@@ -671,10 +671,7 @@ void t_android_lite_generator::output_property(
 
 void t_android_lite_generator::output_case_body_struct(
     const t_struct* tstruct) {
-  const vector<t_field*> members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    const t_field* tfield = *m_iter;
+  for (const auto* tfield : tstruct->fields()) {
     string key = full_property_name(tstruct, tfield);
 
     indent(switch_stmts_) << "if (mMap.containsKey(" + key + ") && "
@@ -709,10 +706,7 @@ void t_android_lite_generator::output_case_body_union(const t_struct* tunion) {
   indent(switch_stmts_) << "switch (mMap.keySet().iterator().next().id) {"
                         << endl;
 
-  const vector<t_field*> members = tunion->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    const t_field* tfield = *m_iter;
+  for (const auto* tfield : tunion->fields()) {
     // We use a non-standard Java scoping rule here. You can add braces to case
     // statements so that each case has its own scope, rather than the entire
     // switch having one scope, as is the usual convention. This makes it
@@ -776,11 +770,9 @@ void t_android_lite_generator::output_case_statement(const t_struct* tstruct) {
 }
 
 void t_android_lite_generator::generate_struct(const t_struct* tstruct) {
-  const vector<t_field*>& members = tstruct->get_members();
-  if (!members.empty()) {
-    vector<t_field*>::const_iterator m_iter;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      output_property(*m_iter, tstruct->get_name());
+  if (tstruct->has_fields()) {
+    for (const auto* field : tstruct->fields()) {
+      output_property(field, tstruct->get_name());
     }
 
     output_case_statement(tstruct);
@@ -866,27 +858,20 @@ void t_android_lite_generator::print_const_value(
       indent_up();
     }
 
-    const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    vector<t_field*>::const_iterator f_iter;
-    const vector<pair<t_const_value*, t_const_value*>>& vals = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
-    for (v_iter = vals.cbegin(); v_iter != vals.cend(); ++v_iter) {
-      const t_type* field_type = nullptr;
-      for (f_iter = fields.cbegin(); f_iter != fields.end(); ++f_iter) {
-        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-          field_type = (*f_iter)->get_type();
-          break;
-        }
-      }
-      if (field_type == nullptr) {
+    const auto* as_struct = static_cast<const t_struct*>(type);
+    for (const auto& entry : value->get_map()) {
+      const auto* field =
+          as_struct->get_field_by_name(entry.first->get_string());
+      if (field == nullptr) {
         throw std::runtime_error(
             "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string());
+            entry.first->get_string());
       }
-      string val = render_const_value(out, name, field_type, v_iter->second);
+      string val =
+          render_const_value(out, name, field->get_type(), entry.second);
       indent(out) << name << ".addProperty("
-                  << full_property_name((t_struct*)type, *f_iter) << ", " << val
-                  << ");" << endl;
+                  << full_property_name(as_struct, field) << ", " << val << ");"
+                  << endl;
     }
 
     if (!in_static) {

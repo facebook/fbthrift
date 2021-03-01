@@ -15,31 +15,31 @@
  */
 
 #include <assert.h>
+#include <stdlib.h>
+
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include <boost/filesystem.hpp>
 
-#include <stdlib.h>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-#include <sstream>
-
-using namespace std;
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-// static const string endl = "\n";  // avoid ostream << std::endl flushes
-static const string kFieldPrefix = "__thrift_";
-static const string kStructInheritanceRootObjectName = "TBaseStruct";
-static const string kExceptionInheritanceRootObjectName = "TBaseException";
-static const string kSetPostfix = "_set";
-static const string kToStringPostfix = "ToString";
-static const string kFromStringPostfix = "FromString";
+// static const std::string std::endl = "\n";  // avoid std::ostream <<
+// std::endl flushes
+static const std::string kFieldPrefix = "__thrift_";
+static const std::string kStructInheritanceRootObjectName = "TBaseStruct";
+static const std::string kExceptionInheritanceRootObjectName = "TBaseException";
+static const std::string kSetPostfix = "_set";
+static const std::string kToStringPostfix = "ToString";
+static const std::string kFromStringPostfix = "FromString";
 
 /**
  * Objective-C code generator.
@@ -104,13 +104,13 @@ class t_cocoa_generator : public t_oop_generator {
 
   void print_const_value(
       std::ofstream& out,
-      std::string name,
+      const std::string& name,
       const t_type* type,
       const t_const_value* value,
       bool defval = false,
       bool is_property = false);
   std::string render_const_value(
-      ofstream& out,
+      std::ofstream& out,
       const t_type* type,
       const t_const_value* value,
       bool containerize_it = false);
@@ -129,16 +129,16 @@ class t_cocoa_generator : public t_oop_generator {
       std::ofstream& out,
       const t_struct* tstruct);
   void generate_cocoa_struct_init_with_coder_method(
-      ofstream& out,
+      std::ofstream& out,
       const t_struct* tstruct,
       bool is_exception);
   void generate_cocoa_struct_encode_with_coder_method(
-      ofstream& out,
+      std::ofstream& out,
       const t_struct* tstruct,
       bool is_exception);
-  void generate_cocoa_struct_hash_method(ofstream& out);
+  void generate_cocoa_struct_hash_method(std::ofstream& out);
   void generate_cocoa_struct_is_equal_method(
-      ofstream& out,
+      std::ofstream& out,
       const t_struct* tstruct,
       bool is_exception);
   void generate_cocoa_struct_field_accessor_declarations(
@@ -214,64 +214,64 @@ class t_cocoa_generator : public t_oop_generator {
   void generate_deserialize_field(
       std::ofstream& out,
       const t_field* tfield,
-      std::string fieldName);
+      const std::string& fieldName);
 
   void generate_deserialize_struct(
       std::ofstream& out,
       const t_struct* tstruct,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_deserialize_container(
       std::ofstream& out,
       const t_type* ttype,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_deserialize_set_element(
       std::ofstream& out,
       const t_set* tset,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_deserialize_map_element(
       std::ofstream& out,
       const t_map* tmap,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_deserialize_list_element(
       std::ofstream& out,
       const t_list* tlist,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_serialize_field(
       std::ofstream& out,
       const t_field* tfield,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_serialize_struct(
       std::ofstream& out,
       const t_struct* tstruct,
-      std::string fieldName = "");
+      const std::string& fieldName);
 
   void generate_serialize_container(
       std::ofstream& out,
       const t_type* ttype,
-      std::string prefix = "");
+      const std::string& fieldName);
 
   void generate_serialize_map_element(
       std::ofstream& out,
       const t_map* tmap,
-      std::string iter,
-      std::string map);
+      const std::string& iter,
+      const std::string& map);
 
   void generate_serialize_set_element(
       std::ofstream& out,
       const t_set* tmap,
-      std::string iter);
+      const std::string& iter);
 
   void generate_serialize_list_element(
       std::ofstream& out,
       const t_list* tlist,
-      std::string index,
-      std::string listName);
+      const std::string& index,
+      const std::string& listName);
 
   /**
    * Helper rendering functions
@@ -289,9 +289,13 @@ class t_cocoa_generator : public t_oop_generator {
   std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
   std::string format_string_for_type(const t_type* type);
-  std::string call_field_setter(const t_field* tfield, std::string fieldName);
-  std::string containerize(const t_type* ttype, std::string fieldName);
-  std::string decontainerize(const t_field* tfield, std::string fieldName);
+  std::string call_field_setter(
+      const t_field* tfield,
+      const std::string& fieldName);
+  std::string containerize(const t_type* ttype, const std::string& fieldName);
+  std::string decontainerize(
+      const t_field* tfield,
+      const std::string& fieldName);
   std::string get_cocoa_property_name(const t_field* tfield);
 
   bool type_can_be_null(const t_type* ttype) {
@@ -316,7 +320,7 @@ class t_cocoa_generator : public t_oop_generator {
   bool validate_required_;
   bool nullability_;
   bool simple_value_equality_;
-  string import_path_;
+  std::string import_path_;
 };
 
 /**
@@ -329,11 +333,11 @@ void t_cocoa_generator::init_generator() {
   cocoa_prefix_ = program_->get_namespace("cocoa");
 
   // we have a .h header file...
-  string f_header_name = program_name_ + ".h";
-  string f_header_fullname = get_out_dir() + f_header_name;
+  std::string f_header_name = program_name_ + ".h";
+  std::string f_header_fullname = get_out_dir() + f_header_name;
   f_header_.open(f_header_fullname.c_str());
 
-  f_header_ << autogen_comment() << endl;
+  f_header_ << autogen_comment() << std::endl;
 
   f_header_ << custom_thrift_marker() << cocoa_imports()
             << cocoa_thrift_imports();
@@ -342,14 +346,14 @@ void t_cocoa_generator::init_generator() {
   }
 
   // ...and a .m implementation file
-  string f_impl_name = get_out_dir() + program_name_ + ".m";
+  std::string f_impl_name = get_out_dir() + program_name_ + ".m";
   f_impl_.open(f_impl_name.c_str());
 
-  f_impl_ << autogen_comment() << endl;
+  f_impl_ << autogen_comment() << std::endl;
 
   f_impl_ << custom_thrift_marker() << cocoa_imports() << cocoa_thrift_imports()
-          << "#import \"" << f_header_name << "\"" << endl
-          << endl;
+          << "#import \"" << f_header_name << "\"" << std::endl
+          << std::endl;
 }
 
 /**
@@ -357,8 +361,8 @@ void t_cocoa_generator::init_generator() {
  *
  * @return List of imports for Cocoa libraries
  */
-string t_cocoa_generator::cocoa_imports() {
-  return string() + "#import <Foundation/Foundation.h>\n" + "\n";
+std::string t_cocoa_generator::cocoa_imports() {
+  return std::string() + "#import <Foundation/Foundation.h>\n" + "\n";
 }
 
 /**
@@ -378,8 +382,8 @@ std::string t_cocoa_generator::custom_thrift_marker() {
  *
  * @return List of imports necessary for thrift runtime
  */
-string t_cocoa_generator::cocoa_thrift_imports() {
-  string systemImports[] = {
+std::string t_cocoa_generator::cocoa_thrift_imports() {
+  std::string systemImports[] = {
       "TProtocol",
       "TApplicationException",
       "TProtocolException",
@@ -391,7 +395,7 @@ string t_cocoa_generator::cocoa_thrift_imports() {
       kExceptionInheritanceRootObjectName,
   };
 
-  string result = "";
+  std::string result = "";
   for (const auto& systemImport : systemImports) {
     if (import_path_ == "") {
       result += "#import \"" + systemImport + ".h\"\n";
@@ -401,7 +405,7 @@ string t_cocoa_generator::cocoa_thrift_imports() {
   }
 
   // Include other Thrift includes
-  const vector<t_program*>& includes = program_->get_included_programs();
+  const std::vector<t_program*>& includes = program_->get_included_programs();
   for (size_t i = 0; i < includes.size(); ++i) {
     result += "#import \"" + includes[i]->get_name() + ".h\"" + "\n";
   }
@@ -416,9 +420,9 @@ string t_cocoa_generator::cocoa_thrift_imports() {
 void t_cocoa_generator::close_generator() {
   // stick our constants declarations at the end of the header file
   // since they refer to things we are defining.
-  f_header_ << constants_declarations_ << endl;
+  f_header_ << constants_declarations_ << std::endl;
   if (nullability_) {
-    f_header_ << endl << "NS_ASSUME_NONNULL_END\n" << endl;
+    f_header_ << std::endl << "NS_ASSUME_NONNULL_END\n" << std::endl;
   }
 }
 
@@ -429,8 +433,8 @@ void t_cocoa_generator::close_generator() {
  */
 void t_cocoa_generator::generate_typedef(const t_typedef* ttypedef) {
   f_header_ << indent() << "typedef " << type_name(ttypedef->get_type()) << " "
-            << cocoa_prefix_ << ttypedef->get_symbolic() << ";" << endl
-            << endl;
+            << cocoa_prefix_ << ttypedef->get_symbolic() << ";" << std::endl
+            << std::endl;
 }
 
 /**
@@ -443,17 +447,17 @@ void t_cocoa_generator::generate_typedef(const t_typedef* ttypedef) {
  */
 void t_cocoa_generator::generate_enum(const t_enum* tenum) {
   f_header_ << indent() << "typedef NS_ENUM(int, " << cocoa_prefix_
-            << tenum->get_name() << ") {" << endl;
+            << tenum->get_name() << ") {" << std::endl;
   indent_up();
 
-  vector<t_enum_value*> constants = tenum->get_enum_values();
-  vector<t_enum_value*>::iterator c_iter;
+  std::vector<t_enum_value*> constants = tenum->get_enum_values();
+  std::vector<t_enum_value*>::iterator c_iter;
   bool first = true;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     if (first) {
       first = false;
     } else {
-      f_header_ << "," << endl;
+      f_header_ << "," << std::endl;
     }
     f_header_ << indent() << cocoa_prefix_ << tenum->get_name() << "_"
               << (*c_iter)->get_name();
@@ -461,36 +465,38 @@ void t_cocoa_generator::generate_enum(const t_enum* tenum) {
   }
 
   indent_down();
-  f_header_ << endl << "};" << endl << endl;
+  f_header_ << std::endl << "};" << std::endl << std::endl;
 
   // toString
 
-  const string toStringFunctionDeclaration = string("NSString* ") +
+  const std::string toStringFunctionDeclaration = std::string("NSString* ") +
       cocoa_prefix_ + tenum->get_name() + kToStringPostfix + "(const " +
       cocoa_prefix_ + tenum->get_name() + " value)";
 
-  f_header_ << indent() << toStringFunctionDeclaration << ";" << endl << endl;
+  f_header_ << indent() << toStringFunctionDeclaration << ";" << std::endl
+            << std::endl;
 
   // implementation:
-  f_impl_ << indent() << toStringFunctionDeclaration << endl << "{" << endl;
+  f_impl_ << indent() << toStringFunctionDeclaration << std::endl
+          << "{" << std::endl;
   indent_up();
 
-  f_impl_ << indent() << "switch(value) {" << endl;
+  f_impl_ << indent() << "switch(value) {" << std::endl;
   indent_up();
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-    string itemName =
+    std::string itemName =
         cocoa_prefix_ + tenum->get_name() + "_" + (*c_iter)->get_name();
     f_impl_ << indent() << "case " << itemName
-            << ": return @\"" + itemName + "\";" << endl;
+            << ": return @\"" + itemName + "\";" << std::endl;
   }
   indent_down();
-  f_impl_ << indent() << "}" << endl;
+  f_impl_ << indent() << "}" << std::endl;
   f_impl_ << indent() << "return [NSString stringWithFormat:@\""
           << cocoa_prefix_ << tenum->get_name() << "_"
-          << "%d\", (int)value];" << endl;
+          << "%d\", (int)value];" << std::endl;
   indent_down();
-  f_impl_ << indent() << "}" << endl;
-  f_impl_ << endl;
+  f_impl_ << indent() << "}" << std::endl;
+  f_impl_ << std::endl;
 
   // fromString
 
@@ -501,53 +507,55 @@ void t_cocoa_generator::generate_enum(const t_enum* tenum) {
 
 void t_cocoa_generator::generate_enum_from_string_function(
     const t_enum* tenum) {
-  const string fromStringFunctionDeclaration = cocoa_prefix_ +
+  const std::string fromStringFunctionDeclaration = cocoa_prefix_ +
       tenum->get_name() + " " + cocoa_prefix_ + tenum->get_name() +
       kFromStringPostfix + "(NSString *str, int fallbackValue)";
 
-  f_header_ << indent() << fromStringFunctionDeclaration << ";" << endl << endl;
+  f_header_ << indent() << fromStringFunctionDeclaration << ";" << std::endl
+            << std::endl;
 
   // implementation:
-  f_impl_ << indent() << fromStringFunctionDeclaration << endl << "{" << endl;
+  f_impl_ << indent() << fromStringFunctionDeclaration << std::endl
+          << "{" << std::endl;
 
   indent_up();
 
   f_impl_ << indent()
           << "static NSDictionary<NSString *, NSNumber *> *mapping = nil;"
-          << endl;
-  f_impl_ << indent() << "static dispatch_once_t onceToken;" << endl;
-  f_impl_ << indent() << "dispatch_once(&onceToken, ^{" << endl;
+          << std::endl;
+  f_impl_ << indent() << "static dispatch_once_t onceToken;" << std::endl;
+  f_impl_ << indent() << "dispatch_once(&onceToken, ^{" << std::endl;
 
   indent_up();
 
-  f_impl_ << indent() << "mapping = @{" << endl;
+  f_impl_ << indent() << "mapping = @{" << std::endl;
 
   indent_up();
 
   for (auto constant = tenum->get_enum_values().begin();
        constant != tenum->get_enum_values().end();
        ++constant) {
-    string namespacedConstantName =
+    std::string namespacedConstantName =
         cocoa_prefix_ + tenum->get_name() + "_" + (*constant)->get_name();
     f_impl_ << indent() << "@\"" << namespacedConstantName << "\": @("
-            << namespacedConstantName << ")," << endl;
+            << namespacedConstantName << ")," << std::endl;
   }
 
   indent_down();
 
-  f_impl_ << indent() << "};" << endl;
+  f_impl_ << indent() << "};" << std::endl;
 
   indent_down();
 
-  f_impl_ << indent() << "});" << endl;
+  f_impl_ << indent() << "});" << std::endl;
   f_impl_ << indent()
           << "return mapping[str] ? [mapping[str] intValue] : fallbackValue;"
-          << endl;
+          << std::endl;
 
   indent_down();
 
-  f_impl_ << indent() << "}" << endl;
-  f_impl_ << endl;
+  f_impl_ << indent() << "}" << std::endl;
+  f_impl_ << std::endl;
 }
 
 /**
@@ -562,7 +570,8 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   }
 
   std::ostringstream const_interface;
-  string constants_class_name = cocoa_prefix_ + program_name_ + "Constants";
+  std::string constants_class_name =
+      cocoa_prefix_ + program_name_ + "Constants";
 
   const_interface << "@interface " << constants_class_name << " : "
                   << kStructInheritanceRootObjectName << " ";
@@ -570,11 +579,12 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   scope_down(const_interface);
 
   // getter method for each constant defined.
-  vector<t_const*>::iterator c_iter;
+  std::vector<t_const*>::iterator c_iter;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
+    std::string name = (*c_iter)->get_name();
     const t_type* type = (*c_iter)->get_type();
-    const_interface << "+ (" << type_name(type) << ") " << name << ";" << endl;
+    const_interface << "+ (" << type_name(type) << ") " << name << ";"
+                    << std::endl;
   }
 
   const_interface << "@end";
@@ -584,23 +594,23 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
 
   // static variables in the .m hold all constant values
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
+    std::string name = (*c_iter)->get_name();
     const t_type* type = (*c_iter)->get_type();
     f_impl_ << "static " << type_name(type) << " " << cocoa_prefix_ << name;
     if (!type->is_container() && !type->is_struct()) {
       f_impl_ << " = "
               << render_const_value(f_impl_, type, (*c_iter)->get_value());
     }
-    f_impl_ << ";" << endl;
+    f_impl_ << ";" << std::endl;
   }
-  f_impl_ << endl;
+  f_impl_ << std::endl;
 
-  f_impl_ << "@implementation " << constants_class_name << endl;
+  f_impl_ << "@implementation " << constants_class_name << std::endl;
 
   // check if initialize method is needed to initialize complex constants
   // when the class is initialized
   bool should_have_initialize =
-      std::any_of(consts.begin(), consts.end(), [](const t_const* c) {
+      any_of(consts.begin(), consts.end(), [](const t_const* c) {
         return c->get_type()->is_container() || c->get_type()->is_struct();
       });
   if (should_have_initialize) {
@@ -617,7 +627,7 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
             (*c_iter)->get_value(),
             false,
             false);
-        f_impl_ << ";" << endl;
+        f_impl_ << ";" << std::endl;
       }
     }
     scope_down(f_impl_);
@@ -625,15 +635,15 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
 
   // getter method for each constant
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
+    std::string name = (*c_iter)->get_name();
     const t_type* type = (*c_iter)->get_type();
     f_impl_ << "+ (" << type_name(type) << ") " << name;
     scope_up(f_impl_);
-    indent(f_impl_) << "return " << cocoa_prefix_ << name << ";" << endl;
+    indent(f_impl_) << "return " << cocoa_prefix_ << name << ";" << std::endl;
     scope_down(f_impl_);
   }
 
-  f_impl_ << "@end" << endl << endl;
+  f_impl_ << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -663,7 +673,7 @@ void t_cocoa_generator::generate_xception(const t_struct* txception) {
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_interface(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception) {
   out << "@interface " << cocoa_prefix_ << tstruct->get_name() << " : ";
@@ -678,65 +688,62 @@ void t_cocoa_generator::generate_cocoa_struct_interface(
   scope_up(out);
 
   // members are protected.  this is redundant, but explicit.
-  //  f_header_ << endl << "@protected:" << endl;
-
-  const vector<t_field*>& members = tstruct->get_members();
+  //  f_header_ << std::endl << "@protected:" << std::endl;
 
   // member varialbes
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    out << indent() << declare_field(*m_iter) << endl;
+  for (const auto* field : tstruct->fields()) {
+    out << indent() << declare_field(field) << std::endl;
   }
 
-  if (members.size() > 0) {
-    out << endl;
+  if (tstruct->has_fields()) {
+    out << std::endl;
     // isset fields
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      indent(out) << "BOOL " << kFieldPrefix << (*m_iter)->get_name()
-                  << kSetPostfix << ";" << endl;
+    for (const auto* field : tstruct->fields()) {
+      indent(out) << "BOOL " << kFieldPrefix << field->get_name() << kSetPostfix
+                  << ";" << std::endl;
     }
   }
 
   scope_down(out);
-  out << endl;
+  out << std::endl;
 
   // properties
-  if (members.size() > 0) {
+  if (tstruct->has_fields()) {
     // out << "#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >=
-    // MAC_OS_X_VERSION_10_5)" << endl;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      out << indent() << declare_property(*m_iter) << endl;
+    // MAC_OS_X_VERSION_10_5)" << std::endl;
+    for (const auto* field : tstruct->fields()) {
+      out << indent() << declare_property(field) << std::endl;
     }
-    // out << "#endif" << endl;
-    out << endl;
+    // out << "#endif" << std::endl;
+    out << std::endl;
   }
 
   // default initializer
-  out << indent() << "- (id) init NS_DESIGNATED_INITIALIZER;" << endl;
+  out << indent() << "- (id) init NS_DESIGNATED_INITIALIZER;" << std::endl;
 
   // although we conform to NSCoding, we need to declare -initWithCoder:
   // explicitly, because the implementation invokes super, and is thus
   // a designated initializer
   out << indent()
       << "- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;"
-      << endl;
+      << std::endl;
 
   // initializer for all fields
-  if (!members.empty()) {
+  if (tstruct->has_fields()) {
     generate_cocoa_struct_initializer_signature(out, tstruct);
-    out << " NS_DESIGNATED_INITIALIZER;" << endl;
+    out << " NS_DESIGNATED_INITIALIZER;" << std::endl;
   }
   // read and write
-  out << "- (void) read: (id <TProtocol>) inProtocol;" << endl;
-  out << "- (void) write: (id <TProtocol>) outProtocol;" << endl;
+  out << "- (void) read: (id <TProtocol>) inProtocol;" << std::endl;
+  out << "- (void) write: (id <TProtocol>) outProtocol;" << std::endl;
   // validator
-  out << "- (void) validate;" << endl << endl;
+  out << "- (void) validate;" << std::endl << std::endl;
 
   // getters and setters
   generate_cocoa_struct_field_accessor_declarations(
       out, tstruct, false, false, true, is_exception);
 
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -744,28 +751,24 @@ void t_cocoa_generator::generate_cocoa_struct_interface(
  * each field.
  */
 void t_cocoa_generator::generate_cocoa_struct_initializer_signature(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
   indent(out) << "- (id) initWith";
-  for (m_iter = members.begin(); m_iter != members.end();) {
-    if (m_iter == members.begin()) {
-      out << capitalize((*m_iter)->get_name());
+  bool first = true;
+  for (const auto* field : tstruct->fields()) {
+    if (first) {
+      out << capitalize(field->get_name());
     } else {
-      out << (*m_iter)->get_name();
+      out << " " << field->get_name();
     }
     out << ": (";
-    if (nullability_ && type_can_be_null(((*m_iter)->get_type()))) {
+    if (nullability_ && type_can_be_null((field->get_type()))) {
       out
-          << ((*m_iter)->get_req() == t_field::e_req::required ? "nonnull "
-                                                               : "nullable ");
+          << (field->get_req() == t_field::e_req::required ? "nonnull "
+                                                           : "nullable ");
     }
-    out << type_name((*m_iter)->get_type()) << ") " << (*m_iter)->get_name();
-    ++m_iter;
-    if (m_iter != members.end()) {
-      out << " ";
-    }
+    out << type_name(field->get_type()) << ") " << field->get_name();
+    first = false;
   }
 }
 
@@ -774,32 +777,30 @@ void t_cocoa_generator::generate_cocoa_struct_initializer_signature(
  * IsSet getter.
  */
 void t_cocoa_generator::generate_cocoa_struct_field_accessor_declarations(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_declare_getter,
     bool is_declare_setter,
     bool is_declare_isset_getter,
     bool is_exception) {
   (void)is_exception;
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    // out << indent() << "#if !__has_feature(objc_arc)" << endl
+  for (const auto* field : tstruct->fields()) {
+    // out << indent() << "#if !__has_feature(objc_arc)" << std::endl
     if (is_declare_getter) {
-      out << indent() << "- (" << type_name((*m_iter)->get_type()) << ") "
-          << decapitalize(get_cocoa_property_name(*m_iter)) << ";" << endl;
+      out << indent() << "- (" << type_name(field->get_type()) << ") "
+          << decapitalize(get_cocoa_property_name(field)) << ";" << std::endl;
     }
 
     if (is_declare_setter) {
       out << indent() << "- (void) set"
-          << capitalize(get_cocoa_property_name(*m_iter)) << ": ("
-          << type_name((*m_iter)->get_type()) << ") " << (*m_iter)->get_name()
-          << ";" << endl;
+          << capitalize(get_cocoa_property_name(field)) << ": ("
+          << type_name(field->get_type()) << ") " << field->get_name() << ";"
+          << std::endl;
     }
-    // out << indent() << "#endif" << endl;
+    // out << indent() << "#endif" << std::endl;
     if (is_declare_isset_getter) {
-      out << indent() << "- (BOOL) " << (*m_iter)->get_name() << "IsSet"
-          << ";" << endl;
+      out << indent() << "- (BOOL) " << field->get_name() << "IsSet"
+          << ";" << std::endl;
     }
   }
 }
@@ -809,59 +810,56 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_declarations(
  * the NSCoding protocol
  */
 void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception) {
-  indent(out) << "- (id) initWithCoder: (NSCoder *) decoder" << endl;
+  indent(out) << "- (id) initWithCoder: (NSCoder *) decoder" << std::endl;
   scope_up(out);
   if (is_exception) {
     // NSExceptions conform to NSCoding, so we can call super
-    out << indent() << "self = [super initWithCoder: decoder];" << endl;
+    out << indent() << "self = [super initWithCoder: decoder];" << std::endl;
   } else {
-    out << indent() << "self = [super init];" << endl;
+    out << indent() << "self = [super init];" << std::endl;
   }
 
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    const t_type* t = (*m_iter)->get_type()->get_true_type();
+  for (const auto* field : tstruct->fields()) {
+    const t_type* t = field->get_type()->get_true_type();
     out << indent() << "if ([decoder containsValueForKey: @\""
-        << (*m_iter)->get_name() << "\"])" << endl;
+        << field->get_name() << "\"])" << std::endl;
     scope_up(out);
-    out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
+    out << indent() << kFieldPrefix << field->get_name() << " = ";
     if (type_can_be_null(t)) {
-      out << "[[decoder decodeObjectForKey: @\"" << (*m_iter)->get_name()
-          << "\"] retain_stub];" << endl;
+      out << "[[decoder decodeObjectForKey: @\"" << field->get_name()
+          << "\"] retain_stub];" << std::endl;
     } else if (t->is_enum()) {
-      out << "[decoder decodeIntForKey: @\"" << (*m_iter)->get_name() << "\"];"
-          << endl;
+      out << "[decoder decodeIntForKey: @\"" << field->get_name() << "\"];"
+          << std::endl;
     } else {
       t_base_type::t_base tbase = ((t_base_type*)t)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_BOOL:
-          out << "[decoder decodeBoolForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeBoolForKey: @\"" << field->get_name() << "\"];"
+              << std::endl;
           break;
         case t_base_type::TYPE_BYTE:
-          out << "[decoder decodeIntForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeIntForKey: @\"" << field->get_name() << "\"];"
+              << std::endl;
           break;
         case t_base_type::TYPE_I16:
-          out << "[decoder decodeIntForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeIntForKey: @\"" << field->get_name() << "\"];"
+              << std::endl;
           break;
         case t_base_type::TYPE_I32:
-          out << "[decoder decodeInt32ForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeInt32ForKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_I64:
-          out << "[decoder decodeInt64ForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeInt64ForKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_DOUBLE:
-          out << "[decoder decodeDoubleForKey: @\"" << (*m_iter)->get_name()
-              << "\"];" << endl;
+          out << "[decoder decodeDoubleForKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         default:
           throw std::runtime_error(
@@ -869,14 +867,14 @@ void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(
               t_base_type::t_base_name(tbase));
       }
     }
-    out << indent() << kFieldPrefix << (*m_iter)->get_name() << kSetPostfix
-        << " = YES;" << endl;
+    out << indent() << kFieldPrefix << field->get_name() << kSetPostfix
+        << " = YES;" << std::endl;
     scope_down(out);
   }
 
-  out << indent() << "return self;" << endl;
+  out << indent() << "return self;" << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 }
 
 /**
@@ -884,65 +882,62 @@ void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(
  * the NSCoding protocol
  */
 void t_cocoa_generator::generate_cocoa_struct_encode_with_coder_method(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception) {
-  indent(out) << "- (void) encodeWithCoder: (NSCoder *) encoder" << endl;
+  indent(out) << "- (void) encodeWithCoder: (NSCoder *) encoder" << std::endl;
   scope_up(out);
   if (is_exception) {
     // NSExceptions conform to NSCoding, so we can call super
-    out << indent() << "[super encodeWithCoder: encoder];" << endl;
+    out << indent() << "[super encodeWithCoder: encoder];" << std::endl;
   }
 
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    const t_type* t = (*m_iter)->get_type()->get_true_type();
-    out << indent() << "if (" << kFieldPrefix << (*m_iter)->get_name()
-        << kSetPostfix << ")" << endl;
+  for (const auto* field : tstruct->fields()) {
+    const t_type* t = field->get_type()->get_true_type();
+    out << indent() << "if (" << kFieldPrefix << field->get_name()
+        << kSetPostfix << ")" << std::endl;
     scope_up(out);
-    // out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
+    // out << indent() << kFieldPrefix << field->get_name() << " = ";
     if (type_can_be_null(t)) {
       out << indent() << "[encoder encodeObject: " << kFieldPrefix
-          << (*m_iter)->get_name() << " forKey: @\"" << (*m_iter)->get_name()
-          << "\"];" << endl;
+          << field->get_name() << " forKey: @\"" << field->get_name() << "\"];"
+          << std::endl;
     } else if (t->is_enum()) {
       out << indent() << "[encoder encodeInt: " << kFieldPrefix
-          << (*m_iter)->get_name() << " forKey: @\"" << (*m_iter)->get_name()
-          << "\"];" << endl;
+          << field->get_name() << " forKey: @\"" << field->get_name() << "\"];"
+          << std::endl;
     } else {
       t_base_type::t_base tbase = ((t_base_type*)t)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_BOOL:
           out << indent() << "[encoder encodeBool: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_BYTE:
           out << indent() << "[encoder encodeInt: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_I16:
           out << indent() << "[encoder encodeInt: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_I32:
           out << indent() << "[encoder encodeInt32: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_I64:
           out << indent() << "[encoder encodeInt64: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         case t_base_type::TYPE_DOUBLE:
           out << indent() << "[encoder encodeDouble: " << kFieldPrefix
-              << (*m_iter)->get_name() << " forKey: @\""
-              << (*m_iter)->get_name() << "\"];" << endl;
+              << field->get_name() << " forKey: @\"" << field->get_name()
+              << "\"];" << std::endl;
           break;
         default:
           throw std::runtime_error(
@@ -954,57 +949,57 @@ void t_cocoa_generator::generate_cocoa_struct_encode_with_coder_method(
   }
 
   scope_down(out);
-  out << endl;
+  out << std::endl;
 }
 
 /**
  * Generate the hash method for this struct
  */
-void t_cocoa_generator::generate_cocoa_struct_hash_method(ofstream& out) {
-  indent(out) << "- (NSUInteger) hash" << endl;
+void t_cocoa_generator::generate_cocoa_struct_hash_method(std::ofstream& out) {
+  indent(out) << "- (NSUInteger) hash" << std::endl;
   scope_up(out);
-  out << indent() << "return 0;" << endl;
+  out << indent() << "return 0;" << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 }
 
 /**
  * Generate the isEqual method for this struct
  */
 void t_cocoa_generator::generate_cocoa_struct_is_equal_method(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception) {
-  indent(out) << "- (BOOL) isEqual: (id) anObject" << endl;
+  indent(out) << "- (BOOL) isEqual: (id) anObject" << std::endl;
   scope_up(out);
 
-  indent(out) << "if (self == anObject) {" << endl;
+  indent(out) << "if (self == anObject) {" << std::endl;
   indent_up();
-  indent(out) << "return YES;" << endl;
+  indent(out) << "return YES;" << std::endl;
   indent_down();
-  indent(out) << "}" << endl;
+  indent(out) << "}" << std::endl;
 
-  string class_name = cocoa_prefix_ + tstruct->get_name();
+  std::string class_name = cocoa_prefix_ + tstruct->get_name();
 
   if (is_exception) {
-    indent(out) << "if (![super isEqual:anObject]) {" << endl;
+    indent(out) << "if (![super isEqual:anObject]) {" << std::endl;
     indent_up();
-    indent(out) << "return NO;" << endl;
+    indent(out) << "return NO;" << std::endl;
     indent_down();
-    indent(out) << "}" << endl << endl;
+    indent(out) << "}" << std::endl << std::endl;
   } else {
     indent(out) << "if (![anObject isKindOfClass:[" << class_name
-                << " class]]) {" << endl;
+                << " class]]) {" << std::endl;
     indent_up();
-    indent(out) << "return NO;" << endl;
+    indent(out) << "return NO;" << std::endl;
     indent_down();
-    indent(out) << "}" << endl;
+    indent(out) << "}" << std::endl;
   }
 
   out << indent() << "return [[self toDict] isEqual:[anObject toDict]];"
-      << endl;
+      << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 }
 
 /**
@@ -1015,89 +1010,84 @@ void t_cocoa_generator::generate_cocoa_struct_is_equal_method(
  * @param is_result    If this is a result it needs a different writer
  */
 void t_cocoa_generator::generate_cocoa_struct_implementation(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception,
     bool is_result) {
   indent(out) << "@implementation " << cocoa_prefix_ << tstruct->get_name()
-              << endl
-              << endl;
-
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
+              << std::endl
+              << std::endl;
 
   // exceptions need to call the designated initializer on NSException
   if (is_exception) {
-    out << indent() << "- (instancetype) init" << endl;
+    out << indent() << "- (instancetype) init" << std::endl;
     scope_up(out);
     out << indent() << "return [super initWithName: @\"" << cocoa_prefix_
         << tstruct->get_name() << "\" reason: @\"unknown\" userInfo: nil];"
-        << endl;
+        << std::endl;
     scope_down(out);
-    out << endl;
+    out << std::endl;
   } else {
     // struct
 
     // default initializer
     // setup instance variables with default values
-    indent(out) << "- (instancetype) init" << endl;
+    indent(out) << "- (instancetype) init" << std::endl;
     scope_up(out);
-    indent(out) << "self = [super init];" << endl;
+    indent(out) << "self = [super init];" << std::endl;
     size_t num_members_with_values = 0;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      if ((*m_iter)->get_value() != NULL)
+    for (const auto* field : tstruct->fields()) {
+      if (field->get_value() != nullptr) {
+        if (num_members_with_values == 0) {
+          // out << "#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >=
+          // MAC_OS_X_VERSION_10_5)" << std::endl;
+        }
         num_members_with_values++;
+        print_const_value(
+            out,
+            "self." + field->get_name(),
+            field->get_type()->get_true_type(),
+            field->get_value(),
+            false,
+            true);
+      }
+    }
+    if (num_members_with_values != 0) {
+      // out << "#endif" << std::endl;
     }
 
-    if (num_members_with_values > 0) {
-      // out << "#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >=
-      // MAC_OS_X_VERSION_10_5)" << endl;
-      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-        const t_type* t = (*m_iter)->get_type()->get_true_type();
-        if ((*m_iter)->get_value() != NULL) {
-          print_const_value(
-              out,
-              "self." + (*m_iter)->get_name(),
-              t,
-              (*m_iter)->get_value(),
-              false,
-              true);
-        }
-      }
-      // out << "#endif" << endl;
-    }
-    indent(out) << "return self;" << endl;
+    indent(out) << "return self;" << std::endl;
     scope_down(out);
-    out << endl;
+    out << std::endl;
   }
 
   // initializer with all fields as params
-  if (!members.empty()) {
+  if (tstruct->has_fields()) {
     generate_cocoa_struct_initializer_signature(out, tstruct);
-    out << endl;
+    out << std::endl;
     scope_up(out);
     if (is_exception) {
-      out << indent() << "self = [self init];" << endl;
+      out << indent() << "self = [self init];" << std::endl;
     } else {
-      out << indent() << "self = [super init];" << endl;
+      out << indent() << "self = [super init];" << std::endl;
     }
 
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      const t_type* t = (*m_iter)->get_type()->get_true_type();
-      out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
+    for (const auto* field : tstruct->fields()) {
+      const t_type* t = field->get_type()->get_true_type();
+      out << indent() << kFieldPrefix << field->get_name() << " = ";
       if (type_can_be_null(t)) {
-        // out << "[" << (*m_iter)->get_name() << " retain_stub];" << endl;
-        out << (*m_iter)->get_name() << ";" << endl;
+        // out << "[" << field->get_name() << " retain_stub];" << std::endl;
+        out << field->get_name() << ";" << std::endl;
       } else {
-        out << (*m_iter)->get_name() << ";" << endl;
+        out << field->get_name() << ";" << std::endl;
       }
-      out << indent() << kFieldPrefix << (*m_iter)->get_name() << kSetPostfix
-          << " = YES;" << endl;
+      out << indent() << kFieldPrefix << field->get_name() << kSetPostfix
+          << " = YES;" << std::endl;
     }
 
-    out << indent() << "return self;" << endl;
+    out << indent() << "return self;" << std::endl;
     scope_down(out);
-    out << endl;
+    out << std::endl;
   }
 
   // initWithCoder for NSCoding
@@ -1113,18 +1103,18 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
 
   // dealloc
   // if (!members.empty()) {
-  //   out << "- (void) dealloc" << endl;
+  //   out << "- (void) dealloc" << std::endl;
   //   scope_up(out);
   //   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
   //     const t_type* t = (*m_iter)->get_type()->get_true_type();
   //     if (type_can_be_null(t)) {
   //       indent(out) << "[" << kFieldPrefix << (*m_iter)->get_name() << "
-  //       release_stub];" << endl;
+  //       release_stub];" << std::endl;
   //     }
   //   }
-  //   // out << indent() << "[super dealloc_stub];" << endl;
+  //   // out << indent() << "[super dealloc_stub];" << std::endl;
   //   scope_down(out);
-  //   out << endl;
+  //   out << std::endl;
   // }
 
   // the rest of the methods
@@ -1142,7 +1132,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
   generate_cocoa_struct_makeImmutable(out, tstruct);
   generate_cocoa_struct_mutableCopyWithZone(out, tstruct);
 
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -1151,104 +1141,103 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_reader(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << "- (void) read: (id <TProtocol>) inProtocol" << endl;
+  out << "- (void) read: (id <TProtocol>) inProtocol" << std::endl;
   scope_up(out);
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
   // Declare stack tmp variables
-  indent(out) << "NSString * fieldName;" << endl;
-  indent(out) << "int fieldType;" << endl;
-  indent(out) << "int fieldID;" << endl;
-  out << endl;
+  indent(out) << "NSString * fieldName;" << std::endl;
+  indent(out) << "int fieldType;" << std::endl;
+  indent(out) << "int fieldID;" << std::endl;
+  out << std::endl;
 
-  indent(out) << "[inProtocol readStructBeginReturningName: NULL];" << endl;
+  indent(out) << "[inProtocol readStructBeginReturningName: NULL];"
+              << std::endl;
 
   // Loop over reading in fields
-  indent(out) << "while (true)" << endl;
+  indent(out) << "while (true)" << std::endl;
   scope_up(out);
 
   // Read beginning field marker
   indent(out)
       << "[inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];"
-      << endl;
+      << std::endl;
 
   // Check for field STOP marker and break
-  indent(out) << "if (fieldType == TType_STOP) { " << endl;
+  indent(out) << "if (fieldType == TType_STOP) { " << std::endl;
   indent_up();
-  indent(out) << "break;" << endl;
+  indent(out) << "break;" << std::endl;
   indent_down();
-  indent(out) << "}" << endl;
+  indent(out) << "}" << std::endl;
 
   // Switch statement on the field we are reading
-  indent(out) << "switch (fieldID)" << endl;
+  indent(out) << "switch (fieldID)" << std::endl;
 
   scope_up(out);
 
   // Generate deserialization code for known cases
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    indent(out) << "case " << (*f_iter)->get_key() << ":" << endl;
+  for (const auto* field : tstruct->fields()) {
+    indent(out) << "case " << field->get_key() << ":" << std::endl;
     indent_up();
-    indent(out) << "if (fieldType == " << type_to_enum((*f_iter)->get_type())
-                << ") {" << endl;
+    indent(out) << "if (fieldType == " << type_to_enum(field->get_type())
+                << ") {" << std::endl;
     indent_up();
 
-    generate_deserialize_field(out, *f_iter, "fieldValue");
-    indent(out) << call_field_setter(*f_iter, "fieldValue") << endl;
+    generate_deserialize_field(out, field, "fieldValue");
+    indent(out) << call_field_setter(field, "fieldValue") << std::endl;
     // if this is an allocated field, release it since the struct
     // is now retaining it
-    if (type_can_be_null((*f_iter)->get_type())) {
+    if (type_can_be_null(field->get_type())) {
       // deserialized strings are autorelease, so don't release them
-      if (!((*f_iter)->get_type()->get_true_type()->is_string_or_binary())) {
-        indent(out) << "[fieldValue release_stub];" << endl;
+      if (!field->get_type()->get_true_type()->is_string_or_binary()) {
+        indent(out) << "[fieldValue release_stub];" << std::endl;
       }
     }
 
     indent_down();
-    out << indent() << "} else {" << endl;
+    out << indent() << "} else {" << std::endl;
     if (log_unexpected_) {
       out << indent()
           << "  NSLog(@\"%s: field ID %i has unexpected type %i.  Skipping.\", __PRETTY_FUNCTION__, fieldID, fieldType);"
-          << endl;
+          << std::endl;
     }
     out << indent()
         << "  [TProtocolUtil skipType: fieldType onProtocol: inProtocol];"
-        << endl
-        << indent() << "}" << endl
-        << indent() << "break;" << endl;
+        << std::endl
+        << indent() << "}" << std::endl
+        << indent() << "break;" << std::endl;
     indent_down();
   }
 
   // In the default case we skip the field
-  out << indent() << "default:" << endl;
+  out << indent() << "default:" << std::endl;
   if (log_unexpected_) {
     out << indent()
         << "  NSLog(@\"%s: unexpected field ID %i with type %i.  Skipping.\", __PRETTY_FUNCTION__, fieldID, fieldType);"
-        << endl;
+        << std::endl;
   }
   out << indent()
-      << "  [TProtocolUtil skipType: fieldType onProtocol: inProtocol];" << endl
-      << indent() << "  break;" << endl;
+      << "  [TProtocolUtil skipType: fieldType onProtocol: inProtocol];"
+      << std::endl
+      << indent() << "  break;" << std::endl;
 
   scope_down(out);
 
   // Read field end marker
-  indent(out) << "[inProtocol readFieldEnd];" << endl;
+  indent(out) << "[inProtocol readFieldEnd];" << std::endl;
 
   scope_down(out);
 
-  out << indent() << "[inProtocol readStructEnd];" << endl;
+  out << indent() << "[inProtocol readStructEnd];" << std::endl;
 
   // performs various checks (e.g. check that all required fields are set)
   if (validate_required_) {
-    out << indent() << "[self validate];" << endl;
+    out << indent() << "[self validate];" << std::endl;
   }
 
   indent_down();
-  out << indent() << "}" << endl << endl;
+  out << indent() << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1257,52 +1246,49 @@ void t_cocoa_generator::generate_cocoa_struct_reader(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_writer(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (void) write: (id <TProtocol>) outProtocol {" << endl;
+  out << indent() << "- (void) write: (id <TProtocol>) outProtocol {"
+      << std::endl;
   indent_up();
 
-  const string& name = tstruct->get_name();
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
+  const std::string& name = tstruct->get_name();
   out << indent() << "[outProtocol writeStructBeginWithName: @\"" << name
-      << "\"];" << endl;
+      << "\"];" << std::endl;
 
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    out << indent() << "if (" << kFieldPrefix << (*f_iter)->get_name()
-        << kSetPostfix << ") {" << endl;
+  for (const auto* field : tstruct->fields()) {
+    out << indent() << "if (" << kFieldPrefix << field->get_name()
+        << kSetPostfix << ") {" << std::endl;
     indent_up();
-    bool null_allowed = type_can_be_null((*f_iter)->get_type());
+    bool null_allowed = type_can_be_null(field->get_type());
     if (null_allowed) {
-      out << indent() << "if (" << kFieldPrefix << (*f_iter)->get_name()
-          << " != nil) {" << endl;
+      out << indent() << "if (" << kFieldPrefix << field->get_name()
+          << " != nil) {" << std::endl;
       indent_up();
     }
 
     indent(out) << "[outProtocol writeFieldBeginWithName: @\""
-                << (*f_iter)->get_name()
-                << "\" type: " << type_to_enum((*f_iter)->get_type())
-                << " fieldID: " << (*f_iter)->get_key() << "];" << endl;
+                << field->get_name()
+                << "\" type: " << type_to_enum(field->get_type())
+                << " fieldID: " << field->get_key() << "];" << std::endl;
 
     // Write field contents
-    generate_serialize_field(
-        out, *f_iter, kFieldPrefix + (*f_iter)->get_name());
+    generate_serialize_field(out, field, kFieldPrefix + field->get_name());
 
     // Write field closer
-    indent(out) << "[outProtocol writeFieldEnd];" << endl;
+    indent(out) << "[outProtocol writeFieldEnd];" << std::endl;
 
     if (null_allowed) {
       scope_down(out);
     }
     scope_down(out);
   }
-  // Write the struct map
-  out << indent() << "[outProtocol writeFieldStop];" << endl
-      << indent() << "[outProtocol writeStructEnd];" << endl;
+  // Write the struct std::map
+  out << indent() << "[outProtocol writeFieldStop];" << std::endl
+      << indent() << "[outProtocol writeStructEnd];" << std::endl;
 
   indent_down();
-  out << indent() << "}" << endl << endl;
+  out << indent() << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1313,65 +1299,63 @@ void t_cocoa_generator::generate_cocoa_struct_writer(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_result_writer(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (void) write: (id <TProtocol>) outProtocol {" << endl;
+  out << indent() << "- (void) write: (id <TProtocol>) outProtocol {"
+      << std::endl;
   indent_up();
 
-  const string& name = tstruct->get_name();
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
+  const std::string& name = tstruct->get_name();
 
   out << indent() << "[outProtocol writeStructBeginWithName: @\"" << name
-      << "\"];" << endl;
+      << "\"];" << std::endl;
 
   bool first = true;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+  for (const auto* field : tstruct->fields()) {
     if (first) {
       first = false;
-      out << endl << indent() << "if ";
+      out << std::endl << indent() << "if ";
     } else {
       out << " else if ";
     }
 
-    out << "(" << kFieldPrefix << (*f_iter)->get_name() << kSetPostfix << ") {"
-        << endl;
+    out << "(" << kFieldPrefix << field->get_name() << kSetPostfix << ") {"
+        << std::endl;
     indent_up();
 
-    bool null_allowed = type_can_be_null((*f_iter)->get_type());
+    bool null_allowed = type_can_be_null(field->get_type());
     if (null_allowed) {
-      out << indent() << "if (" << kFieldPrefix << (*f_iter)->get_name()
-          << " != nil) {" << endl;
+      out << indent() << "if (" << kFieldPrefix << field->get_name()
+          << " != nil) {" << std::endl;
       indent_up();
     }
 
     indent(out) << "[outProtocol writeFieldBeginWithName: @\""
-                << (*f_iter)->get_name()
-                << "\" type: " << type_to_enum((*f_iter)->get_type())
-                << " fieldID: " << (*f_iter)->get_key() << "];" << endl;
+                << field->get_name()
+                << "\" type: " << type_to_enum(field->get_type())
+                << " fieldID: " << field->get_key() << "];" << std::endl;
 
     // Write field contents
-    generate_serialize_field(
-        out, *f_iter, kFieldPrefix + (*f_iter)->get_name());
+    generate_serialize_field(out, field, kFieldPrefix + field->get_name());
 
     // Write field closer
-    indent(out) << "[outProtocol writeFieldEnd];" << endl;
+    indent(out) << "[outProtocol writeFieldEnd];" << std::endl;
 
     if (null_allowed) {
       indent_down();
-      indent(out) << "}" << endl;
+      indent(out) << "}" << std::endl;
     }
 
     indent_down();
     indent(out) << "}";
   }
-  // Write the struct map
-  out << endl
-      << indent() << "[outProtocol writeFieldStop];" << endl
-      << indent() << "[outProtocol writeStructEnd];" << endl;
+  // Write the struct std::map
+  out << std::endl
+      << indent() << "[outProtocol writeFieldStop];" << std::endl
+      << indent() << "[outProtocol writeStructEnd];" << std::endl;
 
   indent_down();
-  out << indent() << "}" << endl << endl;
+  out << indent() << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1381,32 +1365,28 @@ void t_cocoa_generator::generate_cocoa_struct_result_writer(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_validator(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (void) validate {" << endl;
+  out << indent() << "- (void) validate {" << std::endl;
   indent_up();
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
-  out << indent() << "// check for required fields" << endl;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    const t_field* field = (*f_iter);
+  out << indent() << "// check for required fields" << std::endl;
+  for (const auto* field : tstruct->fields()) {
     if (field->get_req() == t_field::e_req::required) {
       out << indent() << "if (!" << kFieldPrefix << field->get_name()
-          << kSetPostfix << ") {" << endl
+          << kSetPostfix << ") {" << std::endl
           << indent()
           << "  @throw [TProtocolException exceptionWithName: @\"TProtocolException\""
-          << endl
+          << std::endl
           << indent()
           << "                             reason: @\"Required field '"
-          << (*f_iter)->get_name() << "' is not set.\"];" << endl
-          << indent() << "}" << endl;
+          << field->get_name() << "' is not set.\"];" << std::endl
+          << indent() << "}" << std::endl;
     }
   }
 
   indent_down();
-  out << indent() << "}" << endl << endl;
+  out << indent() << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1416,72 +1396,71 @@ void t_cocoa_generator::generate_cocoa_struct_validator(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
     bool is_exception) {
   (void)is_exception;
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    const t_field* field = *f_iter;
+  for (const auto* field : tstruct->fields()) {
     const t_type* type = field->get_type()->get_true_type();
-    const std::string field_name = field->get_name();
-    const std::string getter_selector = get_cocoa_property_name(field);
+    const std::string& field_name = field->get_name();
+    std::string getter_selector = get_cocoa_property_name(field);
     std::string cap_name = getter_selector;
     cap_name[0] = toupper(cap_name[0]);
 
     // Simple getter
     indent(out) << "- (" << type_name(type) << ") ";
-    out << getter_selector << " {" << endl;
+    out << getter_selector << " {" << std::endl;
     indent_up();
     if (!type_can_be_null(type)) {
-      indent(out) << "return " << kFieldPrefix << field_name << ";" << endl;
+      indent(out) << "return " << kFieldPrefix << field_name << ";"
+                  << std::endl;
     } else {
-      indent(out) << "return " << kFieldPrefix << field_name << ";" << endl;
+      indent(out) << "return " << kFieldPrefix << field_name << ";"
+                  << std::endl;
     }
     indent_down();
-    indent(out) << "}" << endl << endl;
+    indent(out) << "}" << std::endl << std::endl;
 
     // Simple setter
     indent(out) << "- (void) set" << cap_name << ": (" << type_name(type)
-                << ") " << field_name << " {" << endl;
+                << ") " << field_name << " {" << std::endl;
     indent_up();
-    indent(out) << "[self throwExceptionIfImmutable];" << endl;
+    indent(out) << "[self throwExceptionIfImmutable];" << std::endl;
     if (!type_can_be_null(type)) {
       indent(out) << kFieldPrefix << field_name << " = " << field_name << ";"
-                  << endl;
+                  << std::endl;
     } else {
-      // indent(out) << "[" << field_name << " retain_stub];" << endl;
+      // indent(out) << "[" << field_name << " retain_stub];" << std::endl;
       // indent(out) << "[" << kFieldPrefix << field_name << " release_stub];"
-      // << endl;
+      // << std::endl;
       indent(out) << kFieldPrefix << field_name << " = " << field_name << ";"
-                  << endl;
+                  << std::endl;
     }
     indent(out) << kFieldPrefix << field_name << kSetPostfix << " = YES;"
-                << endl;
+                << std::endl;
     indent_down();
-    indent(out) << "}" << endl << endl;
+    indent(out) << "}" << std::endl << std::endl;
 
     // IsSet
-    indent(out) << "- (BOOL) " << field_name << "IsSet {" << endl;
+    indent(out) << "- (BOOL) " << field_name << "IsSet {" << std::endl;
     indent_up();
     indent(out) << "return " << kFieldPrefix << field_name << kSetPostfix << ";"
-                << endl;
+                << std::endl;
     indent_down();
-    indent(out) << "}" << endl << endl;
+    indent(out) << "}" << std::endl << std::endl;
 
     // Unsetter - do we need this?
-    indent(out) << "- (void) unset" << cap_name << " {" << endl;
+    indent(out) << "- (void) unset" << cap_name << " {" << std::endl;
     indent_up();
     if (type_can_be_null(type)) {
       // indent(out) << "[" << kFieldPrefix << field_name << " release_stub];"
-      // << endl;
-      indent(out) << kFieldPrefix << field_name << " = nil;" << endl;
+      // << std::endl;
+      indent(out) << kFieldPrefix << field_name << " = nil;" << std::endl;
     }
     indent(out) << kFieldPrefix << field_name << kSetPostfix << " = NO;"
-                << endl;
+                << std::endl;
     indent_down();
-    indent(out) << "}" << endl << endl;
+    indent(out) << "}" << std::endl << std::endl;
   }
 }
 
@@ -1491,13 +1470,13 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(
  * @param tstruct The struct definition
  */
 void t_cocoa_generator::generate_cocoa_struct_description(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* /*tstruct*/) {
-  out << indent() << "- (NSString *) description {" << endl;
+  out << indent() << "- (NSString *) description {" << std::endl;
   indent_up();
-  indent(out) << "return [[self toDict] description];" << endl;
+  indent(out) << "return [[self toDict] description];" << std::endl;
   indent_down();
-  indent(out) << "}" << endl << endl;
+  indent(out) << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1506,82 +1485,80 @@ void t_cocoa_generator::generate_cocoa_struct_description(
 void t_cocoa_generator::generate_cocoa_struct_makeImmutable(
     std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (BOOL) makeImmutable {" << endl;
+  out << indent() << "- (BOOL) makeImmutable {" << std::endl;
   indent_up();
-  out << indent() << "const BOOL wasImmutable = [self isImmutable];" << endl;
+  out << indent() << "const BOOL wasImmutable = [self isImmutable];"
+      << std::endl;
 
-  out << indent() << "if (!wasImmutable) {" << endl;
+  out << indent() << "if (!wasImmutable) {" << std::endl;
   indent_up();
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  for (vector<t_field*>::const_iterator f_iter = fields.begin();
-       f_iter != fields.end();
-       ++f_iter) {
-    const t_field* field = (*f_iter);
+  for (const auto* field : tstruct->fields()) {
     const t_type* ttype = field->get_type();
-    string field_name = kFieldPrefix + field->get_name();
+    std::string field_name = kFieldPrefix + field->get_name();
     if (ttype->is_typedef()) {
       ttype = ttype->get_true_type();
     }
     if (ttype->is_struct()) {
       out << indent() << "if (" << field_name << " && "
           << "![" << field_name << " isImmutable]"
-          << ") {" << endl;
+          << ") {" << std::endl;
       indent_up();
-      out << indent() << "[" << field_name << " makeImmutable];" << endl;
+      out << indent() << "[" << field_name << " makeImmutable];" << std::endl;
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
     } else if (ttype->is_base_type()) {
       // nothing.
     } else if (ttype->is_enum()) {
       // nothing
     } else if (ttype->is_list() || ttype->is_set()) {
-      out << indent() << "if (" << field_name << ") {" << endl;
+      out << indent() << "if (" << field_name << ") {" << std::endl;
       indent_up();
-      out << indent() << "for (id item in " << field_name << ") {" << endl;
+      out << indent() << "for (id item in " << field_name << ") {" << std::endl;
       indent_up();
       out << indent() << "if ([item isKindOfClass:["
           << kStructInheritanceRootObjectName << " class]]) {[(("
           << kStructInheritanceRootObjectName << "*)item) makeImmutable];}"
-          << endl;
-      // TODO:: can item be a list / map / set, in which case need to do [copy]
-      // on it
+          << std::endl;
+      // TODO:: can item be a list / std::map / set, in which case need to do
+      // [copy] on it
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
       out << indent() << field_name << " = "
-          << "[" << field_name << " copy];" << endl;
+          << "[" << field_name << " copy];" << std::endl;
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
     } else if (ttype->is_map()) {
-      out << indent() << "if (" << field_name << ") {" << endl;
+      out << indent() << "if (" << field_name << ") {" << std::endl;
       indent_up();
-      out << indent() << "for (NSString* k in " << field_name << ") {" << endl;
+      out << indent() << "for (NSString* k in " << field_name << ") {"
+          << std::endl;
       indent_up();
-      out << indent() << "id item = " << field_name << "[k];" << endl;
+      out << indent() << "id item = " << field_name << "[k];" << std::endl;
       out << indent() << "if ([item isKindOfClass:["
           << kStructInheritanceRootObjectName << " class]]) {[(("
           << kStructInheritanceRootObjectName << "*)item) makeImmutable];}"
-          << endl;
-      // TODO:: can item be a list / map / set, in which case need to do [copy]
-      // on it
+          << std::endl;
+      // TODO:: can item be a list / std::map / set, in which case need to do
+      // [copy] on it
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
       out << indent() << field_name << " = "
-          << "[" << field_name << " copy];" << endl;
+          << "[" << field_name << " copy];" << std::endl;
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
     } else {
       std::cout << "WAT?! " << ttype->get_name() << std::endl;
       assert(false);
     }
   }
-  out << indent() << "[super makeImmutable];" << endl;
+  out << indent() << "[super makeImmutable];" << std::endl;
   indent_down();
-  out << indent() << "}" << endl;
+  out << indent() << "}" << std::endl;
 
-  out << indent() << "return YES;" << endl;
+  out << indent() << "return YES;" << std::endl;
   indent_down();
-  indent(out) << "}" << endl << endl;
+  indent(out) << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1589,24 +1566,22 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(
  *
  */
 void t_cocoa_generator::generate_cocoa_struct_toDict(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (NSDictionary *) toDict {" << endl;
+  out << indent() << "- (NSDictionary *) toDict {" << std::endl;
   indent_up();
 
   out << indent()
-      << "NSMutableDictionary *ret = [NSMutableDictionary dictionary];" << endl;
+      << "NSMutableDictionary *ret = [NSMutableDictionary dictionary];"
+      << std::endl;
   indent(out) << "ret[@\"" << kFieldPrefix << "struct_name\"]"
               << " = "
-              << "@\"" + tstruct->get_name() + "\";" << endl;
+              << "@\"" + tstruct->get_name() + "\";" << std::endl;
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    const t_field* field = (*f_iter);
+  for (const auto* field : tstruct->fields()) {
     const t_type* ttype = field->get_type();
-    string field_name = kFieldPrefix + field->get_name();
-    string ret_equals = "ret[@\"" + field->get_name() + "\"] = ";
+    std::string field_name = kFieldPrefix + field->get_name();
+    std::string ret_equals = "ret[@\"" + field->get_name() + "\"] = ";
     if (ttype->is_typedef()) {
       ttype = ttype->get_true_type();
     }
@@ -1615,50 +1590,53 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(
         ttype->is_string_or_binary() || ttype->is_container();
 
     if (check_for_null) {
-      out << indent() << "if (" << field_name << ") {" << endl;
+      out << indent() << "if (" << field_name << ") {" << std::endl;
       indent_up();
     }
 
     if (ttype->is_struct()) {
-      out << indent() << ret_equals << "[" << field_name << " toDict];" << endl;
+      out << indent() << ret_equals << "[" << field_name << " toDict];"
+          << std::endl;
     } else if (ttype->is_string_or_binary()) {
-      out << indent() << ret_equals << field_name << ";" << endl;
+      out << indent() << ret_equals << field_name << ";" << std::endl;
     } else if (ttype->is_base_type() || ttype->is_enum()) {
-      out << indent() << ret_equals << "@(" << field_name << ");" << endl;
+      out << indent() << ret_equals << "@(" << field_name << ");" << std::endl;
       if (ttype->is_enum()) {
         const t_program* program = ttype->get_program();
-        string ToStringFunctionName = program
+        std::string ToStringFunctionName = program
             ? (program->get_namespace("cocoa") + ttype->get_name() +
                kToStringPostfix)
             : cocoa_prefix_ + ttype->get_name() + kToStringPostfix;
         out << indent() << "ret[@\"" + field->get_name() + "_str\"] = "
-            << ToStringFunctionName << "(" << field_name << ");" << endl;
+            << ToStringFunctionName << "(" << field_name << ");" << std::endl;
       }
     } else if (ttype->is_list() || ttype->is_set()) {
-      out << indent() << "NSMutableArray* a = [NSMutableArray array];" << endl;
-      out << indent() << "for (id item in " << field_name << ") {" << endl;
+      out << indent() << "NSMutableArray* a = [NSMutableArray array];"
+          << std::endl;
+      out << indent() << "for (id item in " << field_name << ") {" << std::endl;
       indent_up();
       out << indent() << "if ([item isKindOfClass:["
           << kStructInheritanceRootObjectName
-          << " class]]) {[a addObject:[item toDict]];}" << endl;
-      out << indent() << "else {[a addObject:item];}" << endl;
+          << " class]]) {[a addObject:[item toDict]];}" << std::endl;
+      out << indent() << "else {[a addObject:item];}" << std::endl;
       indent_down();
-      out << indent() << "}" << endl;
-      out << indent() << ret_equals << "[a copy];" << endl;
+      out << indent() << "}" << std::endl;
+      out << indent() << ret_equals << "[a copy];" << std::endl;
     } else if (ttype->is_map()) {
       out << indent()
           << "NSMutableDictionary* d = [NSMutableDictionary dictionary];"
-          << endl;
-      out << indent() << "for (NSString* k in " << field_name << ") {" << endl;
+          << std::endl;
+      out << indent() << "for (NSString* k in " << field_name << ") {"
+          << std::endl;
       indent_up();
-      out << indent() << "id item = " << field_name << "[k];" << endl;
+      out << indent() << "id item = " << field_name << "[k];" << std::endl;
       out << indent() << "if ([item isKindOfClass:["
           << kStructInheritanceRootObjectName
-          << " class]]) {d[k] = [item toDict];}" << endl;
-      out << indent() << "else {d[k] = item;}" << endl;
+          << " class]]) {d[k] = [item toDict];}" << std::endl;
+      out << indent() << "else {d[k] = item;}" << std::endl;
       indent_down();
-      out << indent() << "}" << endl;
-      out << indent() << ret_equals << "[d copy];" << endl;
+      out << indent() << "}" << std::endl;
+      out << indent() << ret_equals << "[d copy];" << std::endl;
     } else {
       std::cout << "WAT?! " << ttype->get_name() << std::endl;
       assert(false);
@@ -1666,13 +1644,13 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(
 
     if (check_for_null) {
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
     }
   }
 
-  out << indent() << "return [ret copy];" << endl;
+  out << indent() << "return [ret copy];" << std::endl;
   indent_down();
-  indent(out) << "}" << endl << endl;
+  indent(out) << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1680,19 +1658,16 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(
  *
  */
 void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct) {
-  out << indent() << "- (id) mutableCopyWithZone:(NSZone *)zone {" << endl;
+  out << indent() << "- (id) mutableCopyWithZone:(NSZone *)zone {" << std::endl;
   indent_up();
   out << indent() << cocoa_prefix_ << tstruct->get_name()
-      << " *newCopy = [[[self class] alloc] init];;" << endl;
+      << " *newCopy = [[[self class] alloc] init];;" << std::endl;
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    const t_field* field = (*f_iter);
+  for (const auto* field : tstruct->fields()) {
     const t_type* ttype = field->get_type();
-    string field_name = kFieldPrefix + field->get_name();
+    std::string field_name = kFieldPrefix + field->get_name();
     if (ttype->is_typedef()) {
       ttype = ttype->get_true_type();
     }
@@ -1701,34 +1676,35 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(
         ttype->is_string_or_binary() || ttype->is_container();
 
     if (check_for_null) {
-      out << indent() << "if (" << field_name << ") {" << endl;
+      out << indent() << "if (" << field_name << ") {" << std::endl;
       indent_up();
     }
 
     if (ttype->is_struct() || ttype->is_list() || ttype->is_set() ||
         ttype->is_map()) {
       out << indent() << "newCopy->" << field_name << " = "
-          << "[self->" << field_name << " mutableCopyWithZone:zone];" << endl;
+          << "[self->" << field_name << " mutableCopyWithZone:zone];"
+          << std::endl;
     } else if (
         ttype->is_string_or_binary() || ttype->is_base_type() ||
         ttype->is_enum()) {
       out << indent() << "newCopy->" << field_name << " = "
-          << "self->" << field_name << ";" << endl;
+          << "self->" << field_name << ";" << std::endl;
     } else {
       std::cout << "WAT?! " << ttype->get_name() << std::endl;
       assert(false);
     }
     if (check_for_null) {
       indent_down();
-      out << indent() << "}" << endl;
+      out << indent() << "}" << std::endl;
     }
     out << indent() << "newCopy->" << field_name << kSetPostfix << " = "
-        << "self->" << field_name << kSetPostfix << ";" << endl;
+        << "self->" << field_name << kSetPostfix << ";" << std::endl;
   }
 
-  out << indent() << "return newCopy;" << endl;
+  out << indent() << "return newCopy;" << std::endl;
   indent_down();
-  indent(out) << "}" << endl << endl;
+  indent(out) << "}" << std::endl << std::endl;
 }
 
 /**
@@ -1753,8 +1729,8 @@ void t_cocoa_generator::generate_service(const t_service* tservice) {
  */
 void t_cocoa_generator::generate_cocoa_service_helpers(
     const t_service* tservice) {
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
+  std::vector<t_function*> functions = tservice->get_functions();
+  std::vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     const t_struct* ts = (*f_iter)->get_paramlist();
     generate_cocoa_struct_interface(f_impl_, ts, false);
@@ -1763,7 +1739,7 @@ void t_cocoa_generator::generate_cocoa_service_helpers(
   }
 }
 
-string t_cocoa_generator::function_result_helper_struct_type(
+std::string t_cocoa_generator::function_result_helper_struct_type(
     const t_function* tfunction) {
   if (tfunction->is_oneway()) {
     return capitalize(tfunction->get_name());
@@ -1772,7 +1748,7 @@ string t_cocoa_generator::function_result_helper_struct_type(
   }
 }
 
-string t_cocoa_generator::function_args_helper_struct_type(
+std::string t_cocoa_generator::function_args_helper_struct_type(
     const t_function* tfunction) {
   return tfunction->get_name() + "_args";
 }
@@ -1796,11 +1772,8 @@ void t_cocoa_generator::generate_function_helpers(const t_function* tfunction) {
     result.append(std::move(success));
   }
 
-  const t_struct* xs = tfunction->get_xceptions();
-  const vector<t_field*>& fields = xs->get_members();
-  vector<t_field*>::const_iterator f_iter;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    result.append((*f_iter)->clone_DO_NOT_USE());
+  for (const auto* x : tfunction->get_xceptions()->fields()) {
+    result.append(x->clone_DO_NOT_USE());
   }
 
   // generate the result struct
@@ -1814,25 +1787,20 @@ void t_cocoa_generator::generate_function_helpers(const t_function* tfunction) {
  * @param tservice The service to generate a protocol definition for
  */
 void t_cocoa_generator::generate_cocoa_service_protocol(
-    ofstream& out,
+    std::ofstream& out,
     const t_service* tservice) {
   out << "@protocol " << cocoa_prefix_ << tservice->get_name() << " <NSObject>"
-      << endl;
+      << std::endl;
 
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    out << "- " << function_signature(*f_iter) << ";"
+  for (const auto* function : tservice->get_functions()) {
+    out << "- " << function_signature(function) << ";"
         << "  // throws ";
-    const t_struct* xs = (*f_iter)->get_xceptions();
-    const std::vector<t_field*>& xceptions = xs->get_members();
-    vector<t_field*>::const_iterator x_iter;
-    for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-      out << type_name((*x_iter)->get_type()) + ", ";
+    for (const auto* x : function->get_xceptions()->fields()) {
+      out << type_name(x->get_type()) + ", ";
     }
-    out << "TException" << endl;
+    out << "TException" << std::endl;
   }
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -1841,20 +1809,20 @@ void t_cocoa_generator::generate_cocoa_service_protocol(
  * @param tservice The service to generate a client interface definition for
  */
 void t_cocoa_generator::generate_cocoa_service_client_interface(
-    ofstream& out,
+    std::ofstream& out,
     const t_service* tservice) {
   out << "@interface " << cocoa_prefix_ << tservice->get_name()
       << "Client : NSObject <" << cocoa_prefix_ << tservice->get_name() << "> ";
 
   scope_up(out);
-  out << indent() << "id <TProtocol> inProtocol;" << endl;
-  out << indent() << "id <TProtocol> outProtocol;" << endl;
+  out << indent() << "id <TProtocol> inProtocol;" << std::endl;
+  out << indent() << "id <TProtocol> outProtocol;" << std::endl;
   scope_down(out);
 
-  out << "- (id) initWithProtocol: (id <TProtocol>) protocol;" << endl;
+  out << "- (id) initWithProtocol: (id <TProtocol>) protocol;" << std::endl;
   out << "- (id) initWithInProtocol: (id <TProtocol>) inProtocol outProtocol: (id <TProtocol>) outProtocol;"
-      << endl;
-  out << "@end" << endl << endl;
+      << std::endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -1864,23 +1832,23 @@ void t_cocoa_generator::generate_cocoa_service_client_interface(
  * @param tservice The service to generate a client interface definition for
  */
 void t_cocoa_generator::generate_cocoa_service_server_interface(
-    ofstream& out,
+    std::ofstream& out,
     const t_service* tservice) {
   out << "@interface " << cocoa_prefix_ << tservice->get_name()
       << "Processor : NSObject <TProcessor> ";
 
   scope_up(out);
   out << indent() << "id <" << cocoa_prefix_ << tservice->get_name()
-      << "> mService;" << endl;
-  out << indent() << "NSDictionary * mMethodMap;" << endl;
+      << "> mService;" << std::endl;
+  out << indent() << "NSDictionary * mMethodMap;" << std::endl;
   scope_down(out);
 
   out << "- (id) initWith" << tservice->get_name() << ": (id <" << cocoa_prefix_
-      << tservice->get_name() << ">) service;" << endl;
+      << tservice->get_name() << ">) service;" << std::endl;
   out << "- (id<" << cocoa_prefix_ << tservice->get_name() << ">) service;"
-      << endl;
+      << std::endl;
 
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -1889,72 +1857,67 @@ void t_cocoa_generator::generate_cocoa_service_server_interface(
  * @param tservice The service to generate an implementation for
  */
 void t_cocoa_generator::generate_cocoa_service_client_implementation(
-    ofstream& out,
+    std::ofstream& out,
     const t_service* tservice) {
   out << "@implementation " << cocoa_prefix_ << tservice->get_name() << "Client"
-      << endl;
+      << std::endl;
 
   // initializers
-  out << "- (id) initWithProtocol: (id <TProtocol>) protocol" << endl;
+  out << "- (id) initWithProtocol: (id <TProtocol>) protocol" << std::endl;
   scope_up(out);
   out << indent()
       << "return [self initWithInProtocol: protocol outProtocol: protocol];"
-      << endl;
+      << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 
   out << "- (id) initWithInProtocol: (id <TProtocol>) anInProtocol outProtocol: (id <TProtocol>) anOutProtocol"
-      << endl;
+      << std::endl;
   scope_up(out);
-  out << indent() << "self = [super init];" << endl;
-  out << indent() << "inProtocol = [anInProtocol retain_stub];" << endl;
-  out << indent() << "outProtocol = [anOutProtocol retain_stub];" << endl;
-  out << indent() << "return self;" << endl;
+  out << indent() << "self = [super init];" << std::endl;
+  out << indent() << "inProtocol = [anInProtocol retain_stub];" << std::endl;
+  out << indent() << "outProtocol = [anOutProtocol retain_stub];" << std::endl;
+  out << indent() << "return self;" << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 
   // dealloc
-  out << "- (void) dealloc" << endl;
+  out << "- (void) dealloc" << std::endl;
   scope_up(out);
-  out << indent() << "[inProtocol release_stub];" << endl;
-  out << indent() << "[outProtocol release_stub];" << endl;
-  out << indent() << "[super dealloc_stub];" << endl;
+  out << indent() << "[inProtocol release_stub];" << std::endl;
+  out << indent() << "[outProtocol release_stub];" << std::endl;
+  out << indent() << "[super dealloc_stub];" << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 
   // generate client method implementations
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::const_iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    string funname = (*f_iter)->get_name();
+  for (const auto* function : tservice->get_functions()) {
+    const std::string& funname = function->get_name();
 
     t_function send_function(
         void_type(),
-        string("send_") + (*f_iter)->get_name(),
-        t_struct::clone_DO_NOT_USE((*f_iter)->get_paramlist()));
+        std::string("send_") + function->get_name(),
+        t_struct::clone_DO_NOT_USE(function->get_paramlist()));
 
-    string argsname = (*f_iter)->get_name() + "_args";
+    std::string argsname = function->get_name() + "_args";
 
     // Open function
-    indent(out) << "- " << function_signature(&send_function) << endl;
+    indent(out) << "- " << function_signature(&send_function) << std::endl;
     scope_up(out);
 
     // Serialize the request
     out << indent() << "[outProtocol writeMessageBeginWithName: @\"" << funname
         << "\""
         << " type: TMessageType_CALL"
-        << " sequenceID: 0];" << endl;
+        << " sequenceID: 0];" << std::endl;
 
     out << indent() << "[outProtocol writeStructBeginWithName: @\"" << argsname
-        << "\"];" << endl;
+        << "\"];" << std::endl;
 
     // write out function parameters
-    const t_struct* arg_struct = (*f_iter)->get_paramlist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      string fieldName = (*fld_iter)->get_name();
-      if (type_can_be_null((*fld_iter)->get_type())) {
+    for (const auto* param : function->get_paramlist()->fields()) {
+      const std::string& fieldName = param->get_name();
+      if (type_can_be_null(param->get_type())) {
         out << indent() << "if (" << fieldName << " != nil)";
         scope_up(out);
       }
@@ -1962,105 +1925,103 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
           << fieldName
           << "\""
              " type: "
-          << type_to_enum((*fld_iter)->get_type())
-          << " fieldID: " << (*fld_iter)->get_key() << "];" << endl;
+          << type_to_enum(param->get_type()) << " fieldID: " << param->get_key()
+          << "];" << std::endl;
 
-      generate_serialize_field(out, *fld_iter, fieldName);
+      generate_serialize_field(out, param, fieldName);
 
-      out << indent() << "[outProtocol writeFieldEnd];" << endl;
+      out << indent() << "[outProtocol writeFieldEnd];" << std::endl;
 
-      if (type_can_be_null((*fld_iter)->get_type())) {
+      if (type_can_be_null(param->get_type())) {
         scope_down(out);
       }
     }
 
-    out << indent() << "[outProtocol writeFieldStop];" << endl;
-    out << indent() << "[outProtocol writeStructEnd];" << endl;
+    out << indent() << "[outProtocol writeFieldStop];" << std::endl;
+    out << indent() << "[outProtocol writeStructEnd];" << std::endl;
 
-    out << indent() << "[outProtocol writeMessageEnd];" << endl
-        << indent() << "[[outProtocol transport] flush];" << endl;
+    out << indent() << "[outProtocol writeMessageEnd];" << std::endl
+        << indent() << "[[outProtocol transport] flush];" << std::endl;
 
     scope_down(out);
-    out << endl;
+    out << std::endl;
 
-    if (!(*f_iter)->is_oneway()) {
+    if (!function->is_oneway()) {
       t_function recv_function(
-          (*f_iter)->get_returntype(),
-          string("recv_") + (*f_iter)->get_name(),
+          function->get_returntype(),
+          std::string("recv_") + function->get_name(),
           std::make_unique<t_paramlist>(program_),
-          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()),
+          t_struct::clone_DO_NOT_USE(function->get_xceptions()),
           nullptr);
       // Open function
-      indent(out) << "- " << function_signature(&recv_function) << endl;
+      indent(out) << "- " << function_signature(&recv_function) << std::endl;
       scope_up(out);
 
       // TODO(mcslee): Message validation here, was the seqid etc ok?
 
       // check for an exception
-      out << indent() << "int msgType = 0;" << endl
+      out << indent() << "int msgType = 0;" << std::endl
           << indent()
           << "[inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];"
-          << endl
-          << indent() << "if (msgType == TMessageType_EXCEPTION) {" << endl
+          << std::endl
+          << indent() << "if (msgType == TMessageType_EXCEPTION) {" << std::endl
           << indent()
           << "  TApplicationException * x = [TApplicationException read: inProtocol];"
-          << endl
-          << indent() << "  [inProtocol readMessageEnd];" << endl
-          << indent() << "  @throw x;" << endl
-          << indent() << "}" << endl;
+          << std::endl
+          << indent() << "  [inProtocol readMessageEnd];" << std::endl
+          << indent() << "  @throw x;" << std::endl
+          << indent() << "}" << std::endl;
 
       // FIXME - could optimize here to reduce creation of temporary objects.
-      string resultname = function_result_helper_struct_type(*f_iter);
+      std::string resultname = function_result_helper_struct_type(function);
       out << indent() << cocoa_prefix_ << resultname << " * result = [[["
           << cocoa_prefix_ << resultname << " alloc] init] autorelease_stub];"
-          << endl;
-      indent(out) << "[result read: inProtocol];" << endl;
-      indent(out) << "[inProtocol readMessageEnd];" << endl;
+          << std::endl;
+      indent(out) << "[result read: inProtocol];" << std::endl;
+      indent(out) << "[inProtocol readMessageEnd];" << std::endl;
 
       // Careful, only return _result if not a void function
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        out << indent() << "if ([result successIsSet]) {" << endl
-            << indent() << "  return [result success];" << endl
-            << indent() << "}" << endl;
+      if (!function->get_returntype()->is_void()) {
+        out << indent() << "if ([result successIsSet]) {" << std::endl
+            << indent() << "  return [result success];" << std::endl
+            << indent() << "}" << std::endl;
       }
 
-      const t_struct* xs = (*f_iter)->get_xceptions();
-      const std::vector<t_field*>& xceptions = xs->get_members();
-      vector<t_field*>::const_iterator x_iter;
-      for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-        out << indent() << "if ([result " << (*x_iter)->get_name()
-            << "IsSet]) {" << endl
-            << indent() << "  @throw [result " << (*x_iter)->get_name() << "];"
-            << endl
-            << indent() << "}" << endl;
+      for (const auto* x : function->get_xceptions()->fields()) {
+        out << indent() << "if ([result " << x->get_name() << "IsSet]) {"
+            << std::endl
+            << indent() << "  @throw [result " << x->get_name() << "];"
+            << std::endl
+            << indent() << "}" << std::endl;
       }
 
       // If you get here it's an exception, unless a void function
-      if ((*f_iter)->get_returntype()->is_void()) {
-        indent(out) << "return;" << endl;
+      if (function->get_returntype()->is_void()) {
+        indent(out) << "return;" << std::endl;
       } else {
         out << indent()
             << "@throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT"
-            << endl
+            << std::endl
             << indent()
             << "                                         reason: @\""
-            << (*f_iter)->get_name() << " failed: unknown result\"];" << endl;
+            << function->get_name() << " failed: unknown result\"];"
+            << std::endl;
       }
 
       // Close function
       scope_down(out);
-      out << endl;
+      out << std::endl;
     }
 
     // Open function
-    indent(out) << "- " << function_signature(*f_iter) << endl;
+    indent(out) << "- " << function_signature(function) << std::endl;
     scope_up(out);
     indent(out) << "[self send_" << funname;
 
     // Declare the function arguments
     bool first = true;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      string fieldName = (*fld_iter)->get_name();
+    for (const auto* param : function->get_paramlist()->fields()) {
+      const std::string& fieldName = param->get_name();
       out << " ";
       if (first) {
         first = false;
@@ -2069,22 +2030,22 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
         out << fieldName << ": " << fieldName;
       }
     }
-    out << "];" << endl;
+    out << "];" << std::endl;
 
-    if (!(*f_iter)->is_oneway()) {
+    if (!function->is_oneway()) {
       out << indent();
-      if (!(*f_iter)->get_returntype()->is_void()) {
+      if (!function->get_returntype()->is_void()) {
         out << "return ";
       }
-      out << "[self recv_" << funname << "];" << endl;
+      out << "[self recv_" << funname << "];" << std::endl;
     }
     scope_down(out);
-    out << endl;
+    out << std::endl;
   }
 
   indent_down();
 
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -2094,150 +2055,145 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
  * @param tservice The service to generate an implementation for
  */
 void t_cocoa_generator::generate_cocoa_service_server_implementation(
-    ofstream& out,
+    std::ofstream& out,
     const t_service* tservice) {
   out << "@implementation " << cocoa_prefix_ << tservice->get_name()
-      << "Processor" << endl;
+      << "Processor" << std::endl;
   indent_up();
 
   // initializer
-  out << endl;
+  out << std::endl;
   out << "- (id) initWith" << tservice->get_name() << ": (id <" << cocoa_prefix_
-      << tservice->get_name() << ">) service" << endl;
+      << tservice->get_name() << ">) service" << std::endl;
   scope_up(out);
-  out << indent() << "self = [super init];" << endl;
-  out << indent() << "if (!self) {" << endl;
-  out << indent() << "  return nil;" << endl;
-  out << indent() << "}" << endl;
-  // out << indent() << "mService = [service retain_stub];" << endl;
+  out << indent() << "self = [super init];" << std::endl;
+  out << indent() << "if (!self) {" << std::endl;
+  out << indent() << "  return nil;" << std::endl;
+  out << indent() << "}" << std::endl;
+  // out << indent() << "mService = [service retain_stub];" << std::endl;
   // out << indent() << "mMethodMap = [[NSMutableDictionary dictionary]
-  // retain_stub];" << endl;
+  // retain_stub];" << std::endl;
 
-  // generate method map for routing incoming calls
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::const_iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    string funname = (*f_iter)->get_name();
+  // generate method std::map for routing incoming calls
+  for (const auto* function : tservice->get_functions()) {
+    const std::string& funname = function->get_name();
     scope_up(out);
     out << indent() << "SEL s = @selector(process_" << funname
-        << "_withSequenceID:inProtocol:outProtocol:);" << endl;
+        << "_withSequenceID:inProtocol:outProtocol:);" << std::endl;
     out << indent()
         << "NSMethodSignature * sig = [self methodSignatureForSelector: s];"
-        << endl;
+        << std::endl;
     out << indent()
         << "NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];"
-        << endl;
-    out << indent() << "[invocation setSelector: s];" << endl;
-    out << indent() << "[invocation retainArguments];" << endl;
+        << std::endl;
+    out << indent() << "[invocation setSelector: s];" << std::endl;
+    out << indent() << "[invocation retainArguments];" << std::endl;
     out << indent() << "[mMethodMap setValue: invocation forKey: @\"" << funname
-        << "\"];" << endl;
+        << "\"];" << std::endl;
     scope_down(out);
   }
-  out << indent() << "return self;" << endl;
+  out << indent() << "return self;" << std::endl;
   scope_down(out);
 
   // implementation of the 'service' method which returns the service associated
   // with this processor
-  out << endl;
+  out << std::endl;
   out << indent() << "- (id<" << cocoa_prefix_ << tservice->get_name()
-      << ">) service" << endl;
-  out << indent() << "{" << endl;
+      << ">) service" << std::endl;
+  out << indent() << "{" << std::endl;
   out << indent() << "  return [[mService retain_stub] autorelease_stub];"
-      << endl;
-  out << indent() << "}" << endl;
+      << std::endl;
+  out << indent() << "}" << std::endl;
 
   // implementation of the TProcess method, which dispatches the incoming call
-  // using the method map
-  out << endl;
+  // using the method std::map
+  out << std::endl;
   out << indent()
-      << "- (BOOL) processOnInputProtocol: (id <TProtocol>) inProtocol" << endl;
+      << "- (BOOL) processOnInputProtocol: (id <TProtocol>) inProtocol"
+      << std::endl;
   out << indent()
       << "                 outputProtocol: (id <TProtocol>) outProtocol"
-      << endl;
-  out << indent() << "{" << endl;
-  out << indent() << "  NSString * messageName;" << endl;
-  out << indent() << "  int messageType;" << endl;
-  out << indent() << "  int seqID;" << endl;
+      << std::endl;
+  out << indent() << "{" << std::endl;
+  out << indent() << "  NSString * messageName;" << std::endl;
+  out << indent() << "  int messageType;" << std::endl;
+  out << indent() << "  int seqID;" << std::endl;
   out << indent() << "  [inProtocol readMessageBeginReturningName: &messageName"
-      << endl;
+      << std::endl;
   out << indent() << "                                       type: &messageType"
-      << endl;
+      << std::endl;
   out << indent() << "                                 sequenceID: &seqID];"
-      << endl;
+      << std::endl;
   out << indent()
       << "  NSInvocation * invocation = [mMethodMap valueForKey: messageName];"
-      << endl;
-  out << indent() << "  if (invocation == nil) {" << endl;
+      << std::endl;
+  out << indent() << "  if (invocation == nil) {" << std::endl;
   out << indent()
       << "    [TProtocolUtil skipType: TType_STRUCT onProtocol: inProtocol];"
-      << endl;
-  out << indent() << "    [inProtocol readMessageEnd];" << endl;
+      << std::endl;
+  out << indent() << "    [inProtocol readMessageEnd];" << std::endl;
   out << indent()
       << "    TApplicationException * x = [TApplicationException exceptionWithType: TApplicationException_UNKNOWN_METHOD reason: [NSString stringWithFormat: @\"Invalid method name: '%@'\", messageName]];"
-      << endl;
+      << std::endl;
   out << indent() << "    [outProtocol writeMessageBeginWithName: messageName"
-      << endl;
+      << std::endl;
   out << indent()
       << "                                      type: TMessageType_EXCEPTION"
-      << endl;
+      << std::endl;
   out << indent() << "                                sequenceID: seqID];"
-      << endl;
-  out << indent() << "    [x write: outProtocol];" << endl;
-  out << indent() << "    [outProtocol writeMessageEnd];" << endl;
-  out << indent() << "    [[outProtocol transport] flush];" << endl;
-  out << indent() << "    return YES;" << endl;
-  out << indent() << "  }" << endl;
+      << std::endl;
+  out << indent() << "    [x write: outProtocol];" << std::endl;
+  out << indent() << "    [outProtocol writeMessageEnd];" << std::endl;
+  out << indent() << "    [[outProtocol transport] flush];" << std::endl;
+  out << indent() << "    return YES;" << std::endl;
+  out << indent() << "  }" << std::endl;
   out << indent() << "  // NSInvocation does not conform to NSCopying protocol"
-      << endl;
+      << std::endl;
   out << indent()
       << "  NSInvocation * i = [NSInvocation invocationWithMethodSignature: [invocation methodSignature]];"
-      << endl;
-  out << indent() << "  [i setSelector: [invocation selector]];" << endl;
-  out << indent() << "  [i setArgument: &seqID atIndex: 2];" << endl;
-  out << indent() << "  [i setArgument: &inProtocol atIndex: 3];" << endl;
-  out << indent() << "  [i setArgument: &outProtocol atIndex: 4];" << endl;
-  out << indent() << "  [i setTarget: self];" << endl;
-  out << indent() << "  [i invoke];" << endl;
-  out << indent() << "  return YES;" << endl;
-  out << indent() << "}" << endl;
+      << std::endl;
+  out << indent() << "  [i setSelector: [invocation selector]];" << std::endl;
+  out << indent() << "  [i setArgument: &seqID atIndex: 2];" << std::endl;
+  out << indent() << "  [i setArgument: &inProtocol atIndex: 3];" << std::endl;
+  out << indent() << "  [i setArgument: &outProtocol atIndex: 4];" << std::endl;
+  out << indent() << "  [i setTarget: self];" << std::endl;
+  out << indent() << "  [i invoke];" << std::endl;
+  out << indent() << "  return YES;" << std::endl;
+  out << indent() << "}" << std::endl;
 
   // generate a process_XXXX method for each service function, which reads args,
   // calls the service, and writes results
-  functions = tservice->get_functions();
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    out << endl;
-    string funname = (*f_iter)->get_name();
+  for (const auto* function : tservice->get_functions()) {
+    out << std::endl;
+    const std::string& funname = function->get_name();
     out << indent() << "- (void) process_" << funname
         << "_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol"
-        << endl;
+        << std::endl;
     scope_up(out);
-    string argstype = cocoa_prefix_ + function_args_helper_struct_type(*f_iter);
+    std::string argstype =
+        cocoa_prefix_ + function_args_helper_struct_type(function);
     out << indent() << argstype << " * args = [[" << argstype
-        << " alloc] init];" << endl;
-    out << indent() << "[args read: inProtocol];" << endl;
-    out << indent() << "[inProtocol readMessageEnd];" << endl;
+        << " alloc] init];" << std::endl;
+    out << indent() << "[args read: inProtocol];" << std::endl;
+    out << indent() << "[inProtocol readMessageEnd];" << std::endl;
 
     // prepare the result if not oneway
-    if (!(*f_iter)->is_oneway()) {
-      string resulttype =
-          cocoa_prefix_ + function_result_helper_struct_type(*f_iter);
+    if (!function->is_oneway()) {
+      std::string resulttype =
+          cocoa_prefix_ + function_result_helper_struct_type(function);
       out << indent() << resulttype << " * result = [[" << resulttype
-          << " alloc] init];" << endl;
+          << " alloc] init];" << std::endl;
     }
 
     // make the call to the actual service object
     out << indent();
-    if (!(*f_iter)->get_returntype()->is_void()) {
+    if (!function->get_returntype()->is_void()) {
       out << "[result setSuccess: ";
     }
     out << "[mService " << funname;
-    // supplying arguments
-    const t_struct* arg_struct = (*f_iter)->get_paramlist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
     bool first = true;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      string fieldName = (*fld_iter)->get_name();
+    for (const auto* param : function->get_paramlist()->fields()) {
+      const std::string& fieldName = param->get_name();
       if (first) {
         first = false;
         out << ": [args " << fieldName << "]";
@@ -2246,43 +2202,43 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
       }
     }
     out << "]";
-    if (!(*f_iter)->get_returntype()->is_void()) {
+    if (!function->get_returntype()->is_void()) {
       out << "]";
     }
-    out << ";" << endl;
+    out << ";" << std::endl;
 
     // write out the result if not oneway
-    if (!(*f_iter)->is_oneway()) {
+    if (!function->is_oneway()) {
       out << indent() << "[outProtocol writeMessageBeginWithName: @\""
-          << funname << "\"" << endl;
+          << funname << "\"" << std::endl;
       out << indent()
           << "                                  type: TMessageType_REPLY"
-          << endl;
+          << std::endl;
       out << indent() << "                            sequenceID: seqID];"
-          << endl;
-      out << indent() << "[result write: outProtocol];" << endl;
-      out << indent() << "[outProtocol writeMessageEnd];" << endl;
-      out << indent() << "[[outProtocol transport] flush];" << endl;
-      out << indent() << "[result release_stub];" << endl;
+          << std::endl;
+      out << indent() << "[result write: outProtocol];" << std::endl;
+      out << indent() << "[outProtocol writeMessageEnd];" << std::endl;
+      out << indent() << "[[outProtocol transport] flush];" << std::endl;
+      out << indent() << "[result release_stub];" << std::endl;
     }
-    out << indent() << "[args release_stub];" << endl;
+    out << indent() << "[args release_stub];" << std::endl;
 
     scope_down(out);
   }
 
   // dealloc
-  out << endl;
-  out << "- (void) dealloc" << endl;
+  out << std::endl;
+  out << "- (void) dealloc" << std::endl;
   scope_up(out);
-  out << indent() << "[mService release_stub];" << endl;
-  out << indent() << "[mMethodMap release_stub];" << endl;
-  out << indent() << "[super dealloc_stub];" << endl;
+  out << indent() << "[mService release_stub];" << std::endl;
+  out << indent() << "[mMethodMap release_stub];" << std::endl;
+  out << indent() << "[super dealloc_stub];" << std::endl;
   scope_down(out);
-  out << endl;
+  out << std::endl;
 
   indent_down();
 
-  out << "@end" << endl << endl;
+  out << "@end" << std::endl << std::endl;
 }
 
 /**
@@ -2292,9 +2248,9 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
  * @param fieldName The variable name for this field
  */
 void t_cocoa_generator::generate_deserialize_field(
-    ofstream& out,
+    std::ofstream& out,
     const t_field* tfield,
-    string fieldName) {
+    const std::string& fieldName) {
   const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
@@ -2349,7 +2305,7 @@ void t_cocoa_generator::generate_deserialize_field(
     } else if (type->is_enum()) {
       out << "readI32];";
     }
-    out << endl;
+    out << std::endl;
   } else {
     printf(
         "DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n",
@@ -2363,55 +2319,55 @@ void t_cocoa_generator::generate_deserialize_field(
  * read:
  */
 void t_cocoa_generator::generate_deserialize_struct(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
-    string fieldName) {
+    const std::string& fieldName) {
   indent(out) << type_name(tstruct) << fieldName << " = [["
-              << type_name(tstruct, true) << " alloc] init];" << endl;
-  indent(out) << "[" << fieldName << " read: inProtocol];" << endl;
+              << type_name(tstruct, true) << " alloc] init];" << std::endl;
+  indent(out) << "[" << fieldName << " read: inProtocol];" << std::endl;
 }
 
 /**
  * Deserializes a container by reading its size and then iterating
  */
 void t_cocoa_generator::generate_deserialize_container(
-    ofstream& out,
+    std::ofstream& out,
     const t_type* ttype,
-    string fieldName) {
-  string size = tmp("_size");
-  indent(out) << "int " << size << ";" << endl;
+    const std::string& fieldName) {
+  std::string size = tmp("_size");
+  indent(out) << "int " << size << ";" << std::endl;
 
   // Declare variables, read header
   if (ttype->is_map()) {
     indent(out)
         << "[inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &"
-        << size << "];" << endl;
+        << size << "];" << std::endl;
     indent(out) << "NSMutableDictionary * " << fieldName
                 << " = [[NSMutableDictionary alloc] initWithCapacity: " << size
-                << "];" << endl;
+                << "];" << std::endl;
   } else if (ttype->is_set()) {
     indent(out) << "[inProtocol readSetBeginReturningElementType: NULL size: &"
-                << size << "];" << endl;
+                << size << "];" << std::endl;
     indent(out) << "NSMutableSet * " << fieldName
                 << " = [[NSMutableSet alloc] initWithCapacity: " << size << "];"
-                << endl;
+                << std::endl;
   } else if (ttype->is_list()) {
     indent(out) << "[inProtocol readListBeginReturningElementType: NULL size: &"
-                << size << "];" << endl;
+                << size << "];" << std::endl;
     indent(out) << "NSMutableArray * " << fieldName
                 << " = [[NSMutableArray alloc] initWithCapacity: " << size
-                << "];" << endl;
+                << "];" << std::endl;
   }
   // FIXME - the code above does not verify that the element types of
   // the containers being read match the element types of the
   // containers we are reading into.  Does that matter?
 
   // For loop iterates over elements
-  string i = tmp("_i");
-  indent(out) << "int " << i << ";" << endl
+  std::string i = tmp("_i");
+  indent(out) << "int " << i << ";" << std::endl
               << indent() << "for (" << i << " = 0; " << i << " < " << size
               << "; "
-              << "++" << i << ")" << endl;
+              << "++" << i << ")" << std::endl;
 
   scope_up(out);
 
@@ -2427,11 +2383,11 @@ void t_cocoa_generator::generate_deserialize_container(
 
   // Read container end
   if (ttype->is_map()) {
-    indent(out) << "[inProtocol readMapEnd];" << endl;
+    indent(out) << "[inProtocol readMapEnd];" << std::endl;
   } else if (ttype->is_set()) {
-    indent(out) << "[inProtocol readSetEnd];" << endl;
+    indent(out) << "[inProtocol readSetEnd];" << std::endl;
   } else if (ttype->is_list()) {
-    indent(out) << "[inProtocol readListEnd];" << endl;
+    indent(out) << "[inProtocol readListEnd];" << std::endl;
   }
 }
 
@@ -2440,7 +2396,9 @@ void t_cocoa_generator::generate_deserialize_container(
  * suitable for putting into a container, if necessary.  Basically,
  * wrap scaler primitives in NSNumber objects.
  */
-string t_cocoa_generator::containerize(const t_type* ttype, string fieldName) {
+std::string t_cocoa_generator::containerize(
+    const t_type* ttype,
+    const std::string& fieldName) {
   // FIXME - optimize here to avoid autorelease pool?
   ttype = ttype->get_true_type();
   if (ttype->is_enum()) {
@@ -2472,14 +2430,14 @@ string t_cocoa_generator::containerize(const t_type* ttype, string fieldName) {
 }
 
 /**
- * Generates code to deserialize a map element
+ * Generates code to deserialize a std::map element
  */
 void t_cocoa_generator::generate_deserialize_map_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_map* tmap,
-    string fieldName) {
-  string key = tmp("_key");
-  string val = tmp("_val");
+    const std::string& fieldName) {
+  std::string key = tmp("_key");
+  std::string val = tmp("_val");
   const t_type* keyType = tmap->get_key_type();
   const t_type* valType = tmap->get_val_type();
   t_field fkey(keyType, key);
@@ -2490,19 +2448,19 @@ void t_cocoa_generator::generate_deserialize_map_element(
 
   indent(out) << "[" << fieldName
               << " setObject: " << containerize(valType, val)
-              << " forKey: " << containerize(keyType, key) << "];" << endl;
+              << " forKey: " << containerize(keyType, key) << "];" << std::endl;
 
   if (type_can_be_null(keyType)) {
     if (!(keyType->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(keyType, key) << " release_stub];"
-                  << endl;
+                  << std::endl;
     }
   }
 
   if (type_can_be_null(valType)) {
     if (!(valType->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(valType, val) << " release_stub];"
-                  << endl;
+                  << std::endl;
     }
   }
 }
@@ -2511,23 +2469,23 @@ void t_cocoa_generator::generate_deserialize_map_element(
  * Deserializes a set element
  */
 void t_cocoa_generator::generate_deserialize_set_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_set* tset,
-    string fieldName) {
-  string elem = tmp("_elem");
+    const std::string& fieldName) {
+  std::string elem = tmp("_elem");
   const t_type* type = tset->get_elem_type();
   t_field felem(type, elem);
 
   generate_deserialize_field(out, &felem, elem);
 
   indent(out) << "[" << fieldName << " addObject: " << containerize(type, elem)
-              << "];" << endl;
+              << "];" << std::endl;
 
   if (type_can_be_null(type)) {
     // deserialized strings are autorelease, so don't release them
     if (!(type->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];"
-                  << endl;
+                  << std::endl;
     }
   }
 }
@@ -2536,22 +2494,22 @@ void t_cocoa_generator::generate_deserialize_set_element(
  * Deserializes a list element
  */
 void t_cocoa_generator::generate_deserialize_list_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_list* tlist,
-    string fieldName) {
-  string elem = tmp("_elem");
+    const std::string& fieldName) {
+  std::string elem = tmp("_elem");
   const t_type* type = tlist->get_elem_type();
   t_field felem(type, elem);
 
   generate_deserialize_field(out, &felem, elem);
 
   indent(out) << "[" << fieldName << " addObject: " << containerize(type, elem)
-              << "];" << endl;
+              << "];" << std::endl;
 
   if (type_can_be_null(type)) {
     if (!(type->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];"
-                  << endl;
+                  << std::endl;
     }
   }
 }
@@ -2563,9 +2521,9 @@ void t_cocoa_generator::generate_deserialize_list_element(
  * @param fieldName Name to of the variable holding the field
  */
 void t_cocoa_generator::generate_serialize_field(
-    ofstream& out,
+    std::ofstream& out,
     const t_field* tfield,
-    string fieldName) {
+    const std::string& fieldName) {
   const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
@@ -2620,7 +2578,7 @@ void t_cocoa_generator::generate_serialize_field(
     } else if (type->is_enum()) {
       out << "writeI32: " << fieldName << "];";
     }
-    out << endl;
+    out << std::endl;
   } else {
     printf(
         "DO NOT KNOW HOW TO SERIALIZE FIELD '%s' TYPE '%s'\n",
@@ -2636,11 +2594,11 @@ void t_cocoa_generator::generate_serialize_field(
  * @param fieldName Name of variable holding struct
  */
 void t_cocoa_generator::generate_serialize_struct(
-    ofstream& out,
+    std::ofstream& out,
     const t_struct* tstruct,
-    string fieldName) {
+    const std::string& fieldName) {
   (void)tstruct;
-  out << indent() << "[" << fieldName << " write: outProtocol];" << endl;
+  out << indent() << "[" << fieldName << " write: outProtocol];" << std::endl;
 }
 
 /**
@@ -2650,9 +2608,9 @@ void t_cocoa_generator::generate_serialize_struct(
  * @param fieldName Name of variable holding container
  */
 void t_cocoa_generator::generate_serialize_container(
-    ofstream& out,
+    std::ofstream& out,
     const t_type* ttype,
-    string fieldName) {
+    const std::string& fieldName) {
   scope_up(out);
 
   if (ttype->is_map()) {
@@ -2660,38 +2618,38 @@ void t_cocoa_generator::generate_serialize_container(
                 << type_to_enum(((t_map*)ttype)->get_key_type())
                 << " valueType: "
                 << type_to_enum(((t_map*)ttype)->get_val_type())
-                << " size: (int)[" << fieldName << " count]];" << endl;
+                << " size: (int)[" << fieldName << " count]];" << std::endl;
   } else if (ttype->is_set()) {
     indent(out) << "[outProtocol writeSetBeginWithElementType: "
                 << type_to_enum(((t_set*)ttype)->get_elem_type())
-                << " size: (int)[" << fieldName << " count]];" << endl;
+                << " size: (int)[" << fieldName << " count]];" << std::endl;
   } else if (ttype->is_list()) {
     indent(out) << "[outProtocol writeListBeginWithElementType: "
                 << type_to_enum(((t_list*)ttype)->get_elem_type())
-                << " size: (int)[" << fieldName << " count]];" << endl;
+                << " size: (int)[" << fieldName << " count]];" << std::endl;
   }
 
-  string iter = tmp("_iter");
-  string key;
+  std::string iter = tmp("_iter");
+  std::string key;
   if (ttype->is_map()) {
     key = tmp("key");
     indent(out) << "NSEnumerator * " << iter << " = [" << fieldName
-                << " keyEnumerator];" << endl;
-    indent(out) << "id " << key << ";" << endl;
+                << " keyEnumerator];" << std::endl;
+    indent(out) << "id " << key << ";" << std::endl;
     indent(out) << "while ((" << key << " = [" << iter << " nextObject]))"
-                << endl;
+                << std::endl;
   } else if (ttype->is_set()) {
     key = tmp("obj");
     indent(out) << "NSEnumerator * " << iter << " = [" << fieldName
-                << " objectEnumerator];" << endl;
-    indent(out) << "id " << key << ";" << endl;
+                << " objectEnumerator];" << std::endl;
+    indent(out) << "id " << key << ";" << std::endl;
     indent(out) << "while ((" << key << " = [" << iter << " nextObject]))"
-                << endl;
+                << std::endl;
   } else if (ttype->is_list()) {
     key = tmp("i");
-    indent(out) << "int " << key << ";" << endl;
+    indent(out) << "int " << key << ";" << std::endl;
     indent(out) << "for (" << key << " = 0; " << key << " < [" << fieldName
-                << " count]; " << key << "++)" << endl;
+                << " count]; " << key << "++)" << std::endl;
   }
 
   scope_up(out);
@@ -2707,11 +2665,11 @@ void t_cocoa_generator::generate_serialize_container(
   scope_down(out);
 
   if (ttype->is_map()) {
-    indent(out) << "[outProtocol writeMapEnd];" << endl;
+    indent(out) << "[outProtocol writeMapEnd];" << std::endl;
   } else if (ttype->is_set()) {
-    indent(out) << "[outProtocol writeSetEnd];" << endl;
+    indent(out) << "[outProtocol writeSetEnd];" << std::endl;
   } else if (ttype->is_list()) {
-    indent(out) << "[outProtocol writeListEnd];" << endl;
+    indent(out) << "[outProtocol writeListEnd];" << std::endl;
   }
 
   scope_down(out);
@@ -2721,9 +2679,9 @@ void t_cocoa_generator::generate_serialize_container(
  * Given a field variable name, wrap it in code that converts it to a
  * primitive type, if necessary.
  */
-string t_cocoa_generator::decontainerize(
+std::string t_cocoa_generator::decontainerize(
     const t_field* tfield,
-    string fieldName) {
+    const std::string& fieldName) {
   const t_type* ttype = tfield->get_type()->get_true_type();
   if (ttype->is_enum()) {
     return "[" + fieldName + " intValue]";
@@ -2754,13 +2712,13 @@ string t_cocoa_generator::decontainerize(
 }
 
 /**
- * Serializes the members of a map.
+ * Serializes the members of a std::map.
  */
 void t_cocoa_generator::generate_serialize_map_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_map* tmap,
-    string key,
-    string mapName) {
+    const std::string& key,
+    const std::string& mapName) {
   t_field kfield(tmap->get_key_type(), key);
   generate_serialize_field(out, &kfield, decontainerize(&kfield, key));
   t_field vfield(
@@ -2773,9 +2731,9 @@ void t_cocoa_generator::generate_serialize_map_element(
  * Serializes the members of a set.
  */
 void t_cocoa_generator::generate_serialize_set_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_set* tset,
-    string elementName) {
+    const std::string& elementName) {
   t_field efield(tset->get_elem_type(), elementName);
   generate_serialize_field(out, &efield, decontainerize(&efield, elementName));
 }
@@ -2784,10 +2742,10 @@ void t_cocoa_generator::generate_serialize_set_element(
  * Serializes the members of a list.
  */
 void t_cocoa_generator::generate_serialize_list_element(
-    ofstream& out,
+    std::ofstream& out,
     const t_list* tlist,
-    string index,
-    string listName) {
+    const std::string& index,
+    const std::string& listName) {
   t_field efield(
       tlist->get_elem_type(),
       "[" + listName + " objectAtIndex: " + index + "]");
@@ -2802,14 +2760,14 @@ void t_cocoa_generator::generate_serialize_list_element(
  * @param class_ref Do we want a Class reference istead of a type reference?
  * @return Java type name, i.e. HashMap<Key,Value>
  */
-string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
+std::string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
   if (ttype->is_typedef() || ttype->is_enum()) {
     const t_program* program = ttype->get_program();
     return program ? (program->get_namespace("cocoa") + ttype->get_name())
                    : ttype->get_name();
   }
 
-  string result;
+  std::string result;
   if (ttype->is_base_type()) {
     return base_type_name((t_base_type*)ttype);
   } else if (ttype->is_map()) {
@@ -2836,7 +2794,7 @@ string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
  *
  * @param tbase The base type
  */
-string t_cocoa_generator::base_type_name(t_base_type* type) {
+std::string t_cocoa_generator::base_type_name(t_base_type* type) {
   t_base_type::t_base tbase = type->get_base();
 
   switch (tbase) {
@@ -2872,7 +2830,7 @@ string t_cocoa_generator::base_type_name(t_base_type* type) {
  */
 void t_cocoa_generator::print_const_value(
     std::ofstream& out,
-    std::string name,
+    const std::string& name,
     const t_type* type,
     const t_const_value* value,
     bool defval,
@@ -2881,112 +2839,111 @@ void t_cocoa_generator::print_const_value(
 
   indent(out);
   if (type->is_base_type()) {
-    string v2 = render_const_value(out, type, value);
+    std::string v2 = render_const_value(out, type, value);
     if (defval)
       out << type_name(type) << " ";
-    out << name << " = " << v2 << ";" << endl << endl;
+    out << name << " = " << v2 << ";" << std::endl << std::endl;
   } else if (type->is_enum()) {
     if (defval)
       out << type_name(type) << " ";
-    out << name << " = " << render_const_value(out, type, value) << ";" << endl
-        << endl;
+    out << name << " = " << render_const_value(out, type, value) << ";"
+        << std::endl
+        << std::endl;
   } else if (type->is_struct() || type->is_xception()) {
-    const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    vector<t_field*>::const_iterator f_iter;
-    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
-    if (defval)
+    const auto* as_struct = static_cast<const t_struct*>(type);
+    if (defval) {
       out << type_name(type) << " ";
-    if (defval || is_property)
+    }
+    if (defval || is_property) {
       out << name << " = [[[" << type_name(type, true)
-          << " alloc] init] autorelease_stub];" << endl;
-    else
+          << " alloc] init] autorelease_stub];" << std::endl;
+    } else {
       out << name << " = [[" << type_name(type, true) << " alloc] init];"
-          << endl;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      const t_type* field_type = NULL;
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-          field_type = (*f_iter)->get_type();
-        }
-      }
-      if (field_type == NULL) {
+          << std::endl;
+    }
+    for (const auto& entry : value->get_map()) {
+      const auto* field =
+          as_struct->get_field_by_name(entry.first->get_string());
+      if (field == nullptr) {
         throw std::runtime_error(
             "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string());
+            entry.first->get_string());
       }
-      string val = render_const_value(out, field_type, v_iter->second);
-      std::string cap_name = capitalize(v_iter->first->get_string());
+      std::string val =
+          render_const_value(out, field->get_type(), entry.second);
+      std::string cap_name = capitalize(entry.first->get_string());
       indent(out) << "[" << name << " set" << cap_name << ":" << val << "];"
-                  << endl;
+                  << std::endl;
     }
-    out << endl;
+    out << std::endl;
   } else if (type->is_map()) {
     const t_type* ktype = ((t_map*)type)->get_key_type();
     const t_type* vtype = ((t_map*)type)->get_val_type();
-    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
+    const std::vector<std::pair<t_const_value*, t_const_value*>>& val =
+        value->get_map();
+    std::vector<std::pair<t_const_value*, t_const_value*>>::const_iterator
+        v_iter;
     if (defval)
       out << "NSMutableDictionary *";
     if (defval || is_property)
       out << name
           << " = [[[NSMutableDictionary alloc] initWithCapacity:" << val.size()
-          << "] autorelease_stub]; " << endl;
+          << "] autorelease_stub]; " << std::endl;
     else
       out << name
           << " = [[NSMutableDictionary alloc] initWithCapacity:" << val.size()
-          << "]; " << endl;
+          << "]; " << std::endl;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string key = render_const_value(out, ktype, v_iter->first, true);
-      string val = render_const_value(out, vtype, v_iter->second, true);
+      std::string key = render_const_value(out, ktype, v_iter->first, true);
+      std::string val = render_const_value(out, vtype, v_iter->second, true);
       indent(out) << "[" << name << " setObject:" << val << " forKey:" << key
-                  << "];" << endl;
+                  << "];" << std::endl;
     }
-    out << endl;
+    out << std::endl;
   } else if (type->is_list()) {
     const t_type* etype = ((t_list*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
-    vector<t_const_value*>::const_iterator v_iter;
+    const std::vector<t_const_value*>& val = value->get_list();
+    std::vector<t_const_value*>::const_iterator v_iter;
     if (defval)
       out << "NSMutableArray *";
     if (defval || is_property)
       out << name
           << " = [[[NSMutableArray alloc] initWithCapacity:" << val.size()
-          << "] autorelease_stub];" << endl;
+          << "] autorelease_stub];" << std::endl;
     else
       out << name
           << " = [[NSMutableArray alloc] initWithCapacity:" << val.size()
-          << "];" << endl;
+          << "];" << std::endl;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string val = render_const_value(out, etype, *v_iter, true);
-      indent(out) << "[" << name << " addObject:" << val << "];" << endl;
+      std::string val = render_const_value(out, etype, *v_iter, true);
+      indent(out) << "[" << name << " addObject:" << val << "];" << std::endl;
     }
-    out << endl;
+    out << std::endl;
   } else if (type->is_set()) {
     const t_type* etype = ((t_set*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
-    vector<t_const_value*>::const_iterator v_iter;
+    const std::vector<t_const_value*>& val = value->get_list();
+    std::vector<t_const_value*>::const_iterator v_iter;
     if (defval)
       out << "NSMutableSet *";
     if (defval || is_property)
       out << name << " = [[[NSMutableSet alloc] initWithCapacity:" << val.size()
-          << "] autorelease_stub];" << endl;
+          << "] autorelease_stub];" << std::endl;
     else
       out << name << " = [[NSMutableSet alloc] initWithCapacity:" << val.size()
-          << "];" << endl;
+          << "];" << std::endl;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string val = render_const_value(out, etype, *v_iter, true);
-      indent(out) << "[" << name << " addObject:" << val << "];" << endl;
+      std::string val = render_const_value(out, etype, *v_iter, true);
+      indent(out) << "[" << name << " addObject:" << val << "];" << std::endl;
     }
-    out << endl;
+    out << std::endl;
   } else {
     throw std::runtime_error(
         "compiler error: no const of type " + type->get_name());
   }
 }
 
-string t_cocoa_generator::render_const_value(
-    ofstream& out,
+std::string t_cocoa_generator::render_const_value(
+    std::ofstream& out,
     const t_type* type,
     const t_const_value* value,
     bool containerize_it) {
@@ -3026,7 +2983,7 @@ string t_cocoa_generator::render_const_value(
   } else if (type->is_enum()) {
     render << value->get_integer();
   } else {
-    string t = tmp("tmp");
+    std::string t = tmp("tmp");
     print_const_value(out, t, type, value, true, false);
     render << t;
   }
@@ -3042,7 +2999,7 @@ string t_cocoa_generator::render_const_value(
 ORIGINAL
  * Spit out code that evaluates to the specified constant value.
  */
-string t_cocoa_generator::render_const_value(string name,
+std::string t_cocoa_generator::render_const_value(std::string name,
                                              const t_type* type,
                                              t_const_value* value,
                                              bool containerize_it) {
@@ -3077,47 +3034,40 @@ string t_cocoa_generator::render_const_value(string name,
   } else if (type->is_enum()) {
     render << value->get_integer();
   } else if (type->is_struct() || type->is_xception()) {
-    const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    vector<t_field*>::const_iterator f_iter;
-    const map<t_const_value*, t_const_value*>& val = value->get_map();
-    map<t_const_value*, t_const_value*>::const_iterator v_iter;
-    if (val.size() > 0)
-      render << "[[" << type_name(type, true) << " alloc] initWith";
-    else
+    const auto* as_struct = std::static_cast<const t_struct*>(type);
+    if (value->get_map().empty()) {
       render << "[[" << type_name(type, true) << " alloc] init";
+    } else{
+      render << "[[" << type_name(type, true) << " alloc] initWith";
+    }
     bool first = true;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+    for (const auto& entry : value->get_map()) {
       // FIXME The generated code does not match with initWithXXX
       //       initializer and causes compile error.
       //       Try: test/DebugProtoTest.thrift and test/SmallTest.thrift
-      const t_type* field_type = NULL;
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-          field_type = (*f_iter)->get_type();
-        }
-      }
-      if (field_type == NULL) {
-        throw std::runtime_error("type error: " + type->get_name() + " has no field " + v_iter->first->get_string());
+      const auto* field = as_struct->get_field_by_name(entry.first->get_string());
+      if (field == nullptr) {
+        throw std::runtime_error("type error: " + type->get_name() + " has no field " + entry.first->get_string());
       }
       if (first) {
-        render << capitalize(v_iter->first->get_string());
+        render << capitalize(field->get_name());
         first = false;
       } else {
-        render << " " << v_iter->first->get_string();
+        render << " " << field->get_name();
       }
-      render << ": " << render_const_value(name, field_type, v_iter->second);
+      render << ": " << render_const_value(name, field->get_type(), entry.second);
     }
     render << "]";
   } else if (type->is_map()) {
     render << "[[NSDictionary alloc] initWithObjectsAndKeys: ";
     const t_type* ktype = ((t_map*)type)->get_key_type();
     const t_type* vtype = ((t_map*)type)->get_val_type();
-    const map<t_const_value*, t_const_value*>& val = value->get_map();
-    map<t_const_value*, t_const_value*>::const_iterator v_iter;
+    const std::map<t_const_value*, t_const_value*>& val = value->get_map();
+    std::map<t_const_value*, t_const_value*>::const_iterator v_iter;
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string key = render_const_value(name, ktype, v_iter->first, true);
-      string val = render_const_value(name, vtype, v_iter->second, true);
+      std::string key = render_const_value(name, ktype, v_iter->first, true);
+      std::string val = render_const_value(name, vtype, v_iter->second, true);
       if (first) {
         first = false;
       } else {
@@ -3132,9 +3082,9 @@ string t_cocoa_generator::render_const_value(string name,
   } else if (type->is_list()) {
     render << "[[NSArray alloc] initWithObjects: ";
     t_type * etype = ((t_list*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
+    const std::vector<t_const_value*>& val = value->get_list();
     bool first = true;
-    vector<t_const_value*>::const_iterator v_iter;
+    std::vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       if (first) {
         first = false;
@@ -3150,9 +3100,9 @@ string t_cocoa_generator::render_const_value(string name,
   } else if (type->is_set()) {
     render << "[[NSSet alloc] initWithObjects: ";
     t_type * etype = ((t_set*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
+    const std::vector<t_const_value*>& val = value->get_list();
     bool first = true;
-    vector<t_const_value*>::const_iterator v_iter;
+    std::vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       if (first) {
         first = false;
@@ -3182,7 +3132,7 @@ string t_cocoa_generator::render_const_value(string name,
  *
  * @param ttype The type
  */
-string t_cocoa_generator::declare_field(const t_field* tfield) {
+std::string t_cocoa_generator::declare_field(const t_field* tfield) {
   return type_name(tfield->get_type()) + " " + kFieldPrefix +
       tfield->get_name() + ";";
 }
@@ -3192,7 +3142,7 @@ string t_cocoa_generator::declare_field(const t_field* tfield) {
  *
  * @param tfield The field to declare a property for
  */
-string t_cocoa_generator::declare_property(const t_field* tfield) {
+std::string t_cocoa_generator::declare_property(const t_field* tfield) {
   std::ostringstream render;
   render << "@property (nonatomic";
   if (type_can_be_null(tfield->get_type())) {
@@ -3205,7 +3155,8 @@ string t_cocoa_generator::declare_property(const t_field* tfield) {
   }
   render
       // << ", getter=" << decapitalize(get_cocoa_property_name(tfield))
-      // << ", setter=set" << capitalize(get_cocoa_property_name(tfield)) + ":"
+      // << ", setter=set" << capitalize(get_cocoa_property_name(tfield)) +
+      // ":"
       << ")"
       << " " << type_name(tfield->get_type()) << " "
       << get_cocoa_property_name(tfield) << ";";
@@ -3218,7 +3169,7 @@ string t_cocoa_generator::declare_property(const t_field* tfield) {
  * @param tfunction Function definition
  * @return String of rendered function definition
  */
-string t_cocoa_generator::function_signature(const t_function* tfunction) {
+std::string t_cocoa_generator::function_signature(const t_function* tfunction) {
   const t_type* ttype = tfunction->get_returntype();
   std::string result = "(" + type_name(ttype) + ") " + tfunction->get_name() +
       argument_list(tfunction->get_paramlist());
@@ -3229,30 +3180,29 @@ string t_cocoa_generator::function_signature(const t_function* tfunction) {
  * Renders a colon separated list of types and names, suitable for an
  * objective-c parameter list
  */
-string t_cocoa_generator::argument_list(const t_struct* tstruct) {
-  string result = "";
+std::string t_cocoa_generator::argument_list(const t_struct* tstruct) {
+  std::string result = "";
 
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
   bool first = true;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    string argPrefix = "";
+  for (const auto* field : tstruct->fields()) {
+    std::string argPrefix = "";
     if (first) {
       first = false;
     } else {
-      argPrefix = (*f_iter)->get_name();
+      argPrefix = field->get_name();
       result += " ";
     }
-    result += argPrefix + ": (" + type_name((*f_iter)->get_type()) + ") " +
-        (*f_iter)->get_name();
+    result += argPrefix + ": (" + type_name(field->get_type()) + ") " +
+        field->get_name();
   }
   return result;
 }
 
 /**
- * Converts the parse type to an Objective-C enum string for the given type.
+ * Converts the parse type to an Objective-C enum std::string for the given
+ * type.
  */
-string t_cocoa_generator::type_to_enum(const t_type* type) {
+std::string t_cocoa_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -3294,9 +3244,9 @@ string t_cocoa_generator::type_to_enum(const t_type* type) {
 }
 
 /**
- * Returns a format string specifier for the supplied parse type.
+ * Returns a format std::string specifier for the supplied parse type.
  */
-string t_cocoa_generator::format_string_for_type(const t_type* type) {
+std::string t_cocoa_generator::format_string_for_type(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -3345,14 +3295,14 @@ string t_cocoa_generator::format_string_for_type(const t_type* type) {
  * @param fieldName Name of variable to pass to setter
  */
 
-string t_cocoa_generator::call_field_setter(
+std::string t_cocoa_generator::call_field_setter(
     const t_field* tfield,
-    string fieldName) {
+    const std::string& fieldName) {
   return "[self set" + capitalize(get_cocoa_property_name(tfield)) + ": " +
       fieldName + "];";
 }
 
-string t_cocoa_generator::get_cocoa_property_name(const t_field* tfield) {
+std::string t_cocoa_generator::get_cocoa_property_name(const t_field* tfield) {
   return tfield->get_annotation("cocoa.name", &tfield->get_name());
 }
 

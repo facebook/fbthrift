@@ -251,19 +251,13 @@ class t_d_generator : public t_oop_generator {
     set<const t_type*> exception_types;
 
     // Print the method signatures.
-    vector<t_function*> functions = tservice->get_functions();
-    vector<t_function*>::iterator fn_iter;
-    for (fn_iter = functions.begin(); fn_iter != functions.end(); ++fn_iter) {
+    for (const auto* function : tservice->get_functions()) {
       f_service << indent();
-      print_function_signature(f_service, *fn_iter);
+      print_function_signature(f_service, function);
       f_service << ";" << endl;
 
-      const vector<t_field*>& exceptions =
-          (*fn_iter)->get_xceptions()->get_members();
-      vector<t_field*>::const_iterator ex_iter;
-      for (ex_iter = exceptions.begin(); ex_iter != exceptions.end();
-           ++ex_iter) {
-        exception_types.insert((*ex_iter)->get_type());
+      for (const auto* ex : function->get_xceptions()->fields()) {
+        exception_types.insert(ex->get_type());
       }
     }
 
@@ -280,75 +274,47 @@ class t_d_generator : public t_oop_generator {
     // Write the method metadata.
     ostringstream meta;
     indent_up();
-    bool first_fn = true;
-    for (fn_iter = functions.begin(); fn_iter != functions.end(); ++fn_iter) {
-      if ((*fn_iter)->get_paramlist()->get_members().empty() &&
-          (*fn_iter)->get_xceptions()->get_members().empty() &&
-          !(*fn_iter)->is_oneway()) {
+    auto func_delim = "";
+    for (const auto* function : tservice->get_functions()) {
+      if (function->get_paramlist()->fields().empty() &&
+          function->get_xceptions()->fields().empty() &&
+          !function->is_oneway()) {
         continue;
       }
-
-      if (first_fn) {
-        first_fn = false;
-      } else {
-        meta << ",";
-      }
-
-      meta << endl
-           << indent() << "TMethodMeta(`" << (*fn_iter)->get_name() << "`, "
+      meta << func_delim << endl
+           << indent() << "TMethodMeta(`" << function->get_name() << "`, "
            << endl;
+      func_delim = ",";
       indent_up();
       indent(meta) << "[";
 
-      bool first_param = true;
-      const vector<t_field*>& params =
-          (*fn_iter)->get_paramlist()->get_members();
-      vector<t_field*>::const_iterator p_iter;
-      for (p_iter = params.begin(); p_iter != params.end(); ++p_iter) {
-        if (first_param) {
-          first_param = false;
-        } else {
-          meta << ", ";
-        }
-
-        meta << "TParamMeta(`" << (*p_iter)->get_name() << "`, "
-             << (*p_iter)->get_key();
-
-        const t_const_value* cv = (*p_iter)->get_value();
-        if (cv != nullptr) {
-          meta << ", q{" << render_const_value((*p_iter)->get_type(), cv)
-               << "}";
+      auto param_delim = "";
+      for (const auto* param : function->get_paramlist()->fields()) {
+        meta << param_delim << "TParamMeta(`" << param->get_name() << "`, "
+             << param->get_key();
+        param_delim = ", ";
+        if (const t_const_value* cv = param->get_value()) {
+          meta << ", q{" << render_const_value(param->get_type(), cv) << "}";
         }
         meta << ")";
       }
 
       meta << "]";
 
-      if (!(*fn_iter)->get_xceptions()->get_members().empty() ||
-          (*fn_iter)->is_oneway()) {
+      if (!function->get_xceptions()->fields().empty() ||
+          function->is_oneway()) {
         meta << "," << endl << indent() << "[";
-
-        bool first = true;
-        const vector<t_field*>& exceptions =
-            (*fn_iter)->get_xceptions()->get_members();
-        vector<t_field*>::const_iterator ex_iter;
-        for (ex_iter = exceptions.begin(); ex_iter != exceptions.end();
-             ++ex_iter) {
-          if (first) {
-            first = false;
-          } else {
-            meta << ", ";
-          }
-
-          meta << "TExceptionMeta(`" << (*ex_iter)->get_name() << "`, "
-               << (*ex_iter)->get_key() << ", `"
-               << (*ex_iter)->get_type()->get_name() << "`)";
+        auto ex_delim = "";
+        for (const auto* ex : function->get_xceptions()->fields()) {
+          meta << ex_delim << "TExceptionMeta(`" << ex->get_name() << "`, "
+               << ex->get_key() << ", `" << ex->get_type()->get_name() << "`)";
+          ex_delim = ", ";
         }
 
         meta << "]";
       }
 
-      if ((*fn_iter)->is_oneway()) {
+      if (function->is_oneway()) {
         meta << "," << endl << indent() << "TMethodType.ONEWAY";
       }
 
@@ -466,8 +432,6 @@ class t_d_generator : public t_oop_generator {
       ostream& out,
       const t_struct* tstruct,
       bool is_exception) {
-    const vector<t_field*>& members = tstruct->get_members();
-
     if (is_exception) {
       indent(out) << "class " << tstruct->get_name() << " : TException {"
                   << endl;
@@ -478,42 +442,35 @@ class t_d_generator : public t_oop_generator {
 
     { // separate scope to avoid shadowing "m_iter" below.
       // Declare all fields.
-      vector<t_field*>::const_iterator m_iter;
-      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-        indent(out) << render_type_name((*m_iter)->get_type()) << " "
-                    << get_name(*m_iter) << ";" << endl;
+      for (const auto* field : tstruct->fields()) {
+        indent(out) << render_type_name(field->get_type()) << " "
+                    << get_name(field) << ";" << endl;
       }
     }
 
-    if (!members.empty())
+    if (tstruct->has_fields()) {
       indent(out) << endl;
+    }
     indent(out) << "mixin TStructHelpers!(";
 
-    if (!members.empty()) {
+    if (tstruct->has_fields()) {
       // If there are any fields, construct the TFieldMeta array to pass to
       // TStructHelpers. We can't just pass an empty array if not because []
       // doesn't pass the TFieldMeta[] constraint.
       out << "[";
       indent_up();
+      auto delim = "";
+      for (const auto* field : tstruct->fields()) {
+        out << delim << endl;
+        delim = ",";
+        indent(out) << "TFieldMeta(`" << get_name(field) << "`, "
+                    << field->get_key();
 
-      bool first = true;
-      vector<t_field*>::const_iterator m_iter;
-      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-        if (first) {
-          first = false;
-        } else {
-          out << ",";
-        }
-        out << endl;
-
-        indent(out) << "TFieldMeta(`" << get_name(*m_iter) << "`, "
-                    << (*m_iter)->get_key();
-
-        const t_const_value* cv = (*m_iter)->get_value();
-        t_field::e_req req = (*m_iter)->get_req();
+        const t_const_value* cv = field->get_value();
+        t_field::e_req req = field->get_req();
         out << ", " << render_req(req);
         if (cv != nullptr) {
-          out << ", q{" << render_const_value((*m_iter)->get_type(), cv) << "}";
+          out << ", q{" << render_const_value(field->get_type(), cv) << "}";
         }
         out << ")";
       }
@@ -535,20 +492,12 @@ class t_d_generator : public t_oop_generator {
   void print_function_signature(ostream& out, const t_function* fn) {
     out << render_type_name(fn->get_returntype()) << " " << fn->get_name()
         << "(";
-
-    const vector<t_field*>& fields = fn->get_paramlist()->get_members();
-    vector<t_field*>::const_iterator f_iter;
-    bool first = true;
-    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      if (first) {
-        first = false;
-      } else {
-        out << ", ";
-      }
-      out << render_type_name((*f_iter)->get_type(), true) << " "
-          << get_name(*f_iter);
+    auto delim = "";
+    for (const auto* param : fn->get_paramlist()->fields()) {
+      out << delim << render_type_name(param->get_type(), true) << " "
+          << get_name(param);
+      delim = ", ";
     }
-
     out << ")";
   }
 
@@ -605,26 +554,17 @@ class t_d_generator : public t_oop_generator {
       if (type->is_struct() || type->is_xception()) {
         indent(out) << "v = " << (type->is_xception() ? "new " : "")
                     << render_type_name(type) << "();" << endl;
-
-        const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-        vector<t_field*>::const_iterator f_iter;
-        const vector<pair<t_const_value*, t_const_value*>>& val =
-            value->get_map();
-        vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
-        for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-          const t_type* field_type = nullptr;
-          for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-            if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-              field_type = (*f_iter)->get_type();
-            }
-          }
-          if (field_type == nullptr) {
+        const auto* as_struct = static_cast<const t_struct*>(type);
+        for (const auto& entry : value->get_map()) {
+          const auto* field =
+              as_struct->get_field_by_name(entry.first->get_string());
+          if (field == nullptr) {
             throw std::runtime_error(
                 "Type error: " + type->get_name() + " has no field " +
-                v_iter->first->get_string());
+                entry.first->get_string());
           }
-          string val = render_const_value(field_type, v_iter->second);
-          indent(out) << "v.set!`" << v_iter->first->get_string() << "`(" << val
+          string val = render_const_value(field->get_type(), entry.second);
+          indent(out) << "v.set!`" << entry.first->get_string() << "`(" << val
                       << ");" << endl;
         }
       } else if (type->is_map()) {
@@ -643,12 +583,10 @@ class t_d_generator : public t_oop_generator {
           out << key << "] = " << val << ";" << endl;
         }
       } else if (type->is_list()) {
-        const t_type* etype = ((t_list*)type)->get_elem_type();
-        const vector<t_const_value*>& val = value->get_list();
-        vector<t_const_value*>::const_iterator v_iter;
-        for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-          string val = render_const_value(etype, *v_iter);
-          indent(out) << "v ~= " << val << ";" << endl;
+        const auto* as_list = static_cast<const t_list*>(type)->get_elem_type();
+        for (const auto* val : value->get_list()) {
+          indent(out) << "v ~= " << render_const_value(as_list, val) << ";"
+                      << endl;
         }
       } else if (type->is_set()) {
         const t_type* etype = ((t_set*)type)->get_elem_type();
