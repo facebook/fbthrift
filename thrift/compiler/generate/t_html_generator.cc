@@ -51,7 +51,7 @@ class t_html_generator : public t_concat_generator {
 
   void generate_program() override;
   void generate_program_toc();
-  void generate_program_toc_row(t_program* tprog);
+  void generate_program_toc_row(const t_program* tprog);
   void generate_program_toc_rows(
       t_program* tprog,
       std::vector<t_program*>& finished);
@@ -62,14 +62,14 @@ class t_html_generator : public t_concat_generator {
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_service(t_service* tservice) override;
-  void generate_xception(t_struct* txception) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_service(const t_service* tservice) override;
+  void generate_xception(const t_struct* txception) override;
 
-  void print_doc(t_node* tdoc);
+  void print_doc(const t_node* tdoc);
   int print_type(const t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
 
@@ -114,7 +114,7 @@ void t_html_generator::generate_program_toc_rows(
 /**
  * Emits the Table of Contents links at the top of the module's page
  */
-void t_html_generator::generate_program_toc_row(t_program* tprog) {
+void t_html_generator::generate_program_toc_row(const t_program* tprog) {
   string fname = tprog->get_name() + ".html";
   f_out_ << "<tr>" << endl << "<td>" << tprog->get_name() << "</td><td>";
   if (!tprog->get_services().empty()) {
@@ -334,7 +334,7 @@ void t_html_generator::generate_css() {
  * If the provided documentable object has documentation attached, this
  * will emit it to the output stream in HTML format.
  */
-void t_html_generator::print_doc(t_node* tdoc) {
+void t_html_generator::print_doc(const t_node* tdoc) {
   if (tdoc->has_doc()) {
     string doc = tdoc->get_doc();
     size_t index;
@@ -462,7 +462,7 @@ void t_html_generator::print_const_value(const t_const_value* tvalue) {
  *
  * @param ttypedef The type definition
  */
-void t_html_generator::generate_typedef(t_typedef* ttypedef) {
+void t_html_generator::generate_typedef(const t_typedef* ttypedef) {
   string name = ttypedef->get_name();
   f_out_ << "<div class=\"definition\">";
   f_out_ << "<h3 id=\"Typedef_" << name << "\">Typedef: " << name << "</h3>"
@@ -479,7 +479,7 @@ void t_html_generator::generate_typedef(t_typedef* ttypedef) {
  *
  * @param tenum The enumeration
  */
-void t_html_generator::generate_enum(t_enum* tenum) {
+void t_html_generator::generate_enum(const t_enum* tenum) {
   string name = tenum->get_name();
   f_out_ << "<div class=\"definition\">";
   f_out_ << "<h3 id=\"Enum_" << name << "\">Enumeration: " << name << "</h3>"
@@ -501,7 +501,7 @@ void t_html_generator::generate_enum(t_enum* tenum) {
 /**
  * Generates a constant value
  */
-void t_html_generator::generate_const(t_const* tconst) {
+void t_html_generator::generate_const(const t_const* tconst) {
   string name = tconst->get_name();
   f_out_ << "<tr id=\"Const_" << name << "\"><td><code>" << name
          << "</code></td><td><code>";
@@ -521,7 +521,7 @@ void t_html_generator::generate_const(t_const* tconst) {
  *
  * @param tstruct The struct definition
  */
-void t_html_generator::generate_struct(t_struct* tstruct) {
+void t_html_generator::generate_struct(const t_struct* tstruct) {
   string name = tstruct->get_name();
   f_out_ << "<div class=\"definition\">";
   f_out_ << "<h3 id=\"Struct_" << name << "\">";
@@ -563,7 +563,7 @@ void t_html_generator::generate_struct(t_struct* tstruct) {
  *
  * @param tstruct The struct definition
  */
-void t_html_generator::generate_xception(t_struct* txception) {
+void t_html_generator::generate_xception(const t_struct* txception) {
   generate_struct(txception);
 }
 
@@ -572,7 +572,7 @@ void t_html_generator::generate_xception(t_struct* txception) {
  *
  * @param tservice The service definition
  */
-void t_html_generator::generate_service(t_service* tservice) {
+void t_html_generator::generate_service(const t_service* tservice) {
   f_out_ << "<h3 id=\"Svc_" << service_name_ << "\">Service: " << service_name_
          << "</h3>" << endl;
 

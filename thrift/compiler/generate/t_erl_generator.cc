@@ -62,12 +62,12 @@ class t_erl_generator : public t_concat_generator {
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_xception(t_struct* txception) override;
-  void generate_service(t_service* tservice) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_xception(const t_struct* txception) override;
+  void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(
       const t_type* type,
@@ -77,23 +77,25 @@ class t_erl_generator : public t_concat_generator {
    * Struct generation code
    */
 
-  void generate_erl_struct(t_struct* tstruct, bool is_exception);
+  void generate_erl_struct(const t_struct* tstruct, bool is_exception);
   void generate_erl_struct_definition(
       std::ostream& out,
       std::ostream& hrl_out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       bool is_xception = false,
       bool is_result = false);
-  void generate_erl_struct_info(std::ostream& out, t_struct* tstruct);
-  void generate_erl_function_helpers(t_function* tfunction);
+  void generate_erl_struct_info(std::ostream& out, const t_struct* tstruct);
+  void generate_erl_function_helpers(const t_function* tfunction);
 
   /**
    * Service-level generation functions
    */
 
-  void generate_service_helpers(t_service* tservice);
-  void generate_service_interface(t_service* tservice);
-  void generate_function_info(t_service* tservice, t_function* tfunction);
+  void generate_service_helpers(const t_service* tservice);
+  void generate_service_interface(const t_service* tservice);
+  void generate_function_info(
+      const t_service* tservice,
+      const t_function* tfunction);
 
   /**
    * Helper rendering functions
@@ -102,14 +104,14 @@ class t_erl_generator : public t_concat_generator {
   std::string erl_autogen_comment();
   std::string erl_imports();
   std::string render_includes();
-  std::string declare_field(t_field* tfield);
+  std::string declare_field(const t_field* tfield);
   std::string type_name(const t_type* ttype);
 
   std::string function_signature(
-      t_function* tfunction,
+      const t_function* tfunction,
       std::string prefix = "");
 
-  std::string argument_list(t_struct* tstruct);
+  std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
   std::string generate_type_term(const t_type* ttype, bool expand_structs);
   std::string type_module(const t_type* ttype);
@@ -129,10 +131,12 @@ class t_erl_generator : public t_concat_generator {
    * add function to export list
    */
 
-  void export_function(t_function* tfunction, std::string prefix = "");
+  void export_function(const t_function* tfunction, std::string prefix = "");
   void export_string(std::string name, int num);
 
-  void export_types_function(t_function* tfunction, std::string prefix = "");
+  void export_types_function(
+      const t_function* tfunction,
+      std::string prefix = "");
   void export_types_string(std::string name, int num);
 
   /**
@@ -278,7 +282,7 @@ void t_erl_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_erl_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
+void t_erl_generator::generate_typedef(const t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Done using a class to scope
@@ -286,7 +290,7 @@ void t_erl_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
  *
  * @param tenum The enumeration
  */
-void t_erl_generator::generate_enum(t_enum* tenum) {
+void t_erl_generator::generate_enum(const t_enum* tenum) {
   vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
 
@@ -305,7 +309,7 @@ void t_erl_generator::generate_enum(t_enum* tenum) {
 /**
  * Generate a constant value
  */
-void t_erl_generator::generate_const(t_const* tconst) {
+void t_erl_generator::generate_const(const t_const* tconst) {
   const t_type* type = tconst->get_type();
   string name = capitalize(tconst->get_name());
   t_const_value* value = tconst->get_value();
@@ -456,7 +460,7 @@ string t_erl_generator::render_const_value(
 /**
  * Generates a struct
  */
-void t_erl_generator::generate_struct(t_struct* tstruct) {
+void t_erl_generator::generate_struct(const t_struct* tstruct) {
   generate_erl_struct(tstruct, false);
 }
 
@@ -466,7 +470,7 @@ void t_erl_generator::generate_struct(t_struct* tstruct) {
  *
  * @param txception The struct definition
  */
-void t_erl_generator::generate_xception(t_struct* txception) {
+void t_erl_generator::generate_xception(const t_struct* txception) {
   generate_erl_struct(txception, true);
 }
 
@@ -474,7 +478,7 @@ void t_erl_generator::generate_xception(t_struct* txception) {
  * Generates a struct
  */
 void t_erl_generator::generate_erl_struct(
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception) {
   generate_erl_struct_definition(
       f_types_, f_types_hrl_file_, tstruct, is_exception);
@@ -488,7 +492,7 @@ void t_erl_generator::generate_erl_struct(
 void t_erl_generator::generate_erl_struct_definition(
     ostream& out,
     ostream& hrl_out,
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception,
     bool /*is_result*/) {
   const vector<t_field*>& members = tstruct->get_members();
@@ -535,7 +539,7 @@ void t_erl_generator::generate_erl_struct_definition(
  */
 void t_erl_generator::generate_erl_struct_info(
     ostream& out,
-    t_struct* tstruct) {
+    const t_struct* tstruct) {
   string name = type_name(tstruct);
 
   indent(out) << "struct_info('" << name << "') ->" << endl;
@@ -552,7 +556,7 @@ void t_erl_generator::generate_erl_struct_info(
  *
  * @param tservice The service definition
  */
-void t_erl_generator::generate_service(t_service* tservice) {
+void t_erl_generator::generate_service(const t_service* tservice) {
   // somehow this point is reached before the constructor and it's not downcased
   // yet
   // ...awesome
@@ -615,7 +619,7 @@ void t_erl_generator::generate_service(t_service* tservice) {
  *
  * @param tservice The service to generate a header definition for
  */
-void t_erl_generator::generate_service_helpers(t_service* tservice) {
+void t_erl_generator::generate_service_helpers(const t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
@@ -635,15 +639,15 @@ void t_erl_generator::generate_service_helpers(t_service* tservice) {
  *
  * @param tfunction The function
  */
-void t_erl_generator::generate_erl_function_helpers(t_function* /*tfunction*/) {
-}
+void t_erl_generator::generate_erl_function_helpers(
+    const t_function* /*tfunction*/) {}
 
 /**
  * Generates a service interface definition.
  *
  * @param tservice The service to generate a header definition for
  */
-void t_erl_generator::generate_service_interface(t_service* tservice) {
+void t_erl_generator::generate_service_interface(const t_service* tservice) {
   export_string("function_info", 2);
 
   vector<t_function*> functions = tservice->get_functions();
@@ -675,12 +679,12 @@ void t_erl_generator::generate_service_interface(t_service* tservice) {
  * function_info(FunctionName, reply_type)
  */
 void t_erl_generator::generate_function_info(
-    t_service* /*tservice*/,
-    t_function* tfunction) {
+    const t_service* /*tservice*/,
+    const t_function* tfunction) {
   string name_atom = "'" + tfunction->get_name() + "'";
 
-  t_struct* xs = tfunction->get_xceptions();
-  t_struct* arg_struct = tfunction->get_paramlist();
+  const t_struct* xs = tfunction->get_xceptions();
+  const t_struct* arg_struct = tfunction->get_paramlist();
 
   // function_info(Function, params_type):
   indent(f_service_) << "function_info(" << name_atom << ", params_type) ->"
@@ -719,7 +723,7 @@ void t_erl_generator::generate_function_info(
  *
  * @param ttype The type
  */
-string t_erl_generator::declare_field(t_field* tfield) { // TODO
+string t_erl_generator::declare_field(const t_field* tfield) { // TODO
   string result = "@" + tfield->get_name();
   const t_type* type = tfield->get_type()->get_true_type();
   if (tfield->get_value() != nullptr) {
@@ -737,7 +741,7 @@ string t_erl_generator::declare_field(t_field* tfield) { // TODO
  * @return String of rendered function definition
  */
 string t_erl_generator::function_signature(
-    t_function* tfunction,
+    const t_function* tfunction,
     string prefix) {
   return prefix + tfunction->get_name() + "(This" +
       capitalize(argument_list(tfunction->get_paramlist())) + ")";
@@ -756,7 +760,7 @@ void t_erl_generator::export_string(string name, int num) {
 }
 
 void t_erl_generator::export_types_function(
-    t_function* tfunction,
+    const t_function* tfunction,
     string prefix) {
   export_types_string(
       prefix + tfunction->get_name(),
@@ -773,7 +777,9 @@ void t_erl_generator::export_types_string(string name, int num) {
   export_types_lines_ << name << "/" << num;
 }
 
-void t_erl_generator::export_function(t_function* tfunction, string prefix) {
+void t_erl_generator::export_function(
+    const t_function* tfunction,
+    string prefix) {
   export_string(
       prefix + tfunction->get_name(),
       1 // This
@@ -783,7 +789,7 @@ void t_erl_generator::export_function(t_function* tfunction, string prefix) {
 /**
  * Renders a field list
  */
-string t_erl_generator::argument_list(t_struct* tstruct) {
+string t_erl_generator::argument_list(const t_struct* tstruct) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();

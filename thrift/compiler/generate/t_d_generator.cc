@@ -161,13 +161,13 @@ class t_d_generator : public t_oop_generator {
     indent(f_consts) << "}" << endl;
   }
 
-  void generate_typedef(t_typedef* ttypedef) override {
+  void generate_typedef(const t_typedef* ttypedef) override {
     f_types_ << indent() << "alias " << render_type_name(ttypedef->get_type())
              << " " << ttypedef->get_symbolic() << ";" << endl
              << endl;
   }
 
-  void generate_enum(t_enum* tenum) override {
+  void generate_enum(const t_enum* tenum) override {
     vector<t_enum_value*> constants = tenum->get_enum_values();
 
     const string& enum_name = tenum->get_name();
@@ -196,15 +196,15 @@ class t_d_generator : public t_oop_generator {
     f_types_ << endl;
   }
 
-  void generate_struct(t_struct* tstruct) override {
+  void generate_struct(const t_struct* tstruct) override {
     print_struct_definition(f_types_, tstruct, false);
   }
 
-  void generate_xception(t_struct* txception) override {
+  void generate_xception(const t_struct* txception) override {
     print_struct_definition(f_types_, txception, true);
   }
 
-  void generate_service(t_service* tservice) override {
+  void generate_service(const t_service* tservice) override {
     string svc_name = tservice->get_name();
 
     // Service implementation file includes
@@ -228,7 +228,7 @@ class t_d_generator : public t_oop_generator {
                 << includes[i]->get_name() << "_types;" << endl;
     }
 
-    t_service* extends_service = tservice->get_extends();
+    const t_service* extends_service = tservice->get_extends();
     if (extends_service != nullptr) {
       f_service << "import "
                 << render_package(*(extends_service->get_program()))
@@ -270,14 +270,11 @@ class t_d_generator : public t_oop_generator {
     // Alias the exception types into the current scope.
     if (!exception_types.empty())
       f_service << endl;
-    set<const t_type*>::const_iterator et_iter;
-    for (et_iter = exception_types.begin(); et_iter != exception_types.end();
-         ++et_iter) {
-      indent(f_service) << "alias "
-                        << render_package(*(*et_iter)->get_program())
-                        << (*et_iter)->get_program()->get_name() << "_types"
-                        << "." << (*et_iter)->get_name() << " "
-                        << (*et_iter)->get_name() << ";" << endl;
+    for (const auto* et : exception_types) {
+      indent(f_service) << "alias " << render_package(*et->get_program())
+                        << et->get_program()->get_name() << "_types"
+                        << "." << et->get_name() << " " << et->get_name() << ";"
+                        << endl;
     }
 
     // Write the method metadata.
@@ -382,7 +379,7 @@ class t_d_generator : public t_oop_generator {
   /**
    * Writes a server skeleton for the passed service to out.
    */
-  void print_server_skeleton(ostream& out, t_service* tservice) {
+  void print_server_skeleton(ostream& out, const t_service* tservice) {
     const string& svc_name = tservice->get_name();
 
     out << "/*" << endl
@@ -465,8 +462,10 @@ class t_d_generator : public t_oop_generator {
   /**
    * Writes the definition of a struct or an exception type to out.
    */
-  void
-  print_struct_definition(ostream& out, t_struct* tstruct, bool is_exception) {
+  void print_struct_definition(
+      ostream& out,
+      const t_struct* tstruct,
+      bool is_exception) {
     const vector<t_field*>& members = tstruct->get_members();
 
     if (is_exception) {
@@ -533,7 +532,7 @@ class t_d_generator : public t_oop_generator {
    * Prints the D function signature (including return type) for the given
    * method.
    */
-  void print_function_signature(ostream& out, t_function* fn) {
+  void print_function_signature(ostream& out, const t_function* fn) {
     out << render_type_name(fn->get_returntype()) << " " << fn->get_name()
         << "(";
 
@@ -719,11 +718,11 @@ class t_d_generator : public t_oop_generator {
     }
 
     if (ttype->is_container()) {
-      t_container* tcontainer = (t_container*)ttype;
+      const t_container* tcontainer = (t_container*)ttype;
       if (tcontainer->has_cpp_name()) {
         return tcontainer->get_cpp_name();
       } else if (ttype->is_map()) {
-        t_map* tmap = (t_map*)ttype;
+        const t_map* tmap = (t_map*)ttype;
         const t_type* ktype = tmap->get_key_type();
 
         string name = render_type_name(tmap->get_val_type()) + "[";
@@ -737,10 +736,10 @@ class t_d_generator : public t_oop_generator {
         name += "]";
         return name;
       } else if (ttype->is_set()) {
-        t_set* tset = (t_set*)ttype;
+        const t_set* tset = (t_set*)ttype;
         return "HashSet!(" + render_type_name(tset->get_elem_type()) + ")";
       } else if (ttype->is_list()) {
-        t_list* tlist = (t_list*)ttype;
+        const t_list* tlist = (t_list*)ttype;
         return render_type_name(tlist->get_elem_type()) + "[]";
       }
     }

@@ -60,12 +60,12 @@ class t_st_generator : public t_oop_generator {
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_xception(t_struct* txception) override;
-  void generate_service(t_service* tservice) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_xception(const t_struct* txception) override;
+  void generate_service(const t_service* tservice) override;
   void generate_class_side_definition();
   void generate_force_consts();
 
@@ -75,28 +75,30 @@ class t_st_generator : public t_oop_generator {
    * Struct generation code
    */
 
-  void
-  generate_st_struct(std::ofstream& out, t_struct* tstruct, bool is_exception);
-  void generate_accessors(std::ofstream& out, t_struct* tstruct);
+  void generate_st_struct(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      bool is_exception);
+  void generate_accessors(std::ofstream& out, const t_struct* tstruct);
 
   /**
    * Service-level generation functions
    */
 
-  void generate_service_client(t_service* tservice);
+  void generate_service_client(const t_service* tservice);
 
-  void generate_send_method(t_function* tfunction);
-  void generate_recv_method(t_function* tfunction);
+  void generate_send_method(const t_function* tfunction);
+  void generate_recv_method(const t_function* tfunction);
 
-  std::string map_reader(t_map* tmap);
-  std::string list_reader(t_list* tlist);
-  std::string set_reader(t_set* tset);
-  std::string struct_reader(t_struct* tstruct, std::string clsName);
+  std::string map_reader(const t_map* tmap);
+  std::string list_reader(const t_list* tlist);
+  std::string set_reader(const t_set* tset);
+  std::string struct_reader(const t_struct* tstruct, std::string clsName);
 
-  std::string map_writer(t_map* tmap, std::string name);
-  std::string list_writer(t_list* tlist, std::string name);
-  std::string set_writer(t_set* tset, std::string name);
-  std::string struct_writer(t_struct* tstruct, std::string fname);
+  std::string map_writer(const t_map* tmap, std::string name);
+  std::string list_writer(const t_list* tlist, std::string name);
+  std::string set_writer(const t_set* tset, std::string name);
+  std::string struct_writer(const t_struct* tstruct, std::string fname);
 
   std::string write_val(const t_type* t, std::string fname);
   std::string read_val(const t_type* t);
@@ -136,13 +138,13 @@ class t_st_generator : public t_oop_generator {
   std::string class_name();
   std::string client_class_name();
   std::string prefix(std::string name);
-  std::string declare_field(t_field* tfield);
+  std::string declare_field(const t_field* tfield);
   std::string sanitize(std::string s);
   std::string type_name(const t_type* ttype);
 
-  std::string function_signature(t_function* tfunction);
-  std::string argument_list(t_struct* tstruct);
-  std::string function_types_comment(t_function* fn);
+  std::string function_signature(const t_function* tfunction);
+  std::string argument_list(const t_struct* tstruct);
+  std::string function_types_comment(const t_function* fn);
 
   std::string type_to_enum(const t_type* ttype);
   std::string a_type(const t_type* type);
@@ -243,7 +245,7 @@ string t_st_generator::generated_category() {
  *
  * @param ttypedef The type definition
  */
-void t_st_generator::generate_typedef(t_typedef* /* ttypedef */) {}
+void t_st_generator::generate_typedef(const t_typedef* /* ttypedef */) {}
 
 void t_st_generator::st_class_def(std::ofstream& out, string name) {
   out << "Object subclass: #" << prefix(name) << endl;
@@ -345,7 +347,7 @@ void t_st_generator::generate_class_side_definition() {
  *
  * @param tenum The enumeration
  */
-void t_st_generator::generate_enum(t_enum* tenum) {
+void t_st_generator::generate_enum(const t_enum* tenum) {
   string cls_name = program_name_ + capitalize(tenum->get_name());
 
   f_ << prefix(class_name()) << " enums at: '" << tenum->get_name()
@@ -367,7 +369,7 @@ void t_st_generator::generate_enum(t_enum* tenum) {
 /**
  * Generate a constant value
  */
-void t_st_generator::generate_const(t_const* tconst) {
+void t_st_generator::generate_const(const t_const* tconst) {
   const t_type* type = tconst->get_type();
   string name = tconst->get_name();
   t_const_value* value = tconst->get_value();
@@ -497,7 +499,7 @@ string t_st_generator::render_const_value(
 /**
  * Generates a Smalltalk struct
  */
-void t_st_generator::generate_struct(t_struct* tstruct) {
+void t_st_generator::generate_struct(const t_struct* tstruct) {
   generate_st_struct(f_, tstruct, false);
 }
 
@@ -507,7 +509,7 @@ void t_st_generator::generate_struct(t_struct* tstruct) {
  *
  * @param txception The struct definition
  */
-void t_st_generator::generate_xception(t_struct* txception) {
+void t_st_generator::generate_xception(const t_struct* txception) {
   generate_st_struct(f_, txception, true);
 }
 
@@ -516,7 +518,7 @@ void t_st_generator::generate_xception(t_struct* txception) {
  */
 void t_st_generator::generate_st_struct(
     std::ofstream& out,
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception = false) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -568,7 +570,9 @@ string t_st_generator::a_type(const t_type* type) {
   return prefix + capitalize(type_name(type));
 }
 
-void t_st_generator::generate_accessors(std::ofstream& out, t_struct* tstruct) {
+void t_st_generator::generate_accessors(
+    std::ofstream& out,
+    const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   string type;
@@ -591,7 +595,7 @@ void t_st_generator::generate_accessors(std::ofstream& out, t_struct* tstruct) {
  *
  * @param tservice The service definition
  */
-void t_st_generator::generate_service(t_service* tservice) {
+void t_st_generator::generate_service(const t_service* tservice) {
   generate_service_client(tservice);
   // generate_service_server(tservice);
 }
@@ -602,7 +606,7 @@ string t_st_generator::temp_name() {
   return out.str();
 }
 
-string t_st_generator::map_writer(t_map* tmap, string fname) {
+string t_st_generator::map_writer(const t_map* tmap, string fname) {
   std::ostringstream out;
   string key = temp_name();
   string val = temp_name();
@@ -627,7 +631,7 @@ string t_st_generator::map_writer(t_map* tmap, string fname) {
   return out.str();
 }
 
-string t_st_generator::map_reader(t_map* tmap) {
+string t_st_generator::map_reader(const t_map* tmap) {
   std::ostringstream out;
   string desc = temp_name();
   string val = temp_name();
@@ -652,7 +656,7 @@ string t_st_generator::map_reader(t_map* tmap) {
   return out.str();
 }
 
-string t_st_generator::list_writer(t_list* tlist, string fname) {
+string t_st_generator::list_writer(const t_list* tlist, string fname) {
   std::ostringstream out;
   string val = temp_name();
 
@@ -673,7 +677,7 @@ string t_st_generator::list_writer(t_list* tlist, string fname) {
   return out.str();
 }
 
-string t_st_generator::list_reader(t_list* tlist) {
+string t_st_generator::list_reader(const t_list* tlist) {
   std::ostringstream out;
   string desc = temp_name();
   string val = temp_name();
@@ -697,7 +701,7 @@ string t_st_generator::list_reader(t_list* tlist) {
   return out.str();
 }
 
-string t_st_generator::set_writer(t_set* tset, string fname) {
+string t_st_generator::set_writer(const t_set* tset, string fname) {
   std::ostringstream out;
   string val = temp_name();
 
@@ -718,7 +722,7 @@ string t_st_generator::set_writer(t_set* tset, string fname) {
   return out.str();
 }
 
-string t_st_generator::set_reader(t_set* tset) {
+string t_st_generator::set_reader(const t_set* tset) {
   std::ostringstream out;
   string desc = temp_name();
   string val = temp_name();
@@ -742,7 +746,7 @@ string t_st_generator::set_reader(t_set* tset) {
   return out.str();
 }
 
-string t_st_generator::struct_writer(t_struct* tstruct, string sname) {
+string t_st_generator::struct_writer(const t_struct* tstruct, string sname) {
   std::ostringstream out;
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator fld_iter;
@@ -783,7 +787,9 @@ string t_st_generator::struct_writer(t_struct* tstruct, string sname) {
   return out.str();
 }
 
-string t_st_generator::struct_reader(t_struct* tstruct, string clsName = "") {
+string t_st_generator::struct_reader(
+    const t_struct* tstruct,
+    string clsName = "") {
   std::ostringstream out;
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator fld_iter;
@@ -888,10 +894,10 @@ string t_st_generator::read_val(const t_type* t) {
   }
 }
 
-void t_st_generator::generate_send_method(t_function* function) {
+void t_st_generator::generate_send_method(const t_function* function) {
   string funname = function->get_name();
   string signature = function_signature(function);
-  t_struct* arg_struct = function->get_paramlist();
+  const t_struct* arg_struct = function->get_paramlist();
   const vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator fld_iter;
 
@@ -931,7 +937,7 @@ void t_st_generator::generate_send_method(t_function* function) {
 
 // We only support receiving TResult structures (so this won't work on the
 // server side)
-void t_st_generator::generate_recv_method(t_function* function) {
+void t_st_generator::generate_recv_method(const t_function* function) {
   string funname = function->get_name();
   string signature = function_signature(function);
 
@@ -940,7 +946,7 @@ void t_st_generator::generate_recv_method(t_function* function) {
       std::make_unique<t_field>(function->get_returntype(), "success", 0);
   result.append(std::move(success));
 
-  t_struct* xs = function->get_xceptions();
+  const t_struct* xs = function->get_xceptions();
   const vector<t_field*>& fields = xs->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -963,7 +969,7 @@ void t_st_generator::generate_recv_method(t_function* function) {
   st_close_method(f_);
 }
 
-string t_st_generator::function_types_comment(t_function* fn) {
+string t_st_generator::function_types_comment(const t_function* fn) {
   std::ostringstream out;
   const vector<t_field*>& fields = fn->get_paramlist()->get_members();
   vector<t_field*>::const_iterator f_iter;
@@ -987,7 +993,7 @@ string t_st_generator::function_types_comment(t_function* fn) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_st_generator::generate_service_client(t_service* tservice) {
+void t_st_generator::generate_service_client(const t_service* tservice) {
   string extends = "";
   string extends_client = "TClient";
   vector<t_function*> functions = tservice->get_functions();
@@ -1052,7 +1058,7 @@ string t_st_generator::sanitize(string s) {
  * @param tfunction Function definition
  * @return String of rendered function definition
  */
-string t_st_generator::function_signature(t_function* tfunction) {
+string t_st_generator::function_signature(const t_function* tfunction) {
   return tfunction->get_name() +
       capitalize(argument_list(tfunction->get_paramlist()));
 }
@@ -1060,7 +1066,7 @@ string t_st_generator::function_signature(t_function* tfunction) {
 /**
  * Renders a field list
  */
-string t_st_generator::argument_list(t_struct* tstruct) {
+string t_st_generator::argument_list(const t_struct* tstruct) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();

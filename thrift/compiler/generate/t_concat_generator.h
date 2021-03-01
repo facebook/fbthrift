@@ -81,13 +81,13 @@ class t_concat_generator : public t_generator {
    * Pure virtual methods implemented by the generator subclasses.
    */
 
-  virtual void generate_typedef(t_typedef* ttypedef) = 0;
-  virtual void generate_enum(t_enum* tenum) = 0;
-  virtual void generate_const(t_const* /*tconst*/) {}
-  virtual void generate_forward_declaration(t_struct* /*tstruct*/) {}
-  virtual void generate_struct(t_struct* tstruct) = 0;
-  virtual void generate_service(t_service* tservice) = 0;
-  virtual void generate_xception(t_struct* txception) {
+  virtual void generate_typedef(const t_typedef* ttypedef) = 0;
+  virtual void generate_enum(const t_enum* tenum) = 0;
+  virtual void generate_const(const t_const* /*tconst*/) {}
+  virtual void generate_forward_declaration(const t_struct* /*tstruct*/) {}
+  virtual void generate_struct(const t_struct* tstruct) = 0;
+  virtual void generate_service(const t_service* tservice) = 0;
+  virtual void generate_xception(const t_struct* txception) {
     // By default exceptions are the same as structs
     generate_struct(txception);
   }
@@ -95,7 +95,7 @@ class t_concat_generator : public t_generator {
   /**
    * Method to get the service name, may be overridden
    */
-  virtual std::string get_service_name(t_service* tservice) {
+  virtual std::string get_service_name(const t_service* tservice) {
     return tservice->get_name();
   }
 
@@ -110,14 +110,14 @@ class t_concat_generator : public t_generator {
 
     if (ttype->is_container()) {
       if (ttype->is_map()) {
-        t_map* tmap = (t_map*)ttype;
+        const auto* tmap = static_cast<const t_map*>(ttype);
         return "map<" + thrift_type_name(tmap->get_key_type()) + ", " +
             thrift_type_name(tmap->get_val_type()) + ">";
       } else if (ttype->is_set()) {
-        t_set* tset = (t_set*)ttype;
+        const auto* tset = static_cast<const t_set*>(ttype);
         return "set<" + thrift_type_name(tset->get_elem_type()) + ">";
       } else if (ttype->is_list()) {
-        t_list* tlist = (t_list*)ttype;
+        const auto* tlist = static_cast<const t_list*>(ttype);
         return "list<" + thrift_type_name(tlist->get_elem_type()) + ">";
       }
     }
@@ -152,7 +152,7 @@ class t_concat_generator : public t_generator {
    * two structures having same fields properties will have the same
    * structural ID.
    */
-  std::string generate_structural_id(const std::vector<t_field*>& members);
+  std::string generate_structural_id(const t_struct* t_struct);
 
   /**
    * Creates a unique temporary variable name, which is just "name" with a

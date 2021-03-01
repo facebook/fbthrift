@@ -59,12 +59,12 @@ class t_perl_generator : public t_oop_generator {
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_xception(t_struct* txception) override;
-  void generate_service(t_service* tservice) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_xception(const t_struct* txception) override;
+  void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(
       const t_type* type,
@@ -74,25 +74,34 @@ class t_perl_generator : public t_oop_generator {
    * Structs!
    */
 
-  void generate_perl_struct(t_struct* tstruct, bool is_exception);
+  void generate_perl_struct(const t_struct* tstruct, bool is_exception);
   void generate_perl_struct_definition(
       std::ofstream& out,
-      t_struct* tstruct,
-      bool is_xception = false);
-  void generate_perl_struct_reader(std::ofstream& out, t_struct* tstruct);
-  void generate_perl_struct_writer(std::ofstream& out, t_struct* tstruct);
-  void generate_perl_function_helpers(t_function* tfunction);
+      const t_struct* tstruct,
+      bool is_xception = false,
+      const std::string& name_prefix = "");
+  void generate_perl_struct_reader(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& name);
+  void generate_perl_struct_writer(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& name);
+  void generate_perl_function_helpers(const t_function* tfunction);
 
   /**
    * Service-level generation functions
    */
 
-  void generate_service_helpers(t_service* tservice);
-  void generate_service_interface(t_service* tservice);
-  void generate_service_rest(t_service* tservice);
-  void generate_service_client(t_service* tservice);
-  void generate_service_processor(t_service* tservice);
-  void generate_process_function(t_service* tservice, t_function* tfunction);
+  void generate_service_helpers(const t_service* tservice);
+  void generate_service_interface(const t_service* tservice);
+  void generate_service_rest(const t_service* tservice);
+  void generate_service_client(const t_service* tservice);
+  void generate_service_processor(const t_service* tservice);
+  void generate_process_function(
+      const t_service* tservice,
+      const t_function* tfunction);
 
   /**
    * Serialization constructs
@@ -100,13 +109,13 @@ class t_perl_generator : public t_oop_generator {
 
   void generate_deserialize_field(
       std::ofstream& out,
-      t_field* tfield,
+      const t_field* tfield,
       std::string prefix = "",
       bool inclass = false);
 
   void generate_deserialize_struct(
       std::ofstream& out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       std::string prefix = "");
 
   void generate_deserialize_container(
@@ -116,27 +125,27 @@ class t_perl_generator : public t_oop_generator {
 
   void generate_deserialize_set_element(
       std::ofstream& out,
-      t_set* tset,
+      const t_set* tset,
       std::string prefix = "");
 
   void generate_deserialize_map_element(
       std::ofstream& out,
-      t_map* tmap,
+      const t_map* tmap,
       std::string prefix = "");
 
   void generate_deserialize_list_element(
       std::ofstream& out,
-      t_list* tlist,
+      const t_list* tlist,
       std::string prefix = "");
 
   void generate_serialize_field(
       std::ofstream& out,
-      t_field* tfield,
+      const t_field* tfield,
       std::string prefix = "");
 
   void generate_serialize_struct(
       std::ofstream& out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       std::string prefix = "");
 
   void generate_serialize_container(
@@ -146,18 +155,18 @@ class t_perl_generator : public t_oop_generator {
 
   void generate_serialize_map_element(
       std::ofstream& out,
-      t_map* tmap,
+      const t_map* tmap,
       std::string kiter,
       std::string viter);
 
   void generate_serialize_set_element(
       std::ofstream& out,
-      t_set* tmap,
+      const t_set* tmap,
       std::string iter);
 
   void generate_serialize_list_element(
       std::ofstream& out,
-      t_list* tlist,
+      const t_list* tlist,
       std::string iter);
 
   /**
@@ -166,11 +175,11 @@ class t_perl_generator : public t_oop_generator {
 
   std::string perl_includes();
   std::string
-  declare_field(t_field* tfield, bool init = false, bool obj = false);
+  declare_field(const t_field* tfield, bool init = false, bool obj = false);
   std::string function_signature(
-      t_function* tfunction,
+      const t_function* tfunction,
       std::string prefix = "");
-  std::string argument_list(t_struct* tstruct);
+  std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
 
   std::string autogen_comment() override {
@@ -310,7 +319,7 @@ void t_perl_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_perl_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
+void t_perl_generator::generate_typedef(const t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Since define is expensive to lookup
@@ -318,7 +327,7 @@ void t_perl_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
  *
  * @param tenum The enumeration
  */
-void t_perl_generator::generate_enum(t_enum* tenum) {
+void t_perl_generator::generate_enum(const t_enum* tenum) {
   f_types_ << "package " << perl_namespace(program_) << tenum->get_name() << ";"
            << endl;
 
@@ -335,7 +344,7 @@ void t_perl_generator::generate_enum(t_enum* tenum) {
 /**
  * Generate a constant value
  */
-void t_perl_generator::generate_const(t_const* tconst) {
+void t_perl_generator::generate_const(const t_const* tconst) {
   const t_type* type = tconst->get_type();
   string name = tconst->get_name();
   t_const_value* value = tconst->get_value();
@@ -455,7 +464,7 @@ string t_perl_generator::render_const_value(
 /**
  * Make a struct
  */
-void t_perl_generator::generate_struct(t_struct* tstruct) {
+void t_perl_generator::generate_struct(const t_struct* tstruct) {
   generate_perl_struct(tstruct, false);
 }
 
@@ -465,7 +474,7 @@ void t_perl_generator::generate_struct(t_struct* tstruct) {
  *
  * @param txception The struct definition
  */
-void t_perl_generator::generate_xception(t_struct* txception) {
+void t_perl_generator::generate_xception(const t_struct* txception) {
   generate_perl_struct(txception, true);
 }
 
@@ -473,7 +482,7 @@ void t_perl_generator::generate_xception(t_struct* txception) {
  * Structs can be normal or exceptions.
  */
 void t_perl_generator::generate_perl_struct(
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception) {
   generate_perl_struct_definition(f_types_, tstruct, is_exception);
 }
@@ -487,13 +496,13 @@ void t_perl_generator::generate_perl_struct(
  */
 void t_perl_generator::generate_perl_struct_definition(
     ofstream& out,
-    t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct,
+    bool is_exception,
+    const std::string& name_prefix) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
-
-  out << "package " << perl_namespace(tstruct->get_program())
-      << tstruct->get_name() << ";\n";
+  std::string name = name_prefix + tstruct->get_name();
+  out << "package " << perl_namespace(tstruct->get_program()) << name << ";\n";
   if (is_exception) {
     out << "use base qw(Thrift::TException);\n";
   }
@@ -502,7 +511,7 @@ void t_perl_generator::generate_perl_struct_definition(
   out << "use base qw(Class::Accessor);\n";
 
   if (members.size() > 0) {
-    out << perl_namespace(tstruct->get_program()) << tstruct->get_name()
+    out << perl_namespace(tstruct->get_program()) << name
         << "->mk_accessors( qw( ";
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       const t_type* t = (*m_iter)->get_type()->get_true_type();
@@ -564,12 +573,12 @@ void t_perl_generator::generate_perl_struct_definition(
   out << "}\n\n";
 
   out << "sub getName {" << endl
-      << indent() << "  return '" << tstruct->get_name() << "';" << endl
+      << indent() << "  return '" << name << "';" << endl
       << indent() << "}" << endl
       << endl;
 
-  generate_perl_struct_reader(out, tstruct);
-  generate_perl_struct_writer(out, tstruct);
+  generate_perl_struct_reader(out, tstruct, name);
+  generate_perl_struct_writer(out, tstruct, name);
 }
 
 /**
@@ -577,7 +586,8 @@ void t_perl_generator::generate_perl_struct_definition(
  */
 void t_perl_generator::generate_perl_struct_reader(
     ofstream& out,
-    t_struct* tstruct) {
+    const t_struct* tstruct,
+    const std::string&) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -652,8 +662,8 @@ void t_perl_generator::generate_perl_struct_reader(
  */
 void t_perl_generator::generate_perl_struct_writer(
     ofstream& out,
-    t_struct* tstruct) {
-  const string& name = tstruct->get_name();
+    const t_struct* tstruct,
+    const std::string& name) {
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -699,7 +709,7 @@ void t_perl_generator::generate_perl_struct_writer(
  *
  * @param tservice The service definition
  */
-void t_perl_generator::generate_service(t_service* tservice) {
+void t_perl_generator::generate_service(const t_service* tservice) {
   string f_service_name = get_namespace_out_dir() + service_name_ + ".pm";
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
@@ -711,7 +721,7 @@ void t_perl_generator::generate_service(t_service* tservice) {
   f_service_ << "use " << perl_namespace(tservice->get_program()) << "Types;"
              << endl;
 
-  t_service* extends_s = tservice->get_extends();
+  const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     f_service_ << "use " << perl_namespace(extends_s->get_program())
                << extends_s->get_name() << ";" << endl;
@@ -736,14 +746,14 @@ void t_perl_generator::generate_service(t_service* tservice) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_perl_generator::generate_service_processor(t_service* tservice) {
+void t_perl_generator::generate_service_processor(const t_service* tservice) {
   // Generate the dispatch methods
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
   string extends = "";
   string extends_processor = "";
-  t_service* extends_s = tservice->get_extends();
+  const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     extends = perl_namespace(extends_s->get_program()) + extends_s->get_name();
     extends_processor = "use base qw(" + extends + "Processor);";
@@ -832,8 +842,8 @@ void t_perl_generator::generate_service_processor(t_service* tservice) {
  * @param tfunction The function to write a dispatcher for
  */
 void t_perl_generator::generate_process_function(
-    t_service* tservice,
-    t_function* tfunction) {
+    const t_service* tservice,
+    const t_function* tfunction) {
   // Open function
   f_service_ << "sub process_" << tfunction->get_name() << " {" << endl;
 
@@ -851,7 +861,7 @@ void t_perl_generator::generate_process_function(
 
   f_service_ << indent() << "$input->readMessageEnd();" << endl;
 
-  t_struct* xs = tfunction->get_xceptions();
+  const t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
   vector<t_field*>::const_iterator x_iter;
 
@@ -868,7 +878,7 @@ void t_perl_generator::generate_process_function(
   }
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_paramlist();
+  const t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -931,19 +941,16 @@ void t_perl_generator::generate_process_function(
  *
  * @param tservice The service to generate a header definition for
  */
-void t_perl_generator::generate_service_helpers(t_service* tservice) {
+void t_perl_generator::generate_service_helpers(const t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
   f_service_ << "# HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
-
+  std::string prefix = service_name_ + "_";
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_paramlist();
-    string name = ts->get_name();
-    ts->set_name(service_name_ + "_" + name);
-    generate_perl_struct_definition(f_service_, ts, false);
+    const t_struct* ts = (*f_iter)->get_paramlist();
+    generate_perl_struct_definition(f_service_, ts, false, prefix);
     generate_perl_function_helpers(*f_iter);
-    ts->set_name(name);
   }
 }
 
@@ -952,7 +959,8 @@ void t_perl_generator::generate_service_helpers(t_service* tservice) {
  *
  * @param tfunction The function
  */
-void t_perl_generator::generate_perl_function_helpers(t_function* tfunction) {
+void t_perl_generator::generate_perl_function_helpers(
+    const t_function* tfunction) {
   t_struct result(
       program_, service_name_ + "_" + tfunction->get_name() + "_result");
   auto success =
@@ -961,7 +969,7 @@ void t_perl_generator::generate_perl_function_helpers(t_function* tfunction) {
     result.append(std::move(success));
   }
 
-  t_struct* xs = tfunction->get_xceptions();
+  const t_struct* xs = tfunction->get_xceptions();
   const vector<t_field*>& fields = xs->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -976,9 +984,9 @@ void t_perl_generator::generate_perl_function_helpers(t_function* tfunction) {
  *
  * @param tservice The service to generate a header definition for
  */
-void t_perl_generator::generate_service_interface(t_service* tservice) {
+void t_perl_generator::generate_service_interface(const t_service* tservice) {
   string extends_if = "";
-  t_service* extends_s = tservice->get_extends();
+  const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     extends_if = "use base qw(" + perl_namespace(extends_s->get_program()) +
         extends_s->get_name() + "If);";
@@ -1005,10 +1013,10 @@ void t_perl_generator::generate_service_interface(t_service* tservice) {
 /**
  * Generates a REST interface
  */
-void t_perl_generator::generate_service_rest(t_service* tservice) {
+void t_perl_generator::generate_service_rest(const t_service* tservice) {
   string extends = "";
   string extends_if = "";
-  t_service* extends_s = tservice->get_extends();
+  const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     extends = extends_s->get_name();
     extends_if = "use base qw(" + perl_namespace(extends_s->get_program()) +
@@ -1065,10 +1073,10 @@ void t_perl_generator::generate_service_rest(t_service* tservice) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_perl_generator::generate_service_client(t_service* tservice) {
+void t_perl_generator::generate_service_client(const t_service* tservice) {
   string extends = "";
   string extends_client = "";
-  t_service* extends_s = tservice->get_extends();
+  const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     extends = perl_namespace(extends_s->get_program()) + extends_s->get_name();
     extends_client = "use base qw(" + extends + "Client);";
@@ -1110,7 +1118,7 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_paramlist();
+    const t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -1218,7 +1226,7 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
                    << indent() << "}" << endl;
       }
 
-      t_struct* xs = (*f_iter)->get_xceptions();
+      const t_struct* xs = (*f_iter)->get_xceptions();
       const std::vector<t_field*>& xceptions = xs->get_members();
       vector<t_field*>::const_iterator x_iter;
       for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
@@ -1249,7 +1257,7 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
  */
 void t_perl_generator::generate_deserialize_field(
     ofstream& out,
-    t_field* tfield,
+    const t_field* tfield,
     string prefix,
     bool /*inclass*/) {
   const t_type* type = tfield->get_type()->get_true_type();
@@ -1329,7 +1337,7 @@ void t_perl_generator::generate_deserialize_field(
  */
 void t_perl_generator::generate_deserialize_struct(
     ofstream& out,
-    t_struct* tstruct,
+    const t_struct* tstruct,
     string prefix) {
   out << indent() << "$" << prefix << " = new "
       << perl_namespace(tstruct->get_program()) << tstruct->get_name() << "();"
@@ -1412,7 +1420,7 @@ void t_perl_generator::generate_deserialize_container(
  */
 void t_perl_generator::generate_deserialize_map_element(
     ofstream& out,
-    t_map* tmap,
+    const t_map* tmap,
     string prefix) {
   string key = tmp("key");
   string val = tmp("val");
@@ -1431,7 +1439,7 @@ void t_perl_generator::generate_deserialize_map_element(
 
 void t_perl_generator::generate_deserialize_set_element(
     ofstream& out,
-    t_set* tset,
+    const t_set* tset,
     string prefix) {
   string elem = tmp("elem");
   t_field felem(tset->get_elem_type(), elem);
@@ -1445,7 +1453,7 @@ void t_perl_generator::generate_deserialize_set_element(
 
 void t_perl_generator::generate_deserialize_list_element(
     ofstream& out,
-    t_list* tlist,
+    const t_list* tlist,
     string prefix) {
   string elem = tmp("elem");
   t_field felem(tlist->get_elem_type(), elem);
@@ -1465,7 +1473,7 @@ void t_perl_generator::generate_deserialize_list_element(
  */
 void t_perl_generator::generate_serialize_field(
     ofstream& out,
-    t_field* tfield,
+    const t_field* tfield,
     string prefix) {
   const t_type* type = tfield->get_type()->get_true_type();
 
@@ -1547,7 +1555,7 @@ void t_perl_generator::generate_serialize_field(
  */
 void t_perl_generator::generate_serialize_struct(
     ofstream& out,
-    t_struct* /*tstruct*/,
+    const t_struct* /*tstruct*/,
     string prefix) {
   indent(out) << "$xfer += $" << prefix << "->write($output);" << endl;
 }
@@ -1623,7 +1631,7 @@ void t_perl_generator::generate_serialize_container(
  */
 void t_perl_generator::generate_serialize_map_element(
     ofstream& out,
-    t_map* tmap,
+    const t_map* tmap,
     string kiter,
     string viter) {
   t_field kfield(tmap->get_key_type(), kiter);
@@ -1638,7 +1646,7 @@ void t_perl_generator::generate_serialize_map_element(
  */
 void t_perl_generator::generate_serialize_set_element(
     ofstream& out,
-    t_set* tset,
+    const t_set* tset,
     string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
@@ -1649,7 +1657,7 @@ void t_perl_generator::generate_serialize_set_element(
  */
 void t_perl_generator::generate_serialize_list_element(
     ofstream& out,
-    t_list* tlist,
+    const t_list* tlist,
     string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
@@ -1660,7 +1668,8 @@ void t_perl_generator::generate_serialize_list_element(
  *
  * @param ttype The type
  */
-string t_perl_generator::declare_field(t_field* tfield, bool init, bool obj) {
+string
+t_perl_generator::declare_field(const t_field* tfield, bool init, bool obj) {
   string result = "my $" + tfield->get_name();
   if (init) {
     const t_type* type = tfield->get_type()->get_true_type();
@@ -1713,7 +1722,7 @@ string t_perl_generator::declare_field(t_field* tfield, bool init, bool obj) {
  * @return String of rendered function definition
  */
 string t_perl_generator::function_signature(
-    t_function* tfunction,
+    const t_function* tfunction,
     string prefix) {
   string str;
 
@@ -1734,7 +1743,7 @@ string t_perl_generator::function_signature(
 /**
  * Renders a field list
  */
-string t_perl_generator::argument_list(t_struct* tstruct) {
+string t_perl_generator::argument_list(const t_struct* tstruct) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();

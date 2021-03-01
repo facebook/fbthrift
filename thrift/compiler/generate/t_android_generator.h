@@ -59,7 +59,7 @@ class t_android_generator : public t_java_generator {
    */
   void init_generator() override;
 
-  bool has_bit_vector(t_struct* /*tstruct*/) override {
+  bool has_bit_vector(const t_struct* /*tstruct*/) override {
     return false;
   }
 

@@ -58,12 +58,12 @@ class t_ocaml_generator : public t_oop_generator {
    * Program-level generation functions
    */
   void generate_program() override;
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_xception(t_struct* txception) override;
-  void generate_service(t_service* tservice) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_xception(const t_struct* txception) override;
+  void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(const t_type* type, t_const_value* value);
 
@@ -71,28 +71,34 @@ class t_ocaml_generator : public t_oop_generator {
    * Struct generation code
    */
 
-  void generate_ocaml_struct(t_struct* tstruct, bool is_exception);
+  void generate_ocaml_struct(const t_struct* tstruct, bool is_exception);
   void generate_ocaml_struct_definition(
       std::ofstream& out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       bool is_xception = false);
   void generate_ocaml_struct_sig(
       std::ofstream& out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       bool is_exception);
-  void generate_ocaml_struct_reader(std::ofstream& out, t_struct* tstruct);
-  void generate_ocaml_struct_writer(std::ofstream& out, t_struct* tstruct);
-  void generate_ocaml_function_helpers(t_function* tfunction);
+  void generate_ocaml_struct_reader(
+      std::ofstream& out,
+      const t_struct* tstruct);
+  void generate_ocaml_struct_writer(
+      std::ofstream& out,
+      const t_struct* tstruct);
+  void generate_ocaml_function_helpers(const t_function* tfunction);
 
   /**
    * Service-level generation functions
    */
 
-  void generate_service_helpers(t_service* tservice);
-  void generate_service_interface(t_service* tservice);
-  void generate_service_client(t_service* tservice);
-  void generate_service_server(t_service* tservice);
-  void generate_process_function(t_service* tservice, t_function* tfunction);
+  void generate_service_helpers(const t_service* tservice);
+  void generate_service_interface(const t_service* tservice);
+  void generate_service_client(const t_service* tservice);
+  void generate_service_server(const t_service* tservice);
+  void generate_process_function(
+      const t_service* tservice,
+      const t_function* tfunction);
 
   /**
    * Serialization constructs
@@ -100,29 +106,29 @@ class t_ocaml_generator : public t_oop_generator {
 
   void generate_deserialize_field(
       std::ofstream& out,
-      t_field* tfield,
+      const t_field* tfield,
       std::string prefix);
 
-  void generate_deserialize_struct(std::ofstream& out, t_struct* tstruct);
+  void generate_deserialize_struct(std::ofstream& out, const t_struct* tstruct);
 
   void generate_deserialize_container(std::ofstream& out, const t_type* ttype);
 
-  void generate_deserialize_set_element(std::ofstream& out, t_set* tset);
+  void generate_deserialize_set_element(std::ofstream& out, const t_set* tset);
 
   void generate_deserialize_list_element(
       std::ofstream& out,
-      t_list* tlist,
+      const t_list* tlist,
       std::string prefix = "");
   void generate_deserialize_type(std::ofstream& out, const t_type* type);
 
   void generate_serialize_field(
       std::ofstream& out,
-      t_field* tfield,
+      const t_field* tfield,
       std::string name = "");
 
   void generate_serialize_struct(
       std::ofstream& out,
-      t_struct* tstruct,
+      const t_struct* tstruct,
       std::string prefix = "");
 
   void generate_serialize_container(
@@ -132,18 +138,18 @@ class t_ocaml_generator : public t_oop_generator {
 
   void generate_serialize_map_element(
       std::ofstream& out,
-      t_map* tmap,
+      const t_map* tmap,
       std::string kiter,
       std::string viter);
 
   void generate_serialize_set_element(
       std::ofstream& out,
-      t_set* tmap,
+      const t_set* tmap,
       std::string iter);
 
   void generate_serialize_list_element(
       std::ofstream& out,
-      t_list* tlist,
+      const t_list* tlist,
       std::string iter);
 
   /**
@@ -154,11 +160,13 @@ class t_ocaml_generator : public t_oop_generator {
   std::string ocaml_imports();
   std::string type_name(const t_type* ttype);
   std::string function_signature(
-      t_function* tfunction,
+      const t_function* tfunction,
       std::string prefix = "");
-  std::string
-  function_type(t_function* tfunc, bool method = false, bool options = false);
-  std::string argument_list(t_struct* tstruct);
+  std::string function_type(
+      const t_function* tfunc,
+      bool method = false,
+      bool options = false);
+  std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
   std::string render_ocaml_type(const t_type* type);
 
@@ -274,7 +282,7 @@ void t_ocaml_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_ocaml_generator::generate_typedef(t_typedef* ttypedef) {
+void t_ocaml_generator::generate_typedef(const t_typedef* ttypedef) {
   f_types_ << indent() << "type " << decapitalize(ttypedef->get_symbolic())
            << " = " << render_ocaml_type(ttypedef->get_type()) << endl
            << endl;
@@ -289,7 +297,7 @@ void t_ocaml_generator::generate_typedef(t_typedef* ttypedef) {
  *
  * @param tenum The enumeration
  */
-void t_ocaml_generator::generate_enum(t_enum* tenum) {
+void t_ocaml_generator::generate_enum(const t_enum* tenum) {
   indent(f_types_) << "module " << capitalize(tenum->get_name()) << " = "
                    << endl
                    << "struct" << endl;
@@ -339,7 +347,7 @@ void t_ocaml_generator::generate_enum(t_enum* tenum) {
 /**
  * Generate a constant value
  */
-void t_ocaml_generator::generate_const(t_const* tconst) {
+void t_ocaml_generator::generate_const(const t_const* tconst) {
   const t_type* type = tconst->get_type();
   string name = decapitalize(tconst->get_name());
   t_const_value* value = tconst->get_value();
@@ -390,7 +398,7 @@ string t_ocaml_generator::render_const_value(
             t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
-    t_enum* tenum = (t_enum*)type;
+    const t_enum* tenum = (t_enum*)type;
     vector<t_enum_value*> constants = tenum->get_enum_values();
     vector<t_enum_value*>::iterator c_iter;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
@@ -491,7 +499,7 @@ string t_ocaml_generator::render_const_value(
 /**
  * Generates a "struct"
  */
-void t_ocaml_generator::generate_struct(t_struct* tstruct) {
+void t_ocaml_generator::generate_struct(const t_struct* tstruct) {
   generate_ocaml_struct(tstruct, false);
 }
 
@@ -501,7 +509,7 @@ void t_ocaml_generator::generate_struct(t_struct* tstruct) {
  *
  * @param txception The struct definition
  */
-void t_ocaml_generator::generate_xception(t_struct* txception) {
+void t_ocaml_generator::generate_xception(const t_struct* txception) {
   generate_ocaml_struct(txception, true);
 }
 
@@ -509,7 +517,7 @@ void t_ocaml_generator::generate_xception(t_struct* txception) {
  * Generates an OCaml struct
  */
 void t_ocaml_generator::generate_ocaml_struct(
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception) {
   generate_ocaml_struct_definition(f_types_, tstruct, is_exception);
   generate_ocaml_struct_sig(f_types_i_, tstruct, is_exception);
@@ -522,7 +530,7 @@ void t_ocaml_generator::generate_ocaml_struct(
  */
 void t_ocaml_generator::generate_ocaml_struct_definition(
     ofstream& out,
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -565,7 +573,7 @@ void t_ocaml_generator::generate_ocaml_struct_definition(
  */
 void t_ocaml_generator::generate_ocaml_struct_sig(
     ofstream& out,
-    t_struct* tstruct,
+    const t_struct* tstruct,
     bool is_exception) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -603,7 +611,7 @@ void t_ocaml_generator::generate_ocaml_struct_sig(
  */
 void t_ocaml_generator::generate_ocaml_struct_reader(
     ofstream& out,
-    t_struct* tstruct) {
+    const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   string sname = type_name(tstruct);
@@ -668,7 +676,7 @@ void t_ocaml_generator::generate_ocaml_struct_reader(
 
 void t_ocaml_generator::generate_ocaml_struct_writer(
     ofstream& out,
-    t_struct* tstruct) {
+    const t_struct* tstruct) {
   const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
@@ -711,7 +719,7 @@ void t_ocaml_generator::generate_ocaml_struct_writer(
  *
  * @param tservice The service definition
  */
-void t_ocaml_generator::generate_service(t_service* tservice) {
+void t_ocaml_generator::generate_service(const t_service* tservice) {
   string f_service_name = get_out_dir() + capitalize(service_name_) + ".ml";
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
@@ -751,14 +759,14 @@ void t_ocaml_generator::generate_service(t_service* tservice) {
  *
  * @param tservice The service to generate a header definition for
  */
-void t_ocaml_generator::generate_service_helpers(t_service* tservice) {
+void t_ocaml_generator::generate_service_helpers(const t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
   indent(f_service_) << "(* HELPER FUNCTIONS AND STRUCTURES *)" << endl << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_paramlist();
+    const t_struct* ts = (*f_iter)->get_paramlist();
     generate_ocaml_struct_definition(f_service_, ts, false);
     generate_ocaml_function_helpers(*f_iter);
   }
@@ -769,7 +777,8 @@ void t_ocaml_generator::generate_service_helpers(t_service* tservice) {
  *
  * @param tfunction The function
  */
-void t_ocaml_generator::generate_ocaml_function_helpers(t_function* tfunction) {
+void t_ocaml_generator::generate_ocaml_function_helpers(
+    const t_function* tfunction) {
   t_struct result(program_, decapitalize(tfunction->get_name()) + "_result");
   auto success =
       std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
@@ -777,7 +786,7 @@ void t_ocaml_generator::generate_ocaml_function_helpers(t_function* tfunction) {
     result.append(std::move(success));
   }
 
-  t_struct* xs = tfunction->get_xceptions();
+  const t_struct* xs = tfunction->get_xceptions();
   const vector<t_field*>& fields = xs->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -791,7 +800,7 @@ void t_ocaml_generator::generate_ocaml_function_helpers(t_function* tfunction) {
  *
  * @param tservice The service to generate a header definition for
  */
-void t_ocaml_generator::generate_service_interface(t_service* tservice) {
+void t_ocaml_generator::generate_service_interface(const t_service* tservice) {
   f_service_ << indent() << "class virtual iface =" << endl
              << "object (self)" << endl;
   f_service_i_ << indent() << "class virtual iface :" << endl
@@ -826,7 +835,7 @@ void t_ocaml_generator::generate_service_interface(t_service* tservice) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_ocaml_generator::generate_service_client(t_service* tservice) {
+void t_ocaml_generator::generate_service_client(const t_service* tservice) {
   string extends = "";
   indent(f_service_)
       << "class client (iprot : Protocol.t) (oprot : Protocol.t) =" << endl
@@ -847,7 +856,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_paramlist();
+    const t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -926,7 +935,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
       f_service_ << indent() << "else ());" << endl;
       string res = "_";
 
-      t_struct* xs = (*f_iter)->get_xceptions();
+      const t_struct* xs = (*f_iter)->get_xceptions();
       const std::vector<t_field*>& xceptions = xs->get_members();
 
       if (!(*f_iter)->get_returntype()->is_void() || xceptions.size() > 0) {
@@ -982,7 +991,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_ocaml_generator::generate_service_server(t_service* tservice) {
+void t_ocaml_generator::generate_service_server(const t_service* tservice) {
   // Generate the dispatch methods
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
@@ -1072,8 +1081,8 @@ void t_ocaml_generator::generate_service_server(t_service* tservice) {
  * @param tfunction The function to write a dispatcher for
  */
 void t_ocaml_generator::generate_process_function(
-    t_service* /* tservice */,
-    t_function* tfunction) {
+    const t_service* /* tservice */,
+    const t_function* tfunction) {
   // Open function
   indent(f_service_) << "method private process_" << tfunction->get_name()
                      << " (seqid, iprot, oprot) =" << endl;
@@ -1083,7 +1092,7 @@ void t_ocaml_generator::generate_process_function(
   string resultname = decapitalize(tfunction->get_name()) + "_result";
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_paramlist();
+  const t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1097,7 +1106,7 @@ void t_ocaml_generator::generate_process_function(
   indent_up();
   f_service_ << indent() << "iprot#readMessageEnd;" << endl;
 
-  t_struct* xs = tfunction->get_xceptions();
+  const t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
   vector<t_field*>::const_iterator x_iter;
 
@@ -1172,7 +1181,7 @@ void t_ocaml_generator::generate_process_function(
  */
 void t_ocaml_generator::generate_deserialize_field(
     ofstream& out,
-    t_field* tfield,
+    const t_field* tfield,
     string prefix) {
   const t_type* type = tfield->get_type();
 
@@ -1246,7 +1255,7 @@ void t_ocaml_generator::generate_deserialize_type(
  */
 void t_ocaml_generator::generate_deserialize_struct(
     ofstream& out,
-    t_struct* tstruct) {
+    const t_struct* tstruct) {
   string name = decapitalize(tstruct->get_name());
   out << "(read_" << name << " iprot)";
 }
@@ -1330,7 +1339,7 @@ void t_ocaml_generator::generate_deserialize_container(
  */
 void t_ocaml_generator::generate_serialize_field(
     ofstream& out,
-    t_field* tfield,
+    const t_field* tfield,
     string name) {
   const t_type* type = tfield->get_type()->get_true_type();
 
@@ -1407,7 +1416,7 @@ void t_ocaml_generator::generate_serialize_field(
  */
 void t_ocaml_generator::generate_serialize_struct(
     ofstream& out,
-    t_struct* /* tstruct */,
+    const t_struct* /* tstruct */,
     string prefix) {
   indent(out) << prefix << "#write(oprot)";
 }
@@ -1471,7 +1480,7 @@ void t_ocaml_generator::generate_serialize_container(
  */
 void t_ocaml_generator::generate_serialize_map_element(
     ofstream& out,
-    t_map* tmap,
+    const t_map* tmap,
     string kiter,
     string viter) {
   t_field kfield(tmap->get_key_type(), kiter);
@@ -1486,7 +1495,7 @@ void t_ocaml_generator::generate_serialize_map_element(
  */
 void t_ocaml_generator::generate_serialize_set_element(
     ofstream& out,
-    t_set* tset,
+    const t_set* tset,
     string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
@@ -1497,7 +1506,7 @@ void t_ocaml_generator::generate_serialize_set_element(
  */
 void t_ocaml_generator::generate_serialize_list_element(
     ofstream& out,
-    t_list* tlist,
+    const t_list* tlist,
     string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
@@ -1510,14 +1519,16 @@ void t_ocaml_generator::generate_serialize_list_element(
  * @return String of rendered function definition
  */
 string t_ocaml_generator::function_signature(
-    t_function* tfunction,
+    const t_function* tfunction,
     string prefix) {
   return prefix + decapitalize(tfunction->get_name()) + " " +
       argument_list(tfunction->get_paramlist());
 }
 
-string
-t_ocaml_generator::function_type(t_function* tfunc, bool method, bool options) {
+string t_ocaml_generator::function_type(
+    const t_function* tfunc,
+    bool method,
+    bool options) {
   string result = "";
 
   const vector<t_field*>& fields = tfunc->get_paramlist()->get_members();
@@ -1538,7 +1549,7 @@ t_ocaml_generator::function_type(t_function* tfunc, bool method, bool options) {
 /**
  * Renders a field list
  */
-string t_ocaml_generator::argument_list(t_struct* tstruct) {
+string t_ocaml_generator::argument_list(const t_struct* tstruct) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();

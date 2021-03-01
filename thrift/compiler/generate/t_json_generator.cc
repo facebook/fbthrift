@@ -56,13 +56,13 @@ class t_json_generator : public t_concat_generator {
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_const(t_const* tconst) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_const(const t_const* tconst) override;
   void generate_consts(vector<t_const*> consts) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_service(t_service* tservice) override;
-  void generate_xception(t_struct* txception) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_service(const t_service* tservice) override;
+  void generate_xception(const t_struct* txception) override;
 
   void print_type(const t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
@@ -493,7 +493,7 @@ void t_json_generator::print_node_annotations(
  *
  * @param ttypedef The type definition
  */
-void t_json_generator::generate_typedef(t_typedef* ttypedef) {
+void t_json_generator::generate_typedef(const t_typedef* ttypedef) {
   indent(f_out_) << "\"" << ttypedef->get_name() << "\" : {" << endl;
   indent_up();
   print_lineno(ttypedef->get_lineno());
@@ -510,7 +510,7 @@ void t_json_generator::generate_typedef(t_typedef* ttypedef) {
  *
  * @param tenum The enumeration
  */
-void t_json_generator::generate_enum(t_enum* tenum) {
+void t_json_generator::generate_enum(const t_enum* tenum) {
   indent(f_out_) << "\"" << tenum->get_name() << "\" : {" << endl;
   indent_up();
   print_lineno(tenum->get_lineno());
@@ -555,7 +555,7 @@ void t_json_generator::generate_consts(vector<t_const*> consts) {
 /**
  * Generates a constant value
  */
-void t_json_generator::generate_const(t_const* tconst) {
+void t_json_generator::generate_const(const t_const* tconst) {
   string name = tconst->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
@@ -576,7 +576,7 @@ void t_json_generator::generate_const(t_const* tconst) {
  *
  * @param tstruct The struct definition
  */
-void t_json_generator::generate_struct(t_struct* tstruct) {
+void t_json_generator::generate_struct(const t_struct* tstruct) {
   const string& name = tstruct->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
@@ -627,7 +627,7 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
  *
  * @param tstruct The struct definition
  */
-void t_json_generator::generate_xception(t_struct* txception) {
+void t_json_generator::generate_xception(const t_struct* txception) {
   generate_struct(txception);
 }
 
@@ -636,7 +636,7 @@ void t_json_generator::generate_xception(t_struct* txception) {
  *
  * @param tservice The service definition
  */
-void t_json_generator::generate_service(t_service* tservice) {
+void t_json_generator::generate_service(const t_service* tservice) {
   indent(f_out_) << "\"" << service_name_ << "\" : {" << endl;
   indent_up();
 

@@ -138,17 +138,16 @@ void t_concat_generator::generate_docstring_comment(
 }
 
 std::string t_concat_generator::generate_structural_id(
-    const vector<t_field*>& members) {
+    const t_struct* tstruct) {
   // Generate a string that contains all the members' information:
   // key, name, type and req.
   vector<std::string> fields_str;
-  std::string delimiter = ",";
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+  constexpr auto delim = ",";
+  for (const auto* field : tstruct->fields()) {
     std::stringstream ss_field;
-    ss_field << (*m_iter)->get_key() << delimiter << (*m_iter)->get_name()
-             << delimiter << (*m_iter)->get_type()->get_name() << delimiter
-             << (int)((*m_iter)->get_req());
+    ss_field << field->get_key() << delim << field->get_name() << delim
+             << field->get_type()->get_name() << delim
+             << (int)(field->get_req());
     fields_str.push_back(ss_field.str());
   }
 
@@ -181,12 +180,12 @@ std::string t_concat_generator::generate_structural_id(
 }
 
 void t_concat_generator::validate_union_members(const t_struct* tstruct) {
-  for (const auto& mem : tstruct->get_members()) {
-    if (mem->get_req() == t_field::e_req::required ||
-        mem->get_req() == t_field::e_req::optional) {
+  for (const auto* field : tstruct->fields()) {
+    if (field->get_req() == t_field::e_req::required ||
+        field->get_req() == t_field::e_req::optional) {
       throw std::runtime_error(
           "compiler error: Union field " + tstruct->get_name() + "." +
-          mem->get_name() + " cannot be required or optional");
+          field->get_name() + " cannot be required or optional");
     }
   }
 }

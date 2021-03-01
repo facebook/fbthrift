@@ -60,11 +60,11 @@ class t_android_lite_generator : public t_java_generator {
   }
 
   void generate_consts(vector<t_const*> tconsts) override;
-  void generate_enum(t_enum* tenum) override;
-  void generate_service(t_service* tservice) override;
-  void generate_struct(t_struct* tstruct) override;
-  void generate_typedef(t_typedef* ttypedef) override;
-  void generate_xception(t_struct* txception) override;
+  void generate_enum(const t_enum* tenum) override;
+  void generate_service(const t_service* tservice) override;
+  void generate_struct(const t_struct* tstruct) override;
+  void generate_typedef(const t_typedef* ttypedef) override;
+  void generate_xception(const t_struct* txception) override;
 
   void init_generator() override;
   void close_generator() override;
@@ -90,34 +90,34 @@ class t_android_lite_generator : public t_java_generator {
       const t_type* type,
       const t_const_value* value) override;
 
-  void output_case_statement(t_struct* tstruct);
-  void output_property(t_field* tfield, const string parent_name);
-  void output_case_body_union(t_struct* tunion);
-  void output_case_body_struct(t_struct* tstruct);
+  void output_case_statement(const t_struct* tstruct);
+  void output_property(const t_field* tfield, const string parent_name);
+  void output_case_body_union(const t_struct* tunion);
+  void output_case_body_struct(const t_struct* tstruct);
 
   void output_write(
-      t_list* tlist,
+      const t_list* tlist,
       const string value,
       int depth,
       bool needs_cast,
       stringstream& stream);
 
   void output_write(
-      t_map* tmap,
+      const t_map* tmap,
       const string value,
       int depth,
       bool needs_cast,
       stringstream& stream);
 
   void output_write(
-      t_set* tset,
+      const t_set* tset,
       const string value,
       int depth,
       bool needs_cast,
       stringstream& stream);
 
   void output_write(
-      t_struct* tstruct,
+      const t_struct* tstruct,
       const string value,
       int depth,
       bool needs_cast,
@@ -131,7 +131,7 @@ class t_android_lite_generator : public t_java_generator {
       stringstream& stream);
 
   void output_write(
-      t_enum* tenum,
+      const t_enum* tenum,
       const string value,
       int depth,
       bool needsCast,
@@ -144,8 +144,8 @@ class t_android_lite_generator : public t_java_generator {
   string android_thrift_imports();
   string package_header();
   string temp_variable(const string& prefix, int postfix);
-  string full_property_name(t_struct* tstruct, t_field* tfield);
-  string full_enum_name(t_enum* tenum, int offset);
+  string full_property_name(const t_struct* tstruct, const t_field* tfield);
+  string full_enum_name(const t_enum* tenum, int offset);
 
   const string logger_name();
   const string enum_name();
@@ -427,13 +427,15 @@ string t_android_lite_generator::type_name(
 }
 
 string t_android_lite_generator::full_property_name(
-    t_struct* tstruct,
-    t_field* tfield) {
+    const t_struct* tstruct,
+    const t_field* tfield) {
   return capitalize(tstruct->get_program()->get_name()) + "." +
       tstruct->get_name() + "_" + tfield->get_name();
 }
 
-string t_android_lite_generator::full_enum_name(t_enum* tenum, int offset) {
+string t_android_lite_generator::full_enum_name(
+    const t_enum* tenum,
+    int offset) {
   return capitalize(tenum->get_program()->get_name()) + "Enum." +
       tenum->get_name() + "_" + tenum->find_value(offset)->get_name();
 }
@@ -454,12 +456,12 @@ void t_android_lite_generator::close_generator() {
 
 /* Just like Java, we don't do anything for typedefs. We still override the
  * method so that a change to the Java compiler doesn't suprise us. */
-void t_android_lite_generator::generate_typedef(t_typedef* /*ttypedef*/) {
+void t_android_lite_generator::generate_typedef(const t_typedef* /*ttypedef*/) {
   // Empty.
 }
 
 void t_android_lite_generator::output_write(
-    t_list* tlist,
+    const t_list* tlist,
     const string value,
     int depth,
     bool needs_cast,
@@ -492,7 +494,7 @@ void t_android_lite_generator::output_write(
 }
 
 void t_android_lite_generator::output_write(
-    t_map* tmap,
+    const t_map* tmap,
     const string value,
     int depth,
     bool needs_cast,
@@ -530,7 +532,7 @@ void t_android_lite_generator::output_write(
 }
 
 void t_android_lite_generator::output_write(
-    t_struct* tstruct,
+    const t_struct* tstruct,
     const string value,
     int /*depth*/,
     bool needs_cast,
@@ -544,7 +546,7 @@ void t_android_lite_generator::output_write(
 }
 
 void t_android_lite_generator::output_write(
-    t_set* tset,
+    const t_set* tset,
     const string value,
     int depth,
     bool needs_cast,
@@ -577,7 +579,7 @@ void t_android_lite_generator::output_write(
 }
 
 void t_android_lite_generator::output_write(
-    t_enum* tenum,
+    const t_enum* tenum,
     const string value,
     int /*depth*/,
     bool needsCast,
@@ -640,7 +642,7 @@ void t_android_lite_generator::output_write(
 // public static final ThriftProperty<TypeName> ParentName_MyName =
 //    new ThriftProperty<TypeName>("Name", (short) idx);
 void t_android_lite_generator::output_property(
-    t_field* tfield,
+    const t_field* tfield,
     const string parent_name) {
   if (annotate_) {
     indent(class_defns_) << ((tfield->get_req() == t_field::e_req::required)
@@ -667,11 +669,12 @@ void t_android_lite_generator::output_property(
   indent_down();
 }
 
-void t_android_lite_generator::output_case_body_struct(t_struct* tstruct) {
+void t_android_lite_generator::output_case_body_struct(
+    const t_struct* tstruct) {
   const vector<t_field*> members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_field* tfield = *m_iter;
+    const t_field* tfield = *m_iter;
     string key = full_property_name(tstruct, tfield);
 
     indent(switch_stmts_) << "if (mMap.containsKey(" + key + ") && "
@@ -701,7 +704,7 @@ void t_android_lite_generator::output_case_body_struct(t_struct* tstruct) {
   }
 }
 
-void t_android_lite_generator::output_case_body_union(t_struct* tunion) {
+void t_android_lite_generator::output_case_body_union(const t_struct* tunion) {
   // We're guaranteed that there will be only one element in the keySet
   indent(switch_stmts_) << "switch (mMap.keySet().iterator().next().id) {"
                         << endl;
@@ -709,7 +712,7 @@ void t_android_lite_generator::output_case_body_union(t_struct* tunion) {
   const vector<t_field*> members = tunion->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_field* tfield = *m_iter;
+    const t_field* tfield = *m_iter;
     // We use a non-standard Java scoping rule here. You can add braces to case
     // statements so that each case has its own scope, rather than the entire
     // switch having one scope, as is the usual convention. This makes it
@@ -730,7 +733,7 @@ void t_android_lite_generator::output_case_body_union(t_struct* tunion) {
   indent(switch_stmts_) << "}" << endl;
 }
 
-void t_android_lite_generator::output_case_statement(t_struct* tstruct) {
+void t_android_lite_generator::output_case_statement(const t_struct* tstruct) {
   indent(switch_stmts_) << "case " << tstruct->get_name() << ": {" << endl;
   indent_up();
 
@@ -772,7 +775,7 @@ void t_android_lite_generator::output_case_statement(t_struct* tstruct) {
   switch_stmts_ << endl; // extra blank line
 }
 
-void t_android_lite_generator::generate_struct(t_struct* tstruct) {
+void t_android_lite_generator::generate_struct(const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   if (!members.empty()) {
     vector<t_field*>::const_iterator m_iter;
@@ -802,7 +805,7 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
 
   vector<t_const*>::const_iterator c_iter;
   for (c_iter = tconsts.cbegin(); c_iter != tconsts.cend(); ++c_iter) {
-    t_const* tconst = *c_iter;
+    const t_const* tconst = *c_iter;
     print_const_value(
         consts_stream,
         tconst->get_name(),
@@ -824,7 +827,7 @@ string t_android_lite_generator::render_const_value(
   if (!type->is_enum()) {
     return t_java_generator::render_const_value(out, name, type, value);
   }
-  t_enum* tenum = (t_enum*)type;
+  const t_enum* tenum = (t_enum*)type;
   string enum_name = tenum->find_value(value->get_integer())->get_name();
   return full_enum_name(tenum, value->get_integer());
 }
@@ -847,7 +850,7 @@ void t_android_lite_generator::print_const_value(
     out << (in_static ? "" : "public static final ") << type_name(type) << " ";
   }
   if (type->is_enum()) {
-    t_enum* tenum = (t_enum*)type;
+    const t_enum* tenum = (t_enum*)type;
     out << name << " = " << full_enum_name(tenum, value->get_integer());
 
     if (!defval) {
@@ -893,7 +896,7 @@ void t_android_lite_generator::print_const_value(
   }
 }
 
-void t_android_lite_generator::generate_enum(t_enum* tenum) {
+void t_android_lite_generator::generate_enum(const t_enum* tenum) {
   const vector<t_enum_value*>& e_values = tenum->get_enum_values();
   vector<t_enum_value*>::const_iterator ev_iter;
   for (ev_iter = e_values.begin(); ev_iter != e_values.end(); ++ev_iter) {
@@ -905,12 +908,13 @@ void t_android_lite_generator::generate_enum(t_enum* tenum) {
   }
 }
 
-void t_android_lite_generator::generate_service(t_service* /*tservice*/) {
+void t_android_lite_generator::generate_service(const t_service* /*tservice*/) {
   throw std::runtime_error(
       "Services are not yet supported for Thrift on Android.");
 }
 
-void t_android_lite_generator::generate_xception(t_struct* /*txception*/) {
+void t_android_lite_generator::generate_xception(
+    const t_struct* /*txception*/) {
   throw std::runtime_error(
       "Exceptions are not yet supported for Thrift on Android.");
 }
