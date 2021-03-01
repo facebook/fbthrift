@@ -34,6 +34,50 @@ public interface MyService extends java.io.Closeable {
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
+        public class MyInteraction implements java.io.Closeable {
+            ListenableFuture<Integer> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+            ListenableFuture<Void> ping() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void close() {}
+        }
+
+        default public MyInteraction createMyInteraction() {
+            return new MyInteraction();
+        }
+
+        public class MyInteractionFast implements java.io.Closeable {
+            ListenableFuture<Integer> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+            ListenableFuture<Void> ping() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void close() {}
+        }
+
+        default public MyInteractionFast createMyInteractionFast() {
+            return new MyInteractionFast();
+        }
+
+        public class SerialInteraction implements java.io.Closeable {
+            ListenableFuture<Void> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void close() {}
+        }
+
+        default public SerialInteraction createSerialInteraction() {
+            return new SerialInteraction();
+        }
     }
     @java.lang.Override void close();
 
@@ -59,5 +103,93 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        public class MyInteraction implements reactor.core.Disposable {
+            ListenableFuture<Integer> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+            ListenableFuture<Void> ping() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void dispose() {}
+        }
+
+        default public MyInteraction createMyInteraction() {
+            return new MyInteraction();
+        }
+
+        public class MyInteractionFast implements reactor.core.Disposable {
+            ListenableFuture<Integer> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+            ListenableFuture<Void> ping() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void dispose() {}
+        }
+
+        default public MyInteractionFast createMyInteractionFast() {
+            return new MyInteractionFast();
+        }
+
+        public class SerialInteraction implements reactor.core.Disposable {
+            ListenableFuture<Void> frobnicate() {
+                throw new UnsupportedOperationException();
+            }
+
+            @java.lang.Override
+            public void dispose() {}
+        }
+
+        default public SerialInteraction createSerialInteraction() {
+            return new SerialInteraction();
+        }
+    }
+    public class MyInteraction implements java.io.Closeable {
+        int frobnicate() throws org.apache.thrift.TException {
+            throw new UnsupportedOperationException();
+        }
+        void ping() throws org.apache.thrift.TException {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public void close() {}
+    }
+
+    default public MyInteraction createMyInteraction() {
+        return new MyInteraction();
+    }
+
+    public class MyInteractionFast implements java.io.Closeable {
+        int frobnicate() throws org.apache.thrift.TException {
+            throw new UnsupportedOperationException();
+        }
+        void ping() throws org.apache.thrift.TException {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public void close() {}
+    }
+
+    default public MyInteractionFast createMyInteractionFast() {
+        return new MyInteractionFast();
+    }
+
+    public class SerialInteraction implements java.io.Closeable {
+        void frobnicate() throws org.apache.thrift.TException {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public void close() {}
+    }
+
+    default public SerialInteraction createSerialInteraction() {
+        return new SerialInteraction();
     }
 }
