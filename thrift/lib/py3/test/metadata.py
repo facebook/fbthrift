@@ -59,10 +59,10 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(fieldInstance.is_optional, False)
         self.assertEqual(field.type.value, ThriftPrimitiveType.THRIFT_STRING_TYPE)
         self.assertEqual(
-            fieldClass.type.as_primitive().value, ThriftPrimitiveType.THRIFT_STRING_TYPE
+            fieldClass.type.as_primitive(), ThriftPrimitiveType.THRIFT_STRING_TYPE
         )
         self.assertEqual(
-            fieldInstance.type.as_primitive().value,
+            fieldInstance.type.as_primitive(),
             ThriftPrimitiveType.THRIFT_STRING_TYPE,
         )
 
@@ -86,7 +86,7 @@ class MetadataTests(unittest.TestCase):
         _, _, _, _, _, name, digits, *rest = integers.fields
         self.assertEqual(digits.name, "digits")
         self.assertEqual(
-            name.type.as_primitive().value, ThriftPrimitiveType.THRIFT_STRING_TYPE
+            name.type.as_primitive(), ThriftPrimitiveType.THRIFT_STRING_TYPE
         )
 
         # metadata api returns a typedef from the former, this seems to be a known bug
@@ -153,11 +153,11 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(funcInstance.name, "complex_action")
         self.assertEqual(func.return_type.value, ThriftPrimitiveType.THRIFT_I32_TYPE)
         self.assertEqual(
-            funcClass.return_type.as_primitive().value,
+            funcClass.return_type.as_primitive(),
             ThriftPrimitiveType.THRIFT_I32_TYPE,
         )
         self.assertEqual(
-            funcInstance.return_type.as_primitive().value,
+            funcInstance.return_type.as_primitive(),
             ThriftPrimitiveType.THRIFT_I32_TYPE,
         )
         self.assertEqual(len(func.exceptions), 0)
@@ -177,8 +177,8 @@ class MetadataTests(unittest.TestCase):
         self.assertFalse(arg.is_optional)
         self.assertEqual(arg.type.value, ThriftPrimitiveType.THRIFT_I64_TYPE)
         self.assertEqual(
-            argClass.type.as_primitive().value, ThriftPrimitiveType.THRIFT_I64_TYPE
+            argClass.type.as_primitive(), ThriftPrimitiveType.THRIFT_I64_TYPE
         )
         self.assertEqual(
-            argInstance.type.as_primitive().value, ThriftPrimitiveType.THRIFT_I64_TYPE
+            argInstance.type.as_primitive(), ThriftPrimitiveType.THRIFT_I64_TYPE
         )

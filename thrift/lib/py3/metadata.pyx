@@ -60,10 +60,8 @@ cpdef enum ThriftKind:
     SINK = 9
 
 cdef class ThriftTypeProxy:
-    # This is actually a union of a bunch of thrift metadata types
-    # whose closest shared parent is Struct, so this is just to make
-    # the compiler happy
-    cdef public Struct thriftType
+    # A union of a bunch of thrift metadata types
+    cdef public object thriftType
     cdef public ThriftMetadata thriftMeta
     cdef public ThriftKind kind
     def __init__(self, thriftType, thriftMeta):
@@ -93,7 +91,7 @@ cdef class ThriftTypeProxy:
             return ThriftStreamProxy(thriftType.value, thriftMeta)
         elif thriftType.type == ThriftType.Type.t_sink:
             return ThriftSinkProxy(thriftType.value, thriftMeta)
-        specialType = ThriftTypeProxy(thriftType, thriftMeta)
+        specialType = ThriftTypeProxy(thriftType.value, thriftMeta)
         specialType.kind = ThriftKind.PRIMITIVE
         return specialType
 
@@ -126,6 +124,11 @@ cdef class ThriftTypeProxy:
         if self.kind == ThriftKind.SET:
             return self
         raise TypeError('Type is not a set')
+
+    def as_map(self):
+        if self.kind == ThriftKind.MAP:
+            return self
+        raise TypeError('Type is not a map')
 
     def as_typedef(self):
         if self.kind == ThriftKind.TYPEDEF:
