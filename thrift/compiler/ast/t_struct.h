@@ -80,24 +80,12 @@ class t_struct : public t_type {
     return !is_xception();
   }
 
-  void set_view_parent(const t_struct* p) {
-    view_parent_ = p;
-  }
-
-  const t_struct* get_view_parent() const {
-    return view_parent_ != nullptr ? view_parent_->get_view_parent() : this;
-  }
-
-  bool is_view() const {
-    return view_parent_ != nullptr;
-  }
-
   std::string get_full_name() const override {
     return make_full_name("struct");
   }
 
   std::string get_impl_full_name() const override {
-    return get_view_parent()->get_full_name();
+    return get_full_name();
   }
 
   type get_type_value() const override {
@@ -109,8 +97,6 @@ class t_struct : public t_type {
   std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
   std::map<std::string, const t_field*> fields_by_name_;
-
-  const t_struct* view_parent_ = nullptr;
 
   ////
   // Everyting below here is for backwards compatiblity, and will be removed.
@@ -166,7 +152,6 @@ class t_struct : public t_type {
   }
 
   void cloneStruct(t_struct* clone) const {
-    clone->set_view_parent(view_parent_);
     for (auto const& field : fields_) {
       clone->append(field->clone_DO_NOT_USE());
     }
