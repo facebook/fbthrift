@@ -22,8 +22,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-using md::get_struct_metadata;
-
 /**
  * Get ThriftMetadata of given thrift structure. If no_metadata option is
  * enabled, return empty data.
