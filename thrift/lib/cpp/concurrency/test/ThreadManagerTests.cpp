@@ -548,6 +548,64 @@ TEST_F(ThreadManagerTest, OnlyStartedTest) {
   }
 }
 
+TEST_F(ThreadManagerTest, RequestContext) {
+  class TestData : public folly::RequestData {
+   public:
+    explicit TestData(int data) : data(data) {}
+
+    bool hasCallback() override {
+      return false;
+    }
+
+    int data;
+  };
+
+  // Create new request context for this scope.
+  folly::RequestContextScopeGuard rctx;
+  EXPECT_EQ(nullptr, folly::RequestContext::get()->getContextData("test"));
+  folly::RequestContext::get()->setContextData(
+      "test", std::make_unique<TestData>(42));
+  auto data = folly::RequestContext::get()->getContextData("test");
+  EXPECT_EQ(42, dynamic_cast<TestData*>(data)->data);
+
+  struct VerifyRequestContext {
+    ~VerifyRequestContext() {
+      auto data2 = folly::RequestContext::get()->getContextData("test");
+      EXPECT_TRUE(data2 != nullptr);
+      if (data2 != nullptr) {
+        EXPECT_EQ(42, dynamic_cast<TestData*>(data2)->data);
+      }
+    }
+  };
+
+  {
+    auto threadManager = ThreadManager::newSimpleThreadManager(10);
+    auto threadFactory = std::make_shared<PosixThreadFactory>();
+    threadManager->threadFactory(threadFactory);
+    threadManager->start();
+    threadManager->add([] { VerifyRequestContext(); });
+    threadManager->add([x = VerifyRequestContext()] {});
+    threadManager->join();
+  }
+}
+
+TEST_F(ThreadManagerTest, Exceptions) {
+  class ThrowTask : public Runnable {
+   public:
+    void run() override {
+      throw std::runtime_error("This should not crash the program");
+    }
+  };
+  {
+    auto threadManager = ThreadManager::newSimpleThreadManager(10);
+    auto threadFactory = std::make_shared<PosixThreadFactory>();
+    threadManager->threadFactory(threadFactory);
+    threadManager->start();
+    threadManager->add(std::make_shared<ThrowTask>());
+    threadManager->join();
+  }
+}
+
 class TestObserver : public ThreadManager::Observer {
  public:
   TestObserver(int64_t timeout, const std::string& expectedName)

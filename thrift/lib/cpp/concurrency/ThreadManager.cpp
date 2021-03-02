@@ -119,6 +119,18 @@ class Deleter {
   bool owning_{true};
 };
 
+template <class F>
+void nothrow(const char* name, F&& f) {
+  try {
+    f();
+  } catch (const std::exception& e) {
+    LOG(ERROR) << name << " threw unhandled " << folly::exceptionStr(e);
+  } catch (...) {
+    LOG(ERROR) << name << " threw unhandled "
+               << folly::exceptionStr(std::current_exception());
+  }
+}
+
 } // namespace
 
 /**
@@ -151,7 +163,13 @@ class ThreadManager::Task {
 
   void run() {
     folly::RequestContextScopeGuard rctx(context_);
-    runnable_->run();
+    nothrow("worker task", [&] { runnable_->run(); });
+    nothrow("worker dtor", [&] { runnable_.reset(); });
+  }
+
+  void skip() {
+    folly::RequestContextScopeGuard rctx(context_);
+    nothrow("worker dtor", [&] { runnable_.reset(); });
   }
 
   const std::shared_ptr<Runnable>& getRunnable() const {
@@ -612,8 +630,8 @@ class ThreadManager::Impl::Worker : public Runnable {
         }
         if (manager_->codelEnabled_) {
           FB_LOG_EVERY_MS(WARNING, 10000) << "Queueing delay timeout";
-
           manager_->onTaskExpired(*task);
+          task->skip();
           continue;
         }
       }
@@ -629,18 +647,11 @@ class ThreadManager::Impl::Worker : public Runnable {
       // Check if the task is expired
       if (task->canExpire() && task->getExpireTime() <= startTime) {
         manager_->onTaskExpired(*task);
+        task->skip();
         continue;
       }
 
-      try {
-        task->run();
-      } catch (const std::exception& ex) {
-        LOG(ERROR) << "worker task threw unhandled " << folly::exceptionStr(ex);
-      } catch (...) {
-        LOG(ERROR) << "worker task threw unhandled "
-                   << folly::exceptionStr(std::current_exception());
-      }
-
+      task->run();
       auto endTime = std::chrono::steady_clock::now();
       manager_->reportTaskStats(*task, startTime, endTime);
     }
