@@ -16,30 +16,13 @@
 
 #pragma once
 
-#include <array>
-
-#include <folly/Indestructible.h>
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-/**
- * Get ThriftMetadata of given thrift structure. If no_metadata option is
- * enabled, return empty data.
- *
- * @tparam T thrift structure
- *
- * @return ThriftStruct (https://git.io/JJQpW)
- */
-template <class T>
-const auto& get_struct_metadata() {
-  static const folly::Indestructible<metadata::ThriftStruct> data =
-      md::StructMetadata<T>::gen(std::array<metadata::ThriftMetadata, 1>()[0]);
-  return *data;
-} // namespace detail
+using md::get_struct_metadata;
 
 /**
  * Get ThriftMetadata of given thrift structure. If no_metadata option is

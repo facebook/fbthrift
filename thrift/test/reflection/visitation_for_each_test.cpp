@@ -45,9 +45,8 @@ struct ForEachFieldAdapter {
 struct VisitByThriftIdAdapter {
   template <class T, class F>
   void operator()(T&& t, F f) const {
-    for (auto&& meta :
-         *::apache::thrift::detail::get_struct_metadata<std::decay_t<T>>()
-              .fields_ref()) {
+    for (auto&& meta : *::apache::thrift::get_struct_metadata<std::decay_t<T>>()
+                            .fields_ref()) {
       apache::thrift::visit_by_thrift_field_metadata(
           std::forward<T>(t), meta, [&](auto&& ref) { f(meta, ref); });
     }
@@ -56,8 +55,7 @@ struct VisitByThriftIdAdapter {
   template <class T, class F>
   void operator()(T&& t1, T&& t2, F f) const {
     using namespace apache::thrift;
-    for (auto&& meta :
-         *detail::get_struct_metadata<std::decay_t<T>>().fields_ref()) {
+    for (auto&& meta : *get_struct_metadata<std::decay_t<T>>().fields_ref()) {
       visit_by_thrift_field_metadata(
           std::forward<T>(t1), meta, [&](auto&& ref1) {
             visit_by_thrift_field_metadata(
