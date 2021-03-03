@@ -128,6 +128,14 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         }
 
         {{/service:streamingFunctions}}
+        {{#service:sinkFunctions}}
+        {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads);
+
+        default {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        {{/service:sinkFunctions}}
         {{#service:interactions}}
         public class {{service:name}} implements reactor.core.Disposable {
             {{#service:supportedFunctions}}
