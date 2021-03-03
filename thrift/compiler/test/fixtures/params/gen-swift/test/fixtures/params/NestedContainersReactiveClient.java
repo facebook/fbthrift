@@ -15,23 +15,18 @@ public class NestedContainersReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final TField _mapList_FOO_FIELD_DESC = new TField("foo", TType.MAP, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _mapList_EXCEPTION_READERS;
-  private static final TField _mapSet_FOO_FIELD_DESC = new TField("foo", TType.MAP, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _mapSet_EXCEPTION_READERS;
-  private static final TField _listMap_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _listMap_EXCEPTION_READERS;
-  private static final TField _listSet_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _listSet_EXCEPTION_READERS;
-  private static final TField _turtles_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _turtles_EXCEPTION_READERS;
+  private static final TField _mapList_FOO_FIELD_DESC = new TField("foo", TType.MAP, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _mapList_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _mapSet_FOO_FIELD_DESC = new TField("foo", TType.MAP, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _mapSet_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _listMap_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _listMap_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _listSet_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _listSet_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _turtles_FOO_FIELD_DESC = new TField("foo", TType.LIST, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _turtles_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _mapList_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _mapSet_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _listMap_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _listSet_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _turtles_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public NestedContainersReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

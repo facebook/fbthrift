@@ -15,14 +15,12 @@ public class DbMixedStackArgumentsReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final TField _getDataByKey0_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataByKey0_EXCEPTION_READERS;
-  private static final TField _getDataByKey1_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataByKey1_EXCEPTION_READERS;
+  private static final TField _getDataByKey0_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataByKey0_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _getDataByKey1_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataByKey1_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _getDataByKey0_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _getDataByKey1_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public DbMixedStackArgumentsReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

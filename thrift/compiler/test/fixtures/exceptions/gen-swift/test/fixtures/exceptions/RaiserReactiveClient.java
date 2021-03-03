@@ -15,16 +15,78 @@ public class RaiserReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doBland_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doRaise_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _get200_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _get500_EXCEPTION_READERS;
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doBland_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doRaise_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _doRaise_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Banal _r = test.fixtures.exceptions.Banal.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _doRaise_EXCEPTION_READER1 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Fiery _r = test.fixtures.exceptions.Fiery.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _doRaise_EXCEPTION_READER2 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Serious _r = test.fixtures.exceptions.Serious.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _get200_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _get500_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _get500_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Fiery _r = test.fixtures.exceptions.Fiery.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _get500_EXCEPTION_READER1 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Banal _r = test.fixtures.exceptions.Banal.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _get500_EXCEPTION_READER2 =
+  oprot -> {
+            try {
+              test.fixtures.exceptions.Serious _r = test.fixtures.exceptions.Serious.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
 
   static {
-    _doBland_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _doRaise_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _get200_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _get500_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _doRaise_EXCEPTION_READERS.put((short)1, _doRaise_EXCEPTION_READER0);
+    _doRaise_EXCEPTION_READERS.put((short)2, _doRaise_EXCEPTION_READER1);
+    _doRaise_EXCEPTION_READERS.put((short)3, _doRaise_EXCEPTION_READER2);
+    _get500_EXCEPTION_READERS.put((short)1, _get500_EXCEPTION_READER0);
+    _get500_EXCEPTION_READERS.put((short)2, _get500_EXCEPTION_READER1);
+    _get500_EXCEPTION_READERS.put((short)3, _get500_EXCEPTION_READER2);
   }
 
   public RaiserReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

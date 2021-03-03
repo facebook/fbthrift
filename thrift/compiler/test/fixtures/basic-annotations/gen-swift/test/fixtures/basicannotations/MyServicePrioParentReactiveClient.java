@@ -15,12 +15,10 @@ public class MyServicePrioParentReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _ping_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _pong_EXCEPTION_READERS;
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _pong_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _pong_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public MyServicePrioParentReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

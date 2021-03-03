@@ -15,12 +15,11 @@ public class LegacyServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final TField _getPoints_KEY_FIELD_DESC = new TField("key", TType.SET, (short)(0 + 1));
-  private static final TField _getPoints_LEGACY_STUFF_FIELD_DESC = new TField("legacyStuff", TType.I64, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getPoints_EXCEPTION_READERS;
+  private static final TField _getPoints_KEY_FIELD_DESC = new TField("key", TType.SET, (short)1);
+  private static final TField _getPoints_LEGACY_STUFF_FIELD_DESC = new TField("legacyStuff", TType.I64, (short)-1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getPoints_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _getPoints_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

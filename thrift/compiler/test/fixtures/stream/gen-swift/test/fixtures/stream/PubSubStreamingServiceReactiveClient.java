@@ -15,25 +15,80 @@ public class PubSubStreamingServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final TField _returnstream_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)(0 + 1));
-  private static final TField _returnstream_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstream_EXCEPTION_READERS;
-  private static final TField _streamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _streamthrows_EXCEPTION_READERS;
-  private static final TField _boththrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _boththrows_EXCEPTION_READERS;
-  private static final TField _responseandstreamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _responseandstreamthrows_EXCEPTION_READERS;
-  private static final TField _returnstreamFast_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)(0 + 1));
-  private static final TField _returnstreamFast_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstreamFast_EXCEPTION_READERS;
+  private static final TField _returnstream_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)1);
+  private static final TField _returnstream_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstream_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstream_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _streamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _streamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _streamthrows_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _streamthrows_STREAM_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _boththrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _boththrows_EXCEPTION_READERS = new HashMap<>();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _boththrows_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _boththrows_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _boththrows_STREAM_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _responseandstreamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _responseandstreamthrows_EXCEPTION_READERS = new HashMap<>();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _responseandstreamthrows_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _responseandstreamthrows_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final com.facebook.swift.transport.payload.Reader _responseandstreamthrows_STREAM_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _returnstreamFast_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)1);
+  private static final TField _returnstreamFast_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstreamFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstreamFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _returnstream_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _streamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _boththrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _responseandstreamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _returnstreamFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _streamthrows_STREAM_EXCEPTION_READERS.put((short)1, _streamthrows_STREAM_EXCEPTION_READER0);
+    _boththrows_EXCEPTION_READERS.put((short)1, _boththrows_EXCEPTION_READER0);
+    _boththrows_STREAM_EXCEPTION_READERS.put((short)1, _boththrows_STREAM_EXCEPTION_READER0);
+    _responseandstreamthrows_EXCEPTION_READERS.put((short)1, _responseandstreamthrows_EXCEPTION_READER0);
+    _responseandstreamthrows_STREAM_EXCEPTION_READERS.put((short)1, _responseandstreamthrows_STREAM_EXCEPTION_READER0);
   }
 
   public PubSubStreamingServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
@@ -101,6 +156,7 @@ public class PubSubStreamingServiceReactiveClient
                     _createreturnstreamWriter(i32From, i32To),
                     _returnstream_READER,
                     _returnstream_EXCEPTION_READERS,
+                    _returnstream_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
@@ -163,6 +219,7 @@ public class PubSubStreamingServiceReactiveClient
                     _createstreamthrowsWriter(foo),
                     _streamthrows_READER,
                     _streamthrows_EXCEPTION_READERS,
+                    _streamthrows_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
@@ -225,6 +282,7 @@ public class PubSubStreamingServiceReactiveClient
                     _createboththrowsWriter(foo),
                     _boththrows_READER,
                     _boththrows_EXCEPTION_READERS,
+                    _boththrows_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
@@ -300,6 +358,7 @@ public class PubSubStreamingServiceReactiveClient
                     _responseandstreamthrows_READER,
                     _responseandstreamthrows_FIRST_READER,
                     _responseandstreamthrows_EXCEPTION_READERS,
+                    _responseandstreamthrows_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
@@ -370,6 +429,7 @@ public class PubSubStreamingServiceReactiveClient
                     _createreturnstreamFastWriter(i32From, i32To),
                     _returnstreamFast_READER,
                     _returnstreamFast_EXCEPTION_READERS,
+                    _returnstreamFast_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 

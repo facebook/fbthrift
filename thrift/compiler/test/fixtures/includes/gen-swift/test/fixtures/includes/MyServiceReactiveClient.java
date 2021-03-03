@@ -15,16 +15,14 @@ public class MyServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final TField _query_S_FIELD_DESC = new TField("s", TType.STRUCT, (short)(0 + 1));
-  private static final TField _query_I_FIELD_DESC = new TField("i", TType.STRUCT, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _query_EXCEPTION_READERS;
-  private static final TField _hasArgDocs_S_FIELD_DESC = new TField("s", TType.STRUCT, (short)(0 + 1));
-  private static final TField _hasArgDocs_I_FIELD_DESC = new TField("i", TType.STRUCT, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _hasArgDocs_EXCEPTION_READERS;
+  private static final TField _query_S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
+  private static final TField _query_I_FIELD_DESC = new TField("i", TType.STRUCT, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _query_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _hasArgDocs_S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
+  private static final TField _hasArgDocs_I_FIELD_DESC = new TField("i", TType.STRUCT, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _hasArgDocs_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _query_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _hasArgDocs_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

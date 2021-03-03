@@ -15,28 +15,21 @@ public class MyServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _ping_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getRandomData_EXCEPTION_READERS;
-  private static final TField _hasDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _hasDataById_EXCEPTION_READERS;
-  private static final TField _getDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataById_EXCEPTION_READERS;
-  private static final TField _putDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
-  private static final TField _putDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _putDataById_EXCEPTION_READERS;
-  private static final TField _lobDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
-  private static final TField _lobDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _lobDataById_EXCEPTION_READERS;
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doNothing_EXCEPTION_READERS;
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getRandomData_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _hasDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _hasDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _getDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _putDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
+  private static final TField _putDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _putDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _lobDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
+  private static final TField _lobDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _lobDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doNothing_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
-    _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _getRandomData_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _hasDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _getDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _putDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _lobDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _doNothing_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {

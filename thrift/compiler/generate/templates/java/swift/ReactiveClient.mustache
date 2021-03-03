@@ -29,24 +29,72 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
   {{#service:supportedFunctions}}
   {{#function:args}}
-  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short)({{field:index}} + 1));
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS;
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  {{#function:exceptions}}
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:exceptions}}
   {{/service:supportedFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
-  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short)({{field:index}} + 1));
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS;
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:stream_exceptions?}}new HashMap<>();{{/function:stream_exceptions?}}{{^function:stream_exceptions?}}java.util.Collections.emptyMap();{{/function:stream_exceptions?}}
+  {{#function:exceptions}}
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:exceptions}}
+  {{#function:stream_exceptions}}
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:stream_exceptions}}
   {{/service:streamingFunctions}}
 
   static {
-    {{#service:supportedFunctions}}
-    _{{function:javaName}}_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    {{/service:supportedFunctions}}
-    {{#service:streamingFunctions}}
-    _{{function:javaName}}_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    {{/service:streamingFunctions}}
+    {{#service:supportedFunctions}}{{#function:exceptions}}
+    _{{function:javaName}}_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_EXCEPTION_READER{{field:index}});
+    {{/function:exceptions}}{{/service:supportedFunctions}}
+    {{#service:streamingFunctions}}{{#function:exceptions}}
+    _{{function:javaName}}_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_EXCEPTION_READER{{field:index}});
+    {{/function:exceptions}}{{#function:stream_exceptions}}
+    _{{function:javaName}}_STREAM_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}});
+    {{/function:stream_exceptions}}{{/service:streamingFunctions}}
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
@@ -221,6 +269,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
                     _{{function:javaName}}_READER,{{#function:returnType}}{{#type:streamHasFirstResponse?}}
                     _{{function:javaName}}_FIRST_READER,{{/type:streamHasFirstResponse?}}{{/function:returnType}}
                     _{{function:javaName}}_EXCEPTION_READERS,
+                    _{{function:javaName}}_STREAM_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
