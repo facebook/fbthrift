@@ -59,11 +59,8 @@ std::string t_type::make_full_name(const char* prefix) const {
 }
 
 const t_type* t_type::get_true_type() const {
-  const t_type* type = this;
-  while (type->is_typedef()) {
-    type = static_cast<const t_typedef*>(type)->get_type();
-  }
-  return type;
+  return t_typedef::find_type_if(
+      this, [](const t_type* type) { return !type->is_typedef(); });
 }
 
 } // namespace compiler

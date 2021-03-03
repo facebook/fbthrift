@@ -19,7 +19,6 @@
 #include <vector>
 
 #include <folly/portability/GTest.h>
-
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 

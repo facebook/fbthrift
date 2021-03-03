@@ -90,6 +90,40 @@ class t_typedef : public t_type {
     return defined_;
   }
 
+  // Returns the first type, in the typedef type hierarchy, matching the
+  // given predicate or nullptr.
+  template <typename UnaryPredicate>
+  static const t_type* find_type_if(const t_type* type, UnaryPredicate&& pred) {
+    while (true) {
+      if (pred(type)) {
+        return type;
+      }
+      if (const auto* as_typedef = dynamic_cast<const t_typedef*>(type)) {
+        type = as_typedef->get_type();
+      } else {
+        return nullptr;
+      }
+    };
+  }
+
+  // Finds the first matching annoation in the typdef's type hierarchy.
+  // Return null if not found.
+  static const std::string* get_first_annotation_or_null(
+      const t_type* type,
+      const aliases& name);
+
+  // Finds the first matching annoation in the typdef's type heiarchy.
+  // Return default_value or "" if not found.
+  template <typename D = const std::string*>
+  static auto get_first_annotation(
+      const t_type* type,
+      const aliases& name,
+      D&& default_value = nullptr) {
+    return annotation_or(
+        get_first_annotation_or_null(type, name),
+        std::forward<D>(default_value));
+  }
+
  private:
   t_type* type_;
   std::string symbolic_;

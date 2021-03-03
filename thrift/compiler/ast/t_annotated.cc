@@ -21,77 +21,20 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-namespace {
-const std::string kEmpty{};
-}
+const std::string t_annotated::kEmptyString{};
 
-// Must be defined here for t_const's destructor's defintion.
+// NOTE: Must be defined here for t_const's destructor's defintion.
 t_annotated::~t_annotated() = default;
 
-bool t_annotated::has_annotation(
-    std::initializer_list<std::string> names) const {
-  for (const auto& name : names) {
-    if (has_annotation(name)) {
-      return true;
-    }
-  }
-  return false;
-}
-
 const std::string* t_annotated::get_annotation_or_null(
-    const std::string& name) const {
-  auto itr = annotations_.find(name);
-  if (itr != annotations_.end()) {
-    return &itr->second;
-  }
-  return nullptr;
-}
-
-const std::string& t_annotated::get_annotation(
-    const std::string& name,
-    const std::string* default_value) const {
-  if (const auto* value = get_annotation_or_null(name)) {
-    return *value;
-  }
-  return default_value == nullptr ? kEmpty : *default_value;
-}
-
-std::string t_annotated::get_annotation(
-    const std::string& name,
-    std::string default_value) const {
-  if (const auto* value = get_annotation_or_null(name)) {
-    return *value;
-  }
-  return default_value;
-}
-
-const std::string* t_annotated::get_annotation_or_null(
-    std::initializer_list<std::string> names) const {
-  for (const auto& name : names) {
-    auto itr = annotations_.find(name);
+    const aliases& name) const {
+  for (const auto& alias : name) {
+    auto itr = annotations_.find(alias);
     if (itr != annotations_.end()) {
       return &itr->second;
     }
   }
   return nullptr;
-}
-
-const std::string& t_annotated::get_annotation(
-    std::initializer_list<std::string> names,
-    const std::string* default_value) const {
-  if (const auto* value = get_annotation_or_null(names)) {
-    return *value;
-  }
-  return default_value == nullptr ? kEmpty : *default_value;
-}
-
-std::string t_annotated::get_annotation(
-    std::initializer_list<std::string> names,
-    std::string default_value) const {
-  if (const auto* value = get_annotation_or_null(names)) {
-    return *value;
-  }
-  return default_value;
 }
 
 void t_annotated::add_structured_annotation(std::unique_ptr<t_const> annot) {

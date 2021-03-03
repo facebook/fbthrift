@@ -39,6 +39,16 @@ t_type* t_typedef::get_type() {
   return type_;
 }
 
+const std::string* t_typedef::get_first_annotation_or_null(
+    const t_type* type,
+    const aliases& name) {
+  const std::string* result = nullptr;
+  find_type_if(type, [&result, &name](const t_type* type) {
+    return (result = type->get_annotation_or_null(name)) != nullptr;
+  });
+  return result;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

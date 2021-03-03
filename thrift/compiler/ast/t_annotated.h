@@ -29,8 +29,46 @@ namespace compiler {
 
 class t_const;
 
+// An ordered list of the aliases for an annotation.
+//
+// If two aliases are set on a node, the value for the first alias in the span
+// will be used.
+//
+// TODO(afuller): Make this non-owning like std::span and std::string_view.
+class aliases {
+ public:
+  using value_type = std::string;
+  using const_reference = const std::string&;
+  using reference = const_reference;
+  using size_type = std::size_t;
+  using const_iterator = std::vector<std::string>::const_iterator;
+  using iterator = const_iterator;
+
+  /* implicit */ aliases(std::initializer_list<std::string> list)
+      : aliases_(list) {}
+  /* implicit */ aliases(std::string name) {
+    aliases_.emplace_back(std::move(name));
+  }
+  /* implicit */ aliases(const char* name) {
+    aliases_.emplace_back(std::move(name));
+  }
+
+  const_iterator begin() const {
+    return aliases_.begin();
+  }
+  const_iterator end() const {
+    return aliases_.end();
+  }
+  size_type size() const {
+    return aliases_.size();
+  }
+
+ private:
+  std::vector<std::string> aliases_;
+};
+
 /**
- * class t_type
+ * class t_annotated
  *
  * Generic representation of any parsed element that can support annotations
  */
@@ -38,38 +76,31 @@ class t_annotated : public t_node {
  public:
   ~t_annotated() override;
 
-  // Returns true if there exists an annotation with the given name.
-  bool has_annotation(const std::string& name) const {
-    return annotations_.find(name) != annotations_.end();
-  }
-  // Returns true if there exists an annotation with any of the given names.
-  bool has_annotation(std::initializer_list<std::string> names) const;
-
-  // Returns the value of an annotation with the given name.
-  // If not found returns the provided default or "".
-  const std::string& get_annotation(
-      const std::string& name,
-      const std::string* default_value = nullptr) const;
-  std::string get_annotation(const std::string& name, std::string default_value)
-      const;
-
-  // Returns the value of the first annotation found with a given name.
-  // If not found returns the provided default or "".
-  const std::string& get_annotation(
-      std::initializer_list<std::string> names,
-      const std::string* default_value = nullptr) const;
-  std::string get_annotation(
-      std::initializer_list<std::string> names,
-      std::string default_value) const;
-
-  // Returns the ptr to the value of the first annotation found with a given
-  // name. If not found returns nullptr.
-  const std::string* get_annotation_or_null(const std::string& name) const;
-  const std::string* get_annotation_or_null(
-      std::initializer_list<std::string> names) const;
-
+  // The annotaions declared directly on this node.
   const std::map<std::string, std::string>& annotations() const {
     return annotations_;
+  }
+
+  // Returns true if there exists an annotation with the given name.
+  bool has_annotation(const aliases& name) const {
+    return get_annotation_or_null(name) != nullptr;
+  }
+
+  // Returns the pointer to the value of the first annotation found with the
+  // given name.
+  //
+  // If not found returns nullptr.
+  const std::string* get_annotation_or_null(const aliases& name) const;
+
+  // Returns the value of an annotation with the given name.
+  //
+  // If not found returns the provided default or "".
+  template <typename D = const std::string*>
+  decltype(auto) get_annotation(
+      const aliases& name,
+      D&& default_value = nullptr) const {
+    return annotation_or(
+        get_annotation_or_null(name), std::forward<D>(default_value));
   }
 
   void reset_annotations(
@@ -96,6 +127,25 @@ class t_annotated : public t_node {
   // t_annotated is abstract.
   t_annotated() = default;
 
+  template <typename D>
+  static std::string annotation_or(const std::string* val, D&& def) {
+    if (val != nullptr) {
+      return *val;
+    }
+    return std::forward<D>(def);
+  }
+
+  static const std::string& annotation_or(
+      const std::string* val,
+      const std::string* def) {
+    return val ? *val : (def ? *def : kEmptyString);
+  }
+  static const std::string& annotation_or(
+      const std::string* val,
+      std::string* def) {
+    return val ? *val : (def ? *def : kEmptyString);
+  }
+
  private:
   std::map<std::string, std::string> annotations_;
   // TODO(afuller): Looks like only this is only used by t_json_generator.
@@ -103,6 +153,8 @@ class t_annotated : public t_node {
   int last_annotation_lineno_ = -1;
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
   std::vector<const t_const*> structured_annotations_raw_;
+
+  static const std::string kEmptyString;
 };
 
 using t_annotation = std::map<std::string, std::string>::value_type;
