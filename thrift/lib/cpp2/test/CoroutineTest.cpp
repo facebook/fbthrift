@@ -17,6 +17,7 @@
 #include <exception>
 
 #include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Coroutine.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 
@@ -68,13 +69,13 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
 
   folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrows(
       std::unique_ptr<SumRequest> /* request */) override {
-    co_await std::experimental::suspend_never{};
+    co_await folly::coro::suspend_never{};
     throw std::runtime_error("Not implemented");
   }
 
   folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
       override {
-    co_await std::experimental::suspend_never{};
+    co_await folly::coro::suspend_never{};
     throw std::runtime_error("Not implemented");
   }
 
