@@ -82,14 +82,6 @@ class t_sink : public t_type {
              : "");
   }
 
-  std::string get_impl_full_name() const override {
-    return "sink<" + sink_type_->get_impl_full_name() + ", " +
-        final_response_type_->get_impl_full_name() + ">" +
-        (sink_has_first_response()
-             ? (", " + first_response_type_->get_impl_full_name())
-             : "");
-  }
-
   type get_type_value() const override {
     return type::t_sink;
   }

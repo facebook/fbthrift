@@ -57,14 +57,6 @@ class t_stream_response : public t_type {
     return "stream<" + elem_type_->get_full_name() + ">";
   }
 
-  std::string get_impl_full_name() const override {
-    if (has_first_response()) {
-      return first_response_type_->get_impl_full_name() + ", stream<" +
-          elem_type_->get_impl_full_name() + ">";
-    }
-    return "stream<" + elem_type_->get_impl_full_name() + ">";
-  }
-
   type get_type_value() const override {
     return type::t_stream;
   }

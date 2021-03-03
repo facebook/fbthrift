@@ -78,10 +78,6 @@ class t_typedef : public t_type {
     return get_type()->get_full_name();
   }
 
-  std::string get_impl_full_name() const override {
-    return get_type()->get_impl_full_name();
-  }
-
   type get_type_value() const override {
     return get_type()->get_type_value();
   }

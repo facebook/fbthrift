@@ -43,10 +43,6 @@ class t_list : public t_container {
     return "list<" + elem_type_->get_full_name() + ">";
   }
 
-  std::string get_impl_full_name() const override {
-    return "list<" + elem_type_->get_impl_full_name() + ">";
-  }
-
   type get_type_value() const override {
     return type::t_list;
   }

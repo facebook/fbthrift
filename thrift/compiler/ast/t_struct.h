@@ -84,10 +84,6 @@ class t_struct : public t_type {
     return make_full_name("struct");
   }
 
-  std::string get_impl_full_name() const override {
-    return get_full_name();
-  }
-
   type get_type_value() const override {
     return type::t_struct;
   }

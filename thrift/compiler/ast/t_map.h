@@ -51,12 +51,6 @@ class t_map : public t_container {
         val_type_->get_full_name() + ">");
   }
 
-  std::string get_impl_full_name() const override {
-    return (
-        "map<" + key_type_->get_impl_full_name() + ", " +
-        val_type_->get_impl_full_name() + ">");
-  }
-
   type get_type_value() const override {
     return type::t_map;
   }

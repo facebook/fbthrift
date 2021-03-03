@@ -65,10 +65,6 @@ class t_service : public t_type {
     return make_full_name("service");
   }
 
-  std::string get_impl_full_name() const override {
-    return make_full_name("service");
-  }
-
   bool is_interaction() const {
     return is_interaction_;
   }

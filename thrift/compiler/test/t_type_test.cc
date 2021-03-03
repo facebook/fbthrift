@@ -41,10 +41,6 @@ class t_type_fake : public t_type {
     return full_name_;
   }
 
-  std::string get_impl_full_name() const override {
-    return {};
-  }
-
   type get_type_value() const override {
     return {};
   }

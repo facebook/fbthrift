@@ -73,11 +73,10 @@ class t_type : public t_named {
   static constexpr size_t kTypeBits = 5;
   static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 
-  /**
-   * t_type abstract methods
-   */
+  // Returns the full name for the given type. For example:
+  // `list<string, string>`
   virtual std::string get_full_name() const = 0;
-  virtual std::string get_impl_full_name() const = 0;
+
   // @get_type_value() - TODO: Renanme function
   virtual type get_type_value() const = 0;
 
@@ -230,6 +229,14 @@ class t_type : public t_named {
   std::string make_full_name(const char* prefix) const;
 
   t_program* program_{nullptr};
+
+ public:
+  // TODO(afuller): Delete everything below this point. It's only here for
+  // backwards captibility.
+
+  std::string get_impl_full_name() const {
+    return get_full_name();
+  }
 };
 
 } // namespace compiler

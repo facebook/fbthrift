@@ -130,10 +130,6 @@ class t_base_type : public t_type {
     return t_base_name(base_);
   }
 
-  std::string get_impl_full_name() const override {
-    return t_base_name(base_);
-  }
-
   type get_type_value() const override {
     return static_cast<type>(base_);
   }

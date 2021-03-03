@@ -65,10 +65,6 @@ class t_enum : public t_type {
     return make_full_name("enum");
   }
 
-  std::string get_impl_full_name() const override {
-    return make_full_name("enum");
-  }
-
   type get_type_value() const override {
     return type::t_enum;
   }
