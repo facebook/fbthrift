@@ -26,6 +26,7 @@ enum Numberz {
 }
 
 typedef i64 UserId
+typedef Xtruct3 Xtruct3Def
 
 struct Bonk {
   1: string message;

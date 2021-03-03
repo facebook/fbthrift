@@ -948,6 +948,7 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
   generate_go_docstring(f_types_, ttypedef);
   string new_type_name(publicize(ttypedef->get_symbolic()));
   const t_type* tbasetype(ttypedef->get_type());
+  const t_type* true_type(ttypedef->get_true_type());
   string base_type(type_to_go_type_with_opt(tbasetype, false, true));
 
   if (base_type == new_type_name) {
@@ -972,8 +973,9 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
              << new_type_name << " { return &v }" << endl
              << endl;
   }
+
   // Generate New* function
-  if (tbasetype->is_struct() || tbasetype->is_xception()) {
+  if (true_type->is_struct() || true_type->is_xception()) {
     const t_program* program = tbasetype->get_program();
     string ctor;
     if (program != nullptr && program != program_) {
@@ -983,7 +985,7 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
       ctor = "New" + publicize(tbasetype->get_name());
     }
     f_types_ << "func "
-             << "New" << new_type_name << "() *" << new_type_name
+             << "New" << publicize(new_type_name) << "() *" << new_type_name
              << " { return " << ctor << "() }" << endl
              << endl;
   }
