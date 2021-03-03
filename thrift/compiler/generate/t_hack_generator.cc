@@ -140,7 +140,7 @@ class t_hack_generator : public t_oop_generator {
     THRIFT_VOID_TYPE = 10,
   };
 
-  ThriftPrimitiveType base_to_t_primitive(t_base_type* base_type);
+  ThriftPrimitiveType base_to_t_primitive(const t_base_type* base_type);
 
   std::unique_ptr<t_const_value> type_to_tmeta(const t_type* type);
   std::unique_ptr<t_const_value> field_to_tmeta(const t_field* field);
@@ -758,15 +758,16 @@ void t_hack_generator::generate_json_field(
   std::string name = prefix_thrift + tfield->get_name() + suffix_thrift;
 
   if (type->is_struct() || type->is_xception()) {
-    generate_json_struct(out, namer, (t_struct*)type, name, prefix_json);
+    generate_json_struct(out, namer, (const t_struct*)type, name, prefix_json);
   } else if (type->is_container()) {
-    generate_json_container(out, namer, (t_container*)type, name, prefix_json);
+    generate_json_container(
+        out, namer, (const t_container*)type, name, prefix_json);
   } else if (type->is_enum()) {
     generate_json_enum(
         out, namer, static_cast<const t_enum*>(type), name, prefix_json);
   } else if (type->is_base_type()) {
     std::string typeConversionString = "";
-    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    t_base_type::t_base tbase = ((const t_base_type*)type)->get_base();
     std::string number_limit = "";
     switch (tbase) {
       case t_base_type::TYPE_VOID:
@@ -858,11 +859,14 @@ void t_hack_generator::generate_json_container(
   indent_up();
 
   if (ttype->is_list()) {
-    generate_json_list_element(out, namer, (t_list*)ttype, value, container);
+    generate_json_list_element(
+        out, namer, (const t_list*)ttype, value, container);
   } else if (ttype->is_set()) {
-    generate_json_set_element(out, namer, (t_set*)ttype, value, container);
+    generate_json_set_element(
+        out, namer, (const t_set*)ttype, value, container);
   } else if (ttype->is_map()) {
-    generate_json_map_element(out, namer, (t_map*)ttype, key, value, container);
+    generate_json_map_element(
+        out, namer, (const t_map*)ttype, key, value, container);
   } else {
     throw std::runtime_error("compiler error: no PHP reader for this type.");
   }
@@ -919,7 +923,7 @@ void t_hack_generator::generate_json_map_element(
     throw error_msg;
   }
   if (keytype->is_base_type()) {
-    t_base_type::t_base tbase = ((t_base_type*)keytype)->get_base();
+    t_base_type::t_base tbase = ((const t_base_type*)keytype)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
       case t_base_type::TYPE_DOUBLE:
@@ -942,7 +946,7 @@ void t_hack_generator::generate_json_reader(
   if (!json_) {
     return;
   }
-  const std::vector<t_field*>& fields = tstruct->get_members();
+  const auto& fields = tstruct->get_members();
   std::vector<t_field*>::const_iterator f_iter;
   t_name_generator namer;
 
@@ -1090,7 +1094,7 @@ void t_hack_generator::generate_typedef(const t_typedef* /*ttypedef*/) {}
  * @param tenum The enumeration
  */
 void t_hack_generator::generate_enum(const t_enum* tenum) {
-  std::vector<t_enum_value*> constants = tenum->get_enum_values();
+  auto constants = tenum->get_enum_values();
   std::vector<t_enum_value*>::iterator c_iter;
 
   std::string typehint;
@@ -1170,7 +1174,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
 void t_hack_generator::generate_const(const t_const* tconst) {
   const t_type* type = tconst->get_type();
   std::string name = tconst->get_name();
-  t_const_value* value = tconst->get_value();
+  const t_const_value* value = tconst->get_value();
 
   indent_up();
   generate_php_docstring(f_consts_, tconst);
@@ -1202,12 +1206,12 @@ bool t_hack_generator::is_hack_const_type(const t_type* type) {
     return true;
   } else if (arrays_ && type->is_container()) {
     if (type->is_list()) {
-      return is_hack_const_type(((t_list*)type)->get_elem_type());
+      return is_hack_const_type(((const t_list*)type)->get_elem_type());
     } else if (type->is_set()) {
-      return is_hack_const_type(((t_set*)type)->get_elem_type());
+      return is_hack_const_type(((const t_set*)type)->get_elem_type());
     } else if (type->is_map()) {
-      return is_hack_const_type(((t_map*)type)->get_key_type()) &&
-          is_hack_const_type(((t_map*)type)->get_val_type());
+      return is_hack_const_type(((const t_map*)type)->get_key_type()) &&
+          is_hack_const_type(((const t_map*)type)->get_val_type());
     }
   }
   return false;
@@ -1244,7 +1248,7 @@ std::string t_hack_generator::render_const_value(
   std::ostringstream out;
   type = type->get_true_type();
   if (type->is_base_type()) {
-    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    t_base_type::t_base tbase = ((const t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
@@ -1277,7 +1281,7 @@ std::string t_hack_generator::render_const_value(
             t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
-    const t_enum* tenum = (t_enum*)type;
+    const t_enum* tenum = (const t_enum*)type;
     const t_enum_value* val = tenum->find_value(value->get_integer());
     if (val != nullptr) {
       out << hack_name(tenum) << "::" << val->get_name();
@@ -1290,10 +1294,9 @@ std::string t_hack_generator::render_const_value(
     indent(out) << "shape(\n";
     indent_up();
 
-    const std::vector<t_field*>& fields = ((t_struct*)type)->get_members();
+    const auto& fields = ((const t_struct*)type)->get_members();
     std::vector<t_field*>::const_iterator f_iter;
-    const std::vector<std::pair<t_const_value*, t_const_value*>>& val =
-        value->get_map();
+    const auto& val = value->get_map();
     std::vector<std::pair<t_const_value*, t_const_value*>>::const_iterator
         v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1310,8 +1313,8 @@ std::string t_hack_generator::render_const_value(
       }
     }
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      t_const_value* k = nullptr;
-      t_const_value* v = nullptr;
+      const t_const_value* k = nullptr;
+      const t_const_value* v = nullptr;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           k = v_iter->first;
@@ -1328,8 +1331,8 @@ std::string t_hack_generator::render_const_value(
     indent_down();
     indent(out) << ")";
   } else if (type->is_map()) {
-    const t_type* ktype = ((t_map*)type)->get_key_type();
-    const t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((const t_map*)type)->get_key_type();
+    const t_type* vtype = ((const t_map*)type)->get_val_type();
     if (arrays_) {
       out << "dict[\n";
     } else if (no_use_hack_collections_) {
@@ -1338,8 +1341,7 @@ std::string t_hack_generator::render_const_value(
       out << (immutable_collections ? "Imm" : "") << "Map {\n";
     }
     indent_up();
-    const std::vector<std::pair<t_const_value*, t_const_value*>>& val =
-        value->get_map();
+    const auto& val = value->get_map();
     std::vector<std::pair<t_const_value*, t_const_value*>>::const_iterator
         v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1356,7 +1358,7 @@ std::string t_hack_generator::render_const_value(
       indent(out) << "}";
     }
   } else if (type->is_list()) {
-    const t_type* etype = ((t_list*)type)->get_elem_type();
+    const t_type* etype = ((const t_list*)type)->get_elem_type();
     if (arrays_) {
       out << "vec[\n";
     } else if (no_use_hack_collections_) {
@@ -1365,7 +1367,7 @@ std::string t_hack_generator::render_const_value(
       out << (immutable_collections ? "Imm" : "") << "Vector {\n";
     }
     indent_up();
-    const std::vector<t_const_value*>& val = value->get_list();
+    const auto& val = value->get_list();
     std::vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       out << indent();
@@ -1379,9 +1381,9 @@ std::string t_hack_generator::render_const_value(
       indent(out) << "}";
     }
   } else if (type->is_set()) {
-    const t_type* etype = ((t_set*)type)->get_elem_type();
+    const t_type* etype = ((const t_set*)type)->get_elem_type();
     indent_up();
-    const std::vector<t_const_value*>& val = value->get_list();
+    const auto& val = value->get_list();
     std::vector<t_const_value*>::const_iterator v_iter;
     if (arrays_) {
       out << "keyset[\n";
@@ -1420,7 +1422,7 @@ std::string t_hack_generator::render_default_value(const t_type* type) {
   std::string dval;
   type = type->get_true_type();
   if (type->is_base_type()) {
-    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    t_base_type::t_base tbase = ((const t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
@@ -1447,7 +1449,7 @@ std::string t_hack_generator::render_default_value(const t_type* type) {
   } else if (type->is_enum()) {
     dval = "null";
   } else if (type->is_struct() || type->is_xception()) {
-    const t_struct* tstruct = (t_struct*)type;
+    const t_struct* tstruct = (const t_struct*)type;
     if (no_nullables_) {
       dval = hack_name(tstruct) + "::withDefaultValues()";
     } else {
@@ -1482,7 +1484,7 @@ std::string t_hack_generator::render_default_value(const t_type* type) {
 }
 
 t_hack_generator::ThriftPrimitiveType t_hack_generator::base_to_t_primitive(
-    t_base_type* tbase) {
+    const t_base_type* tbase) {
   switch (tbase->get_base()) {
     case t_base_type::TYPE_BOOL:
       return ThriftPrimitiveType::THRIFT_BOOL_TYPE;
@@ -1519,9 +1521,9 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_primitive"),
         std::make_unique<t_const_value>(
-            base_to_t_primitive((t_base_type*)type)));
+            base_to_t_primitive((const t_base_type*)type)));
   } else if (type->is_list()) {
-    const t_list* tlist = (t_list*)type;
+    const t_list* tlist = (const t_list*)type;
     auto tlist_tmeta = std::make_unique<t_const_value>();
     tlist_tmeta->add_map(
         std::make_unique<t_const_value>("valueType"),
@@ -1530,7 +1532,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_list"), std::move(tlist_tmeta));
   } else if (type->is_set()) {
-    const t_set* tset = (t_set*)type;
+    const t_set* tset = (const t_set*)type;
     auto tset_tmeta = std::make_unique<t_const_value>();
     tset_tmeta->add_map(
         std::make_unique<t_const_value>("valueType"),
@@ -1539,7 +1541,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_set"), std::move(tset_tmeta));
   } else if (type->is_map()) {
-    const t_map* tmap = (t_map*)type;
+    const t_map* tmap = (const t_map*)type;
     auto tmap_tmeta = std::make_unique<t_const_value>();
     tmap_tmeta->add_map(
         std::make_unique<t_const_value>("keyType"),
@@ -1575,7 +1577,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_union"), std::move(tunion_tmeta));
   } else if (type->is_typedef()) {
-    const t_typedef* ttypedef = (t_typedef*)type;
+    const t_typedef* ttypedef = (const t_typedef*)type;
     auto ttypedef_tmeta = std::make_unique<t_const_value>();
     ttypedef_tmeta->add_map(
         std::make_unique<t_const_value>("name"),
@@ -1588,7 +1590,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
         std::make_unique<t_const_value>("t_typedef"),
         std::move(ttypedef_tmeta));
   } else if (type->is_sink()) {
-    const t_sink* tsink = (t_sink*)type;
+    const t_sink* tsink = (const t_sink*)type;
     auto tsink_tmeta = std::make_unique<t_const_value>();
     tsink_tmeta->add_map(
         std::make_unique<t_const_value>("elemType"),
@@ -1647,8 +1649,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
       std::make_unique<t_const_value>("return_type"),
       type_to_tmeta(function->get_returntype()));
 
-  std::vector<t_field*> arguments_fields =
-      function->get_paramlist()->get_members();
+  const auto& arguments_fields = function->get_paramlist()->get_members();
   if (!arguments_fields.empty()) {
     auto arguments = std::make_unique<t_const_value>();
     arguments->set_list();
@@ -1659,8 +1660,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
         std::make_unique<t_const_value>("arguments"), std::move(arguments));
   }
 
-  std::vector<t_field*> exceptions_fields =
-      function->get_xceptions()->get_members();
+  const auto& exceptions_fields = function->get_xceptions()->get_members();
   if (!exceptions_fields.empty()) {
     auto exceptions = std::make_unique<t_const_value>();
     exceptions->set_list();
@@ -1689,7 +1689,7 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
       std::make_unique<t_const_value>("name"),
       std::make_unique<t_const_value>(service->get_name()));
 
-  std::vector<t_function*> functions = get_supported_functions(service);
+  auto functions = get_supported_functions(service);
   if (!functions.empty()) {
     auto tmeta_functions = std::make_unique<t_const_value>();
     tmeta_functions->set_list();
@@ -1770,7 +1770,7 @@ const t_type* t_hack_generator::tmeta_ThriftType_type() {
   static t_struct stream_type(&empty_program, "tmeta_ThriftStreamType");
   static t_struct sink_type(&empty_program, "tmeta_ThriftSinkType");
   if (!type.get_members().empty()) {
-    return (t_type*)&type;
+    return (const t_type*)&type;
   }
 
   primitive_type.set_name("tmeta_ThriftPrimitiveType");
@@ -1795,51 +1795,56 @@ const t_type* t_hack_generator::tmeta_ThriftType_type() {
   append_to_t_enum(
       &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_VOID_TYPE);
 
-  list_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
-  set_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
-  map_type.append(std::make_unique<t_field>((t_type*)&type, "keyType"));
-  map_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
+  list_type.append(
+      std::make_unique<t_field>((const t_type*)&type, "valueType"));
+  set_type.append(std::make_unique<t_field>((const t_type*)&type, "valueType"));
+  map_type.append(std::make_unique<t_field>((const t_type*)&type, "keyType"));
+  map_type.append(std::make_unique<t_field>((const t_type*)&type, "valueType"));
   enum_type.append(std::make_unique<t_field>(string_type(), "name"));
   struct_type.append(std::make_unique<t_field>(string_type(), "name"));
   union_type.append(std::make_unique<t_field>(string_type(), "name"));
   typedef_type.append(std::make_unique<t_field>(string_type(), "name"));
   typedef_type.append(
-      std::make_unique<t_field>((t_type*)&type, "underlyingType"));
-  stream_type.append(std::make_unique<t_field>((t_type*)&type, "elemType"));
+      std::make_unique<t_field>((const t_type*)&type, "underlyingType"));
   stream_type.append(
-      std::make_unique<t_field>((t_type*)&type, "initialResponseType"));
-  sink_type.append(std::make_unique<t_field>((t_type*)&type, "elemType"));
+      std::make_unique<t_field>((const t_type*)&type, "elemType"));
+  stream_type.append(
+      std::make_unique<t_field>((const t_type*)&type, "initialResponseType"));
+  sink_type.append(std::make_unique<t_field>((const t_type*)&type, "elemType"));
   sink_type.append(
-      std::make_unique<t_field>((t_type*)&type, "finalResponseType"));
+      std::make_unique<t_field>((const t_type*)&type, "finalResponseType"));
   sink_type.append(
-      std::make_unique<t_field>((t_type*)&type, "initialResponseType"));
+      std::make_unique<t_field>((const t_type*)&type, "initialResponseType"));
 
   type.append(
-      std::make_unique<t_field>((t_type*)&primitive_type, "t_primitive"));
-  type.append(std::make_unique<t_field>((t_type*)&list_type, "t_list"));
-  type.append(std::make_unique<t_field>((t_type*)&set_type, "t_set"));
-  type.append(std::make_unique<t_field>((t_type*)&map_type, "t_map"));
-  type.append(std::make_unique<t_field>((t_type*)&enum_type, "t_enum"));
-  type.append(std::make_unique<t_field>((t_type*)&struct_type, "t_struct"));
-  type.append(std::make_unique<t_field>((t_type*)&union_type, "t_union"));
-  type.append(std::make_unique<t_field>((t_type*)&typedef_type, "t_typedef"));
-  type.append(std::make_unique<t_field>((t_type*)&stream_type, "t_stream"));
-  type.append(std::make_unique<t_field>((t_type*)&sink_type, "t_sink"));
-  return (t_type*)&type;
+      std::make_unique<t_field>((const t_type*)&primitive_type, "t_primitive"));
+  type.append(std::make_unique<t_field>((const t_type*)&list_type, "t_list"));
+  type.append(std::make_unique<t_field>((const t_type*)&set_type, "t_set"));
+  type.append(std::make_unique<t_field>((const t_type*)&map_type, "t_map"));
+  type.append(std::make_unique<t_field>((const t_type*)&enum_type, "t_enum"));
+  type.append(
+      std::make_unique<t_field>((const t_type*)&struct_type, "t_struct"));
+  type.append(std::make_unique<t_field>((const t_type*)&union_type, "t_union"));
+  type.append(
+      std::make_unique<t_field>((const t_type*)&typedef_type, "t_typedef"));
+  type.append(
+      std::make_unique<t_field>((const t_type*)&stream_type, "t_stream"));
+  type.append(std::make_unique<t_field>((const t_type*)&sink_type, "t_sink"));
+  return (const t_type*)&type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftField_type() {
   static t_program empty_program("");
   static t_struct type(&empty_program, "tmeta_ThriftField");
   if (!type.get_members().empty()) {
-    return (t_type*)&type;
+    return (const t_type*)&type;
   }
 
   type.append(std::make_unique<t_field>(i64_type(), "id"));
   type.append(std::make_unique<t_field>(tmeta_ThriftType_type(), "type"));
   type.append(std::make_unique<t_field>(string_type(), "name"));
   type.append(std::make_unique<t_field>(bool_type(), "is_optional"));
-  return (t_type*)&type;
+  return (const t_type*)&type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftFunction_type() {
@@ -1847,16 +1852,16 @@ const t_type* t_hack_generator::tmeta_ThriftFunction_type() {
   static t_struct type(&empty_program, "tmeta_ThriftFunction");
   static t_list tlist(tmeta_ThriftField_type());
   if (!type.get_members().empty()) {
-    return (t_type*)&type;
+    return (const t_type*)&type;
   }
 
   type.append(std::make_unique<t_field>(string_type(), "name"));
   type.append(
       std::make_unique<t_field>(tmeta_ThriftType_type(), "return_type"));
-  type.append(std::make_unique<t_field>((t_type*)&tlist, "arguments"));
-  type.append(std::make_unique<t_field>((t_type*)&tlist, "exceptions"));
+  type.append(std::make_unique<t_field>((const t_type*)&tlist, "arguments"));
+  type.append(std::make_unique<t_field>((const t_type*)&tlist, "exceptions"));
   type.append(std::make_unique<t_field>(bool_type(), "is_oneway"));
-  return (t_type*)&type;
+  return (const t_type*)&type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftService_type() {
@@ -1864,13 +1869,13 @@ const t_type* t_hack_generator::tmeta_ThriftService_type() {
   static t_struct type(&empty_program, "tmeta_ThriftService");
   static t_list tlist(tmeta_ThriftFunction_type());
   if (!type.get_members().empty()) {
-    return (t_type*)&type;
+    return (const t_type*)&type;
   }
 
   type.append(std::make_unique<t_field>(string_type(), "name"));
-  type.append(std::make_unique<t_field>((t_type*)&tlist, "functions"));
+  type.append(std::make_unique<t_field>((const t_type*)&tlist, "functions"));
   type.append(std::make_unique<t_field>(string_type(), "parent"));
-  return (t_type*)&type;
+  return (const t_type*)&type;
 }
 
 /**
@@ -1916,8 +1921,8 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_struct() || t->is_xception()) {
     indent(out) << "'class' => " << hack_name(t) << "::class,\n";
   } else if (t->is_map()) {
-    const t_type* ktype = ((t_map*)t)->get_key_type();
-    const t_type* vtype = ((t_map*)t)->get_val_type();
+    const t_type* ktype = ((const t_map*)t)->get_key_type();
+    const t_type* vtype = ((const t_map*)t)->get_val_type();
     if (get_hack_adapter(ktype)) {
       throw std::runtime_error(
           "using hack.adapter annotation with map keys is not supported yet");
@@ -1942,7 +1947,7 @@ void t_hack_generator::generate_php_type_spec(
       indent(out) << "'format' => 'collection',\n";
     }
   } else if (t->is_list()) {
-    const t_type* etype = ((t_list*)t)->get_elem_type();
+    const t_type* etype = ((const t_list*)t)->get_elem_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
     indent(out) << "'elem' => shape(\n";
     indent_up();
@@ -1957,7 +1962,7 @@ void t_hack_generator::generate_php_type_spec(
       indent(out) << "'format' => 'collection',\n";
     }
   } else if (t->is_set()) {
-    const t_type* etype = ((t_set*)t)->get_elem_type();
+    const t_type* etype = ((const t_set*)t)->get_elem_type();
     if (get_hack_adapter(etype)) {
       throw std::runtime_error(
           "using hack.adapter annotation with set keys is not supported yet");
@@ -1988,7 +1993,7 @@ void t_hack_generator::generate_php_type_spec(
 void t_hack_generator::generate_php_struct_spec(
     std::ofstream& out,
     const t_struct* tstruct) {
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   std::vector<t_field*>::const_iterator m_iter;
 
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
@@ -2051,7 +2056,7 @@ void t_hack_generator::generate_php_struct_shape_spec(
   indent(out) << "const type "
               << (is_constructor_shape ? "TConstructorShape" : "TShape")
               << " = shape(\n";
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   std::vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     const t_type* t = (*m_iter)->get_type();
@@ -2127,9 +2132,9 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
   } else if (t->is_map() || t->is_list()) {
     const t_type* val_type;
     if (t->is_map()) {
-      val_type = ((t_map*)t)->get_val_type();
+      val_type = ((const t_map*)t)->get_val_type();
     } else {
-      val_type = ((t_list*)t)->get_elem_type();
+      val_type = ((const t_list*)t)->get_elem_type();
     }
     val_type = val_type->get_true_type();
 
@@ -2165,9 +2170,9 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
 
   const t_type* val_type;
   if (t->is_map()) {
-    val_type = ((t_map*)t)->get_val_type();
+    val_type = ((const t_map*)t)->get_val_type();
   } else {
-    val_type = ((t_list*)t)->get_elem_type();
+    val_type = ((const t_list*)t)->get_elem_type();
   }
   val_type = val_type->get_true_type();
 
@@ -2225,9 +2230,9 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
 
   const t_type* val_type;
   if (t->is_map()) {
-    val_type = ((t_map*)t)->get_val_type();
+    val_type = ((const t_map*)t)->get_val_type();
   } else {
-    val_type = ((t_list*)t)->get_elem_type();
+    val_type = ((const t_list*)t)->get_elem_type();
   }
   val_type = val_type->get_true_type();
 
@@ -2260,9 +2265,9 @@ bool t_hack_generator::type_has_nested_struct(const t_type* t) {
   const t_type* val_type = t;
   while (true) {
     if (val_type->is_map()) {
-      val_type = ((t_map*)val_type)->get_val_type();
+      val_type = ((const t_map*)val_type)->get_val_type();
     } else {
-      val_type = ((t_list*)val_type)->get_elem_type();
+      val_type = ((const t_list*)val_type)->get_elem_type();
     }
     val_type = val_type->get_true_type();
 
@@ -2335,7 +2340,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "return new static(\n";
   indent_up();
 
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   t_name_generator namer;
   for (const auto& member : members) {
     const t_type* t = member->get_type()->get_true_type();
@@ -2371,7 +2376,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     } else if (t->is_map() || t->is_list()) {
       bool stringify_map_keys = false;
       if (t->is_map() && shape_arraykeys_) {
-        const t_type* key_type = ((t_map*)t)->get_key_type();
+        const t_type* key_type = ((const t_map*)t)->get_key_type();
         if (key_type->is_base_type() && key_type->is_string_or_binary()) {
           stringify_map_keys = true;
         }
@@ -2407,9 +2412,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
         while (true) {
           const t_type* val_type;
           if (t->is_map()) {
-            val_type = ((t_map*)t)->get_val_type();
+            val_type = ((const t_map*)t)->get_val_type();
           } else {
-            val_type = ((t_list*)t)->get_elem_type();
+            val_type = ((const t_list*)t)->get_elem_type();
           }
           val_type = val_type->get_true_type();
 
@@ -2429,7 +2434,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
               stringify_map_keys = false;
               if (val_type->is_map() && shape_arraykeys_) {
-                const t_type* key_type = ((t_map*)val_type)->get_key_type();
+                const t_type* key_type =
+                    ((const t_map*)val_type)->get_key_type();
                 if (key_type->is_base_type() &&
                     key_type->is_string_or_binary()) {
                   stringify_map_keys = true;
@@ -2531,9 +2537,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
         } else {
           const t_type* val_type;
           if (t->is_map()) {
-            val_type = ((t_map*)t)->get_val_type();
+            val_type = ((const t_map*)t)->get_val_type();
           } else {
-            val_type = ((t_list*)t)->get_elem_type();
+            val_type = ((const t_list*)t)->get_elem_type();
           }
           val_type = val_type->get_true_type();
 
@@ -2631,7 +2637,7 @@ void t_hack_generator::generate_php_union_methods(
     std::ofstream& out,
     const t_struct* tstruct) {
   std::vector<t_field*>::const_iterator m_iter;
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   auto enumName = union_enum_name(tstruct);
 
   indent(out) << "public function getType(): " << enumName << " {\n";
@@ -2714,7 +2720,7 @@ void t_hack_generator::generate_php_union_enum(
   //   __EMPTY__ = 0;
   //   field1 = 1;
   // }
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   std::vector<t_field*>::const_iterator m_iter;
 
   if (std::string const* union_enum_attributes =
@@ -2780,12 +2786,12 @@ void t_hack_generator::generate_adapter_type_checks(
 
         t = t->get_true_type();
         if (t->is_map()) {
-          collect_adapters_recursively(((t_map*)t)->get_key_type());
-          collect_adapters_recursively(((t_map*)t)->get_val_type());
+          collect_adapters_recursively(((const t_map*)t)->get_key_type());
+          collect_adapters_recursively(((const t_map*)t)->get_val_type());
         } else if (t->is_list()) {
-          collect_adapters_recursively(((t_list*)t)->get_elem_type());
+          collect_adapters_recursively(((const t_list*)t)->get_elem_type());
         } else if (t->is_set()) {
-          collect_adapters_recursively(((t_set*)t)->get_elem_type());
+          collect_adapters_recursively(((const t_set*)t)->get_elem_type());
         }
       };
 
@@ -2820,7 +2826,7 @@ void t_hack_generator::_generate_php_struct_definition(
     bool is_result,
     bool is_args,
     const std::string& name) {
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   std::vector<t_field*>::const_iterator m_iter;
 
   bool generateAsTrait = tstruct->has_annotation("php.trait");
@@ -2884,9 +2890,9 @@ void t_hack_generator::_generate_php_struct_definition(
 
     t = t->get_true_type();
 
-    if (t->is_enum() && is_bitmask_enum((t_enum*)t)) {
+    if (t->is_enum() && is_bitmask_enum((const t_enum*)t)) {
       throw std::runtime_error(
-          "Enum " + (((t_enum*)t)->get_name()) +
+          "Enum " + (((const t_enum*)t)->get_name()) +
           "is actually a bitmask, cannot generate a field of this enum type");
     }
 
@@ -2922,7 +2928,8 @@ void t_hack_generator::_generate_php_struct_definition(
         throw tstruct->get_name() +
             "::code defined to be a non-integral type. " +
             "code fields for Exception classes must be integral";
-      } else if (t->is_enum() && ((t_enum*)t)->get_enum_values().empty()) {
+      } else if (
+          t->is_enum() && ((const t_enum*)t)->get_enum_values().empty()) {
         throw std::runtime_error(
             "Enum " + t->get_name() + " is the type for the code property of " +
             tstruct->get_name() + ", but it has no values.");
@@ -3003,7 +3010,7 @@ void t_hack_generator::_generate_php_struct_definition(
         dval = "0";
       } else {
         // just use the lowest value
-        const t_enum* tenum = (t_enum*)t;
+        const t_enum* tenum = (const t_enum*)t;
         dval = hack_name(tenum) +
             "::" + (*(tenum->get_enum_values().begin()))->get_name();
       }
@@ -3148,7 +3155,7 @@ void t_hack_generator::generate_php_struct_from_shape(
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
-  const std::vector<t_field*>& members = tstruct->get_members();
+  const auto& members = tstruct->get_members();
   std::vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     std::string name = (*m_iter)->get_name();
@@ -3399,7 +3406,7 @@ void t_hack_generator::generate_process_function(
              << fn_name << "', $args);\n";
 
   const t_struct* xs = tfunction->get_xceptions();
-  const std::vector<t_field*>& xceptions = xs->get_members();
+  const auto& xceptions = xs->get_members();
   std::vector<t_field*>::const_iterator x_iter;
 
   // Declare result for non oneway function
@@ -3414,7 +3421,7 @@ void t_hack_generator::generate_process_function(
 
   // Generate the function call
   const t_struct* arg_struct = tfunction->get_paramlist();
-  const std::vector<t_field*>& fields = arg_struct->get_members();
+  const auto& fields = arg_struct->get_members();
   std::vector<t_field*>::const_iterator f_iter;
 
   indent(f_service_) << "$this->eventHandler_->preExec($handler_ctx, '"
@@ -3531,7 +3538,7 @@ void t_hack_generator::generate_service_helpers(
     generate_php_function_helpers(tservice, *f_iter);
   }
 
-  const std::vector<t_service*>& interactions = get_interactions(tservice);
+  const auto& interactions = get_interactions(tservice);
   for (const auto& interaction : interactions) {
     for (const auto& function : get_supported_functions(interaction)) {
       generate_php_interaction_function_helpers(
@@ -3596,7 +3603,7 @@ void t_hack_generator::generate_service_helpers(
 void t_hack_generator::generate_service_interactions(
     const t_service* tservice,
     bool mangle) {
-  const std::vector<t_service*>& interactions = get_interactions(tservice);
+  const auto& interactions = get_interactions(tservice);
   if (interactions.empty()) {
     return;
   }
@@ -3679,7 +3686,7 @@ void t_hack_generator::generate_php_function_helpers(
     }
 
     const t_struct* xs = tfunction->get_xceptions();
-    const std::vector<t_field*>& fields = xs->get_members();
+    const auto& fields = xs->get_members();
     std::vector<t_field*>::const_iterator f_iter;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       result.append((*f_iter)->clone_DO_NOT_USE());
@@ -3713,7 +3720,7 @@ void t_hack_generator::generate_php_interaction_function_helpers(
     }
 
     const t_struct* xs = tfunction->get_xceptions();
-    const std::vector<t_field*>& fields = xs->get_members();
+    const auto& fields = xs->get_members();
     std::vector<t_field*>::const_iterator f_iter;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       result.append((*f_iter)->clone_DO_NOT_USE());
@@ -3972,7 +3979,7 @@ void t_hack_generator::generate_php_docstring_args(
     int start_pos,
     const t_struct* arg_list) {
   if (arg_list) {
-    std::vector<t_field*> params = arg_list->get_members();
+    const auto params = arg_list->get_members();
     if (params.size()) {
       std::vector<t_field*>::const_iterator p_iter;
       for (p_iter = params.begin(); p_iter != params.end(); ++p_iter) {
@@ -4005,7 +4012,7 @@ std::string t_hack_generator::type_to_typehint(
   ttype = ttype->get_true_type();
   immutable_collections = immutable_collections || const_collections_;
   if (ttype->is_base_type()) {
-    switch (((t_base_type*)ttype)->get_base()) {
+    switch (((const t_base_type*)ttype)->get_base()) {
       case t_base_type::TYPE_VOID:
         return "void";
       case t_base_type::TYPE_STRING:
@@ -4025,7 +4032,7 @@ std::string t_hack_generator::type_to_typehint(
         return "mixed";
     }
   } else if (ttype->is_enum()) {
-    if (is_bitmask_enum((t_enum*)ttype)) {
+    if (is_bitmask_enum((const t_enum*)ttype)) {
       return "int";
     } else {
       return (nullable ? "?" : "") + hack_name(ttype);
@@ -4045,7 +4052,7 @@ std::string t_hack_generator::type_to_typehint(
     }
     return prefix + "<" +
         type_to_typehint(
-               ((t_list*)ttype)->get_elem_type(),
+               ((const t_list*)ttype)->get_elem_type(),
                false,
                shape,
                immutable_collections) +
@@ -4062,15 +4069,18 @@ std::string t_hack_generator::type_to_typehint(
       prefix = immutable_collections ? "ConstMap" : "Map";
     }
     std::string key_type = type_to_typehint(
-        ((t_map*)ttype)->get_key_type(), false, shape, immutable_collections);
+        ((const t_map*)ttype)->get_key_type(),
+        false,
+        shape,
+        immutable_collections);
     if (shape && shape_arraykeys_ && key_type == "string") {
       key_type = "arraykey";
-    } else if (!is_type_arraykey(((t_map*)ttype)->get_key_type())) {
+    } else if (!is_type_arraykey(((const t_map*)ttype)->get_key_type())) {
       key_type = "arraykey";
     }
     return prefix + "<" + key_type + ", " +
         type_to_typehint(
-               ((t_map*)ttype)->get_val_type(),
+               ((const t_map*)ttype)->get_val_type(),
                false,
                shape,
                immutable_collections) +
@@ -4087,10 +4097,11 @@ std::string t_hack_generator::type_to_typehint(
       prefix = immutable_collections ? "ConstSet" : "Set";
     }
     std::string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
-    std::string key_type = !is_type_arraykey(((t_set*)ttype)->get_elem_type())
+    std::string key_type =
+        !is_type_arraykey(((const t_set*)ttype)->get_elem_type())
         ? "arraykey"
         : type_to_typehint(
-              ((t_set*)ttype)->get_elem_type(),
+              ((const t_set*)ttype)->get_elem_type(),
               false,
               shape,
               immutable_collections);
@@ -4113,17 +4124,18 @@ std::string t_hack_generator::type_to_param_typehint(
       return type_to_typehint(ttype, nullable);
     } else {
       return "KeyedContainer<int, " +
-          type_to_param_typehint(((t_list*)ttype)->get_elem_type()) + ">";
+          type_to_param_typehint(((const t_list*)ttype)->get_elem_type()) + ">";
     }
   } else if (ttype->is_map()) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      auto key_type = ((t_map*)ttype)->get_key_type();
+      auto key_type = ((const t_map*)ttype)->get_key_type();
       return "KeyedContainer<" +
           (!is_type_arraykey(key_type) ? "arraykey"
                                        : type_to_param_typehint(key_type)) +
-          ", " + type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
+          ", " + type_to_param_typehint(((const t_map*)ttype)->get_val_type()) +
+          ">";
     }
   } else {
     return type_to_typehint(ttype, nullable);
@@ -4164,7 +4176,7 @@ void t_hack_generator::generate_service_interface(
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();
-  std::vector<t_function*> functions = get_supported_functions(tservice);
+  auto functions = get_supported_functions(tservice);
   std::vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     // Add a blank line before the start of a new function definition
@@ -4222,7 +4234,7 @@ void t_hack_generator::_generate_service_client(
   indent_up();
 
   // Generate client method implementations
-  std::vector<t_function*> functions = get_supported_functions(tservice);
+  auto functions = get_supported_functions(tservice);
   std::vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     _generate_sendImpl(out, tservice, *f_iter);
@@ -4235,7 +4247,7 @@ void t_hack_generator::_generate_service_client(
   }
 
   // Generate factory method for interactions
-  const std::vector<t_service*>& interactions = get_interactions(tservice);
+  const auto& interactions = get_interactions(tservice);
   if (!interactions.empty()) {
     out << indent() << "/* interaction handlers factory methods */\n";
     const std::string& service_name = tservice->get_name();
@@ -4405,7 +4417,7 @@ void t_hack_generator::_generate_recvImpl(
   }
 
   const t_struct* xs = tfunction->get_xceptions();
-  const std::vector<t_field*>& xceptions = xs->get_members();
+  const auto& xceptions = xs->get_members();
   std::vector<t_field*>::const_iterator x_iter;
   for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
     out << indent() << "if ($result->" << (*x_iter)->get_name()
@@ -4442,7 +4454,7 @@ void t_hack_generator::_generate_sendImpl(
     const t_service* tservice,
     const t_function* tfunction) {
   const t_struct* arg_struct = tfunction->get_paramlist();
-  const std::vector<t_field*>& fields = arg_struct->get_members();
+  const auto& fields = arg_struct->get_members();
   std::string funname = tfunction->get_name();
   const std::string& rpc_function_name =
       generate_rpc_function_name(tservice, tfunction);
@@ -4581,11 +4593,11 @@ void t_hack_generator::_generate_sendImpl_arg(
   }
 
   if (t->is_map()) {
-    val_type = ((t_map*)t)->get_val_type();
+    val_type = ((const t_map*)t)->get_val_type();
   } else if (t->is_list()) {
-    val_type = ((t_list*)t)->get_elem_type();
+    val_type = ((const t_list*)t)->get_elem_type();
   } else if (t->is_set()) {
-    val_type = ((t_set*)t)->get_elem_type();
+    val_type = ((const t_set*)t)->get_elem_type();
   } else {
     throw std::runtime_error("Unknown container type");
   }
@@ -4680,7 +4692,7 @@ void t_hack_generator::_generate_service_client_children(
   indent_up();
 
   // Generate client method implementations
-  std::vector<t_function*> functions = get_supported_functions(tservice);
+  auto functions = get_supported_functions(tservice);
   std::vector<t_function*>::const_iterator f_iter;
 
   // generate functions as necessary
@@ -4697,7 +4709,7 @@ void t_hack_generator::_generate_service_client_children(
 
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
       const t_struct* arg_struct = (*f_iter)->get_paramlist();
-      const std::vector<t_field*>& fields = arg_struct->get_members();
+      const auto& fields = arg_struct->get_members();
       std::vector<t_field*>::const_iterator fld_iter;
       std::string funname = (*f_iter)->get_name();
       std::string return_typehint =
@@ -4751,7 +4763,7 @@ void t_hack_generator::_generate_service_client_child_fn(
     bool rpc_options,
     bool legacy_arrays) {
   const t_struct* arg_struct = tfunction->get_paramlist();
-  const std::vector<t_field*>& fields = arg_struct->get_members();
+  const auto& fields = arg_struct->get_members();
   std::vector<t_field*>::const_iterator fld_iter;
   std::string funname =
       tfunction->get_name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
@@ -4863,7 +4875,7 @@ std::string t_hack_generator::declare_field(
   if (init) {
     const t_type* type = tfield->get_type()->get_true_type();
     if (type->is_base_type()) {
-      t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+      t_base_type::t_base tbase = ((const t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
           break;
@@ -4960,7 +4972,7 @@ std::string t_hack_generator::argument_list(
     bool force_nullable) {
   std::string result = "";
 
-  const std::vector<t_field*>& fields = tstruct->get_members();
+  const auto& fields = tstruct->get_members();
   std::vector<t_field*>::const_iterator f_iter;
   bool first = true;
 
@@ -5036,7 +5048,7 @@ std::string t_hack_generator::generate_function_helper_name(
  */
 std::string t_hack_generator::type_to_cast(const t_type* type) {
   if (type->is_base_type()) {
-    t_base_type* btype = (t_base_type*)type;
+    const t_base_type* btype = (const t_base_type*)type;
     switch (btype->get_base()) {
       case t_base_type::TYPE_BOOL:
         return "(bool)";
@@ -5067,7 +5079,7 @@ std::string t_hack_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
-    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    t_base_type::t_base tbase = ((const t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
         throw std::runtime_error("NO T_VOID CONSTRUCT");
