@@ -15,7 +15,7 @@
  */
 
 use crate::binary_type::CopyFromBuf;
-use crate::bufext::{BufExt, BufMutExt};
+use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
@@ -27,7 +27,7 @@ use crate::Result;
 use bufsize::SizeCounter;
 use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::{convert::TryFrom, io::Cursor};
+use std::convert::TryFrom;
 
 pub const BINARY_VERSION_MASK: u32 = 0xffff_0000;
 pub const BINARY_VERSION_1: u32 = 0x8001_0000;
@@ -482,12 +482,13 @@ where
 }
 
 /// Deserialize a Thrift blob using the binary protocol.
-pub fn deserialize<T, B>(b: B) -> Result<T>
+pub fn deserialize<T, B, C>(b: B) -> Result<T>
 where
-    B: AsRef<[u8]>,
-    for<'a> T: Deserialize<BinaryProtocolDeserializer<Cursor<&'a [u8]>>>,
+    B: Into<DeserializeSource<C>>,
+    C: BufExt,
+    T: Deserialize<BinaryProtocolDeserializer<C>>,
 {
-    let b = b.as_ref();
-    let mut deser = BinaryProtocolDeserializer::new(Cursor::new(b));
+    let source: DeserializeSource<C> = b.into();
+    let mut deser = BinaryProtocolDeserializer::new(source.0);
     Ok(T::read(&mut deser)?)
 }
