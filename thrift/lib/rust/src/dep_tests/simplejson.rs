@@ -16,11 +16,13 @@
 
 use anyhow::Result;
 use fbthrift::simplejson_protocol::{deserialize, serialize};
+use fbthrift::{simplejson_protocol::SimpleJsonProtocolDeserializer, Deserialize};
 use fbthrift_test_if::{
     Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
 };
 use std::collections::BTreeMap;
 use std::default::Default;
+use std::io::Cursor;
 
 #[test]
 fn test_large_roundtrip() -> Result<()> {
@@ -363,5 +365,31 @@ fn test_serde_compat() -> Result<()> {
     // but passing between them should work
     assert_eq!(r, serde_json::from_str(&fbthrift_s).unwrap());
     assert_eq!(r, deserialize(&serde_s).unwrap());
+    Ok(())
+}
+
+#[test]
+fn test_multiple_deser() -> Result<()> {
+    // Tests that we don't too eagerly advance the buffer
+    let b1 = Basic {
+        b: true,
+        b2: false,
+        ..Default::default()
+    };
+    let b2 = Basic {
+        b: true,
+        b2: true,
+        ..Default::default()
+    };
+    // serialize it and assert that it serializes correctly
+    let s1 = String::from_utf8(serialize(&b1).to_vec()).unwrap();
+    let s2 = String::from_utf8(serialize(&b2).to_vec()).unwrap();
+    let to_check = format!("{} {}", s1, s2);
+
+    let mut deserializer = SimpleJsonProtocolDeserializer::new(Cursor::new(to_check.as_bytes()));
+    // Assert that deserialize builts the exact same struct
+    assert_eq!(b1, Basic::read(&mut deserializer)?);
+    assert_eq!(b2, Basic::read(&mut deserializer)?);
+
     Ok(())
 }

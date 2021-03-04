@@ -365,16 +365,24 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     }
 
     // TODO(azw): codify this (number of bytes left) in the Deserializer API
-    pub fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
-        if self.buffer.bytes().len() >= len {
-            Some(&self.buffer.bytes()[..len])
+    // TODO(azw): decrease the number of calls to `remaining`
+    /// Returns a byte from the underly buffer if there is enough remaining
+    // `bytes` (named `chunks` in bytes1.0) does not represent a contiguous slice
+    // of the remaining bytes. Implicitly, if the remaining is > 0, then all we
+    // can do is read 1 byte (and not more) from the chunk
+    pub fn peek(&self) -> Option<u8> {
+        if self.buffer.remaining() > 0 {
+            // panic free as it follows:
+            // https://docs.rs/bytes/1.0.1/src/bytes/buf/buf_impl.rs.html#284-289
+            Some(self.buffer.bytes()[0])
         } else {
             None
         }
     }
 
-    fn peek(&self) -> Option<u8> {
-        self.peek_bytes(1).map(|s| s[0])
+    /// Like peek but panics if there is none remaining
+    fn peek_can_panic(&self) -> u8 {
+        self.buffer.bytes()[0]
     }
 
     fn strip_whitespace(&mut self) {
@@ -389,15 +397,19 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     // strip whitespace before and after
     fn eat(&mut self, val: &[u8]) -> Result<()> {
         self.strip_whitespace();
-        match self.peek_bytes(val.len()) {
-            Some(slice) => {
-                if slice != val {
-                    bail!("Expected {:?}, got {:?}", val, slice)
-                }
-            }
-            None => bail!("Expected {:?}", val),
+
+        if self.buffer.remaining() < val.len() {
+            bail!("Expected {:?}, not enough remaining", val)
         }
-        self.advance(val.len());
+
+        for to_check in val {
+            let b = self.peek_can_panic();
+            if b != *to_check {
+                // TODO(azw): better error messages
+                bail!("Expected {} got {}", to_check, b)
+            }
+            self.advance(1);
+        }
         self.strip_whitespace();
         Ok(())
     }
@@ -558,8 +570,8 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
 
     fn check_null(&mut self) -> bool {
         self.strip_whitespace();
-        match self.peek_bytes(4) {
-            Some(slice) if slice == b"null" => {
+        match self.peek() {
+            Some(b'n') => {
                 return true;
             }
             _ => false,
