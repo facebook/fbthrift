@@ -37,6 +37,10 @@ bool field_has_isset(const t_field* field) {
       !cpp2::is_explicit_ref(field);
 }
 
+bool field_is_lazy(const t_field* field) {
+  return field->has_annotation("cpp.experimental.lazy");
+}
+
 std::string const& get_cpp_template(const t_type* type) {
   return type->get_annotation({"cpp.template", "cpp2.template"});
 }
@@ -582,6 +586,7 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::fatal_required_qualifier},
             {"field:visibility", &mstch_cpp2_field::visibility},
             {"field:metadata_name", &mstch_cpp2_field::metadata_name},
+            {"field:lazy?", &mstch_cpp2_field::lazy},
         });
   }
   mstch::node name_hash() {
@@ -595,6 +600,9 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_ref() {
     return cpp2::is_explicit_ref(field_);
+  }
+  mstch::node lazy() {
+    return field_is_lazy(field_);
   }
   mstch::node cpp_ref_unique() {
     return cpp2::is_unique_ref(field_);
@@ -674,7 +682,9 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node visibility() {
     auto req = field_->get_req();
     bool isPrivate = true;
-    if (cpp2::is_ref(field_) || req == t_field::e_req::required) {
+    if (field_is_lazy(field_)) {
+      // Lazy field has to be private.
+    } else if (cpp2::is_ref(field_) || req == t_field::e_req::required) {
       isPrivate = false;
     } else if (req == t_field::e_req::optional) {
       // Optional fields are always private.
