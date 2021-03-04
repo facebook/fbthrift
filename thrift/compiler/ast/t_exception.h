@@ -23,14 +23,15 @@ namespace thrift {
 namespace compiler {
 
 enum class t_error_kind {
-  transient = 0, // The associated RPC may succeed if retried.
+  transient = 0, // The associated RPC might succeed if retried.
   stateful, // Server state must be change for the associated RPC to have
             // any chance of succeeding.
   permanent, // The associated RPC can never succeed, and should not be retried.
 };
 
 enum class t_error_blame {
-  server = 0, // The error was the fault of the server.
+  unspecified = 0, // The blame for the error was not specified.
+  server, // The error was the fault of the server.
   client, // The error was the fault of the client's request.
 };
 
