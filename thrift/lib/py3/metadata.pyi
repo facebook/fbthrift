@@ -63,7 +63,7 @@ class ThriftKind(Enum):
 class Metadata(Protocol):
     def getThriftModuleMetadata(self) -> ThriftMetadata: ...
 
-class ThriftTypeProxy(Protocol):
+class ThriftTypeProxy:
     thriftType: Union[
         ThriftPrimitiveType,
         ThriftSetType,
