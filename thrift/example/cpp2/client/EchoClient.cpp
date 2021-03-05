@@ -29,7 +29,6 @@ DEFINE_string(
     "Transport to use: header, rsocket, http2, or inmemory");
 
 using example::chatroom::EchoAsyncClient;
-using example::chatroom::EchoHandler;
 
 int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
