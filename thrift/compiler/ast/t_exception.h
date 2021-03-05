@@ -36,7 +36,7 @@ enum class t_error_blame {
 };
 
 enum class t_error_safety {
-  unknown = 0, // It is unknown if the associated RPC failed completely or not.
+  unspecified = 0, // The safety for the error was not specified.
   safe, // It is guarneteed the associated RPC failed completely, and no
         // significant server state changed while trying to process the
         // RPC.
