@@ -85,6 +85,46 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
   {{/function:stream_exceptions}}
   {{/service:streamingFunctions}}
+  {{#service:sinkFunctions}}
+  {{#function:args}}
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
+  {{/function:args}}
+  {{#function:returnType}}{{#type:sinkElemType}}
+  private static final TField _{{function:javaName}}_SINK_TFIELD = new TField("payload", TType.{{> TType}}, (short)1);
+  {{/type:sinkElemType}}{{/function:returnType}}
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:sink_final_response_exceptions?}}new HashMap<>();{{/function:sink_final_response_exceptions?}}{{^function:sink_final_response_exceptions?}}java.util.Collections.emptyMap();{{/function:sink_final_response_exceptions?}}
+  {{#function:exceptions}}
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:exceptions}}
+  {{#function:sink_final_response_exceptions}}
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:sink_final_response_exceptions}}
+  {{/service:sinkFunctions}}
 
   static {
     {{#service:supportedFunctions}}{{#function:exceptions}}
@@ -95,6 +135,11 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     {{/function:exceptions}}{{#function:stream_exceptions}}
     _{{function:javaName}}_STREAM_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}});
     {{/function:stream_exceptions}}{{/service:streamingFunctions}}
+    {{#service:sinkFunctions}}{{#function:exceptions}}
+    _{{function:javaName}}_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_EXCEPTION_READER{{field:index}});
+    {{/function:exceptions}}{{#function:sink_final_response_exceptions}}
+    _{{function:javaName}}_STREAM_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}});
+    {{/function:sink_final_response_exceptions}}{{/service:sinkFunctions}}
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
@@ -289,9 +334,133 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/service:streamingFunctions}}
 
   {{#service:sinkFunctions}}
+  private com.facebook.swift.transport.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    return oprot -> {
+      try {
+        {{#function:args}}
+        {{#field:type}}
+        {
+          oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}});
+
+          {{> FieldType}} _iter0 = {{field:javaName}};
+
+          {{#field:type}}
+          {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
+          {{/field:type}}
+          oprot.writeFieldEnd();
+        }
+        {{/field:type}}
+
+        {{/function:args}}
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _create{{function:javaName}}SinkWriter({{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}} _p{{/type:sinkElemType}}{{/function:returnType}}) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_{{function:javaName}}_SINK_TFIELD);
+        {{#function:returnType}}{{#type:sinkElemType}}
+        {{> WriteSinkPayloadType}}
+        {{/type:sinkElemType}}{{/function:returnType}}
+
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_READER =
+    oprot -> {
+              try {
+                {{^function:voidType}}
+                {{#function:returnType}}{{#type:sinkFinalResponseType}}
+                {{> ReadReturnType }}
+
+                return _r;
+                {{/type:sinkFinalResponseType}}{{/function:returnType}}
+                {{/function:voidType}}
+
+                {{#function:voidType}}
+                return null;
+                {{/function:voidType}}
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+    {{#function:returnType}}{{#type:sinkHasFirstResponse?}}
+
+    private static final com.facebook.swift.transport.payload.Reader _{{function:javaName}}_FIRST_READER =
+    oprot -> {
+              try {
+                {{^function:voidType}}
+                {{#function:returnType}}{{#type:sinkFirstResponseType}}
+                {{> ReadReturnType }}
+
+                return _r;
+                {{/type:sinkFirstResponseType}}{{/function:returnType}}
+                {{/function:voidType}}
+
+                {{#function:voidType}}
+                return null;
+                {{/function:voidType}}
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+  {{/type:sinkHasFirstResponse?}}{{/function:returnType}}
+
+  @java.lang.Override
+  public {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("{{function:javaName}}")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<{{#function:returnType}}{{#type:sinkFinalResponseType}}{{> BoxedType}}{{/type:sinkFinalResponseType}}{{/function:returnType}}> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
+                    _{{function:javaName}}_READER,{{#function:returnType}}{{#type:sinkHasFirstResponse?}}
+                    _{{function:javaName}}_FIRST_READER,{{/type:sinkHasFirstResponse?}}{{/function:returnType}}
+                    _{{function:javaName}}_EXCEPTION_READERS,
+                    _{{function:javaName}}_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<{{#function:returnType}}{{#type:sinkFinalResponseType}}{{> BoxedType}}{{/type:sinkFinalResponseType}}{{/function:returnType}}>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _create{{function:javaName}}SinkWriter(_p),
+                    _{{function:javaName}}_READER,{{#function:returnType}}{{#type:sinkHasFirstResponse?}}
+                    _{{function:javaName}}_FIRST_READER,{{/type:sinkHasFirstResponse?}}{{/function:returnType}}
+                    _{{function:javaName}}_EXCEPTION_READERS,
+                    _{{function:javaName}}_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2){{#function:returnType}}{{^type:sinkHasFirstResponse?}}
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData()){{/type:sinkHasFirstResponse?}}{{/function:returnType}}
+                .map(_p -> (({{#function:returnType}}{{> SinkResponseGeneric}}{{/function:returnType}})_p.getData()){{#function:returnType}}{{!
+                }}{{^type:sinkHasFirstResponse?}}.getData(){{/type:sinkHasFirstResponse?}}{{/function:returnType}});
+      }){{#function:returnType}}{{^type:sinkHasFirstResponse?}}.single(){{/type:sinkHasFirstResponse?}}{{/function:returnType}};
+  }
+
   @java.lang.Override
   public {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads) {
-      throw new UnsupportedOperationException();
+      return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}} payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   {{/service:sinkFunctions}}

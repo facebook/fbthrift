@@ -15,8 +15,62 @@ public class SinkServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
+  private static final TField _method_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _methodAndReponse_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _methodThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_EXCEPTION_READERS = new HashMap<>();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final com.facebook.swift.transport.payload.Reader _methodThrow_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.sink.InitialException _r = test.fixtures.sink.InitialException.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _methodSinkThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final TField _methodFinalThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _methodBothThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.swift.transport.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 =
+  oprot -> {
+            try {
+              test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  private static final TField _methodFast_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
+    _methodThrow_EXCEPTION_READERS.put((short)1, _methodThrow_EXCEPTION_READER0);
+    _methodFinalThrow_STREAM_EXCEPTION_READERS.put((short)1, _methodFinalThrow_STREAM_EXCEPTION_READER0);
+    _methodBothThrow_STREAM_EXCEPTION_READERS.put((short)1, _methodBothThrow_STREAM_EXCEPTION_READER0);
   }
 
   public SinkServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
@@ -29,39 +83,563 @@ public class SinkServiceReactiveClient
   public void close() {}
 
 
+  private com.facebook.swift.transport.payload.Writer _createmethodWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_method_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _method_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("method")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodWriter(),
+                    _method_READER,
+                    _method_EXCEPTION_READERS,
+                    _method_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodSinkWriter(_p),
+                    _method_READER,
+                    _method_EXCEPTION_READERS,
+                    _method_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
+  }
+
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return method( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodAndReponseWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodAndReponse_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodAndReponse_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+    private static final com.facebook.swift.transport.payload.Reader _methodAndReponse_FIRST_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.InitialResponse _r = test.fixtures.sink.InitialResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodAndReponse")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodAndReponseWriter(),
+                    _methodAndReponse_READER,
+                    _methodAndReponse_FIRST_READER,
+                    _methodAndReponse_EXCEPTION_READERS,
+                    _methodAndReponse_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodAndReponseSinkWriter(_p),
+                    _methodAndReponse_READER,
+                    _methodAndReponse_FIRST_READER,
+                    _methodAndReponse_EXCEPTION_READERS,
+                    _methodAndReponse_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()));
+      });
   }
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodAndReponse( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodThrowWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodThrow_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodThrow_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodThrow")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodThrowWriter(),
+                    _methodThrow_READER,
+                    _methodThrow_EXCEPTION_READERS,
+                    _methodThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodThrowSinkWriter(_p),
+                    _methodThrow_READER,
+                    _methodThrow_EXCEPTION_READERS,
+                    _methodThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodSinkThrowWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodSinkThrow_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodSinkThrow_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodSinkThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodSinkThrow")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodSinkThrowWriter(),
+                    _methodSinkThrow_READER,
+                    _methodSinkThrow_EXCEPTION_READERS,
+                    _methodSinkThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodSinkThrowSinkWriter(_p),
+                    _methodSinkThrow_READER,
+                    _methodSinkThrow_EXCEPTION_READERS,
+                    _methodSinkThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodSinkThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodSinkThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodFinalThrowWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodFinalThrow_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodFinalThrow_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFinalThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodFinalThrow")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodFinalThrowWriter(),
+                    _methodFinalThrow_READER,
+                    _methodFinalThrow_EXCEPTION_READERS,
+                    _methodFinalThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodFinalThrowSinkWriter(_p),
+                    _methodFinalThrow_READER,
+                    _methodFinalThrow_EXCEPTION_READERS,
+                    _methodFinalThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFinalThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodFinalThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodBothThrowWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodBothThrow_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodBothThrow_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodBothThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodBothThrow")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodBothThrowWriter(),
+                    _methodBothThrow_READER,
+                    _methodBothThrow_EXCEPTION_READERS,
+                    _methodBothThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodBothThrowSinkWriter(_p),
+                    _methodBothThrow_READER,
+                    _methodBothThrow_EXCEPTION_READERS,
+                    _methodBothThrow_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodBothThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodBothThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodFastWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _p) {
+    return oprot -> {
+      try {
+        oprot.writeFieldBegin(_methodFast_SINK_TFIELD);
+        _p.write0(oprot);
+        oprot.writeFieldEnd();
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _methodFast_READER =
+    oprot -> {
+              try {
+                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("methodFast")
+                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodFastWriter(),
+                    _methodFast_READER,
+                    _methodFast_EXCEPTION_READERS,
+                    _methodFast_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+              reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
+                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createmethodFastSinkWriter(_p),
+                    _methodFast_READER,
+                    _methodFast_EXCEPTION_READERS,
+                    _methodFast_STREAM_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap())));
+
+            return _rpc
+                .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .limitRequest(2)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData());
+      }).single();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      throw new UnsupportedOperationException();
+      return methodFast( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 }
