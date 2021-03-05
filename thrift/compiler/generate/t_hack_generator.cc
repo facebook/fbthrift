@@ -1770,7 +1770,7 @@ const t_type* t_hack_generator::tmeta_ThriftType_type() {
   static t_struct stream_type(&empty_program, "tmeta_ThriftStreamType");
   static t_struct sink_type(&empty_program, "tmeta_ThriftSinkType");
   if (!type.get_members().empty()) {
-    return (const t_type*)&type;
+    return &type;
   }
 
   primitive_type.set_name("tmeta_ThriftPrimitiveType");
@@ -1795,56 +1795,46 @@ const t_type* t_hack_generator::tmeta_ThriftType_type() {
   append_to_t_enum(
       &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_VOID_TYPE);
 
-  list_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "valueType"));
-  set_type.append(std::make_unique<t_field>((const t_type*)&type, "valueType"));
-  map_type.append(std::make_unique<t_field>((const t_type*)&type, "keyType"));
-  map_type.append(std::make_unique<t_field>((const t_type*)&type, "valueType"));
+  list_type.append(std::make_unique<t_field>(&type, "valueType"));
+  set_type.append(std::make_unique<t_field>(&type, "valueType"));
+  map_type.append(std::make_unique<t_field>(&type, "keyType"));
+  map_type.append(std::make_unique<t_field>(&type, "valueType"));
   enum_type.append(std::make_unique<t_field>(string_type(), "name"));
   struct_type.append(std::make_unique<t_field>(string_type(), "name"));
   union_type.append(std::make_unique<t_field>(string_type(), "name"));
   typedef_type.append(std::make_unique<t_field>(string_type(), "name"));
-  typedef_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "underlyingType"));
-  stream_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "elemType"));
-  stream_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "initialResponseType"));
-  sink_type.append(std::make_unique<t_field>((const t_type*)&type, "elemType"));
-  sink_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "finalResponseType"));
-  sink_type.append(
-      std::make_unique<t_field>((const t_type*)&type, "initialResponseType"));
+  typedef_type.append(std::make_unique<t_field>(&type, "underlyingType"));
+  stream_type.append(std::make_unique<t_field>(&type, "elemType"));
+  stream_type.append(std::make_unique<t_field>(&type, "initialResponseType"));
+  sink_type.append(std::make_unique<t_field>(&type, "elemType"));
+  sink_type.append(std::make_unique<t_field>(&type, "finalResponseType"));
+  sink_type.append(std::make_unique<t_field>(&type, "initialResponseType"));
 
-  type.append(
-      std::make_unique<t_field>((const t_type*)&primitive_type, "t_primitive"));
-  type.append(std::make_unique<t_field>((const t_type*)&list_type, "t_list"));
-  type.append(std::make_unique<t_field>((const t_type*)&set_type, "t_set"));
-  type.append(std::make_unique<t_field>((const t_type*)&map_type, "t_map"));
-  type.append(std::make_unique<t_field>((const t_type*)&enum_type, "t_enum"));
-  type.append(
-      std::make_unique<t_field>((const t_type*)&struct_type, "t_struct"));
-  type.append(std::make_unique<t_field>((const t_type*)&union_type, "t_union"));
-  type.append(
-      std::make_unique<t_field>((const t_type*)&typedef_type, "t_typedef"));
-  type.append(
-      std::make_unique<t_field>((const t_type*)&stream_type, "t_stream"));
-  type.append(std::make_unique<t_field>((const t_type*)&sink_type, "t_sink"));
-  return (const t_type*)&type;
+  type.append(std::make_unique<t_field>(&primitive_type, "t_primitive"));
+  type.append(std::make_unique<t_field>(&list_type, "t_list"));
+  type.append(std::make_unique<t_field>(&set_type, "t_set"));
+  type.append(std::make_unique<t_field>(&map_type, "t_map"));
+  type.append(std::make_unique<t_field>(&enum_type, "t_enum"));
+  type.append(std::make_unique<t_field>(&struct_type, "t_struct"));
+  type.append(std::make_unique<t_field>(&union_type, "t_union"));
+  type.append(std::make_unique<t_field>(&typedef_type, "t_typedef"));
+  type.append(std::make_unique<t_field>(&stream_type, "t_stream"));
+  type.append(std::make_unique<t_field>(&sink_type, "t_sink"));
+  return &type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftField_type() {
   static t_program empty_program("");
   static t_struct type(&empty_program, "tmeta_ThriftField");
   if (!type.get_members().empty()) {
-    return (const t_type*)&type;
+    return &type;
   }
 
   type.append(std::make_unique<t_field>(i64_type(), "id"));
   type.append(std::make_unique<t_field>(tmeta_ThriftType_type(), "type"));
   type.append(std::make_unique<t_field>(string_type(), "name"));
   type.append(std::make_unique<t_field>(bool_type(), "is_optional"));
-  return (const t_type*)&type;
+  return &type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftFunction_type() {
@@ -1852,16 +1842,16 @@ const t_type* t_hack_generator::tmeta_ThriftFunction_type() {
   static t_struct type(&empty_program, "tmeta_ThriftFunction");
   static t_list tlist(tmeta_ThriftField_type());
   if (!type.get_members().empty()) {
-    return (const t_type*)&type;
+    return &type;
   }
 
   type.append(std::make_unique<t_field>(string_type(), "name"));
   type.append(
       std::make_unique<t_field>(tmeta_ThriftType_type(), "return_type"));
-  type.append(std::make_unique<t_field>((const t_type*)&tlist, "arguments"));
-  type.append(std::make_unique<t_field>((const t_type*)&tlist, "exceptions"));
+  type.append(std::make_unique<t_field>(&tlist, "arguments"));
+  type.append(std::make_unique<t_field>(&tlist, "exceptions"));
   type.append(std::make_unique<t_field>(bool_type(), "is_oneway"));
-  return (const t_type*)&type;
+  return &type;
 }
 
 const t_type* t_hack_generator::tmeta_ThriftService_type() {
@@ -1869,13 +1859,13 @@ const t_type* t_hack_generator::tmeta_ThriftService_type() {
   static t_struct type(&empty_program, "tmeta_ThriftService");
   static t_list tlist(tmeta_ThriftFunction_type());
   if (!type.get_members().empty()) {
-    return (const t_type*)&type;
+    return &type;
   }
 
   type.append(std::make_unique<t_field>(string_type(), "name"));
-  type.append(std::make_unique<t_field>((const t_type*)&tlist, "functions"));
+  type.append(std::make_unique<t_field>(&tlist, "functions"));
   type.append(std::make_unique<t_field>(string_type(), "parent"));
-  return (const t_type*)&type;
+  return &type;
 }
 
 /**
