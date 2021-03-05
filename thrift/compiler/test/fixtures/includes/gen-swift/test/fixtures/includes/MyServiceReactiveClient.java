@@ -81,7 +81,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("query")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -151,7 +151,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("hasArgDocs")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -175,4 +175,7 @@ public class MyServiceReactiveClient
   }
 
 
+  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  }
 }

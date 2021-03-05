@@ -73,7 +73,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("ping")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -126,7 +126,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("getRandomData")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -187,7 +187,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("sink")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -257,7 +257,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("putDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -319,7 +319,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("hasDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -381,7 +381,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("getDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -442,7 +442,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("deleteDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -512,7 +512,7 @@ public class MyServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("lobDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -536,4 +536,7 @@ public class MyServiceReactiveClient
   }
 
 
+  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  }
 }

@@ -125,7 +125,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("method")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -215,7 +215,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodAndReponse")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -294,7 +294,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodThrow")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -372,7 +372,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodSinkThrow")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -450,7 +450,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodFinalThrow")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -528,7 +528,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodBothThrow")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -606,7 +606,7 @@ public class SinkServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodFast")
                 .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -642,4 +642,7 @@ public class SinkServiceReactiveClient
       return methodFast( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
+  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  }
 }

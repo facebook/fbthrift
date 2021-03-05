@@ -147,7 +147,7 @@ public class PubSubStreamingServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("returnstream")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -210,7 +210,7 @@ public class PubSubStreamingServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("streamthrows")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -273,7 +273,7 @@ public class PubSubStreamingServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("boththrows")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -348,7 +348,7 @@ public class PubSubStreamingServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("responseandstreamthrows")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -420,7 +420,7 @@ public class PubSubStreamingServiceReactiveClient
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("returnstreamFast")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
-                .setOtherMetadata(Collections.emptyMap())
+                .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
 
@@ -446,4 +446,7 @@ public class PubSubStreamingServiceReactiveClient
   }
 
 
+  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  }
 }
