@@ -36,12 +36,12 @@ class t_typedef : public t_type {
  public:
   t_typedef(
       t_program* program,
-      t_type* type,
-      const std::string& symbolic,
+      const t_type* type,
+      std::string symbolic,
       t_scope* scope)
       : t_type(program, symbolic),
         type_(type),
-        symbolic_(symbolic),
+        symbolic_(std::move(symbolic)),
         scope_(scope),
         defined_(true) {}
 
@@ -64,7 +64,6 @@ class t_typedef : public t_type {
   bool resolve_placeholder();
 
   const t_type* get_type() const;
-  t_type* get_type();
 
   const std::string& get_symbolic() const {
     return symbolic_;
@@ -125,7 +124,7 @@ class t_typedef : public t_type {
   }
 
  private:
-  t_type* type_;
+  const t_type* type_;
   std::string symbolic_;
   t_scope* scope_;
   bool defined_{true};

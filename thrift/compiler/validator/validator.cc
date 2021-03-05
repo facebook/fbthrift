@@ -368,7 +368,8 @@ bool interactions_validator::visit(t_program* p) {
   for (auto* interaction : p->get_interactions()) {
     for (auto* func : interaction->get_functions()) {
       auto ret = func->get_returntype();
-      if (ret->is_service() && static_cast<t_service*>(ret)->is_interaction()) {
+      if (ret->is_service() &&
+          static_cast<const t_service*>(ret)->is_interaction()) {
         add_error(func->get_lineno(), "Nested interactions are forbidden.");
       }
     }
@@ -382,7 +383,7 @@ bool interactions_validator::visit(t_service* s) {
     auto ret = func->get_returntype();
     if (func->is_interaction_constructor()) {
       if (!ret->is_service() ||
-          !static_cast<t_service*>(ret)->is_interaction()) {
+          !static_cast<const t_service*>(ret)->is_interaction()) {
         add_error(func->get_lineno(), "Only interactions can be performed.");
         continue;
       }

@@ -26,18 +26,20 @@ namespace compiler {
 
 class t_stream_response : public t_type {
  public:
-  explicit t_stream_response(t_type* elem_type, t_struct* throws = nullptr)
+  explicit t_stream_response(
+      const t_type* elem_type,
+      t_struct* throws = nullptr)
       : elem_type_(elem_type), throws_(throws) {}
 
-  t_type* get_elem_type() const {
+  const t_type* get_elem_type() const {
     return elem_type_;
   }
 
-  t_type* get_first_response_type() const {
+  const t_type* get_first_response_type() const {
     return first_response_type_;
   }
 
-  void set_first_response_type(t_type* first_response_type) {
+  void set_first_response_type(const t_type* first_response_type) {
     first_response_type_ = first_response_type;
   }
 
@@ -46,7 +48,7 @@ class t_stream_response : public t_type {
   }
 
   bool has_first_response() const {
-    return (bool)(first_response_type_);
+    return first_response_type_ != nullptr;
   }
 
   std::string get_full_name() const override {
@@ -69,8 +71,8 @@ class t_stream_response : public t_type {
   }
 
  private:
-  t_type* first_response_type_{nullptr};
-  t_type* elem_type_;
+  const t_type* first_response_type_{nullptr};
+  const t_type* elem_type_;
   t_struct* throws_;
 };
 

@@ -33,20 +33,20 @@ namespace compiler {
 class t_sink : public t_type {
  public:
   explicit t_sink(
-      t_type* sink_type,
+      const t_type* sink_type,
       t_struct* sink_xceptions,
-      t_type* final_response_type,
+      const t_type* final_response_type,
       t_struct* final_response_xceptions)
       : sink_type_(sink_type),
         sink_xceptions_(sink_xceptions),
         final_response_type_(final_response_type),
         final_response_xceptions_(final_response_xceptions) {}
 
-  void set_first_response(t_type* first_response) {
+  void set_first_response(const t_type* first_response) {
     first_response_type_ = first_response;
   }
 
-  t_type* get_sink_type() const {
+  const t_type* get_sink_type() const {
     return sink_type_;
   }
 
@@ -54,7 +54,7 @@ class t_sink : public t_type {
     return sink_xceptions_;
   }
 
-  t_type* get_final_response_type() const {
+  const t_type* get_final_response_type() const {
     return final_response_type_;
   }
 
@@ -66,7 +66,7 @@ class t_sink : public t_type {
     return true;
   }
 
-  t_type* get_first_response_type() const {
+  const t_type* get_first_response_type() const {
     return first_response_type_;
   }
 
@@ -87,11 +87,11 @@ class t_sink : public t_type {
   }
 
  private:
-  t_type* sink_type_;
+  const t_type* sink_type_;
   t_struct* sink_xceptions_;
-  t_type* final_response_type_;
+  const t_type* final_response_type_;
   t_struct* final_response_xceptions_;
-  t_type* first_response_type_{nullptr};
+  const t_type* first_response_type_{nullptr};
 };
 
 } // namespace compiler

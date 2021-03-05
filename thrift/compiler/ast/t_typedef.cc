@@ -34,11 +34,6 @@ const t_type* t_typedef::get_type() const {
   return type_;
 }
 
-t_type* t_typedef::get_type() {
-  assert(type_ != nullptr);
-  return type_;
-}
-
 const std::string* t_typedef::get_first_annotation_or_null(
     const t_type* type,
     const aliases& name) {

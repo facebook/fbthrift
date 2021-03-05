@@ -57,7 +57,7 @@ class t_function : public t_named {
    * @param qualifier        - The qualifier of the function, if any.
    */
   t_function(
-      t_type* returntype,
+      const t_type* returntype,
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_struct> xceptions = nullptr,
@@ -98,7 +98,7 @@ class t_function : public t_named {
   }
 
   t_function(
-      t_sink* returntype,
+      const t_sink* returntype,
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_struct> xceptions)
@@ -126,7 +126,7 @@ class t_function : public t_named {
   /**
    * t_function getters
    */
-  t_type* get_returntype() const {
+  const t_type* get_returntype() const {
     return returntype_;
   }
 
@@ -176,7 +176,7 @@ class t_function : public t_named {
   }
 
  private:
-  t_type* returntype_;
+  const t_type* returntype_;
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;

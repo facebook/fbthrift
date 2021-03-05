@@ -96,7 +96,19 @@ std::unique_ptr<T> own(T*ptr) {
 namespace apache {
 namespace thrift {
 namespace compiler {
-using t_typestructpair = std::pair<t_type*, t_struct*>;
+using t_typestructpair = std::pair<const t_type*, t_struct*>;
+
+// A strongly typed const t_type pointer.
+//
+// This is needed to avoid ambiguity in the parser code gen.
+struct t_type_ref {
+  constexpr t_type_ref() = default;
+  constexpr t_type_ref(const t_type* ttype) : type(ttype) {}
+  constexpr explicit operator bool() const { return bool(type); }
+  constexpr operator const t_type*() const { return type; }
+  constexpr const t_type* operator->() const { return type; }
+  const t_type* type = nullptr;
+};
 
 } // namespace compiler
 } // namespace thrift
@@ -240,7 +252,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_field*>         Field
 %type<t_field_id>       FieldIdentifier
 %type<t_field::e_req>   FieldRequiredness
-%type<t_type*>          FieldType
+%type<t_type_ref>       FieldType
 %type<t_type*>          ResponseAndStreamReturnType
 %type<t_type*>          ResponseAndSinkReturnType
 %type<t_stream_response*>
@@ -277,7 +289,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_service*>       Interaction
 
 %type<t_function*>      Function
-%type<t_type*>          FunctionType
+%type<t_type_ref>       FunctionType
 %type<t_service*>       FunctionList
 
 %type<t_paramlist*>     ParamList
@@ -1115,13 +1127,13 @@ Function:
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
-      auto* rettype = $4;
+      const auto* rettype = $4.type;
       auto* paramlist = $7;
-      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<t_stream_response*>(rettype)->get_throws_struct() : nullptr;
+      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<const t_stream_response*>(rettype)->get_throws_struct() : nullptr;
       t_function* func;
-      if (rettype && rettype->is_sink()) {
+      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype)) {
         func = new t_function(
-          static_cast<t_sink*>(rettype),
+          tsink,
           $5,
           own(paramlist),
           own($9)
@@ -1469,12 +1481,12 @@ FieldType:
         }
         // Create typedef in case we have annotations on the type.
         if ($$ && $2) {
-          auto td = new t_typedef(
+          auto td = std::make_unique<t_typedef>(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          td->reset_annotations($2->strings, $2->last_lineno);
+          td->reset_annotations(std::move($2->strings), $2->last_lineno);
           delete $2;
-          $$ = td;
-          driver.program->add_unnamed_typedef(own(td));
+          $$ = td.get();
+          driver.program->add_unnamed_typedef(std::move(td));
         }
         if (!$$) {
           /*
@@ -1482,13 +1494,13 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          auto td = new t_typedef(driver.program, $1, driver.scope_cache);
-          $$ = td;
-          driver.program->add_placeholder_typedef(own(td));
+          auto td = std::make_unique<t_typedef>(driver.program, $1, driver.scope_cache);
           if ($2) {
-            $$->reset_annotations($2->strings, $2->last_lineno);
+            td->reset_annotations($2->strings, $2->last_lineno);
             delete $2;
           }
+          $$ = td.get();
+          driver.program->add_placeholder_typedef(std::move(td));
         }
       }
     }
@@ -1502,9 +1514,9 @@ FieldType:
       driver.debug("FieldType -> ContainerType");
       $$ = $1;
       if (driver.mode == parsing_mode::INCLUDES) {
-        driver.delete_at_the_end($$);
+        driver.delete_at_the_end($1);
       } else {
-        driver.program->add_unnamed_type(own($$));
+        driver.program->add_unnamed_type(own($1));
       }
     }
 
@@ -1512,13 +1524,14 @@ BaseType: SimpleBaseType TypeAnnotations
     {
       driver.debug("BaseType => SimpleBaseType TypeAnnotations");
       if ($2) {
-        $$ = new t_base_type(*static_cast<t_base_type*>($1));
-        $$->reset_annotations($2->strings, $2->last_lineno);
+        auto bt = std::make_unique<t_base_type>(*static_cast<const t_base_type*>($1));
+        bt->reset_annotations(std::move($2->strings), $2->last_lineno);
         delete $2;
+        $$ = bt.get();
         if (driver.mode == parsing_mode::INCLUDES) {
-          driver.delete_at_the_end($$);
+          driver.delete_at_the_end(bt.release());
         } else {
-          driver.program->add_unnamed_type(own($$));
+          driver.program->add_unnamed_type(std::move(bt));
         }
       } else {
         $$ = $1;

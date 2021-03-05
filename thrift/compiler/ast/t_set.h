@@ -29,9 +29,9 @@ namespace compiler {
  */
 class t_set : public t_container {
  public:
-  t_set(t_type* elem_type) : elem_type_(elem_type) {}
+  explicit t_set(const t_type* elem_type) : elem_type_(elem_type) {}
 
-  t_type* get_elem_type() const {
+  const t_type* get_elem_type() const {
     return elem_type_;
   }
 
@@ -48,7 +48,7 @@ class t_set : public t_container {
   }
 
  private:
-  t_type* elem_type_;
+  const t_type* elem_type_;
 };
 
 } // namespace compiler
