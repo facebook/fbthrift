@@ -418,7 +418,7 @@ void HeaderServerChannel::messageReceived(
       }
     }
 
-    auto ew = folly::try_and_catch<std::exception>(
+    auto ew = folly::try_and_catch(
         [&]() { callback_->requestReceived(std::move(request)); });
     if (ew) {
       LOG(WARNING) << "Could not parse request: " << ew.what();

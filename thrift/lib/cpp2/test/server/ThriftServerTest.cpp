@@ -424,7 +424,7 @@ void doLoadHeaderTest(bool isRocket) {
     void requestSent() override {}
     void replyReceived(ClientReceiveState&& state) override {
       header_ = *state.extractHeader();
-      ew_ = folly::try_and_catch<std::exception>(
+      ew_ = folly::try_and_catch(
           [&] { TestServiceAsyncClient::recv_voidResponse(state); });
       baton_.post();
     }

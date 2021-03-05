@@ -33,7 +33,7 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
   while (!closing_) {
     std::unique_ptr<folly::IOBuf> unframed;
     std::unique_ptr<apache::thrift::transport::THeader> header;
-    auto ex = folly::try_and_catch<std::exception>([&]() {
+    auto ex = folly::try_and_catch([&]() {
       // got a decrypted message
       std::tie(unframed, remaining, header) = removeFrame(&q);
     });
