@@ -416,7 +416,9 @@ void JSONProtocolReaderCommon::readFloat(float& flt) {
 
 template <typename StrType>
 void JSONProtocolReaderCommon::readString(StrType& str) {
-  readInContext<StrType>(str);
+  bool keyish;
+  ensureAndReadContext(keyish);
+  readJSONString(str);
 }
 
 template <typename StrType>
@@ -590,6 +592,10 @@ T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
 
 template <typename T>
 void JSONProtocolReaderCommon::readInContext(T& val) {
+  static_assert(
+      !apache::thrift::detail::is_string<T>::value,
+      "Strings are strings in any context, use readJSONString");
+
   bool keyish;
   ensureAndReadContext(keyish);
   if (keyish) {
@@ -597,14 +603,6 @@ void JSONProtocolReaderCommon::readInContext(T& val) {
   } else {
     readJSONVal(val);
   }
-}
-
-void JSONProtocolReaderCommon::readJSONKey(std::string& key) {
-  readJSONString(key);
-}
-
-void JSONProtocolReaderCommon::readJSONKey(folly::fbstring& key) {
-  readJSONString(key);
 }
 
 void JSONProtocolReaderCommon::readJSONKey(bool& key) {

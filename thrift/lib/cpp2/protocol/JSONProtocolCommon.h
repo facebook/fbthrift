@@ -22,6 +22,7 @@
 
 #include <folly/Conv.h>
 #include <folly/Range.h>
+#include <folly/Traits.h>
 #include <folly/dynamic.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
@@ -34,8 +35,12 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
-template <typename Str>
-using is_string = std::is_same<typename Str::value_type, char>;
+
+template <typename T>
+using value_type_of = typename T::value_type;
+
+template <typename T>
+using is_string = std::is_same<char, folly::detected_t<value_type_of, T>>;
 
 namespace json {
 constexpr uint8_t kJSONObjectStart = '{';
@@ -219,9 +224,6 @@ class JSONProtocolReaderCommon {
  protected:
   enum class ContextType { MAP, ARRAY };
 
-  template <typename Str>
-  using is_string = std::is_same<typename Str::value_type, char>;
-
   // skip over whitespace so that we can peek, and store number of bytes
   // skipped
   inline void skipWhitespace();
@@ -244,8 +246,6 @@ class JSONProtocolReaderCommon {
   static T castIntegral(folly::StringPiece val);
   template <typename T>
   void readInContext(T& val);
-  inline void readJSONKey(std::string& key);
-  inline void readJSONKey(folly::fbstring& key);
   inline void readJSONKey(bool& key);
   template <typename T>
   void readJSONKey(T& key);
