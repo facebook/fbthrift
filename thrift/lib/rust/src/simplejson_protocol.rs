@@ -45,6 +45,7 @@ pub struct SimpleJsonProtocolSerializer<B: BufMutExt> {
 
 pub struct SimpleJsonProtocolDeserializer<B> {
     buffer: B,
+    remaining: usize,
 }
 
 impl<F> Protocol for SimpleJsonProtocol<F>
@@ -357,7 +358,8 @@ enum CommaState {
 
 impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     pub fn new(buffer: B) -> Self {
-        SimpleJsonProtocolDeserializer { buffer }
+        let remaining = buffer.remaining();
+        SimpleJsonProtocolDeserializer { buffer, remaining }
     }
 
     pub fn into_inner(self) -> B {
@@ -365,15 +367,12 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     }
 
     // TODO(azw): codify this (number of bytes left) in the Deserializer API
-    // TODO(azw): decrease the number of calls to `remaining`
-    /// Returns a byte from the underly buffer if there is enough remaining
     // `bytes` (named `chunks` in bytes1.0) does not represent a contiguous slice
-    // of the remaining bytes. Implicitly, if the remaining is > 0, then all we
-    // can do is read 1 byte (and not more) from the chunk
+    // of the remaining bytes. All we can do is check if there is a byte to return
+    /// Returns a byte from the underly buffer if there is enough remaining
     pub fn peek(&self) -> Option<u8> {
-        if self.buffer.remaining() > 0 {
-            // panic free as it follows:
-            // https://docs.rs/bytes/1.0.1/src/bytes/buf/buf_impl.rs.html#284-289
+        // fast path like https://docs.rs/bytes/1.0.1/src/bytes/buf/buf_impl.rs.html#18
+        if !self.buffer.bytes().is_empty() {
             Some(self.buffer.bytes()[0])
         } else {
             None
@@ -390,7 +389,7 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             if !&[b' ', b'\t', b'\n', b'\r'].contains(&b) {
                 break;
             }
-            self.buffer.advance(1);
+            self.advance(1);
         }
     }
 
@@ -398,7 +397,7 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     fn eat(&mut self, val: &[u8]) -> Result<()> {
         self.strip_whitespace();
 
-        if self.buffer.remaining() < val.len() {
+        if self.remaining < val.len() {
             bail!("Expected {:?}, not enough remaining", val)
         }
 
@@ -416,6 +415,9 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
 
     fn advance(&mut self, len: usize) {
         self.buffer.advance(len);
+
+        // advance will panic if we try to advance more than remaining
+        self.remaining -= len
     }
 
     // Attempts to eat a comma, returns

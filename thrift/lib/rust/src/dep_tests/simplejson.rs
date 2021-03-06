@@ -393,3 +393,33 @@ fn test_multiple_deser() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn test_not_enough() -> Result<()> {
+    // Tests that we can deserialize until
+    // we run out, and don't panic
+    let b1 = Basic {
+        b: true,
+        b2: false,
+        ..Default::default()
+    };
+    let b2 = Basic {
+        b: true,
+        b2: true,
+        ..Default::default()
+    };
+    // serialize it and assert that it serializes correctly
+    let s1 = String::from_utf8(serialize(&b1).to_vec()).unwrap();
+    let s2 = String::from_utf8(serialize(&b2).to_vec()).unwrap();
+    let to_check = format!("{} {}", s1, s2);
+
+    let mut deserializer = SimpleJsonProtocolDeserializer::new(Cursor::new(
+        // 6 should cover the } and a `true` value
+        &to_check.as_bytes()[..to_check.as_bytes().len() - 6],
+    ));
+    // Assert that deserialize builts the exact same struct
+    assert_eq!(b1, Basic::read(&mut deserializer)?);
+    assert!(Basic::read(&mut deserializer).is_err());
+
+    Ok(())
+}
