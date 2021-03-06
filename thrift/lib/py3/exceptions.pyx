@@ -135,10 +135,12 @@ cdef class GeneratedError(Error):
         for name in self.__iter_names():
             yield name, getattr(self, name)
 
-    cdef cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         raise NotImplementedError()
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         raise NotImplementedError()
 
 

@@ -85,12 +85,14 @@ cdef class Enum(thrift.py3.types.CompiledEnum):
         return __Enum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module1.Enum"
 
 
@@ -162,12 +164,14 @@ cdef class Struct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Struct()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cStruct].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module1.Struct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

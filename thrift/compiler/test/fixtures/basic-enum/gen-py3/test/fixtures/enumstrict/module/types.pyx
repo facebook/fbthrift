@@ -85,12 +85,14 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
         return __EmptyEnum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cEmptyEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.EmptyEnum"
 
 
@@ -124,12 +126,14 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
         return __MyEnum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cMyEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.MyEnum"
 
 
@@ -163,12 +167,14 @@ cdef class MyBigEnum(thrift.py3.types.CompiledEnum):
         return __MyBigEnum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cMyBigEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.MyBigEnum"
 
 
@@ -244,12 +250,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cMyStruct].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.MyStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

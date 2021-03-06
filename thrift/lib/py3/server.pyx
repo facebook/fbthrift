@@ -92,10 +92,12 @@ cdef class ServiceInterface(AsyncProcessorFactory):
         # Same as above, but allow end users to define things to be cleaned up
         pass
 
-    cdef cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         raise NotImplementedError()
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         raise NotImplementedError()
 
 

@@ -85,12 +85,14 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
         return __AnEnum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cAnEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "includes.AnEnum"
 
 
@@ -156,12 +158,14 @@ cdef class AStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__AStruct()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cAStruct].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "includes.AStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -245,12 +249,14 @@ cdef class AStructB(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__AStructB()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cAStructB].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "includes.AStructB"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

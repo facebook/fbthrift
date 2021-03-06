@@ -14,12 +14,12 @@
 
 from enum import Enum
 from typing import (
+    Iterator,
     Protocol,
     Type,
     Tuple,
     Union,
     Optional,
-    Sequence,
     overload,
 )
 
@@ -44,7 +44,7 @@ from apache.thrift.metadata.types import (
     ThriftStreamType,
 )
 from thrift.py3.client import Client
-from thrift.py3.exceptions import Error
+from thrift.py3.exceptions import GeneratedError
 from thrift.py3.server import ServiceInterface
 from thrift.py3.types import Struct, Enum as ThriftEnumClass
 
@@ -129,27 +129,27 @@ class ThriftStructProxy(ThriftTypeProxy):
     thriftType: ThriftStruct
     thriftMeta: ThriftMetadata
     name: str
-    fields: Sequence[ThriftFieldProxy]
+    fields: Iterator[ThriftFieldProxy]
     is_union: bool
 
 class ThriftExceptionProxy(Protocol):
     name: str
-    fields: Sequence[ThriftFieldProxy]
+    fields: Iterator[ThriftFieldProxy]
     thriftType: ThriftException
     thriftMeta: ThriftMetadata
 
 class ThriftFunctionProxy(Protocol):
     name: str
     return_type: ThriftTypeProxy
-    arguments: Sequence[ThriftFieldProxy]
-    exceptions: Sequence[ThriftFieldProxy]
+    arguments: Iterator[ThriftFieldProxy]
+    exceptions: Iterator[ThriftFieldProxy]
     is_oneway: bool
     thriftType: ThriftFunction
     thriftMeta: ThriftMetadata
 
 class ThriftServiceProxy(Protocol):
     name: str
-    functions: Sequence[ThriftFunctionProxy]
+    functions: Iterator[ThriftFunctionProxy]
     parent: Optional[ThriftServiceProxy]
     thriftType: ThriftService
     thriftMeta: ThriftMetadata
@@ -159,7 +159,9 @@ def gen_metadata(cls: Metadata) -> ThriftMetadata: ...
 @overload
 def gen_metadata(cls: Union[Struct, Type[Struct]]) -> ThriftStructProxy: ...
 @overload
-def gen_metadata(cls: Union[Error, Type[Error]]) -> ThriftExceptionProxy: ...
+def gen_metadata(
+    cls: Union[GeneratedError, Type[GeneratedError]]
+) -> ThriftExceptionProxy: ...
 @overload
 def gen_metadata(
     cls: Union[ServiceInterface, Type[ServiceInterface], Client, Type[Client]]

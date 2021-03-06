@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+cimport cython
+from libcpp.memory cimport make_shared
+from libcpp.utility cimport move
 from cython.operator cimport dereference as deref, preincrement as inc
 from enum import Enum
 from collections.abc import Mapping
@@ -219,3 +222,15 @@ cdef class RpcOptions:
         if not self._writeheaders:
             self._writeheaders = WriteHeaders.create(self)
         return self._writeheaders
+
+
+@cython.auto_pickle(False)
+cdef class MetadataBox:
+    def __init__(self):
+        raise TypeError
+
+    @staticmethod
+    cdef box(cThriftMetadata&& meta):
+        inst = <MetadataBox>MetadataBox.__new__(MetadataBox)
+        inst._cpp_obj = make_shared[cThriftMetadata](move(meta))
+        return inst

@@ -35,6 +35,7 @@ from thrift.py3.common cimport (
     cThriftMetadata as __fbthrift_cThriftMetadata,
     ServiceMetadata,
     extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -409,14 +410,16 @@ cdef class MyService(thrift.py3.client.Client):
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=True)
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         cdef __fbthrift_cThriftServiceContext context
         ServiceMetadata[_services_reflection.cMyServiceSvIf].gen(meta, context)
         extractMetadataFromServiceContext(meta, context)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.MyService"
 
 cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
@@ -484,13 +487,15 @@ cdef class DbMixedStackArguments(thrift.py3.client.Client):
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=True)
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         cdef __fbthrift_cThriftServiceContext context
         ServiceMetadata[_services_reflection.cDbMixedStackArgumentsSvIf].gen(meta, context)
         extractMetadataFromServiceContext(meta, context)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.DbMixedStackArguments"
 

@@ -154,10 +154,12 @@ cdef class Struct:
             return NotImplemented
         # otherwise returns None
 
-    cdef cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         raise NotImplementedError()
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         raise NotImplementedError()
 
 
@@ -626,10 +628,12 @@ cdef class CompiledEnum:
             return False
         return self is other
 
-    cdef cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         raise NotImplementedError()
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         raise NotImplementedError()
 
 

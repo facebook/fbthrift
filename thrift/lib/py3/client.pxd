@@ -105,8 +105,6 @@ cdef class Client:
     cdef const type_info* _typeid(self)
     cdef bind_client(self, cRequestChannel_ptr&& channel)
     cdef add_event_handler(self, const shared_ptr[cTProcessorEventHandler]& handler)
-    cdef cThriftMetadata __get_metadata__(self) except *
-    cdef str __get_thrift_name__(self)
 
 cdef void requestchannel_callback(
         cFollyTry[cRequestChannel_ptr]&& result,

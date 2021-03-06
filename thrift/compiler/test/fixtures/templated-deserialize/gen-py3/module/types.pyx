@@ -85,12 +85,14 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
         return __MyEnumA_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cMyEnumA].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.MyEnumA"
 
 
@@ -162,12 +164,14 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__SmallStruct()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cSmallStruct].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.SmallStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -415,12 +419,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__containerStruct()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[ccontainerStruct].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.containerStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

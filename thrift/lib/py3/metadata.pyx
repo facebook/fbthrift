@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cimport cython
-
-import threading
-from functools import wraps
+from libcpp.utility cimport move
 from thrift.py3.types cimport CompiledEnum, Struct
 from thrift.py3.exceptions cimport GeneratedError
 from thrift.py3.server cimport ServiceInterface
 from thrift.py3.client cimport Client
+from thrift.py3.common cimport MetadataBox
 from apache.thrift.metadata.types cimport (
     ThriftMetadata,
     ThriftStruct,
@@ -45,7 +43,7 @@ from apache.thrift.metadata.types cimport (
     ThriftSinkType,
     ThriftStreamType,
 )
-from libcpp.memory cimport make_shared
+
 
 cpdef enum ThriftKind:
     PRIMITIVE = 0
@@ -59,37 +57,51 @@ cpdef enum ThriftKind:
     STREAM = 8
     SINK = 9
 
+
 cdef class ThriftTypeProxy:
     # A union of a bunch of thrift metadata types
-    cdef public object thriftType
-    cdef public ThriftMetadata thriftMeta
-    cdef public ThriftKind kind
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly object thriftType
+    cdef readonly ThriftMetadata thriftMeta
+    cdef readonly ThriftKind kind
+
+    def __init__(self, object thriftType not None, ThriftMetadata thriftMeta not None):
+        if not isinstance(thriftType, (
+            ThriftStruct,
+            ThriftEnum,
+            ThriftPrimitiveType,
+            ThriftListType,
+            ThriftSetType,
+            ThriftMapType,
+            ThriftTypedefType,
+            ThriftSinkType,
+            ThriftStreamType,
+        )):
+            raise TypeError(f"{thriftType!r} is not a known thrift type.")
         self.thriftType = thriftType
         self.thriftMeta = thriftMeta
 
     @staticmethod
-    def create(thriftType, thriftMeta):
+    cdef create(ThriftType thriftType, ThriftMetadata thriftMeta):
         # Determine value and kind
-        if thriftType.type == ThriftType.Type.t_list:
+        if thriftType.type is ThriftType.Type.t_list:
             return ThriftListProxy(thriftType.value, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_set:
+        elif thriftType.type is ThriftType.Type.t_set:
             return ThriftSetProxy(thriftType.value, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_map:
+        elif thriftType.type is ThriftType.Type.t_map:
             return ThriftMapProxy(thriftType.value, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_enum:
+        elif thriftType.type is ThriftType.Type.t_enum:
             specialType = ThriftTypeProxy(thriftMeta.enums[thriftType.value.name], thriftMeta)
             specialType.kind = ThriftKind.ENUM
             return specialType
-        elif thriftType.type == ThriftType.Type.t_struct:
+        elif thriftType.type is ThriftType.Type.t_struct:
             return ThriftStructProxy(thriftType.value.name, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_union:
+        elif thriftType.type is ThriftType.Type.t_union:
             return ThriftStructProxy(thriftType.value.name, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_typedef:
+        elif thriftType.type is ThriftType.Type.t_typedef:
             return ThriftTypedefProxy(thriftType.value, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_stream:
+        elif thriftType.type is ThriftType.Type.t_stream:
             return ThriftStreamProxy(thriftType.value, thriftMeta)
-        elif thriftType.type == ThriftType.Type.t_sink:
+        elif thriftType.type is ThriftType.Type.t_sink:
             return ThriftSinkProxy(thriftType.value, thriftMeta)
         specialType = ThriftTypeProxy(thriftType.value, thriftMeta)
         specialType.kind = ThriftKind.PRIMITIVE
@@ -145,66 +157,80 @@ cdef class ThriftTypeProxy:
             return self
         raise TypeError('Type is not a sink')
 
+
 cdef class ThriftSetProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy valueType
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy valueType
+
+    def __init__(self, ThriftSetType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.SET
         self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
 
+
 cdef class ThriftListProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy valueType
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy valueType
+
+    def __init__(self, ThriftListType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.LIST
         self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
 
+
 cdef class ThriftMapProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy valueType
-    cdef public ThriftTypeProxy keyType
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy valueType
+    cdef readonly ThriftTypeProxy keyType
+
+    def __init__(self, ThriftMapType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.MAP
         self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
         self.keyType = ThriftTypeProxy.create(self.thriftType.keyType, self.thriftMeta)
 
+
 cdef class ThriftTypedefProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy underlyingType
-    cdef public str name
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy underlyingType
+    cdef readonly str name
+
+    def __init__(self, ThriftTypedefType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.TYPEDEF
         self.name = self.thriftType.name
         self.underlyingType = ThriftTypeProxy.create(self.thriftType.underlyingType, self.thriftMeta)
 
+
 cdef class ThriftSinkProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy elemType
-    cdef public ThriftTypeProxy initialResponseType
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy elemType
+    cdef readonly ThriftTypeProxy initialResponseType
+
+    def __init__(self, ThriftSinkType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.SINK
         self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
         self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
 
+
 cdef class ThriftStreamProxy(ThriftTypeProxy):
-    cdef public ThriftTypeProxy elemType
-    cdef public ThriftTypeProxy finalResponseType
-    cdef public ThriftTypeProxy initialResponseType
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy elemType
+    cdef readonly ThriftTypeProxy finalResponseType
+    cdef readonly ThriftTypeProxy initialResponseType
+
+    def __init__(self, ThriftStreamType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.STREAM
         self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
         self.finalResponseType = ThriftTypeProxy.create(self.thriftType.finalResponseType, self.thriftMeta)
         self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
 
+
 cdef class ThriftFieldProxy:
-    cdef public ThriftTypeProxy type
-    cdef public ThriftField thriftType
-    cdef public ThriftMetadata thriftMeta
-    cdef public int id
-    cdef public str name
-    cdef public int is_optional
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly ThriftTypeProxy type
+    cdef readonly ThriftField thriftType
+    cdef readonly ThriftMetadata thriftMeta
+    cdef readonly int id
+    cdef readonly str name
+    cdef readonly int is_optional
+
+    def __init__(self, ThriftField thriftType not None, ThriftMetadata thriftMeta not None):
         self.type = ThriftTypeProxy.create(thriftType.type, thriftMeta)
         self.thriftType = thriftType
         self.thriftMeta = thriftMeta
@@ -212,10 +238,12 @@ cdef class ThriftFieldProxy:
         self.name = self.thriftType.name
         self.is_optional = self.thriftType.is_optional
 
+
 cdef class ThriftStructProxy(ThriftTypeProxy):
-    cdef public str name
-    cdef public int is_union
-    def __init__(self, name, thriftMeta):
+    cdef readonly str name
+    cdef readonly int is_union
+
+    def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftMeta.structs[name], thriftMeta)
         self.name = self.thriftType.name
         self.is_union = self.thriftType.is_union
@@ -224,51 +252,61 @@ cdef class ThriftStructProxy(ThriftTypeProxy):
             self.kind = ThriftKind.UNION
         else:
             self.kind = ThriftKind.STRUCT
+
     @property
     def fields(self):
         for field in self.thriftType.fields:
             yield ThriftFieldProxy(field, self.thriftMeta)
 
+
 cdef class ThriftExceptionProxy:
-    cdef public ThriftException thriftType
-    cdef public ThriftMetadata thriftMeta
-    cdef public str name
-    def __init__(self, name, thriftMeta):
+    cdef readonly ThriftException thriftType
+    cdef readonly ThriftMetadata thriftMeta
+    cdef readonly str name
+
+    def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         self.thriftType = thriftMeta.exceptions[name]
         self.thriftMeta = thriftMeta
         self.name = self.thriftType.name
+
     @property
     def fields(self):
         for field in self.thriftType.fields:
             yield ThriftFieldProxy(field, self.thriftMeta)
 
+
 cdef class ThriftFunctionProxy:
-    cdef public str name
-    cdef public ThriftFunction thriftType
-    cdef public ThriftMetadata thriftMeta
-    cdef public ThriftTypeProxy return_type
-    cdef public int is_oneway
-    def __init__(self, thriftType, thriftMeta):
+    cdef readonly str name
+    cdef readonly ThriftFunction thriftType
+    cdef readonly ThriftMetadata thriftMeta
+    cdef readonly ThriftTypeProxy return_type
+    cdef readonly int is_oneway
+
+    def __init__(self, ThriftFunction thriftType not None, ThriftMetadata thriftMeta not None):
         self.name = thriftType.name
         self.thriftType = thriftType
         self.thriftMeta = thriftMeta
         self.return_type = ThriftTypeProxy.create(self.thriftType.return_type, self.thriftMeta)
         self.is_oneway = self.thriftType.is_oneway
+
     @property
     def arguments(self):
         for argument in self.thriftType.arguments:
             yield ThriftFieldProxy(argument, self.thriftMeta)
+
     @property
     def exceptions(self):
         for exception in self.thriftType.exceptions:
             yield ThriftFieldProxy(exception, self.thriftMeta)
 
+
 cdef class ThriftServiceProxy:
-    cdef public ThriftService thriftType
-    cdef public str name
-    cdef public ThriftMetadata thriftMeta
-    cdef public ThriftServiceProxy parent
-    def __init__(self, name, thriftMeta):
+    cdef readonly ThriftService thriftType
+    cdef readonly str name
+    cdef readonly ThriftMetadata thriftMeta
+    cdef readonly ThriftServiceProxy parent
+
+    def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         self.thriftType = thriftMeta.services[name]
         self.name = self.thriftType.name
         self.thriftMeta = thriftMeta
@@ -276,35 +314,37 @@ cdef class ThriftServiceProxy:
             self.thriftMeta.services[self.thriftType.parent],
             self.thriftMeta
         )
+
     @property
     def functions(self):
         for function in self.thriftType.functions:
             yield ThriftFunctionProxy(function, self.thriftMeta)
 
+
 def gen_metadata(obj_or_cls):
     if hasattr(obj_or_cls, "getThriftModuleMetadata"):
-        meta = obj_or_cls.getThriftModuleMetadata()
-        return meta
-    if isinstance(obj_or_cls, type):
-    # Enums need to be special cased here because you cannot init an enum with CompiledEnum()
-        if issubclass(obj_or_cls, CompiledEnum):
-            obj_or_cls = obj_or_cls(0)
-        else:
-            obj_or_cls = obj_or_cls()
-    if isinstance(obj_or_cls, Struct):
-        meta = ThriftMetadata.create(make_shared[cThriftMetadata]((<Struct?>obj_or_cls).__get_metadata__()))
-        return ThriftStructProxy((<Struct?>obj_or_cls).__get_thrift_name__(), meta)
-    elif isinstance(obj_or_cls, GeneratedError):
-        meta = ThriftMetadata.create(make_shared[cThriftMetadata]((<GeneratedError?>obj_or_cls).__get_metadata__()))
-        return ThriftExceptionProxy((<GeneratedError?>obj_or_cls).__get_thrift_name__(), meta)
-    elif isinstance(obj_or_cls, ServiceInterface):
-        meta = ThriftMetadata.create(make_shared[cThriftMetadata]((<ServiceInterface?>obj_or_cls).__get_metadata__()))
-        return ThriftServiceProxy((<ServiceInterface?>obj_or_cls).__get_thrift_name__(), meta)
-    elif isinstance(obj_or_cls, Client):
-        meta = ThriftMetadata.create(make_shared[cThriftMetadata]((<Client?>obj_or_cls).__get_metadata__()))
-        return ThriftServiceProxy((<Client?>obj_or_cls).__get_thrift_name__(), meta)
-    elif isinstance(obj_or_cls, CompiledEnum):
-        meta = ThriftMetadata.create(make_shared[cThriftMetadata]((<CompiledEnum?>obj_or_cls).__get_metadata__()))
-        return meta.enums[(<CompiledEnum?>obj_or_cls).__get_thrift_name__()]
+        return obj_or_cls.getThriftModuleMetadata()
+
+    cls = obj_or_cls if isinstance(obj_or_cls, type) else type(obj_or_cls)
+
+    if not issubclass(cls, (Struct, GeneratedError, ServiceInterface, Client, CompiledEnum)):
+        raise TypeError(f'{cls!r} is not a thrift-py3 type.')
+
+    # get the box
+    cdef MetadataBox box = cls.__get_metadata__()
+    # unbox the box
+    cdef ThriftMetadata meta = ThriftMetadata.create(move(box._cpp_obj))
+    cdef str name = cls.__get_thrift_name__()
+
+    if issubclass(cls, Struct):
+        return ThriftStructProxy(name, meta)
+    elif issubclass(cls, GeneratedError):
+        return ThriftExceptionProxy(name, meta)
+    elif issubclass(cls, ServiceInterface):
+        return ThriftServiceProxy(name, meta)
+    elif issubclass(cls, Client):
+        return ThriftServiceProxy(name, meta)
+    elif issubclass(cls, CompiledEnum):
+        return meta.enums[name]
     else:
-        raise TypeError('No metadata information found')
+        raise TypeError(f'unsupported thrift-py3 type: {cls!r}.')

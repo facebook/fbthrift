@@ -35,6 +35,7 @@ from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
     Protocol as __Protocol,
     cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
 cimport includes.types as _includes_types

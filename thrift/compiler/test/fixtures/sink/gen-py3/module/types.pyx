@@ -117,12 +117,14 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__InitialResponse()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cInitialResponse].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.InitialResponse"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -203,12 +205,14 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__FinalResponse()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cFinalResponse].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.FinalResponse"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -289,12 +293,14 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkPayload()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cSinkPayload].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.SinkPayload"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -375,12 +381,14 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__CompatibleWithKeywordSink()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cCompatibleWithKeywordSink].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.CompatibleWithKeywordSink"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -452,12 +460,14 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__InitialException()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         ExceptionMetadata[cInitialException].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.InitialException"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -517,12 +527,14 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkException1()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         ExceptionMetadata[cSinkException1].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.SinkException1"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -582,12 +594,14 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkException2()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         ExceptionMetadata[cSinkException2].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.SinkException2"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

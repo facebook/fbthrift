@@ -85,12 +85,14 @@ cdef class Animal(thrift.py3.types.CompiledEnum):
         return __Animal_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cAnimal].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Animal"
 
 
@@ -174,12 +176,14 @@ cdef class Color(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Color()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cColor].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Color"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -292,12 +296,14 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Vehicle()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cVehicle].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Vehicle"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -458,12 +464,14 @@ cdef class Person(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Person()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cPerson].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Person"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

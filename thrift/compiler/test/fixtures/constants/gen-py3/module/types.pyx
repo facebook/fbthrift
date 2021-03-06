@@ -85,12 +85,14 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
         return __EmptyEnum_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cEmptyEnum].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.EmptyEnum"
 
 
@@ -124,12 +126,14 @@ cdef class City(thrift.py3.types.CompiledEnum):
         return __City_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cCity].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.City"
 
 
@@ -163,12 +167,14 @@ cdef class Company(thrift.py3.types.CompiledEnum):
         return __Company_enum_data.get_by_name(name)
 
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         EnumMetadata[cCompany].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Company"
 
 
@@ -324,12 +330,14 @@ cdef class Internship(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Internship()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cInternship].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Internship"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -416,12 +424,14 @@ cdef class Range(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Range()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cRange].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Range"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -508,12 +518,14 @@ cdef class struct1(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__struct1()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cstruct1].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.struct1"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -616,12 +628,14 @@ cdef class struct2(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__struct2()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cstruct2].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.struct2"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -716,12 +730,14 @@ cdef class struct3(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__struct3()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cstruct3].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.struct3"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -818,12 +834,14 @@ cdef class struct4(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__struct4()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cstruct4].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.struct4"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -971,12 +989,14 @@ cdef class union1(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__union1()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cunion1].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.union1"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -1162,12 +1182,14 @@ cdef class union2(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__union2()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cunion2].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.union2"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

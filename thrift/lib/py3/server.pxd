@@ -151,13 +151,13 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         THeader* getHeader()
         string getMethodName()
 
+
 cdef class AsyncProcessorFactory:
     cdef shared_ptr[cAsyncProcessorFactory] _cpp_obj
 
 
 cdef class ServiceInterface(AsyncProcessorFactory):
-    cdef cThriftMetadata __get_metadata__(self) except *
-    cdef str __get_thrift_name__(self)
+    pass
 
 
 cdef class ThriftServer:

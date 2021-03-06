@@ -35,6 +35,7 @@ from thrift.py3.common cimport (
     cThriftMetadata as __fbthrift_cThriftMetadata,
     ServiceMetadata,
     extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 from folly.futures cimport bridgeFutureWith
@@ -118,13 +119,15 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__ExtendTestService(for_clients=True)
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         cdef __fbthrift_cThriftServiceContext context
         ServiceMetadata[_services_reflection.cExtendTestServiceSvIf].gen(meta, context)
         extractMetadataFromServiceContext(meta, context)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "extend.ExtendTestService"
 
