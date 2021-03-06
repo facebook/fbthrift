@@ -157,9 +157,17 @@ public interface Raiser extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> doBlandWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> doRaise();
 
         default reactor.core.publisher.Mono<Void> doRaise(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> doRaiseWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -169,9 +177,17 @@ public interface Raiser extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<String>> get200Wrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> get500();
 
         default reactor.core.publisher.Mono<String> get500(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<String>> get500Wrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

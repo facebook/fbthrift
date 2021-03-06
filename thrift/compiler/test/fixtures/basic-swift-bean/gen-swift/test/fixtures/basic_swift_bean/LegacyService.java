@@ -71,5 +71,9 @@ public interface LegacyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(final Set<String> key, final long legacyStuff, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

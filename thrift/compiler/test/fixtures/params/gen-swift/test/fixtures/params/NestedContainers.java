@@ -193,9 +193,17 @@ public interface NestedContainers extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> mapListWrapper(final Map<Integer, List<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo);
 
         default reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> mapSetWrapper(final Map<Integer, Set<Integer>> foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -205,15 +213,27 @@ public interface NestedContainers extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> listMapWrapper(final List<Map<Integer, Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo);
 
         default reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> listSetWrapper(final List<Set<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
 
         default reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> turtlesWrapper(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

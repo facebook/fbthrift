@@ -9,6 +9,7 @@ package test.fixtures.params;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class NestedContainersReactiveClient 
   implements NestedContainers.Reactive {
@@ -80,7 +81,7 @@ public class NestedContainersReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> mapListWrapper(final Map<Integer, List<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -99,9 +100,13 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return mapListWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -151,7 +156,7 @@ public class NestedContainersReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> mapSetWrapper(final Map<Integer, Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -170,9 +175,13 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return mapSetWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -221,7 +230,7 @@ public class NestedContainersReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> listMapWrapper(final List<Map<Integer, Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -240,9 +249,13 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return listMapWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -290,7 +303,7 @@ public class NestedContainersReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> listSetWrapper(final List<Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -309,9 +322,13 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return listSetWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -375,7 +392,7 @@ public class NestedContainersReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> turtlesWrapper(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -394,9 +411,13 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return turtlesWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

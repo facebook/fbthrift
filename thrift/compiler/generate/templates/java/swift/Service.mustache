@@ -119,11 +119,19 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         {{/service:supportedFunctions}}
         {{#service:streamingFunctions}}
-        {{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
-        default {{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -132,6 +140,10 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads);
 
         default {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default {{#function:returnType}}{{> SinkWrapperReturnType}}{{/function:returnType}} {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

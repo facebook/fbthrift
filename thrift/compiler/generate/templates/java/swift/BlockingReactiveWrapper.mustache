@@ -63,7 +63,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
     {{/service:supportedFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
-    public {{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException();
     }
 

@@ -109,9 +109,17 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> queryWrapper(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> hasArgDocs(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i);
 
         default reactor.core.publisher.Mono<Void> hasArgDocs(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> hasArgDocsWrapper(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

@@ -9,6 +9,7 @@ package test.fixtures.exceptions;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class RaiserReactiveClient 
   implements Raiser.Reactive {
@@ -121,7 +122,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doBland( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> doBlandWrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -140,9 +141,13 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doBland( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return doBlandWrapper( rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -173,7 +178,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doRaise( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> doRaiseWrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -192,9 +197,13 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doRaise( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return doRaiseWrapper( rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -226,7 +235,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> get200( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<String>> get200Wrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -245,9 +254,13 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> get200( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return get200Wrapper( rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -279,7 +292,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> get500( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<String>> get500Wrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -298,9 +311,13 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> get500( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return get500Wrapper( rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

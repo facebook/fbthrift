@@ -103,6 +103,10 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> fooWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         public class MyInteraction implements reactor.core.Disposable {
             ListenableFuture<Integer> frobnicate() {
                 throw new UnsupportedOperationException();

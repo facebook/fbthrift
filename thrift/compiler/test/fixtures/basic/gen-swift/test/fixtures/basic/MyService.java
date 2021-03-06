@@ -291,9 +291,17 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> getRandomData();
 
         default reactor.core.publisher.Mono<String> getRandomData(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<String>> getRandomDataWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -303,9 +311,17 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> sinkWrapper(final long sink, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> putDataById(final long id, final String data);
 
         default reactor.core.publisher.Mono<Void> putDataById(final long id, final String data, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> putDataByIdWrapper(final long id, final String data, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -315,9 +331,17 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Boolean>> hasDataByIdWrapper(final long id, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> getDataById(final long id);
 
         default reactor.core.publisher.Mono<String> getDataById(final long id, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<String>> getDataByIdWrapper(final long id, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -327,9 +351,17 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> deleteDataByIdWrapper(final long id, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data);
 
         default reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> lobDataByIdWrapper(final long id, final String data, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

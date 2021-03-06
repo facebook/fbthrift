@@ -97,9 +97,17 @@ public interface DbMixedStackArguments extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<byte[]>> getDataByKey0Wrapper(final String key, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key);
 
         default reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<byte[]>> getDataByKey1Wrapper(final String key, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

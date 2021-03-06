@@ -9,6 +9,7 @@ package test.fixtures.inheritance;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReactiveClient
   implements MyLeaf.Reactive {
@@ -52,7 +53,7 @@ public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReact
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doLeaf( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> doLeafWrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -71,9 +72,13 @@ public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReact
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doLeaf( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return doLeafWrapper( rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

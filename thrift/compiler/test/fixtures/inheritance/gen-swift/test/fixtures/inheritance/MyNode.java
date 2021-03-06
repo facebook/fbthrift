@@ -59,5 +59,9 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> doMidWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

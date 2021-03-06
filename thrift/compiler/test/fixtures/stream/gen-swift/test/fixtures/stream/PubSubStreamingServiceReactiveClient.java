@@ -9,6 +9,7 @@ package test.fixtures.stream;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class PubSubStreamingServiceReactiveClient 
   implements PubSubStreamingService.Reactive {
@@ -141,7 +142,7 @@ public class PubSubStreamingServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.client.ResponseWrapper<Integer>> returnstreamWrapper(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -163,8 +164,13 @@ public class PubSubStreamingServiceReactiveClient
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return returnstreamWrapper(i32From, i32To,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -204,7 +210,7 @@ public class PubSubStreamingServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<Integer> streamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.client.ResponseWrapper<Integer>> streamthrowsWrapper(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -226,8 +232,13 @@ public class PubSubStreamingServiceReactiveClient
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> streamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return streamthrowsWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -267,7 +278,7 @@ public class PubSubStreamingServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<Integer> boththrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.client.ResponseWrapper<Integer>> boththrowsWrapper(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -289,8 +300,13 @@ public class PubSubStreamingServiceReactiveClient
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> boththrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return boththrowsWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -342,7 +358,7 @@ public class PubSubStreamingServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.client.ResponseWrapper<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>>> responseandstreamthrowsWrapper(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -363,9 +379,13 @@ public class PubSubStreamingServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestStreamingResponse(_crp, rpcOptions)
-                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Integer,Integer>)_p.getData()));
+                .singleRequestStreamingResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return responseandstreamthrowsWrapper(foo,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -414,7 +434,7 @@ public class PubSubStreamingServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.client.ResponseWrapper<Integer>> returnstreamFastWrapper(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -436,8 +456,13 @@ public class PubSubStreamingServiceReactiveClient
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return returnstreamFastWrapper(i32From, i32To,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

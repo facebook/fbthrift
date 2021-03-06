@@ -9,6 +9,7 @@ package test.fixtures.basic_swift_bean;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class LegacyServiceReactiveClient 
   implements LegacyService.Reactive {
@@ -103,7 +104,7 @@ public class LegacyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(final Set<String> key, final long legacyStuff,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -122,9 +123,13 @@ public class LegacyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return getPointsWrapper(key, legacyStuff,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

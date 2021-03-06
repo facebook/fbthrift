@@ -59,5 +59,9 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> pangWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

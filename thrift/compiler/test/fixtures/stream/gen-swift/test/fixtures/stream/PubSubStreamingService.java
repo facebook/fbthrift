@@ -34,9 +34,17 @@ public interface PubSubStreamingService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Flux<ResponseWrapper<Integer>> returnstreamWrapper(final int i32From, final int i32To, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Flux<Integer> streamthrows(final int foo);
 
         default reactor.core.publisher.Flux<Integer> streamthrows(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<Integer>> streamthrowsWrapper(final int foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -46,15 +54,27 @@ public interface PubSubStreamingService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Flux<ResponseWrapper<Integer>> boththrowsWrapper(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo);
 
         default reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>>> responseandstreamthrowsWrapper(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To);
 
         default reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<Integer>> returnstreamFastWrapper(final int i32From, final int i32To, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

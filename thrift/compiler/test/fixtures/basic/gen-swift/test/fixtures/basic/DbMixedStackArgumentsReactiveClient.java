@@ -9,6 +9,7 @@ package test.fixtures.basic;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.swift.transport.client.ResponseWrapper;
 
 public class DbMixedStackArgumentsReactiveClient 
   implements DbMixedStackArguments.Reactive {
@@ -65,7 +66,7 @@ public class DbMixedStackArgumentsReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<byte[]>> getDataByKey0Wrapper(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -84,9 +85,13 @@ public class DbMixedStackArgumentsReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return getDataByKey0Wrapper(key,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
@@ -127,7 +132,7 @@ public class DbMixedStackArgumentsReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<byte[]>> getDataByKey1Wrapper(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -146,9 +151,13 @@ public class DbMixedStackArgumentsReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions)
-                .map(_p -> _p.getData());
+                .singleRequestSingleResponse(_crp, rpcOptions);
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return getDataByKey1Wrapper(key,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override

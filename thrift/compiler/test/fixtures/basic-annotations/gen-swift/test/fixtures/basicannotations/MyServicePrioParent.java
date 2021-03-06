@@ -85,9 +85,17 @@ public interface MyServicePrioParent extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> pong();
 
         default reactor.core.publisher.Mono<Void> pong(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> pongWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

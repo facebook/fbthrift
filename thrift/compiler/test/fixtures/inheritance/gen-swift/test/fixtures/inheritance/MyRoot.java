@@ -59,5 +59,9 @@ public interface MyRoot extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> doRootWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

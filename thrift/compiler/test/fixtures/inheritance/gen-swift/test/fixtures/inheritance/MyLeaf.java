@@ -59,5 +59,9 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
             throw new UnsupportedOperationException();
         }
 
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> doLeafWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }
