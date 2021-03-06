@@ -250,19 +250,12 @@ bool AnyRegistry::registerType(
     return false;
   }
 
-  // NOTE: Only fails if serialzers are redundant.
+  // NOTE: Only fails if serializers are redundant.
   // TODO(afuller): Make success atomic.
   bool success = true;
-  for (auto& serializer : serializers) {
-    // TODO(afuller): Fix folly::forward_like for containers that only expose
-    // const access.
-    if constexpr (std::is_const_v<
-                      std::remove_reference_t<decltype(serializer)>>) {
-      success &= registerSerializerImpl(serializer, entry);
-    } else {
-      success &=
-          registerSerializerImpl(folly::forward_like<C>(serializer), entry);
-    }
+  for (auto&& serializer : std::forward<C>(serializers)) {
+    success &= registerSerializerImpl(
+        std::forward<decltype(serializer)>(serializer), entry);
   }
   return success;
 }

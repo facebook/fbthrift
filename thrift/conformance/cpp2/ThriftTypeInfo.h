@@ -18,6 +18,7 @@
 
 #include <initializer_list>
 
+#include <folly/container/Access.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 #include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -40,29 +41,21 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type);
 
 // Implementation
 
-template <typename C>
-ThriftTypeInfo createThriftTypeInfo(C&& uris, type_hash_size_t typeHashBytes) {
+template <typename R>
+ThriftTypeInfo createThriftTypeInfo(R&& uris, type_hash_size_t typeHashBytes) {
   ThriftTypeInfo type;
   if (typeHashBytes != kTypeHashBytesNotSpecified) {
     type.typeHashBytes_ref() = typeHashBytes;
   }
-  auto itr = uris.begin();
-  if (itr == uris.end()) {
+  auto itr = folly::access::begin(std::forward<R>(uris));
+  auto iend = folly::access::end(std::forward<R>(uris));
+  if (itr == iend) {
     folly::throw_exception<std::invalid_argument>(
         "At least one name must be provided.");
   }
-  // TODO(afuller): Fix folly::forward_like for containers that only expose
-  // const access.
-  if constexpr (std::is_const_v<std::remove_reference_t<decltype(*itr)>>) {
-    type.set_uri(*itr++);
-    for (; itr != uris.end(); ++itr) {
-      type.altUris_ref()->emplace(*itr);
-    }
-  } else {
-    type.set_uri(folly::forward_like<C>(*itr++));
-    for (; itr != uris.end(); ++itr) {
-      type.altUris_ref()->emplace(folly::forward_like<C>(*itr));
-    }
+  type.set_uri(std::forward<decltype(*itr)>(*itr++));
+  for (; itr != iend; ++itr) {
+    type.altUris_ref()->emplace(std::forward<decltype(*itr)>(*itr++));
   }
   return type;
 }
