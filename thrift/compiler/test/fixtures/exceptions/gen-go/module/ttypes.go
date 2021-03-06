@@ -28,21 +28,6 @@ func NewBanal() *Banal {
   return &Banal{}
 }
 
-type BanalBuilder struct {
-  obj *Banal
-}
-
-func NewBanalBuilder() *BanalBuilder{
-  return &BanalBuilder{
-    obj: NewBanal(),
-  }
-}
-
-func (p BanalBuilder) Emit() *Banal{
-  return &Banal{
-  }
-}
-
 func (p *Banal) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -104,32 +89,6 @@ func NewFiery() *Fiery {
 func (p *Fiery) GetMessage() string {
   return p.Message
 }
-type FieryBuilder struct {
-  obj *Fiery
-}
-
-func NewFieryBuilder() *FieryBuilder{
-  return &FieryBuilder{
-    obj: NewFiery(),
-  }
-}
-
-func (p FieryBuilder) Emit() *Fiery{
-  return &Fiery{
-    Message: p.obj.Message,
-  }
-}
-
-func (p *FieryBuilder) Message(message string) *FieryBuilder {
-  p.obj.Message = message
-  return p
-}
-
-func (p *Fiery) SetMessage(message string) *Fiery {
-  p.Message = message
-  return p
-}
-
 func (p *Fiery) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -229,32 +188,6 @@ return *p.Sonnet
 }
 func (p *Serious) IsSetSonnet() bool {
   return p != nil && p.Sonnet != nil
-}
-
-type SeriousBuilder struct {
-  obj *Serious
-}
-
-func NewSeriousBuilder() *SeriousBuilder{
-  return &SeriousBuilder{
-    obj: NewSerious(),
-  }
-}
-
-func (p SeriousBuilder) Emit() *Serious{
-  return &Serious{
-    Sonnet: p.obj.Sonnet,
-  }
-}
-
-func (p *SeriousBuilder) Sonnet(sonnet *string) *SeriousBuilder {
-  p.obj.Sonnet = sonnet
-  return p
-}
-
-func (p *Serious) SetSonnet(sonnet *string) *Serious {
-  p.Sonnet = sonnet
-  return p
 }
 
 func (p *Serious) Read(iprot thrift.Protocol) error {
@@ -359,43 +292,6 @@ func (p *ComplexFieldNames) GetErrorMessage() string {
 func (p *ComplexFieldNames) GetInternalErrorMessage() string {
   return p.InternalErrorMessage
 }
-type ComplexFieldNamesBuilder struct {
-  obj *ComplexFieldNames
-}
-
-func NewComplexFieldNamesBuilder() *ComplexFieldNamesBuilder{
-  return &ComplexFieldNamesBuilder{
-    obj: NewComplexFieldNames(),
-  }
-}
-
-func (p ComplexFieldNamesBuilder) Emit() *ComplexFieldNames{
-  return &ComplexFieldNames{
-    ErrorMessage: p.obj.ErrorMessage,
-    InternalErrorMessage: p.obj.InternalErrorMessage,
-  }
-}
-
-func (p *ComplexFieldNamesBuilder) ErrorMessage(errorMessage string) *ComplexFieldNamesBuilder {
-  p.obj.ErrorMessage = errorMessage
-  return p
-}
-
-func (p *ComplexFieldNamesBuilder) InternalErrorMessage(internalErrorMessage string) *ComplexFieldNamesBuilder {
-  p.obj.InternalErrorMessage = internalErrorMessage
-  return p
-}
-
-func (p *ComplexFieldNames) SetErrorMessage(errorMessage string) *ComplexFieldNames {
-  p.ErrorMessage = errorMessage
-  return p
-}
-
-func (p *ComplexFieldNames) SetInternalErrorMessage(internalErrorMessage string) *ComplexFieldNames {
-  p.InternalErrorMessage = internalErrorMessage
-  return p
-}
-
 func (p *ComplexFieldNames) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -516,43 +412,6 @@ func (p *CustomFieldNames) GetErrorMessage() string {
 func (p *CustomFieldNames) GetInternalErrorMessage() string {
   return p.InternalErrorMessage
 }
-type CustomFieldNamesBuilder struct {
-  obj *CustomFieldNames
-}
-
-func NewCustomFieldNamesBuilder() *CustomFieldNamesBuilder{
-  return &CustomFieldNamesBuilder{
-    obj: NewCustomFieldNames(),
-  }
-}
-
-func (p CustomFieldNamesBuilder) Emit() *CustomFieldNames{
-  return &CustomFieldNames{
-    ErrorMessage: p.obj.ErrorMessage,
-    InternalErrorMessage: p.obj.InternalErrorMessage,
-  }
-}
-
-func (p *CustomFieldNamesBuilder) ErrorMessage(errorMessage string) *CustomFieldNamesBuilder {
-  p.obj.ErrorMessage = errorMessage
-  return p
-}
-
-func (p *CustomFieldNamesBuilder) InternalErrorMessage(internalErrorMessage string) *CustomFieldNamesBuilder {
-  p.obj.InternalErrorMessage = internalErrorMessage
-  return p
-}
-
-func (p *CustomFieldNames) SetErrorMessage(errorMessage string) *CustomFieldNames {
-  p.ErrorMessage = errorMessage
-  return p
-}
-
-func (p *CustomFieldNames) SetInternalErrorMessage(internalErrorMessage string) *CustomFieldNames {
-  p.InternalErrorMessage = internalErrorMessage
-  return p
-}
-
 func (p *CustomFieldNames) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

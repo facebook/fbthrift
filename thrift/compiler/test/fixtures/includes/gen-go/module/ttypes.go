@@ -73,54 +73,6 @@ func (p *MyStruct) IsSetMyOtherIncludedField() bool {
   return p != nil && p.MyOtherIncludedField != nil
 }
 
-type MyStructBuilder struct {
-  obj *MyStruct
-}
-
-func NewMyStructBuilder() *MyStructBuilder{
-  return &MyStructBuilder{
-    obj: NewMyStruct(),
-  }
-}
-
-func (p MyStructBuilder) Emit() *MyStruct{
-  return &MyStruct{
-    MyIncludedField: p.obj.MyIncludedField,
-    MyOtherIncludedField: p.obj.MyOtherIncludedField,
-    MyIncludedInt: p.obj.MyIncludedInt,
-  }
-}
-
-func (p *MyStructBuilder) MyIncludedField(myIncludedField *includes0.Included) *MyStructBuilder {
-  p.obj.MyIncludedField = myIncludedField
-  return p
-}
-
-func (p *MyStructBuilder) MyOtherIncludedField(myOtherIncludedField *includes0.Included) *MyStructBuilder {
-  p.obj.MyOtherIncludedField = myOtherIncludedField
-  return p
-}
-
-func (p *MyStructBuilder) MyIncludedInt(myIncludedInt includes0.IncludedInt64) *MyStructBuilder {
-  p.obj.MyIncludedInt = myIncludedInt
-  return p
-}
-
-func (p *MyStruct) SetMyIncludedField(myIncludedField *includes0.Included) *MyStruct {
-  p.MyIncludedField = myIncludedField
-  return p
-}
-
-func (p *MyStruct) SetMyOtherIncludedField(myOtherIncludedField *includes0.Included) *MyStruct {
-  p.MyOtherIncludedField = myOtherIncludedField
-  return p
-}
-
-func (p *MyStruct) SetMyIncludedInt(myIncludedInt includes0.IncludedInt64) *MyStruct {
-  p.MyIncludedInt = myIncludedInt
-  return p
-}
-
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

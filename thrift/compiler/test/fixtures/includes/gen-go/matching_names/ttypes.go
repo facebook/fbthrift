@@ -47,32 +47,6 @@ func (p *IncludesAlso) IsSetAlso() bool {
   return p != nil && p.Also != nil
 }
 
-type IncludesAlsoBuilder struct {
-  obj *IncludesAlso
-}
-
-func NewIncludesAlsoBuilder() *IncludesAlsoBuilder{
-  return &IncludesAlsoBuilder{
-    obj: NewIncludesAlso(),
-  }
-}
-
-func (p IncludesAlsoBuilder) Emit() *IncludesAlso{
-  return &IncludesAlso{
-    Also: p.obj.Also,
-  }
-}
-
-func (p *IncludesAlsoBuilder) Also(also *IncludesAlso0.Also) *IncludesAlsoBuilder {
-  p.obj.Also = also
-  return p
-}
-
-func (p *IncludesAlso) SetAlso(also *IncludesAlso0.Also) *IncludesAlso {
-  p.Also = also
-  return p
-}
-
 func (p *IncludesAlso) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

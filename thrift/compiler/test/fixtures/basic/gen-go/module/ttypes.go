@@ -122,98 +122,6 @@ func (p *MyStruct) IsSetMyDataField() bool {
   return p != nil && p.MyDataField != nil
 }
 
-type MyStructBuilder struct {
-  obj *MyStruct
-}
-
-func NewMyStructBuilder() *MyStructBuilder{
-  return &MyStructBuilder{
-    obj: NewMyStruct(),
-  }
-}
-
-func (p MyStructBuilder) Emit() *MyStruct{
-  return &MyStruct{
-    MyIntField: p.obj.MyIntField,
-    MyStringField: p.obj.MyStringField,
-    MyDataField: p.obj.MyDataField,
-    MyEnum: p.obj.MyEnum,
-    Oneway: p.obj.Oneway,
-    Readonly: p.obj.Readonly,
-    Idempotent: p.obj.Idempotent,
-  }
-}
-
-func (p *MyStructBuilder) MyIntField(myIntField int64) *MyStructBuilder {
-  p.obj.MyIntField = myIntField
-  return p
-}
-
-func (p *MyStructBuilder) MyStringField(myStringField string) *MyStructBuilder {
-  p.obj.MyStringField = myStringField
-  return p
-}
-
-func (p *MyStructBuilder) MyDataField(myDataField *MyDataItem) *MyStructBuilder {
-  p.obj.MyDataField = myDataField
-  return p
-}
-
-func (p *MyStructBuilder) MyEnum(myEnum MyEnum) *MyStructBuilder {
-  p.obj.MyEnum = myEnum
-  return p
-}
-
-func (p *MyStructBuilder) Oneway(oneway bool) *MyStructBuilder {
-  p.obj.Oneway = oneway
-  return p
-}
-
-func (p *MyStructBuilder) Readonly(readonly bool) *MyStructBuilder {
-  p.obj.Readonly = readonly
-  return p
-}
-
-func (p *MyStructBuilder) Idempotent(idempotent bool) *MyStructBuilder {
-  p.obj.Idempotent = idempotent
-  return p
-}
-
-func (p *MyStruct) SetMyIntField(myIntField int64) *MyStruct {
-  p.MyIntField = myIntField
-  return p
-}
-
-func (p *MyStruct) SetMyStringField(myStringField string) *MyStruct {
-  p.MyStringField = myStringField
-  return p
-}
-
-func (p *MyStruct) SetMyDataField(myDataField *MyDataItem) *MyStruct {
-  p.MyDataField = myDataField
-  return p
-}
-
-func (p *MyStruct) SetMyEnum(myEnum MyEnum) *MyStruct {
-  p.MyEnum = myEnum
-  return p
-}
-
-func (p *MyStruct) SetOneway(oneway bool) *MyStruct {
-  p.Oneway = oneway
-  return p
-}
-
-func (p *MyStruct) SetReadonly(readonly bool) *MyStruct {
-  p.Readonly = readonly
-  return p
-}
-
-func (p *MyStruct) SetIdempotent(idempotent bool) *MyStruct {
-  p.Idempotent = idempotent
-  return p
-}
-
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -448,21 +356,6 @@ func NewMyDataItem() *MyDataItem {
   return &MyDataItem{}
 }
 
-type MyDataItemBuilder struct {
-  obj *MyDataItem
-}
-
-func NewMyDataItemBuilder() *MyDataItemBuilder{
-  return &MyDataItemBuilder{
-    obj: NewMyDataItem(),
-  }
-}
-
-func (p MyDataItemBuilder) Emit() *MyDataItem{
-  return &MyDataItem{
-  }
-}
-
 func (p *MyDataItem) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -566,54 +459,6 @@ func (p *MyUnion) IsSetMyStruct() bool {
 
 func (p *MyUnion) IsSetMyDataItem() bool {
   return p != nil && p.MyDataItem != nil
-}
-
-type MyUnionBuilder struct {
-  obj *MyUnion
-}
-
-func NewMyUnionBuilder() *MyUnionBuilder{
-  return &MyUnionBuilder{
-    obj: NewMyUnion(),
-  }
-}
-
-func (p MyUnionBuilder) Emit() *MyUnion{
-  return &MyUnion{
-    MyEnum: p.obj.MyEnum,
-    MyStruct: p.obj.MyStruct,
-    MyDataItem: p.obj.MyDataItem,
-  }
-}
-
-func (p *MyUnionBuilder) MyEnum(myEnum *MyEnum) *MyUnionBuilder {
-  p.obj.MyEnum = myEnum
-  return p
-}
-
-func (p *MyUnionBuilder) MyStruct(myStruct *MyStruct) *MyUnionBuilder {
-  p.obj.MyStruct = myStruct
-  return p
-}
-
-func (p *MyUnionBuilder) MyDataItem(myDataItem *MyDataItem) *MyUnionBuilder {
-  p.obj.MyDataItem = myDataItem
-  return p
-}
-
-func (p *MyUnion) SetMyEnum(myEnum *MyEnum) *MyUnion {
-  p.MyEnum = myEnum
-  return p
-}
-
-func (p *MyUnion) SetMyStruct(myStruct *MyStruct) *MyUnion {
-  p.MyStruct = myStruct
-  return p
-}
-
-func (p *MyUnion) SetMyDataItem(myDataItem *MyDataItem) *MyUnion {
-  p.MyDataItem = myDataItem
-  return p
 }
 
 func (p *MyUnion) Read(iprot thrift.Protocol) error {

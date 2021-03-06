@@ -384,32 +384,6 @@ func NewSomeServiceBounceMapArgs() *SomeServiceBounceMapArgs {
 func (p *SomeServiceBounceMapArgs) GetM() include0.SomeMap {
   return p.M
 }
-type SomeServiceBounceMapArgsBuilder struct {
-  obj *SomeServiceBounceMapArgs
-}
-
-func NewSomeServiceBounceMapArgsBuilder() *SomeServiceBounceMapArgsBuilder{
-  return &SomeServiceBounceMapArgsBuilder{
-    obj: NewSomeServiceBounceMapArgs(),
-  }
-}
-
-func (p SomeServiceBounceMapArgsBuilder) Emit() *SomeServiceBounceMapArgs{
-  return &SomeServiceBounceMapArgs{
-    M: p.obj.M,
-  }
-}
-
-func (p *SomeServiceBounceMapArgsBuilder) M(m include0.SomeMap) *SomeServiceBounceMapArgsBuilder {
-  p.obj.M = m
-  return p
-}
-
-func (p *SomeServiceBounceMapArgs) SetM(m include0.SomeMap) *SomeServiceBounceMapArgs {
-  p.M = m
-  return p
-}
-
 func (p *SomeServiceBounceMapArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -530,32 +504,6 @@ func (p *SomeServiceBounceMapResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
 }
 
-type SomeServiceBounceMapResultBuilder struct {
-  obj *SomeServiceBounceMapResult
-}
-
-func NewSomeServiceBounceMapResultBuilder() *SomeServiceBounceMapResultBuilder{
-  return &SomeServiceBounceMapResultBuilder{
-    obj: NewSomeServiceBounceMapResult(),
-  }
-}
-
-func (p SomeServiceBounceMapResultBuilder) Emit() *SomeServiceBounceMapResult{
-  return &SomeServiceBounceMapResult{
-    Success: p.obj.Success,
-  }
-}
-
-func (p *SomeServiceBounceMapResultBuilder) Success(success include0.SomeMap) *SomeServiceBounceMapResultBuilder {
-  p.obj.Success = success
-  return p
-}
-
-func (p *SomeServiceBounceMapResult) SetSuccess(success include0.SomeMap) *SomeServiceBounceMapResult {
-  p.Success = success
-  return p
-}
-
 func (p *SomeServiceBounceMapResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -673,32 +621,6 @@ func NewSomeServiceBinaryKeyedMapArgs() *SomeServiceBinaryKeyedMapArgs {
 func (p *SomeServiceBinaryKeyedMapArgs) GetR() []int64 {
   return p.R
 }
-type SomeServiceBinaryKeyedMapArgsBuilder struct {
-  obj *SomeServiceBinaryKeyedMapArgs
-}
-
-func NewSomeServiceBinaryKeyedMapArgsBuilder() *SomeServiceBinaryKeyedMapArgsBuilder{
-  return &SomeServiceBinaryKeyedMapArgsBuilder{
-    obj: NewSomeServiceBinaryKeyedMapArgs(),
-  }
-}
-
-func (p SomeServiceBinaryKeyedMapArgsBuilder) Emit() *SomeServiceBinaryKeyedMapArgs{
-  return &SomeServiceBinaryKeyedMapArgs{
-    R: p.obj.R,
-  }
-}
-
-func (p *SomeServiceBinaryKeyedMapArgsBuilder) R(r []int64) *SomeServiceBinaryKeyedMapArgsBuilder {
-  p.obj.R = r
-  return p
-}
-
-func (p *SomeServiceBinaryKeyedMapArgs) SetR(r []int64) *SomeServiceBinaryKeyedMapArgs {
-  p.R = r
-  return p
-}
-
 func (p *SomeServiceBinaryKeyedMapArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -809,32 +731,6 @@ func (p *SomeServiceBinaryKeyedMapResult) GetSuccess() map[string]int64 {
 }
 func (p *SomeServiceBinaryKeyedMapResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
-}
-
-type SomeServiceBinaryKeyedMapResultBuilder struct {
-  obj *SomeServiceBinaryKeyedMapResult
-}
-
-func NewSomeServiceBinaryKeyedMapResultBuilder() *SomeServiceBinaryKeyedMapResultBuilder{
-  return &SomeServiceBinaryKeyedMapResultBuilder{
-    obj: NewSomeServiceBinaryKeyedMapResult(),
-  }
-}
-
-func (p SomeServiceBinaryKeyedMapResultBuilder) Emit() *SomeServiceBinaryKeyedMapResult{
-  return &SomeServiceBinaryKeyedMapResult{
-    Success: p.obj.Success,
-  }
-}
-
-func (p *SomeServiceBinaryKeyedMapResultBuilder) Success(success map[string]int64) *SomeServiceBinaryKeyedMapResultBuilder {
-  p.obj.Success = success
-  return p
-}
-
-func (p *SomeServiceBinaryKeyedMapResult) SetSuccess(success map[string]int64) *SomeServiceBinaryKeyedMapResult {
-  p.Success = success
-  return p
 }
 
 func (p *SomeServiceBinaryKeyedMapResult) Read(iprot thrift.Protocol) error {

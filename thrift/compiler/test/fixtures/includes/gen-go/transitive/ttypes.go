@@ -37,32 +37,6 @@ func NewFoo() *Foo {
 func (p *Foo) GetA() int64 {
   return p.A
 }
-type FooBuilder struct {
-  obj *Foo
-}
-
-func NewFooBuilder() *FooBuilder{
-  return &FooBuilder{
-    obj: NewFoo(),
-  }
-}
-
-func (p FooBuilder) Emit() *Foo{
-  return &Foo{
-    A: p.obj.A,
-  }
-}
-
-func (p *FooBuilder) A(a int64) *FooBuilder {
-  p.obj.A = a
-  return p
-}
-
-func (p *Foo) SetA(a int64) *Foo {
-  p.A = a
-  return p
-}
-
 func (p *Foo) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

@@ -223,21 +223,6 @@ func NewMyLeafDoLeafArgs() *MyLeafDoLeafArgs {
   return &MyLeafDoLeafArgs{}
 }
 
-type MyLeafDoLeafArgsBuilder struct {
-  obj *MyLeafDoLeafArgs
-}
-
-func NewMyLeafDoLeafArgsBuilder() *MyLeafDoLeafArgsBuilder{
-  return &MyLeafDoLeafArgsBuilder{
-    obj: NewMyLeafDoLeafArgs(),
-  }
-}
-
-func (p MyLeafDoLeafArgsBuilder) Emit() *MyLeafDoLeafArgs{
-  return &MyLeafDoLeafArgs{
-  }
-}
-
 func (p *MyLeafDoLeafArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -287,21 +272,6 @@ type MyLeafDoLeafResult struct {
 
 func NewMyLeafDoLeafResult() *MyLeafDoLeafResult {
   return &MyLeafDoLeafResult{}
-}
-
-type MyLeafDoLeafResultBuilder struct {
-  obj *MyLeafDoLeafResult
-}
-
-func NewMyLeafDoLeafResultBuilder() *MyLeafDoLeafResultBuilder{
-  return &MyLeafDoLeafResultBuilder{
-    obj: NewMyLeafDoLeafResult(),
-  }
-}
-
-func (p MyLeafDoLeafResultBuilder) Emit() *MyLeafDoLeafResult{
-  return &MyLeafDoLeafResult{
-  }
 }
 
 func (p *MyLeafDoLeafResult) Read(iprot thrift.Protocol) error {

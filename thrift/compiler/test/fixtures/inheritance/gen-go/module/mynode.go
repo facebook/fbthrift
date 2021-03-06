@@ -223,21 +223,6 @@ func NewMyNodeDoMidArgs() *MyNodeDoMidArgs {
   return &MyNodeDoMidArgs{}
 }
 
-type MyNodeDoMidArgsBuilder struct {
-  obj *MyNodeDoMidArgs
-}
-
-func NewMyNodeDoMidArgsBuilder() *MyNodeDoMidArgsBuilder{
-  return &MyNodeDoMidArgsBuilder{
-    obj: NewMyNodeDoMidArgs(),
-  }
-}
-
-func (p MyNodeDoMidArgsBuilder) Emit() *MyNodeDoMidArgs{
-  return &MyNodeDoMidArgs{
-  }
-}
-
 func (p *MyNodeDoMidArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -287,21 +272,6 @@ type MyNodeDoMidResult struct {
 
 func NewMyNodeDoMidResult() *MyNodeDoMidResult {
   return &MyNodeDoMidResult{}
-}
-
-type MyNodeDoMidResultBuilder struct {
-  obj *MyNodeDoMidResult
-}
-
-func NewMyNodeDoMidResultBuilder() *MyNodeDoMidResultBuilder{
-  return &MyNodeDoMidResultBuilder{
-    obj: NewMyNodeDoMidResult(),
-  }
-}
-
-func (p MyNodeDoMidResultBuilder) Emit() *MyNodeDoMidResult{
-  return &MyNodeDoMidResult{
-  }
 }
 
 func (p *MyNodeDoMidResult) Read(iprot thrift.Protocol) error {

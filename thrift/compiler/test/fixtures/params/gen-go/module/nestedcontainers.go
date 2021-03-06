@@ -677,32 +677,6 @@ func NewNestedContainersMapListArgs() *NestedContainersMapListArgs {
 func (p *NestedContainersMapListArgs) GetFoo() map[int32][]int32 {
   return p.Foo
 }
-type NestedContainersMapListArgsBuilder struct {
-  obj *NestedContainersMapListArgs
-}
-
-func NewNestedContainersMapListArgsBuilder() *NestedContainersMapListArgsBuilder{
-  return &NestedContainersMapListArgsBuilder{
-    obj: NewNestedContainersMapListArgs(),
-  }
-}
-
-func (p NestedContainersMapListArgsBuilder) Emit() *NestedContainersMapListArgs{
-  return &NestedContainersMapListArgs{
-    Foo: p.obj.Foo,
-  }
-}
-
-func (p *NestedContainersMapListArgsBuilder) Foo(foo map[int32][]int32) *NestedContainersMapListArgsBuilder {
-  p.obj.Foo = foo
-  return p
-}
-
-func (p *NestedContainersMapListArgs) SetFoo(foo map[int32][]int32) *NestedContainersMapListArgs {
-  p.Foo = foo
-  return p
-}
-
 func (p *NestedContainersMapListArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -831,21 +805,6 @@ func NewNestedContainersMapListResult() *NestedContainersMapListResult {
   return &NestedContainersMapListResult{}
 }
 
-type NestedContainersMapListResultBuilder struct {
-  obj *NestedContainersMapListResult
-}
-
-func NewNestedContainersMapListResultBuilder() *NestedContainersMapListResultBuilder{
-  return &NestedContainersMapListResultBuilder{
-    obj: NewNestedContainersMapListResult(),
-  }
-}
-
-func (p NestedContainersMapListResultBuilder) Emit() *NestedContainersMapListResult{
-  return &NestedContainersMapListResult{
-  }
-}
-
 func (p *NestedContainersMapListResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -904,32 +863,6 @@ func NewNestedContainersMapSetArgs() *NestedContainersMapSetArgs {
 func (p *NestedContainersMapSetArgs) GetFoo() map[int32][]int32 {
   return p.Foo
 }
-type NestedContainersMapSetArgsBuilder struct {
-  obj *NestedContainersMapSetArgs
-}
-
-func NewNestedContainersMapSetArgsBuilder() *NestedContainersMapSetArgsBuilder{
-  return &NestedContainersMapSetArgsBuilder{
-    obj: NewNestedContainersMapSetArgs(),
-  }
-}
-
-func (p NestedContainersMapSetArgsBuilder) Emit() *NestedContainersMapSetArgs{
-  return &NestedContainersMapSetArgs{
-    Foo: p.obj.Foo,
-  }
-}
-
-func (p *NestedContainersMapSetArgsBuilder) Foo(foo map[int32][]int32) *NestedContainersMapSetArgsBuilder {
-  p.obj.Foo = foo
-  return p
-}
-
-func (p *NestedContainersMapSetArgs) SetFoo(foo map[int32][]int32) *NestedContainersMapSetArgs {
-  p.Foo = foo
-  return p
-}
-
 func (p *NestedContainersMapSetArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1065,21 +998,6 @@ func NewNestedContainersMapSetResult() *NestedContainersMapSetResult {
   return &NestedContainersMapSetResult{}
 }
 
-type NestedContainersMapSetResultBuilder struct {
-  obj *NestedContainersMapSetResult
-}
-
-func NewNestedContainersMapSetResultBuilder() *NestedContainersMapSetResultBuilder{
-  return &NestedContainersMapSetResultBuilder{
-    obj: NewNestedContainersMapSetResult(),
-  }
-}
-
-func (p NestedContainersMapSetResultBuilder) Emit() *NestedContainersMapSetResult{
-  return &NestedContainersMapSetResult{
-  }
-}
-
 func (p *NestedContainersMapSetResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1138,32 +1056,6 @@ func NewNestedContainersListMapArgs() *NestedContainersListMapArgs {
 func (p *NestedContainersListMapArgs) GetFoo() []map[int32]int32 {
   return p.Foo
 }
-type NestedContainersListMapArgsBuilder struct {
-  obj *NestedContainersListMapArgs
-}
-
-func NewNestedContainersListMapArgsBuilder() *NestedContainersListMapArgsBuilder{
-  return &NestedContainersListMapArgsBuilder{
-    obj: NewNestedContainersListMapArgs(),
-  }
-}
-
-func (p NestedContainersListMapArgsBuilder) Emit() *NestedContainersListMapArgs{
-  return &NestedContainersListMapArgs{
-    Foo: p.obj.Foo,
-  }
-}
-
-func (p *NestedContainersListMapArgsBuilder) Foo(foo []map[int32]int32) *NestedContainersListMapArgsBuilder {
-  p.obj.Foo = foo
-  return p
-}
-
-func (p *NestedContainersListMapArgs) SetFoo(foo []map[int32]int32) *NestedContainersListMapArgs {
-  p.Foo = foo
-  return p
-}
-
 func (p *NestedContainersListMapArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1292,21 +1184,6 @@ func NewNestedContainersListMapResult() *NestedContainersListMapResult {
   return &NestedContainersListMapResult{}
 }
 
-type NestedContainersListMapResultBuilder struct {
-  obj *NestedContainersListMapResult
-}
-
-func NewNestedContainersListMapResultBuilder() *NestedContainersListMapResultBuilder{
-  return &NestedContainersListMapResultBuilder{
-    obj: NewNestedContainersListMapResult(),
-  }
-}
-
-func (p NestedContainersListMapResultBuilder) Emit() *NestedContainersListMapResult{
-  return &NestedContainersListMapResult{
-  }
-}
-
 func (p *NestedContainersListMapResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1365,32 +1242,6 @@ func NewNestedContainersListSetArgs() *NestedContainersListSetArgs {
 func (p *NestedContainersListSetArgs) GetFoo() [][]int32 {
   return p.Foo
 }
-type NestedContainersListSetArgsBuilder struct {
-  obj *NestedContainersListSetArgs
-}
-
-func NewNestedContainersListSetArgsBuilder() *NestedContainersListSetArgsBuilder{
-  return &NestedContainersListSetArgsBuilder{
-    obj: NewNestedContainersListSetArgs(),
-  }
-}
-
-func (p NestedContainersListSetArgsBuilder) Emit() *NestedContainersListSetArgs{
-  return &NestedContainersListSetArgs{
-    Foo: p.obj.Foo,
-  }
-}
-
-func (p *NestedContainersListSetArgsBuilder) Foo(foo [][]int32) *NestedContainersListSetArgsBuilder {
-  p.obj.Foo = foo
-  return p
-}
-
-func (p *NestedContainersListSetArgs) SetFoo(foo [][]int32) *NestedContainersListSetArgs {
-  p.Foo = foo
-  return p
-}
-
 func (p *NestedContainersListSetArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1518,21 +1369,6 @@ func NewNestedContainersListSetResult() *NestedContainersListSetResult {
   return &NestedContainersListSetResult{}
 }
 
-type NestedContainersListSetResultBuilder struct {
-  obj *NestedContainersListSetResult
-}
-
-func NewNestedContainersListSetResultBuilder() *NestedContainersListSetResultBuilder{
-  return &NestedContainersListSetResultBuilder{
-    obj: NewNestedContainersListSetResult(),
-  }
-}
-
-func (p NestedContainersListSetResultBuilder) Emit() *NestedContainersListSetResult{
-  return &NestedContainersListSetResult{
-  }
-}
-
 func (p *NestedContainersListSetResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1591,32 +1427,6 @@ func NewNestedContainersTurtlesArgs() *NestedContainersTurtlesArgs {
 func (p *NestedContainersTurtlesArgs) GetFoo() [][]map[int32]map[int32][]int32 {
   return p.Foo
 }
-type NestedContainersTurtlesArgsBuilder struct {
-  obj *NestedContainersTurtlesArgs
-}
-
-func NewNestedContainersTurtlesArgsBuilder() *NestedContainersTurtlesArgsBuilder{
-  return &NestedContainersTurtlesArgsBuilder{
-    obj: NewNestedContainersTurtlesArgs(),
-  }
-}
-
-func (p NestedContainersTurtlesArgsBuilder) Emit() *NestedContainersTurtlesArgs{
-  return &NestedContainersTurtlesArgs{
-    Foo: p.obj.Foo,
-  }
-}
-
-func (p *NestedContainersTurtlesArgsBuilder) Foo(foo [][]map[int32]map[int32][]int32) *NestedContainersTurtlesArgsBuilder {
-  p.obj.Foo = foo
-  return p
-}
-
-func (p *NestedContainersTurtlesArgs) SetFoo(foo [][]map[int32]map[int32][]int32) *NestedContainersTurtlesArgs {
-  p.Foo = foo
-  return p
-}
-
 func (p *NestedContainersTurtlesArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1818,21 +1628,6 @@ type NestedContainersTurtlesResult struct {
 
 func NewNestedContainersTurtlesResult() *NestedContainersTurtlesResult {
   return &NestedContainersTurtlesResult{}
-}
-
-type NestedContainersTurtlesResultBuilder struct {
-  obj *NestedContainersTurtlesResult
-}
-
-func NewNestedContainersTurtlesResultBuilder() *NestedContainersTurtlesResultBuilder{
-  return &NestedContainersTurtlesResultBuilder{
-    obj: NewNestedContainersTurtlesResult(),
-  }
-}
-
-func (p NestedContainersTurtlesResultBuilder) Emit() *NestedContainersTurtlesResult{
-  return &NestedContainersTurtlesResult{
-  }
 }
 
 func (p *NestedContainersTurtlesResult) Read(iprot thrift.Protocol) error {

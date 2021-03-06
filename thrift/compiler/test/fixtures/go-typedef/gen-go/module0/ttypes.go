@@ -41,43 +41,6 @@ func (p *Accessory) GetInventoryId() int32 {
 func (p *Accessory) GetName() string {
   return p.Name
 }
-type AccessoryBuilder struct {
-  obj *Accessory
-}
-
-func NewAccessoryBuilder() *AccessoryBuilder{
-  return &AccessoryBuilder{
-    obj: NewAccessory(),
-  }
-}
-
-func (p AccessoryBuilder) Emit() *Accessory{
-  return &Accessory{
-    InventoryId: p.obj.InventoryId,
-    Name: p.obj.Name,
-  }
-}
-
-func (p *AccessoryBuilder) InventoryId(inventoryId int32) *AccessoryBuilder {
-  p.obj.InventoryId = inventoryId
-  return p
-}
-
-func (p *AccessoryBuilder) Name(name string) *AccessoryBuilder {
-  p.obj.Name = name
-  return p
-}
-
-func (p *Accessory) SetInventoryId(inventoryId int32) *Accessory {
-  p.InventoryId = inventoryId
-  return p
-}
-
-func (p *Accessory) SetName(name string) *Accessory {
-  p.Name = name
-  return p
-}
-
 func (p *Accessory) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -194,43 +157,6 @@ func (p *PartName) GetInventoryId() int32 {
 func (p *PartName) GetName() string {
   return p.Name
 }
-type PartNameBuilder struct {
-  obj *PartName
-}
-
-func NewPartNameBuilder() *PartNameBuilder{
-  return &PartNameBuilder{
-    obj: NewPartName(),
-  }
-}
-
-func (p PartNameBuilder) Emit() *PartName{
-  return &PartName{
-    InventoryId: p.obj.InventoryId,
-    Name: p.obj.Name,
-  }
-}
-
-func (p *PartNameBuilder) InventoryId(inventoryId int32) *PartNameBuilder {
-  p.obj.InventoryId = inventoryId
-  return p
-}
-
-func (p *PartNameBuilder) Name(name string) *PartNameBuilder {
-  p.obj.Name = name
-  return p
-}
-
-func (p *PartName) SetInventoryId(inventoryId int32) *PartName {
-  p.InventoryId = inventoryId
-  return p
-}
-
-func (p *PartName) SetName(name string) *PartName {
-  p.Name = name
-  return p
-}
-
 func (p *PartName) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

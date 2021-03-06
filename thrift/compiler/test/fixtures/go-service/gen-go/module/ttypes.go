@@ -35,32 +35,6 @@ func NewGetEntityRequest() *GetEntityRequest {
 func (p *GetEntityRequest) GetId() string {
   return p.Id
 }
-type GetEntityRequestBuilder struct {
-  obj *GetEntityRequest
-}
-
-func NewGetEntityRequestBuilder() *GetEntityRequestBuilder{
-  return &GetEntityRequestBuilder{
-    obj: NewGetEntityRequest(),
-  }
-}
-
-func (p GetEntityRequestBuilder) Emit() *GetEntityRequest{
-  return &GetEntityRequest{
-    Id: p.obj.Id,
-  }
-}
-
-func (p *GetEntityRequestBuilder) Id(id string) *GetEntityRequestBuilder {
-  p.obj.Id = id
-  return p
-}
-
-func (p *GetEntityRequest) SetId(id string) *GetEntityRequest {
-  p.Id = id
-  return p
-}
-
 func (p *GetEntityRequest) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -146,32 +120,6 @@ func NewGetEntityResponse() *GetEntityResponse {
 func (p *GetEntityResponse) GetEntity() string {
   return p.Entity
 }
-type GetEntityResponseBuilder struct {
-  obj *GetEntityResponse
-}
-
-func NewGetEntityResponseBuilder() *GetEntityResponseBuilder{
-  return &GetEntityResponseBuilder{
-    obj: NewGetEntityResponse(),
-  }
-}
-
-func (p GetEntityResponseBuilder) Emit() *GetEntityResponse{
-  return &GetEntityResponse{
-    Entity: p.obj.Entity,
-  }
-}
-
-func (p *GetEntityResponseBuilder) Entity(entity string) *GetEntityResponseBuilder {
-  p.obj.Entity = entity
-  return p
-}
-
-func (p *GetEntityResponse) SetEntity(entity string) *GetEntityResponse {
-  p.Entity = entity
-  return p
-}
-
 func (p *GetEntityResponse) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

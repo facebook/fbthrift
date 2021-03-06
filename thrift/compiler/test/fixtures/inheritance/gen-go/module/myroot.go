@@ -238,21 +238,6 @@ func NewMyRootDoRootArgs() *MyRootDoRootArgs {
   return &MyRootDoRootArgs{}
 }
 
-type MyRootDoRootArgsBuilder struct {
-  obj *MyRootDoRootArgs
-}
-
-func NewMyRootDoRootArgsBuilder() *MyRootDoRootArgsBuilder{
-  return &MyRootDoRootArgsBuilder{
-    obj: NewMyRootDoRootArgs(),
-  }
-}
-
-func (p MyRootDoRootArgsBuilder) Emit() *MyRootDoRootArgs{
-  return &MyRootDoRootArgs{
-  }
-}
-
 func (p *MyRootDoRootArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -302,21 +287,6 @@ type MyRootDoRootResult struct {
 
 func NewMyRootDoRootResult() *MyRootDoRootResult {
   return &MyRootDoRootResult{}
-}
-
-type MyRootDoRootResultBuilder struct {
-  obj *MyRootDoRootResult
-}
-
-func NewMyRootDoRootResultBuilder() *MyRootDoRootResultBuilder{
-  return &MyRootDoRootResultBuilder{
-    obj: NewMyRootDoRootResult(),
-  }
-}
-
-func (p MyRootDoRootResultBuilder) Emit() *MyRootDoRootResult{
-  return &MyRootDoRootResult{
-  }
 }
 
 func (p *MyRootDoRootResult) Read(iprot thrift.Protocol) error {
