@@ -57,6 +57,13 @@ struct Xtruct3 {
   11: i64 i64_thing;
 }
 
+struct Xtruct4 {
+  1: string string_thing;
+  2: i32 int_thing = 42;
+  3: list<i32> list_int32_thing = [5];
+  4: Xtruct2 xtruct2;
+}
+
 struct Insanity {
   1: map<Numberz, UserId> userMap;
   2: list<Xtruct> xtructs;

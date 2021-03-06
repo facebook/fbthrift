@@ -28,6 +28,21 @@ func NewEmpty() *Empty {
   return &Empty{}
 }
 
+type EmptyBuilder struct {
+  obj *Empty
+}
+
+func NewEmptyBuilder() *EmptyBuilder{
+  return &EmptyBuilder{
+    obj: NewEmpty(),
+  }
+}
+
+func (p EmptyBuilder) Emit() *Empty{
+  return &Empty{
+  }
+}
+
 func (p *Empty) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -76,6 +91,21 @@ type Nada struct {
 
 func NewNada() *Nada {
   return &Nada{}
+}
+
+type NadaBuilder struct {
+  obj *Nada
+}
+
+func NewNadaBuilder() *NadaBuilder{
+  return &NadaBuilder{
+    obj: NewNada(),
+  }
+}
+
+func (p NadaBuilder) Emit() *Nada{
+  return &Nada{
+  }
 }
 
 func (p *Nada) Read(iprot thrift.Protocol) error {

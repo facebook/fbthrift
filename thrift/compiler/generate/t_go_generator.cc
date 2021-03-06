@@ -139,6 +139,16 @@ class t_go_generator : public t_concat_generator {
       const t_struct* tstruct,
       const string& tstruct_name,
       bool is_result = false);
+  void generate_go_struct_builder(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const string& tstruct_name,
+      bool is_result = false);
+  void generate_go_struct_setters(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const string& tstruct_name,
+      bool is_result = false);
   void generate_countsetfields_helper(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -1527,6 +1537,8 @@ void t_go_generator::generate_go_struct_definition(
   }
 
   generate_isset_helpers(out, tstruct, tstruct_name, is_result);
+  generate_go_struct_builder(out, tstruct, tstruct_name, is_result);
+  generate_go_struct_setters(out, tstruct, tstruct_name, is_result);
   generate_go_struct_reader(out, tstruct, tstruct_name, is_result);
   generate_go_struct_writer(
       out, tstruct, tstruct_name, is_result, num_setable > 0);
@@ -1622,6 +1634,128 @@ void t_go_generator::generate_isset_helpers(
       indent_down();
       out << indent() << "}" << endl << endl;
     }
+  }
+}
+
+/**
+ * Generates Builder helper object for a struct
+ */
+void t_go_generator::generate_go_struct_builder(
+    ofstream& out,
+    const t_struct* tstruct,
+    const string& tstruct_name,
+    bool is_result) {
+  (void)is_result;
+
+  // Type definition
+  out << indent() << "type " << tstruct_name << "Builder struct {" << endl;
+  indent_up();
+  out << indent() << "obj *" << tstruct_name << endl;
+  indent_down();
+  out << indent() << "}" << endl << endl;
+  // End of type definition
+
+  // New function
+  out << indent() << "func New" << tstruct_name << "Builder() *" << tstruct_name
+      << "Builder"
+      << "{" << endl;
+  indent_up();
+  out << indent() << "return &" << tstruct_name << "Builder{" << endl;
+  indent_up();
+  out << indent() << "obj: New" << tstruct_name << "()," << endl;
+  indent_down();
+  out << indent() << "}" << endl;
+  indent_down();
+  out << indent() << "}" << endl << endl;
+  // End of New function
+
+  // Emit function
+  out << indent() << "func (p " << tstruct_name << "Builder) Emit() *"
+      << tstruct_name << "{" << endl;
+  indent_up();
+  out << indent() << "return &" << tstruct_name << "{" << endl;
+  indent_up();
+  const auto members = tstruct->get_members();
+  // Emit: copy values field-by-field into the new object to let Emit() issue
+  // new object on every call which allows to reuse Builder
+  for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    string publicized_name;
+    const t_const_value* def_value;
+    get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
+    out << indent() << publicized_name << ": p.obj." << publicized_name << ","
+        << endl;
+  }
+  indent_down();
+  out << indent() << "}" << endl;
+  indent_down();
+  out << indent() << "}" << endl << endl;
+  // End of Emit function
+
+  // Builder functions
+  for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    string publicized_name;
+    const t_const_value* def_value;
+    get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
+
+    string arg_name =
+        variable_name_to_go_name(privatize((*m_iter)->get_name()));
+
+    const t_type* ttype = (*m_iter)->get_type();
+    string go_type = type_to_go_type(ttype);
+
+    string maybepointer;
+    if (is_pointer_field(*m_iter)) {
+      string go_opt_type = type_to_go_type_with_opt(ttype, true);
+      maybepointer = go_opt_type != go_type ? "*" : "";
+    }
+
+    out << indent() << "func (p *" << tstruct_name << "Builder) "
+        << publicized_name << "(" << arg_name << " " << maybepointer << go_type
+        << ") *" << tstruct_name << "Builder {" << endl;
+    indent_up();
+    out << indent() << "p.obj." << publicized_name << " = " << arg_name << endl;
+    out << indent() << "return p" << endl;
+    indent_down();
+    out << indent() << "}" << endl << endl;
+  }
+  // End of Builder functions
+}
+
+/**
+ * Generates Set* methods for Go struct
+ */
+void t_go_generator::generate_go_struct_setters(
+    ofstream& out,
+    const t_struct* tstruct,
+    const string& tstruct_name,
+    bool is_result) {
+  (void)is_result;
+  const auto members = tstruct->get_members();
+  for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    string publicized_name;
+    const t_const_value* def_value;
+    get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
+
+    string arg_name =
+        variable_name_to_go_name(privatize((*m_iter)->get_name()));
+
+    const t_type* ttype = (*m_iter)->get_type();
+    string go_type = type_to_go_type(ttype);
+
+    string maybepointer;
+    if (is_pointer_field(*m_iter)) {
+      string go_opt_type = type_to_go_type_with_opt(ttype, true);
+      maybepointer = go_opt_type != go_type ? "*" : "";
+    }
+
+    out << indent() << "func (p *" << tstruct_name << ") Set" << publicized_name
+        << "(" << arg_name << " " << maybepointer << go_type << ") *"
+        << tstruct_name << " {" << endl;
+    indent_up();
+    out << indent() << "p." << publicized_name << " = " << arg_name << endl;
+    out << indent() << "return p" << endl;
+    indent_down();
+    out << indent() << "}" << endl << endl;
   }
 }
 

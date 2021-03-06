@@ -65,6 +65,43 @@ func (p *Included) IsSetMyTransitiveField() bool {
   return p != nil && p.MyTransitiveField != nil
 }
 
+type IncludedBuilder struct {
+  obj *Included
+}
+
+func NewIncludedBuilder() *IncludedBuilder{
+  return &IncludedBuilder{
+    obj: NewIncluded(),
+  }
+}
+
+func (p IncludedBuilder) Emit() *Included{
+  return &Included{
+    MyIntField: p.obj.MyIntField,
+    MyTransitiveField: p.obj.MyTransitiveField,
+  }
+}
+
+func (p *IncludedBuilder) MyIntField(myIntField int64) *IncludedBuilder {
+  p.obj.MyIntField = myIntField
+  return p
+}
+
+func (p *IncludedBuilder) MyTransitiveField(myTransitiveField *transitive0.Foo) *IncludedBuilder {
+  p.obj.MyTransitiveField = myTransitiveField
+  return p
+}
+
+func (p *Included) SetMyIntField(myIntField int64) *Included {
+  p.MyIntField = myIntField
+  return p
+}
+
+func (p *Included) SetMyTransitiveField(myTransitiveField *transitive0.Foo) *Included {
+  p.MyTransitiveField = myTransitiveField
+  return p
+}
+
 func (p *Included) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
