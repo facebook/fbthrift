@@ -220,9 +220,8 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
 
 TEST_F(ValidatorTest, QualifiedInUnion) {
   t_program program("/path/to/file.thrift");
-  t_base_type i64type("i64", t_base_type::TYPE_I64);
 
-  auto field = std::make_unique<t_field>(&i64type, "foo", 1);
+  auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "foo", 1);
   field->set_lineno(5);
   field->set_req(t_field::e_req::required);
 
@@ -230,12 +229,12 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
 
   struct_union->append(std::move(field));
 
-  field = std::make_unique<t_field>(&i64type, "baz", 2);
+  field = std::make_unique<t_field>(&t_base_type::t_i64(), "baz", 2);
   field->set_lineno(6);
   field->set_req(t_field::e_req::optional);
   struct_union->append(std::move(field));
 
-  field = std::make_unique<t_field>(&i64type, "qux", 3);
+  field = std::make_unique<t_field>(&t_base_type::t_i64(), "qux", 3);
   field->set_lineno(7);
   struct_union->append(std::move(field));
 
@@ -307,7 +306,7 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   service->add_function(std::move(func));
 
   auto args = std::make_unique<t_paramlist>(&program, "args");
-  auto type = std::make_unique<t_base_type>("i32", t_base_type::TYPE_I32);
+  auto type = std::make_unique<t_base_type>(t_base_type::t_i32());
   args->append(std::make_unique<t_field>(type.get(), "arg"));
   func = std::make_unique<t_function>(
       interaction.get(), "reinteract", std::move(args));

@@ -71,8 +71,7 @@ TEST_F(UtilTest, get_gen_namespace_none) {
 }
 
 TEST_F(UtilTest, is_orderable_set_template) {
-  t_base_type e("element", t_base_type::TYPE_DOUBLE);
-  t_set t(&e);
+  t_set t(&t_base_type::t_double());
   t.set_annotation("cpp2.template", "blah");
   t_program p("path/to/program.thrift");
   t_struct s(&p, "struct_name");
@@ -84,14 +83,14 @@ TEST_F(UtilTest, is_orderable_set_template) {
 TEST_F(UtilTest, is_orderable_struct) {
   t_program p("path/to/program.thrift");
   t_struct s(&p, "struct_name");
-  t_base_type t("field_name", t_base_type::TYPE_STRING);
-  s.append(std::make_unique<t_field>(&t, "field_name", 1));
+  s.append(
+      std::make_unique<t_field>(&t_base_type::t_string(), "field_name", 1));
   EXPECT_TRUE(cpp2::is_orderable(s));
 }
 
 TEST_F(UtilTest, get_gen_type_class) {
   // a single example as demo
-  t_base_type t("something", t_base_type::TYPE_STRING);
   EXPECT_EQ(
-      "::apache::thrift::type_class::string", cpp2::get_gen_type_class(t));
+      "::apache::thrift::type_class::string",
+      cpp2::get_gen_type_class(t_base_type::t_string()));
 }

@@ -49,7 +49,20 @@ class t_base_type : public t_type {
     TYPE_BINARY = int(type::t_binary),
   };
 
-  t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}
+  static const t_base_type& t_void();
+  static const t_base_type& t_string();
+  static const t_base_type& t_binary();
+  static const t_base_type& t_bool();
+  static const t_base_type& t_byte();
+  static const t_base_type& t_i16();
+  static const t_base_type& t_i32();
+  static const t_base_type& t_i64();
+  static const t_base_type& t_double();
+  static const t_base_type& t_float();
+
+  // TODO(afuller): Disable copy constructor, and use
+  // 'anonymous' typdefs instead.
+  // t_base_type(const t_base_type&) = delete;
 
   t_base get_base() const {
     return base_;
@@ -140,6 +153,8 @@ class t_base_type : public t_type {
 
  private:
   t_base base_;
+
+  t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}
 };
 
 } // namespace compiler

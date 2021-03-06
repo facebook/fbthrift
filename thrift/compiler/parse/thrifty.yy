@@ -98,17 +98,22 @@ namespace thrift {
 namespace compiler {
 using t_typestructpair = std::pair<const t_type*, t_struct*>;
 
-// A strongly typed const t_type pointer.
+// A strongly typed const T pointer.
 //
-// This is needed to avoid ambiguity in the parser code gen.
-struct t_type_ref {
-  constexpr t_type_ref() = default;
-  constexpr t_type_ref(const t_type* ttype) : type(ttype) {}
-  constexpr explicit operator bool() const { return bool(type); }
-  constexpr operator const t_type*() const { return type; }
-  constexpr const t_type* operator->() const { return type; }
-  const t_type* type = nullptr;
+// This is needed to avoid ambiguity in the parser code gen for const pointers.
+template <typename T>
+class t_ref {
+ public:
+  constexpr t_ref() = default;
+  constexpr t_ref(const T* ptr) : ptr_(ptr) {}
+  constexpr explicit operator bool() const { return bool(ptr_); }
+  constexpr operator const T*() const { return ptr_; }
+  constexpr const T* operator->() const { return ptr_; }
+  constexpr const T* get() const { return ptr_; }
+private:
+  const T* ptr_ = nullptr;
 };
+using t_type_ref = t_ref<t_type>;
 
 } // namespace compiler
 } // namespace thrift
@@ -226,8 +231,8 @@ struct t_type_ref {
  * Grammar nodes
  */
 
-%type<t_type*>          BaseType
-%type<t_type*>          SimpleBaseType
+%type<t_type_ref>       BaseType
+%type<t_type_ref>       SimpleBaseType
 %type<t_type*>          ContainerType
 %type<t_type*>          SimpleContainerType
 %type<t_type*>          MapType
@@ -253,8 +258,8 @@ struct t_type_ref {
 %type<t_field_id>       FieldIdentifier
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type_ref>       FieldType
-%type<t_type*>          ResponseAndStreamReturnType
-%type<t_type*>          ResponseAndSinkReturnType
+%type<t_type_ref>       ResponseAndStreamReturnType
+%type<t_type_ref>       ResponseAndSinkReturnType
 %type<t_stream_response*>
                         StreamReturnType
 %type<t_sink*>          SinkReturnType
@@ -629,7 +634,7 @@ EnumDefList:
         const_val->set_enum_value($2);
 
         auto tconst = std::make_unique<t_const>(
-            driver.program, i32_type(), $2->get_name(), std::move(const_val));
+            driver.program, &t_base_type::t_i32(), $2->get_name(), std::move(const_val));
 
         assert(y_enum_name != nullptr);
         std::string type_prefix = std::string(y_enum_name) + ".";
@@ -1127,7 +1132,7 @@ Function:
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
-      const auto* rettype = $4.type;
+      const auto* rettype = $4.get();
       auto* paramlist = $7;
       t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<const t_stream_response*>(rettype)->get_throws_struct() : nullptr;
       t_function* func;
@@ -1383,7 +1388,7 @@ FunctionType:
 | tok_void
     {
       driver.debug("FunctionType -> tok_void");
-      $$ = void_type();
+      $$ = &t_base_type::t_void();
     }
 
 ResponseAndStreamReturnType:
@@ -1403,9 +1408,7 @@ StreamReturnType:
   tok_stream "<" FieldType ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
-
     $$ = new t_stream_response($3);
-
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
     } else {
@@ -1415,9 +1418,7 @@ StreamReturnType:
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
-
     $$ = new t_stream_response($3, $4);
-
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
     } else {
@@ -1524,7 +1525,9 @@ BaseType: SimpleBaseType TypeAnnotations
     {
       driver.debug("BaseType => SimpleBaseType TypeAnnotations");
       if ($2) {
-        auto bt = std::make_unique<t_base_type>(*static_cast<const t_base_type*>($1));
+        // TODO(afuller): This should probably be a typedef instead of copying the
+        // base type.
+        auto bt = std::make_unique<t_base_type>(static_cast<const t_base_type&>(*$1));
         bt->reset_annotations(std::move($2->strings), $2->last_lineno);
         delete $2;
         $$ = bt.get();
@@ -1542,47 +1545,47 @@ SimpleBaseType:
   tok_string
     {
       driver.debug("BaseType -> tok_string");
-      $$ = string_type();
+      $$ = &t_base_type::t_string();
     }
 | tok_binary
     {
       driver.debug("BaseType -> tok_binary");
-      $$ = binary_type();
+      $$ = &t_base_type::t_binary();
     }
 | tok_bool
     {
       driver.debug("BaseType -> tok_bool");
-      $$ = bool_type();
+      $$ = &t_base_type::t_bool();
     }
 | tok_byte
     {
       driver.debug("BaseType -> tok_byte");
-      $$ = byte_type();
+      $$ = &t_base_type::t_byte();
     }
 | tok_i16
     {
       driver.debug("BaseType -> tok_i16");
-      $$ = i16_type();
+      $$ = &t_base_type::t_i16();
     }
 | tok_i32
     {
       driver.debug("BaseType -> tok_i32");
-      $$ = i32_type();
+      $$ = &t_base_type::t_i32();
     }
 | tok_i64
     {
       driver.debug("BaseType -> tok_i64");
-      $$ = i64_type();
+      $$ = &t_base_type::t_i64();
     }
 | tok_double
     {
       driver.debug("BaseType -> tok_double");
-      $$ = double_type();
+      $$ = &t_base_type::t_double();
     }
 | tok_float
     {
       driver.debug("BaseType -> tok_float");
-      $$ = float_type();
+      $$ = &t_base_type::t_float();
     }
 
 ContainerType: SimpleContainerType TypeAnnotations
