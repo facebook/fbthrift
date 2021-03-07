@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_CONTAINER_H
-#define T_CONTAINER_H
+#pragma once
 
 #include <thrift/compiler/ast/t_type.h>
 
@@ -25,10 +24,40 @@ namespace compiler {
 
 class t_container : public t_type {
  public:
-  t_container() : cpp_name_(), has_cpp_name_(false) {}
+  /**
+   * The subset of t_type::type values that are containers.
+   */
+  enum class type {
+    t_list = int(t_type::type::t_list),
+    t_set = int(t_type::type::t_set),
+    t_map = int(t_type::type::t_map),
+  };
+
+  using t_type::type_name;
+  static const std::string& type_name(type container_type) {
+    return type_name(static_cast<t_type::type>(container_type));
+  }
+
+  t_container() = default;
+
+  type container_type() const {
+    return static_cast<type>(get_type_value());
+  }
+
+  bool is_set() const final {
+    return container_type() == type::t_set;
+  }
+
+  bool is_list() const final {
+    return container_type() == type::t_list;
+  }
+
+  bool is_map() const final {
+    return container_type() == type::t_map;
+  }
 
   void set_cpp_name(std::string cpp_name) {
-    cpp_name_ = cpp_name;
+    cpp_name_ = std::move(cpp_name);
     has_cpp_name_ = true;
   }
 
@@ -46,11 +75,9 @@ class t_container : public t_type {
 
  private:
   std::string cpp_name_;
-  bool has_cpp_name_;
+  bool has_cpp_name_ = false;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

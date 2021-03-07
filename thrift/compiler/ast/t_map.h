@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_MAP_H
-#define T_MAP_H
+#pragma once
 
 #include <thrift/compiler/ast/t_container.h>
 
@@ -41,18 +40,14 @@ class t_map : public t_container {
     return val_type_;
   }
 
-  bool is_map() const override {
-    return true;
-  }
-
   std::string get_full_name() const override {
     return (
         "map<" + key_type_->get_full_name() + ", " +
         val_type_->get_full_name() + ">");
   }
 
-  type get_type_value() const override {
-    return type::t_map;
+  t_type::type get_type_value() const override {
+    return t_type::type::t_map;
   }
 
  private:
@@ -63,5 +58,3 @@ class t_map : public t_container {
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

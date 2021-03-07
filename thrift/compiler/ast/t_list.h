@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_LIST_H
-#define T_LIST_H
+#pragma once
 
 #include <thrift/compiler/ast/t_container.h>
 
@@ -35,16 +34,12 @@ class t_list : public t_container {
     return elem_type_;
   }
 
-  bool is_list() const override {
-    return true;
-  }
-
   std::string get_full_name() const override {
     return "list<" + elem_type_->get_full_name() + ">";
   }
 
-  type get_type_value() const override {
-    return type::t_list;
+  t_type::type get_type_value() const override {
+    return t_type::type::t_list;
   }
 
  private:
@@ -54,5 +49,3 @@ class t_list : public t_container {
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

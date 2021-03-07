@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_SET_H
-#define T_SET_H
+#pragma once
 
 #include <thrift/compiler/ast/t_container.h>
 
@@ -35,16 +34,12 @@ class t_set : public t_container {
     return elem_type_;
   }
 
-  bool is_set() const override {
-    return true;
-  }
-
   std::string get_full_name() const override {
     return "set<" + elem_type_->get_full_name() + ">";
   }
 
-  type get_type_value() const override {
-    return type::t_set;
+  t_type::type get_type_value() const override {
+    return t_type::type::t_set;
   }
 
  private:
@@ -54,5 +49,3 @@ class t_set : public t_container {
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif
