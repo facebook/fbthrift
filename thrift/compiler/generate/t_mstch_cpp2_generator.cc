@@ -21,6 +21,7 @@
 #include <vector>
 
 #include <boost/algorithm/string/replace.hpp>
+
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
@@ -498,7 +499,9 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_type() {
-    return cpp2::get_type(type_);
+    // TODO(afuller): Use a shared resolver.
+    cpp2::TypeResolver resolver;
+    return resolver.type_name(type_);
   }
   mstch::node resolved_cpp_type() {
     return cpp2::get_type(resolved_type_);

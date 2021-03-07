@@ -14,28 +14,34 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/lib/cpp2/util.h>
+
 #include <algorithm>
+#include <stdexcept>
 
 #include <openssl/sha.h>
 
-#include <thrift/compiler/lib/cpp2/util.h>
-#include <thrift/compiler/util.h>
-
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
+
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_set.h>
 #include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/util.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 namespace cpp2 {
+namespace {
 
 static bool is_dot(char const c) {
   return c == '.';
 }
+
+} // namespace
 
 std::vector<std::string> get_gen_namespace_components(
     t_program const& program) {
@@ -43,7 +49,6 @@ std::vector<std::string> get_gen_namespace_components(
   auto const& cpp = program.get_namespace("cpp");
 
   std::vector<std::string> components;
-
   if (!cpp2.empty()) {
     boost::algorithm::split(components, cpp2, is_dot);
   } else if (!cpp.empty()) {
@@ -59,6 +64,209 @@ std::vector<std::string> get_gen_namespace_components(
 std::string get_gen_namespace(t_program const& program) {
   auto const components = get_gen_namespace_components(program);
   return "::" + boost::algorithm::join(components, "::");
+}
+
+const std::string& TypeResolver::type_name(const t_type* node) {
+  auto itr = type_cache_.find(node);
+  if (itr == type_cache_.end()) {
+    // TODO(afuller): Support adapted types.
+    itr = type_cache_.emplace_hint(itr, node, gen_native_type(node));
+  }
+  return itr->second;
+}
+
+const std::string& TypeResolver::default_template(t_container::type ctype) {
+  switch (ctype) {
+    case t_container::type::t_list: {
+      static const auto& kValue = *new std::string("::std::vector");
+      return kValue;
+    }
+    case t_container::type::t_set: {
+      static const auto& kValue = *new std::string("::std::set");
+      return kValue;
+    }
+    case t_container::type::t_map: {
+      static const auto& kValue = *new std::string("::std::map");
+      return kValue;
+    }
+  }
+  throw std::runtime_error(
+      "unknown container type: " + std::to_string(static_cast<int>(ctype)));
+}
+
+const std::string& TypeResolver::default_type(t_base_type::type btype) {
+  switch (btype) {
+    case t_base_type::type::t_void: {
+      static const auto& kValue = *new std::string("void");
+      return kValue;
+    }
+    case t_base_type::type::t_bool: {
+      static const auto& kValue = *new std::string("bool");
+      return kValue;
+    }
+    // TODO(afuller): Fully qualify these with '::std::'
+    case t_base_type::type::t_byte: {
+      static const auto& kValue = *new std::string("int8_t");
+      return kValue;
+    }
+    case t_base_type::type::t_i16: {
+      static const auto& kValue = *new std::string("int16_t");
+      return kValue;
+    }
+    case t_base_type::type::t_i32: {
+      static const auto& kValue = *new std::string("int32_t");
+      return kValue;
+    }
+    case t_base_type::type::t_i64: {
+      static const auto& kValue = *new std::string("int64_t");
+      return kValue;
+    }
+    case t_base_type::type::t_float: {
+      static const auto& kValue = *new std::string("float");
+      return kValue;
+    }
+    case t_base_type::type::t_double: {
+      static const auto& kValue = *new std::string("double");
+      return kValue;
+    }
+    case t_base_type::type::t_string:
+    case t_base_type::type::t_binary: {
+      static const auto& kValue = *new std::string("::std::string");
+      return kValue;
+    }
+  }
+  throw std::runtime_error(
+      "unknown base type: " + std::to_string(static_cast<int>(btype)));
+}
+
+std::string TypeResolver::gen_native_type(const t_type* node) {
+  if (node->is_service()) {
+    // Services don't support any annotations.
+    // TODO(afuller): Remove special handling. This should likely be namespaced,
+    // like everything else.
+    return node->get_name();
+  }
+
+  if (const auto* type = find_type(node)) {
+    // Return the override.
+    return *type;
+  }
+
+  // Base types have fixed type mappings.
+  if (const auto* tbase_type = dynamic_cast<const t_base_type*>(node)) {
+    return default_type(tbase_type->base_type());
+  }
+
+  // Containers have fixed template mappings.
+  if (const auto* tcontainer = dynamic_cast<const t_container*>(node)) {
+    return gen_container_type(tcontainer);
+  }
+
+  // Streaming types have special handling.
+  if (const auto* tstream_res = dynamic_cast<const t_stream_response*>(node)) {
+    return gen_stream_resp_type(tstream_res);
+  }
+  if (const auto* tsink = dynamic_cast<const t_sink*>((node))) {
+    return gen_sink_type(tsink);
+  }
+
+  // For everything else, just use namespaced name.
+  return gen_namespaced_name(node);
+}
+
+std::string TypeResolver::gen_container_type(const t_container* node) {
+  const auto* val = find_template(node);
+  const auto& template_name =
+      val ? *val : default_template(node->container_type());
+
+  switch (node->container_type()) {
+    case t_container::type::t_list:
+      return gen_template_type(
+          template_name,
+          {type_name(static_cast<const t_list*>(node)->get_elem_type())});
+    case t_container::type::t_set:
+      return gen_template_type(
+          template_name,
+          {type_name(static_cast<const t_set*>(node)->get_elem_type())});
+    case t_container::type::t_map: {
+      const auto* tmap = static_cast<const t_map*>(node);
+      return gen_template_type(
+          template_name,
+          {type_name(tmap->get_key_type()), type_name(tmap->get_val_type())});
+    }
+  }
+  throw std::runtime_error(
+      "unknown container type: " +
+      std::to_string(static_cast<int>(node->container_type())));
+}
+
+std::string TypeResolver::gen_stream_resp_type(const t_stream_response* node) {
+  if (node->has_first_response()) {
+    return gen_template_type(
+        // TODO(afuller): Add :: prefix.
+        "apache::thrift::ResponseAndServerStream",
+        {type_name(node->get_first_response_type()),
+         type_name(node->get_elem_type())},
+        ",");
+  }
+  return gen_template_type(
+      // TODO(afuller): Add :: prefix.
+      "apache::thrift::ServerStream",
+      {type_name(node->get_elem_type())},
+      ",");
+}
+
+std::string TypeResolver::gen_sink_type(const t_sink* node) {
+  if (node->sink_has_first_response()) {
+    return gen_template_type(
+        // TODO(afuller): Add :: prefix.
+        "apache::thrift::ResponseAndSinkConsumer",
+        {type_name(node->get_first_response_type()),
+         type_name(node->get_sink_type()),
+         type_name(node->get_final_response_type())},
+        ",");
+  }
+  return gen_template_type(
+      // TODO(afuller): Add :: prefix.
+      "apache::thrift::SinkConsumer",
+      {type_name(node->get_sink_type()),
+       type_name(node->get_final_response_type())},
+      ",");
+}
+
+// TODO(afuller): Remove custom delim.
+std::string TypeResolver::gen_template_type(
+    std::string template_name,
+    std::initializer_list<std::string> args,
+    const char* delim) {
+  template_name += "<";
+  auto cdelim = "";
+  for (const auto& arg : args) {
+    template_name += cdelim;
+    cdelim = delim;
+    template_name += arg;
+  }
+  template_name += ">";
+  return template_name;
+}
+
+std::string TypeResolver::gen_namespaced_name(const t_type* node) {
+  if (node->get_program() == nullptr) {
+    // No namespace.
+    return node->get_name();
+  }
+  // TODO(afuller): Remove " " prefix.
+  return " " + get_gen_namespace(*node->get_program()) +
+      "::" + node->get_name();
+}
+
+const std::string& TypeResolver::get_namespace(const t_program* program) {
+  auto itr = namespace_cache_.find(program);
+  if (itr == namespace_cache_.end()) {
+    itr = namespace_cache_.emplace_hint(
+        itr, program, get_gen_namespace(*program));
+  }
+  return itr->second;
 }
 
 bool is_orderable(

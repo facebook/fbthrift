@@ -16,14 +16,18 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <map>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_stream.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -34,6 +38,41 @@ namespace cpp2 {
 std::vector<std::string> get_gen_namespace_components(t_program const& program);
 
 std::string get_gen_namespace(t_program const& program);
+
+// A class that resolves c++ type names from thrift types and caches the
+// results.
+class TypeResolver {
+ public:
+  // Returns c++ type name for the given thrift type.
+  const std::string& type_name(const t_type* node);
+
+ private:
+  std::unordered_map<const t_program*, std::string> namespace_cache_;
+  std::unordered_map<const t_type*, std::string> type_cache_;
+
+  static const std::string* find_type(const t_type* node) {
+    return node->get_annotation_or_null({"cpp.type", "cpp2.type"});
+  }
+  static const std::string* find_template(const t_type* node) {
+    return node->get_annotation_or_null({"cpp.template", "cpp2.template"});
+  }
+
+  static const std::string& default_type(t_base_type::type btype);
+  static const std::string& default_template(t_container::type ctype);
+
+  const std::string& get_namespace(const t_program* program);
+
+  // Generatating functions.
+  std::string gen_native_type(const t_type* node);
+  std::string gen_container_type(const t_container* node);
+  std::string gen_sink_type(const t_sink* node);
+  std::string gen_stream_resp_type(const t_stream_response* node);
+  std::string gen_template_type(
+      std::string template_name,
+      std::initializer_list<std::string> args,
+      const char* delim = ", ");
+  std::string gen_namespaced_name(const t_type* node);
+};
 
 /*
  * This determines if a type can be ordered.
