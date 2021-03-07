@@ -119,18 +119,6 @@ class Deleter {
   bool owning_{true};
 };
 
-template <class F>
-void nothrow(const char* name, F&& f) {
-  try {
-    f();
-  } catch (const std::exception& e) {
-    LOG(ERROR) << name << " threw unhandled " << folly::exceptionStr(e);
-  } catch (...) {
-    LOG(ERROR) << name << " threw unhandled "
-               << folly::exceptionStr(std::current_exception());
-  }
-}
-
 } // namespace
 
 /**
@@ -163,13 +151,13 @@ class ThreadManager::Task {
 
   void run() {
     folly::RequestContextScopeGuard rctx(context_);
-    nothrow("worker task", [&] { runnable_->run(); });
-    nothrow("worker dtor", [&] { runnable_.reset(); });
+    invokeCatchingExns(
+        "ThreadManager: func", [&] { std::exchange(runnable_, {})->run(); });
   }
 
   void skip() {
     folly::RequestContextScopeGuard rctx(context_);
-    nothrow("worker dtor", [&] { runnable_.reset(); });
+    std::exchange(runnable_, {});
   }
 
   const std::shared_ptr<Runnable>& getRunnable() const {
