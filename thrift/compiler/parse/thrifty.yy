@@ -27,6 +27,7 @@
 
 #define __STDC_LIMIT_MACROS
 #define __STDC_FORMAT_MACROS
+
 #include <cassert>
 #include <stdio.h>
 #include <inttypes.h>
@@ -36,13 +37,12 @@
 
 #include <boost/optional.hpp>
 
-#include "thrift/compiler/ast/base_types.h"
-#include "thrift/compiler/ast/t_annotated.h"
-#include "thrift/compiler/ast/t_scope.h"
-#include "thrift/compiler/ast/t_union.h"
-
-#include "thrift/compiler/parse/parsing_driver.h"
-
+#include <thrift/compiler/ast/base_types.h>
+#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_scope.h>
+#include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/parse/parsing_driver.h>
+#include <thrift/compiler/ast/t_container.h>
 /**
  * Note macro expansion because this is different between OSS and internal
  * build, sigh.
@@ -79,8 +79,15 @@ const char* y_enum_name = nullptr;
 
 // Assume ownership of a pointer.
 template <typename T>
-std::unique_ptr<T> own(T*ptr) {
+std::unique_ptr<T> own(T* ptr) {
   return std::unique_ptr<T>(ptr);
+}
+
+// TODO(afuller): Update the scope lookups to return
+// const pointers and remove this function.
+template <typename T>
+t_ref<T> tref(const T* ptr) {
+  return t_ref<T>{ptr};
 }
 
 } // namespace
@@ -96,24 +103,9 @@ std::unique_ptr<T> own(T*ptr) {
 namespace apache {
 namespace thrift {
 namespace compiler {
-using t_typestructpair = std::pair<const t_type*, t_struct*>;
 
-// A strongly typed const T pointer.
-//
-// This is needed to avoid ambiguity in the parser code gen for const pointers.
-template <typename T>
-class t_ref {
- public:
-  constexpr t_ref() = default;
-  constexpr t_ref(const T* ptr) : ptr_(ptr) {}
-  constexpr explicit operator bool() const { return bool(ptr_); }
-  constexpr operator const T*() const { return ptr_; }
-  constexpr const T* operator->() const { return ptr_; }
-  constexpr const T* get() const { return ptr_; }
-private:
-  const T* ptr_ = nullptr;
-};
-using t_type_ref = t_ref<t_type>;
+using t_typestructpair = std::pair<t_ref<t_type>, t_struct*>;
+class t_container_type;
 
 } // namespace compiler
 } // namespace thrift
@@ -132,7 +124,7 @@ using t_type_ref = t_ref<t_type>;
  */
 %token<std::string>     tok_identifier
 %token<std::string>     tok_literal
-%token<boost::optional<std::string>>
+%token<t_doc>
                         tok_doctext
 %token<std::string>     tok_st_identifier
 
@@ -229,88 +221,90 @@ using t_type_ref = t_ref<t_type>;
 
 /**
  * Grammar nodes
+ *
+ * Memory managment rules:
+ * - mutable pointers in the process of being build, and
+ * need to be owned when complete.
+ * - t_refs are already owned.
  */
 
-%type<t_type_ref>       BaseType
-%type<t_type_ref>       SimpleBaseType
-%type<t_type*>          ContainerType
-%type<t_type*>          SimpleContainerType
-%type<t_type*>          MapType
-%type<t_type*>          SetType
-%type<t_type*>          ListType
+%type<t_ref<t_base_type>>    BaseType
+%type<t_ref<t_base_type>>    SimpleBaseType
+%type<t_ref<t_container>>    ContainerType
+%type<t_container*>          SimpleContainerType
+%type<t_container*>          MapType
+%type<t_container*>          SetType
+%type<t_container*>          ListType
 
-%type<std::string>      Identifier
-%type<t_node*>          Definition
-%type<t_type*>          TypeDefinition
+%type<std::string>           Identifier
+%type<t_ref<t_node>>         Definition
 
-%type<t_typedef*>       Typedef
+%type<t_typedef*>            Typedef
 
-%type<t_annotation*>    TypeAnnotation
-%type<t_annotations*>   TypeAnnotations
-%type<t_annotations*>   TypeAnnotationList
-%type<t_annotations*>   FunctionAnnotations
+%type<t_annotation*>         TypeAnnotation
+%type<t_annotations*>        TypeAnnotations
+%type<t_annotations*>        TypeAnnotationList
+%type<t_annotations*>        FunctionAnnotations
 
 %type<t_const*>              StructuredAnnotation
 %type<t_struct_annotations*> StructuredAnnotations
 %type<t_struct_annotations*> NonEmptyStructuredAnnotationList
 
-%type<t_field*>         Field
-%type<t_field_id>       FieldIdentifier
-%type<t_field::e_req>   FieldRequiredness
-%type<t_type_ref>       FieldType
-%type<t_type_ref>       ResponseAndStreamReturnType
-%type<t_type_ref>       ResponseAndSinkReturnType
-%type<t_stream_response*>
-                        StreamReturnType
-%type<t_sink*>          SinkReturnType
-%type<t_typestructpair> SinkFieldType
-%type<t_const_value*>   FieldValue
-%type<t_field_list*>    FieldList
+%type<t_field*>              Field
+%type<t_field_id>            FieldIdentifier
+%type<t_field::e_req>        FieldRequiredness
+%type<t_ref<t_type>>         FieldType
+%type<t_stream_response*>    ResponseAndStreamReturnType
+%type<t_sink*>               ResponseAndSinkReturnType
+%type<t_stream_response*>    StreamReturnType
+%type<t_sink*>               SinkReturnType
+%type<t_typestructpair>      SinkFieldType
+%type<t_const_value*>        FieldValue
+%type<t_field_list*>         FieldList
 
-%type<t_enum*>          Enum
-%type<t_enum*>          EnumDefList
-%type<t_enum_value*>    EnumDef
-%type<t_enum_value*>    EnumValue
+%type<t_enum*>               Enum
+%type<t_enum*>               EnumDefList
+%type<t_enum_value*>         EnumDef
+%type<t_enum_value*>         EnumValue
 
-%type<t_const*>         Const
-%type<t_const_value*>   ConstValue
-%type<t_const_value*>   ConstList
-%type<t_const_value*>   ConstListContents
-%type<t_const_value*>   ConstMap
-%type<t_const_value*>   ConstMapContents
-%type<t_const_value*>   ConstStruct
-%type<t_type*>          ConstStructType
-%type<t_const_value*>   ConstStructContents
+%type<t_const*>              Const
+%type<t_const_value*>        ConstValue
+%type<t_const_value*>        ConstList
+%type<t_const_value*>        ConstListContents
+%type<t_const_value*>        ConstMap
+%type<t_const_value*>        ConstMapContents
+%type<t_const_value*>        ConstStruct
+%type<t_ref<t_type>>         ConstStructType
+%type<t_const_value*>        ConstStructContents
 
-%type<t_struct*>        Struct
-%type<t_union*>         Union
+%type<t_struct*>             Struct
+%type<t_union*>              Union
 
-%type<t_error_kind>     ErrorKind
-%type<t_error_blame>    ErrorBlame
-%type<t_error_safety>   ErrorSafety
-%type<t_exception*>     Xception
+%type<t_error_kind>          ErrorKind
+%type<t_error_blame>         ErrorBlame
+%type<t_error_safety>        ErrorSafety
+%type<t_exception*>          Xception
 
-%type<t_service*>       Service
-%type<t_service*>       Interaction
+%type<t_service*>            Service
+%type<t_service*>            Interaction
 
-%type<t_function*>      Function
-%type<t_type_ref>       FunctionType
-%type<t_service*>       FunctionList
+%type<t_function*>           Function
+%type<t_ref<t_type>>         FunctionType
+%type<t_service*>            FunctionList
 
-%type<t_paramlist*>     ParamList
-%type<t_paramlist*>     EmptyParamList
-%type<t_field*>         Param
+%type<t_paramlist*>          ParamList
+%type<t_paramlist*>          EmptyParamList
+%type<t_field*>              Param
 
-%type<t_struct*>        Throws
-%type<t_struct*>        MaybeThrows
-%type<t_service*>       Extends
-%type<t_function_qualifier> FunctionQualifier
+%type<t_struct*>             Throws
+%type<t_struct*>             MaybeThrows
+%type<t_service*>            Extends
+%type<t_function_qualifier>  FunctionQualifier
 
-%type<boost::optional<std::string>>
-                        CaptureDocText
-%type<std::string>      IntOrLiteral
+%type<t_doc>                 CaptureDocText
+%type<std::string>           IntOrLiteral
 
-%type<bool>             CommaOrSemicolonOptional
+%type<bool>                  CommaOrSemicolonOptional
 
 %%
 
@@ -466,12 +460,9 @@ Include:
     }
 
 DefinitionList:
-  DefinitionList CaptureDocText Definition
+  DefinitionList Definition
     {
       driver.debug("DefinitionList -> DefinitionList Definition");
-      if ($2 && $3) {
-        $3->set_doc(std::string{*$2});
-      }
     }
 |
     {
@@ -479,97 +470,45 @@ DefinitionList:
     }
 
 Definition:
-  Const
+  CaptureDocText Const
     {
       driver.debug("Definition -> Const");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_const(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
+      $$ = driver.add_decl(own($2), std::move($1));
     }
-| TypeDefinition
+| CaptureDocText Typedef
     {
-      driver.debug("Definition -> TypeDefinition");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.scope_cache->add_type(driver.program->get_name() + "." + $1->get_name(), $1);
-      }
-      $$ = $1;
+      driver.debug("Definition -> Typedef");
+      $$ = driver.add_decl(own($2), std::move($1));
     }
-| Service
+| CaptureDocText Enum
+    {
+      driver.debug("Definition -> Enum");
+      $$ = driver.add_decl(own($2), std::move($1));
+    }
+| CaptureDocText Struct
+    {
+      driver.debug("Definition -> Struct");
+      $$ = driver.add_decl(own($2), std::move($1));
+    }
+| CaptureDocText Union
+    {
+      driver.debug("Definition -> Union");
+      $$ = driver.add_decl(own($2), std::move($1));
+    }
+| CaptureDocText Xception
+    {
+      driver.debug("Definition -> Xception");
+      $$ = driver.add_decl(own($2), std::move($1));
+    }
+| CaptureDocText Service
     {
       driver.debug("Definition -> Service");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
-        driver.program->add_service(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
+      $$ = driver.add_decl(own($2), std::move($1));
     }
-| Interaction
+| CaptureDocText Interaction
     {
       driver.debug("Definition -> Interaction");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.scope_cache->add_interaction(driver.program->get_name() + "." + $1->get_name(), $1);
-        driver.program->add_interaction(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
-    }
-
-TypeDefinition:
-  Typedef
-    {
-      driver.debug("TypeDefinition -> Typedef");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_typedef(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
-    }
-| Enum
-    {
-      driver.debug("TypeDefinition -> Enum");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_enum(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
-    }
-| Struct
-    {
-      driver.debug("TypeDefinition -> Struct");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_struct(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
-    }
-| Union
-    {
-      driver.debug("TypeDefinition -> Union");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_struct(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
-    }
-| Xception
-    {
-      driver.debug("TypeDefinition -> Xception");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_xception(own($1));
-      } else {
-        driver.delete_at_the_end($1);
-      }
-      $$ = $1;
+      $$ = driver.add_decl(own($2), std::move($1));
     }
 
 Typedef:
@@ -882,9 +821,9 @@ ConstStructType:
         $$ = nullptr;
       } else {
         // Lookup the identifier in the current scope
-        $$ = driver.scope_cache->get_type($1);
+        $$ = tref(driver.scope_cache->get_type($1));
         if (!$$) {
-          $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
+          $$ = tref(driver.scope_cache->get_type(driver.program->get_name() + "." + $1));
         }
         if (!$$) {
           driver.failure("The type '%s' is not defined yet. Types must be "
@@ -1132,11 +1071,11 @@ Function:
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
-      const auto* rettype = $4.get();
+      auto rettype = $4;
       auto* paramlist = $7;
-      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<const t_stream_response*>(rettype)->get_throws_struct() : nullptr;
+      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<const t_stream_response*>(rettype.get())->get_throws_struct() : nullptr;
       t_function* func;
-      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype)) {
+      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype.get())) {
         func = new t_function(
           tsink,
           $5,
@@ -1373,12 +1312,12 @@ FunctionType:
   ResponseAndStreamReturnType
     {
       driver.debug("FunctionType -> ResponseAndStreamReturnType");
-      $$ = $1;
+      $$ = driver.add_unnamed_type(own($1), nullptr);
     }
 | ResponseAndSinkReturnType
     {
       driver.debug("FunctionType -> ResponseAndSinkReturnType");
-      $$ = $1;
+      $$ = driver.add_unnamed_type(own($1), nullptr);
     }
 | FieldType
     {
@@ -1409,21 +1348,11 @@ StreamReturnType:
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
     $$ = new t_stream_response($3);
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
-    } else {
-      driver.program->add_unnamed_type(own($$));
-    }
   }
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
     $$ = new t_stream_response($3, $4);
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
-    } else {
-      driver.program->add_unnamed_type(own($$));
-    }
   }
 
 ResponseAndSinkReturnType:
@@ -1444,11 +1373,6 @@ SinkReturnType:
     {
       driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
       $$ = new t_sink($3.first, $3.second, $5.first, $5.second);
-      if (driver.mode == parsing_mode::INCLUDES) {
-        driver.delete_at_the_end($$);
-      } else {
-        driver.program->add_unnamed_type(own($$));
-      }
     }
 SinkFieldType:
   FieldType
@@ -1470,24 +1394,21 @@ FieldType:
         delete $2;
       } else {
         // Lookup the identifier in the current scope
-        $$ = driver.scope_cache->get_type($1);
+        $$ = tref(driver.scope_cache->get_type($1));
         if (!$$) {
-          $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
+          $$ = tref(driver.scope_cache->get_type(driver.program->get_name() + "." + $1));
         }
         if (!$$) {
-          $$ = driver.scope_cache->get_interaction($1);
+          $$ = tref(driver.scope_cache->get_interaction($1));
         }
         if (!$$) {
-          $$ = driver.scope_cache->get_interaction(driver.program->get_name() + "." + $1);
+          $$ = tref(driver.scope_cache->get_interaction(driver.program->get_name() + "." + $1));
         }
         // Create typedef in case we have annotations on the type.
         if ($$ && $2) {
           auto td = std::make_unique<t_typedef>(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          td->reset_annotations(std::move($2->strings), $2->last_lineno);
-          delete $2;
-          $$ = td.get();
-          driver.program->add_unnamed_typedef(std::move(td));
+          $$ = driver.add_unnamed_typedef(std::move(td), own($2));
         }
         if (!$$) {
           /*
@@ -1495,13 +1416,9 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          auto td = std::make_unique<t_typedef>(driver.program, $1, driver.scope_cache);
-          if ($2) {
-            td->reset_annotations($2->strings, $2->last_lineno);
-            delete $2;
-          }
-          $$ = td.get();
-          driver.program->add_placeholder_typedef(std::move(td));
+          $$ = driver.add_placeholder_typedef(
+              std::make_unique<t_typedef>(driver.program, $1, driver.scope_cache),
+              own($2));
         }
       }
     }
@@ -1514,28 +1431,15 @@ FieldType:
     {
       driver.debug("FieldType -> ContainerType");
       $$ = $1;
-      if (driver.mode == parsing_mode::INCLUDES) {
-        driver.delete_at_the_end($1);
-      } else {
-        driver.program->add_unnamed_type(own($1));
-      }
     }
 
 BaseType: SimpleBaseType TypeAnnotations
     {
       driver.debug("BaseType => SimpleBaseType TypeAnnotations");
       if ($2) {
-        // TODO(afuller): This should probably be a typedef instead of copying the
-        // base type.
-        auto bt = std::make_unique<t_base_type>(static_cast<const t_base_type&>(*$1));
-        bt->reset_annotations(std::move($2->strings), $2->last_lineno);
-        delete $2;
-        $$ = bt.get();
-        if (driver.mode == parsing_mode::INCLUDES) {
-          driver.delete_at_the_end(bt.release());
-        } else {
-          driver.program->add_unnamed_type(std::move(bt));
-        }
+        // TODO(afuller): Make the reference itself annotatable
+        // instead of copying the type.
+        $$ = driver.add_unnamed_type(std::make_unique<t_base_type>(*$1), own($2));
       } else {
         $$ = $1;
       }
@@ -1591,11 +1495,7 @@ SimpleBaseType:
 ContainerType: SimpleContainerType TypeAnnotations
     {
       driver.debug("ContainerType => SimpleContainerType TypeAnnotations");
-      $$ = $1;
-      if ($2) {
-        $$->reset_annotations($2->strings, $2->last_lineno);
-        delete $2;
-      }
+      $$ = driver.add_unnamed_type(own($1), own($2));
     }
 
 SimpleContainerType:

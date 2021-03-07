@@ -17,6 +17,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <memory>
 #include <set>
 #include <stack>
@@ -26,13 +27,14 @@
 
 #include <boost/optional.hpp>
 
-#include "thrift/compiler/ast/t_annotated.h"
-#include "thrift/compiler/ast/t_named.h"
-#include "thrift/compiler/ast/t_program.h"
-#include "thrift/compiler/ast/t_program_bundle.h"
-#include "thrift/compiler/ast/t_scope.h"
-#include "thrift/compiler/ast/t_union.h"
-#include "thrift/compiler/parse/yy_scanner.h"
+#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_exception.h>
+#include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_program_bundle.h>
+#include <thrift/compiler/ast/t_scope.h>
+#include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/parse/yy_scanner.h>
 
 /**
  * Provide the custom fbthrift_compiler_parse_lex signature to flex.
@@ -79,6 +81,51 @@ struct t_annotations {
   std::map<std::string, std::string> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
   int last_lineno;
+};
+using t_doc = boost::optional<std::string>;
+
+// A const pointer to an AST node.
+//
+// This is needed to avoid ambiguity in the parser code gen for const pointers.
+template <typename T>
+class t_ref {
+ public:
+  constexpr t_ref() = default;
+  constexpr t_ref(const t_ref&) noexcept = default;
+  constexpr t_ref(std::nullptr_t) noexcept {}
+
+  template <typename U>
+  constexpr /* implicit */ t_ref(const t_ref<U>& u) noexcept : ptr_(u.get()) {}
+
+  // Require an explicit cast for a non-const pointer, as non-const pointers
+  // likely need to be owned, so this is probably a bug.
+  template <typename U, std::enable_if_t<std::is_const<U>::value, int> = 0>
+  constexpr /* implicit */ t_ref(U* ptr) : ptr_(ptr) {}
+  template <typename U, std::enable_if_t<!std::is_const<U>::value, int> = 0>
+  constexpr explicit t_ref(U* ptr) : ptr_(ptr) {}
+
+  constexpr const T* get() const {
+    return ptr_;
+  }
+
+  constexpr const T* operator->() const {
+    assert(ptr_ != nullptr);
+    return ptr_;
+  }
+  constexpr const T& operator*() const {
+    assert(ptr_ != nullptr);
+    return *ptr_;
+  }
+
+  constexpr explicit operator bool() const {
+    return bool(ptr_);
+  }
+  constexpr /* implicit */ operator const T*() const {
+    return ptr_;
+  }
+
+ private:
+  const T* ptr_ = nullptr;
 };
 
 struct diagnostic_message {
@@ -186,7 +233,7 @@ class parsing_driver {
   /**
    * The last parsed doctext comment.
    */
-  boost::optional<std::string> doctext;
+  t_doc doctext;
 
   /**
    * The location of the last parsed doctext comment.
@@ -334,7 +381,7 @@ class parsing_driver {
    * Warning: if you mix tabs and spaces in a non-uniform way,
    * you will get what you deserve.
    */
-  boost::optional<std::string> clean_up_doctext(std::string docstring);
+  t_doc clean_up_doctext(std::string docstring);
 
   // Checks if the given experimental features is enabled, and reports a failure
   // and returns false iff not.
@@ -382,6 +429,43 @@ class parsing_driver {
 
   std::unique_ptr<t_struct> new_throws(
       std::unique_ptr<t_field_list> exceptions = nullptr);
+
+  template <typename T>
+  t_ref<T> add_unnamed_type(
+      std::unique_ptr<T> node,
+      std::unique_ptr<t_annotations> annotations) {
+    t_ref<T> result(node.get());
+    set_annotations(node.get(), std::move(annotations), nullptr);
+    if (mode == parsing_mode::INCLUDES) {
+      delete_at_the_end(node.release());
+    } else {
+      program->add_unnamed_type(std::move(node));
+    }
+    return result;
+  }
+
+  // Adds an unnamed typedef to the program
+  // TODO(afuller): Remove the need for these by an explicit t_type_ref node
+  // that can annotatable.
+  t_ref<t_typedef> add_unnamed_typedef(
+      std::unique_ptr<t_typedef> node,
+      std::unique_ptr<t_annotations> annotations);
+
+  // Adds an placeholder typedef to the program
+  // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
+  // node that can be resolved in a second passover the ast.
+  t_ref<t_typedef> add_placeholder_typedef(
+      std::unique_ptr<t_typedef> node,
+      std::unique_ptr<t_annotations> annotations);
+
+  // Adds a declaration to the program.
+  t_ref<t_const> add_decl(std::unique_ptr<t_const>&& node, t_doc doc);
+  t_ref<t_service> add_decl(std::unique_ptr<t_service>&& node, t_doc doc);
+  t_ref<t_typedef> add_decl(std::unique_ptr<t_typedef>&& node, t_doc doc);
+  t_ref<t_struct> add_decl(std::unique_ptr<t_struct>&& node, t_doc doc);
+  t_ref<t_union> add_decl(std::unique_ptr<t_union>&& node, t_doc doc);
+  t_ref<t_exception> add_decl(std::unique_ptr<t_exception>&& node, t_doc doc);
+  t_ref<t_enum> add_decl(std::unique_ptr<t_enum>&& node, t_doc doc);
 
  private:
   class deleter {
@@ -434,6 +518,37 @@ class parsing_driver {
   int pop_node(LineType lineType);
 
   void append_fields(t_struct& tstruct, t_field_list&& fields);
+
+  // Sets the doc and returns true if the node should be
+  // added to the program. Otherwise, the driver itself
+  // takes ownership of node.
+  template <typename T>
+  bool should_add_node(std::unique_ptr<T>& node, t_doc&& doc) {
+    if (doc.has_value()) {
+      node->set_doc(std::move(*doc));
+    }
+    if (mode != parsing_mode::PROGRAM) {
+      delete_at_the_end(node.release());
+      return false;
+    }
+    return true;
+  }
+
+  // Sets the doc and updates the scope cache and returns true
+  // if the node should be added to the program. Otherwise,
+  // the driver itself takes ownership of node.
+  template <typename T>
+  bool should_add_type(std::unique_ptr<T>& node, t_doc&& doc) {
+    if (should_add_node(node, std::move(doc))) {
+      scope_cache->add_type(scoped_name(*node), node.get());
+      return true;
+    }
+    return false;
+  }
+
+  std::string scoped_name(const t_named& node) {
+    return program->get_name() + "." + node.get_name();
+  }
 
   template <typename... Arg>
   diagnostic_message construct_diagnostic_message(

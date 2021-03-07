@@ -642,6 +642,100 @@ void parsing_driver::append_fields(t_struct& tstruct, t_field_list&& fields) {
   }
 }
 
+t_ref<t_typedef> parsing_driver::add_unnamed_typedef(
+    std::unique_ptr<t_typedef> node,
+    std::unique_ptr<t_annotations> annotations) {
+  t_ref<t_typedef> result(node.get());
+  set_annotations(node.get(), std::move(annotations), nullptr);
+  program->add_unnamed_typedef(std::move(node));
+  return result;
+}
+
+t_ref<t_typedef> parsing_driver::add_placeholder_typedef(
+    std::unique_ptr<t_typedef> node,
+    std::unique_ptr<t_annotations> annotations) {
+  t_ref<t_typedef> result(node.get());
+  set_annotations(node.get(), std::move(annotations), nullptr);
+  program->add_placeholder_typedef(std::move(node));
+  return result;
+}
+
+t_ref<t_const> parsing_driver::add_decl(
+    std::unique_ptr<t_const>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_const> result(node.get());
+  if (should_add_node(node, std::move(doc))) {
+    program->add_const(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_service> parsing_driver::add_decl(
+    std::unique_ptr<t_service>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_service> result(node.get());
+  if (should_add_node(node, std::move(doc))) {
+    // TODO(afuller): Make interactions their own type.
+    if (node->is_interaction()) {
+      scope_cache->add_interaction(scoped_name(*node), node.get());
+      program->add_interaction(std::move(node));
+    } else {
+      scope_cache->add_service(scoped_name(*node), node.get());
+      program->add_service(std::move(node));
+    }
+  }
+  return result;
+}
+
+t_ref<t_typedef> parsing_driver::add_decl(
+    std::unique_ptr<t_typedef>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_typedef> result(node.get());
+  if (should_add_type(node, std::move(doc))) {
+    program->add_typedef(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_struct> parsing_driver::add_decl(
+    std::unique_ptr<t_struct>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_struct> result(node.get());
+  if (should_add_type(node, std::move(doc))) {
+    program->add_struct(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_union> parsing_driver::add_decl(
+    std::unique_ptr<t_union>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_union> result(node.get());
+  if (should_add_type(node, std::move(doc))) {
+    program->add_struct(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_exception> parsing_driver::add_decl(
+    std::unique_ptr<t_exception>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_exception> result(node.get());
+  if (should_add_type(node, std::move(doc))) {
+    program->add_xception(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_enum> parsing_driver::add_decl(
+    std::unique_ptr<t_enum>&& node,
+    boost::optional<std::string> doc) {
+  t_ref<t_enum> result(node.get());
+  if (should_add_type(node, std::move(doc))) {
+    program->add_enum(std::move(node));
+  }
+  return result;
+}
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
