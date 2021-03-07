@@ -140,13 +140,6 @@ const std::string& TypeResolver::default_type(t_base_type::type btype) {
 }
 
 std::string TypeResolver::gen_native_type(const t_type* node) {
-  if (node->is_service()) {
-    // Services don't support any annotations.
-    // TODO(afuller): Remove special handling. This should likely be namespaced,
-    // like everything else.
-    return node->get_name();
-  }
-
   if (const auto* type = find_type(node)) {
     // Return the override.
     return *type;
