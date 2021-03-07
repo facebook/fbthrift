@@ -15,8 +15,8 @@
  */
 
 #include <thrift/compiler/ast/t_type.h>
-#include <thrift/compiler/ast/t_typedef.h>
 
+#include <array>
 #include <sstream>
 #include <string>
 
@@ -24,6 +24,7 @@
 
 #include <thrift/compiler/ast/endianness.h>
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_typedef.h>
 
 namespace apache {
 namespace thrift {
@@ -31,6 +32,31 @@ namespace compiler {
 
 constexpr size_t t_type::kTypeBits;
 constexpr uint64_t t_type::kTypeMask;
+
+const std::string& t_type::type_name(type t) {
+  static const auto& kTypeNames =
+      *new std::array<std::string, t_type::kTypeCount>(
+          {{"void",
+            "string",
+            "bool",
+            "byte",
+            "i16",
+            "i32",
+            "i64",
+            "double",
+            "enum",
+            "list",
+            "set",
+            "map",
+            "struct",
+            "service",
+            "program",
+            "float",
+            "sink",
+            "stream",
+            "binary"}});
+  return kTypeNames.at(static_cast<size_t>(t));
+}
 
 uint64_t t_type::get_type_id() const {
   // This union allows the conversion of the SHA char buffer to a 64bit uint

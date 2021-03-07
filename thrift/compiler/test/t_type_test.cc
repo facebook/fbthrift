@@ -121,3 +121,25 @@ TEST(TType, GetTypeId) {
 
   EXPECT_EQ(expect, hashes);
 }
+
+TEST(TType, TypeName) {
+  EXPECT_EQ(t_type::type_name(t_type::type::t_void), "void");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_string), "string");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_bool), "bool");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_byte), "byte");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_i16), "i16");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_i32), "i32");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_i64), "i64");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_double), "double");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_enum), "enum");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_list), "list");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_set), "set");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_map), "map");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_struct), "struct");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_service), "service");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_program), "program");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_float), "float");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_sink), "sink");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_stream), "stream");
+  EXPECT_EQ(t_type::type_name(t_type::type::t_binary), "binary");
+}

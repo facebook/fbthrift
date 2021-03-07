@@ -21,53 +21,54 @@ namespace thrift {
 namespace compiler {
 
 const t_base_type& t_base_type::t_void() {
-  static t_base_type type{"void", TYPE_VOID};
+  static t_base_type type{"void", type::t_void};
   return type;
 }
 
 const t_base_type& t_base_type::t_string() {
-  static t_base_type type{"string", TYPE_STRING};
+  static t_base_type type{"string", type::t_string};
   return type;
 }
 
 const t_base_type& t_base_type::t_binary() {
   // NOTE: thrift compiler used to treat both string and binary as string.
-  static t_base_type type{"string", TYPE_BINARY};
+  // TODO(afuller): Change this to "binary".
+  static t_base_type type{"string", type::t_binary};
   return type;
 }
 
 const t_base_type& t_base_type::t_bool() {
-  static t_base_type type{"bool", TYPE_BOOL};
+  static t_base_type type{"bool", type::t_bool};
   return type;
 }
 
 const t_base_type& t_base_type::t_byte() {
-  static t_base_type type{"byte", TYPE_BYTE};
+  static t_base_type type{"byte", type::t_byte};
   return type;
 }
 
 const t_base_type& t_base_type::t_i16() {
-  static t_base_type type{"i16", TYPE_I16};
+  static t_base_type type{"i16", type::t_i16};
   return type;
 }
 
-const t_base_type& t_base_type::t_base_type::t_i32() {
-  static t_base_type type{"i32", TYPE_I32};
+const t_base_type& t_base_type::t_i32() {
+  static t_base_type type{"i32", type::t_i32};
   return type;
 }
 
 const t_base_type& t_base_type::t_i64() {
-  static t_base_type type{"i64", TYPE_I64};
+  static t_base_type type{"i64", type::t_i64};
   return type;
 }
 
 const t_base_type& t_base_type::t_double() {
-  static t_base_type type{"double", TYPE_DOUBLE};
+  static t_base_type type{"double", type::t_double};
   return type;
 }
 
 const t_base_type& t_base_type::t_float() {
-  static t_base_type type{"float", TYPE_FLOAT};
+  static t_base_type type{"float", type::t_float};
   return type;
 }
 

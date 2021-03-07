@@ -46,38 +46,47 @@ class t_type : public t_named {
   /*
    * All the thrift supported types
    *
-   * @kTypeBits - TODO: add description
-   * @kTypeMask - TODO: add description
+   * TODO(afuller): Remove 'legacy type id's use of these enum values, then
+   * remove the explicit numbering.
    */
   enum class type {
-    t_void,
-    t_string,
-    t_bool,
-    t_byte,
-    t_i16,
-    t_i32,
-    t_i64,
-    t_double,
-    t_enum,
-    t_list,
-    t_set,
-    t_map,
-    t_struct,
-    t_service,
-    t_program,
-    t_float,
-    t_sink,
-    t_stream,
-    t_binary,
+    // Base types.
+    t_void = 0,
+    t_bool = 2,
+    t_byte = 3,
+    t_i16 = 4,
+    t_i32 = 5,
+    t_i64 = 6,
+    t_float = 15,
+    t_double = 7,
+    t_string = 1,
+    t_binary = 18,
+
+    // Container types.
+    t_list = 9,
+    t_set = 10,
+    t_map = 11,
+
+    // Declared types
+    t_enum = 8,
+    t_struct = 12,
+    t_service = 13,
+    t_sink = 16,
+    t_stream = 17,
+    t_program = 14,
   };
+  static constexpr size_t kTypeCount = 19;
+  // TODO: add description
   static constexpr size_t kTypeBits = 5;
+  // TODO: add description
   static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
+  static const std::string& type_name(type t);
 
   // Returns the full name for the given type. For example:
   // `list<string, string>`
   virtual std::string get_full_name() const = 0;
 
-  // @get_type_value() - TODO: Renanme function
+  // TODO: Rename function.
   virtual type get_type_value() const = 0;
 
   /**
