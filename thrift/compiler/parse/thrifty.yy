@@ -519,9 +519,8 @@ Typedef:
   FieldType Identifier TypeAnnotations
     {
       driver.debug("TypeDef => StructuredAnnotations tok_typedef FieldType "
-        "Identifier TypeAnnotations");
-      t_typedef *td = new t_typedef(driver.program, $4, $5, driver.scope_cache);
-      $$ = td;
+          "Identifier TypeAnnotations");
+      $$ = new t_typedef(driver.program, $4, $5, driver.scope_cache);
       driver.finish_node($$, LineType::Typedef, own($6), own($1));
     }
 
@@ -554,8 +553,8 @@ Enum:
   "{" EnumDefList "}" TypeAnnotations
     {
       driver.debug("Enum => StructuredAnnotations tok_enum Identifier { EnumDefList } TypeAnnotations");
+      driver.finish_node($7, LineType::Enum, $4, own($9), own($1));
       $$ = $7;
-      driver.finish_node($$, LineType::Enum, $4, own($9), own($1));
       y_enum_name = nullptr;
     }
 
@@ -601,7 +600,7 @@ EnumDef:
         "TypeAnnotations CommaOrSemicolonOptional");
       $$ = $3;
       if ($1) {
-        $$->set_doc(std::string{*$1});
+        $$->set_doc(std::move(*$1));
       }
       driver.set_annotations($$, own($4), own($2));
     }
@@ -651,8 +650,6 @@ Const:
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, $4, $5, own($7));
         driver.finish_node($$, LineType::Const, own($8), own($1));
-        driver.validate_const_type($$);
-        driver.scope_cache->add_constant(driver.program->get_name() + "." + $5, $$);
       } else {
         delete $1;
         delete $7;
@@ -695,7 +692,7 @@ ConstValue:
       driver.debug("ConstValue => Identifier");
       t_const* constant = driver.scope_cache->get_constant($1);
       driver.validate_not_ambiguous_enum($1);
-      if (!constant) {
+      if (constant == nullptr) {
         auto name_with_program_name = driver.program->get_name() + "." + $1;
         constant = driver.scope_cache->get_constant(name_with_program_name);
         driver.validate_not_ambiguous_enum(name_with_program_name);
@@ -797,9 +794,6 @@ ConstStruct:
       driver.debug("ConstStruct => ConstStructType { ConstStructContents CommaOrSemicolonOptional }");
       $$ = $3;
       $$->set_ttype($1);
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.validate_const_rec($$->get_ttype()->get_name(), $$->get_ttype(), $$);
-      }
     }
 | ConstStructType "{" "}"
     {
@@ -807,9 +801,6 @@ ConstStruct:
       $$ = new t_const_value();
       $$->set_map();
       $$->set_ttype($1);
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.validate_const_rec($$->get_ttype()->get_name(), $$->get_ttype(), $$);
-      }
     }
 
 ConstStructType:

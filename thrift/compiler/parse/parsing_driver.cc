@@ -665,6 +665,8 @@ t_ref<t_const> parsing_driver::add_decl(
     boost::optional<std::string> doc) {
   t_ref<t_const> result(node.get());
   if (should_add_node(node, std::move(doc))) {
+    validate_const_type(node.get());
+    scope_cache->add_constant(scoped_name(*node), node.get());
     program->add_const(std::move(node));
   }
   return result;
