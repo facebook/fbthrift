@@ -32,8 +32,8 @@ namespace detail {
     TypeClass, Type, ThriftType, TTypeValue)                           \
   const TypeInfo TypeToInfo<type_class::TypeClass, Type>::typeInfo = { \
       protocol::TType::TTypeValue,                                     \
-      reinterpret_cast<VoidFuncPtr>(identity(set<Type, ThriftType>)),  \
       reinterpret_cast<VoidFuncPtr>(identity(get<ThriftType, Type>)),  \
+      reinterpret_cast<VoidFuncPtr>(identity(set<Type, ThriftType>)),  \
       nullptr,                                                         \
   }
 
@@ -89,8 +89,8 @@ THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
       ExtVal;                                                                \
   const TypeInfo TypeToInfo<type_class::TypeClass, ActualType>::typeInfo = { \
       /* .type */ protocol::TType::T_STRING,                                 \
-      /* .set */ nullptr,                                                    \
       /* .get */ nullptr,                                                    \
+      /* .set */ nullptr,                                                    \
       /* .typeExt */ &ext,                                                   \
   }
 
@@ -135,9 +135,7 @@ void* getMember(const FieldInfo& fieldInfo, void* object) {
   return static_cast<char*>(object) + fieldInfo.memberOffset;
 }
 
-const OptionalThriftValue getValue(
-    const TypeInfo& typeInfo,
-    const void* object) {
+OptionalThriftValue getValue(const TypeInfo& typeInfo, const void* object) {
   if (typeInfo.get) {
     // Handle smart pointer and numerical types.
     return reinterpret_cast<OptionalThriftValue (*)(const void*)>(typeInfo.get)(

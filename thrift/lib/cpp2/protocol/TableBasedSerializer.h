@@ -40,6 +40,7 @@ namespace thrift {
 namespace detail {
 
 using FieldID = std::int16_t;
+
 // MSVC cannot reinterpret_cast an overloaded function to another function
 // pointer, but piping the function through an identity function before
 // reinterpret_cast works.
@@ -149,31 +150,6 @@ FOLLY_ERASE const StructInfo& toStructInfo(
   return reinterpret_cast<const StructInfo&>(templatizedInfo);
 }
 
-struct MapFieldExt {
-  const TypeInfo* keyInfo;
-  const TypeInfo* valInfo;
-  std::uint32_t (*size)(const void* object);
-  void (*consumeElem)(
-      const void* context,
-      void* object,
-      void (*keyReader)(const void* context, void* key),
-      void (*valueReader)(const void* context, void* val));
-  void (*readMap)(
-      const void* context,
-      void* object,
-      std::uint32_t mapSize,
-      void (*keyReader)(const void* context, void* key),
-      void (*valueReader)(const void* context, void* val));
-  size_t (*writeMap)(
-      const void* context,
-      const void* object,
-      bool protocolSortKeys,
-      size_t (*writer)(
-          const void* context,
-          const void* keyElem,
-          const void* valueElem));
-};
-
 struct ListFieldExt {
   const TypeInfo* valInfo;
   std::uint32_t (*size)(const void* object);
@@ -209,6 +185,31 @@ struct SetFieldExt {
       const void* object,
       bool protocolSortKeys,
       size_t (*writer)(const void* context, const void* val));
+};
+
+struct MapFieldExt {
+  const TypeInfo* keyInfo;
+  const TypeInfo* valInfo;
+  std::uint32_t (*size)(const void* object);
+  void (*consumeElem)(
+      const void* context,
+      void* object,
+      void (*keyReader)(const void* context, void* key),
+      void (*valueReader)(const void* context, void* val));
+  void (*readMap)(
+      const void* context,
+      void* object,
+      std::uint32_t mapSize,
+      void (*keyReader)(const void* context, void* key),
+      void (*valueReader)(const void* context, void* val));
+  size_t (*writeMap)(
+      const void* context,
+      const void* object,
+      bool protocolSortKeys,
+      size_t (*writer)(
+          const void* context,
+          const void* keyElem,
+          const void* valueElem));
 };
 
 template <typename ThriftUnion>
@@ -602,8 +603,8 @@ const SetFieldExt TypeToInfo<type_class::set<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::set<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_SET,
-    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .get */ getDerefFuncPtr<T>(nullptr),
+    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .typeExt */
     &TypeToInfo<type_class::set<ElemTypeClass>, T>::ext,
 };
@@ -627,8 +628,8 @@ const ListFieldExt TypeToInfo<type_class::list<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::list<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_LIST,
-    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .get */ getDerefFuncPtr<T>(nullptr),
+    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .typeExt */ &ext,
 };
 
@@ -655,8 +656,8 @@ template <typename KeyTypeClass, typename ValTypeClass, typename T>
 const TypeInfo
     TypeToInfo<type_class::map<KeyTypeClass, ValTypeClass>, T>::typeInfo = {
         /* .type */ protocol::TType::T_MAP,
-        /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
         /* .get */ getDerefFuncPtr<T>(nullptr),
+        /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
         /* .typeExt */ &ext,
 };
 
@@ -674,8 +675,8 @@ const TypeInfo
       T,                                                                  \
       enable_if_smart_ptr_t<T>>::typeInfo = {                             \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.type,      \
-      reinterpret_cast<VoidFuncPtr>(set<T>),                              \
       reinterpret_cast<VoidFuncPtr>(identity(get<T>)),                    \
+      reinterpret_cast<VoidFuncPtr>(set<T>),                              \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.typeExt,   \
   }
 
@@ -699,9 +700,9 @@ THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(variant);
       TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>>::        \
           typeInfo = {                                                        \
               TypeToInfo<type_class::TypeClass, numeric_type>::typeInfo.type, \
-              reinterpret_cast<VoidFuncPtr>(set<T, underlying_type>),         \
               reinterpret_cast<VoidFuncPtr>(                                  \
                   identity(get<underlying_type, T>)),                         \
+              reinterpret_cast<VoidFuncPtr>(set<T, underlying_type>),         \
               nullptr,                                                        \
   }
 
