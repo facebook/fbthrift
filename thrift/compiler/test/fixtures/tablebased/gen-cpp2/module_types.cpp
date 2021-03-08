@@ -703,7 +703,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
     apache::thrift::type_class::enumeration,
     ::test::fixtures::tablebased::ExampleEnum>::typeInfo = {
   /* .type */ apache::thrift::protocol::TType::T_I32,
-  /* .get */ reinterpret_cast<VoidFuncPtr>(get<std::int32_t, ::test::fixtures::tablebased::ExampleEnum>),
+  /* .get */ get<std::int32_t, ::test::fixtures::tablebased::ExampleEnum>,
   /* .set */ reinterpret_cast<VoidFuncPtr>(set<::test::fixtures::tablebased::ExampleEnum, std::int32_t>),
   /* .typeExt */ nullptr,
 };

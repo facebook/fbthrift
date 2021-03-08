@@ -262,6 +262,16 @@ enable_if_smart_ptr_t<PtrType, OptionalThriftValue> get(const void* object) {
   return folly::none;
 }
 
+template <typename T, enable_if_not_smart_ptr_t<T, int> = 0>
+constexpr auto getDerefFuncPtr() {
+  return nullptr;
+}
+
+template <typename T, enable_if_smart_ptr_t<T, int> = 0>
+constexpr auto getDerefFuncPtr() {
+  return get<T>;
+}
+
 template <typename ObjectType>
 enable_if_not_smart_ptr_t<ObjectType, void*> set(void* object) {
   *static_cast<ObjectType*>(object) = ObjectType();
@@ -572,16 +582,6 @@ THRIFT_DEFINE_STRING_TYPE_TO_INFO(
 
 #undef THRIFT_DEFINE_STRING_TYPE_TO_INFO
 
-template <typename T>
-constexpr VoidFuncPtr getDerefFuncPtr(enable_if_not_smart_ptr_t<T, void*>) {
-  return nullptr;
-}
-
-template <typename T>
-constexpr VoidFuncPtr getDerefFuncPtr(enable_if_smart_ptr_t<T, void*>) {
-  return reinterpret_cast<VoidFuncPtr>(identity(get<T>));
-}
-
 // Specialization for set.
 template <typename ElemTypeClass, typename T>
 struct TypeToInfo<type_class::set<ElemTypeClass>, T> {
@@ -603,7 +603,7 @@ const SetFieldExt TypeToInfo<type_class::set<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::set<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_SET,
-    /* .get */ getDerefFuncPtr<T>(nullptr),
+    /* .get */ getDerefFuncPtr<T>(),
     /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .typeExt */
     &TypeToInfo<type_class::set<ElemTypeClass>, T>::ext,
@@ -628,7 +628,7 @@ const ListFieldExt TypeToInfo<type_class::list<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::list<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_LIST,
-    /* .get */ getDerefFuncPtr<T>(nullptr),
+    /* .get */ getDerefFuncPtr<T>(),
     /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .typeExt */ &ext,
 };
@@ -656,7 +656,7 @@ template <typename KeyTypeClass, typename ValTypeClass, typename T>
 const TypeInfo
     TypeToInfo<type_class::map<KeyTypeClass, ValTypeClass>, T>::typeInfo = {
         /* .type */ protocol::TType::T_MAP,
-        /* .get */ getDerefFuncPtr<T>(nullptr),
+        /* .get */ getDerefFuncPtr<T>(),
         /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
         /* .typeExt */ &ext,
 };
@@ -675,7 +675,7 @@ const TypeInfo
       T,                                                                  \
       enable_if_smart_ptr_t<T>>::typeInfo = {                             \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.type,      \
-      reinterpret_cast<VoidFuncPtr>(identity(get<T>)),                    \
+      get<T>,                                                             \
       reinterpret_cast<VoidFuncPtr>(set<T>),                              \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.typeExt,   \
   }
@@ -700,8 +700,7 @@ THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(variant);
       TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>>::        \
           typeInfo = {                                                        \
               TypeToInfo<type_class::TypeClass, numeric_type>::typeInfo.type, \
-              reinterpret_cast<VoidFuncPtr>(                                  \
-                  identity(get<underlying_type, T>)),                         \
+              get<underlying_type, T>,                                        \
               reinterpret_cast<VoidFuncPtr>(set<T, underlying_type>),         \
               nullptr,                                                        \
   }

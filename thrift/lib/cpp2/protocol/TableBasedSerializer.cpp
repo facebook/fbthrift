@@ -32,7 +32,7 @@ namespace detail {
     TypeClass, Type, ThriftType, TTypeValue)                           \
   const TypeInfo TypeToInfo<type_class::TypeClass, Type>::typeInfo = { \
       protocol::TType::TTypeValue,                                     \
-      reinterpret_cast<VoidFuncPtr>(identity(get<ThriftType, Type>)),  \
+      get<ThriftType, Type>,                                           \
       reinterpret_cast<VoidFuncPtr>(identity(set<Type, ThriftType>)),  \
       nullptr,                                                         \
   }
@@ -137,15 +137,9 @@ void* getMember(const FieldInfo& fieldInfo, void* object) {
 
 OptionalThriftValue getValue(const TypeInfo& typeInfo, const void* object) {
   if (typeInfo.get) {
-    // Handle smart pointer and numerical types.
-    return reinterpret_cast<OptionalThriftValue (*)(const void*)>(typeInfo.get)(
-        object);
+    return typeInfo.get(object);
   }
-  // Handle others.
-  if (object) {
-    return folly::make_optional<ThriftValue>(object);
-  }
-  return folly::none;
+  return object ? folly::make_optional<ThriftValue>(object) : folly::none;
 }
 
 FOLLY_ERASE void* invokeSet(VoidFuncPtr set, void* object) {
