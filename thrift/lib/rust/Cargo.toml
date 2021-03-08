@@ -9,7 +9,7 @@ publish = false
 
 [dependencies]
 anyhow = "1.0"
-async-trait = "0.1.29"
+async-trait = "0.1.45"
 base64 = "0.11.0"
 bufsize = "0.5"
 bytes = { version = "0.5", features = ["serde"] }
