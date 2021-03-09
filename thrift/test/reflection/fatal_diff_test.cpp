@@ -544,7 +544,7 @@ TEST(fatal_diff, optional_members) {
   struct1 field1Unset;
   struct1 field1SetButNotIsset;
   field1SetButNotIsset.field1_ref() = "2";
-  field1SetButNotIsset.__isset.field1 = false;
+  apache::thrift::unset_unsafe(field1SetButNotIsset.field1_ref());
   struct1 field1SetDefault;
   apache::thrift::ensure_isset_unsafe(field1SetDefault.field1_ref());
   TEST_IMPL(field1Set, field1Unset, R"(

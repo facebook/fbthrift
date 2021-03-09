@@ -89,7 +89,7 @@ TEST(SwapTest, test_swap_optional) {
   *simple2.im_default_ref() = 2;
   simple2.im_required = 2;
   simple2.im_optional_ref() = 2;
-  simple2.__isset.im_default = false;
+  apache::thrift::unset_unsafe(simple2.im_default_ref());
 
   Simple simple3;
   *simple3.im_default_ref() = 3;
@@ -101,7 +101,7 @@ TEST(SwapTest, test_swap_optional) {
   *simple4.im_default_ref() = 4;
   simple4.im_required = 4;
   simple4.im_optional_ref() = 4;
-  simple4.__isset.im_default = false;
+  apache::thrift::unset_unsafe(simple4.im_default_ref());
 
   *comp1.cp_default_ref() = 5;
   comp1.cp_default_ref().ensure();
@@ -114,7 +114,7 @@ TEST(SwapTest, test_swap_optional) {
   comp1.opt_simp_ref().reset();
 
   *comp2.cp_default_ref() = -7;
-  comp2.__isset.cp_default = false;
+  apache::thrift::unset_unsafe(comp2.cp_default_ref());
   comp2.cp_required = 0;
   comp2.cp_optional_ref().reset();
   comp2.the_map_ref()->insert(make_pair(6, simple2));
