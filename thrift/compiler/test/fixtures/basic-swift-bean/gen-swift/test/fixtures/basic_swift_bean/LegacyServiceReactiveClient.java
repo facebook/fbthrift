@@ -15,6 +15,8 @@ public class LegacyServiceReactiveClient
   implements LegacyService.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final Map<String, String> _headers;
+  private final Map<String, String> _persistentHeaders;
 
   private static final TField _getPoints_KEY_FIELD_DESC = new TField("key", TType.SET, (short)1);
   private static final TField _getPoints_LEGACY_STUFF_FIELD_DESC = new TField("legacyStuff", TType.I64, (short)-1);
@@ -27,6 +29,16 @@ public class LegacyServiceReactiveClient
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
+    this._headers = java.util.Collections.emptyMap();
+    this._persistentHeaders = java.util.Collections.emptyMap();
+  }
+
+  public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    
+    this._protocolId = _protocolId;
+    this._rpcClient = _rpcClient;
+    this._headers = _headers;
+    this._persistentHeaders = _persistentHeaders;
   }
 
   @java.lang.Override

@@ -50,6 +50,7 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
         throw new UnsupportedOperationException();
     }
 
+    @com.facebook.swift.service.ThriftService("MyServicePrioChild")
     interface Reactive extends Closeable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
         @java.lang.Override void close();
 

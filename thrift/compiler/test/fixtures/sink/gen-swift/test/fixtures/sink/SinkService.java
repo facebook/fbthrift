@@ -25,6 +25,7 @@ public interface SinkService extends java.io.Closeable {
     }
     @java.lang.Override void close();
 
+    @com.facebook.swift.service.ThriftService("SinkService")
     interface Reactive extends Closeable {
         @java.lang.Override void close();
 

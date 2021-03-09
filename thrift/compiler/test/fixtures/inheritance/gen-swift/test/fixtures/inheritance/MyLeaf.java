@@ -50,6 +50,7 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
         throw new UnsupportedOperationException();
     }
 
+    @com.facebook.swift.service.ThriftService("MyLeaf")
     interface Reactive extends Closeable, test.fixtures.inheritance.MyNode.Reactive {
         @java.lang.Override void close();
 

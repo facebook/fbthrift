@@ -62,6 +62,7 @@ public interface LegacyService extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
+    @com.facebook.swift.service.ThriftService("LegacyService")
     interface Reactive extends Closeable {
         @java.lang.Override void close();
 

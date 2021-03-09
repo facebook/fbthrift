@@ -15,6 +15,8 @@ public class MyRootReactiveClient
   implements MyRoot.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final Map<String, String> _headers;
+  private final Map<String, String> _persistentHeaders;
 
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _doRoot_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
@@ -25,6 +27,16 @@ public class MyRootReactiveClient
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
+    this._headers = java.util.Collections.emptyMap();
+    this._persistentHeaders = java.util.Collections.emptyMap();
+  }
+
+  public MyRootReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    
+    this._protocolId = _protocolId;
+    this._rpcClient = _rpcClient;
+    this._headers = _headers;
+    this._persistentHeaders = _persistentHeaders;
   }
 
   @java.lang.Override

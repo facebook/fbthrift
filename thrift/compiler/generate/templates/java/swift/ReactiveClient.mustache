@@ -27,6 +27,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   implements {{service:javaCapitalName}}.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final Map<String, String> _headers;
+  private final Map<String, String> _persistentHeaders;
 
   {{#service:supportedFunctions}}
   {{#function:args}}
@@ -147,6 +149,16 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
+    this._headers = java.util.Collections.emptyMap();
+    this._persistentHeaders = java.util.Collections.emptyMap();
+  }
+
+  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
+    this._protocolId = _protocolId;
+    this._rpcClient = _rpcClient;
+    this._headers = _headers;
+    this._persistentHeaders = _persistentHeaders;
   }
 
   @java.lang.Override

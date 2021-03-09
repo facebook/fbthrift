@@ -15,6 +15,8 @@ public class MyServiceReactiveClient
   implements MyService.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final Map<String, String> _headers;
+  private final Map<String, String> _persistentHeaders;
 
   private static final TField _query_S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
   private static final TField _query_I_FIELD_DESC = new TField("i", TType.STRUCT, (short)2);
@@ -30,6 +32,16 @@ public class MyServiceReactiveClient
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
+    this._headers = java.util.Collections.emptyMap();
+    this._persistentHeaders = java.util.Collections.emptyMap();
+  }
+
+  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    
+    this._protocolId = _protocolId;
+    this._rpcClient = _rpcClient;
+    this._headers = _headers;
+    this._persistentHeaders = _persistentHeaders;
   }
 
   @java.lang.Override

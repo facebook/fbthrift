@@ -76,6 +76,7 @@ public interface MyServicePrioParent extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
+    @com.facebook.swift.service.ThriftService("MyServicePrioParent")
     interface Reactive extends Closeable {
         @java.lang.Override void close();
 

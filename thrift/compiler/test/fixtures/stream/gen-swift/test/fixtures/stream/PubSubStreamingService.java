@@ -25,6 +25,7 @@ public interface PubSubStreamingService extends java.io.Closeable {
     }
     @java.lang.Override void close();
 
+    @com.facebook.swift.service.ThriftService("PubSubStreamingService")
     interface Reactive extends Closeable {
         @java.lang.Override void close();
 
