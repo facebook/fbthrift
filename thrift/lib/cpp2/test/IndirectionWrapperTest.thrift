@@ -24,10 +24,12 @@ struct Foo_data {
 }
 
 typedef Foo_data (cpp.type = 'Foo', cpp.indirection) Foo
+typedef i64 (cpp.type = "Seconds", cpp.indirection) Seconds
 
 struct Bar_data {
   1: Foo foo;
   2: i32 field;
+  3: Seconds seconds;
 }
 
 typedef Bar_data (cpp.type = 'Bar', cpp.indirection) Bar

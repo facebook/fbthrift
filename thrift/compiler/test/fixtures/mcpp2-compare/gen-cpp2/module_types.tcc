@@ -6015,7 +6015,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
   }
-  if (this->indirection_a != 0) {
+  if (::apache::thrift::apply_indirection(this->indirection_a) != 0) {
     xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
   }
@@ -6275,7 +6275,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
   }
-  if (this->indirection_a != 0) {
+  if (::apache::thrift::apply_indirection(this->indirection_a) != 0) {
     xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
   }
@@ -6581,7 +6581,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::write(*prot_, this->typedef_map_template);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->indirection_a != 0) {
+  if (::apache::thrift::apply_indirection(this->indirection_a) != 0) {
     xfer += prot_->writeFieldBegin("indirection_a", apache::thrift::protocol::T_I64, 35);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::write(*prot_, this->indirection_a);
     xfer += prot_->writeFieldEnd();
