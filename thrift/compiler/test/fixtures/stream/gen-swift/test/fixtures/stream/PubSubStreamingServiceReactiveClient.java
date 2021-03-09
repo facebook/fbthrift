@@ -175,6 +175,7 @@ public class PubSubStreamingServiceReactiveClient
 
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
                 .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
@@ -243,6 +244,7 @@ public class PubSubStreamingServiceReactiveClient
 
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
                 .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
@@ -311,6 +313,7 @@ public class PubSubStreamingServiceReactiveClient
 
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
                 .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });
@@ -391,7 +394,9 @@ public class PubSubStreamingServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestStreamingResponse(_crp, rpcOptions);
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
+                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Integer,Integer>)_p.getData()), _p.getHeaders()));
       });
   }
 
@@ -467,6 +472,7 @@ public class PubSubStreamingServiceReactiveClient
 
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
                 .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
       });

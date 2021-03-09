@@ -231,7 +231,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions);
+                {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap())){{/function:oneway?}}{{!
+                }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
       });
   }
 
@@ -336,9 +337,10 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestStreamingResponse(_crp, rpcOptions){{#function:returnType}}{{^type:streamHasFirstResponse?}}
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create((({{#function:returnType}}{{> StreamResponseGeneric}}{{/function:returnType}})_p.getData()).getData(), _p.getHeaders())){{/type:streamHasFirstResponse?}}{{/function:returnType}};
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{#function:returnType}}{{^type:streamHasFirstResponse?}}
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData()){{/type:streamHasFirstResponse?}}{{/function:returnType}}
+                .map(_p -> ResponseWrapper.create((({{#function:returnType}}{{> StreamResponseGeneric}}{{/function:returnType}})_p.getData()){{#function:returnType}}{{^type:streamHasFirstResponse?}}.getData(){{/type:streamHasFirstResponse?}}{{/function:returnType}}, _p.getHeaders()));
       });
   }
 
@@ -472,6 +474,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
             return _rpc
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
+                .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2){{#function:returnType}}{{^type:sinkHasFirstResponse?}}
                 .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData()){{/type:sinkHasFirstResponse?}}{{/function:returnType}}
                 .map(_p -> ResponseWrapper.create((({{#function:returnType}}{{> SinkResponseGeneric}}{{/function:returnType}})_p.getData()){{#function:returnType}}{{^type:sinkHasFirstResponse?}}.getData(){{/type:sinkHasFirstResponse?}}{{/function:returnType}}, _p.getHeaders()));
