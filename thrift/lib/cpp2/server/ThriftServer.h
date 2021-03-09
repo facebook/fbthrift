@@ -90,16 +90,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
                      public wangle::ServerBootstrap<Pipeline> {
  private:
   //! SSL context
-  folly::Optional<folly::observer::Observer<wangle::SSLContextConfig>>
+  std::optional<folly::observer::Observer<wangle::SSLContextConfig>>
       sslContextObserver_;
-  folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
+  std::optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
   folly::observer::CallbackHandle getSSLCallbackHandle();
 
-  folly::Optional<bool> reusePort_;
-  folly::Optional<bool> enableTFO_;
+  std::optional<bool> reusePort_;
+  std::optional<bool> enableTFO_;
   uint32_t fastOpenQueueSize_{10000};
 
-  folly::Optional<wangle::SSLCacheOptions> sslCacheOptions_;
+  std::optional<wangle::SSLCacheOptions> sslCacheOptions_;
   wangle::FizzConfig fizzConfig_;
   ThriftTlsConfig thriftConfig_;
 
@@ -129,9 +129,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   //! The folly::EventBase currently driving serve().  NULL when not serving.
   std::atomic<folly::EventBase*> serveEventBase_{nullptr};
-  folly::Optional<IdleServerAction> idleServer_;
+  std::optional<IdleServerAction> idleServer_;
   std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
-  folly::Optional<std::chrono::milliseconds> sslHandshakeTimeout_;
+  std::optional<std::chrono::milliseconds> sslHandshakeTimeout_;
   std::atomic<std::chrono::steady_clock::duration::rep> lastRequestTime_;
 
   std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
@@ -408,11 +408,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * Set the ssl handshake timeout.
    */
   void setSSLHandshakeTimeout(
-      folly::Optional<std::chrono::milliseconds> timeout) {
+      std::optional<std::chrono::milliseconds> timeout) {
     sslHandshakeTimeout_ = timeout;
   }
 
-  folly::Optional<std::chrono::milliseconds> getSSLHandshakeTimeout() const {
+  const std::optional<std::chrono::milliseconds>& getSSLHandshakeTimeout()
+      const {
     return sslHandshakeTimeout_;
   }
 
@@ -450,7 +451,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     fastOpenQueueSize_ = fastOpenQueueSize;
   }
 
-  folly::Optional<bool> getTFOEnabled() {
+  std::optional<bool> getTFOEnabled() {
     return enableTFO_;
   }
 
@@ -458,20 +459,20 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     reusePort_ = reusePort;
   }
 
-  folly::Optional<bool> getReusePort() {
+  std::optional<bool> getReusePort() {
     return reusePort_;
   }
 
-  folly::Optional<folly::observer::Observer<wangle::SSLContextConfig>>
+  const std::optional<folly::observer::Observer<wangle::SSLContextConfig>>&
   getSSLConfig() const {
     return sslContextObserver_;
   }
 
-  folly::Optional<wangle::TLSTicketKeySeeds> getTicketSeeds() const {
+  const std::optional<wangle::TLSTicketKeySeeds>& getTicketSeeds() const {
     return ticketSeeds_;
   }
 
-  folly::Optional<wangle::SSLCacheOptions> getSSLCacheOptions() const {
+  const std::optional<wangle::SSLCacheOptions>& getSSLCacheOptions() const {
     return sslCacheOptions_;
   }
 

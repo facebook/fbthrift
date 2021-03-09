@@ -1734,7 +1734,7 @@ TEST(ThriftServer, ServerConfigTest) {
   EXPECT_EQ(serverConfig.sslHandshakeTimeout, std::chrono::milliseconds(100));
 
   // Clear it and expect it to be zero again (due to idle timeout = 0)
-  server.setSSLHandshakeTimeout(folly::none);
+  server.setSSLHandshakeTimeout(std::nullopt);
   serverConfig = server.getServerSocketConfig();
   EXPECT_EQ(
       serverConfig.sslHandshakeTimeout, std::chrono::milliseconds::zero());
