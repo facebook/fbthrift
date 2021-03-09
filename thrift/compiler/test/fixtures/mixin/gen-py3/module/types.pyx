@@ -117,12 +117,14 @@ cdef class Mixin1(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Mixin1()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cMixin1].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Mixin1"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -191,6 +193,11 @@ cdef class Mixin2(thrift.py3.types.Struct):
 
         return (<bytes>deref(self._cpp_obj).field2_ref().value_unchecked()).decode('UTF-8')
 
+    @property
+    def field1(self):
+
+        return (<bytes>deref(self._cpp_obj).field1_ref().value()).decode('UTF-8')
+
 
     def __hash__(Mixin2 self):
         return  super().__hash__()
@@ -213,12 +220,14 @@ cdef class Mixin2(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Mixin2()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cMixin2].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Mixin2"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -299,12 +308,14 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Mixin3Base()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cMixin3Base].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Mixin3Base"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
@@ -379,6 +390,30 @@ cdef class Foo(thrift.py3.types.Struct):
             self.__fbthrift_cached_m3 = Mixin3Base.create(__reference_shared_ptr(deref(self._cpp_obj).m3_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m3
 
+    @property
+    def m1(self):
+
+        if self.__fbthrift_cached_m1 is None:
+            self.__fbthrift_cached_m1 = Mixin1.create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_m1
+
+    @property
+    def field2(self):
+        if not deref(self._cpp_obj).field2_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).field2_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def field1(self):
+
+        return (<bytes>deref(self._cpp_obj).field1_ref().value()).decode('UTF-8')
+
+    @property
+    def field3(self):
+
+        return (<bytes>deref(self._cpp_obj).field3_ref().value()).decode('UTF-8')
+
 
     def __hash__(Foo self):
         return  super().__hash__()
@@ -401,12 +436,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Foo()
 
-    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+    @staticmethod
+    def __get_metadata__():
         cdef __fbthrift_cThriftMetadata meta
         StructMetadata[cFoo].gen(meta)
-        return meta
+        return __MetadataBox.box(cmove(meta))
 
-    cdef str __get_thrift_name__(self):
+    @staticmethod
+    def __get_thrift_name__():
         return "module.Foo"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):

@@ -35,6 +35,7 @@ from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
     Protocol as __Protocol,
     cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
 
@@ -89,6 +90,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cMixin1 m1
         __optional_field_ref[string] field2_ref()
         string field2
+        __field_ref[string] field1_ref()
         cMixin2__isset __isset
 
     cdef cppclass cMixin3Base__isset "::cpp2::Mixin3Base::__isset":
@@ -127,6 +129,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cMixin2 m2
         __field_ref[cMixin3Base] m3_ref()
         cMixin3Base m3
+        __field_ref[cMixin1] m1_ref()
+        __optional_field_ref[string] field2_ref()
+        __field_ref[string] field1_ref()
+        __field_ref[string] field3_ref()
         cFoo__isset __isset
 
 

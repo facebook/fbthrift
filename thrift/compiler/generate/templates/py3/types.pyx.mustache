@@ -166,6 +166,24 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/field:type}}
 
     {{/struct:fields}}
+    {{#struct:mixin_fields}}
+    @property
+    def {{field:py_name}}(self):
+        {{#field:optional?}}
+        {{^field:hasDefaultValue?}}
+        {{#field:has_ref_accessor?}}
+        if not deref(self._cpp_obj).{{field:py_name}}_ref().has_value():
+            return None
+        {{/field:has_ref_accessor?}}
+        {{/field:hasDefaultValue?}}
+        {{/field:optional?}}
+        {{#field:type}}
+
+        {{> CythonStructGetter}}
+
+        {{/field:type}}
+
+    {{/struct:mixin_fields}}
 
     def __hash__({{struct:name}} self):
         return  super().__hash__()

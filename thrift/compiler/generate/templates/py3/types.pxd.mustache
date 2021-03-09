@@ -166,6 +166,22 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
         {{/field:has_ref_accessor?}}
         {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:fields}}
+    {{#struct:mixin_fields}}
+        {{#field:has_ref_accessor?}}
+        {{#field:optional?}}
+        __optional_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{/field:optional?}}
+        {{#field:required?}}
+        __required_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{/field:required?}}
+        {{#field:optInReqOut?}}
+        __field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{/field:optInReqOut?}}
+        {{/field:has_ref_accessor?}}
+    {{/struct:mixin_fields}}
         c{{struct:name}}__isset __isset
     {{/struct:union?}}
     {{#struct:union?}}

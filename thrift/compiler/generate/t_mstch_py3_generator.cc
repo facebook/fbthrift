@@ -418,6 +418,7 @@ class mstch_py3_program : public mstch_program {
     visit_types_for_objects();
     visit_types_for_constants();
     visit_types_for_typedefs();
+    visit_types_for_mixin_fields();
   }
 
   mstch::node getContainerTypes() {
@@ -594,6 +595,14 @@ class mstch_py3_program : public mstch_program {
   void visit_types_for_typedefs() {
     for (const auto typedef_def : program_->get_typedefs()) {
       visit_type(typedef_def->get_type());
+    }
+  }
+
+  void visit_types_for_mixin_fields() {
+    for (const auto& strct : program_->get_structs()) {
+      for (const auto& m : cpp2::get_mixins_and_members(*strct)) {
+        visit_type(m.member->get_type());
+      }
     }
   }
 
@@ -942,6 +951,7 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:exception_message?",
              &mstch_py3_struct::hasExceptionMessage},
             {"struct:exception_message", &mstch_py3_struct::exceptionMessage},
+            {"struct:mixin_fields", &mstch_py3_struct::mixin_fields},
         });
   }
 
@@ -977,6 +987,14 @@ class mstch_py3_struct : public mstch_struct {
 
   mstch::node exceptionMessage() {
     return strct_->get_annotation("message");
+  }
+
+  mstch::node mixin_fields() {
+    std::vector<t_field const*> mixin_fields;
+    for (auto m : cpp2::get_mixins_and_members(*strct_)) {
+      mixin_fields.push_back(m.member);
+    }
+    return generate_fields(mixin_fields);
   }
 };
 
