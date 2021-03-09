@@ -360,7 +360,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
   worker_->getServer()->touchRequestTimestamp();
 
   rocket::Payload debugPayload = payload.clone();
-  auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
+  auto requestPayloadTry =
+      unpackAsCompressed<RequestPayload>(std::move(payload));
 
   auto makeActiveRequest = [&](auto&& md, auto&& payload, auto&& reqCtx) {
     serverConfigs_->incActiveRequests();
@@ -475,7 +476,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
   try {
     cpp2Processor_->processSerializedCompressedRequest(
         std::move(request),
-        SerializedCompressedRequest(std::move(data)),
+        SerializedCompressedRequest(
+            std::move(data),
+            metadata.compression_ref().value_or(CompressionAlgorithm::NONE)),
         protocolId,
         cpp2ReqCtx,
         eventBase_,

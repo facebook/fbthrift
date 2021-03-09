@@ -115,27 +115,38 @@ std::unique_ptr<folly::IOBuf> uncompressBuffer(
     std::unique_ptr<folly::IOBuf>&& buffer,
     CompressionAlgorithm compression);
 
+namespace detail {
+template <class T, bool uncompressPayload>
+inline T unpackPayload(rocket::Payload&& payload) {
+  T t{{}, {}};
+  if (payload.hasNonemptyMetadata()) {
+    if (unpackCompact(t.metadata, payload.buffer()) != payload.metadataSize()) {
+      folly::throw_exception<std::out_of_range>("metadata size mismatch");
+    }
+  }
+  if constexpr (uncompressPayload) {
+    auto data = std::move(payload).data();
+    if (auto compression = t.metadata.compression_ref()) {
+      data = uncompressBuffer(std::move(data), *compression);
+    }
+    unpackCompact(t.payload, std::move(data));
+  } else {
+    t.payload = std::move(payload).data();
+  }
+  return t;
+}
+} // namespace detail
+
+template <class T>
+folly::Try<T> unpackAsCompressed(rocket::Payload&& payload) {
+  return folly::makeTryWith(
+      [&] { return detail::unpackPayload<T, false>(std::move(payload)); });
+}
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
-  return folly::makeTryWith([&] {
-    T t{{}, {}};
-    if (payload.hasNonemptyMetadata()) {
-      if (unpackCompact(t.metadata, payload.buffer()) !=
-          payload.metadataSize()) {
-        folly::throw_exception<std::out_of_range>("metadata size mismatch");
-      }
-    }
-
-    auto data = std::move(payload).data();
-    // uncompress the payload if needed
-    if (auto compress = t.metadata.compression_ref()) {
-      data = uncompressBuffer(std::move(data), *compress);
-    }
-
-    unpackCompact(t.payload, std::move(data));
-
-    return t;
-  });
+  return folly::makeTryWith(
+      [&] { return detail::unpackPayload<T, true>(std::move(payload)); });
 }
 
 template <typename T>

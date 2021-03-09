@@ -46,10 +46,12 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientTestChannel.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -160,30 +162,6 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
   auto client = runner.newClient<TestServiceAsyncClient>();
   client->sync_noResponse(100);
   ASSERT_TRUE(handler->done.try_wait_for(std::chrono::seconds(1)));
-}
-
-TEST(ThriftServer, CompressionClientTest) {
-  TestThriftServerFactory<TestInterface> factory;
-  ScopedServerThread sst(factory.create());
-  folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
-
-  auto channel =
-      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
-  channel->setTransform(apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-
-  std::string response;
-  client.sync_sendResponse(response, 64);
-  EXPECT_EQ(response, "test64");
-
-  auto trans = channel->getWriteTransforms();
-  EXPECT_EQ(trans.size(), 1);
-  for (auto& tran : trans) {
-    EXPECT_EQ(tran, apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-  }
 }
 
 TEST(ThriftServer, ResponseTooBigTest) {
@@ -619,7 +597,18 @@ class HeaderOrRocketTest : public testing::Test {
           });
     } else {
       return runner.newClient<TestServiceAsyncClient>(
-          evb, RocketClientChannel::newChannel);
+          evb, [&](auto socket) mutable {
+            auto channel =
+                RocketClientTestChannel::newChannel(std::move(socket));
+            if (compression == Compression::Enabled) {
+              CodecConfig codec;
+              codec.set_zstdConfig(ZstdCompressionCodecConfig());
+              CompressionConfig compressionConfig;
+              compressionConfig.set_codecConfig(codec);
+              channel->setDesiredCompressionConfig(compressionConfig);
+            }
+            return channel;
+          });
     }
   }
 };
@@ -2338,3 +2327,157 @@ TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   auto client = makeClient(runner, nullptr);
   EXPECT_EQ(client->semifuture_sendResponse(42).get(), "test42");
 }
+
+namespace {
+enum class ProcessorImplementation {
+  Containment,
+  ContainmentLegacy,
+  Inheritance
+};
+} // namespace
+
+class HeaderOrRocketCompression
+    : public HeaderOrRocketTest,
+      public ::testing::WithParamInterface<
+          std::tuple<TransportType, Compression, ProcessorImplementation>> {
+ public:
+  ProcessorImplementation processorImplementation =
+      ProcessorImplementation::Containment;
+
+  void SetUp() override {
+    std::tie(transport, compression, processorImplementation) = GetParam();
+  }
+
+  std::unique_ptr<AsyncProcessorFactory> makeFactory() {
+    // processor can only check for compressed request payload on rocket
+    if (compression == Compression::Enabled &&
+        transport == TransportType::Rocket) {
+      return std::make_unique<CompressionCheckTestInterface>(
+          processorImplementation, CompressionAlgorithm::ZSTD);
+    } else {
+      return std::make_unique<CompressionCheckTestInterface>(
+          processorImplementation, CompressionAlgorithm::NONE);
+    }
+  }
+
+ private:
+  // Custom processor derived from AsyncProcessor with compressed request API
+  struct ContainmentCompressionCheckProcessor : public AsyncProcessor {
+    ContainmentCompressionCheckProcessor(
+        std::unique_ptr<AsyncProcessor> underlyingProcessor,
+        CompressionAlgorithm compression)
+        : underlyingProcessor_(std::move(underlyingProcessor)),
+          compression_(compression) {}
+    void processSerializedRequest(
+        ResponseChannelRequest::UniquePtr req,
+        SerializedRequest&& serializedRequest,
+        protocol::PROTOCOL_TYPES prot,
+        Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        concurrency::ThreadManager* tm) override {
+      ADD_FAILURE() << "processSerializedRequest should not be called if "
+                    << "processSerializedCompressedRequest is implemented";
+      underlyingProcessor_->processSerializedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+    void processSerializedCompressedRequest(
+        ResponseChannelRequest::UniquePtr req,
+        SerializedCompressedRequest&& serializedRequest,
+        protocol::PROTOCOL_TYPES prot,
+        Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        concurrency::ThreadManager* tm) override {
+      // check that SerializedCompressedRequest has expected compression
+      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
+      underlyingProcessor_->processSerializedCompressedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+    std::unique_ptr<AsyncProcessor> underlyingProcessor_;
+    CompressionAlgorithm compression_;
+  };
+
+  // Custom processor derived from AsyncProcessor without compressed request API
+  struct LegacyContainmentProcessor : public AsyncProcessor {
+    explicit LegacyContainmentProcessor(
+        std::unique_ptr<AsyncProcessor> underlyingProcessor)
+        : underlyingProcessor_(std::move(underlyingProcessor)) {}
+    void processSerializedRequest(
+        ResponseChannelRequest::UniquePtr req,
+        SerializedRequest&& serializedRequest,
+        protocol::PROTOCOL_TYPES prot,
+        Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        concurrency::ThreadManager* tm) override {
+      underlyingProcessor_->processSerializedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+    std::unique_ptr<AsyncProcessor> underlyingProcessor_;
+  };
+
+  // Custom processor derived from generated processor
+  struct InheritanceCompressionCheckProcessor
+      : public TestInterface::ProcessorType {
+    InheritanceCompressionCheckProcessor(
+        TestServiceSvIf* iface,
+        CompressionAlgorithm compression)
+        : TestInterface::ProcessorType(iface), compression_(compression) {}
+    void processSerializedCompressedRequest(
+        ResponseChannelRequest::UniquePtr req,
+        SerializedCompressedRequest&& serializedRequest,
+        protocol::PROTOCOL_TYPES prot,
+        Cpp2RequestContext* ctx,
+        folly::EventBase* eb,
+        concurrency::ThreadManager* tm) override {
+      // check that SerializedCompressedRequest has expected compression
+      EXPECT_EQ(compression_, serializedRequest.getCompressionAlgorithm());
+      TestInterface::ProcessorType::processSerializedCompressedRequest(
+          std::move(req), std::move(serializedRequest), prot, ctx, eb, tm);
+    }
+    CompressionAlgorithm compression_;
+  };
+
+  struct CompressionCheckTestInterface : public TestInterface {
+    CompressionCheckTestInterface(
+        ProcessorImplementation processorImplementation,
+        CompressionAlgorithm compression)
+        : processorImplementation_(processorImplementation),
+          compression_(compression) {}
+    std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+      switch (processorImplementation_) {
+        case ProcessorImplementation::Containment:
+          return std::make_unique<ContainmentCompressionCheckProcessor>(
+              std::make_unique<TestInterface::ProcessorType>(this),
+              compression_);
+        case ProcessorImplementation::ContainmentLegacy:
+          return std::make_unique<LegacyContainmentProcessor>(
+              std::make_unique<TestInterface::ProcessorType>(this));
+        case ProcessorImplementation::Inheritance:
+          return std::make_unique<InheritanceCompressionCheckProcessor>(
+              this, compression_);
+      }
+    }
+    ProcessorImplementation processorImplementation_;
+    CompressionAlgorithm compression_;
+  };
+};
+
+TEST_P(HeaderOrRocketCompression, ClientCompressionTest) {
+  folly::EventBase base;
+  ScopedServerInterfaceThread runner(makeFactory());
+  auto client = makeClient(runner, &base);
+
+  std::string response;
+  client->sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+}
+
+INSTANTIATE_TEST_CASE_P(
+    HeaderOrRocketCompression,
+    HeaderOrRocketCompression,
+    ::testing::Combine(
+        testing::Values(TransportType::Header, TransportType::Rocket),
+        testing::Values(Compression::Enabled, Compression::Disabled),
+        testing::Values(
+            ProcessorImplementation::Containment,
+            ProcessorImplementation::ContainmentLegacy,
+            ProcessorImplementation::Inheritance)));
