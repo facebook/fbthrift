@@ -124,9 +124,6 @@ void Cpp2Worker::onNewConnection(
         handleHeader(std::move(sock), addr);
       }
       break;
-    case wangle::SecureTransportType::ZERO:
-      LOG(ERROR) << "Unsupported Secure Transport Type: ZERO";
-      break;
     default:
       LOG(ERROR) << "Unsupported Secure Transport Type";
       break;
