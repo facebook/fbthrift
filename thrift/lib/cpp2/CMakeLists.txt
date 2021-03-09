@@ -168,7 +168,6 @@ add_library(
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
   server/RequestDebugLog.cpp
-  server/RequestsRegistry.cpp
   server/BaseThriftServer.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
