@@ -1507,6 +1507,10 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
                 .get();
       }
     } else {
+      DCHECK(!dynamic_cast<folly::InlineLikeExecutor*>(executor.get()))
+          << "InlineExecutor cannot be used as a ThreadManager. "
+          << "If you wish to process requests inline you should instead use the "
+          << "`thread='eb'` annotation in your IDL file.";
       executors_[idxFromPriSrc(i, 0)] = executor.get();
       std::unique_ptr<folly::MeteredExecutor> adapter;
       for (int j = 1; j < N_SOURCES; j++) {
