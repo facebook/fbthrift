@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 
 #include <string>
+#include <utility>
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -97,7 +98,7 @@ RequestRpcMetadata
 CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = ProtocolId::COMPACT;
-  metadata.name_ref() = name;
+  metadata.name_ref() = std::move(name);
   metadata.seqId_ref() = seqId;
   metadata.kind_ref() = kind;
   return metadata;

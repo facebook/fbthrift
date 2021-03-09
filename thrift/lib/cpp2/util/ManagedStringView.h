@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <variant>
+#include <string>
+#include <string_view>
 
 #include <folly/Conv.h>
-#include <folly/Overload.h>
 #include <folly/Range.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
@@ -27,53 +27,39 @@ namespace apache::thrift {
 // A view into a string that may or may not be stored inline.
 // Unlike string_view, should be passed by move by default.
 class ManagedStringView {
-  using Storage = std::variant<std::string, folly::StringPiece>;
-
  public:
-  ManagedStringView() : ManagedStringView("") {}
-  /* implicit */ ManagedStringView(
-      folly::StringPiece str,
-      bool isTemporary = true)
-      : str_(
-            isTemporary ? Storage(std::in_place_index_t<0>{}, str.str())
-                        : Storage(std::in_place_index_t<1>{}, str)) {}
-  /* implicit */ ManagedStringView(
-      const std::string& str,
-      bool isTemporary = true)
-      : str_(
-            isTemporary ? Storage(std::in_place_index_t<0>{}, str)
-                        : Storage(std::in_place_index_t<1>{}, str)) {}
-  /* implicit */ ManagedStringView(std::string&& str)
-      : str_(std::in_place_index_t<0>{}, std::move(str)) {}
-  /* implicit */ ManagedStringView(const char* str, bool isTemporary = true)
-      : str_(
-            isTemporary ? Storage(std::in_place_index_t<0>{}, str)
-                        : Storage(std::in_place_index_t<1>{}, str)) {}
+  ManagedStringView() = default;
+  /* implicit */ ManagedStringView(std::string_view view) : string_{view} {}
+  /* implicit */ ManagedStringView(const std::string& string)
+      : string_{string} {}
+  /* implicit */ ManagedStringView(std::string&& string) noexcept
+      : string_{std::move(string)} {}
+  /* implicit */ ManagedStringView(const char* buf) : string_{buf} {}
+  /* implicit */ ManagedStringView(folly::StringPiece view) : string_{view} {}
+
+  static ManagedStringView from_static(std::string_view view) noexcept {
+    return ManagedStringView{view, FromStaticTag{}};
+  }
+
+  /* implicit */ operator std::string_view() const {
+    return view();
+  }
 
   std::string str() const& {
-    return folly::variant_match(
-        str_,
-        [](folly::StringPiece str) { return str.str(); },
-        [](const std::string& str) { return str; });
+    return is_owned() ? string_ : std::string{view_};
   }
   std::string str() && {
-    return folly::variant_match(
-        std::move(str_),
-        [](folly::StringPiece str) { return str.str(); },
-        [](std::string&& str) { return std::move(str); });
+    return is_owned() ? std::move(string_) : std::string{view_};
   }
 
-  folly::StringPiece view() const {
-    return folly::variant_match(
-        str_,
-        [](folly::StringPiece str) { return str; },
-        [](const std::string& str) { return folly::StringPiece(str); });
+  std::string_view view() const {
+    return is_owned() ? std::string_view{string_} : view_;
   }
 
-  friend bool operator==(const ManagedStringView& a, folly::StringPiece b) {
+  friend bool operator==(const ManagedStringView& a, std::string_view b) {
     return a.view() == b;
   }
-  friend bool operator==(folly::StringPiece b, const ManagedStringView& a) {
+  friend bool operator==(std::string_view b, const ManagedStringView& a) {
     return a.view() == b;
   }
   friend bool operator==(
@@ -81,10 +67,10 @@ class ManagedStringView {
       const ManagedStringView& b) {
     return a.view() == b.view();
   }
-  friend bool operator!=(const ManagedStringView& a, folly::StringPiece b) {
+  friend bool operator!=(const ManagedStringView& a, std::string_view b) {
     return a.view() != b;
   }
-  friend bool operator!=(folly::StringPiece b, const ManagedStringView& a) {
+  friend bool operator!=(std::string_view b, const ManagedStringView& a) {
     return a.view() != b;
   }
   friend bool operator!=(
@@ -92,10 +78,10 @@ class ManagedStringView {
       const ManagedStringView& b) {
     return a.view() != b.view();
   }
-  friend bool operator<(const ManagedStringView& a, folly::StringPiece b) {
+  friend bool operator<(const ManagedStringView& a, std::string_view b) {
     return a.view() < b;
   }
-  friend bool operator<(folly::StringPiece b, const ManagedStringView& a) {
+  friend bool operator<(std::string_view b, const ManagedStringView& a) {
     return a.view() > b;
   }
   friend bool operator<(
@@ -105,7 +91,17 @@ class ManagedStringView {
   }
 
  protected:
-  Storage str_;
+  struct FromStaticTag {};
+
+  explicit ManagedStringView(std::string_view view, FromStaticTag) noexcept
+      : view_{view} {}
+
+  bool is_owned() const noexcept {
+    return !view_.data();
+  }
+
+  std::string_view view_;
+  std::string string_;
 };
 
 // Separate adaptor to work with FieldRef without making the main type
@@ -113,57 +109,39 @@ class ManagedStringView {
 class ManagedStringViewWithConversions : public ManagedStringView {
  public:
   using value_type = char;
-  explicit ManagedStringViewWithConversions(ManagedStringView self)
-      : ManagedStringView(std::move(self)) {}
-  /* implicit */ ManagedStringViewWithConversions(folly::StringPiece str)
-      : ManagedStringView(str) {}
-  /* implicit */ ManagedStringViewWithConversions(const std::string& str)
-      : ManagedStringView(str) {}
-  /* implicit */ ManagedStringViewWithConversions(std::string&& str)
-      : ManagedStringView(std::move(str)) {}
-  /* implicit */ ManagedStringViewWithConversions(const char* str)
-      : ManagedStringView(str) {}
-  ManagedStringViewWithConversions() = default;
+
+  using ManagedStringView::ManagedStringView;
 
   /* implicit */ operator folly::StringPiece() const {
     return view();
   }
   void clear() {
-    *this = ManagedStringViewWithConversions("");
+    *this = ManagedStringViewWithConversions();
   }
   void reserve(size_t n) {
-    folly::variant_match(
-        str_,
-        [](folly::StringPiece) {
-          folly::throw_exception<std::runtime_error>("Can't reserve in view");
-        },
-        [=](std::string& str) { str.reserve(n); });
+    check_owned("view: cannot reserve");
+    string_.reserve(n);
   }
   void append(const char* data, size_t n) {
-    folly::variant_match(
-        str_,
-        [](folly::StringPiece) {
-          folly::throw_exception<std::runtime_error>("Can't append to view");
-        },
-        [=](std::string& str) { str.append(data, n); });
+    check_owned("view: cannot append");
+    string_.append(data, n);
   }
-  ManagedStringView& operator+=(folly::StringPiece in) {
-    folly::variant_match(
-        str_,
-        [](folly::StringPiece) {
-          folly::throw_exception<std::runtime_error>("Can't append to view");
-        },
-        [=](std::string& str) { str.append(in.data(), in.size()); });
+  ManagedStringView& operator+=(std::string_view in) {
+    check_owned("view: cannot append");
+    string_.append(in.data(), in.size());
     return *this;
   }
   ManagedStringView& operator+=(unsigned char in) {
-    folly::variant_match(
-        str_,
-        [](folly::StringPiece) {
-          folly::throw_exception<std::runtime_error>("Can't append to view");
-        },
-        [=](std::string& str) { str += in; });
+    check_owned("view: cannot append");
+    string_ += in;
     return *this;
+  }
+
+ private:
+  void check_owned(const char* what) {
+    if (!is_owned()) {
+      folly::terminate_with<std::runtime_error>(what);
+    }
   }
 };
 

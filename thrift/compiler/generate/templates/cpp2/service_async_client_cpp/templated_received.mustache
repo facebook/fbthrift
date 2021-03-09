@@ -35,8 +35,8 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* 
 %>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr const folly::StringPiece methodName = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
-  apache::thrift::clientSendT<<% > types/function_kind%>, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView(methodName, false), writer, sizer);
+  static constexpr std::string_view methodName = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
+  apache::thrift::clientSendT<<% > types/function_kind%>, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 

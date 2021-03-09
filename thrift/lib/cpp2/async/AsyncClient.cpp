@@ -16,12 +16,14 @@
 
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 
+#include <string_view>
+
 namespace apache {
 namespace thrift {
 namespace {
 static InteractionId createInteraction(
     RequestChannel& channel,
-    folly::StringPiece methodName) {
+    std::string_view methodName) {
   DCHECK(
       !channel.getEventBase() || channel.getEventBase()->isInEventBaseThread());
   return channel.createInteraction(methodName);

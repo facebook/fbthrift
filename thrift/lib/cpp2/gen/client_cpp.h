@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string_view>
+
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/ContextStack.h>
