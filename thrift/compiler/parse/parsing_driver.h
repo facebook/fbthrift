@@ -524,7 +524,7 @@ class parsing_driver {
   // takes ownership of node.
   template <typename T>
   bool should_add_node(std::unique_ptr<T>& node, t_doc&& doc) {
-    if (doc.has_value()) {
+    if (doc) {
       node->set_doc(std::move(*doc));
     }
     if (mode != parsing_mode::PROGRAM) {
