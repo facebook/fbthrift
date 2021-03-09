@@ -20,9 +20,12 @@
 #include <folly/json.h>
 #include <folly/portability/GTest.h>
 #include <folly/test/JsonTestUtil.h>
+#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
+#include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
 #include <thrift/test/tablebased/gen-cpp2/frozen_tablebased_types.h>
 #include <thrift/test/tablebased/gen-cpp2/frozen_types.h>
 #include <thrift/test/tablebased/gen-cpp2/thrift_tablebased_types.h>
+#include <thrift/test/tablebased/gen-cpp2/thrift_tablebased_types_custom_protocol.h>
 #include <thrift/test/tablebased/gen-cpp2/thrift_types.h>
 
 using apache::thrift::BinarySerializer;
@@ -377,4 +380,9 @@ TEST(SerializerTest, DuplicateUnionData) {
       BinarySerializer::deserialize<tablebased::TestStructWithUnion>(
           folly::StringPiece(data, sizeof(data))),
       std::out_of_range);
+}
+
+TEST(SerializerTest, DebugProtocol) {
+  auto s = apache::thrift::debugString(tablebased::StructA());
+  EXPECT_NE(s.find("StructA"), std::string::npos);
 }
