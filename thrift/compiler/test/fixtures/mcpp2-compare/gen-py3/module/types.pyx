@@ -643,7 +643,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyBinaryField2(self):
-        if not deref(self._cpp_obj).__isset.MyBinaryField2:
+        if not deref(self._cpp_obj).MyBinaryField2_ref().has_value():
             return None
 
         return deref(self._cpp_obj).MyBinaryField2_ref().value_unchecked()
@@ -1841,7 +1841,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     @property
     def opt_fieldA(self):
-        if not deref(self._cpp_obj).__isset.opt_fieldA:
+        if not deref(self._cpp_obj).opt_fieldA_ref().has_value():
             return None
 
         return <pbool> deref(self._cpp_obj).opt_fieldA_ref().value_unchecked()
@@ -1862,7 +1862,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     @property
     def opt_fieldB(self):
-        if not deref(self._cpp_obj).__isset.opt_fieldB:
+        if not deref(self._cpp_obj).opt_fieldB_ref().has_value():
             return None
 
         if self.__fbthrift_cached_opt_fieldB is None:
@@ -2048,7 +2048,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     @property
     def opt_fieldV(self):
-        if not deref(self._cpp_obj).__isset.opt_fieldV:
+        if not deref(self._cpp_obj).opt_fieldV_ref().has_value():
             return None
 
         if self.__fbthrift_cached_opt_fieldV is None:
@@ -2078,7 +2078,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     @property
     def opt_fieldX(self):
-        if not deref(self._cpp_obj).__isset.opt_fieldX:
+        if not deref(self._cpp_obj).opt_fieldX_ref().has_value():
             return None
 
         if self.__fbthrift_cached_opt_fieldX is None:

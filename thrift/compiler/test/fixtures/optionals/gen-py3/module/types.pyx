@@ -250,21 +250,21 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     @property
     def licensePlate(self):
-        if not deref(self._cpp_obj).__isset.licensePlate:
+        if not deref(self._cpp_obj).licensePlate_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).licensePlate_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def description(self):
-        if not deref(self._cpp_obj).__isset.description:
+        if not deref(self._cpp_obj).description_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).description_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
+        if not deref(self._cpp_obj).name_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).name_ref().value_unchecked()).decode('UTF-8')
@@ -378,21 +378,21 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def age(self):
-        if not deref(self._cpp_obj).__isset.age:
+        if not deref(self._cpp_obj).age_ref().has_value():
             return None
 
         return deref(self._cpp_obj).age_ref().value_unchecked()
 
     @property
     def address(self):
-        if not deref(self._cpp_obj).__isset.address:
+        if not deref(self._cpp_obj).address_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).address_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def favoriteColor(self):
-        if not deref(self._cpp_obj).__isset.favoriteColor:
+        if not deref(self._cpp_obj).favoriteColor_ref().has_value():
             return None
 
         if self.__fbthrift_cached_favoriteColor is None:
@@ -401,7 +401,7 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def friends(self):
-        if not deref(self._cpp_obj).__isset.friends:
+        if not deref(self._cpp_obj).friends_ref().has_value():
             return None
 
         if self.__fbthrift_cached_friends is None:
@@ -410,14 +410,14 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def bestFriend(self):
-        if not deref(self._cpp_obj).__isset.bestFriend:
+        if not deref(self._cpp_obj).bestFriend_ref().has_value():
             return None
 
         return deref(self._cpp_obj).bestFriend_ref().value_unchecked()
 
     @property
     def petNames(self):
-        if not deref(self._cpp_obj).__isset.petNames:
+        if not deref(self._cpp_obj).petNames_ref().has_value():
             return None
 
         if self.__fbthrift_cached_petNames is None:
@@ -426,7 +426,7 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def afraidOfAnimal(self):
-        if not deref(self._cpp_obj).__isset.afraidOfAnimal:
+        if not deref(self._cpp_obj).afraidOfAnimal_ref().has_value():
             return None
 
         if self.__fbthrift_cached_afraidOfAnimal is None:
@@ -435,7 +435,7 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def vehicles(self):
-        if not deref(self._cpp_obj).__isset.vehicles:
+        if not deref(self._cpp_obj).vehicles_ref().has_value():
             return None
 
         if self.__fbthrift_cached_vehicles is None:

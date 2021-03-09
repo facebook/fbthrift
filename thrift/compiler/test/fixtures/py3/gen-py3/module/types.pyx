@@ -277,7 +277,7 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
     @property
     def optional_blob(self):
-        if not deref(self._cpp_obj).__isset.optional_blob:
+        if not deref(self._cpp_obj).optional_blob_ref().has_value():
             return None
 
         if self.__fbthrift_cached_optional_blob is None:

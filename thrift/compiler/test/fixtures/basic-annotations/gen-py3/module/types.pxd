@@ -103,16 +103,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
         __field_ref[cint64_t] major_ref "majorVer_ref"()
-        cint64_t major "majorVer"
         __field_ref[string] package_ref()
-        string package
         __field_ref[string] annotation_with_quote_ref()
-        string annotation_with_quote
         __field_ref[string] class__ref()
-        string class_
         __field_ref[string] annotation_with_trailing_comma_ref()
-        string annotation_with_trailing_comma
         __field_ref[string] empty_annotations_ref()
+        cint64_t major "majorVer"
+        string package
+        string annotation_with_quote
+        string class_
+        string annotation_with_trailing_comma
         string empty_annotations
         cMyStruct__isset __isset
 
@@ -130,8 +130,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSecretStruct&)
         bint operator>=(cSecretStruct&)
         __field_ref[cint64_t] id_ref()
-        cint64_t id
         __field_ref[string] password_ref()
+        cint64_t id
         string password
         cSecretStruct__isset __isset
 

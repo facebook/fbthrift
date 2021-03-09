@@ -148,25 +148,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:exception?}}
         return __fbthrift_inst
 
-    {{#struct:fields}}
-    @property
-    def {{field:py_name}}(self):
-        {{#field:optional?}}
-        {{^field:hasDefaultValue?}}
-        {{#field:isset?}}
-        if not deref(self._cpp_obj).__isset.{{field:py_name}}:
-            return None
-        {{/field:isset?}}
-        {{/field:hasDefaultValue?}}
-        {{/field:optional?}}
-        {{#field:type}}
-
-        {{> CythonStructGetter}}
-
-        {{/field:type}}
-
-    {{/struct:fields}}
-    {{#struct:mixin_fields}}
+    {{#struct:fields_and_mixin_fields}}
     @property
     def {{field:py_name}}(self):
         {{#field:optional?}}
@@ -183,7 +165,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
         {{/field:type}}
 
-    {{/struct:mixin_fields}}
+    {{/struct:fields_and_mixin_fields}}
 
     def __hash__({{struct:name}} self):
         return  super().__hash__()

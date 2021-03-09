@@ -359,20 +359,20 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator==(cContainerStruct&)
         bint operator!=(cContainerStruct&)
         __field_ref[vector[cint32_t]] fieldA_ref()
-        vector[cint32_t] fieldA
         __field_ref[std_list[cint32_t]] fieldB_ref()
-        std_list[cint32_t] fieldB
         __field_ref[std_deque[cint32_t]] fieldC_ref()
-        std_deque[cint32_t] fieldC
         __field_ref[folly_fbvector[cint32_t]] fieldD_ref()
-        folly_fbvector[cint32_t] fieldD
         __field_ref[folly_small_vector[cint32_t]] fieldE_ref()
-        folly_small_vector[cint32_t] fieldE
         __field_ref[folly_sorted_vector_set[cint32_t]] fieldF_ref()
-        folly_sorted_vector_set[cint32_t] fieldF
         __field_ref[folly_sorted_vector_map[cint32_t,string]] fieldG_ref()
-        folly_sorted_vector_map[cint32_t,string] fieldG
         __field_ref[std_unordered_map[cint32_t,string]] fieldH_ref()
+        vector[cint32_t] fieldA
+        std_list[cint32_t] fieldB
+        std_deque[cint32_t] fieldC
+        folly_fbvector[cint32_t] fieldD
+        folly_small_vector[cint32_t] fieldE
+        folly_sorted_vector_set[cint32_t] fieldF
+        folly_sorted_vector_map[cint32_t,string] fieldG
         std_unordered_map[cint32_t,string] fieldH
         cContainerStruct__isset __isset
 
@@ -422,8 +422,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cMyStructWithForwardRefEnum&)
         bint operator>=(cMyStructWithForwardRefEnum&)
         __field_ref[cMyForwardRefEnum] a_ref()
-        cMyForwardRefEnum a
         __field_ref[cMyForwardRefEnum] b_ref()
+        cMyForwardRefEnum a
         cMyForwardRefEnum b
         cMyStructWithForwardRefEnum__isset __isset
 
@@ -441,8 +441,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cTrivialNumeric&)
         bint operator>=(cTrivialNumeric&)
         __field_ref[cint32_t] a_ref()
-        cint32_t a
         __field_ref[cbool] b_ref()
+        cint32_t a
         cbool b
         cTrivialNumeric__isset __isset
 
@@ -460,8 +460,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cTrivialNestedWithDefault&)
         bint operator>=(cTrivialNestedWithDefault&)
         __field_ref[cint32_t] z_ref()
-        cint32_t z
         __field_ref[cTrivialNumeric] n_ref()
+        cint32_t z
         cTrivialNumeric n
         cTrivialNestedWithDefault__isset __isset
 
@@ -479,8 +479,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cComplexString&)
         bint operator>=(cComplexString&)
         __field_ref[string] a_ref()
-        string a
         __field_ref[cmap[string,cint32_t]] b_ref()
+        string a
         cmap[string,cint32_t] b
         cComplexString__isset __isset
 
@@ -498,8 +498,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cComplexNestedWithDefault&)
         bint operator>=(cComplexNestedWithDefault&)
         __field_ref[string] z_ref()
-        string z
         __field_ref[cComplexString] n_ref()
+        string z
         cComplexString n
         cComplexNestedWithDefault__isset __isset
 
@@ -520,14 +520,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cMinPadding&)
         bint operator>=(cMinPadding&)
         __required_field_ref[cint8_t] small_ref()
-        cint8_t small
         __required_field_ref[cint64_t] big_ref()
-        cint64_t big
         __required_field_ref[cint16_t] medium_ref()
-        cint16_t medium
         __required_field_ref[cint32_t] biggish_ref()
-        cint32_t biggish
         __required_field_ref[cint8_t] tiny_ref()
+        cint8_t small
+        cint64_t big
+        cint16_t medium
+        cint32_t biggish
         cint8_t tiny
         cMinPadding__isset __isset
 
@@ -541,12 +541,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         __field_ref[cint64_t] MyIntField_ref()
-        cint64_t MyIntField
         __field_ref[string] MyStringField_ref()
-        string MyStringField
         __field_ref[cint64_t] majorVer_ref()
-        cint64_t majorVer
         __field_ref[cMyDataItem] data_ref()
+        cint64_t MyIntField
+        string MyStringField
+        cint64_t majorVer
         cMyDataItem data
         cMyStruct__isset __isset
 
@@ -584,8 +584,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator==(cAnnotatedTypes&)
         bint operator!=(cAnnotatedTypes&)
         __field_ref[string] binary_field_ref()
-        string binary_field
         __field_ref[vector[std_unordered_map[cint32_t,string]]] list_field_ref()
+        string binary_field
         vector[std_unordered_map[cint32_t,string]] list_field
         cAnnotatedTypes__isset __isset
 
@@ -690,22 +690,22 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cNoexceptMoveComplexStruct&)
         bint operator>=(cNoexceptMoveComplexStruct&)
         __field_ref[cbool] MyBoolField_ref()
-        cbool MyBoolField
         __field_ref[cint64_t] MyIntField_ref()
-        cint64_t MyIntField
         __field_ref[string] MyStringField_ref()
-        string MyStringField
         __field_ref[string] MyStringField2_ref()
-        string MyStringField2
         __field_ref[string] MyBinaryField_ref()
-        string MyBinaryField
         __optional_field_ref[string] MyBinaryField2_ref()
-        string MyBinaryField2
         __required_field_ref[string] MyBinaryField3_ref()
-        string MyBinaryField3
         __field_ref[vector[string]] MyBinaryListField4_ref()
-        vector[string] MyBinaryListField4
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        cbool MyBoolField
+        cint64_t MyIntField
+        string MyStringField
+        string MyStringField2
+        string MyBinaryField
+        string MyBinaryField2
+        string MyBinaryField3
+        vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
         cNoexceptMoveComplexStruct__isset __isset
 
@@ -746,14 +746,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cAllocatorAware&)
         bint operator>=(cAllocatorAware&)
         __field_ref[vector[cint32_t]] aa_list_ref()
-        vector[cint32_t] aa_list
         __field_ref[cset[cint32_t]] aa_set_ref()
-        cset[cint32_t] aa_set
         __field_ref[cmap[cint32_t,cint32_t]] aa_map_ref()
-        cmap[cint32_t,cint32_t] aa_map
         __field_ref[string] aa_string_ref()
-        string aa_string
         __field_ref[cint32_t] not_a_container_ref()
+        vector[cint32_t] aa_list
+        cset[cint32_t] aa_set
+        cmap[cint32_t,cint32_t] aa_map
+        string aa_string
         cint32_t not_a_container
         cAllocatorAware__isset __isset
 

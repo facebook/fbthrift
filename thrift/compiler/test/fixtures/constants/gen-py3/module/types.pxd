@@ -99,12 +99,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cInternship&)
         bint operator>=(cInternship&)
         __required_field_ref[cint32_t] weeks_ref()
-        cint32_t weeks
         __field_ref[string] title_ref()
-        string title
         __optional_field_ref[cCompany] employer_ref()
-        cCompany employer
         __optional_field_ref[double] compensation_ref()
+        cint32_t weeks
+        string title
+        cCompany employer
         double compensation
         cInternship__isset __isset
 
@@ -122,8 +122,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cRange&)
         bint operator>=(cRange&)
         __required_field_ref[cint32_t] min_ref()
-        cint32_t min
         __required_field_ref[cint32_t] max_ref()
+        cint32_t min
         cint32_t max
         cRange__isset __isset
 
@@ -141,8 +141,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cstruct1&)
         bint operator>=(cstruct1&)
         __field_ref[cint32_t] a_ref()
-        cint32_t a
         __field_ref[string] b_ref()
+        cint32_t a
         string b
         cstruct1__isset __isset
 
@@ -162,12 +162,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cstruct2&)
         bint operator>=(cstruct2&)
         __field_ref[cint32_t] a_ref()
-        cint32_t a
         __field_ref[string] b_ref()
-        string b
         __field_ref[cstruct1] c_ref()
-        cstruct1 c
         __field_ref[vector[cint32_t]] d_ref()
+        cint32_t a
+        string b
+        cstruct1 c
         vector[cint32_t] d
         cstruct2__isset __isset
 
@@ -186,10 +186,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cstruct3&)
         bint operator>=(cstruct3&)
         __field_ref[string] a_ref()
-        string a
         __field_ref[cint32_t] b_ref()
-        cint32_t b
         __field_ref[cstruct2] c_ref()
+        string a
+        cint32_t b
         cstruct2 c
         cstruct3__isset __isset
 
@@ -208,10 +208,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cstruct4&)
         bint operator>=(cstruct4&)
         __field_ref[cint32_t] a_ref()
-        cint32_t a
         __optional_field_ref[double] b_ref()
-        double b
         __optional_field_ref[cint8_t] c_ref()
+        cint32_t a
+        double b
         cint8_t c
         cstruct4__isset __isset
 

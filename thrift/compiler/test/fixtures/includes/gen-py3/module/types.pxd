@@ -73,10 +73,10 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
         __field_ref[_includes_types.cIncluded] MyIncludedField_ref()
-        _includes_types.cIncluded MyIncludedField
         __field_ref[_includes_types.cIncluded] MyOtherIncludedField_ref()
-        _includes_types.cIncluded MyOtherIncludedField
         __field_ref[cint64_t] MyIncludedInt_ref()
+        _includes_types.cIncluded MyIncludedField
+        _includes_types.cIncluded MyOtherIncludedField
         cint64_t MyIncludedInt
         cMyStruct__isset __isset
 

@@ -117,8 +117,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cComplexFieldNames&)
         bint operator>=(cComplexFieldNames&)
         __field_ref[string] error_message_ref()
-        string error_message
         __field_ref[string] internal_error_message_ref()
+        string error_message
         string internal_error_message
         cComplexFieldNames__isset __isset
 
@@ -136,8 +136,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cCustomFieldNames&)
         bint operator>=(cCustomFieldNames&)
         __field_ref[string] error_message_ref()
-        string error_message
         __field_ref[string] internal_error_message_ref()
+        string error_message
         string internal_error_message
         cCustomFieldNames__isset __isset
 

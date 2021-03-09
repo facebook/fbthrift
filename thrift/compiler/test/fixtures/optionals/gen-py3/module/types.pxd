@@ -85,12 +85,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cColor&)
         bint operator>=(cColor&)
         __field_ref[double] red_ref()
-        double red
         __field_ref[double] green_ref()
-        double green
         __field_ref[double] blue_ref()
-        double blue
         __field_ref[double] alpha_ref()
+        double red
+        double green
+        double blue
         double alpha
         cColor__isset __isset
 
@@ -111,14 +111,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
         __field_ref[cColor] color_ref()
-        cColor color
         __optional_field_ref[string] licensePlate_ref()
-        string licensePlate
         __optional_field_ref[string] description_ref()
-        string description
         __optional_field_ref[string] name_ref()
-        string name
         __optional_field_ref[cbool] hasAC_ref()
+        cColor color
+        string licensePlate
+        string description
+        string name
         cbool hasAC
         cVehicle__isset __isset
 
@@ -144,24 +144,24 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
         __field_ref[cint64_t] id_ref()
-        cint64_t id
         __field_ref[string] name_ref()
-        string name
         __optional_field_ref[cint16_t] age_ref()
-        cint16_t age
         __optional_field_ref[string] address_ref()
-        string address
         __optional_field_ref[cColor] favoriteColor_ref()
-        cColor favoriteColor
         __optional_field_ref[cset[cint64_t]] friends_ref()
-        cset[cint64_t] friends
         __optional_field_ref[cint64_t] bestFriend_ref()
-        cint64_t bestFriend
         __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
-        cmap[cAnimal,string] petNames
         __optional_field_ref[cAnimal] afraidOfAnimal_ref()
-        cAnimal afraidOfAnimal
         __optional_field_ref[vector[cVehicle]] vehicles_ref()
+        cint64_t id
+        string name
+        cint16_t age
+        string address
+        cColor favoriteColor
+        cset[cint64_t] friends
+        cint64_t bestFriend
+        cmap[cAnimal,string] petNames
+        cAnimal afraidOfAnimal
         vector[cVehicle] vehicles
         cPerson__isset __isset
 

@@ -951,7 +951,8 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:exception_message?",
              &mstch_py3_struct::hasExceptionMessage},
             {"struct:exception_message", &mstch_py3_struct::exceptionMessage},
-            {"struct:mixin_fields", &mstch_py3_struct::mixin_fields},
+            {"struct:fields_and_mixin_fields",
+             &mstch_py3_struct::fields_and_mixin_fields},
         });
   }
 
@@ -989,12 +990,12 @@ class mstch_py3_struct : public mstch_struct {
     return strct_->get_annotation("message");
   }
 
-  mstch::node mixin_fields() {
-    std::vector<t_field const*> mixin_fields;
+  mstch::node fields_and_mixin_fields() {
+    std::vector<t_field const*> fields = strct_->fields();
     for (auto m : cpp2::get_mixins_and_members(*strct_)) {
-      mixin_fields.push_back(m.member);
+      fields.push_back(m.member);
     }
-    return generate_fields(mixin_fields);
+    return generate_fields(fields);
   }
 };
 

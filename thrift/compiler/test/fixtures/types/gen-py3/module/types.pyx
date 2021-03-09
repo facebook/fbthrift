@@ -1656,7 +1656,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
     @property
     def ForwardUsageStruct(self):
-        if not deref(self._cpp_obj).__isset.ForwardUsageStruct:
+        if not deref(self._cpp_obj).ForwardUsageStruct_ref().has_value():
             return None
 
         if self.__fbthrift_cached_ForwardUsageStruct is None:
@@ -1757,7 +1757,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
     @property
     def foo(self):
-        if not deref(self._cpp_obj).__isset.foo:
+        if not deref(self._cpp_obj).foo_ref().has_value():
             return None
 
         if self.__fbthrift_cached_foo is None:
@@ -1849,7 +1849,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
     @property
     def foo(self):
-        if not deref(self._cpp_obj).__isset.foo:
+        if not deref(self._cpp_obj).foo_ref().has_value():
             return None
 
         if self.__fbthrift_cached_foo is None:
@@ -2137,7 +2137,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
 
     @property
     def MyBinaryField2(self):
-        if not deref(self._cpp_obj).__isset.MyBinaryField2:
+        if not deref(self._cpp_obj).MyBinaryField2_ref().has_value():
             return None
 
         return deref(self._cpp_obj).MyBinaryField2_ref().value_unchecked()

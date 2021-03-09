@@ -73,12 +73,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
         __required_field_ref[cint32_t] myInteger_ref()
-        cint32_t myInteger
         __optional_field_ref[string] myString_ref()
-        string myString
         __field_ref[vector[cbool]] myBools_ref()
-        vector[cbool] myBools
         __required_field_ref[vector[cint32_t]] myNumbers_ref()
+        cint32_t myInteger
+        string myString
+        vector[cbool] myBools
         vector[cint32_t] myNumbers
         cFoo__isset __isset
 

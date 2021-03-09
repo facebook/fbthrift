@@ -104,10 +104,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
         __optional_field_ref[cint64_t] opt_value_ref()
-        cint64_t opt_value
         __field_ref[cint64_t] value_ref()
-        cint64_t value
         __required_field_ref[cint64_t] req_value_ref()
+        cint64_t opt_value
+        cint64_t value
         cint64_t req_value
         cMyField__isset __isset
 
@@ -144,10 +144,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithUnion&)
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
-        unique_ptr[cMyUnion] u
         __field_ref[double] aDouble_ref()
-        double aDouble
         __field_ref[cMyField] f_ref()
+        unique_ptr[cMyUnion] u
+        double aDouble
         cMyField f
         cStructWithUnion__isset __isset
 

@@ -188,7 +188,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
 
     @property
     def field2(self):
-        if not deref(self._cpp_obj).__isset.field2:
+        if not deref(self._cpp_obj).field2_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).field2_ref().value_unchecked()).decode('UTF-8')

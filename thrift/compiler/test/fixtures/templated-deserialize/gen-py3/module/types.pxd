@@ -89,8 +89,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSmallStruct&)
         bint operator>=(cSmallStruct&)
         __field_ref[cbool] small_A_ref()
-        cbool small_A
         __field_ref[cint32_t] small_B_ref()
+        cbool small_A
         cint32_t small_B
         cSmallStruct__isset __isset
 
@@ -128,38 +128,38 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
         __field_ref[cbool] fieldA_ref()
-        cbool fieldA
         __field_ref[cmap[string,cbool]] fieldB_ref()
-        cmap[string,cbool] fieldB
         __field_ref[cset[cint32_t]] fieldC_ref()
-        cset[cint32_t] fieldC
         __field_ref[string] fieldD_ref()
-        string fieldD
         __field_ref[string] fieldE_ref()
-        string fieldE
         __field_ref[vector[vector[vector[cint32_t]]]] fieldF_ref()
-        vector[vector[vector[cint32_t]]] fieldF
         __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
-        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
         __field_ref[vector[cset[cint32_t]]] fieldH_ref()
-        vector[cset[cint32_t]] fieldH
         __field_ref[cbool] fieldI_ref()
-        cbool fieldI
         __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
-        cmap[string,vector[cint32_t]] fieldJ
         __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
-        vector[vector[vector[vector[cint32_t]]]] fieldK
         __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
-        cset[cset[cset[cbool]]] fieldL
         __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
-        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
         __field_ref[vector[Foo]] fieldN_ref()
-        vector[Foo] fieldN
         __field_ref[vector[Bar]] fieldO_ref()
-        vector[Bar] fieldO
         __field_ref[vector[Baz]] fieldP_ref()
-        vector[Baz] fieldP
         __field_ref[cMyEnumA] fieldQ_ref()
+        cbool fieldA
+        cmap[string,cbool] fieldB
+        cset[cint32_t] fieldC
+        string fieldD
+        string fieldE
+        vector[vector[vector[cint32_t]]] fieldF
+        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
+        vector[cset[cint32_t]] fieldH
+        cbool fieldI
+        cmap[string,vector[cint32_t]] fieldJ
+        vector[vector[vector[vector[cint32_t]]]] fieldK
+        cset[cset[cset[cbool]]] fieldL
+        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
+        vector[Foo] fieldN
+        vector[Bar] fieldO
+        vector[Baz] fieldP
         cMyEnumA fieldQ
         unique_ptr[cmap[string,cbool]] fieldR
         unique_ptr[cSmallStruct] fieldS

@@ -129,18 +129,18 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator<=(cSimpleStruct&)
         bint operator>=(cSimpleStruct&)
         __field_ref[cbool] is_on_ref()
-        cbool is_on
         __field_ref[cint8_t] tiny_int_ref()
-        cint8_t tiny_int
         __field_ref[cint16_t] small_int_ref()
-        cint16_t small_int
         __field_ref[cint32_t] nice_sized_int_ref()
-        cint32_t nice_sized_int
         __field_ref[cint64_t] big_int_ref()
-        cint64_t big_int
         __field_ref[double] real_ref()
-        double real
         __field_ref[float] smaller_real_ref()
+        cbool is_on
+        cint8_t tiny_int
+        cint16_t small_int
+        cint32_t nice_sized_int
+        cint64_t big_int
+        double real
         float smaller_real
         cSimpleStruct__isset __isset
 
@@ -165,22 +165,22 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator<=(cComplexStruct&)
         bint operator>=(cComplexStruct&)
         __field_ref[cSimpleStruct] structOne_ref()
-        cSimpleStruct structOne
         __field_ref[cSimpleStruct] structTwo_ref()
-        cSimpleStruct structTwo
         __field_ref[cint32_t] an_integer_ref()
-        cint32_t an_integer
         __field_ref[string] name_ref()
-        string name
         __field_ref[cAnEnum] an_enum_ref()
-        cAnEnum an_enum
         __field_ref[string] some_bytes_ref()
-        string some_bytes
         __field_ref[string] sender_ref "from_ref"()
-        string sender "from"
         __field_ref[string] cdef__ref "cdef_ref"()
-        string cdef_ "cdef"
         __field_ref[foo_Bar] bytes_with_cpp_type_ref()
+        cSimpleStruct structOne
+        cSimpleStruct structTwo
+        cint32_t an_integer
+        string name
+        cAnEnum an_enum
+        string some_bytes
+        string sender "from"
+        string cdef_ "cdef"
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 

@@ -144,10 +144,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cVal&)
         bint operator>=(cVal&)
         __field_ref[string] strVal_ref()
-        string strVal
         __field_ref[cint32_t] intVal_ref()
-        cint32_t intVal
         __field_ref[cmap[cint16_t,string]] typedefValue_ref()
+        string strVal
+        cint32_t intVal
         cmap[cint16_t,string] typedefValue
         cVal__isset __isset
 

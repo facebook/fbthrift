@@ -311,7 +311,7 @@ cdef class MyField(thrift.py3.types.Struct):
 
     @property
     def opt_value(self):
-        if not deref(self._cpp_obj).__isset.opt_value:
+        if not deref(self._cpp_obj).opt_value_ref().has_value():
             return None
 
         return deref(self._cpp_obj).opt_value_ref().value_unchecked()
@@ -625,7 +625,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
     @property
     def mes(self):
-        if not deref(self._cpp_obj).__isset.mes:
+        if not deref(self._cpp_obj).mes_ref().has_value():
             return None
 
         if self.__fbthrift_cached_mes is None:

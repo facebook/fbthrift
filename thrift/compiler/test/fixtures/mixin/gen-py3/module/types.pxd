@@ -87,10 +87,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMixin2&)
         bint operator>=(cMixin2&)
         __field_ref[cMixin1] m1_ref()
-        cMixin1 m1
         __optional_field_ref[string] field2_ref()
-        string field2
         __field_ref[string] field1_ref()
+        cMixin1 m1
+        string field2
         cMixin2__isset __isset
 
     cdef cppclass cMixin3Base__isset "::cpp2::Mixin3Base::__isset":
@@ -124,15 +124,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
         __field_ref[string] field4_ref()
-        string field4
         __field_ref[cMixin2] m2_ref()
-        cMixin2 m2
         __field_ref[cMixin3Base] m3_ref()
-        cMixin3Base m3
         __field_ref[cMixin1] m1_ref()
         __optional_field_ref[string] field2_ref()
         __field_ref[string] field1_ref()
         __field_ref[string] field3_ref()
+        string field4
+        cMixin2 m2
+        cMixin3Base m3
         cFoo__isset __isset
 
 

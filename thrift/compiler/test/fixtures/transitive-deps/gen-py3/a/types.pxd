@@ -73,8 +73,8 @@ cdef extern from "src/gen-cpp2/a_types_custom_protocol.h" namespace "::cpp2":
         bint operator<=(cA&)
         bint operator>=(cA&)
         __field_ref[vector[vector[_c_types.cC]]] b_ref()
-        vector[vector[_c_types.cC]] b
         __field_ref[vector[_c_types.cC]] other_ref()
+        vector[vector[_c_types.cC]] b
         vector[_c_types.cC] other
         cA__isset __isset
 

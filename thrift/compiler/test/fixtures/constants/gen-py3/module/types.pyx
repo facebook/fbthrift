@@ -294,7 +294,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def employer(self):
-        if not deref(self._cpp_obj).__isset.employer:
+        if not deref(self._cpp_obj).employer_ref().has_value():
             return None
 
         if self.__fbthrift_cached_employer is None:
@@ -303,7 +303,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def compensation(self):
-        if not deref(self._cpp_obj).__isset.compensation:
+        if not deref(self._cpp_obj).compensation_ref().has_value():
             return None
 
         return deref(self._cpp_obj).compensation_ref().value_unchecked()
@@ -800,14 +800,14 @@ cdef class struct4(thrift.py3.types.Struct):
 
     @property
     def b(self):
-        if not deref(self._cpp_obj).__isset.b:
+        if not deref(self._cpp_obj).b_ref().has_value():
             return None
 
         return deref(self._cpp_obj).b_ref().value_unchecked()
 
     @property
     def c(self):
-        if not deref(self._cpp_obj).__isset.c:
+        if not deref(self._cpp_obj).c_ref().has_value():
             return None
 
         return deref(self._cpp_obj).c_ref().value_unchecked()

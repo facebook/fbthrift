@@ -100,7 +100,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myString(self):
-        if not deref(self._cpp_obj).__isset.myString:
+        if not deref(self._cpp_obj).myString_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).myString_ref().value_unchecked()).decode('UTF-8')

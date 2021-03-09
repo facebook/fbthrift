@@ -217,7 +217,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
     @property
     def sonnet(self):
-        if not deref(self._cpp_obj).__isset.sonnet:
+        if not deref(self._cpp_obj).sonnet_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).sonnet_ref().value_unchecked()).decode('UTF-8')

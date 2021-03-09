@@ -90,12 +90,12 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator<=(cCombo&)
         bint operator>=(cCombo&)
         __field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
-        vector[vector[cMyStruct]] listOfOurMyStructLists
         __field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
-        vector[_module_types.cMyStruct] theirMyStructList
         __field_ref[vector[cMyStruct]] ourMyStructList_ref()
-        vector[cMyStruct] ourMyStructList
         __field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
+        vector[vector[cMyStruct]] listOfOurMyStructLists
+        vector[_module_types.cMyStruct] theirMyStructList
+        vector[cMyStruct] ourMyStructList
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
         cCombo__isset __isset
 
