@@ -40,3 +40,7 @@ struct MyMapping {
     java.swift.type = "com.foo.FastIntObjectMap<com.foo.FastIntLongMap>",
   ) ioMap;
 }
+
+service MyAnnotationService {
+  void ping();
+} (java.swift.disable_reactive)

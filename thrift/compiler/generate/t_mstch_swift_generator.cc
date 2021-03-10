@@ -423,6 +423,8 @@ class mstch_swift_service : public mstch_service {
             {"service:streamingFunctions",
              &mstch_swift_service::get_streaming_functions},
             {"service:sinkFunctions", &mstch_swift_service::get_sink_functions},
+            {"service:disableReactive?",
+             &mstch_swift_service::disable_reactive},
         });
   }
   mstch::node java_package() {
@@ -440,6 +442,10 @@ class mstch_swift_service : public mstch_service {
       }
     }
     return generate_functions(funcs);
+  }
+
+  mstch::node disable_reactive() {
+    return service_->get_annotation("java.swift.disable_reactive");
   }
 
   mstch::node get_streaming_functions() {

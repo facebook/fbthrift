@@ -22,7 +22,7 @@ package {{service:javaPackage}};
 import java.util.*;
 import org.apache.thrift.protocol.*;
 import com.facebook.swift.transport.client.ResponseWrapper;
-
+{{#service:disableReactive?}}// Generation of this class is disabled using (java.swift.disable_reactive){{/service:disableReactive?}}{{^service:disableReactive?}}
 public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
   implements {{service:javaCapitalName}}.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
@@ -496,3 +496,4 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
   }
 }
+{{/service:disableReactive?}}
