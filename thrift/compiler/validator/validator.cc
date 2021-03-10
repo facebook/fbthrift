@@ -448,9 +448,11 @@ void structured_annotations_uniqueness_validator::validate_annotations(
 }
 
 bool reserved_field_id_validator::visit(t_struct* s) {
-  if (const auto* field = s->get_field_by_id(-32768)) {
-    add_error(
-        field->get_lineno(), "Too many fields in `" + s->get_name() + "`");
+  for (const auto* field : s->fields()) {
+    if (field->get_key() < kMinimalValidFieldId) {
+      add_error(
+          field->get_lineno(), "Too many fields in `" + s->get_name() + "`");
+    }
   }
   return true;
 }

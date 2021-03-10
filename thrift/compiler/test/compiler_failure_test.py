@@ -614,13 +614,15 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_reserved_field_id(self):
-        lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(32768)] + ["}"]
+        reserved_id = int.from_bytes([int('10111111', 2), 255], byteorder='big', signed=True)
+        id_count = -reserved_id
+        lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
-        expected_error = ["[FAILURE:foo.thrift:32769] Too many fields in `Foo`"] + [
+        expected_error = [f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"] + [
             f"[WARNING:foo.thrift:{i+3}] No field key specified for field_{i}, "
             "resulting protocol may have conflicts or not be backwards compatible!"
-            for i in range(32768)
+            for i in range(id_count)
         ] * 2
         expected_error = "\n".join(expected_error) + "\n"
 

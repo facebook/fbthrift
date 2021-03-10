@@ -260,6 +260,9 @@ class reserved_field_id_validator : virtual public validator {
  public:
   using validator::visit;
 
+  /// field id whose binary digital leads with `10` is reserved
+  static constexpr int16_t kMinimalValidFieldId = 0b1100'0000'0000'0000;
+
   /**
    * check whether struct contains reserved field id
    */
