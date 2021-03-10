@@ -496,6 +496,32 @@ func NewFinderByPlateArgs() *FinderByPlateArgs {
 func (p *FinderByPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderByPlateArgsBuilder struct {
+  obj *FinderByPlateArgs
+}
+
+func NewFinderByPlateArgsBuilder() *FinderByPlateArgsBuilder{
+  return &FinderByPlateArgsBuilder{
+    obj: NewFinderByPlateArgs(),
+  }
+}
+
+func (p FinderByPlateArgsBuilder) Emit() *FinderByPlateArgs{
+  return &FinderByPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderByPlateArgsBuilder) Plate(plate Plate) *FinderByPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderByPlateArgs) SetPlate(plate Plate) *FinderByPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderByPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -588,6 +614,32 @@ return p.Success
 }
 func (p *FinderByPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderByPlateResultBuilder struct {
+  obj *FinderByPlateResult
+}
+
+func NewFinderByPlateResultBuilder() *FinderByPlateResultBuilder{
+  return &FinderByPlateResultBuilder{
+    obj: NewFinderByPlateResult(),
+  }
+}
+
+func (p FinderByPlateResultBuilder) Emit() *FinderByPlateResult{
+  return &FinderByPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderByPlateResultBuilder) Success(success *Automobile) *FinderByPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderByPlateResult) SetSuccess(success *Automobile) *FinderByPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderByPlateResult) Read(iprot thrift.Protocol) error {
@@ -683,6 +735,32 @@ func NewFinderAliasByPlateArgs() *FinderAliasByPlateArgs {
 func (p *FinderAliasByPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderAliasByPlateArgsBuilder struct {
+  obj *FinderAliasByPlateArgs
+}
+
+func NewFinderAliasByPlateArgsBuilder() *FinderAliasByPlateArgsBuilder{
+  return &FinderAliasByPlateArgsBuilder{
+    obj: NewFinderAliasByPlateArgs(),
+  }
+}
+
+func (p FinderAliasByPlateArgsBuilder) Emit() *FinderAliasByPlateArgs{
+  return &FinderAliasByPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderAliasByPlateArgsBuilder) Plate(plate Plate) *FinderAliasByPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderAliasByPlateArgs) SetPlate(plate Plate) *FinderAliasByPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderAliasByPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -775,6 +853,32 @@ return p.Success
 }
 func (p *FinderAliasByPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderAliasByPlateResultBuilder struct {
+  obj *FinderAliasByPlateResult
+}
+
+func NewFinderAliasByPlateResultBuilder() *FinderAliasByPlateResultBuilder{
+  return &FinderAliasByPlateResultBuilder{
+    obj: NewFinderAliasByPlateResult(),
+  }
+}
+
+func (p FinderAliasByPlateResultBuilder) Emit() *FinderAliasByPlateResult{
+  return &FinderAliasByPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderAliasByPlateResultBuilder) Success(success *Car) *FinderAliasByPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderAliasByPlateResult) SetSuccess(success *Car) *FinderAliasByPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderAliasByPlateResult) Read(iprot thrift.Protocol) error {
@@ -870,6 +974,32 @@ func NewFinderPreviousPlateArgs() *FinderPreviousPlateArgs {
 func (p *FinderPreviousPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderPreviousPlateArgsBuilder struct {
+  obj *FinderPreviousPlateArgs
+}
+
+func NewFinderPreviousPlateArgsBuilder() *FinderPreviousPlateArgsBuilder{
+  return &FinderPreviousPlateArgsBuilder{
+    obj: NewFinderPreviousPlateArgs(),
+  }
+}
+
+func (p FinderPreviousPlateArgsBuilder) Emit() *FinderPreviousPlateArgs{
+  return &FinderPreviousPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderPreviousPlateArgsBuilder) Plate(plate Plate) *FinderPreviousPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderPreviousPlateArgs) SetPlate(plate Plate) *FinderPreviousPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderPreviousPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -962,6 +1092,32 @@ return *p.Success
 }
 func (p *FinderPreviousPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderPreviousPlateResultBuilder struct {
+  obj *FinderPreviousPlateResult
+}
+
+func NewFinderPreviousPlateResultBuilder() *FinderPreviousPlateResultBuilder{
+  return &FinderPreviousPlateResultBuilder{
+    obj: NewFinderPreviousPlateResult(),
+  }
+}
+
+func (p FinderPreviousPlateResultBuilder) Emit() *FinderPreviousPlateResult{
+  return &FinderPreviousPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderPreviousPlateResultBuilder) Success(success *Plate) *FinderPreviousPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderPreviousPlateResult) SetSuccess(success *Plate) *FinderPreviousPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderPreviousPlateResult) Read(iprot thrift.Protocol) error {

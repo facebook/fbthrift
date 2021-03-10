@@ -104,6 +104,65 @@ func (p *Color) GetBlue() float64 {
 func (p *Color) GetAlpha() float64 {
   return p.Alpha
 }
+type ColorBuilder struct {
+  obj *Color
+}
+
+func NewColorBuilder() *ColorBuilder{
+  return &ColorBuilder{
+    obj: NewColor(),
+  }
+}
+
+func (p ColorBuilder) Emit() *Color{
+  return &Color{
+    Red: p.obj.Red,
+    Green: p.obj.Green,
+    Blue: p.obj.Blue,
+    Alpha: p.obj.Alpha,
+  }
+}
+
+func (c *ColorBuilder) Red(red float64) *ColorBuilder {
+  c.obj.Red = red
+  return c
+}
+
+func (c *ColorBuilder) Green(green float64) *ColorBuilder {
+  c.obj.Green = green
+  return c
+}
+
+func (c *ColorBuilder) Blue(blue float64) *ColorBuilder {
+  c.obj.Blue = blue
+  return c
+}
+
+func (c *ColorBuilder) Alpha(alpha float64) *ColorBuilder {
+  c.obj.Alpha = alpha
+  return c
+}
+
+func (c *Color) SetRed(red float64) *Color {
+  c.Red = red
+  return c
+}
+
+func (c *Color) SetGreen(green float64) *Color {
+  c.Green = green
+  return c
+}
+
+func (c *Color) SetBlue(blue float64) *Color {
+  c.Blue = blue
+  return c
+}
+
+func (c *Color) SetAlpha(alpha float64) *Color {
+  c.Alpha = alpha
+  return c
+}
+
 func (p *Color) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -321,6 +380,76 @@ func (p *Vehicle) IsSetName() bool {
 
 func (p *Vehicle) IsSetHasAC() bool {
   return p != nil && p.HasAC != Vehicle_HasAC_DEFAULT
+}
+
+type VehicleBuilder struct {
+  obj *Vehicle
+}
+
+func NewVehicleBuilder() *VehicleBuilder{
+  return &VehicleBuilder{
+    obj: NewVehicle(),
+  }
+}
+
+func (p VehicleBuilder) Emit() *Vehicle{
+  return &Vehicle{
+    Color: p.obj.Color,
+    LicensePlate: p.obj.LicensePlate,
+    Description: p.obj.Description,
+    Name: p.obj.Name,
+    HasAC: p.obj.HasAC,
+  }
+}
+
+func (v *VehicleBuilder) Color(color *Color) *VehicleBuilder {
+  v.obj.Color = color
+  return v
+}
+
+func (v *VehicleBuilder) LicensePlate(licensePlate *string) *VehicleBuilder {
+  v.obj.LicensePlate = licensePlate
+  return v
+}
+
+func (v *VehicleBuilder) Description(description *string) *VehicleBuilder {
+  v.obj.Description = description
+  return v
+}
+
+func (v *VehicleBuilder) Name(name *string) *VehicleBuilder {
+  v.obj.Name = name
+  return v
+}
+
+func (v *VehicleBuilder) HasAC(hasAC bool) *VehicleBuilder {
+  v.obj.HasAC = hasAC
+  return v
+}
+
+func (v *Vehicle) SetColor(color *Color) *Vehicle {
+  v.Color = color
+  return v
+}
+
+func (v *Vehicle) SetLicensePlate(licensePlate *string) *Vehicle {
+  v.LicensePlate = licensePlate
+  return v
+}
+
+func (v *Vehicle) SetDescription(description *string) *Vehicle {
+  v.Description = description
+  return v
+}
+
+func (v *Vehicle) SetName(name *string) *Vehicle {
+  v.Name = name
+  return v
+}
+
+func (v *Vehicle) SetHasAC(hasAC bool) *Vehicle {
+  v.HasAC = hasAC
+  return v
 }
 
 func (p *Vehicle) Read(iprot thrift.Protocol) error {
@@ -638,6 +767,131 @@ func (p *Person) IsSetAfraidOfAnimal() bool {
 
 func (p *Person) IsSetVehicles() bool {
   return p != nil && p.Vehicles != nil
+}
+
+type PersonBuilder struct {
+  obj *Person
+}
+
+func NewPersonBuilder() *PersonBuilder{
+  return &PersonBuilder{
+    obj: NewPerson(),
+  }
+}
+
+func (p PersonBuilder) Emit() *Person{
+  return &Person{
+    Id: p.obj.Id,
+    Name: p.obj.Name,
+    Age: p.obj.Age,
+    Address: p.obj.Address,
+    FavoriteColor: p.obj.FavoriteColor,
+    Friends: p.obj.Friends,
+    BestFriend: p.obj.BestFriend,
+    PetNames: p.obj.PetNames,
+    AfraidOfAnimal: p.obj.AfraidOfAnimal,
+    Vehicles: p.obj.Vehicles,
+  }
+}
+
+func (p *PersonBuilder) Id(id PersonID) *PersonBuilder {
+  p.obj.Id = id
+  return p
+}
+
+func (p *PersonBuilder) Name(name string) *PersonBuilder {
+  p.obj.Name = name
+  return p
+}
+
+func (p *PersonBuilder) Age(age *int16) *PersonBuilder {
+  p.obj.Age = age
+  return p
+}
+
+func (p *PersonBuilder) Address(address *string) *PersonBuilder {
+  p.obj.Address = address
+  return p
+}
+
+func (p *PersonBuilder) FavoriteColor(favoriteColor *Color) *PersonBuilder {
+  p.obj.FavoriteColor = favoriteColor
+  return p
+}
+
+func (p *PersonBuilder) Friends(friends []PersonID) *PersonBuilder {
+  p.obj.Friends = friends
+  return p
+}
+
+func (p *PersonBuilder) BestFriend(bestFriend *PersonID) *PersonBuilder {
+  p.obj.BestFriend = bestFriend
+  return p
+}
+
+func (p *PersonBuilder) PetNames(petNames map[Animal]string) *PersonBuilder {
+  p.obj.PetNames = petNames
+  return p
+}
+
+func (p *PersonBuilder) AfraidOfAnimal(afraidOfAnimal *Animal) *PersonBuilder {
+  p.obj.AfraidOfAnimal = afraidOfAnimal
+  return p
+}
+
+func (p *PersonBuilder) Vehicles(vehicles []*Vehicle) *PersonBuilder {
+  p.obj.Vehicles = vehicles
+  return p
+}
+
+func (p *Person) SetId(id PersonID) *Person {
+  p.Id = id
+  return p
+}
+
+func (p *Person) SetName(name string) *Person {
+  p.Name = name
+  return p
+}
+
+func (p *Person) SetAge(age *int16) *Person {
+  p.Age = age
+  return p
+}
+
+func (p *Person) SetAddress(address *string) *Person {
+  p.Address = address
+  return p
+}
+
+func (p *Person) SetFavoriteColor(favoriteColor *Color) *Person {
+  p.FavoriteColor = favoriteColor
+  return p
+}
+
+func (p *Person) SetFriends(friends []PersonID) *Person {
+  p.Friends = friends
+  return p
+}
+
+func (p *Person) SetBestFriend(bestFriend *PersonID) *Person {
+  p.BestFriend = bestFriend
+  return p
+}
+
+func (p *Person) SetPetNames(petNames map[Animal]string) *Person {
+  p.PetNames = petNames
+  return p
+}
+
+func (p *Person) SetAfraidOfAnimal(afraidOfAnimal *Animal) *Person {
+  p.AfraidOfAnimal = afraidOfAnimal
+  return p
+}
+
+func (p *Person) SetVehicles(vehicles []*Vehicle) *Person {
+  p.Vehicles = vehicles
+  return p
 }
 
 func (p *Person) Read(iprot thrift.Protocol) error {

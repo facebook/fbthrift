@@ -82,6 +82,32 @@ func NewMyStructNestedAnnotation() *MyStructNestedAnnotation {
 func (p *MyStructNestedAnnotation) GetName() string {
   return p.Name
 }
+type MyStructNestedAnnotationBuilder struct {
+  obj *MyStructNestedAnnotation
+}
+
+func NewMyStructNestedAnnotationBuilder() *MyStructNestedAnnotationBuilder{
+  return &MyStructNestedAnnotationBuilder{
+    obj: NewMyStructNestedAnnotation(),
+  }
+}
+
+func (p MyStructNestedAnnotationBuilder) Emit() *MyStructNestedAnnotation{
+  return &MyStructNestedAnnotation{
+    Name: p.obj.Name,
+  }
+}
+
+func (m *MyStructNestedAnnotationBuilder) Name(name string) *MyStructNestedAnnotationBuilder {
+  m.obj.Name = name
+  return m
+}
+
+func (m *MyStructNestedAnnotation) SetName(name string) *MyStructNestedAnnotation {
+  m.Name = name
+  return m
+}
+
 func (p *MyStructNestedAnnotation) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -197,6 +223,87 @@ func (p *MyStruct) GetAnnotationWithTrailingComma() string {
 func (p *MyStruct) GetEmptyAnnotations() string {
   return p.EmptyAnnotations
 }
+type MyStructBuilder struct {
+  obj *MyStruct
+}
+
+func NewMyStructBuilder() *MyStructBuilder{
+  return &MyStructBuilder{
+    obj: NewMyStruct(),
+  }
+}
+
+func (p MyStructBuilder) Emit() *MyStruct{
+  return &MyStruct{
+    Major: p.obj.Major,
+    Package: p.obj.Package,
+    AnnotationWithQuote: p.obj.AnnotationWithQuote,
+    Class_: p.obj.Class_,
+    AnnotationWithTrailingComma: p.obj.AnnotationWithTrailingComma,
+    EmptyAnnotations: p.obj.EmptyAnnotations,
+  }
+}
+
+func (m *MyStructBuilder) Major(major int64) *MyStructBuilder {
+  m.obj.Major = major
+  return m
+}
+
+func (m *MyStructBuilder) Package(package_a1 string) *MyStructBuilder {
+  m.obj.Package = package_a1
+  return m
+}
+
+func (m *MyStructBuilder) AnnotationWithQuote(annotationWithQuote string) *MyStructBuilder {
+  m.obj.AnnotationWithQuote = annotationWithQuote
+  return m
+}
+
+func (m *MyStructBuilder) Class_(class_ string) *MyStructBuilder {
+  m.obj.Class_ = class_
+  return m
+}
+
+func (m *MyStructBuilder) AnnotationWithTrailingComma(annotationWithTrailingComma string) *MyStructBuilder {
+  m.obj.AnnotationWithTrailingComma = annotationWithTrailingComma
+  return m
+}
+
+func (m *MyStructBuilder) EmptyAnnotations(emptyAnnotations string) *MyStructBuilder {
+  m.obj.EmptyAnnotations = emptyAnnotations
+  return m
+}
+
+func (m *MyStruct) SetMajor(major int64) *MyStruct {
+  m.Major = major
+  return m
+}
+
+func (m *MyStruct) SetPackage(package_a1 string) *MyStruct {
+  m.Package = package_a1
+  return m
+}
+
+func (m *MyStruct) SetAnnotationWithQuote(annotationWithQuote string) *MyStruct {
+  m.AnnotationWithQuote = annotationWithQuote
+  return m
+}
+
+func (m *MyStruct) SetClass_(class_ string) *MyStruct {
+  m.Class_ = class_
+  return m
+}
+
+func (m *MyStruct) SetAnnotationWithTrailingComma(annotationWithTrailingComma string) *MyStruct {
+  m.AnnotationWithTrailingComma = annotationWithTrailingComma
+  return m
+}
+
+func (m *MyStruct) SetEmptyAnnotations(emptyAnnotations string) *MyStruct {
+  m.EmptyAnnotations = emptyAnnotations
+  return m
+}
+
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -413,6 +520,43 @@ func (p *SecretStruct) GetId() int64 {
 func (p *SecretStruct) GetPassword() string {
   return p.Password
 }
+type SecretStructBuilder struct {
+  obj *SecretStruct
+}
+
+func NewSecretStructBuilder() *SecretStructBuilder{
+  return &SecretStructBuilder{
+    obj: NewSecretStruct(),
+  }
+}
+
+func (p SecretStructBuilder) Emit() *SecretStruct{
+  return &SecretStruct{
+    Id: p.obj.Id,
+    Password: p.obj.Password,
+  }
+}
+
+func (s *SecretStructBuilder) Id(id int64) *SecretStructBuilder {
+  s.obj.Id = id
+  return s
+}
+
+func (s *SecretStructBuilder) Password(password string) *SecretStructBuilder {
+  s.obj.Password = password
+  return s
+}
+
+func (s *SecretStruct) SetId(id int64) *SecretStruct {
+  s.Id = id
+  return s
+}
+
+func (s *SecretStruct) SetPassword(password string) *SecretStruct {
+  s.Password = password
+  return s
+}
+
 func (p *SecretStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

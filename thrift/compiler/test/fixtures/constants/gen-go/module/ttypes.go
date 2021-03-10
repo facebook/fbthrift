@@ -219,6 +219,65 @@ func (p *Internship) IsSetCompensation() bool {
   return p != nil && p.Compensation != nil
 }
 
+type InternshipBuilder struct {
+  obj *Internship
+}
+
+func NewInternshipBuilder() *InternshipBuilder{
+  return &InternshipBuilder{
+    obj: NewInternship(),
+  }
+}
+
+func (p InternshipBuilder) Emit() *Internship{
+  return &Internship{
+    Weeks: p.obj.Weeks,
+    Title: p.obj.Title,
+    Employer: p.obj.Employer,
+    Compensation: p.obj.Compensation,
+  }
+}
+
+func (i *InternshipBuilder) Weeks(weeks int32) *InternshipBuilder {
+  i.obj.Weeks = weeks
+  return i
+}
+
+func (i *InternshipBuilder) Title(title string) *InternshipBuilder {
+  i.obj.Title = title
+  return i
+}
+
+func (i *InternshipBuilder) Employer(employer *Company) *InternshipBuilder {
+  i.obj.Employer = employer
+  return i
+}
+
+func (i *InternshipBuilder) Compensation(compensation *float64) *InternshipBuilder {
+  i.obj.Compensation = compensation
+  return i
+}
+
+func (i *Internship) SetWeeks(weeks int32) *Internship {
+  i.Weeks = weeks
+  return i
+}
+
+func (i *Internship) SetTitle(title string) *Internship {
+  i.Title = title
+  return i
+}
+
+func (i *Internship) SetEmployer(employer *Company) *Internship {
+  i.Employer = employer
+  return i
+}
+
+func (i *Internship) SetCompensation(compensation *float64) *Internship {
+  i.Compensation = compensation
+  return i
+}
+
 func (p *Internship) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -405,6 +464,43 @@ func (p *Range) GetMin() int32 {
 func (p *Range) GetMax() int32 {
   return p.Max
 }
+type RangeBuilder struct {
+  obj *Range
+}
+
+func NewRangeBuilder() *RangeBuilder{
+  return &RangeBuilder{
+    obj: NewRange(),
+  }
+}
+
+func (p RangeBuilder) Emit() *Range{
+  return &Range{
+    Min: p.obj.Min,
+    Max: p.obj.Max,
+  }
+}
+
+func (r *RangeBuilder) Min(min int32) *RangeBuilder {
+  r.obj.Min = min
+  return r
+}
+
+func (r *RangeBuilder) Max(max int32) *RangeBuilder {
+  r.obj.Max = max
+  return r
+}
+
+func (r *Range) SetMin(min int32) *Range {
+  r.Min = min
+  return r
+}
+
+func (r *Range) SetMax(max int32) *Range {
+  r.Max = max
+  return r
+}
+
 func (p *Range) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -534,6 +630,43 @@ func (p *Struct1) GetA() int32 {
 func (p *Struct1) GetB() string {
   return p.B
 }
+type Struct1Builder struct {
+  obj *Struct1
+}
+
+func NewStruct1Builder() *Struct1Builder{
+  return &Struct1Builder{
+    obj: NewStruct1(),
+  }
+}
+
+func (p Struct1Builder) Emit() *Struct1{
+  return &Struct1{
+    A: p.obj.A,
+    B: p.obj.B,
+  }
+}
+
+func (s *Struct1Builder) A(a int32) *Struct1Builder {
+  s.obj.A = a
+  return s
+}
+
+func (s *Struct1Builder) B(b string) *Struct1Builder {
+  s.obj.B = b
+  return s
+}
+
+func (s *Struct1) SetA(a int32) *Struct1 {
+  s.A = a
+  return s
+}
+
+func (s *Struct1) SetB(b string) *Struct1 {
+  s.B = b
+  return s
+}
+
 func (p *Struct1) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -669,6 +802,65 @@ func (p *Struct2) GetD() []int32 {
 }
 func (p *Struct2) IsSetC() bool {
   return p != nil && p.C != nil
+}
+
+type Struct2Builder struct {
+  obj *Struct2
+}
+
+func NewStruct2Builder() *Struct2Builder{
+  return &Struct2Builder{
+    obj: NewStruct2(),
+  }
+}
+
+func (p Struct2Builder) Emit() *Struct2{
+  return &Struct2{
+    A: p.obj.A,
+    B: p.obj.B,
+    C: p.obj.C,
+    D: p.obj.D,
+  }
+}
+
+func (s *Struct2Builder) A(a int32) *Struct2Builder {
+  s.obj.A = a
+  return s
+}
+
+func (s *Struct2Builder) B(b string) *Struct2Builder {
+  s.obj.B = b
+  return s
+}
+
+func (s *Struct2Builder) C(c *Struct1) *Struct2Builder {
+  s.obj.C = c
+  return s
+}
+
+func (s *Struct2Builder) D(d []int32) *Struct2Builder {
+  s.obj.D = d
+  return s
+}
+
+func (s *Struct2) SetA(a int32) *Struct2 {
+  s.A = a
+  return s
+}
+
+func (s *Struct2) SetB(b string) *Struct2 {
+  s.B = b
+  return s
+}
+
+func (s *Struct2) SetC(c *Struct1) *Struct2 {
+  s.C = c
+  return s
+}
+
+func (s *Struct2) SetD(d []int32) *Struct2 {
+  s.D = d
+  return s
 }
 
 func (p *Struct2) Read(iprot thrift.Protocol) error {
@@ -878,6 +1070,54 @@ func (p *Struct3) IsSetC() bool {
   return p != nil && p.C != nil
 }
 
+type Struct3Builder struct {
+  obj *Struct3
+}
+
+func NewStruct3Builder() *Struct3Builder{
+  return &Struct3Builder{
+    obj: NewStruct3(),
+  }
+}
+
+func (p Struct3Builder) Emit() *Struct3{
+  return &Struct3{
+    A: p.obj.A,
+    B: p.obj.B,
+    C: p.obj.C,
+  }
+}
+
+func (s *Struct3Builder) A(a string) *Struct3Builder {
+  s.obj.A = a
+  return s
+}
+
+func (s *Struct3Builder) B(b int32) *Struct3Builder {
+  s.obj.B = b
+  return s
+}
+
+func (s *Struct3Builder) C(c *Struct2) *Struct3Builder {
+  s.obj.C = c
+  return s
+}
+
+func (s *Struct3) SetA(a string) *Struct3 {
+  s.A = a
+  return s
+}
+
+func (s *Struct3) SetB(b int32) *Struct3 {
+  s.B = b
+  return s
+}
+
+func (s *Struct3) SetC(c *Struct2) *Struct3 {
+  s.C = c
+  return s
+}
+
 func (p *Struct3) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1042,6 +1282,54 @@ func (p *Struct4) IsSetB() bool {
 
 func (p *Struct4) IsSetC() bool {
   return p != nil && p.C != nil
+}
+
+type Struct4Builder struct {
+  obj *Struct4
+}
+
+func NewStruct4Builder() *Struct4Builder{
+  return &Struct4Builder{
+    obj: NewStruct4(),
+  }
+}
+
+func (p Struct4Builder) Emit() *Struct4{
+  return &Struct4{
+    A: p.obj.A,
+    B: p.obj.B,
+    C: p.obj.C,
+  }
+}
+
+func (s *Struct4Builder) A(a int32) *Struct4Builder {
+  s.obj.A = a
+  return s
+}
+
+func (s *Struct4Builder) B(b *float64) *Struct4Builder {
+  s.obj.B = b
+  return s
+}
+
+func (s *Struct4Builder) C(c *int8) *Struct4Builder {
+  s.obj.C = c
+  return s
+}
+
+func (s *Struct4) SetA(a int32) *Struct4 {
+  s.A = a
+  return s
+}
+
+func (s *Struct4) SetB(b *float64) *Struct4 {
+  s.B = b
+  return s
+}
+
+func (s *Struct4) SetC(c *int8) *Struct4 {
+  s.C = c
+  return s
 }
 
 func (p *Struct4) Read(iprot thrift.Protocol) error {
@@ -1224,6 +1512,43 @@ func (p *Union1) IsSetI() bool {
 
 func (p *Union1) IsSetD() bool {
   return p != nil && p.D != nil
+}
+
+type Union1Builder struct {
+  obj *Union1
+}
+
+func NewUnion1Builder() *Union1Builder{
+  return &Union1Builder{
+    obj: NewUnion1(),
+  }
+}
+
+func (p Union1Builder) Emit() *Union1{
+  return &Union1{
+    I: p.obj.I,
+    D: p.obj.D,
+  }
+}
+
+func (u *Union1Builder) I(i *int32) *Union1Builder {
+  u.obj.I = i
+  return u
+}
+
+func (u *Union1Builder) D(d *float64) *Union1Builder {
+  u.obj.D = d
+  return u
+}
+
+func (u *Union1) SetI(i *int32) *Union1 {
+  u.I = i
+  return u
+}
+
+func (u *Union1) SetD(d *float64) *Union1 {
+  u.D = d
+  return u
 }
 
 func (p *Union1) Read(iprot thrift.Protocol) error {
@@ -1415,6 +1740,65 @@ func (p *Union2) IsSetS() bool {
 
 func (p *Union2) IsSetU() bool {
   return p != nil && p.U != nil
+}
+
+type Union2Builder struct {
+  obj *Union2
+}
+
+func NewUnion2Builder() *Union2Builder{
+  return &Union2Builder{
+    obj: NewUnion2(),
+  }
+}
+
+func (p Union2Builder) Emit() *Union2{
+  return &Union2{
+    I: p.obj.I,
+    D: p.obj.D,
+    S: p.obj.S,
+    U: p.obj.U,
+  }
+}
+
+func (u *Union2Builder) I(i *int32) *Union2Builder {
+  u.obj.I = i
+  return u
+}
+
+func (u *Union2Builder) D(d *float64) *Union2Builder {
+  u.obj.D = d
+  return u
+}
+
+func (u *Union2Builder) S(s *Struct1) *Union2Builder {
+  u.obj.S = s
+  return u
+}
+
+func (un *Union2Builder) U(u *Union1) *Union2Builder {
+  un.obj.U = u
+  return un
+}
+
+func (u *Union2) SetI(i *int32) *Union2 {
+  u.I = i
+  return u
+}
+
+func (u *Union2) SetD(d *float64) *Union2 {
+  u.D = d
+  return u
+}
+
+func (u *Union2) SetS(s *Struct1) *Union2 {
+  u.S = s
+  return u
+}
+
+func (un *Union2) SetU(u *Union1) *Union2 {
+  un.U = u
+  return un
 }
 
 func (p *Union2) Read(iprot thrift.Protocol) error {

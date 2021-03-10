@@ -37,6 +37,18 @@ struct Bools {
   2: bool im_false;
 }
 
+struct WeirdNames {
+  1: bool me;
+  2: bool set_me;
+  // commented intentionally
+  // golang generator does not support this combination of ambiguous names
+  // 3: bool SetMe;
+  4: bool SetMe_;
+  5: bool _setMe;
+  6: bool p;
+  7: bool b;
+}
+
 struct Xtruct {
   1: string string_thing;
   4: byte byte_thing;
@@ -55,6 +67,13 @@ struct Xtruct3 {
   4: i32 changed;
   9: i32 i32_thing;
   11: i64 i64_thing;
+}
+
+struct Xtruct4 {
+  1: string string_thing;
+  2: i32 int_thing = 42;
+  3: list<i32> list_int32_thing = [5];
+  4: Xtruct2 xtruct2;
 }
 
 struct Insanity {

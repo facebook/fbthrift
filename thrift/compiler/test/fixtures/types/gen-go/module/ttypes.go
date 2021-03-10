@@ -230,6 +230,32 @@ func NewDecoratedStruct() *DecoratedStruct {
 func (p *DecoratedStruct) GetField() string {
   return p.Field
 }
+type DecoratedStructBuilder struct {
+  obj *DecoratedStruct
+}
+
+func NewDecoratedStructBuilder() *DecoratedStructBuilder{
+  return &DecoratedStructBuilder{
+    obj: NewDecoratedStruct(),
+  }
+}
+
+func (p DecoratedStructBuilder) Emit() *DecoratedStruct{
+  return &DecoratedStruct{
+    Field: p.obj.Field,
+  }
+}
+
+func (d *DecoratedStructBuilder) Field(field string) *DecoratedStructBuilder {
+  d.obj.Field = field
+  return d
+}
+
+func (d *DecoratedStruct) SetField(field string) *DecoratedStruct {
+  d.Field = field
+  return d
+}
+
 func (p *DecoratedStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -359,6 +385,109 @@ func (p *ContainerStruct) GetFieldG() map[int32]string {
 func (p *ContainerStruct) GetFieldH() include0.SomeMap {
   return p.FieldH
 }
+type ContainerStructBuilder struct {
+  obj *ContainerStruct
+}
+
+func NewContainerStructBuilder() *ContainerStructBuilder{
+  return &ContainerStructBuilder{
+    obj: NewContainerStruct(),
+  }
+}
+
+func (p ContainerStructBuilder) Emit() *ContainerStruct{
+  return &ContainerStruct{
+    FieldA: p.obj.FieldA,
+    FieldB: p.obj.FieldB,
+    FieldC: p.obj.FieldC,
+    FieldD: p.obj.FieldD,
+    FieldE: p.obj.FieldE,
+    FieldF: p.obj.FieldF,
+    FieldG: p.obj.FieldG,
+    FieldH: p.obj.FieldH,
+  }
+}
+
+func (c *ContainerStructBuilder) FieldA(fieldA []int32) *ContainerStructBuilder {
+  c.obj.FieldA = fieldA
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldB(fieldB []int32) *ContainerStructBuilder {
+  c.obj.FieldB = fieldB
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldC(fieldC []int32) *ContainerStructBuilder {
+  c.obj.FieldC = fieldC
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldD(fieldD []int32) *ContainerStructBuilder {
+  c.obj.FieldD = fieldD
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldE(fieldE []int32) *ContainerStructBuilder {
+  c.obj.FieldE = fieldE
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldF(fieldF []int32) *ContainerStructBuilder {
+  c.obj.FieldF = fieldF
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldG(fieldG map[int32]string) *ContainerStructBuilder {
+  c.obj.FieldG = fieldG
+  return c
+}
+
+func (c *ContainerStructBuilder) FieldH(fieldH include0.SomeMap) *ContainerStructBuilder {
+  c.obj.FieldH = fieldH
+  return c
+}
+
+func (c *ContainerStruct) SetFieldA(fieldA []int32) *ContainerStruct {
+  c.FieldA = fieldA
+  return c
+}
+
+func (c *ContainerStruct) SetFieldB(fieldB []int32) *ContainerStruct {
+  c.FieldB = fieldB
+  return c
+}
+
+func (c *ContainerStruct) SetFieldC(fieldC []int32) *ContainerStruct {
+  c.FieldC = fieldC
+  return c
+}
+
+func (c *ContainerStruct) SetFieldD(fieldD []int32) *ContainerStruct {
+  c.FieldD = fieldD
+  return c
+}
+
+func (c *ContainerStruct) SetFieldE(fieldE []int32) *ContainerStruct {
+  c.FieldE = fieldE
+  return c
+}
+
+func (c *ContainerStruct) SetFieldF(fieldF []int32) *ContainerStruct {
+  c.FieldF = fieldF
+  return c
+}
+
+func (c *ContainerStruct) SetFieldG(fieldG map[int32]string) *ContainerStruct {
+  c.FieldG = fieldG
+  return c
+}
+
+func (c *ContainerStruct) SetFieldH(fieldH include0.SomeMap) *ContainerStruct {
+  c.FieldH = fieldH
+  return c
+}
+
 func (p *ContainerStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -810,6 +939,32 @@ func NewCppTypeStruct() *CppTypeStruct {
 func (p *CppTypeStruct) GetFieldA() []int32 {
   return p.FieldA
 }
+type CppTypeStructBuilder struct {
+  obj *CppTypeStruct
+}
+
+func NewCppTypeStructBuilder() *CppTypeStructBuilder{
+  return &CppTypeStructBuilder{
+    obj: NewCppTypeStruct(),
+  }
+}
+
+func (p CppTypeStructBuilder) Emit() *CppTypeStruct{
+  return &CppTypeStruct{
+    FieldA: p.obj.FieldA,
+  }
+}
+
+func (c *CppTypeStructBuilder) FieldA(fieldA []int32) *CppTypeStructBuilder {
+  c.obj.FieldA = fieldA
+  return c
+}
+
+func (c *CppTypeStruct) SetFieldA(fieldA []int32) *CppTypeStruct {
+  c.FieldA = fieldA
+  return c
+}
+
 func (p *CppTypeStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -916,6 +1071,32 @@ func NewVirtualStruct() *VirtualStruct {
 func (p *VirtualStruct) GetMyIntField() int64 {
   return p.MyIntField
 }
+type VirtualStructBuilder struct {
+  obj *VirtualStruct
+}
+
+func NewVirtualStructBuilder() *VirtualStructBuilder{
+  return &VirtualStructBuilder{
+    obj: NewVirtualStruct(),
+  }
+}
+
+func (p VirtualStructBuilder) Emit() *VirtualStruct{
+  return &VirtualStruct{
+    MyIntField: p.obj.MyIntField,
+  }
+}
+
+func (v *VirtualStructBuilder) MyIntField(myIntField int64) *VirtualStructBuilder {
+  v.obj.MyIntField = myIntField
+  return v
+}
+
+func (v *VirtualStruct) SetMyIntField(myIntField int64) *VirtualStruct {
+  v.MyIntField = myIntField
+  return v
+}
+
 func (p *VirtualStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1010,6 +1191,43 @@ func (p *MyStructWithForwardRefEnum) GetA() MyForwardRefEnum {
 func (p *MyStructWithForwardRefEnum) GetB() MyForwardRefEnum {
   return p.B
 }
+type MyStructWithForwardRefEnumBuilder struct {
+  obj *MyStructWithForwardRefEnum
+}
+
+func NewMyStructWithForwardRefEnumBuilder() *MyStructWithForwardRefEnumBuilder{
+  return &MyStructWithForwardRefEnumBuilder{
+    obj: NewMyStructWithForwardRefEnum(),
+  }
+}
+
+func (p MyStructWithForwardRefEnumBuilder) Emit() *MyStructWithForwardRefEnum{
+  return &MyStructWithForwardRefEnum{
+    A: p.obj.A,
+    B: p.obj.B,
+  }
+}
+
+func (m *MyStructWithForwardRefEnumBuilder) A(a MyForwardRefEnum) *MyStructWithForwardRefEnumBuilder {
+  m.obj.A = a
+  return m
+}
+
+func (m *MyStructWithForwardRefEnumBuilder) B(b MyForwardRefEnum) *MyStructWithForwardRefEnumBuilder {
+  m.obj.B = b
+  return m
+}
+
+func (m *MyStructWithForwardRefEnum) SetA(a MyForwardRefEnum) *MyStructWithForwardRefEnum {
+  m.A = a
+  return m
+}
+
+func (m *MyStructWithForwardRefEnum) SetB(b MyForwardRefEnum) *MyStructWithForwardRefEnum {
+  m.B = b
+  return m
+}
+
 func (p *MyStructWithForwardRefEnum) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1128,6 +1346,43 @@ func (p *TrivialNumeric) GetA() int32 {
 func (p *TrivialNumeric) GetB() bool {
   return p.B
 }
+type TrivialNumericBuilder struct {
+  obj *TrivialNumeric
+}
+
+func NewTrivialNumericBuilder() *TrivialNumericBuilder{
+  return &TrivialNumericBuilder{
+    obj: NewTrivialNumeric(),
+  }
+}
+
+func (p TrivialNumericBuilder) Emit() *TrivialNumeric{
+  return &TrivialNumeric{
+    A: p.obj.A,
+    B: p.obj.B,
+  }
+}
+
+func (t *TrivialNumericBuilder) A(a int32) *TrivialNumericBuilder {
+  t.obj.A = a
+  return t
+}
+
+func (t *TrivialNumericBuilder) B(b bool) *TrivialNumericBuilder {
+  t.obj.B = b
+  return t
+}
+
+func (t *TrivialNumeric) SetA(a int32) *TrivialNumeric {
+  t.A = a
+  return t
+}
+
+func (t *TrivialNumeric) SetB(b bool) *TrivialNumeric {
+  t.B = b
+  return t
+}
+
 func (p *TrivialNumeric) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1257,6 +1512,43 @@ func (p *TrivialNestedWithDefault) IsSetN() bool {
   return p != nil && p.N != nil
 }
 
+type TrivialNestedWithDefaultBuilder struct {
+  obj *TrivialNestedWithDefault
+}
+
+func NewTrivialNestedWithDefaultBuilder() *TrivialNestedWithDefaultBuilder{
+  return &TrivialNestedWithDefaultBuilder{
+    obj: NewTrivialNestedWithDefault(),
+  }
+}
+
+func (p TrivialNestedWithDefaultBuilder) Emit() *TrivialNestedWithDefault{
+  return &TrivialNestedWithDefault{
+    Z: p.obj.Z,
+    N: p.obj.N,
+  }
+}
+
+func (t *TrivialNestedWithDefaultBuilder) Z(z int32) *TrivialNestedWithDefaultBuilder {
+  t.obj.Z = z
+  return t
+}
+
+func (t *TrivialNestedWithDefaultBuilder) N(n *TrivialNumeric) *TrivialNestedWithDefaultBuilder {
+  t.obj.N = n
+  return t
+}
+
+func (t *TrivialNestedWithDefault) SetZ(z int32) *TrivialNestedWithDefault {
+  t.Z = z
+  return t
+}
+
+func (t *TrivialNestedWithDefault) SetN(n *TrivialNumeric) *TrivialNestedWithDefault {
+  t.N = n
+  return t
+}
+
 func (p *TrivialNestedWithDefault) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1378,6 +1670,43 @@ func (p *ComplexString) GetA() string {
 func (p *ComplexString) GetB() map[string]int32 {
   return p.B
 }
+type ComplexStringBuilder struct {
+  obj *ComplexString
+}
+
+func NewComplexStringBuilder() *ComplexStringBuilder{
+  return &ComplexStringBuilder{
+    obj: NewComplexString(),
+  }
+}
+
+func (p ComplexStringBuilder) Emit() *ComplexString{
+  return &ComplexString{
+    A: p.obj.A,
+    B: p.obj.B,
+  }
+}
+
+func (c *ComplexStringBuilder) A(a string) *ComplexStringBuilder {
+  c.obj.A = a
+  return c
+}
+
+func (c *ComplexStringBuilder) B(b map[string]int32) *ComplexStringBuilder {
+  c.obj.B = b
+  return c
+}
+
+func (c *ComplexString) SetA(a string) *ComplexString {
+  c.A = a
+  return c
+}
+
+func (c *ComplexString) SetB(b map[string]int32) *ComplexString {
+  c.B = b
+  return c
+}
+
 func (p *ComplexString) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1538,6 +1867,43 @@ func (p *ComplexNestedWithDefault) IsSetN() bool {
   return p != nil && p.N != nil
 }
 
+type ComplexNestedWithDefaultBuilder struct {
+  obj *ComplexNestedWithDefault
+}
+
+func NewComplexNestedWithDefaultBuilder() *ComplexNestedWithDefaultBuilder{
+  return &ComplexNestedWithDefaultBuilder{
+    obj: NewComplexNestedWithDefault(),
+  }
+}
+
+func (p ComplexNestedWithDefaultBuilder) Emit() *ComplexNestedWithDefault{
+  return &ComplexNestedWithDefault{
+    Z: p.obj.Z,
+    N: p.obj.N,
+  }
+}
+
+func (c *ComplexNestedWithDefaultBuilder) Z(z string) *ComplexNestedWithDefaultBuilder {
+  c.obj.Z = z
+  return c
+}
+
+func (c *ComplexNestedWithDefaultBuilder) N(n *ComplexString) *ComplexNestedWithDefaultBuilder {
+  c.obj.N = n
+  return c
+}
+
+func (c *ComplexNestedWithDefault) SetZ(z string) *ComplexNestedWithDefault {
+  c.Z = z
+  return c
+}
+
+func (c *ComplexNestedWithDefault) SetN(n *ComplexString) *ComplexNestedWithDefault {
+  c.N = n
+  return c
+}
+
 func (p *ComplexNestedWithDefault) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1677,6 +2043,76 @@ func (p *MinPadding) GetBiggish() int32 {
 func (p *MinPadding) GetTiny() int8 {
   return p.Tiny
 }
+type MinPaddingBuilder struct {
+  obj *MinPadding
+}
+
+func NewMinPaddingBuilder() *MinPaddingBuilder{
+  return &MinPaddingBuilder{
+    obj: NewMinPadding(),
+  }
+}
+
+func (p MinPaddingBuilder) Emit() *MinPadding{
+  return &MinPadding{
+    Small: p.obj.Small,
+    Big: p.obj.Big,
+    Medium: p.obj.Medium,
+    Biggish: p.obj.Biggish,
+    Tiny: p.obj.Tiny,
+  }
+}
+
+func (m *MinPaddingBuilder) Small(small int8) *MinPaddingBuilder {
+  m.obj.Small = small
+  return m
+}
+
+func (m *MinPaddingBuilder) Big(big int64) *MinPaddingBuilder {
+  m.obj.Big = big
+  return m
+}
+
+func (m *MinPaddingBuilder) Medium(medium int16) *MinPaddingBuilder {
+  m.obj.Medium = medium
+  return m
+}
+
+func (m *MinPaddingBuilder) Biggish(biggish int32) *MinPaddingBuilder {
+  m.obj.Biggish = biggish
+  return m
+}
+
+func (m *MinPaddingBuilder) Tiny(tiny int8) *MinPaddingBuilder {
+  m.obj.Tiny = tiny
+  return m
+}
+
+func (m *MinPadding) SetSmall(small int8) *MinPadding {
+  m.Small = small
+  return m
+}
+
+func (m *MinPadding) SetBig(big int64) *MinPadding {
+  m.Big = big
+  return m
+}
+
+func (m *MinPadding) SetMedium(medium int16) *MinPadding {
+  m.Medium = medium
+  return m
+}
+
+func (m *MinPadding) SetBiggish(biggish int32) *MinPadding {
+  m.Biggish = biggish
+  return m
+}
+
+func (m *MinPadding) SetTiny(tiny int8) *MinPadding {
+  m.Tiny = tiny
+  return m
+}
+
 func (p *MinPadding) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1916,6 +2352,65 @@ func (p *MyStruct) IsSetData() bool {
   return p != nil && p.Data != nil
 }
 
+type MyStructBuilder struct {
+  obj *MyStruct
+}
+
+func NewMyStructBuilder() *MyStructBuilder{
+  return &MyStructBuilder{
+    obj: NewMyStruct(),
+  }
+}
+
+func (p MyStructBuilder) Emit() *MyStruct{
+  return &MyStruct{
+    MyIntField: p.obj.MyIntField,
+    MyStringField: p.obj.MyStringField,
+    MajorVer: p.obj.MajorVer,
+    Data: p.obj.Data,
+  }
+}
+
+func (m *MyStructBuilder) MyIntField(myIntField int64) *MyStructBuilder {
+  m.obj.MyIntField = myIntField
+  return m
+}
+
+func (m *MyStructBuilder) MyStringField(myStringField string) *MyStructBuilder {
+  m.obj.MyStringField = myStringField
+  return m
+}
+
+func (m *MyStructBuilder) MajorVer(majorVer int64) *MyStructBuilder {
+  m.obj.MajorVer = majorVer
+  return m
+}
+
+func (m *MyStructBuilder) Data(data *MyDataItem) *MyStructBuilder {
+  m.obj.Data = data
+  return m
+}
+
+func (m *MyStruct) SetMyIntField(myIntField int64) *MyStruct {
+  m.MyIntField = myIntField
+  return m
+}
+
+func (m *MyStruct) SetMyStringField(myStringField string) *MyStruct {
+  m.MyStringField = myStringField
+  return m
+}
+
+func (m *MyStruct) SetMajorVer(majorVer int64) *MyStruct {
+  m.MajorVer = majorVer
+  return m
+}
+
+func (m *MyStruct) SetData(data *MyDataItem) *MyStruct {
+  m.Data = data
+  return m
+}
+
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2074,6 +2569,21 @@ func NewMyDataItem() *MyDataItem {
   return &MyDataItem{}
 }
 
+type MyDataItemBuilder struct {
+  obj *MyDataItem
+}
+
+func NewMyDataItemBuilder() *MyDataItemBuilder{
+  return &MyDataItemBuilder{
+    obj: NewMyDataItem(),
+  }
+}
+
+func (p MyDataItemBuilder) Emit() *MyDataItem{
+  return &MyDataItem{
+  }
+}
+
 func (p *MyDataItem) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2131,6 +2641,32 @@ func NewRenaming() *Renaming {
 func (p *Renaming) GetFoo() int64 {
   return p.Foo
 }
+type RenamingBuilder struct {
+  obj *Renaming
+}
+
+func NewRenamingBuilder() *RenamingBuilder{
+  return &RenamingBuilder{
+    obj: NewRenaming(),
+  }
+}
+
+func (p RenamingBuilder) Emit() *Renaming{
+  return &Renaming{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (r *RenamingBuilder) Foo(foo int64) *RenamingBuilder {
+  r.obj.Foo = foo
+  return r
+}
+
+func (r *Renaming) SetFoo(foo int64) *Renaming {
+  r.Foo = foo
+  return r
+}
+
 func (p *Renaming) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2222,6 +2758,43 @@ func (p *AnnotatedTypes) GetBinaryField() TBinary {
 func (p *AnnotatedTypes) GetListField() include0.SomeListOfTypeMap {
   return p.ListField
 }
+type AnnotatedTypesBuilder struct {
+  obj *AnnotatedTypes
+}
+
+func NewAnnotatedTypesBuilder() *AnnotatedTypesBuilder{
+  return &AnnotatedTypesBuilder{
+    obj: NewAnnotatedTypes(),
+  }
+}
+
+func (p AnnotatedTypesBuilder) Emit() *AnnotatedTypes{
+  return &AnnotatedTypes{
+    BinaryField: p.obj.BinaryField,
+    ListField: p.obj.ListField,
+  }
+}
+
+func (a *AnnotatedTypesBuilder) BinaryField(binaryField TBinary) *AnnotatedTypesBuilder {
+  a.obj.BinaryField = binaryField
+  return a
+}
+
+func (a *AnnotatedTypesBuilder) ListField(listField include0.SomeListOfTypeMap) *AnnotatedTypesBuilder {
+  a.obj.ListField = listField
+  return a
+}
+
+func (a *AnnotatedTypes) SetBinaryField(binaryField TBinary) *AnnotatedTypes {
+  a.BinaryField = binaryField
+  return a
+}
+
+func (a *AnnotatedTypes) SetListField(listField include0.SomeListOfTypeMap) *AnnotatedTypes {
+  a.ListField = listField
+  return a
+}
+
 func (p *AnnotatedTypes) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2402,6 +2975,43 @@ func (p *ForwardUsageRoot) IsSetForwardUsageByRef() bool {
   return p != nil && p.ForwardUsageByRef != nil
 }
 
+type ForwardUsageRootBuilder struct {
+  obj *ForwardUsageRoot
+}
+
+func NewForwardUsageRootBuilder() *ForwardUsageRootBuilder{
+  return &ForwardUsageRootBuilder{
+    obj: NewForwardUsageRoot(),
+  }
+}
+
+func (p ForwardUsageRootBuilder) Emit() *ForwardUsageRoot{
+  return &ForwardUsageRoot{
+    ForwardUsageStruct: p.obj.ForwardUsageStruct,
+    ForwardUsageByRef: p.obj.ForwardUsageByRef,
+  }
+}
+
+func (f *ForwardUsageRootBuilder) ForwardUsageStruct(forwardUsageStruct *ForwardUsageStruct) *ForwardUsageRootBuilder {
+  f.obj.ForwardUsageStruct = forwardUsageStruct
+  return f
+}
+
+func (f *ForwardUsageRootBuilder) ForwardUsageByRef(forwardUsageByRef *ForwardUsageByRef) *ForwardUsageRootBuilder {
+  f.obj.ForwardUsageByRef = forwardUsageByRef
+  return f
+}
+
+func (f *ForwardUsageRoot) SetForwardUsageStruct(forwardUsageStruct *ForwardUsageStruct) *ForwardUsageRoot {
+  f.ForwardUsageStruct = forwardUsageStruct
+  return f
+}
+
+func (f *ForwardUsageRoot) SetForwardUsageByRef(forwardUsageByRef *ForwardUsageByRef) *ForwardUsageRoot {
+  f.ForwardUsageByRef = forwardUsageByRef
+  return f
+}
+
 func (p *ForwardUsageRoot) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2533,6 +3143,32 @@ func (p *ForwardUsageStruct) IsSetFoo() bool {
   return p != nil && p.Foo != nil
 }
 
+type ForwardUsageStructBuilder struct {
+  obj *ForwardUsageStruct
+}
+
+func NewForwardUsageStructBuilder() *ForwardUsageStructBuilder{
+  return &ForwardUsageStructBuilder{
+    obj: NewForwardUsageStruct(),
+  }
+}
+
+func (p ForwardUsageStructBuilder) Emit() *ForwardUsageStruct{
+  return &ForwardUsageStruct{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (f *ForwardUsageStructBuilder) Foo(foo *ForwardUsageRoot) *ForwardUsageStructBuilder {
+  f.obj.Foo = foo
+  return f
+}
+
+func (f *ForwardUsageStruct) SetFoo(foo *ForwardUsageRoot) *ForwardUsageStruct {
+  f.Foo = foo
+  return f
+}
+
 func (p *ForwardUsageStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2632,6 +3268,32 @@ func (p *ForwardUsageByRef) IsSetFoo() bool {
   return p != nil && p.Foo != nil
 }
 
+type ForwardUsageByRefBuilder struct {
+  obj *ForwardUsageByRef
+}
+
+func NewForwardUsageByRefBuilder() *ForwardUsageByRefBuilder{
+  return &ForwardUsageByRefBuilder{
+    obj: NewForwardUsageByRef(),
+  }
+}
+
+func (p ForwardUsageByRefBuilder) Emit() *ForwardUsageByRef{
+  return &ForwardUsageByRef{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (f *ForwardUsageByRefBuilder) Foo(foo *ForwardUsageRoot) *ForwardUsageByRefBuilder {
+  f.obj.Foo = foo
+  return f
+}
+
+func (f *ForwardUsageByRef) SetFoo(foo *ForwardUsageRoot) *ForwardUsageByRef {
+  f.Foo = foo
+  return f
+}
+
 func (p *ForwardUsageByRef) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2717,6 +3379,21 @@ func NewNoexceptMoveEmpty() *NoexceptMoveEmpty {
   return &NoexceptMoveEmpty{}
 }
 
+type NoexceptMoveEmptyBuilder struct {
+  obj *NoexceptMoveEmpty
+}
+
+func NewNoexceptMoveEmptyBuilder() *NoexceptMoveEmptyBuilder{
+  return &NoexceptMoveEmptyBuilder{
+    obj: NewNoexceptMoveEmpty(),
+  }
+}
+
+func (p NoexceptMoveEmptyBuilder) Emit() *NoexceptMoveEmpty{
+  return &NoexceptMoveEmpty{
+  }
+}
+
 func (p *NoexceptMoveEmpty) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2774,6 +3451,32 @@ func NewNoexceptMoveSimpleStruct() *NoexceptMoveSimpleStruct {
 func (p *NoexceptMoveSimpleStruct) GetBoolField() int64 {
   return p.BoolField
 }
+type NoexceptMoveSimpleStructBuilder struct {
+  obj *NoexceptMoveSimpleStruct
+}
+
+func NewNoexceptMoveSimpleStructBuilder() *NoexceptMoveSimpleStructBuilder{
+  return &NoexceptMoveSimpleStructBuilder{
+    obj: NewNoexceptMoveSimpleStruct(),
+  }
+}
+
+func (p NoexceptMoveSimpleStructBuilder) Emit() *NoexceptMoveSimpleStruct{
+  return &NoexceptMoveSimpleStruct{
+    BoolField: p.obj.BoolField,
+  }
+}
+
+func (n *NoexceptMoveSimpleStructBuilder) BoolField(boolField int64) *NoexceptMoveSimpleStructBuilder {
+  n.obj.BoolField = boolField
+  return n
+}
+
+func (n *NoexceptMoveSimpleStruct) SetBoolField(boolField int64) *NoexceptMoveSimpleStruct {
+  n.BoolField = boolField
+  return n
+}
+
 func (p *NoexceptMoveSimpleStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2917,6 +3620,120 @@ func (p *NoexceptMoveComplexStruct) GetMyMapEnumAndInt() map[MyEnumA]string {
 }
 func (p *NoexceptMoveComplexStruct) IsSetMyBinaryField2() bool {
   return p != nil && p.MyBinaryField2 != nil
+}
+
+type NoexceptMoveComplexStructBuilder struct {
+  obj *NoexceptMoveComplexStruct
+}
+
+func NewNoexceptMoveComplexStructBuilder() *NoexceptMoveComplexStructBuilder{
+  return &NoexceptMoveComplexStructBuilder{
+    obj: NewNoexceptMoveComplexStruct(),
+  }
+}
+
+func (p NoexceptMoveComplexStructBuilder) Emit() *NoexceptMoveComplexStruct{
+  return &NoexceptMoveComplexStruct{
+    MyBoolField: p.obj.MyBoolField,
+    MyIntField: p.obj.MyIntField,
+    MyStringField: p.obj.MyStringField,
+    MyStringField2: p.obj.MyStringField2,
+    MyBinaryField: p.obj.MyBinaryField,
+    MyBinaryField2: p.obj.MyBinaryField2,
+    MyBinaryField3: p.obj.MyBinaryField3,
+    MyBinaryListField4: p.obj.MyBinaryListField4,
+    MyMapEnumAndInt: p.obj.MyMapEnumAndInt,
+  }
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyBoolField(myBoolField bool) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyBoolField = myBoolField
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyIntField(myIntField int64) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyIntField = myIntField
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyStringField(myStringField string) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyStringField = myStringField
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyStringField2(myStringField2 string) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyStringField2 = myStringField2
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyBinaryField(myBinaryField []byte) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyBinaryField = myBinaryField
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyBinaryField2(myBinaryField2 []byte) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyBinaryField2 = myBinaryField2
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyBinaryField3(myBinaryField3 []byte) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyBinaryField3 = myBinaryField3
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyBinaryListField4(myBinaryListField4 [][]byte) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyBinaryListField4 = myBinaryListField4
+  return n
+}
+
+func (n *NoexceptMoveComplexStructBuilder) MyMapEnumAndInt(myMapEnumAndInt map[MyEnumA]string) *NoexceptMoveComplexStructBuilder {
+  n.obj.MyMapEnumAndInt = myMapEnumAndInt
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyBoolField(myBoolField bool) *NoexceptMoveComplexStruct {
+  n.MyBoolField = myBoolField
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyIntField(myIntField int64) *NoexceptMoveComplexStruct {
+  n.MyIntField = myIntField
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyStringField(myStringField string) *NoexceptMoveComplexStruct {
+  n.MyStringField = myStringField
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyStringField2(myStringField2 string) *NoexceptMoveComplexStruct {
+  n.MyStringField2 = myStringField2
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyBinaryField(myBinaryField []byte) *NoexceptMoveComplexStruct {
+  n.MyBinaryField = myBinaryField
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyBinaryField2(myBinaryField2 []byte) *NoexceptMoveComplexStruct {
+  n.MyBinaryField2 = myBinaryField2
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyBinaryField3(myBinaryField3 []byte) *NoexceptMoveComplexStruct {
+  n.MyBinaryField3 = myBinaryField3
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyBinaryListField4(myBinaryListField4 [][]byte) *NoexceptMoveComplexStruct {
+  n.MyBinaryListField4 = myBinaryListField4
+  return n
+}
+
+func (n *NoexceptMoveComplexStruct) SetMyMapEnumAndInt(myMapEnumAndInt map[MyEnumA]string) *NoexceptMoveComplexStruct {
+  n.MyMapEnumAndInt = myMapEnumAndInt
+  return n
 }
 
 func (p *NoexceptMoveComplexStruct) Read(iprot thrift.Protocol) error {
@@ -3294,6 +4111,43 @@ func (p *NoExceptMoveUnion) IsSetI32Field() bool {
   return p != nil && p.I32Field != nil
 }
 
+type NoExceptMoveUnionBuilder struct {
+  obj *NoExceptMoveUnion
+}
+
+func NewNoExceptMoveUnionBuilder() *NoExceptMoveUnionBuilder{
+  return &NoExceptMoveUnionBuilder{
+    obj: NewNoExceptMoveUnion(),
+  }
+}
+
+func (p NoExceptMoveUnionBuilder) Emit() *NoExceptMoveUnion{
+  return &NoExceptMoveUnion{
+    StringField: p.obj.StringField,
+    I32Field: p.obj.I32Field,
+  }
+}
+
+func (n *NoExceptMoveUnionBuilder) StringField(stringField *string) *NoExceptMoveUnionBuilder {
+  n.obj.StringField = stringField
+  return n
+}
+
+func (n *NoExceptMoveUnionBuilder) I32Field(i32Field *int32) *NoExceptMoveUnionBuilder {
+  n.obj.I32Field = i32Field
+  return n
+}
+
+func (n *NoExceptMoveUnion) SetStringField(stringField *string) *NoExceptMoveUnion {
+  n.StringField = stringField
+  return n
+}
+
+func (n *NoExceptMoveUnion) SetI32Field(i32Field *int32) *NoExceptMoveUnion {
+  n.I32Field = i32Field
+  return n
+}
+
 func (p *NoExceptMoveUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3445,6 +4299,76 @@ func (p *AllocatorAware) GetAaString() string {
 func (p *AllocatorAware) GetNotAContainer() int32 {
   return p.NotAContainer
 }
+type AllocatorAwareBuilder struct {
+  obj *AllocatorAware
+}
+
+func NewAllocatorAwareBuilder() *AllocatorAwareBuilder{
+  return &AllocatorAwareBuilder{
+    obj: NewAllocatorAware(),
+  }
+}
+
+func (p AllocatorAwareBuilder) Emit() *AllocatorAware{
+  return &AllocatorAware{
+    AaList: p.obj.AaList,
+    AaSet: p.obj.AaSet,
+    AaMap: p.obj.AaMap,
+    AaString: p.obj.AaString,
+    NotAContainer: p.obj.NotAContainer,
+  }
+}
+
+func (a *AllocatorAwareBuilder) AaList(aaList []int32) *AllocatorAwareBuilder {
+  a.obj.AaList = aaList
+  return a
+}
+
+func (a *AllocatorAwareBuilder) AaSet(aaSet []int32) *AllocatorAwareBuilder {
+  a.obj.AaSet = aaSet
+  return a
+}
+
+func (a *AllocatorAwareBuilder) AaMap(aaMap map[int32]int32) *AllocatorAwareBuilder {
+  a.obj.AaMap = aaMap
+  return a
+}
+
+func (a *AllocatorAwareBuilder) AaString(aaString string) *AllocatorAwareBuilder {
+  a.obj.AaString = aaString
+  return a
+}
+
+func (a *AllocatorAwareBuilder) NotAContainer(notAContainer int32) *AllocatorAwareBuilder {
+  a.obj.NotAContainer = notAContainer
+  return a
+}
+
+func (a *AllocatorAware) SetAaList(aaList []int32) *AllocatorAware {
+  a.AaList = aaList
+  return a
+}
+
+func (a *AllocatorAware) SetAaSet(aaSet []int32) *AllocatorAware {
+  a.AaSet = aaSet
+  return a
+}
+
+func (a *AllocatorAware) SetAaMap(aaMap map[int32]int32) *AllocatorAware {
+  a.AaMap = aaMap
+  return a
+}
+
+func (a *AllocatorAware) SetAaString(aaString string) *AllocatorAware {
+  a.AaString = aaString
+  return a
+}
+
+func (a *AllocatorAware) SetNotAContainer(notAContainer int32) *AllocatorAware {
+  a.NotAContainer = notAContainer
+  return a
+}
+
 func (p *AllocatorAware) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3708,6 +4632,32 @@ func NewAllocatorAware2() *AllocatorAware2 {
 func (p *AllocatorAware2) GetNotAContainer() int32 {
   return p.NotAContainer
 }
+type AllocatorAware2Builder struct {
+  obj *AllocatorAware2
+}
+
+func NewAllocatorAware2Builder() *AllocatorAware2Builder{
+  return &AllocatorAware2Builder{
+    obj: NewAllocatorAware2(),
+  }
+}
+
+func (p AllocatorAware2Builder) Emit() *AllocatorAware2{
+  return &AllocatorAware2{
+    NotAContainer: p.obj.NotAContainer,
+  }
+}
+
+func (a *AllocatorAware2Builder) NotAContainer(notAContainer int32) *AllocatorAware2Builder {
+  a.obj.NotAContainer = notAContainer
+  return a
+}
+
+func (a *AllocatorAware2) SetNotAContainer(notAContainer int32) *AllocatorAware2 {
+  a.NotAContainer = notAContainer
+  return a
+}
+
 func (p *AllocatorAware2) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

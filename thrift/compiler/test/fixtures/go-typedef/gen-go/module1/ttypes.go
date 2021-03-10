@@ -122,6 +122,98 @@ func (p *Automobile) IsSetFirstPlate() bool {
   return p != nil && p.FirstPlate != Automobile_FirstPlate_DEFAULT
 }
 
+type AutomobileBuilder struct {
+  obj *Automobile
+}
+
+func NewAutomobileBuilder() *AutomobileBuilder{
+  return &AutomobileBuilder{
+    obj: NewAutomobile(),
+  }
+}
+
+func (p AutomobileBuilder) Emit() *Automobile{
+  return &Automobile{
+    Plate: p.obj.Plate,
+    PreviousPlate: p.obj.PreviousPlate,
+    FirstPlate: p.obj.FirstPlate,
+    Year: p.obj.Year,
+    Drivers: p.obj.Drivers,
+    Accessories: p.obj.Accessories,
+    PartNames: p.obj.PartNames,
+  }
+}
+
+func (a *AutomobileBuilder) Plate(plate Plate) *AutomobileBuilder {
+  a.obj.Plate = plate
+  return a
+}
+
+func (a *AutomobileBuilder) PreviousPlate(previousPlate *Plate) *AutomobileBuilder {
+  a.obj.PreviousPlate = previousPlate
+  return a
+}
+
+func (a *AutomobileBuilder) FirstPlate(firstPlate Plate) *AutomobileBuilder {
+  a.obj.FirstPlate = firstPlate
+  return a
+}
+
+func (a *AutomobileBuilder) Year(year Year) *AutomobileBuilder {
+  a.obj.Year = year
+  return a
+}
+
+func (a *AutomobileBuilder) Drivers(drivers Drivers) *AutomobileBuilder {
+  a.obj.Drivers = drivers
+  return a
+}
+
+func (a *AutomobileBuilder) Accessories(accessories []*Accessory) *AutomobileBuilder {
+  a.obj.Accessories = accessories
+  return a
+}
+
+func (a *AutomobileBuilder) PartNames(partNames map[int32]*PartName) *AutomobileBuilder {
+  a.obj.PartNames = partNames
+  return a
+}
+
+func (a *Automobile) SetPlate(plate Plate) *Automobile {
+  a.Plate = plate
+  return a
+}
+
+func (a *Automobile) SetPreviousPlate(previousPlate *Plate) *Automobile {
+  a.PreviousPlate = previousPlate
+  return a
+}
+
+func (a *Automobile) SetFirstPlate(firstPlate Plate) *Automobile {
+  a.FirstPlate = firstPlate
+  return a
+}
+
+func (a *Automobile) SetYear(year Year) *Automobile {
+  a.Year = year
+  return a
+}
+
+func (a *Automobile) SetDrivers(drivers Drivers) *Automobile {
+  a.Drivers = drivers
+  return a
+}
+
+func (a *Automobile) SetAccessories(accessories []*Accessory) *Automobile {
+  a.Accessories = accessories
+  return a
+}
+
+func (a *Automobile) SetPartNames(partNames map[int32]*PartName) *Automobile {
+  a.PartNames = partNames
+  return a
+}
+
 func (p *Automobile) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -445,6 +537,43 @@ func (p *MapKey) GetNum() int64 {
 func (p *MapKey) GetStrval() string {
   return p.Strval
 }
+type MapKeyBuilder struct {
+  obj *MapKey
+}
+
+func NewMapKeyBuilder() *MapKeyBuilder{
+  return &MapKeyBuilder{
+    obj: NewMapKey(),
+  }
+}
+
+func (p MapKeyBuilder) Emit() *MapKey{
+  return &MapKey{
+    Num: p.obj.Num,
+    Strval: p.obj.Strval,
+  }
+}
+
+func (m *MapKeyBuilder) Num(num int64) *MapKeyBuilder {
+  m.obj.Num = num
+  return m
+}
+
+func (m *MapKeyBuilder) Strval(strval string) *MapKeyBuilder {
+  m.obj.Strval = strval
+  return m
+}
+
+func (m *MapKey) SetNum(num int64) *MapKey {
+  m.Num = num
+  return m
+}
+
+func (m *MapKey) SetStrval(strval string) *MapKey {
+  m.Strval = strval
+  return m
+}
+
 func (p *MapKey) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -555,6 +684,32 @@ func NewMapContainer() *MapContainer {
 func (p *MapContainer) GetMapval() map[MapKey]string {
   return p.Mapval
 }
+type MapContainerBuilder struct {
+  obj *MapContainer
+}
+
+func NewMapContainerBuilder() *MapContainerBuilder{
+  return &MapContainerBuilder{
+    obj: NewMapContainer(),
+  }
+}
+
+func (p MapContainerBuilder) Emit() *MapContainer{
+  return &MapContainer{
+    Mapval: p.obj.Mapval,
+  }
+}
+
+func (m *MapContainerBuilder) Mapval(mapval map[MapKey]string) *MapContainerBuilder {
+  m.obj.Mapval = mapval
+  return m
+}
+
+func (m *MapContainer) SetMapval(mapval map[MapKey]string) *MapContainer {
+  m.Mapval = mapval
+  return m
+}
+
 func (p *MapContainer) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -691,6 +846,43 @@ func (p *Pair) IsSetCar() bool {
   return p != nil && p.Car != nil
 }
 
+type PairBuilder struct {
+  obj *Pair
+}
+
+func NewPairBuilder() *PairBuilder{
+  return &PairBuilder{
+    obj: NewPair(),
+  }
+}
+
+func (p PairBuilder) Emit() *Pair{
+  return &Pair{
+    Automobile: p.obj.Automobile,
+    Car: p.obj.Car,
+  }
+}
+
+func (p *PairBuilder) Automobile(automobile *Automobile) *PairBuilder {
+  p.obj.Automobile = automobile
+  return p
+}
+
+func (p *PairBuilder) Car(car *Car) *PairBuilder {
+  p.obj.Car = car
+  return p
+}
+
+func (p *Pair) SetAutomobile(automobile *Automobile) *Pair {
+  p.Automobile = automobile
+  return p
+}
+
+func (p *Pair) SetCar(car *Car) *Pair {
+  p.Car = car
+  return p
+}
+
 func (p *Pair) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -817,6 +1009,43 @@ func (p *Collection) GetAutomobiles() []*Automobile {
 func (p *Collection) GetCars() []*Car {
   return p.Cars
 }
+type CollectionBuilder struct {
+  obj *Collection
+}
+
+func NewCollectionBuilder() *CollectionBuilder{
+  return &CollectionBuilder{
+    obj: NewCollection(),
+  }
+}
+
+func (p CollectionBuilder) Emit() *Collection{
+  return &Collection{
+    Automobiles: p.obj.Automobiles,
+    Cars: p.obj.Cars,
+  }
+}
+
+func (c *CollectionBuilder) Automobiles(automobiles []*Automobile) *CollectionBuilder {
+  c.obj.Automobiles = automobiles
+  return c
+}
+
+func (c *CollectionBuilder) Cars(cars []*Car) *CollectionBuilder {
+  c.obj.Cars = cars
+  return c
+}
+
+func (c *Collection) SetAutomobiles(automobiles []*Automobile) *Collection {
+  c.Automobiles = automobiles
+  return c
+}
+
+func (c *Collection) SetCars(cars []*Car) *Collection {
+  c.Cars = cars
+  return c
+}
+
 func (p *Collection) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

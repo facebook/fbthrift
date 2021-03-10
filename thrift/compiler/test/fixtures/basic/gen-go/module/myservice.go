@@ -976,6 +976,21 @@ func NewMyServicePingArgs() *MyServicePingArgs {
   return &MyServicePingArgs{}
 }
 
+type MyServicePingArgsBuilder struct {
+  obj *MyServicePingArgs
+}
+
+func NewMyServicePingArgsBuilder() *MyServicePingArgsBuilder{
+  return &MyServicePingArgsBuilder{
+    obj: NewMyServicePingArgs(),
+  }
+}
+
+func (p MyServicePingArgsBuilder) Emit() *MyServicePingArgs{
+  return &MyServicePingArgs{
+  }
+}
+
 func (p *MyServicePingArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1027,6 +1042,21 @@ func NewMyServicePingResult() *MyServicePingResult {
   return &MyServicePingResult{}
 }
 
+type MyServicePingResultBuilder struct {
+  obj *MyServicePingResult
+}
+
+func NewMyServicePingResultBuilder() *MyServicePingResultBuilder{
+  return &MyServicePingResultBuilder{
+    obj: NewMyServicePingResult(),
+  }
+}
+
+func (p MyServicePingResultBuilder) Emit() *MyServicePingResult{
+  return &MyServicePingResult{
+  }
+}
+
 func (p *MyServicePingResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1076,6 +1106,21 @@ type MyServiceGetRandomDataArgs struct {
 
 func NewMyServiceGetRandomDataArgs() *MyServiceGetRandomDataArgs {
   return &MyServiceGetRandomDataArgs{}
+}
+
+type MyServiceGetRandomDataArgsBuilder struct {
+  obj *MyServiceGetRandomDataArgs
+}
+
+func NewMyServiceGetRandomDataArgsBuilder() *MyServiceGetRandomDataArgsBuilder{
+  return &MyServiceGetRandomDataArgsBuilder{
+    obj: NewMyServiceGetRandomDataArgs(),
+  }
+}
+
+func (p MyServiceGetRandomDataArgsBuilder) Emit() *MyServiceGetRandomDataArgs{
+  return &MyServiceGetRandomDataArgs{
+  }
 }
 
 func (p *MyServiceGetRandomDataArgs) Read(iprot thrift.Protocol) error {
@@ -1141,6 +1186,32 @@ return *p.Success
 }
 func (p *MyServiceGetRandomDataResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type MyServiceGetRandomDataResultBuilder struct {
+  obj *MyServiceGetRandomDataResult
+}
+
+func NewMyServiceGetRandomDataResultBuilder() *MyServiceGetRandomDataResultBuilder{
+  return &MyServiceGetRandomDataResultBuilder{
+    obj: NewMyServiceGetRandomDataResult(),
+  }
+}
+
+func (p MyServiceGetRandomDataResultBuilder) Emit() *MyServiceGetRandomDataResult{
+  return &MyServiceGetRandomDataResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (m *MyServiceGetRandomDataResultBuilder) Success(success *string) *MyServiceGetRandomDataResultBuilder {
+  m.obj.Success = success
+  return m
+}
+
+func (m *MyServiceGetRandomDataResult) SetSuccess(success *string) *MyServiceGetRandomDataResult {
+  m.Success = success
+  return m
 }
 
 func (p *MyServiceGetRandomDataResult) Read(iprot thrift.Protocol) error {
@@ -1236,6 +1307,32 @@ func NewMyServiceSinkArgs() *MyServiceSinkArgs {
 func (p *MyServiceSinkArgs) GetSink() int64 {
   return p.Sink
 }
+type MyServiceSinkArgsBuilder struct {
+  obj *MyServiceSinkArgs
+}
+
+func NewMyServiceSinkArgsBuilder() *MyServiceSinkArgsBuilder{
+  return &MyServiceSinkArgsBuilder{
+    obj: NewMyServiceSinkArgs(),
+  }
+}
+
+func (p MyServiceSinkArgsBuilder) Emit() *MyServiceSinkArgs{
+  return &MyServiceSinkArgs{
+    Sink: p.obj.Sink,
+  }
+}
+
+func (m *MyServiceSinkArgsBuilder) Sink(sink int64) *MyServiceSinkArgsBuilder {
+  m.obj.Sink = sink
+  return m
+}
+
+func (m *MyServiceSinkArgs) SetSink(sink int64) *MyServiceSinkArgs {
+  m.Sink = sink
+  return m
+}
+
 func (p *MyServiceSinkArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1315,6 +1412,21 @@ func NewMyServiceSinkResult() *MyServiceSinkResult {
   return &MyServiceSinkResult{}
 }
 
+type MyServiceSinkResultBuilder struct {
+  obj *MyServiceSinkResult
+}
+
+func NewMyServiceSinkResultBuilder() *MyServiceSinkResultBuilder{
+  return &MyServiceSinkResultBuilder{
+    obj: NewMyServiceSinkResult(),
+  }
+}
+
+func (p MyServiceSinkResultBuilder) Emit() *MyServiceSinkResult{
+  return &MyServiceSinkResult{
+  }
+}
+
 func (p *MyServiceSinkResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1379,6 +1491,43 @@ func (p *MyServicePutDataByIdArgs) GetId() int64 {
 func (p *MyServicePutDataByIdArgs) GetData() string {
   return p.Data
 }
+type MyServicePutDataByIdArgsBuilder struct {
+  obj *MyServicePutDataByIdArgs
+}
+
+func NewMyServicePutDataByIdArgsBuilder() *MyServicePutDataByIdArgsBuilder{
+  return &MyServicePutDataByIdArgsBuilder{
+    obj: NewMyServicePutDataByIdArgs(),
+  }
+}
+
+func (p MyServicePutDataByIdArgsBuilder) Emit() *MyServicePutDataByIdArgs{
+  return &MyServicePutDataByIdArgs{
+    Id: p.obj.Id,
+    Data: p.obj.Data,
+  }
+}
+
+func (m *MyServicePutDataByIdArgsBuilder) Id(id int64) *MyServicePutDataByIdArgsBuilder {
+  m.obj.Id = id
+  return m
+}
+
+func (m *MyServicePutDataByIdArgsBuilder) Data(data string) *MyServicePutDataByIdArgsBuilder {
+  m.obj.Data = data
+  return m
+}
+
+func (m *MyServicePutDataByIdArgs) SetId(id int64) *MyServicePutDataByIdArgs {
+  m.Id = id
+  return m
+}
+
+func (m *MyServicePutDataByIdArgs) SetData(data string) *MyServicePutDataByIdArgs {
+  m.Data = data
+  return m
+}
+
 func (p *MyServicePutDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1483,6 +1632,21 @@ func NewMyServicePutDataByIdResult() *MyServicePutDataByIdResult {
   return &MyServicePutDataByIdResult{}
 }
 
+type MyServicePutDataByIdResultBuilder struct {
+  obj *MyServicePutDataByIdResult
+}
+
+func NewMyServicePutDataByIdResultBuilder() *MyServicePutDataByIdResultBuilder{
+  return &MyServicePutDataByIdResultBuilder{
+    obj: NewMyServicePutDataByIdResult(),
+  }
+}
+
+func (p MyServicePutDataByIdResultBuilder) Emit() *MyServicePutDataByIdResult{
+  return &MyServicePutDataByIdResult{
+  }
+}
+
 func (p *MyServicePutDataByIdResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1541,6 +1705,32 @@ func NewMyServiceHasDataByIdArgs() *MyServiceHasDataByIdArgs {
 func (p *MyServiceHasDataByIdArgs) GetId() int64 {
   return p.Id
 }
+type MyServiceHasDataByIdArgsBuilder struct {
+  obj *MyServiceHasDataByIdArgs
+}
+
+func NewMyServiceHasDataByIdArgsBuilder() *MyServiceHasDataByIdArgsBuilder{
+  return &MyServiceHasDataByIdArgsBuilder{
+    obj: NewMyServiceHasDataByIdArgs(),
+  }
+}
+
+func (p MyServiceHasDataByIdArgsBuilder) Emit() *MyServiceHasDataByIdArgs{
+  return &MyServiceHasDataByIdArgs{
+    Id: p.obj.Id,
+  }
+}
+
+func (m *MyServiceHasDataByIdArgsBuilder) Id(id int64) *MyServiceHasDataByIdArgsBuilder {
+  m.obj.Id = id
+  return m
+}
+
+func (m *MyServiceHasDataByIdArgs) SetId(id int64) *MyServiceHasDataByIdArgs {
+  m.Id = id
+  return m
+}
+
 func (p *MyServiceHasDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1632,6 +1822,32 @@ return *p.Success
 }
 func (p *MyServiceHasDataByIdResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type MyServiceHasDataByIdResultBuilder struct {
+  obj *MyServiceHasDataByIdResult
+}
+
+func NewMyServiceHasDataByIdResultBuilder() *MyServiceHasDataByIdResultBuilder{
+  return &MyServiceHasDataByIdResultBuilder{
+    obj: NewMyServiceHasDataByIdResult(),
+  }
+}
+
+func (p MyServiceHasDataByIdResultBuilder) Emit() *MyServiceHasDataByIdResult{
+  return &MyServiceHasDataByIdResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (m *MyServiceHasDataByIdResultBuilder) Success(success *bool) *MyServiceHasDataByIdResultBuilder {
+  m.obj.Success = success
+  return m
+}
+
+func (m *MyServiceHasDataByIdResult) SetSuccess(success *bool) *MyServiceHasDataByIdResult {
+  m.Success = success
+  return m
 }
 
 func (p *MyServiceHasDataByIdResult) Read(iprot thrift.Protocol) error {
@@ -1727,6 +1943,32 @@ func NewMyServiceGetDataByIdArgs() *MyServiceGetDataByIdArgs {
 func (p *MyServiceGetDataByIdArgs) GetId() int64 {
   return p.Id
 }
+type MyServiceGetDataByIdArgsBuilder struct {
+  obj *MyServiceGetDataByIdArgs
+}
+
+func NewMyServiceGetDataByIdArgsBuilder() *MyServiceGetDataByIdArgsBuilder{
+  return &MyServiceGetDataByIdArgsBuilder{
+    obj: NewMyServiceGetDataByIdArgs(),
+  }
+}
+
+func (p MyServiceGetDataByIdArgsBuilder) Emit() *MyServiceGetDataByIdArgs{
+  return &MyServiceGetDataByIdArgs{
+    Id: p.obj.Id,
+  }
+}
+
+func (m *MyServiceGetDataByIdArgsBuilder) Id(id int64) *MyServiceGetDataByIdArgsBuilder {
+  m.obj.Id = id
+  return m
+}
+
+func (m *MyServiceGetDataByIdArgs) SetId(id int64) *MyServiceGetDataByIdArgs {
+  m.Id = id
+  return m
+}
+
 func (p *MyServiceGetDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1818,6 +2060,32 @@ return *p.Success
 }
 func (p *MyServiceGetDataByIdResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type MyServiceGetDataByIdResultBuilder struct {
+  obj *MyServiceGetDataByIdResult
+}
+
+func NewMyServiceGetDataByIdResultBuilder() *MyServiceGetDataByIdResultBuilder{
+  return &MyServiceGetDataByIdResultBuilder{
+    obj: NewMyServiceGetDataByIdResult(),
+  }
+}
+
+func (p MyServiceGetDataByIdResultBuilder) Emit() *MyServiceGetDataByIdResult{
+  return &MyServiceGetDataByIdResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (m *MyServiceGetDataByIdResultBuilder) Success(success *string) *MyServiceGetDataByIdResultBuilder {
+  m.obj.Success = success
+  return m
+}
+
+func (m *MyServiceGetDataByIdResult) SetSuccess(success *string) *MyServiceGetDataByIdResult {
+  m.Success = success
+  return m
 }
 
 func (p *MyServiceGetDataByIdResult) Read(iprot thrift.Protocol) error {
@@ -1913,6 +2181,32 @@ func NewMyServiceDeleteDataByIdArgs() *MyServiceDeleteDataByIdArgs {
 func (p *MyServiceDeleteDataByIdArgs) GetId() int64 {
   return p.Id
 }
+type MyServiceDeleteDataByIdArgsBuilder struct {
+  obj *MyServiceDeleteDataByIdArgs
+}
+
+func NewMyServiceDeleteDataByIdArgsBuilder() *MyServiceDeleteDataByIdArgsBuilder{
+  return &MyServiceDeleteDataByIdArgsBuilder{
+    obj: NewMyServiceDeleteDataByIdArgs(),
+  }
+}
+
+func (p MyServiceDeleteDataByIdArgsBuilder) Emit() *MyServiceDeleteDataByIdArgs{
+  return &MyServiceDeleteDataByIdArgs{
+    Id: p.obj.Id,
+  }
+}
+
+func (m *MyServiceDeleteDataByIdArgsBuilder) Id(id int64) *MyServiceDeleteDataByIdArgsBuilder {
+  m.obj.Id = id
+  return m
+}
+
+func (m *MyServiceDeleteDataByIdArgs) SetId(id int64) *MyServiceDeleteDataByIdArgs {
+  m.Id = id
+  return m
+}
+
 func (p *MyServiceDeleteDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1992,6 +2286,21 @@ func NewMyServiceDeleteDataByIdResult() *MyServiceDeleteDataByIdResult {
   return &MyServiceDeleteDataByIdResult{}
 }
 
+type MyServiceDeleteDataByIdResultBuilder struct {
+  obj *MyServiceDeleteDataByIdResult
+}
+
+func NewMyServiceDeleteDataByIdResultBuilder() *MyServiceDeleteDataByIdResultBuilder{
+  return &MyServiceDeleteDataByIdResultBuilder{
+    obj: NewMyServiceDeleteDataByIdResult(),
+  }
+}
+
+func (p MyServiceDeleteDataByIdResultBuilder) Emit() *MyServiceDeleteDataByIdResult{
+  return &MyServiceDeleteDataByIdResult{
+  }
+}
+
 func (p *MyServiceDeleteDataByIdResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2056,6 +2365,43 @@ func (p *MyServiceLobDataByIdArgs) GetId() int64 {
 func (p *MyServiceLobDataByIdArgs) GetData() string {
   return p.Data
 }
+type MyServiceLobDataByIdArgsBuilder struct {
+  obj *MyServiceLobDataByIdArgs
+}
+
+func NewMyServiceLobDataByIdArgsBuilder() *MyServiceLobDataByIdArgsBuilder{
+  return &MyServiceLobDataByIdArgsBuilder{
+    obj: NewMyServiceLobDataByIdArgs(),
+  }
+}
+
+func (p MyServiceLobDataByIdArgsBuilder) Emit() *MyServiceLobDataByIdArgs{
+  return &MyServiceLobDataByIdArgs{
+    Id: p.obj.Id,
+    Data: p.obj.Data,
+  }
+}
+
+func (m *MyServiceLobDataByIdArgsBuilder) Id(id int64) *MyServiceLobDataByIdArgsBuilder {
+  m.obj.Id = id
+  return m
+}
+
+func (m *MyServiceLobDataByIdArgsBuilder) Data(data string) *MyServiceLobDataByIdArgsBuilder {
+  m.obj.Data = data
+  return m
+}
+
+func (m *MyServiceLobDataByIdArgs) SetId(id int64) *MyServiceLobDataByIdArgs {
+  m.Id = id
+  return m
+}
+
+func (m *MyServiceLobDataByIdArgs) SetData(data string) *MyServiceLobDataByIdArgs {
+  m.Data = data
+  return m
+}
+
 func (p *MyServiceLobDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

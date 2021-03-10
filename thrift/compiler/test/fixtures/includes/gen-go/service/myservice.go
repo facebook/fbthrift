@@ -423,6 +423,43 @@ func (p *MyServiceQueryArgs) IsSetI() bool {
   return p != nil && p.I != nil
 }
 
+type MyServiceQueryArgsBuilder struct {
+  obj *MyServiceQueryArgs
+}
+
+func NewMyServiceQueryArgsBuilder() *MyServiceQueryArgsBuilder{
+  return &MyServiceQueryArgsBuilder{
+    obj: NewMyServiceQueryArgs(),
+  }
+}
+
+func (p MyServiceQueryArgsBuilder) Emit() *MyServiceQueryArgs{
+  return &MyServiceQueryArgs{
+    S: p.obj.S,
+    I: p.obj.I,
+  }
+}
+
+func (m *MyServiceQueryArgsBuilder) S(s *module0.MyStruct) *MyServiceQueryArgsBuilder {
+  m.obj.S = s
+  return m
+}
+
+func (m *MyServiceQueryArgsBuilder) I(i *includes1.Included) *MyServiceQueryArgsBuilder {
+  m.obj.I = i
+  return m
+}
+
+func (m *MyServiceQueryArgs) SetS(s *module0.MyStruct) *MyServiceQueryArgs {
+  m.S = s
+  return m
+}
+
+func (m *MyServiceQueryArgs) SetI(i *includes1.Included) *MyServiceQueryArgs {
+  m.I = i
+  return m
+}
+
 func (p *MyServiceQueryArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -537,6 +574,21 @@ func NewMyServiceQueryResult() *MyServiceQueryResult {
   return &MyServiceQueryResult{}
 }
 
+type MyServiceQueryResultBuilder struct {
+  obj *MyServiceQueryResult
+}
+
+func NewMyServiceQueryResultBuilder() *MyServiceQueryResultBuilder{
+  return &MyServiceQueryResultBuilder{
+    obj: NewMyServiceQueryResult(),
+  }
+}
+
+func (p MyServiceQueryResultBuilder) Emit() *MyServiceQueryResult{
+  return &MyServiceQueryResult{
+  }
+}
+
 func (p *MyServiceQueryResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -616,6 +668,43 @@ func (p *MyServiceHasArgDocsArgs) IsSetS() bool {
 
 func (p *MyServiceHasArgDocsArgs) IsSetI() bool {
   return p != nil && p.I != nil
+}
+
+type MyServiceHasArgDocsArgsBuilder struct {
+  obj *MyServiceHasArgDocsArgs
+}
+
+func NewMyServiceHasArgDocsArgsBuilder() *MyServiceHasArgDocsArgsBuilder{
+  return &MyServiceHasArgDocsArgsBuilder{
+    obj: NewMyServiceHasArgDocsArgs(),
+  }
+}
+
+func (p MyServiceHasArgDocsArgsBuilder) Emit() *MyServiceHasArgDocsArgs{
+  return &MyServiceHasArgDocsArgs{
+    S: p.obj.S,
+    I: p.obj.I,
+  }
+}
+
+func (m *MyServiceHasArgDocsArgsBuilder) S(s *module0.MyStruct) *MyServiceHasArgDocsArgsBuilder {
+  m.obj.S = s
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgsBuilder) I(i *includes1.Included) *MyServiceHasArgDocsArgsBuilder {
+  m.obj.I = i
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgs) SetS(s *module0.MyStruct) *MyServiceHasArgDocsArgs {
+  m.S = s
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgs) SetI(i *includes1.Included) *MyServiceHasArgDocsArgs {
+  m.I = i
+  return m
 }
 
 func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.Protocol) error {
@@ -730,6 +819,21 @@ type MyServiceHasArgDocsResult struct {
 
 func NewMyServiceHasArgDocsResult() *MyServiceHasArgDocsResult {
   return &MyServiceHasArgDocsResult{}
+}
+
+type MyServiceHasArgDocsResultBuilder struct {
+  obj *MyServiceHasArgDocsResult
+}
+
+func NewMyServiceHasArgDocsResultBuilder() *MyServiceHasArgDocsResultBuilder{
+  return &MyServiceHasArgDocsResultBuilder{
+    obj: NewMyServiceHasArgDocsResult(),
+  }
+}
+
+func (p MyServiceHasArgDocsResultBuilder) Emit() *MyServiceHasArgDocsResult{
+  return &MyServiceHasArgDocsResult{
+  }
 }
 
 func (p *MyServiceHasArgDocsResult) Read(iprot thrift.Protocol) error {

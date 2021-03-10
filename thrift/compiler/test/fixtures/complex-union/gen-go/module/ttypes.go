@@ -132,6 +132,87 @@ func (p *ComplexUnion) IsSetStringRef() bool {
   return p != nil && p.StringRef != nil
 }
 
+type ComplexUnionBuilder struct {
+  obj *ComplexUnion
+}
+
+func NewComplexUnionBuilder() *ComplexUnionBuilder{
+  return &ComplexUnionBuilder{
+    obj: NewComplexUnion(),
+  }
+}
+
+func (p ComplexUnionBuilder) Emit() *ComplexUnion{
+  return &ComplexUnion{
+    IntValue: p.obj.IntValue,
+    StringValue: p.obj.StringValue,
+    IntListValue: p.obj.IntListValue,
+    StringListValue: p.obj.StringListValue,
+    TypedefValue: p.obj.TypedefValue,
+    StringRef: p.obj.StringRef,
+  }
+}
+
+func (c *ComplexUnionBuilder) IntValue(intValue *int64) *ComplexUnionBuilder {
+  c.obj.IntValue = intValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringValue(stringValue *string) *ComplexUnionBuilder {
+  c.obj.StringValue = stringValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) IntListValue(intListValue []int64) *ComplexUnionBuilder {
+  c.obj.IntListValue = intListValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringListValue(stringListValue []string) *ComplexUnionBuilder {
+  c.obj.StringListValue = stringListValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) TypedefValue(typedefValue ContainerTypedef) *ComplexUnionBuilder {
+  c.obj.TypedefValue = typedefValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringRef(stringRef *string) *ComplexUnionBuilder {
+  c.obj.StringRef = stringRef
+  return c
+}
+
+func (c *ComplexUnion) SetIntValue(intValue *int64) *ComplexUnion {
+  c.IntValue = intValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringValue(stringValue *string) *ComplexUnion {
+  c.StringValue = stringValue
+  return c
+}
+
+func (c *ComplexUnion) SetIntListValue(intListValue []int64) *ComplexUnion {
+  c.IntListValue = intListValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringListValue(stringListValue []string) *ComplexUnion {
+  c.StringListValue = stringListValue
+  return c
+}
+
+func (c *ComplexUnion) SetTypedefValue(typedefValue ContainerTypedef) *ComplexUnion {
+  c.TypedefValue = typedefValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringRef(stringRef *string) *ComplexUnion {
+  c.StringRef = stringRef
+  return c
+}
+
 func (p *ComplexUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -460,6 +541,43 @@ func (p *ListUnion) IsSetStringListValue() bool {
   return p != nil && p.StringListValue != nil
 }
 
+type ListUnionBuilder struct {
+  obj *ListUnion
+}
+
+func NewListUnionBuilder() *ListUnionBuilder{
+  return &ListUnionBuilder{
+    obj: NewListUnion(),
+  }
+}
+
+func (p ListUnionBuilder) Emit() *ListUnion{
+  return &ListUnion{
+    IntListValue: p.obj.IntListValue,
+    StringListValue: p.obj.StringListValue,
+  }
+}
+
+func (l *ListUnionBuilder) IntListValue(intListValue []int64) *ListUnionBuilder {
+  l.obj.IntListValue = intListValue
+  return l
+}
+
+func (l *ListUnionBuilder) StringListValue(stringListValue []string) *ListUnionBuilder {
+  l.obj.StringListValue = stringListValue
+  return l
+}
+
+func (l *ListUnion) SetIntListValue(intListValue []int64) *ListUnion {
+  l.IntListValue = intListValue
+  return l
+}
+
+func (l *ListUnion) SetStringListValue(stringListValue []string) *ListUnion {
+  l.StringListValue = stringListValue
+  return l
+}
+
 func (p *ListUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -646,6 +764,43 @@ func (p *DataUnion) IsSetStringData() bool {
   return p != nil && p.StringData != nil
 }
 
+type DataUnionBuilder struct {
+  obj *DataUnion
+}
+
+func NewDataUnionBuilder() *DataUnionBuilder{
+  return &DataUnionBuilder{
+    obj: NewDataUnion(),
+  }
+}
+
+func (p DataUnionBuilder) Emit() *DataUnion{
+  return &DataUnion{
+    BinaryData: p.obj.BinaryData,
+    StringData: p.obj.StringData,
+  }
+}
+
+func (d *DataUnionBuilder) BinaryData(binaryData []byte) *DataUnionBuilder {
+  d.obj.BinaryData = binaryData
+  return d
+}
+
+func (d *DataUnionBuilder) StringData(stringData *string) *DataUnionBuilder {
+  d.obj.StringData = stringData
+  return d
+}
+
+func (d *DataUnion) SetBinaryData(binaryData []byte) *DataUnion {
+  d.BinaryData = binaryData
+  return d
+}
+
+func (d *DataUnion) SetStringData(stringData *string) *DataUnion {
+  d.StringData = stringData
+  return d
+}
+
 func (p *DataUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -781,6 +936,54 @@ func (p *Val) GetIntVal() int32 {
 func (p *Val) GetTypedefValue() ContainerTypedef {
   return p.TypedefValue
 }
+type ValBuilder struct {
+  obj *Val
+}
+
+func NewValBuilder() *ValBuilder{
+  return &ValBuilder{
+    obj: NewVal(),
+  }
+}
+
+func (p ValBuilder) Emit() *Val{
+  return &Val{
+    StrVal: p.obj.StrVal,
+    IntVal: p.obj.IntVal,
+    TypedefValue: p.obj.TypedefValue,
+  }
+}
+
+func (v *ValBuilder) StrVal(strVal string) *ValBuilder {
+  v.obj.StrVal = strVal
+  return v
+}
+
+func (v *ValBuilder) IntVal(intVal int32) *ValBuilder {
+  v.obj.IntVal = intVal
+  return v
+}
+
+func (v *ValBuilder) TypedefValue(typedefValue ContainerTypedef) *ValBuilder {
+  v.obj.TypedefValue = typedefValue
+  return v
+}
+
+func (v *Val) SetStrVal(strVal string) *Val {
+  v.StrVal = strVal
+  return v
+}
+
+func (v *Val) SetIntVal(intVal int32) *Val {
+  v.IntVal = intVal
+  return v
+}
+
+func (v *Val) SetTypedefValue(typedefValue ContainerTypedef) *Val {
+  v.TypedefValue = typedefValue
+  return v
+}
+
 func (p *Val) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -977,6 +1180,43 @@ func (p *ValUnion) IsSetV2() bool {
   return p != nil && p.V2 != nil
 }
 
+type ValUnionBuilder struct {
+  obj *ValUnion
+}
+
+func NewValUnionBuilder() *ValUnionBuilder{
+  return &ValUnionBuilder{
+    obj: NewValUnion(),
+  }
+}
+
+func (p ValUnionBuilder) Emit() *ValUnion{
+  return &ValUnion{
+    V1: p.obj.V1,
+    V2: p.obj.V2,
+  }
+}
+
+func (v *ValUnionBuilder) V1(v1 *Val) *ValUnionBuilder {
+  v.obj.V1 = v1
+  return v
+}
+
+func (v *ValUnionBuilder) V2(v2 *Val) *ValUnionBuilder {
+  v.obj.V2 = v2
+  return v
+}
+
+func (v *ValUnion) SetV1(v1 *Val) *ValUnion {
+  v.V1 = v1
+  return v
+}
+
+func (v *ValUnion) SetV2(v2 *Val) *ValUnion {
+  v.V2 = v2
+  return v
+}
+
 func (p *ValUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1136,6 +1376,43 @@ func (p *VirtualComplexUnion) IsSetThingTwo() bool {
   return p != nil && p.ThingTwo != nil
 }
 
+type VirtualComplexUnionBuilder struct {
+  obj *VirtualComplexUnion
+}
+
+func NewVirtualComplexUnionBuilder() *VirtualComplexUnionBuilder{
+  return &VirtualComplexUnionBuilder{
+    obj: NewVirtualComplexUnion(),
+  }
+}
+
+func (p VirtualComplexUnionBuilder) Emit() *VirtualComplexUnion{
+  return &VirtualComplexUnion{
+    ThingOne: p.obj.ThingOne,
+    ThingTwo: p.obj.ThingTwo,
+  }
+}
+
+func (v *VirtualComplexUnionBuilder) ThingOne(thingOne *string) *VirtualComplexUnionBuilder {
+  v.obj.ThingOne = thingOne
+  return v
+}
+
+func (v *VirtualComplexUnionBuilder) ThingTwo(thingTwo *string) *VirtualComplexUnionBuilder {
+  v.obj.ThingTwo = thingTwo
+  return v
+}
+
+func (v *VirtualComplexUnion) SetThingOne(thingOne *string) *VirtualComplexUnion {
+  v.ThingOne = thingOne
+  return v
+}
+
+func (v *VirtualComplexUnion) SetThingTwo(thingTwo *string) *VirtualComplexUnion {
+  v.ThingTwo = thingTwo
+  return v
+}
+
 func (p *VirtualComplexUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1263,6 +1540,32 @@ func NewNonCopyableStruct() *NonCopyableStruct {
 func (p *NonCopyableStruct) GetNum() int64 {
   return p.Num
 }
+type NonCopyableStructBuilder struct {
+  obj *NonCopyableStruct
+}
+
+func NewNonCopyableStructBuilder() *NonCopyableStructBuilder{
+  return &NonCopyableStructBuilder{
+    obj: NewNonCopyableStruct(),
+  }
+}
+
+func (p NonCopyableStructBuilder) Emit() *NonCopyableStruct{
+  return &NonCopyableStruct{
+    Num: p.obj.Num,
+  }
+}
+
+func (n *NonCopyableStructBuilder) Num(num int64) *NonCopyableStructBuilder {
+  n.obj.Num = num
+  return n
+}
+
+func (n *NonCopyableStruct) SetNum(num int64) *NonCopyableStruct {
+  n.Num = num
+  return n
+}
+
 func (p *NonCopyableStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1362,6 +1665,32 @@ func (p *NonCopyableUnion) CountSetFieldsNonCopyableUnion() int {
 
 func (p *NonCopyableUnion) IsSetS() bool {
   return p != nil && p.S != nil
+}
+
+type NonCopyableUnionBuilder struct {
+  obj *NonCopyableUnion
+}
+
+func NewNonCopyableUnionBuilder() *NonCopyableUnionBuilder{
+  return &NonCopyableUnionBuilder{
+    obj: NewNonCopyableUnion(),
+  }
+}
+
+func (p NonCopyableUnionBuilder) Emit() *NonCopyableUnion{
+  return &NonCopyableUnion{
+    S: p.obj.S,
+  }
+}
+
+func (n *NonCopyableUnionBuilder) S(s *NonCopyableStruct) *NonCopyableUnionBuilder {
+  n.obj.S = s
+  return n
+}
+
+func (n *NonCopyableUnion) SetS(s *NonCopyableStruct) *NonCopyableUnion {
+  n.S = s
+  return n
 }
 
 func (p *NonCopyableUnion) Read(iprot thrift.Protocol) error {

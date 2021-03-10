@@ -326,6 +326,21 @@ func NewMyServicePrioParentPingArgs() *MyServicePrioParentPingArgs {
   return &MyServicePrioParentPingArgs{}
 }
 
+type MyServicePrioParentPingArgsBuilder struct {
+  obj *MyServicePrioParentPingArgs
+}
+
+func NewMyServicePrioParentPingArgsBuilder() *MyServicePrioParentPingArgsBuilder{
+  return &MyServicePrioParentPingArgsBuilder{
+    obj: NewMyServicePrioParentPingArgs(),
+  }
+}
+
+func (p MyServicePrioParentPingArgsBuilder) Emit() *MyServicePrioParentPingArgs{
+  return &MyServicePrioParentPingArgs{
+  }
+}
+
 func (p *MyServicePrioParentPingArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -375,6 +390,21 @@ type MyServicePrioParentPingResult struct {
 
 func NewMyServicePrioParentPingResult() *MyServicePrioParentPingResult {
   return &MyServicePrioParentPingResult{}
+}
+
+type MyServicePrioParentPingResultBuilder struct {
+  obj *MyServicePrioParentPingResult
+}
+
+func NewMyServicePrioParentPingResultBuilder() *MyServicePrioParentPingResultBuilder{
+  return &MyServicePrioParentPingResultBuilder{
+    obj: NewMyServicePrioParentPingResult(),
+  }
+}
+
+func (p MyServicePrioParentPingResultBuilder) Emit() *MyServicePrioParentPingResult{
+  return &MyServicePrioParentPingResult{
+  }
 }
 
 func (p *MyServicePrioParentPingResult) Read(iprot thrift.Protocol) error {
@@ -428,6 +458,21 @@ func NewMyServicePrioParentPongArgs() *MyServicePrioParentPongArgs {
   return &MyServicePrioParentPongArgs{}
 }
 
+type MyServicePrioParentPongArgsBuilder struct {
+  obj *MyServicePrioParentPongArgs
+}
+
+func NewMyServicePrioParentPongArgsBuilder() *MyServicePrioParentPongArgsBuilder{
+  return &MyServicePrioParentPongArgsBuilder{
+    obj: NewMyServicePrioParentPongArgs(),
+  }
+}
+
+func (p MyServicePrioParentPongArgsBuilder) Emit() *MyServicePrioParentPongArgs{
+  return &MyServicePrioParentPongArgs{
+  }
+}
+
 func (p *MyServicePrioParentPongArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -477,6 +522,21 @@ type MyServicePrioParentPongResult struct {
 
 func NewMyServicePrioParentPongResult() *MyServicePrioParentPongResult {
   return &MyServicePrioParentPongResult{}
+}
+
+type MyServicePrioParentPongResultBuilder struct {
+  obj *MyServicePrioParentPongResult
+}
+
+func NewMyServicePrioParentPongResultBuilder() *MyServicePrioParentPongResultBuilder{
+  return &MyServicePrioParentPongResultBuilder{
+    obj: NewMyServicePrioParentPongResult(),
+  }
+}
+
+func (p MyServicePrioParentPongResultBuilder) Emit() *MyServicePrioParentPongResult{
+  return &MyServicePrioParentPongResult{
+  }
 }
 
 func (p *MyServicePrioParentPongResult) Read(iprot thrift.Protocol) error {

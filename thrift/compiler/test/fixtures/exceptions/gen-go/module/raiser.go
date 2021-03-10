@@ -608,6 +608,21 @@ func NewRaiserDoBlandArgs() *RaiserDoBlandArgs {
   return &RaiserDoBlandArgs{}
 }
 
+type RaiserDoBlandArgsBuilder struct {
+  obj *RaiserDoBlandArgs
+}
+
+func NewRaiserDoBlandArgsBuilder() *RaiserDoBlandArgsBuilder{
+  return &RaiserDoBlandArgsBuilder{
+    obj: NewRaiserDoBlandArgs(),
+  }
+}
+
+func (p RaiserDoBlandArgsBuilder) Emit() *RaiserDoBlandArgs{
+  return &RaiserDoBlandArgs{
+  }
+}
+
 func (p *RaiserDoBlandArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -659,6 +674,21 @@ func NewRaiserDoBlandResult() *RaiserDoBlandResult {
   return &RaiserDoBlandResult{}
 }
 
+type RaiserDoBlandResultBuilder struct {
+  obj *RaiserDoBlandResult
+}
+
+func NewRaiserDoBlandResultBuilder() *RaiserDoBlandResultBuilder{
+  return &RaiserDoBlandResultBuilder{
+    obj: NewRaiserDoBlandResult(),
+  }
+}
+
+func (p RaiserDoBlandResultBuilder) Emit() *RaiserDoBlandResult{
+  return &RaiserDoBlandResult{
+  }
+}
+
 func (p *RaiserDoBlandResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -708,6 +738,21 @@ type RaiserDoRaiseArgs struct {
 
 func NewRaiserDoRaiseArgs() *RaiserDoRaiseArgs {
   return &RaiserDoRaiseArgs{}
+}
+
+type RaiserDoRaiseArgsBuilder struct {
+  obj *RaiserDoRaiseArgs
+}
+
+func NewRaiserDoRaiseArgsBuilder() *RaiserDoRaiseArgsBuilder{
+  return &RaiserDoRaiseArgsBuilder{
+    obj: NewRaiserDoRaiseArgs(),
+  }
+}
+
+func (p RaiserDoRaiseArgsBuilder) Emit() *RaiserDoRaiseArgs{
+  return &RaiserDoRaiseArgs{
+  }
 }
 
 func (p *RaiserDoRaiseArgs) Read(iprot thrift.Protocol) error {
@@ -799,6 +844,54 @@ func (p *RaiserDoRaiseResult) IsSetF() bool {
 
 func (p *RaiserDoRaiseResult) IsSetS() bool {
   return p != nil && p.S != nil
+}
+
+type RaiserDoRaiseResultBuilder struct {
+  obj *RaiserDoRaiseResult
+}
+
+func NewRaiserDoRaiseResultBuilder() *RaiserDoRaiseResultBuilder{
+  return &RaiserDoRaiseResultBuilder{
+    obj: NewRaiserDoRaiseResult(),
+  }
+}
+
+func (p RaiserDoRaiseResultBuilder) Emit() *RaiserDoRaiseResult{
+  return &RaiserDoRaiseResult{
+    B: p.obj.B,
+    F: p.obj.F,
+    S: p.obj.S,
+  }
+}
+
+func (r *RaiserDoRaiseResultBuilder) B(b *Banal) *RaiserDoRaiseResultBuilder {
+  r.obj.B = b
+  return r
+}
+
+func (r *RaiserDoRaiseResultBuilder) F(f *Fiery) *RaiserDoRaiseResultBuilder {
+  r.obj.F = f
+  return r
+}
+
+func (r *RaiserDoRaiseResultBuilder) S(s *Serious) *RaiserDoRaiseResultBuilder {
+  r.obj.S = s
+  return r
+}
+
+func (r *RaiserDoRaiseResult) SetB(b *Banal) *RaiserDoRaiseResult {
+  r.B = b
+  return r
+}
+
+func (r *RaiserDoRaiseResult) SetF(f *Fiery) *RaiserDoRaiseResult {
+  r.F = f
+  return r
+}
+
+func (r *RaiserDoRaiseResult) SetS(s *Serious) *RaiserDoRaiseResult {
+  r.S = s
+  return r
 }
 
 func (p *RaiserDoRaiseResult) Read(iprot thrift.Protocol) error {
@@ -951,6 +1044,21 @@ func NewRaiserGet200Args() *RaiserGet200Args {
   return &RaiserGet200Args{}
 }
 
+type RaiserGet200ArgsBuilder struct {
+  obj *RaiserGet200Args
+}
+
+func NewRaiserGet200ArgsBuilder() *RaiserGet200ArgsBuilder{
+  return &RaiserGet200ArgsBuilder{
+    obj: NewRaiserGet200Args(),
+  }
+}
+
+func (p RaiserGet200ArgsBuilder) Emit() *RaiserGet200Args{
+  return &RaiserGet200Args{
+  }
+}
+
 func (p *RaiserGet200Args) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1014,6 +1122,32 @@ return *p.Success
 }
 func (p *RaiserGet200Result) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type RaiserGet200ResultBuilder struct {
+  obj *RaiserGet200Result
+}
+
+func NewRaiserGet200ResultBuilder() *RaiserGet200ResultBuilder{
+  return &RaiserGet200ResultBuilder{
+    obj: NewRaiserGet200Result(),
+  }
+}
+
+func (p RaiserGet200ResultBuilder) Emit() *RaiserGet200Result{
+  return &RaiserGet200Result{
+    Success: p.obj.Success,
+  }
+}
+
+func (r *RaiserGet200ResultBuilder) Success(success *string) *RaiserGet200ResultBuilder {
+  r.obj.Success = success
+  return r
+}
+
+func (r *RaiserGet200Result) SetSuccess(success *string) *RaiserGet200Result {
+  r.Success = success
+  return r
 }
 
 func (p *RaiserGet200Result) Read(iprot thrift.Protocol) error {
@@ -1100,6 +1234,21 @@ type RaiserGet500Args struct {
 
 func NewRaiserGet500Args() *RaiserGet500Args {
   return &RaiserGet500Args{}
+}
+
+type RaiserGet500ArgsBuilder struct {
+  obj *RaiserGet500Args
+}
+
+func NewRaiserGet500ArgsBuilder() *RaiserGet500ArgsBuilder{
+  return &RaiserGet500ArgsBuilder{
+    obj: NewRaiserGet500Args(),
+  }
+}
+
+func (p RaiserGet500ArgsBuilder) Emit() *RaiserGet500Args{
+  return &RaiserGet500Args{
+  }
 }
 
 func (p *RaiserGet500Args) Read(iprot thrift.Protocol) error {
@@ -1204,6 +1353,65 @@ func (p *RaiserGet500Result) IsSetB() bool {
 
 func (p *RaiserGet500Result) IsSetS() bool {
   return p != nil && p.S != nil
+}
+
+type RaiserGet500ResultBuilder struct {
+  obj *RaiserGet500Result
+}
+
+func NewRaiserGet500ResultBuilder() *RaiserGet500ResultBuilder{
+  return &RaiserGet500ResultBuilder{
+    obj: NewRaiserGet500Result(),
+  }
+}
+
+func (p RaiserGet500ResultBuilder) Emit() *RaiserGet500Result{
+  return &RaiserGet500Result{
+    Success: p.obj.Success,
+    F: p.obj.F,
+    B: p.obj.B,
+    S: p.obj.S,
+  }
+}
+
+func (r *RaiserGet500ResultBuilder) Success(success *string) *RaiserGet500ResultBuilder {
+  r.obj.Success = success
+  return r
+}
+
+func (r *RaiserGet500ResultBuilder) F(f *Fiery) *RaiserGet500ResultBuilder {
+  r.obj.F = f
+  return r
+}
+
+func (r *RaiserGet500ResultBuilder) B(b *Banal) *RaiserGet500ResultBuilder {
+  r.obj.B = b
+  return r
+}
+
+func (r *RaiserGet500ResultBuilder) S(s *Serious) *RaiserGet500ResultBuilder {
+  r.obj.S = s
+  return r
+}
+
+func (r *RaiserGet500Result) SetSuccess(success *string) *RaiserGet500Result {
+  r.Success = success
+  return r
+}
+
+func (r *RaiserGet500Result) SetF(f *Fiery) *RaiserGet500Result {
+  r.F = f
+  return r
+}
+
+func (r *RaiserGet500Result) SetB(b *Banal) *RaiserGet500Result {
+  r.B = b
+  return r
+}
+
+func (r *RaiserGet500Result) SetS(s *Serious) *RaiserGet500Result {
+  r.S = s
+  return r
 }
 
 func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {
