@@ -3596,7 +3596,7 @@ _readField_field2:
 _readField_field3:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = std::make_unique< ::test_cpp2::cpp_reflection::structA>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr< ::test_cpp2::cpp_reflection::structA>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test_cpp2::cpp_reflection::structA>::readWithContext(*iprot, *ptr, _readState);
     this->field3 = std::move(ptr);
     _readState.afterSubobject(iprot);

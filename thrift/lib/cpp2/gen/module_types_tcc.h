@@ -17,8 +17,10 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 #include <folly/Range.h>
+#include <folly/Traits.h>
 
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -43,6 +45,21 @@ namespace detail {
 
 template <typename T>
 struct TccStructTraits;
+
+template <class T>
+auto make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<T>>) {
+  return std::make_unique<T>();
+}
+
+template <class T>
+auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T>>) {
+  return std::make_shared<T>();
+}
+
+template <class T>
+auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T const>>) {
+  return std::make_shared<T>();
+}
 
 } // namespace detail
 

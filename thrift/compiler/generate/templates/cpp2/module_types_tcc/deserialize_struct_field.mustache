@@ -19,14 +19,9 @@
 %>_readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%><%!
 
-%><%#field:cpp_ref?%><%!
-%><%^field:cpp_ref_shared_or_shared_const?%><%!
-%>auto ptr = std::make_unique<<% > types/type%>>();
-<%/field:cpp_ref_shared_or_shared_const?%><%!
-%><%#field:cpp_ref_shared_or_shared_const?%>
-auto ptr = std::make_shared<<% > types/type%>>();
-<%/field:cpp_ref_shared_or_shared_const?%><%!
-%><%/field:cpp_ref?%><%!
+%><%#field:cpp_ref?%>
+auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > types/ref_type%>>());
+<%/field:cpp_ref?%><%!
 %><%^field:cpp_ref?%><%!
 %><%#type:resolves_to_container?%><%!
 %><%#type:cpp_use_allocator?%>

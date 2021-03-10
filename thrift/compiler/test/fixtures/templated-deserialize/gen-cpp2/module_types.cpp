@@ -329,10 +329,10 @@ void containerStruct::__clear() {
   fieldO.clear();
   fieldP.clear();
   fieldQ = static_cast< ::cpp2::MyEnumA>(0);
-  fieldR.reset(new typename decltype(fieldR)::element_type());
+  fieldR = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<::std::string, bool>>>());
   if (fieldS) fieldS->__clear();
   if (fieldT) fieldT->__clear();
-  if (fieldU) fieldU = std::make_shared< ::cpp2::SmallStruct>();
+  if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
   if (fieldX) fieldX->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

@@ -157,7 +157,7 @@ AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AStructB::__clear() {
   // clear all fields
-  if (FieldA) FieldA = std::make_shared< ::a::different::ns::AStruct>();
+  if (FieldA) FieldA.reset(new typename decltype(FieldA)::element_type());
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {

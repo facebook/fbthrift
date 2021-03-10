@@ -727,12 +727,12 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, s
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithContainers::__clear() {
   // clear all fields
-  list_ref.reset(new typename decltype(list_ref)::element_type());
-  set_ref.reset(new typename decltype(set_ref)::element_type());
-  map_ref.reset(new typename decltype(map_ref)::element_type());
-  list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
-  set_ref_shared = std::make_shared<::std::set<int32_t>>();
-  list_ref_shared_const = std::make_shared<::std::vector<int32_t>>();
+  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<int32_t>>>());
+  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::set<int32_t>>>());
+  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<int32_t, int32_t>>>());
+  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<int32_t>>>());
+  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::std::set<int32_t>>>());
+  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::vector<int32_t>>>());
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -901,8 +901,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithSharedConst::__clear() {
   // clear all fields
   opt_shared_const.reset();
-  if (shared_const) shared_const = std::make_shared< ::cpp2::MyField>();
-  if (req_shared_const) req_shared_const = std::make_shared< ::cpp2::MyField>();
+  if (shared_const) shared_const.reset(new typename decltype(shared_const)::element_type());
+  if (req_shared_const) req_shared_const.reset(new typename decltype(req_shared_const)::element_type());
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {

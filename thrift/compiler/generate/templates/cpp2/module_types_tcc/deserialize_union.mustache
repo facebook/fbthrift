@@ -39,7 +39,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
           _readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%>
 <%#field:cpp_ref?%>
-          std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();
+          auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > types/ref_type%>>());
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
 <%#type:resolves_to_container?%>

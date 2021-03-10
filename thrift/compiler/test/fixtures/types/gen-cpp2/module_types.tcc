@@ -2498,7 +2498,7 @@ _readField_ForwardUsageStruct:
 _readField_ForwardUsageByRef:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::readWithContext(*iprot, *ptr, _readState);
     this->ForwardUsageByRef = std::move(ptr);
     _readState.afterSubobject(iprot);
