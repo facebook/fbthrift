@@ -109,14 +109,14 @@ class t_typedef : public t_type {
   // Return null if not found.
   static const std::string* get_first_annotation_or_null(
       const t_type* type,
-      const aliases& name);
+      alias_span name);
 
   // Finds the first matching annoation in the typdef's type heiarchy.
   // Return default_value or "" if not found.
   template <typename D = const std::string*>
   static auto get_first_annotation(
       const t_type* type,
-      const aliases& name,
+      alias_span name,
       D&& default_value = nullptr) {
     return annotation_or(
         get_first_annotation_or_null(type, name),

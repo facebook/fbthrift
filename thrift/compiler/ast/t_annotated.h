@@ -34,37 +34,43 @@ class t_const;
 // If two aliases are set on a node, the value for the first alias in the span
 // will be used.
 //
-// TODO(afuller): Make this non-owning like std::span and std::string_view.
-class aliases {
+// Like std::span and std::string_view, it is the caller's responsibility to
+// ensure the underlying data outlives the span.
+class alias_span {
  public:
   using value_type = std::string;
   using const_reference = const std::string&;
   using reference = const_reference;
   using size_type = std::size_t;
-  using const_iterator = std::vector<std::string>::const_iterator;
+  using const_iterator = const std::string*;
   using iterator = const_iterator;
 
-  /* implicit */ aliases(std::initializer_list<std::string> list)
-      : aliases_(list) {}
-  /* implicit */ aliases(std::string name) {
-    aliases_.emplace_back(std::move(name));
-  }
-  /* implicit */ aliases(const char* name) {
-    aliases_.emplace_back(std::move(name));
-  }
+  alias_span(const std::string* data, size_type size)
+      : data_(data), size_(size) {}
+
+  /* implicit */ alias_span(std::initializer_list<std::string> name)
+      : alias_span(name.begin(), name.size()) {}
+  /* implicit */ alias_span(const std::string& name) : alias_span(&name, 1) {}
+  template <
+      typename C = std::vector<std::string>,
+      typename = decltype(
+          std::declval<const C&>().data() + std::declval<const C&>().size())>
+  /* implicit */ alias_span(const C& list)
+      : alias_span(list.data(), list.size()) {}
 
   const_iterator begin() const {
-    return aliases_.begin();
+    return data_;
   }
   const_iterator end() const {
-    return aliases_.end();
+    return data_ + size_;
   }
   size_type size() const {
-    return aliases_.size();
+    return size_;
   }
 
  private:
-  std::vector<std::string> aliases_;
+  const std::string* data_;
+  size_type size_;
 };
 
 /**
@@ -82,7 +88,7 @@ class t_annotated : public t_node {
   }
 
   // Returns true if there exists an annotation with the given name.
-  bool has_annotation(const aliases& name) const {
+  bool has_annotation(alias_span name) const {
     return get_annotation_or_null(name) != nullptr;
   }
 
@@ -90,17 +96,22 @@ class t_annotated : public t_node {
   // given name.
   //
   // If not found returns nullptr.
-  const std::string* get_annotation_or_null(const aliases& name) const;
+  const std::string* get_annotation_or_null(alias_span name) const;
 
   // Returns the value of an annotation with the given name.
   //
   // If not found returns the provided default or "".
-  template <typename D = const std::string*>
-  decltype(auto) get_annotation(
-      const aliases& name,
-      D&& default_value = nullptr) const {
+  //
+  // TODO(afuller): Require all call sites to use {} and replace `const N&` with
+  // alias_span.
+  template <
+      typename N = std::vector<std::string>,
+      typename D = const std::string*>
+  decltype(auto) get_annotation(const N& name, D&& default_value = nullptr)
+      const {
     return annotation_or(
-        get_annotation_or_null(name), std::forward<D>(default_value));
+        get_annotation_or_null(alias_span{name}),
+        std::forward<D>(default_value));
   }
 
   void reset_annotations(
@@ -155,6 +166,16 @@ class t_annotated : public t_node {
   std::vector<const t_const*> structured_annotations_raw_;
 
   static const std::string kEmptyString;
+
+ public:
+  // TODO(afuller): Require arg to be wrapped in {} instead of providing these
+  // overloads.
+  bool has_annotation(const char* name) const {
+    return has_annotation(alias_span{name});
+  }
+  const std::string* get_annotation_or_null(const char* name) const {
+    return get_annotation_or_null(alias_span{name});
+  }
 };
 
 using t_annotation = std::map<std::string, std::string>::value_type;

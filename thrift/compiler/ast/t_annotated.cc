@@ -26,8 +26,7 @@ const std::string t_annotated::kEmptyString{};
 // NOTE: Must be defined here for t_const's destructor's defintion.
 t_annotated::~t_annotated() = default;
 
-const std::string* t_annotated::get_annotation_or_null(
-    const aliases& name) const {
+const std::string* t_annotated::get_annotation_or_null(alias_span name) const {
   for (const auto& alias : name) {
     auto itr = annotations_.find(alias);
     if (itr != annotations_.end()) {
