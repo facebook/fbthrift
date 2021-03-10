@@ -162,6 +162,7 @@ type MyNodeProcessor struct {
 func NewMyNodeProcessor(handler MyNode) *MyNodeProcessor {
   self2 := &MyNodeProcessor{NewMyRootProcessor(handler)}
   self2.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
+  self2.AddToFunctionServiceMap("do_mid", "MyNode")
   return self2
 }
 

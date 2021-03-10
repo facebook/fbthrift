@@ -156,11 +156,16 @@ func (p *MyRootChannelClient) DoRoot(ctx context.Context) (err error) {
 
 type MyRootProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyRoot
 }
 
 func (p *MyRootProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyRootProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -174,9 +179,14 @@ func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
+func (p *MyRootProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyRootProcessor(handler MyRoot) *MyRootProcessor {
-  self0 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
+  self0.functionServiceMap["do_root"] = "MyRoot"
   return self0
 }
 

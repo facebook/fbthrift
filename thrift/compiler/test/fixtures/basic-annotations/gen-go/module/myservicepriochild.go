@@ -162,6 +162,7 @@ type MyServicePrioChildProcessor struct {
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
   self10 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
   self10.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  self10.AddToFunctionServiceMap("pang", "MyServicePrioChild")
   return self10
 }
 

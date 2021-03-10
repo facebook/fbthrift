@@ -547,11 +547,16 @@ func (p *MyServiceChannelClient) LobDataById(ctx context.Context, id int64, data
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyService
 }
 
 func (p *MyServiceProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyServiceProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyServiceProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -565,8 +570,12 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
   return p.processorMap
 }
 
+func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self0 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
   self0.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
   self0.processorMap["sink"] = &myServiceProcessorSink{handler:handler}
@@ -575,6 +584,14 @@ func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
   self0.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
   self0.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
   self0.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self0.functionServiceMap["ping"] = "MyService"
+  self0.functionServiceMap["getRandomData"] = "MyService"
+  self0.functionServiceMap["sink"] = "MyService"
+  self0.functionServiceMap["putDataById"] = "MyService"
+  self0.functionServiceMap["hasDataById"] = "MyService"
+  self0.functionServiceMap["getDataById"] = "MyService"
+  self0.functionServiceMap["deleteDataById"] = "MyService"
+  self0.functionServiceMap["lobDataById"] = "MyService"
   return self0
 }
 

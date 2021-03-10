@@ -162,6 +162,7 @@ type MyLeafProcessor struct {
 func NewMyLeafProcessor(handler MyLeaf) *MyLeafProcessor {
   self3 := &MyLeafProcessor{NewMyNodeProcessor(handler)}
   self3.AddToProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
+  self3.AddToFunctionServiceMap("do_leaf", "MyLeaf")
   return self3
 }
 

@@ -238,11 +238,16 @@ func (p *DbMixedStackArgumentsChannelClient) GetDataByKey1(ctx context.Context, 
 
 type DbMixedStackArgumentsProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler DbMixedStackArguments
 }
 
 func (p *DbMixedStackArgumentsProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *DbMixedStackArgumentsProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *DbMixedStackArgumentsProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -256,10 +261,16 @@ func (p *DbMixedStackArgumentsProcessor) ProcessorMap() map[string]thrift.Proces
   return p.processorMap
 }
 
+func (p *DbMixedStackArgumentsProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewDbMixedStackArgumentsProcessor(handler DbMixedStackArguments) *DbMixedStackArgumentsProcessor {
-  self10 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self10 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self10.processorMap["getDataByKey0"] = &dbMixedStackArgumentsProcessorGetDataByKey0{handler:handler}
   self10.processorMap["getDataByKey1"] = &dbMixedStackArgumentsProcessorGetDataByKey1{handler:handler}
+  self10.functionServiceMap["getDataByKey0"] = "DbMixedStackArguments"
+  self10.functionServiceMap["getDataByKey1"] = "DbMixedStackArguments"
   return self10
 }
 

@@ -391,11 +391,16 @@ func (p *NestedContainersChannelClient) Turtles(ctx context.Context, foo [][]map
 
 type NestedContainersProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler NestedContainers
 }
 
 func (p *NestedContainersProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *NestedContainersProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *NestedContainersProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -409,13 +414,22 @@ func (p *NestedContainersProcessor) ProcessorMap() map[string]thrift.ProcessorFu
   return p.processorMap
 }
 
+func (p *NestedContainersProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewNestedContainersProcessor(handler NestedContainers) *NestedContainersProcessor {
-  self0 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["mapList"] = &nestedContainersProcessorMapList{handler:handler}
   self0.processorMap["mapSet"] = &nestedContainersProcessorMapSet{handler:handler}
   self0.processorMap["listMap"] = &nestedContainersProcessorListMap{handler:handler}
   self0.processorMap["listSet"] = &nestedContainersProcessorListSet{handler:handler}
   self0.processorMap["turtles"] = &nestedContainersProcessorTurtles{handler:handler}
+  self0.functionServiceMap["mapList"] = "NestedContainers"
+  self0.functionServiceMap["mapSet"] = "NestedContainers"
+  self0.functionServiceMap["listMap"] = "NestedContainers"
+  self0.functionServiceMap["listSet"] = "NestedContainers"
+  self0.functionServiceMap["turtles"] = "NestedContainers"
   return self0
 }
 

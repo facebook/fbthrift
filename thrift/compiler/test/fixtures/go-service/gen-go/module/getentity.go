@@ -760,11 +760,16 @@ func (p *GetEntityChannelClient) GetLegacyStuff(ctx context.Context, numPos int6
 
 type GetEntityProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler GetEntity
 }
 
 func (p *GetEntityProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *GetEntityProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *GetEntityProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -778,8 +783,12 @@ func (p *GetEntityProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
   return p.processorMap
 }
 
+func (p *GetEntityProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
-  self0 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["getEntity"] = &getEntityProcessorGetEntity{handler:handler}
   self0.processorMap["getBool"] = &getEntityProcessorGetBool{handler:handler}
   self0.processorMap["getByte"] = &getEntityProcessorGetByte{handler:handler}
@@ -793,6 +802,19 @@ func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
   self0.processorMap["getSet"] = &getEntityProcessorGetSet{handler:handler}
   self0.processorMap["getList"] = &getEntityProcessorGetList{handler:handler}
   self0.processorMap["getLegacyStuff"] = &getEntityProcessorGetLegacyStuff{handler:handler}
+  self0.functionServiceMap["getEntity"] = "GetEntity"
+  self0.functionServiceMap["getBool"] = "GetEntity"
+  self0.functionServiceMap["getByte"] = "GetEntity"
+  self0.functionServiceMap["getI16"] = "GetEntity"
+  self0.functionServiceMap["getI32"] = "GetEntity"
+  self0.functionServiceMap["getI64"] = "GetEntity"
+  self0.functionServiceMap["getDouble"] = "GetEntity"
+  self0.functionServiceMap["getString"] = "GetEntity"
+  self0.functionServiceMap["getBinary"] = "GetEntity"
+  self0.functionServiceMap["getMap"] = "GetEntity"
+  self0.functionServiceMap["getSet"] = "GetEntity"
+  self0.functionServiceMap["getList"] = "GetEntity"
+  self0.functionServiceMap["getLegacyStuff"] = "GetEntity"
   return self0
 }
 

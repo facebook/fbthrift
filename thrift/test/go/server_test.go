@@ -202,6 +202,20 @@ func TestHeaderFramedCompact(t *testing.T) {
 	)
 }
 
+func TestFunctionServiceMap(t *testing.T) {
+	handler := &testHandler{}
+	proc := thrifttest.NewThriftTestProcessor(handler)
+	mapping := proc.FunctionServiceMap()
+
+	srv, ok := mapping["doTestVoid"]
+	if !ok {
+		t.Errorf("expected key 'doTestVoid' in FunctionServiceMap")
+	}
+	if srv != "ThriftTest" {
+		t.Errorf("expected key 'doTestVoid' with value 'ThriftTest'")
+	}
+}
+
 // unframed not supported?
 // func TestHeaderUnframedBinary(t *testing.T) {
 // 	doClientTest(

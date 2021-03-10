@@ -241,11 +241,16 @@ func (p *SomeServiceChannelClient) BinaryKeyedMap(ctx context.Context, r []int64
 
 type SomeServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler SomeService
 }
 
 func (p *SomeServiceProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *SomeServiceProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *SomeServiceProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -259,10 +264,16 @@ func (p *SomeServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunctio
   return p.processorMap
 }
 
+func (p *SomeServiceProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewSomeServiceProcessor(handler SomeService) *SomeServiceProcessor {
-  self24 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self24 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self24.processorMap["bounce_map"] = &someServiceProcessorBounceMap{handler:handler}
   self24.processorMap["binary_keyed_map"] = &someServiceProcessorBinaryKeyedMap{handler:handler}
+  self24.functionServiceMap["bounce_map"] = "SomeService"
+  self24.functionServiceMap["binary_keyed_map"] = "SomeService"
   return self24
 }
 

@@ -3220,6 +3220,7 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
                << endl;
     f_service_ << indent() << "  processorMap map[string]"
                << gen_processor_func_ << endl;
+    f_service_ << indent() << "  functionServiceMap map[string]string" << endl;
     f_service_ << indent() << "  handler " << serviceName << endl;
     f_service_ << indent() << "}" << endl << endl;
 
@@ -3228,6 +3229,13 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
                << gen_processor_func_ << ") {" << endl;
     f_service_ << indent() << "  p.processorMap[key] = processor" << endl;
     f_service_ << indent() << "}" << endl << endl;
+
+    f_service_ << indent() << "func (p *" << serviceName
+               << "Processor) AddToFunctionServiceMap(key, service string) {"
+               << endl;
+    f_service_ << indent() << "  p.functionServiceMap[key] = service" << endl;
+    f_service_ << indent() << "}" << endl << endl;
+
     f_service_ << indent() << "func (p *" << serviceName << "Processor) ";
     if (gen_use_context_) {
       f_service_ << "GetProcessorFunctionContext(key string) ";
@@ -3251,12 +3259,17 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
                << " {" << endl;
     f_service_ << indent() << "  return p.processorMap" << endl;
     f_service_ << indent() << "}" << endl << endl;
+    f_service_ << indent() << "func (p *" << serviceName
+               << "Processor) FunctionServiceMap() map[string]string {" << endl;
+    f_service_ << indent() << "  return p.functionServiceMap" << endl;
+    f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func New" << serviceName << "Processor(handler "
                << serviceName << ") *" << serviceName << "Processor {" << endl;
     f_service_ << indent() << "  " << self << " := &" << serviceName
                << "Processor{handler:handler, "
                   "processorMap:make(map[string]"
-               << gen_processor_func_ << ")}" << endl;
+               << gen_processor_func_
+               << "), functionServiceMap:make(map[string]string)}" << endl;
 
     indent_up();
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
@@ -3264,6 +3277,12 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
       f_service_ << indent() << self << ".processorMap[\"" << escapedFuncName
                  << "\"] = &" << pServiceName << "Processor"
                  << publicize((*f_iter)->get_name()) << "{handler:handler}"
+                 << endl;
+    }
+    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+      string escapedFuncName(escape_string((*f_iter)->get_name()));
+      f_service_ << indent() << self << ".functionServiceMap[\""
+                 << escapedFuncName << "\"] = \"" << serviceName << "\""
                  << endl;
     }
 
@@ -3289,6 +3308,12 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
                  << escapedFuncName << "\", &" << pServiceName << "Processor"
                  << publicize((*f_iter)->get_name()) << "{handler:handler})"
                  << endl;
+    }
+
+    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+      string escapedFuncName(escape_string((*f_iter)->get_name()));
+      f_service_ << indent() << "  " << self << ".AddToFunctionServiceMap(\""
+                 << escapedFuncName << "\", \"" << serviceName << "\")" << endl;
     }
 
     f_service_ << indent() << "  return " << self << endl;

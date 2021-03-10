@@ -348,11 +348,16 @@ func (p *RaiserChannelClient) Get500(ctx context.Context) (_r string, err error)
 
 type RaiserProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler Raiser
 }
 
 func (p *RaiserProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *RaiserProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *RaiserProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -366,12 +371,20 @@ func (p *RaiserProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
+func (p *RaiserProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewRaiserProcessor(handler Raiser) *RaiserProcessor {
-  self0 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
   self0.processorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
   self0.processorMap["get200"] = &raiserProcessorGet200{handler:handler}
   self0.processorMap["get500"] = &raiserProcessorGet500{handler:handler}
+  self0.functionServiceMap["doBland"] = "Raiser"
+  self0.functionServiceMap["doRaise"] = "Raiser"
+  self0.functionServiceMap["get200"] = "Raiser"
+  self0.functionServiceMap["get500"] = "Raiser"
   return self0
 }
 

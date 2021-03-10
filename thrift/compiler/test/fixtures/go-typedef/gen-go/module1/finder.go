@@ -302,11 +302,16 @@ func (p *FinderChannelClient) PreviousPlate(ctx context.Context, plate Plate) (_
 
 type FinderProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler Finder
 }
 
 func (p *FinderProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *FinderProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *FinderProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -320,11 +325,18 @@ func (p *FinderProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
+func (p *FinderProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewFinderProcessor(handler Finder) *FinderProcessor {
-  self9 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self9 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self9.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
   self9.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
   self9.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
+  self9.functionServiceMap["byPlate"] = "Finder"
+  self9.functionServiceMap["aliasByPlate"] = "Finder"
+  self9.functionServiceMap["previousPlate"] = "Finder"
   return self9
 }
 

@@ -261,11 +261,16 @@ func (p *MyServiceChannelClient) HasArgDocs(ctx context.Context, s *module0.MySt
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyService
 }
 
 func (p *MyServiceProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyServiceProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyServiceProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -279,10 +284,16 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
   return p.processorMap
 }
 
+func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self2 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self2 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self2.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
   self2.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
+  self2.functionServiceMap["query"] = "MyService"
+  self2.functionServiceMap["has_arg_docs"] = "MyService"
   return self2
 }
 

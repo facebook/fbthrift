@@ -196,11 +196,16 @@ func (p *MyServicePrioParentChannelClient) Pong(ctx context.Context) (err error)
 
 type MyServicePrioParentProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyServicePrioParent
 }
 
 func (p *MyServicePrioParentProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyServicePrioParentProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -214,10 +219,16 @@ func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.Processo
   return p.processorMap
 }
 
+func (p *MyServicePrioParentProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-  self8 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self8 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self8.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
   self8.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
+  self8.functionServiceMap["ping"] = "MyServicePrioParent"
+  self8.functionServiceMap["pong"] = "MyServicePrioParent"
   return self8
 }
 
