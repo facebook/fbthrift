@@ -642,19 +642,125 @@ void parsing_driver::append_fields(t_struct& tstruct, t_field_list&& fields) {
   }
 }
 
-t_ref<t_typedef> parsing_driver::add_unnamed_typedef(
+std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
+    const t_type* type,
+    std::unique_ptr<t_annotations> annotations) {
+  if (annotations != nullptr) {
+    // Make a copy of the node to hold the annotations.
+    // TODO(afuller): Remove the need for copying the underlying type by making
+    // t_type_ref annotatable directly.
+    if (const auto* tbase_type = dynamic_cast<const t_base_type*>(type)) {
+      // base types can be copy constructed.
+      type = add_unnamed_type(
+          std::make_unique<t_base_type>(*tbase_type), std::move(annotations));
+    } else {
+      // Containers always use a new type, so should never show up here.
+      assert(!type->is_container());
+      // For all other types, we can just create a dummy typedef node with
+      // the same name.
+      // NOTE(afuller): This is not a safe assumption as it breaks all
+      // dynamic casts and t_type::is_* calls.
+      type = add_unnamed_typedef(
+          std::make_unique<t_typedef>(
+              const_cast<t_program*>(type->get_program()),
+              type,
+              type->get_name(),
+              scope_cache),
+          std::move(annotations));
+    }
+  }
+  return std::make_unique<t_type_ref>(type);
+}
+
+std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
+    std::unique_ptr<t_type> node,
+    std::unique_ptr<t_annotations> annotations) {
+  const t_type* type = node.get();
+  set_annotations(node.get(), std::move(annotations), nullptr);
+  if (mode == parsing_mode::INCLUDES) {
+    delete_at_the_end(node.release());
+  } else {
+    program->add_unnamed_type(std::move(node));
+  }
+  return std::make_unique<t_type_ref>(type);
+}
+
+std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
+    std::string name,
+    std::unique_ptr<t_annotations> annotations,
+    bool is_const) {
+  if (mode == parsing_mode::INCLUDES) {
+    // Ignore identifier-based type references in include mode
+    return std::make_unique<t_type_ref>();
+  }
+
+  // Try to resolve the type
+  const t_type* type = scope_cache->get_type(name);
+  if (type == nullptr) {
+    type = scope_cache->get_type(program->get_name() + "." + name);
+  }
+  if (type == nullptr) {
+    // TODO(afuller): Remove this special case for const, which requires a
+    // specific declaration order.
+    if (is_const) {
+      failure(
+          "The type '%s' is not defined yet. Types must be "
+          "defined before the usage in constant values.",
+          name.c_str());
+    }
+    // TODO(afuller): Why are interactions special? They should just be another
+    // declared type.
+    type = scope_cache->get_interaction(name);
+    if (type == nullptr) {
+      type = scope_cache->get_interaction(program->get_name() + "." + name);
+    }
+  }
+
+  if (type != nullptr) {
+    // We found the type!
+    return new_type_ref(type, std::move(annotations));
+  }
+
+  /*
+   Either this type isn't yet declared, or it's never
+   declared. Either way allow it and we'll figure it out
+   during generation.
+  */
+  // NOTE(afuller): This assumes that, since the type was referenced by name, it
+  // is safe to create a dummy typedef to use as a proxy for the original type.
+  // However, this actually breaks dynamic casts and t_type::is_* calls.
+  // TODO(afuller): Resolve *all* types in a second pass.
+  return std::make_unique<t_type_ref>(add_placeholder_typedef(
+      std::make_unique<t_typedef>(program, std::move(name), scope_cache),
+      std::move(annotations)));
+}
+
+const t_type* parsing_driver::add_unnamed_type(
+    std::unique_ptr<t_type> node,
+    std::unique_ptr<t_annotations> annotations) {
+  const t_type* result(node.get());
+  set_annotations(node.get(), std::move(annotations), nullptr);
+  if (mode == parsing_mode::INCLUDES) {
+    delete_at_the_end(node.release());
+  } else {
+    program->add_unnamed_type(std::move(node));
+  }
+  return result;
+}
+
+const t_type* parsing_driver::add_unnamed_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
-  t_ref<t_typedef> result(node.get());
+  const t_type* result(node.get());
   set_annotations(node.get(), std::move(annotations), nullptr);
   program->add_unnamed_typedef(std::move(node));
   return result;
 }
 
-t_ref<t_typedef> parsing_driver::add_placeholder_typedef(
+const t_type* parsing_driver::add_placeholder_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
-  t_ref<t_typedef> result(node.get());
+  const t_type* result(node.get());
   set_annotations(node.get(), std::move(annotations), nullptr);
   program->add_placeholder_typedef(std::move(node));
   return result;

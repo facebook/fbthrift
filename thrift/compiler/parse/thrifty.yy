@@ -83,11 +83,13 @@ std::unique_ptr<T> own(T* ptr) {
   return std::unique_ptr<T>(ptr);
 }
 
-// TODO(afuller): Update the scope lookups to return
-// const pointers and remove this function.
-template <typename T>
-t_ref<T> tref(const T* ptr) {
-  return t_ref<T>{ptr};
+// Return the value being pointed to as a temporary and deletes the given pointer.
+template<typename T>
+T consume(T* ptr) {
+  assert(ptr != nullptr);
+  T result(std::move(*ptr));
+  delete ptr;
+  return result;
 }
 
 } // namespace
@@ -104,7 +106,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-using t_typestructpair = std::pair<t_ref<t_type>, t_struct*>;
+using t_typestructpair = std::pair<t_type_ref*, t_struct*>;
 class t_container_type;
 
 } // namespace compiler
@@ -229,9 +231,7 @@ class t_container_type;
  */
 
 %type<t_ref<t_base_type>>    BaseType
-%type<t_ref<t_base_type>>    SimpleBaseType
-%type<t_ref<t_container>>    ContainerType
-%type<t_container*>          SimpleContainerType
+%type<t_container*>          ContainerType
 %type<t_container*>          MapType
 %type<t_container*>          SetType
 %type<t_container*>          ListType
@@ -253,7 +253,7 @@ class t_container_type;
 %type<t_field*>              Field
 %type<t_field_id>            FieldIdentifier
 %type<t_field::e_req>        FieldRequiredness
-%type<t_ref<t_type>>         FieldType
+%type<t_type_ref*>           FieldType
 %type<t_stream_response*>    ResponseAndStreamReturnType
 %type<t_sink*>               ResponseAndSinkReturnType
 %type<t_stream_response*>    StreamReturnType
@@ -274,7 +274,7 @@ class t_container_type;
 %type<t_const_value*>        ConstMap
 %type<t_const_value*>        ConstMapContents
 %type<t_const_value*>        ConstStruct
-%type<t_ref<t_type>>         ConstStructType
+%type<t_type_ref*>           ConstStructType
 %type<t_const_value*>        ConstStructContents
 
 %type<t_struct*>             Struct
@@ -289,7 +289,7 @@ class t_container_type;
 %type<t_service*>            Interaction
 
 %type<t_function*>           Function
-%type<t_ref<t_type>>         FunctionType
+%type<t_type_ref*>           FunctionType
 %type<t_service*>            FunctionList
 
 %type<t_paramlist*>          ParamList
@@ -520,7 +520,7 @@ Typedef:
     {
       driver.debug("TypeDef => StructuredAnnotations tok_typedef FieldType "
           "Identifier TypeAnnotations");
-      $$ = new t_typedef(driver.program, $4, $5, driver.scope_cache);
+      $$ = new t_typedef(driver.program, consume($4), std::move($5), driver.scope_cache);
       driver.finish_node($$, LineType::Typedef, own($6), own($1));
     }
 
@@ -648,10 +648,12 @@ Const:
     {
       driver.debug("StructuredAnnotations Const => tok_const FieldType Identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.program, $4, $5, own($7));
+        $$ = new t_const(driver.program, consume($4), std::move($5), own($7));
         driver.finish_node($$, LineType::Const, own($8), own($1));
       } else {
+        // TODO(afuller): Looks like a bug where driver.finish_node is never called in this case.
         delete $1;
+        delete $4;
         delete $7;
         delete $8;
         $$ = nullptr;
@@ -793,34 +795,21 @@ ConstStruct:
     {
       driver.debug("ConstStruct => ConstStructType { ConstStructContents CommaOrSemicolonOptional }");
       $$ = $3;
-      $$->set_ttype($1);
+      $$->set_ttype(own($1));
     }
 | ConstStructType "{" "}"
     {
       driver.debug("ConstStruct => ConstStructType { }");
       $$ = new t_const_value();
       $$->set_map();
-      $$->set_ttype($1);
+      $$->set_ttype(own($1));
     }
 
 ConstStructType:
   Identifier
     {
       driver.debug("ConstStructType -> Identifier");
-      if (driver.mode == parsing_mode::INCLUDES) {
-        // Ignore identifiers in include mode
-        $$ = nullptr;
-      } else {
-        // Lookup the identifier in the current scope
-        $$ = tref(driver.scope_cache->get_type($1));
-        if (!$$) {
-          $$ = tref(driver.scope_cache->get_type(driver.program->get_name() + "." + $1));
-        }
-        if (!$$) {
-          driver.failure("The type '%s' is not defined yet. Types must be "
-            "defined before the usage in constant values.", $1.c_str());
-        }
-      }
+      $$ = driver.new_type_ref(std::move($1), nullptr, /*is_const=*/true).release();
     }
 
 ConstStructContents:
@@ -1062,11 +1051,15 @@ Function:
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
-      auto rettype = $4;
+      auto rettype = own($4);
       auto* paramlist = $7;
-      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<const t_stream_response*>(rettype.get())->get_throws_struct() : nullptr;
+      t_struct* streamthrows = nullptr;
+      if (const auto* tstream_resp = dynamic_cast<const t_stream_response*>(rettype->get_type())) {
+        streamthrows = tstream_resp->get_throws_struct();
+      }
       t_function* func;
-      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype.get())) {
+      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype->get_type())) {
+        // TODO(afuller): Remove special case for sink.
         func = new t_function(
           tsink,
           $5,
@@ -1075,7 +1068,7 @@ Function:
         );
       } else {
         func = new t_function(
-          rettype,
+          std::move(*rettype),
           $5,
           own(paramlist),
           own($9),
@@ -1094,9 +1087,13 @@ Function:
   | tok_performs FieldType ";"
     {
       driver.debug("Function => tok_performs FieldType");
+      auto ret = own($2);
+      std::string name = ret->get_type()
+          ? "create" + ret->get_type()->get_name()
+          : "<interaction placeholder>";
       $$ = new t_function(
-        $2,
-        $2 ? "create" + $2->get_name() : "<interaction placeholder>",
+        std::move(*ret),
+        std::move(name),
         std::make_unique<t_paramlist>(driver.program)
       );
       $$->set_lineno(driver.scanner->get_lineno());
@@ -1198,9 +1195,9 @@ Field:
         }
       }
 
-      $$ = new t_field($6, $7, $3.value);
+      $$ = new t_field(consume($6), std::move($7), $3.value);
       if ($1) {
-        $$->set_doc(std::string{*$1});
+        $$->set_doc(std::move(*$1));
       }
       $$->set_req($5);
       if ($8) {
@@ -1303,12 +1300,12 @@ FunctionType:
   ResponseAndStreamReturnType
     {
       driver.debug("FunctionType -> ResponseAndStreamReturnType");
-      $$ = driver.add_unnamed_type(own($1), nullptr);
+      $$ = driver.new_type_ref(own($1), nullptr).release();
     }
 | ResponseAndSinkReturnType
     {
       driver.debug("FunctionType -> ResponseAndSinkReturnType");
-      $$ = driver.add_unnamed_type(own($1), nullptr);
+      $$ = driver.new_type_ref(own($1), nullptr).release();
     }
 | FieldType
     {
@@ -1318,14 +1315,14 @@ FunctionType:
 | tok_void
     {
       driver.debug("FunctionType -> tok_void");
-      $$ = &t_base_type::t_void();
+      $$ = new t_type_ref(&t_base_type::t_void());
     }
 
 ResponseAndStreamReturnType:
   FieldType "," StreamReturnType
     {
       driver.debug("ResponseAndStreamReturnType -> FieldType, StreamReturnType");
-      $3->set_first_response_type($1);
+      $3->set_first_response_type(own($1)->get_type());
       $$ = $3;
     }
 | StreamReturnType
@@ -1338,19 +1335,19 @@ StreamReturnType:
   tok_stream "<" FieldType ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
-    $$ = new t_stream_response($3);
+    $$ = new t_stream_response(consume($3).get_type());
   }
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
-    $$ = new t_stream_response($3, $4);
+    $$ = new t_stream_response(consume($3).get_type(), $4);
   }
 
 ResponseAndSinkReturnType:
   FieldType "," SinkReturnType
     {
       driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
-      $3->set_first_response($1);
+      $3->set_first_response(own($1)->get_type());
       $$ = $3;
     }
 | SinkReturnType
@@ -1363,7 +1360,9 @@ SinkReturnType:
   tok_sink "<" SinkFieldType "," SinkFieldType ">"
     {
       driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
-      $$ = new t_sink($3.first, $3.second, $5.first, $5.second);
+      $$ = new t_sink(
+        consume($3.first).get_type(), $3.second,
+        consume($5.first).get_type(), $5.second);
     }
 SinkFieldType:
   FieldType
@@ -1379,64 +1378,20 @@ FieldType:
   Identifier TypeAnnotations
     {
       driver.debug("FieldType => Identifier TypeAnnotations");
-      if (driver.mode == parsing_mode::INCLUDES) {
-        // Ignore identifiers in include mode
-        $$ = nullptr;
-        delete $2;
-      } else {
-        // Lookup the identifier in the current scope
-        $$ = tref(driver.scope_cache->get_type($1));
-        if (!$$) {
-          $$ = tref(driver.scope_cache->get_type(driver.program->get_name() + "." + $1));
-        }
-        if (!$$) {
-          $$ = tref(driver.scope_cache->get_interaction($1));
-        }
-        if (!$$) {
-          $$ = tref(driver.scope_cache->get_interaction(driver.program->get_name() + "." + $1));
-        }
-        // Create typedef in case we have annotations on the type.
-        if ($$ && $2) {
-          auto td = std::make_unique<t_typedef>(
-              const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          $$ = driver.add_unnamed_typedef(std::move(td), own($2));
-        }
-        if (!$$) {
-          /*
-           * Either this type isn't yet declared, or it's never
-             declared.  Either way allow it and we'll figure it out
-             during generation.
-           */
-          $$ = driver.add_placeholder_typedef(
-              std::make_unique<t_typedef>(driver.program, $1, driver.scope_cache),
-              own($2));
-        }
-      }
+      $$ = driver.new_type_ref(std::move($1), own($2)).release();
     }
-| BaseType
+| BaseType TypeAnnotations
     {
       driver.debug("FieldType -> BaseType");
-      $$ = $1;
+      $$ = driver.new_type_ref($1, own($2)).release();
     }
-| ContainerType
+| ContainerType TypeAnnotations
     {
       driver.debug("FieldType -> ContainerType");
-      $$ = $1;
+      $$ = driver.new_type_ref(own($1), own($2)).release();
     }
 
-BaseType: SimpleBaseType TypeAnnotations
-    {
-      driver.debug("BaseType => SimpleBaseType TypeAnnotations");
-      if ($2) {
-        // TODO(afuller): Make the reference itself annotatable
-        // instead of copying the type.
-        $$ = driver.add_unnamed_type(std::make_unique<t_base_type>(*$1), own($2));
-      } else {
-        $$ = $1;
-      }
-    }
-
-SimpleBaseType:
+BaseType:
   tok_string
     {
       driver.debug("BaseType -> tok_string");
@@ -1483,26 +1438,20 @@ SimpleBaseType:
       $$ = &t_base_type::t_float();
     }
 
-ContainerType: SimpleContainerType TypeAnnotations
-    {
-      driver.debug("ContainerType => SimpleContainerType TypeAnnotations");
-      $$ = driver.add_unnamed_type(own($1), own($2));
-    }
-
-SimpleContainerType:
+ContainerType:
   MapType
     {
-      driver.debug("SimpleContainerType -> MapType");
+      driver.debug("ContainerType -> MapType");
       $$ = $1;
     }
 | SetType
     {
-      driver.debug("SimpleContainerType -> SetType");
+      driver.debug("ContainerType -> SetType");
       $$ = $1;
     }
 | ListType
     {
-      driver.debug("SimpleContainerType -> ListType");
+      driver.debug("ContainerType -> ListType");
       $$ = $1;
     }
 
@@ -1510,21 +1459,21 @@ MapType:
   tok_map "<" FieldType "," FieldType ">"
     {
       driver.debug("MapType -> tok_map<FieldType, FieldType>");
-      $$ = new t_map($3, $5);
+      $$ = new t_map(consume($3), consume($5));
     }
 
 SetType:
   tok_set "<" FieldType ">"
     {
       driver.debug("SetType -> tok_set<FieldType>");
-      $$ = new t_set($3);
+      $$ = new t_set(consume($3));
     }
 
 ListType:
   tok_list "<" FieldType ">"
     {
       driver.debug("ListType -> tok_list<FieldType>");
-      $$ = new t_list($3);
+      $$ = new t_list(consume($3));
     }
 
 TypeAnnotations:
@@ -1614,7 +1563,7 @@ StructuredAnnotation:
       driver.debug("StructuredAnnotation => @ConstStructType");
       auto value = std::make_unique<t_const_value>();
       value->set_map();
-      value->set_ttype($2);
+      value->set_ttype(own($2));
       $$ = driver.new_struct_annotation(std::move(value)).release();
     }
 

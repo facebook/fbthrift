@@ -430,33 +430,19 @@ class parsing_driver {
   std::unique_ptr<t_struct> new_throws(
       std::unique_ptr<t_field_list> exceptions = nullptr);
 
-  template <typename T>
-  t_ref<T> add_unnamed_type(
-      std::unique_ptr<T> node,
-      std::unique_ptr<t_annotations> annotations) {
-    t_ref<T> result(node.get());
-    set_annotations(node.get(), std::move(annotations), nullptr);
-    if (mode == parsing_mode::INCLUDES) {
-      delete_at_the_end(node.release());
-    } else {
-      program->add_unnamed_type(std::move(node));
-    }
-    return result;
-  }
-
-  // Adds an unnamed typedef to the program
-  // TODO(afuller): Remove the need for these by an explicit t_type_ref node
-  // that can annotatable.
-  t_ref<t_typedef> add_unnamed_typedef(
-      std::unique_ptr<t_typedef> node,
+  // Creates a reference to a known type.
+  std::unique_ptr<t_type_ref> new_type_ref(
+      const t_type* type,
       std::unique_ptr<t_annotations> annotations);
-
-  // Adds an placeholder typedef to the program
-  // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
-  // node that can be resolved in a second passover the ast.
-  t_ref<t_typedef> add_placeholder_typedef(
-      std::unique_ptr<t_typedef> node,
+  // Creates a reference to a newly created type.
+  std::unique_ptr<t_type_ref> new_type_ref(
+      std::unique_ptr<t_type> type,
       std::unique_ptr<t_annotations> annotations);
+  // Creates a reference to a named type.
+  std::unique_ptr<t_type_ref> new_type_ref(
+      std::string name,
+      std::unique_ptr<t_annotations> annotations,
+      bool is_const = false);
 
   // Adds a declaration to the program.
   t_ref<t_const> add_decl(std::unique_ptr<t_const>&& node, t_doc doc);
@@ -545,6 +531,28 @@ class parsing_driver {
     }
     return false;
   }
+
+  // Add a type specialization.
+  //
+  // For example `map<int, int>` or `int (annotation="value")`
+  // TODO(afuller): Cache specializations.
+  const t_type* add_unnamed_type(
+      std::unique_ptr<t_type> node,
+      std::unique_ptr<t_annotations> annotations);
+
+  // Adds an unnamed typedef to the program
+  // TODO(afuller): Remove the need for these by an explicit t_type_ref node
+  // that can annotatable.
+  const t_type* add_unnamed_typedef(
+      std::unique_ptr<t_typedef> node,
+      std::unique_ptr<t_annotations> annotations);
+
+  // Adds an placeholder typedef to the program
+  // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
+  // node that can be resolved in a second passover the ast.
+  const t_type* add_placeholder_typedef(
+      std::unique_ptr<t_typedef> node,
+      std::unique_ptr<t_annotations> annotations);
 
   std::string scoped_name(const t_named& node) {
     return program->get_name() + "." + node.get_name();
