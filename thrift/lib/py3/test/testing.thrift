@@ -300,3 +300,6 @@ service TestingService {
   void hard_error(1: bool valid) throws (1: HardError e);
   bool renamed_func(1: bool ret) (cpp.name = "renamed_func_in_cpp");
 } (fun_times = "yes",single_quote = "'",double_quotes = '"""',py3.pass_context,)
+
+service TestingServiceChild extends TestingService {
+}

@@ -311,7 +311,7 @@ cdef class ThriftServiceProxy:
         self.name = self.thriftType.name
         self.thriftMeta = thriftMeta
         self.parent = None if self.thriftType.parent is None else ThriftServiceProxy(
-            self.thriftMeta.services[self.thriftType.parent],
+            self.thriftType.parent,
             self.thriftMeta
         )
 
