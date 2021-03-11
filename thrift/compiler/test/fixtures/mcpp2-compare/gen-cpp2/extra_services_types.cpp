@@ -40,15 +40,15 @@ containerStruct2::containerStruct2() :
       fieldA(0),
       req_fieldA(0),
       opt_fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
+      fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
-      req_fieldC(std::initializer_list<int32_t>{1,
+      req_fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
-      opt_fieldC(std::initializer_list<int32_t>{1,
+      opt_fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
@@ -61,7 +61,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 containerStruct2::~containerStruct2() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg) :
+containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg) :
     fieldA(std::move(fieldA__arg)),
     req_fieldA(std::move(req_fieldA__arg)),
     opt_fieldA(std::move(opt_fieldA__arg)),
@@ -222,27 +222,27 @@ const ::std::map<::std::string, bool>* containerStruct2::get_opt_fieldB() const&
   return opt_fieldB_ref().has_value() ? std::addressof(opt_fieldB) : nullptr;
 }
 
-const ::std::set<int32_t>& containerStruct2::get_fieldC() const& {
+const ::std::set<::std::int32_t>& containerStruct2::get_fieldC() const& {
   return fieldC;
 }
 
-::std::set<int32_t> containerStruct2::get_fieldC() && {
+::std::set<::std::int32_t> containerStruct2::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const ::std::set<int32_t>& containerStruct2::get_req_fieldC() const& {
+const ::std::set<::std::int32_t>& containerStruct2::get_req_fieldC() const& {
   return req_fieldC;
 }
 
-::std::set<int32_t> containerStruct2::get_req_fieldC() && {
+::std::set<::std::int32_t> containerStruct2::get_req_fieldC() && {
   return std::move(req_fieldC);
 }
 
-const ::std::set<int32_t>* containerStruct2::get_opt_fieldC() const& {
+const ::std::set<::std::int32_t>* containerStruct2::get_opt_fieldC() const& {
   return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
 }
 
-::std::set<int32_t>* containerStruct2::get_opt_fieldC() & {
+::std::set<::std::int32_t>* containerStruct2::get_opt_fieldC() & {
   return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
 }
 

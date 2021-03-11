@@ -92,7 +92,7 @@ class AStructB;
 // END forward_declare
 // BEGIN typedefs
 namespace a { namespace different { namespace ns {
-typedef int64_t IncludedInt64;
+typedef ::std::int64_t IncludedInt64;
 
 }}} // a::different::ns
 // END typedefs
@@ -121,7 +121,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       FieldA(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
+  AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg);
 
   AStruct(AStruct&&) = default;
 
@@ -134,7 +134,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t FieldA;
+  ::std::int32_t FieldA;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -161,32 +161,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
     return {this->FieldA, __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA_ref() const&& {
     return {std::move(this->FieldA), __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA_ref() & {
     return {this->FieldA, __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
     return {std::move(this->FieldA), __isset.FieldA};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_FieldA() const {
+  ::std::int32_t get_FieldA() const {
     return FieldA;
   }
 
-  int32_t& set_FieldA(int32_t FieldA_) {
+  ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.FieldA = true;
@@ -239,10 +239,10 @@ class AStructB final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :
-      FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
+      FieldA(std::make_shared<::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
+  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);
 
   AStructB(AStructB&&) = default;
 
@@ -255,7 +255,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
+  std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
 
  public:
   bool operator==(const AStructB& rhs) const;
@@ -276,16 +276,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T&& FieldA_ref() && { return std::move(FieldA); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T&& FieldA_ref() const&& { return std::move(FieldA); }
 
   template <class Protocol_>

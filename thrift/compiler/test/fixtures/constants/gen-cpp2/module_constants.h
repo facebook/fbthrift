@@ -14,9 +14,9 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static constexpr int32_t const myInt_ = 1337;
+  static constexpr ::std::int32_t const myInt_ = 1337;
 
-  static constexpr int32_t myInt() {
+  static constexpr ::std::int32_t myInt() {
     return myInt_;
   }
 
@@ -43,7 +43,7 @@ multi line string.
     return multi_line_string_;
   }
 
-  static ::std::vector<::std::map<::std::string, int32_t>> const& states();
+  static ::std::vector<::std::map<::std::string, ::std::int32_t>> const& states();
 
   static constexpr double const x_ = 1;
 
@@ -75,9 +75,9 @@ multi line string.
     return longDoubleValue_;
   }
 
-  static constexpr  ::cpp2::MyCompany const my_company_ =  ::cpp2::Company::FACEBOOK;
+  static constexpr ::cpp2::MyCompany const my_company_ =  ::cpp2::Company::FACEBOOK;
 
-  static constexpr  ::cpp2::MyCompany my_company() {
+  static constexpr ::cpp2::MyCompany my_company() {
     return my_company_;
   }
 
@@ -91,59 +91,59 @@ multi line string.
     return foo_;
   }
 
-  static constexpr  ::cpp2::MyIntIdentifier const bar_ = 42;
+  static constexpr ::cpp2::MyIntIdentifier const bar_ = 42;
 
-  static constexpr  ::cpp2::MyIntIdentifier bar() {
+  static constexpr ::cpp2::MyIntIdentifier bar() {
     return bar_;
   }
 
-  static  ::cpp2::MyMapIdentifier const& mymap();
+  static ::cpp2::MyMapIdentifier const& mymap();
 
-  static  ::cpp2::Internship const& instagram();
+  static ::cpp2::Internship const& instagram();
 
-  static  ::cpp2::Internship const& partial_const();
+  static ::cpp2::Internship const& partial_const();
 
-  static ::std::vector< ::cpp2::Range> const& kRanges();
+  static ::std::vector<::cpp2::Range> const& kRanges();
 
-  static ::std::vector< ::cpp2::Internship> const& internList();
+  static ::std::vector<::cpp2::Internship> const& internList();
 
-  static  ::cpp2::struct1 const& pod_0();
+  static ::cpp2::struct1 const& pod_0();
 
-  static  ::cpp2::struct1 const& pod_s_0();
+  static ::cpp2::struct1 const& pod_s_0();
 
-  static  ::cpp2::struct1 const& pod_1();
+  static ::cpp2::struct1 const& pod_1();
 
-  static  ::cpp2::struct1 const& pod_s_1();
+  static ::cpp2::struct1 const& pod_s_1();
 
-  static  ::cpp2::struct2 const& pod_2();
+  static ::cpp2::struct2 const& pod_2();
 
-  static  ::cpp2::struct2 const& pod_trailing_commas();
+  static ::cpp2::struct2 const& pod_trailing_commas();
 
-  static  ::cpp2::struct2 const& pod_s_2();
+  static ::cpp2::struct2 const& pod_s_2();
 
-  static  ::cpp2::struct3 const& pod_3();
+  static ::cpp2::struct3 const& pod_3();
 
-  static  ::cpp2::struct3 const& pod_s_3();
+  static ::cpp2::struct3 const& pod_s_3();
 
-  static  ::cpp2::struct4 const& pod_4();
+  static ::cpp2::struct4 const& pod_4();
 
-  static  ::cpp2::union1 const& u_1_1();
+  static ::cpp2::union1 const& u_1_1();
 
-  static  ::cpp2::union1 const& u_1_2();
+  static ::cpp2::union1 const& u_1_2();
 
-  static  ::cpp2::union1 const& u_1_3();
+  static ::cpp2::union1 const& u_1_3();
 
-  static  ::cpp2::union2 const& u_2_1();
+  static ::cpp2::union2 const& u_2_1();
 
-  static  ::cpp2::union2 const& u_2_2();
+  static ::cpp2::union2 const& u_2_2();
 
-  static  ::cpp2::union2 const& u_2_3();
+  static ::cpp2::union2 const& u_2_3();
 
-  static  ::cpp2::union2 const& u_2_4();
+  static ::cpp2::union2 const& u_2_4();
 
-  static  ::cpp2::union2 const& u_2_5();
+  static ::cpp2::union2 const& u_2_5();
 
-  static  ::cpp2::union2 const& u_2_6();
+  static ::cpp2::union2 const& u_2_6();
 
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
@@ -195,7 +195,7 @@ multi line string.
     return escaped_a_;
   }
 
-  static ::std::map<::std::string, int32_t> const& char2ascii();
+  static ::std::map<::std::string, ::std::int32_t> const& char2ascii();
 
   static ::std::vector<::std::string> const& escaped_strings();
 
@@ -211,27 +211,27 @@ multi line string.
     return true_c_;
   }
 
-  static constexpr int8_t const zero_byte_ = static_cast<int8_t>(0);
+  static constexpr ::std::int8_t const zero_byte_ = static_cast<int8_t>(0);
 
-  static constexpr int8_t zero_byte() {
+  static constexpr ::std::int8_t zero_byte() {
     return zero_byte_;
   }
 
-  static constexpr int16_t const zero16_ = static_cast<int16_t>(0);
+  static constexpr ::std::int16_t const zero16_ = static_cast<int16_t>(0);
 
-  static constexpr int16_t zero16() {
+  static constexpr ::std::int16_t zero16() {
     return zero16_;
   }
 
-  static constexpr int32_t const zero32_ = 0;
+  static constexpr ::std::int32_t const zero32_ = 0;
 
-  static constexpr int32_t zero32() {
+  static constexpr ::std::int32_t zero32() {
     return zero32_;
   }
 
-  static constexpr int64_t const zero64_ = 0LL;
+  static constexpr ::std::int64_t const zero64_ = 0LL;
 
-  static constexpr int64_t zero64() {
+  static constexpr ::std::int64_t zero64() {
     return zero64_;
   }
 
@@ -251,19 +251,19 @@ multi line string.
     return empty_string_;
   }
 
-  static ::std::vector<int32_t> const& empty_int_list();
+  static ::std::vector<::std::int32_t> const& empty_int_list();
 
   static ::std::vector<::std::string> const& empty_string_list();
 
-  static ::std::set<int32_t> const& empty_int_set();
+  static ::std::set<::std::int32_t> const& empty_int_set();
 
   static ::std::set<::std::string> const& empty_string_set();
 
-  static ::std::map<int32_t, int32_t> const& empty_int_int_map();
+  static ::std::map<::std::int32_t, ::std::int32_t> const& empty_int_int_map();
 
-  static ::std::map<int32_t, ::std::string> const& empty_int_string_map();
+  static ::std::map<::std::int32_t, ::std::string> const& empty_int_string_map();
 
-  static ::std::map<::std::string, int32_t> const& empty_string_int_map();
+  static ::std::map<::std::string, ::std::int32_t> const& empty_string_int_map();
 
   static ::std::map<::std::string, ::std::string> const& empty_string_string_map();
 

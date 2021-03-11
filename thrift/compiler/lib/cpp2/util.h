@@ -69,8 +69,7 @@ class TypeResolver {
   std::string gen_stream_resp_type(const t_stream_response* node);
   std::string gen_template_type(
       std::string template_name,
-      std::initializer_list<std::string> args,
-      const char* delim = ", ");
+      std::initializer_list<std::string> args);
   std::string gen_namespaced_name(const t_type* node);
 };
 

@@ -78,7 +78,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       isTrue(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, int32_t second__arg, int64_t third__arg, bool isTrue__arg);
+  BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg);
 
   BasicTypes(BasicTypes&&) = default;
 
@@ -91,11 +91,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  int32_t first;
+  ::std::int32_t first;
  private:
-  int32_t second;
+  ::std::int32_t second;
  private:
-  int64_t third;
+  ::std::int64_t third;
  private:
   bool isTrue;
 
@@ -124,65 +124,65 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> first_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->first};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> first_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->first)};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> first_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->first};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> first_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->first)};
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> second_ref() const& {
     return {this->second, __isset.second};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> second_ref() const&& {
     return {std::move(this->second), __isset.second};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> second_ref() & {
     return {this->second, __isset.second};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> second_ref() && {
     return {std::move(this->second), __isset.second};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> third_ref() const& {
     return {this->third, __isset.third};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> third_ref() const&& {
     return {std::move(this->third), __isset.third};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> third_ref() & {
     return {this->third, __isset.third};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> third_ref() && {
     return {std::move(this->third), __isset.third};
   }
@@ -210,25 +210,25 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_first() const {
+  ::std::int32_t get_first() const {
     return first;
   }
 
-  int32_t& set_first(int32_t first_) {
+  ::std::int32_t& set_first(::std::int32_t first_) {
     first = first_;
     return first;
   }
 
-  const int32_t* get_second() const& {
+  const ::std::int32_t* get_second() const& {
     return second_ref() ? std::addressof(second) : nullptr;
   }
 
-  int32_t* get_second() & {
+  ::std::int32_t* get_second() & {
     return second_ref() ? std::addressof(second) : nullptr;
   }
-  int32_t* get_second() && = delete;
+  ::std::int32_t* get_second() && = delete;
 
-  int32_t& set_second(int32_t second_) {
+  ::std::int32_t& set_second(::std::int32_t second_) {
     second = second_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.second = true;
@@ -236,16 +236,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return second;
   }
 
-  const int64_t* get_third() const& {
+  const ::std::int64_t* get_third() const& {
     return third_ref() ? std::addressof(third) : nullptr;
   }
 
-  int64_t* get_third() & {
+  ::std::int64_t* get_third() & {
     return third_ref() ? std::addressof(third) : nullptr;
   }
-  int64_t* get_third() && = delete;
+  ::std::int64_t* get_third() && = delete;
 
-  int64_t& set_third(int64_t third_) {
+  ::std::int64_t& set_third(::std::int64_t third_) {
     third = third_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.third = true;

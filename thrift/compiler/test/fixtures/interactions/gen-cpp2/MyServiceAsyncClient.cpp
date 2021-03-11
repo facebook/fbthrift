@@ -206,7 +206,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> MyService_MyInteraction_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> MyService_MyInteraction_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<
@@ -313,12 +313,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteraction.frobnicate");
 }
-folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate() {
+folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_frobnicate(rpcOptions);
 }
 
-folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_frobnicate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   frobnicate(rpcOptions, std::move(callback));
@@ -328,7 +328,7 @@ folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobn
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_frobnicate(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -357,8 +357,8 @@ folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_frobn
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
-int32_t MyServiceAsyncClient::MyInteraction::recv_frobnicate(::apache::thrift::ClientReceiveState& state) {
-  int32_t _return;
+::std::int32_t MyServiceAsyncClient::MyInteraction::recv_frobnicate(::apache::thrift::ClientReceiveState& state) {
+  ::std::int32_t _return;
   auto ew = recv_wrapped_frobnicate(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -614,7 +614,7 @@ apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::s
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> MyService_MyInteractionFast_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> MyService_MyInteractionFast_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<
@@ -721,12 +721,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteractionFast.frobnicate");
 }
-folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate() {
+folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_frobnicate(rpcOptions);
 }
 
-folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_frobnicate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   frobnicate(rpcOptions, std::move(callback));
@@ -736,7 +736,7 @@ folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_f
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_frobnicate(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -765,8 +765,8 @@ folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_f
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
-int32_t MyServiceAsyncClient::MyInteractionFast::recv_frobnicate(::apache::thrift::ClientReceiveState& state) {
-  int32_t _return;
+::std::int32_t MyServiceAsyncClient::MyInteractionFast::recv_frobnicate(::apache::thrift::ClientReceiveState& state) {
+  ::std::int32_t _return;
   auto ew = recv_wrapped_frobnicate(_return, state);
   if (ew) {
     ew.throw_exception();

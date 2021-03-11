@@ -116,7 +116,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -129,7 +129,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
 
@@ -159,22 +159,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
@@ -202,11 +202,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;

@@ -13,10 +13,10 @@ namespace apache { namespace thrift { namespace frozen {
 
 
 FROZEN_TYPE(::some::ns::IncludedB,
-  FROZEN_FIELD(i32Field, 1, int32_t)
+  FROZEN_FIELD(i32Field, 1, ::std::int32_t)
   FROZEN_FIELD(strField, 2, ::std::string)
   FROZEN_VIEW(
-    FROZEN_VIEW_FIELD(i32Field, int32_t)
+    FROZEN_VIEW_FIELD(i32Field, ::std::int32_t)
     FROZEN_VIEW_FIELD(strField, ::std::string))
   FROZEN_SAVE_INLINE(
     FROZEN_SAVE_FIELD(i32Field)

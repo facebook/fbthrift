@@ -29,85 +29,85 @@ namespace some { namespace valid { namespace ns {
 class ParamServiceSvAsyncIf {
  public:
   virtual ~ParamServiceSvAsyncIf() {}
-  virtual void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t p_param1) = 0;
-  virtual void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t p_param1, int16_t p_param2) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) = 0;
-  virtual void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual void async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
-  virtual void async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::simpleTypeDef p_param1) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) = 0;
-  virtual void async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::MyEnumA p_param1) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) = 0;
-  virtual void async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) = 0;
-  virtual void async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) = 0;
-  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) = 0;
-  virtual void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t p_param1, int64_t p_param2) = 0;
-  virtual folly::Future<bool> future_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) = 0;
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) = 0;
-  virtual void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual void async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) = 0;
-  virtual folly::Future<bool> future_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) = 0;
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) = 0;
-  virtual void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float p_param1, double p_param2) = 0;
-  virtual folly::Future<int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2) = 0;
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2) = 0;
-  virtual void async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
-  virtual folly::Future<int64_t> future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
-  virtual void async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) = 0;
-  virtual void async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) = 0;
-  virtual folly::Future<double> future_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) = 0;
-  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) = 0;
+  virtual void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t p_param1) = 0;
+  virtual void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) = 0;
+  virtual void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual void async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) = 0;
+  virtual void async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) = 0;
+  virtual void async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) = 0;
+  virtual void async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) = 0;
+  virtual void async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) = 0;
+  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) = 0;
+  virtual void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) = 0;
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) = 0;
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) = 0;
+  virtual void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual void async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) = 0;
+  virtual folly::Future<bool> future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) = 0;
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) = 0;
+  virtual void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) = 0;
+  virtual folly::Future<::std::int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2) = 0;
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2) = 0;
+  virtual void async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
+  virtual folly::Future<::std::int64_t> future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) = 0;
+  virtual void async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) = 0;
+  virtual void async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) = 0;
+  virtual folly::Future<double> future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) = 0;
+  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) = 0;
   virtual void async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) = 0;
   virtual folly::Future<std::unique_ptr<::std::string>> future_string_ret_string_param(std::unique_ptr<::std::string> p_param1) = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_string_ret_string_param(std::unique_ptr<::std::string> p_param1) = 0;
   virtual void async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) = 0;
   virtual folly::Future<std::unique_ptr<::std::string>> future_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) = 0;
-  virtual void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback, bool p_param1) = 0;
-  virtual folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> future_map_ret_bool_param(bool p_param1) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> semifuture_map_ret_bool_param(bool p_param1) = 0;
-  virtual void async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
-  virtual folly::Future<std::unique_ptr<::std::vector<bool>>> future_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
-  virtual void async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) = 0;
-  virtual folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) = 0;
-  virtual void async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback, int32_t p_param1) = 0;
-  virtual folly::Future< ::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(int32_t p_param1) = 0;
-  virtual folly::SemiFuture< ::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(int32_t p_param1) = 0;
-  virtual void async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> p_param1) = 0;
-  virtual void async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1) = 0;
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1) = 0;
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1) = 0;
-  virtual void async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2) = 0;
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) = 0;
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) = 0;
-  virtual void async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) = 0;
-  virtual void async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t p_param1) = 0;
-  virtual void async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
-  virtual folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
-  virtual void async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback, int32_t p_param1, int32_t p_param2) = 0;
-  virtual folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> future_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) = 0;
-  virtual folly::SemiFuture<std::unique_ptr< ::some::valid::ns::ComplexUnion>> semifuture_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) = 0;
-  virtual void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) = 0;
-  virtual folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> future_listunion_string_param(std::unique_ptr<::std::string> p_param1) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) = 0;
+  virtual void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) = 0;
+  virtual folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> future_map_ret_bool_param(bool p_param1) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> semifuture_map_ret_bool_param(bool p_param1) = 0;
+  virtual void async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
+  virtual folly::Future<std::unique_ptr<::std::vector<bool>>> future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) = 0;
+  virtual void async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) = 0;
+  virtual folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) = 0;
+  virtual void async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) = 0;
+  virtual folly::Future<::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(::std::int32_t p_param1) = 0;
+  virtual folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(::std::int32_t p_param1) = 0;
+  virtual void async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> p_param1) = 0;
+  virtual void async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) = 0;
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1) = 0;
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1) = 0;
+  virtual void async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) = 0;
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) = 0;
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) = 0;
+  virtual void async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) = 0;
+  virtual void async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t p_param1) = 0;
+  virtual void async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
+  virtual folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) = 0;
+  virtual void async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) = 0;
+  virtual folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) = 0;
+  virtual void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) = 0;
+  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> future_listunion_string_param(std::unique_ptr<::std::string> p_param1) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) = 0;
 };
 
 class ParamServiceAsyncProcessor;
@@ -118,60 +118,60 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 
 
-  void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t p_param1) override;
-  virtual void void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/);
-  folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) override;
-  void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t p_param1, int16_t p_param2) override;
-  virtual void void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/);
-  folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  virtual void void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/);
-  folly::Future<folly::Unit> future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
-  void async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
-  virtual void void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/);
-  folly::Future<folly::Unit> future_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) override;
-  void async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::simpleTypeDef p_param1) override;
-  virtual void void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/);
-  folly::Future<folly::Unit> future_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) override;
-  void async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::MyEnumA p_param1) override;
-  virtual void void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/);
-  folly::Future<folly::Unit> future_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) override;
-  void async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) override;
-  virtual void void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/);
-  folly::Future<folly::Unit> future_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) override;
-  folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) override;
-  void async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) override;
-  virtual bool bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/);
-  folly::Future<bool> future_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) override;
-  folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) override;
-  void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t p_param1, int64_t p_param2) override;
-  virtual bool bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/);
-  folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  folly::SemiFuture<bool> semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  virtual bool bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/);
-  folly::Future<bool> future_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) override;
-  folly::SemiFuture<bool> semifuture_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) override;
-  void async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) override;
-  virtual int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/);
-  folly::Future<int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2) override;
-  folly::SemiFuture<int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2) override;
-  void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float p_param1, double p_param2) override;
-  virtual int64_t i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/);
-  folly::Future<int64_t> future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) override;
-  folly::SemiFuture<int64_t> semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) override;
-  void async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) override;
-  void async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) override;
-  virtual double double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> /*param1*/);
-  folly::Future<double> future_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) override;
-  folly::SemiFuture<double> semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) override;
-  void async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) override;
+  void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t p_param1) override;
+  virtual void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/);
+  folly::Future<folly::Unit> future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) override;
+  void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) override;
+  virtual void void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  virtual void void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/);
+  folly::Future<folly::Unit> future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
+  void async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) override;
+  virtual void void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) override;
+  void async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) override;
+  virtual void void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) override;
+  void async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) override;
+  virtual void void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) override;
+  void async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) override;
+  virtual void void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) override;
+  folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) override;
+  void async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) override;
+  virtual bool bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/);
+  folly::Future<bool> future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) override;
+  folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) override;
+  void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) override;
+  virtual bool bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/);
+  folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  folly::SemiFuture<bool> semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  virtual bool bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/);
+  folly::Future<bool> future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) override;
+  folly::SemiFuture<bool> semifuture_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) override;
+  void async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) override;
+  virtual ::std::int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/);
+  folly::Future<::std::int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2) override;
+  folly::SemiFuture<::std::int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2) override;
+  void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) override;
+  virtual ::std::int64_t i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/);
+  folly::Future<::std::int64_t> future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) override;
+  folly::SemiFuture<::std::int64_t> semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) override;
+  void async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) override;
+  void async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) override;
+  virtual double double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/);
+  folly::Future<double> future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) override;
+  folly::SemiFuture<double> semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) override;
+  void async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) override;
   virtual void string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/);
   folly::Future<std::unique_ptr<::std::string>> future_string_ret_string_param(std::unique_ptr<::std::string> p_param1) override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_string_ret_string_param(std::unique_ptr<::std::string> p_param1) override;
@@ -180,77 +180,77 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
   folly::Future<std::unique_ptr<::std::string>> future_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) override;
   void async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) override;
-  virtual void map_ret_bool_param(::std::map<::std::string, int64_t>& /*_return*/, bool /*param1*/);
-  folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> future_map_ret_bool_param(bool p_param1) override;
-  folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> semifuture_map_ret_bool_param(bool p_param1) override;
-  void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback, bool p_param1) override;
-  virtual void list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/);
-  folly::Future<std::unique_ptr<::std::vector<bool>>> future_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
-  folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
-  void async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
-  virtual void mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> /*param1*/);
-  folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) override;
-  folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) override;
-  void async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) override;
-  virtual  ::some::valid::ns::simpleTypeDef typedef_ret_i32_param(int32_t /*param1*/);
-  folly::Future< ::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(int32_t p_param1) override;
-  folly::SemiFuture< ::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(int32_t p_param1) override;
-  void async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback, int32_t p_param1) override;
-  void async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> p_param1) override;
-  virtual  ::some::valid::ns::MyEnumA enum_ret_double_param(double /*param1*/);
-  folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1) override;
-  folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1) override;
-  void async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1) override;
-  virtual  ::some::valid::ns::MyEnumA enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/);
-  folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) override;
-  folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) override;
-  void async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2) override;
-  virtual void listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/);
-  folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  void async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) override;
-  void async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t p_param1) override;
-  virtual void setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/);
-  folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) override;
-  folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) override;
-  void async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) override;
-  virtual void union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/);
-  folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> future_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) override;
-  folly::SemiFuture<std::unique_ptr< ::some::valid::ns::ComplexUnion>> semifuture_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) override;
-  void async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback, int32_t p_param1, int32_t p_param2) override;
-  virtual void listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/);
-  folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> future_listunion_string_param(std::unique_ptr<::std::string> p_param1) override;
-  folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) override;
-  void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) override;
+  virtual void map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/);
+  folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> future_map_ret_bool_param(bool p_param1) override;
+  folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> semifuture_map_ret_bool_param(bool p_param1) override;
+  void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) override;
+  virtual void list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/);
+  folly::Future<std::unique_ptr<::std::vector<bool>>> future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
+  folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
+  void async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) override;
+  virtual void mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/);
+  folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) override;
+  folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) override;
+  void async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) override;
+  virtual ::some::valid::ns::simpleTypeDef typedef_ret_i32_param(::std::int32_t /*param1*/);
+  folly::Future<::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(::std::int32_t p_param1) override;
+  folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(::std::int32_t p_param1) override;
+  void async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) override;
+  void async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> p_param1) override;
+  virtual ::some::valid::ns::MyEnumA enum_ret_double_param(double /*param1*/);
+  folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1) override;
+  folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1) override;
+  void async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) override;
+  virtual ::some::valid::ns::MyEnumA enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/);
+  folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) override;
+  folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) override;
+  void async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) override;
+  virtual void listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/);
+  folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  void async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) override;
+  void async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t p_param1) override;
+  virtual void setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/);
+  folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) override;
+  folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) override;
+  void async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) override;
+  virtual void union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/);
+  folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) override;
+  folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) override;
+  void async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) override;
+  virtual void listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/);
+  folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> future_listunion_string_param(std::unique_ptr<::std::string> p_param1) override;
+  folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) override;
+  void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) override;
 };
 
 class ParamServiceSvNull : public ParamServiceSvIf {
  public:
-  void void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) override;
-  void void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) override;
-  void void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) override;
-  void void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) override;
-  void void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) override;
-  void void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) override;
-  void void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) override;
-  bool bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) override;
-  bool bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) override;
-  bool bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/) override;
-  int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/) override;
-  int64_t i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/) override;
-  double double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> /*param1*/) override;
+  void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) override;
+  void void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) override;
+  void void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) override;
+  void void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) override;
+  void void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) override;
+  void void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) override;
+  void void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) override;
+  bool bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) override;
+  bool bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) override;
+  bool bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) override;
+  ::std::int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/) override;
+  ::std::int64_t i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) override;
+  double double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) override;
   void string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) override;
   void binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) override;
-  void map_ret_bool_param(::std::map<::std::string, int64_t>& /*_return*/, bool /*param1*/) override;
-  void list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) override;
-  void mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> /*param1*/) override;
-   ::some::valid::ns::simpleTypeDef typedef_ret_i32_param(int32_t /*param1*/) override;
-   ::some::valid::ns::MyEnumA enum_ret_double_param(double /*param1*/) override;
-   ::some::valid::ns::MyEnumA enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/) override;
-  void listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) override;
-  void setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) override;
-  void union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) override;
-  void listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) override;
+  void map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) override;
+  void list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) override;
+  void mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) override;
+  ::some::valid::ns::simpleTypeDef typedef_ret_i32_param(::std::int32_t /*param1*/) override;
+  ::some::valid::ns::MyEnumA enum_ret_double_param(double /*param1*/) override;
+  ::some::valid::ns::MyEnumA enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) override;
+  void listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) override;
+  void setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) override;
+  void union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) override;
+  void listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) override;
 };
 
 class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -366,7 +366,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_i64_ret_float_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_i64_ret_float_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return);
+  static folly::IOBufQueue return_i64_ret_float_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_i64_ret_float_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -374,7 +374,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_i64_ret_string_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_i64_ret_string_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return);
+  static folly::IOBufQueue return_i64_ret_string_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_i64_ret_string_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -382,7 +382,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_i64_ret_i32_i32_i32_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return);
+  static folly::IOBufQueue return_i64_ret_i32_i32_i32_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -414,7 +414,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_map_ret_bool_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_map_ret_bool_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, int64_t> const& _return);
+  static folly::IOBufQueue return_map_ret_bool_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int64_t> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_map_ret_bool_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -430,7 +430,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_mapsetlistmapliststring_ret_listlistlist_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> const& _return);
+  static folly::IOBufQueue return_mapsetlistmapliststring_ret_listlistlist_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -438,7 +438,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_typedef_ret_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_typedef_ret_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::simpleTypeDef const& _return);
+  static folly::IOBufQueue return_typedef_ret_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::simpleTypeDef const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_typedef_ret_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -446,7 +446,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_listtypedef_ret_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::simpleTypeDef> const& _return);
+  static folly::IOBufQueue return_listtypedef_ret_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::simpleTypeDef> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -454,7 +454,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_enum_ret_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_enum_ret_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyEnumA const& _return);
+  static folly::IOBufQueue return_enum_ret_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_enum_ret_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -462,7 +462,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_enum_ret_double_enum_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_enum_ret_double_enum_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyEnumA const& _return);
+  static folly::IOBufQueue return_enum_ret_double_enum_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_enum_ret_double_enum_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -470,7 +470,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_listenum_ret_map_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_listenum_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::MyEnumA> const& _return);
+  static folly::IOBufQueue return_listenum_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::MyEnumA> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listenum_ret_map_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -478,7 +478,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_struct_ret_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyStruct const& _return);
+  static folly::IOBufQueue return_struct_ret_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyStruct const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -486,7 +486,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_setstruct_ret_set_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_setstruct_ret_set_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set< ::some::valid::ns::MyStruct> const& _return);
+  static folly::IOBufQueue return_setstruct_ret_set_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::some::valid::ns::MyStruct> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_setstruct_ret_set_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -494,7 +494,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_union_ret_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_union_ret_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::ComplexUnion const& _return);
+  static folly::IOBufQueue return_union_ret_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::ComplexUnion const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_union_ret_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -502,7 +502,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_listunion_string_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_listunion_string_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::ComplexUnion> const& _return);
+  static folly::IOBufQueue return_listunion_string_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::ComplexUnion> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listunion_string_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

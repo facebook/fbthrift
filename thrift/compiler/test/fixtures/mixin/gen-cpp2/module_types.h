@@ -67,7 +67,7 @@ class Foo;
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
-typedef  ::cpp2::Mixin3Base Mixin3;
+typedef ::cpp2::Mixin3Base Mixin3;
 
 } // cpp2
 // END typedefs
@@ -220,7 +220,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Mixin2(apache::thrift::FragileConstructor,  ::cpp2::Mixin1 m1__arg, ::std::string field2__arg);
+  Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg);
 
   Mixin2(Mixin2&&) = default;
 
@@ -233,7 +233,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::cpp2::Mixin1 m1;
+  ::cpp2::Mixin1 m1;
  private:
   ::std::string field2;
 
@@ -263,22 +263,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Mixin1>
+  template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m1_ref() const& {
     return {this->m1, __isset.m1};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin1>
+  template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m1_ref() const&& {
     return {std::move(this->m1), __isset.m1};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin1>
+  template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> m1_ref() & {
     return {this->m1, __isset.m1};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin1>
+  template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m1_ref() && {
     return {std::move(this->m1), __isset.m1};
   }
@@ -309,11 +309,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   FOLLY_ERASE auto field1_ref() const&  { return m1.field1_ref();            }
   FOLLY_ERASE auto field1_ref() &&      { return std::move(m1).field1_ref(); }
   FOLLY_ERASE auto field1_ref() const&& { return std::move(m1).field1_ref(); }
-  const  ::cpp2::Mixin1& get_m1() const&;
-   ::cpp2::Mixin1 get_m1() &&;
+  const ::cpp2::Mixin1& get_m1() const&;
+  ::cpp2::Mixin1 get_m1() &&;
 
-  template <typename T_Mixin2_m1_struct_setter =  ::cpp2::Mixin1>
-   ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
+  template <typename T_Mixin2_m1_struct_setter = ::cpp2::Mixin1>
+  ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
     m1 = std::forward<T_Mixin2_m1_struct_setter>(m1_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m1 = true;
@@ -511,7 +511,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2::Mixin2 m2__arg,  ::cpp2::Mixin3 m3__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg);
 
   Foo(Foo&&) = default;
 
@@ -526,9 +526,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string field4;
  private:
-   ::cpp2::Mixin2 m2;
+  ::cpp2::Mixin2 m2;
  private:
-   ::cpp2::Mixin3 m3;
+  ::cpp2::Mixin3 m3;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -579,44 +579,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Mixin2>
+  template <typename..., typename T = ::cpp2::Mixin2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m2_ref() const& {
     return {this->m2, __isset.m2};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin2>
+  template <typename..., typename T = ::cpp2::Mixin2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m2_ref() const&& {
     return {std::move(this->m2), __isset.m2};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin2>
+  template <typename..., typename T = ::cpp2::Mixin2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> m2_ref() & {
     return {this->m2, __isset.m2};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin2>
+  template <typename..., typename T = ::cpp2::Mixin2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m2_ref() && {
     return {std::move(this->m2), __isset.m2};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Mixin3>
+  template <typename..., typename T = ::cpp2::Mixin3>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m3_ref() const& {
     return {this->m3, __isset.m3};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin3>
+  template <typename..., typename T = ::cpp2::Mixin3>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m3_ref() const&& {
     return {std::move(this->m3), __isset.m3};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin3>
+  template <typename..., typename T = ::cpp2::Mixin3>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> m3_ref() & {
     return {this->m3, __isset.m3};
   }
 
-  template <typename..., typename T =  ::cpp2::Mixin3>
+  template <typename..., typename T = ::cpp2::Mixin3>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m3_ref() && {
     return {std::move(this->m3), __isset.m3};
   }
@@ -654,22 +654,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field4;
   }
-  const  ::cpp2::Mixin2& get_m2() const&;
-   ::cpp2::Mixin2 get_m2() &&;
+  const ::cpp2::Mixin2& get_m2() const&;
+  ::cpp2::Mixin2 get_m2() &&;
 
-  template <typename T_Foo_m2_struct_setter =  ::cpp2::Mixin2>
-   ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
+  template <typename T_Foo_m2_struct_setter = ::cpp2::Mixin2>
+  ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
     m2 = std::forward<T_Foo_m2_struct_setter>(m2_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m2 = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return m2;
   }
-  const  ::cpp2::Mixin3& get_m3() const&;
-   ::cpp2::Mixin3 get_m3() &&;
+  const ::cpp2::Mixin3& get_m3() const&;
+  ::cpp2::Mixin3 get_m3() &&;
 
-  template <typename T_Foo_m3_struct_setter =  ::cpp2::Mixin3>
-   ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
+  template <typename T_Foo_m3_struct_setter = ::cpp2::Mixin3>
+  ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
     m3 = std::forward<T_Foo_m3_struct_setter>(m3_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.m3 = true;

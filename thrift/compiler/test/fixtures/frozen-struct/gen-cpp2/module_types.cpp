@@ -77,7 +77,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 ModuleA::~ModuleA() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<int16_t> listField__arg, ::std::map<::std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
+ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)),
     listField(std::move(listField__arg)),
@@ -155,35 +155,35 @@ bool ModuleA::operator<(const ModuleA& rhs) const {
   return false;
 }
 
-const ::std::vector<int16_t>& ModuleA::get_listField() const& {
+const ::std::vector<::std::int16_t>& ModuleA::get_listField() const& {
   return listField;
 }
 
-::std::vector<int16_t> ModuleA::get_listField() && {
+::std::vector<::std::int16_t> ModuleA::get_listField() && {
   return std::move(listField);
 }
 
-const ::std::map<::std::string, int32_t>& ModuleA::get_mapField() const& {
+const ::std::map<::std::string, ::std::int32_t>& ModuleA::get_mapField() const& {
   return mapField;
 }
 
-::std::map<::std::string, int32_t> ModuleA::get_mapField() && {
+::std::map<::std::string, ::std::int32_t> ModuleA::get_mapField() && {
   return std::move(mapField);
 }
 
-const  ::some::ns::IncludedA& ModuleA::get_inclAField() const& {
+const ::some::ns::IncludedA& ModuleA::get_inclAField() const& {
   return inclAField;
 }
 
- ::some::ns::IncludedA ModuleA::get_inclAField() && {
+::some::ns::IncludedA ModuleA::get_inclAField() && {
   return std::move(inclAField);
 }
 
-const  ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
+const ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
   return inclBField;
 }
 
- ::some::ns::IncludedB ModuleA::get_inclBField() && {
+::some::ns::IncludedB ModuleA::get_inclBField() && {
   return std::move(inclBField);
 }
 
@@ -214,26 +214,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ModuleA,
         ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedA>,
+        ::some::ns::IncludedA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ModuleA,
         ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedB>,
+        ::some::ns::IncludedB>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ModuleA,
         ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedA>,
+        ::some::ns::IncludedA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ModuleA,
         ::apache::thrift::type_class::structure,
-         ::some::ns::IncludedB>,
+        ::some::ns::IncludedB>,
     "inconsistent use of nimble option");
 
 }} // some::ns
@@ -262,7 +262,7 @@ void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
 namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ModuleB::ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg) :
+ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :
     i32Field(std::move(i32Field__arg)),
     inclEnumB(std::move(inclEnumB__arg)) {
   __isset.i32Field = true;

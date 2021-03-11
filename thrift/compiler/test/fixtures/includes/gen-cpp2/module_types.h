@@ -72,7 +72,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyIncludedField__arg, ::cpp2::Included MyOtherIncludedField__arg, ::cpp2::IncludedInt64 MyIncludedInt__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -85,11 +85,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::cpp2::Included MyIncludedField;
+  ::cpp2::Included MyIncludedField;
  private:
-   ::cpp2::Included MyOtherIncludedField;
+  ::cpp2::Included MyOtherIncludedField;
  private:
-   ::cpp2::IncludedInt64 MyIncludedInt;
+  ::cpp2::IncludedInt64 MyIncludedInt;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -118,86 +118,86 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedField_ref() const& {
     return {this->MyIncludedField, __isset.MyIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField_ref() const&& {
     return {std::move(this->MyIncludedField), __isset.MyIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedField_ref() & {
     return {this->MyIncludedField, __isset.MyIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField_ref() && {
     return {std::move(this->MyIncludedField), __isset.MyIncludedField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyOtherIncludedField_ref() const& {
     return {this->MyOtherIncludedField, __isset.MyOtherIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField_ref() const&& {
     return {std::move(this->MyOtherIncludedField), __isset.MyOtherIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyOtherIncludedField_ref() & {
     return {this->MyOtherIncludedField, __isset.MyOtherIncludedField};
   }
 
-  template <typename..., typename T =  ::cpp2::Included>
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField_ref() && {
     return {std::move(this->MyOtherIncludedField), __isset.MyOtherIncludedField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt_ref() const& {
     return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt_ref() const&& {
     return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedInt_ref() & {
     return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::cpp2::IncludedInt64>
+  template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
     return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const  ::cpp2::Included& get_MyIncludedField() const&;
-   ::cpp2::Included get_MyIncludedField() &&;
+  const ::cpp2::Included& get_MyIncludedField() const&;
+  ::cpp2::Included get_MyIncludedField() &&;
 
-  template <typename T_MyStruct_MyIncludedField_struct_setter =  ::cpp2::Included>
-   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
+  template <typename T_MyStruct_MyIncludedField_struct_setter = ::cpp2::Included>
+  ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
     MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedField = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIncludedField;
   }
-  const  ::cpp2::Included& get_MyOtherIncludedField() const&;
-   ::cpp2::Included get_MyOtherIncludedField() &&;
+  const ::cpp2::Included& get_MyOtherIncludedField() const&;
+  ::cpp2::Included get_MyOtherIncludedField() &&;
 
-  template <typename T_MyStruct_MyOtherIncludedField_struct_setter =  ::cpp2::Included>
-   ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
+  template <typename T_MyStruct_MyOtherIncludedField_struct_setter = ::cpp2::Included>
+  ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
     MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyOtherIncludedField = true;
@@ -205,11 +205,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyOtherIncludedField;
   }
 
-   ::cpp2::IncludedInt64 get_MyIncludedInt() const {
+  ::cpp2::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;
   }
 
-   ::cpp2::IncludedInt64& set_MyIncludedInt( ::cpp2::IncludedInt64 MyIncludedInt_) {
+  ::cpp2::IncludedInt64& set_MyIncludedInt(::cpp2::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedInt = true;

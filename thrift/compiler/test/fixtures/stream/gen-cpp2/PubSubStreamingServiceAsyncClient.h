@@ -28,31 +28,31 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   }
 
 
-  virtual void returnstream(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
-  virtual void returnstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
+  virtual void returnstream(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual void returnstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
  protected:
-  void returnstreamImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  void returnstreamImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
  public:
 
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_returnstream(int32_t p_i32_from, int32_t p_i32_to);
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstream(int32_t p_i32_from, int32_t p_i32_to);
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstream(int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstream<false>(nullptr, p_i32_from, p_i32_to);
   }
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstream<true>(&rpcOptions, p_i32_from, p_i32_to);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstream(apache::thrift::RpcOptions* rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -87,7 +87,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    apache::thrift::ClientBufferedStream<int32_t> _return;
+    apache::thrift::ClientBufferedStream<::std::int32_t> _return;
     if (auto ew = recv_wrapped_returnstream(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -98,41 +98,41 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
 
 
 
-  static folly::exception_wrapper recv_wrapped_returnstream(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static apache::thrift::ClientBufferedStream<int32_t> recv_returnstream(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_returnstream(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientBufferedStream<::std::int32_t> recv_returnstream(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual apache::thrift::ClientBufferedStream<int32_t> recv_instance_returnstream(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_returnstream(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> recv_instance_returnstream(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_returnstream(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void returnstreamT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  void returnstreamT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> returnstreamCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
-  virtual void streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
+  virtual void streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
+  virtual void streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
  protected:
-  void streamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void streamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
  public:
 
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_streamthrows(int32_t p_foo);
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_streamthrows(::std::int32_t p_foo);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_streamthrows(int32_t p_foo);
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_streamthrows(::std::int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_streamthrows(int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(::std::int32_t p_foo) {
     return co_streamthrows<false>(nullptr, p_foo);
   }
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_streamthrows<true>(&rpcOptions, p_foo);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_streamthrows(apache::thrift::RpcOptions* rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -167,7 +167,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    apache::thrift::ClientBufferedStream<int32_t> _return;
+    apache::thrift::ClientBufferedStream<::std::int32_t> _return;
     if (auto ew = recv_wrapped_streamthrows(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -178,41 +178,41 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
 
 
 
-  static folly::exception_wrapper recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static apache::thrift::ClientBufferedStream<int32_t> recv_streamthrows(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientBufferedStream<::std::int32_t> recv_streamthrows(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual apache::thrift::ClientBufferedStream<int32_t> recv_instance_streamthrows(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_streamthrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> recv_instance_streamthrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_streamthrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void streamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void streamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> streamthrowsCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
-  virtual void boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
+  virtual void boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
+  virtual void boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
  protected:
-  void boththrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void boththrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
  public:
 
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_boththrows(int32_t p_foo);
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_boththrows(::std::int32_t p_foo);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_boththrows(int32_t p_foo);
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_boththrows(::std::int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_boththrows(int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(::std::int32_t p_foo) {
     return co_boththrows<false>(nullptr, p_foo);
   }
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_boththrows<true>(&rpcOptions, p_foo);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_boththrows(apache::thrift::RpcOptions* rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -247,7 +247,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    apache::thrift::ClientBufferedStream<int32_t> _return;
+    apache::thrift::ClientBufferedStream<::std::int32_t> _return;
     if (auto ew = recv_wrapped_boththrows(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -258,41 +258,41 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
 
 
 
-  static folly::exception_wrapper recv_wrapped_boththrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static apache::thrift::ClientBufferedStream<int32_t> recv_boththrows(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_boththrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientBufferedStream<::std::int32_t> recv_boththrows(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual apache::thrift::ClientBufferedStream<int32_t> recv_instance_boththrows(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_boththrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> recv_instance_boththrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_boththrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void boththrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void boththrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> boththrowsCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
-  virtual void responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
+  virtual void responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
+  virtual void responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo);
  protected:
-  void responseandstreamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void responseandstreamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
  public:
 
-  virtual apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> sync_responseandstreamthrows(int32_t p_foo);
-  virtual apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_responseandstreamthrows(::std::int32_t p_foo);
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
-  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t p_foo);
-  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_responseandstreamthrows(::std::int32_t p_foo);
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> co_responseandstreamthrows(int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(::std::int32_t p_foo) {
     return co_responseandstreamthrows<false>(nullptr, p_foo);
   }
   template <int = 0>
-  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_responseandstreamthrows<true>(&rpcOptions, p_foo);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions* rpcOptions, int32_t p_foo) {
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -327,7 +327,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> _return;
+    apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> _return;
     if (auto ew = recv_wrapped_responseandstreamthrows(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -338,41 +338,41 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
 
 
 
-  static folly::exception_wrapper recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> recv_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> recv_instance_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_instance_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void responseandstreamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  void responseandstreamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> responseandstreamthrowsCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void returnstreamFast(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
-  virtual void returnstreamFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
+  virtual void returnstreamFast(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual void returnstreamFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
  protected:
-  void returnstreamFastImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  void returnstreamFastImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
  public:
 
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_returnstreamFast(int32_t p_i32_from, int32_t p_i32_to);
-  virtual apache::thrift::ClientBufferedStream<int32_t> sync_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> sync_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstreamFast(int32_t p_i32_from, int32_t p_i32_to);
-  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstreamFast(int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstreamFast<false>(nullptr, p_i32_from, p_i32_to);
   }
   template <int = 0>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstreamFast<true>(&rpcOptions, p_i32_from, p_i32_to);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<apache::thrift::ClientBufferedStream<int32_t>> co_returnstreamFast(apache::thrift::RpcOptions* rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -407,7 +407,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    apache::thrift::ClientBufferedStream<int32_t> _return;
+    apache::thrift::ClientBufferedStream<::std::int32_t> _return;
     if (auto ew = recv_wrapped_returnstreamFast(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -418,14 +418,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
 
 
 
-  static folly::exception_wrapper recv_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static apache::thrift::ClientBufferedStream<int32_t> recv_returnstreamFast(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientBufferedStream<::std::int32_t> recv_returnstreamFast(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual apache::thrift::ClientBufferedStream<int32_t> recv_instance_returnstreamFast(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual apache::thrift::ClientBufferedStream<::std::int32_t> recv_instance_returnstreamFast(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void returnstreamFastT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  void returnstreamFastT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> returnstreamFastCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

@@ -148,7 +148,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<int16_t> listField__arg, ::std::map<::std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
+  ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg);
 
   ModuleA(ModuleA&&) = default;
 
@@ -164,17 +164,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~ModuleA();
 
  private:
-  int32_t i32Field;
+  ::std::int32_t i32Field;
  private:
   ::std::string strField;
  private:
-  ::std::vector<int16_t> listField;
+  ::std::vector<::std::int16_t> listField;
  private:
-  ::std::map<::std::string, int32_t> mapField;
+  ::std::map<::std::string, ::std::int32_t> mapField;
  private:
-   ::some::ns::IncludedA inclAField;
+  ::some::ns::IncludedA inclAField;
  private:
-   ::some::ns::IncludedB inclBField;
+  ::some::ns::IncludedB inclBField;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -206,22 +206,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
     return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
@@ -250,98 +250,98 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int16_t>>
+  template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listField_ref() const& {
     return {this->listField, __isset.listField};
   }
 
-  template <typename..., typename T = ::std::vector<int16_t>>
+  template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> listField_ref() const&& {
     return {std::move(this->listField), __isset.listField};
   }
 
-  template <typename..., typename T = ::std::vector<int16_t>>
+  template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> listField_ref() & {
     return {this->listField, __isset.listField};
   }
 
-  template <typename..., typename T = ::std::vector<int16_t>>
+  template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listField_ref() && {
     return {std::move(this->listField), __isset.listField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapField_ref() const& {
     return {this->mapField, __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> mapField_ref() const&& {
     return {std::move(this->mapField), __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> mapField_ref() & {
     return {this->mapField, __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField_ref() && {
     return {std::move(this->mapField), __isset.mapField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::ns::IncludedA>
+  template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclAField_ref() const& {
     return {this->inclAField, __isset.inclAField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedA>
+  template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclAField_ref() const&& {
     return {std::move(this->inclAField), __isset.inclAField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedA>
+  template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> inclAField_ref() & {
     return {this->inclAField, __isset.inclAField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedA>
+  template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclAField_ref() && {
     return {std::move(this->inclAField), __isset.inclAField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::ns::IncludedB>
+  template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclBField_ref() const& {
     return {this->inclBField, __isset.inclBField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedB>
+  template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclBField_ref() const&& {
     return {std::move(this->inclBField), __isset.inclBField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedB>
+  template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> inclBField_ref() & {
     return {this->inclBField, __isset.inclBField};
   }
 
-  template <typename..., typename T =  ::some::ns::IncludedB>
+  template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclBField_ref() && {
     return {std::move(this->inclBField), __isset.inclBField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_i32Field() const {
+  ::std::int32_t get_i32Field() const {
     return i32Field;
   }
 
-  int32_t& set_i32Field(int32_t i32Field_) {
+  ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;
@@ -365,44 +365,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return strField;
   }
-  const ::std::vector<int16_t>& get_listField() const&;
-  ::std::vector<int16_t> get_listField() &&;
+  const ::std::vector<::std::int16_t>& get_listField() const&;
+  ::std::vector<::std::int16_t> get_listField() &&;
 
-  template <typename T_ModuleA_listField_struct_setter = ::std::vector<int16_t>>
-  ::std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
+  template <typename T_ModuleA_listField_struct_setter = ::std::vector<::std::int16_t>>
+  ::std::vector<::std::int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listField = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listField;
   }
-  const ::std::map<::std::string, int32_t>& get_mapField() const&;
-  ::std::map<::std::string, int32_t> get_mapField() &&;
+  const ::std::map<::std::string, ::std::int32_t>& get_mapField() const&;
+  ::std::map<::std::string, ::std::int32_t> get_mapField() &&;
 
-  template <typename T_ModuleA_mapField_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
+  template <typename T_ModuleA_mapField_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  ::std::map<::std::string, ::std::int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapField = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapField;
   }
-  const  ::some::ns::IncludedA& get_inclAField() const&;
-   ::some::ns::IncludedA get_inclAField() &&;
+  const ::some::ns::IncludedA& get_inclAField() const&;
+  ::some::ns::IncludedA get_inclAField() &&;
 
-  template <typename T_ModuleA_inclAField_struct_setter =  ::some::ns::IncludedA>
-   ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
+  template <typename T_ModuleA_inclAField_struct_setter = ::some::ns::IncludedA>
+  ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
     inclAField = std::forward<T_ModuleA_inclAField_struct_setter>(inclAField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclAField = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return inclAField;
   }
-  const  ::some::ns::IncludedB& get_inclBField() const&;
-   ::some::ns::IncludedB get_inclBField() &&;
+  const ::some::ns::IncludedB& get_inclBField() const&;
+  ::some::ns::IncludedB get_inclBField() &&;
 
-  template <typename T_ModuleA_inclBField_struct_setter =  ::some::ns::IncludedB>
-   ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
+  template <typename T_ModuleA_inclBField_struct_setter = ::some::ns::IncludedB>
+  ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
     inclBField = std::forward<T_ModuleA_inclBField_struct_setter>(inclBField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclBField = true;
@@ -459,7 +459,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       inclEnumB(static_cast< ::some::ns::EnumB>(0)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg);
+  ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg);
 
   ModuleB(ModuleB&&) = default;
 
@@ -472,9 +472,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t i32Field;
+  ::std::int32_t i32Field;
  private:
-   ::some::ns::EnumB inclEnumB;
+  ::some::ns::EnumB inclEnumB;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -502,54 +502,54 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
     return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::ns::EnumB>
+  template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> inclEnumB_ref() const& {
     return {this->inclEnumB, __isset.inclEnumB};
   }
 
-  template <typename..., typename T =  ::some::ns::EnumB>
+  template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclEnumB_ref() const&& {
     return {std::move(this->inclEnumB), __isset.inclEnumB};
   }
 
-  template <typename..., typename T =  ::some::ns::EnumB>
+  template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> inclEnumB_ref() & {
     return {this->inclEnumB, __isset.inclEnumB};
   }
 
-  template <typename..., typename T =  ::some::ns::EnumB>
+  template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclEnumB_ref() && {
     return {std::move(this->inclEnumB), __isset.inclEnumB};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_i32Field() const {
+  ::std::int32_t get_i32Field() const {
     return i32Field;
   }
 
-  int32_t& set_i32Field(int32_t i32Field_) {
+  ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;
@@ -557,11 +557,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return i32Field;
   }
 
-   ::some::ns::EnumB get_inclEnumB() const {
+  ::some::ns::EnumB get_inclEnumB() const {
     return inclEnumB;
   }
 
-   ::some::ns::EnumB& set_inclEnumB( ::some::ns::EnumB inclEnumB_) {
+  ::some::ns::EnumB& set_inclEnumB(::some::ns::EnumB inclEnumB_) {
     inclEnumB = inclEnumB_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.inclEnumB = true;

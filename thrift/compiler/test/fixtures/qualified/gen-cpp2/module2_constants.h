@@ -14,11 +14,11 @@ namespace module2 {
 
 struct module2_constants {
 
-  static  ::module2::Struct const& c2();
+  static ::module2::Struct const& c2();
 
-  static  ::module2::Struct const& c3();
+  static ::module2::Struct const& c3();
 
-  static  ::module2::Struct const& c4();
+  static ::module2::Struct const& c4();
 
 };
 

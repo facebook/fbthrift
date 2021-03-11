@@ -15,57 +15,57 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 }
 
 
-void MyServiceSvIf::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+void MyServiceSvIf::query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("query");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   return apache::thrift::detail::si::semifuture([&] {
     return query(std::move(p_s), std::move(p_i));
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_query(std::move(p_s), std::move(p_i)), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_query(std::move(p_s), std::move(p_i));
   });
 }
 
-void MyServiceSvIf::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+void MyServiceSvIf::has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("has_arg_docs");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   return apache::thrift::detail::si::semifuture([&] {
     return has_arg_docs(std::move(p_s), std::move(p_i));
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_has_arg_docs(std::move(p_s), std::move(p_i)), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
+void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_has_arg_docs(std::move(p_s), std::move(p_i));
   });
 }
 
-void MyServiceSvNull::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+void MyServiceSvNull::query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) {
   return;
 }
 
-void MyServiceSvNull::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+void MyServiceSvNull::has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) {
   return;
 }
 

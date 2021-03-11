@@ -133,7 +133,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
@@ -192,11 +192,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
+const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
   return MyDataField;
 }
 
- ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
+::cpp2::MyDataItem MyStruct::get_MyDataField() && {
   return std::move(MyDataField);
 }
 
@@ -225,14 +225,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -354,26 +354,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 
 } // cpp2

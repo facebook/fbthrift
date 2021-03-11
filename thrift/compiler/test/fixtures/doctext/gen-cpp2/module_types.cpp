@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::A>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-A::A(apache::thrift::FragileConstructor, int32_t useless_field__arg) :
+A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
     useless_field(std::move(useless_field__arg)) {
   __isset.useless_field = true;
 }

@@ -121,7 +121,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg);
+  containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg);
 
   containerStruct2(containerStruct2&&) = default;
 
@@ -149,11 +149,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::map<::std::string, bool> opt_fieldB;
  private:
-  ::std::set<int32_t> fieldC;
+  ::std::set<::std::int32_t> fieldC;
  public:
-  ::std::set<int32_t> req_fieldC;
+  ::std::set<::std::int32_t> req_fieldC;
  private:
-  ::std::set<int32_t> opt_fieldC;
+  ::std::set<::std::int32_t> opt_fieldC;
  private:
   ::std::string fieldD;
  private:
@@ -322,63 +322,63 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldC_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldC_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldC)};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldC_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldC_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldC)};
   }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldC_ref() const& {
     return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldC_ref() const&& {
     return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldC_ref() & {
     return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldC_ref() && {
     return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
@@ -537,31 +537,31 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldB;
   }
-  const ::std::set<int32_t>& get_fieldC() const&;
-  ::std::set<int32_t> get_fieldC() &&;
+  const ::std::set<::std::int32_t>& get_fieldC() const&;
+  ::std::set<::std::int32_t> get_fieldC() &&;
 
-  template <typename T_containerStruct2_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_fieldC(T_containerStruct2_fieldC_struct_setter&& fieldC_) {
+  template <typename T_containerStruct2_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_fieldC(T_containerStruct2_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct2_fieldC_struct_setter>(fieldC_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
-  const ::std::set<int32_t>& get_req_fieldC() const&;
-  ::std::set<int32_t> get_req_fieldC() &&;
+  const ::std::set<::std::int32_t>& get_req_fieldC() const&;
+  ::std::set<::std::int32_t> get_req_fieldC() &&;
 
-  template <typename T_containerStruct2_req_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_req_fieldC(T_containerStruct2_req_fieldC_struct_setter&& req_fieldC_) {
+  template <typename T_containerStruct2_req_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_req_fieldC(T_containerStruct2_req_fieldC_struct_setter&& req_fieldC_) {
     req_fieldC = std::forward<T_containerStruct2_req_fieldC_struct_setter>(req_fieldC_);
     return req_fieldC;
   }
-  const ::std::set<int32_t>* get_opt_fieldC() const&;
-  ::std::set<int32_t>* get_opt_fieldC() &;
-  ::std::set<int32_t>* get_opt_fieldC() && = delete;
+  const ::std::set<::std::int32_t>* get_opt_fieldC() const&;
+  ::std::set<::std::int32_t>* get_opt_fieldC() &;
+  ::std::set<::std::int32_t>* get_opt_fieldC() && = delete;
 
-  template <typename T_containerStruct2_opt_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_opt_fieldC(T_containerStruct2_opt_fieldC_struct_setter&& opt_fieldC_) {
+  template <typename T_containerStruct2_opt_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_opt_fieldC(T_containerStruct2_opt_fieldC_struct_setter&& opt_fieldC_) {
     opt_fieldC = std::forward<T_containerStruct2_opt_fieldC_struct_setter>(opt_fieldC_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldC = true;

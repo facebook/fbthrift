@@ -10,18 +10,18 @@
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::MyStruct*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::cpp2::Included*>> MyService_query_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::MyStruct*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::Included*>> MyService_query_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_query_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::MyStruct*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::cpp2::Included*>> MyService_has_arg_docs_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::MyStruct*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::Included*>> MyService_has_arg_docs_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_has_arg_docs_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_query_pargs args;
-  args.get<0>().value = const_cast< ::cpp2::MyStruct*>(&p_s);
-  args.get<1>().value = const_cast< ::cpp2::Included*>(&p_i);
+  args.get<0>().value = const_cast<::cpp2::MyStruct*>(&p_s);
+  args.get<1>().value = const_cast<::cpp2::Included*>(&p_i);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "query";
@@ -30,12 +30,12 @@ void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rp
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_has_arg_docs_pargs args;
-  args.get<0>().value = const_cast< ::cpp2::MyStruct*>(&p_s);
-  args.get<1>().value = const_cast< ::cpp2::Included*>(&p_i);
+  args.get<0>().value = const_cast<::cpp2::MyStruct*>(&p_s);
+  args.get<1>().value = const_cast<::cpp2::Included*>(&p_i);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "has_arg_docs";
@@ -45,12 +45,12 @@ void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOpt
 
 
 
-void MyServiceAsyncClient::query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::query(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   query(rpcOptions, std::move(callback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto ctx = queryCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -60,7 +60,7 @@ void MyServiceAsyncClient::query(apache::thrift::RpcOptions& rpcOptions, std::un
   queryImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -90,12 +90,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       "MyService.query");
 }
 
-void MyServiceAsyncClient::sync_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::sync_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_query(rpcOptions, p_s, p_i);
 }
 
-void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -121,17 +121,17 @@ void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, co
 }
 
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_query(rpcOptions, p_s, p_i);
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_query(rpcOptions, p_s, p_i);
 }
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_query, channel_);
@@ -139,14 +139,14 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::Rp
   return future;
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_query, channel_);
   auto callback = std::move(callbackAndFuture.first);
   query(rpcOptions, std::move(callback), p_s, p_i);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_query, channel_);
@@ -154,14 +154,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_query, channel_);
   auto callback = std::move(callbackAndFuture.first);
   query(rpcOptions, std::move(callback), p_s, p_i);
   return std::move(callbackAndFuture.second);
 }
 
-void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   query(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_s, p_i);
 }
 
@@ -212,12 +212,12 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_query(::apa
   return recv_wrapped_query(state);
 }
 
-void MyServiceAsyncClient::has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   has_arg_docs(rpcOptions, std::move(callback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto ctx = has_arg_docsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -227,7 +227,7 @@ void MyServiceAsyncClient::has_arg_docs(apache::thrift::RpcOptions& rpcOptions, 
   has_arg_docsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -257,12 +257,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       "MyService.has_arg_docs");
 }
 
-void MyServiceAsyncClient::sync_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::sync_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_has_arg_docs(rpcOptions, p_s, p_i);
 }
 
-void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -288,17 +288,17 @@ void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_has_arg_docs(rpcOptions, p_s, p_i);
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_has_arg_docs(rpcOptions, p_s, p_i);
 }
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_has_arg_docs, channel_);
@@ -306,14 +306,14 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thr
   return future;
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_has_arg_docs, channel_);
   auto callback = std::move(callbackAndFuture.first);
   has_arg_docs(rpcOptions, std::move(callback), p_s, p_i);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_has_arg_docs, channel_);
@@ -321,14 +321,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_has_arg_docs, channel_);
   auto callback = std::move(callbackAndFuture.first);
   has_arg_docs(rpcOptions, std::move(callback), p_s, p_i);
   return std::move(callbackAndFuture.second);
 }
 
-void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   has_arg_docs(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_s, p_i);
 }
 

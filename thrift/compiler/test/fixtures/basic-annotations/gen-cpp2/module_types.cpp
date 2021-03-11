@@ -156,7 +156,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 MyStruct::~MyStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
     majorVer(std::move(majorVer__arg)),
     package(std::move(package__arg)),
     annotation_with_quote(std::move(annotation_with_quote__arg)),
@@ -285,7 +285,7 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SecretStruct::SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg) :
+SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :
     id(std::move(id__arg)),
     password(std::move(password__arg)) {
   __isset.id = true;

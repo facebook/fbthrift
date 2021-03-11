@@ -110,7 +110,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       useless_field(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  A(apache::thrift::FragileConstructor, int32_t useless_field__arg);
+  A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg);
 
   A(A&&) = default;
 
@@ -123,7 +123,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t useless_field;
+  ::std::int32_t useless_field;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -150,32 +150,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {
     return {this->useless_field, __isset.useless_field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> useless_field_ref() const&& {
     return {std::move(this->useless_field), __isset.useless_field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> useless_field_ref() & {
     return {this->useless_field, __isset.useless_field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> useless_field_ref() && {
     return {std::move(this->useless_field), __isset.useless_field};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_useless_field() const {
+  ::std::int32_t get_useless_field() const {
     return useless_field;
   }
 
-  int32_t& set_useless_field(int32_t useless_field_) {
+  ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
     useless_field = useless_field_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.useless_field = true;

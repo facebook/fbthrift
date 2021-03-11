@@ -179,7 +179,7 @@ void TccStructTraits<::cpp2::MyField>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyField::MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg) :
+MyField::MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg) :
     opt_value(std::move(opt_value__arg)),
     value(std::move(value__arg)),
     req_value(std::move(req_value__arg)) {
@@ -277,9 +277,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 MyStruct::MyStruct(const MyStruct& srcObj) {
-  if (srcObj.opt_ref) opt_ref.reset(new  ::cpp2::MyField(*srcObj.opt_ref));
-  if (srcObj.ref) ref.reset(new  ::cpp2::MyField(*srcObj.ref));
-  if (srcObj.req_ref) req_ref.reset(new  ::cpp2::MyField(*srcObj.req_ref));
+  if (srcObj.opt_ref) opt_ref.reset(new ::cpp2::MyField(*srcObj.opt_ref));
+  if (srcObj.ref) ref.reset(new ::cpp2::MyField(*srcObj.ref));
+  if (srcObj.req_ref) req_ref.reset(new ::cpp2::MyField(*srcObj.req_ref));
 }
 
 MyStruct& MyStruct::operator=(const MyStruct& src) {
@@ -289,7 +289,7 @@ MyStruct& MyStruct::operator=(const MyStruct& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyField> opt_ref__arg, std::unique_ptr<::cpp2::MyField> ref__arg, std::unique_ptr<::cpp2::MyField> req_ref__arg) :
     opt_ref(std::move(opt_ref__arg)),
     ref(std::move(ref__arg)),
     req_ref(std::move(req_ref__arg)) {}
@@ -384,38 +384,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -444,7 +444,7 @@ void TccStructTraits<::cpp2::StructWithUnion>::translateFieldName(
 namespace cpp2 {
 
 StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
-  if (srcObj.u) u.reset(new  ::cpp2::MyUnion(*srcObj.u));
+  if (srcObj.u) u.reset(new ::cpp2::MyUnion(*srcObj.u));
   aDouble = srcObj.aDouble;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.aDouble = srcObj.__isset.aDouble;
@@ -462,7 +462,7 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg) :
+StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg) :
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
     f(std::move(f__arg)) {
@@ -522,11 +522,11 @@ bool StructWithUnion::operator<(const StructWithUnion& rhs) const {
   return false;
 }
 
-const  ::cpp2::MyField& StructWithUnion::get_f() const& {
+const ::cpp2::MyField& StructWithUnion::get_f() const& {
   return f;
 }
 
- ::cpp2::MyField StructWithUnion::get_f() && {
+::cpp2::MyField StructWithUnion::get_f() && {
   return std::move(f);
 }
 
@@ -554,26 +554,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithUnion,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithUnion,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -602,7 +602,7 @@ void TccStructTraits<::cpp2::RecursiveStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::RecursiveStruct> mes__arg) :
+RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg) :
     mes(std::move(mes__arg)) {
   __isset.mes = true;
 }
@@ -635,11 +635,11 @@ bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
   return false;
 }
 
-const ::std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
+const ::std::vector<::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
   return mes_ref().has_value() ? std::addressof(mes) : nullptr;
 }
 
-::std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
+::std::vector<::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
   return mes_ref().has_value() ? std::addressof(mes) : nullptr;
 }
 
@@ -689,10 +689,10 @@ void TccStructTraits<::cpp2::StructWithContainers>::translateFieldName(
 namespace cpp2 {
 
 StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
-  if (srcObj.list_ref) list_ref.reset(new ::std::vector<int32_t>(*srcObj.list_ref));
-  if (srcObj.set_ref) set_ref.reset(new ::std::set<int32_t>(*srcObj.set_ref));
-  if (srcObj.map_ref) map_ref.reset(new ::std::map<int32_t, int32_t>(*srcObj.map_ref));
-  if (srcObj.list_ref_unique) list_ref_unique.reset(new ::std::vector<int32_t>(*srcObj.list_ref_unique));
+  if (srcObj.list_ref) list_ref.reset(new ::std::vector<::std::int32_t>(*srcObj.list_ref));
+  if (srcObj.set_ref) set_ref.reset(new ::std::set<::std::int32_t>(*srcObj.set_ref));
+  if (srcObj.map_ref) map_ref.reset(new ::std::map<::std::int32_t, ::std::int32_t>(*srcObj.map_ref));
+  if (srcObj.list_ref_unique) list_ref_unique.reset(new ::std::vector<::std::int32_t>(*srcObj.list_ref_unique));
   set_ref_shared = srcObj.set_ref_shared;
   list_ref_shared_const = srcObj.list_ref_shared_const;
 }
@@ -705,19 +705,19 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithContainers::StructWithContainers() :
-      list_ref(std::make_unique<::std::vector<int32_t>>()),
-      set_ref(std::make_unique<::std::set<int32_t>>()),
-      map_ref(std::make_unique<::std::map<int32_t, int32_t>>()),
-      list_ref_unique(std::make_unique<::std::vector<int32_t>>()),
-      set_ref_shared(std::make_shared<::std::set<int32_t>>()),
-      list_ref_shared_const(std::make_shared<::std::vector<int32_t>>()) {}
+      list_ref(std::make_unique<::std::vector<::std::int32_t>>()),
+      set_ref(std::make_unique<::std::set<::std::int32_t>>()),
+      map_ref(std::make_unique<::std::map<::std::int32_t, ::std::int32_t>>()),
+      list_ref_unique(std::make_unique<::std::vector<::std::int32_t>>()),
+      set_ref_shared(std::make_shared<::std::set<::std::int32_t>>()),
+      list_ref_shared_const(std::make_shared<::std::vector<::std::int32_t>>()) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 StructWithContainers::~StructWithContainers() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<int32_t>> list_ref__arg, std::unique_ptr<::std::set<int32_t>> set_ref__arg, std::unique_ptr<::std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<::std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const__arg) :
+StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<::std::int32_t>> list_ref__arg, std::unique_ptr<::std::set<::std::int32_t>> set_ref__arg, std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref__arg, std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const__arg) :
     list_ref(std::move(list_ref__arg)),
     set_ref(std::move(set_ref__arg)),
     map_ref(std::move(map_ref__arg)),
@@ -727,12 +727,12 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, s
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithContainers::__clear() {
   // clear all fields
-  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<int32_t>>>());
-  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::set<int32_t>>>());
-  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<int32_t, int32_t>>>());
-  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<int32_t>>>());
-  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::std::set<int32_t>>>());
-  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::vector<int32_t>>>());
+  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
+  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::set<::std::int32_t>>>());
+  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
+  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
+  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::std::set<::std::int32_t>>>());
+  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::vector<::std::int32_t>>>());
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -893,7 +893,7 @@ void TccStructTraits<::cpp2::StructWithSharedConst>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg) :
+StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const ::cpp2::MyField> shared_const__arg, std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg) :
     opt_shared_const(std::move(opt_shared_const__arg)),
     shared_const(std::move(shared_const__arg)),
     req_shared_const(std::move(req_shared_const__arg)) {}
@@ -988,38 +988,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyField>,
+        ::cpp2::MyField>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -1112,9 +1112,9 @@ void TccStructTraits<::cpp2::StructWithRef>::translateFieldName(
 namespace cpp2 {
 
 StructWithRef::StructWithRef(const StructWithRef& srcObj) {
-  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
-  if (srcObj.opt_field) opt_field.reset(new  ::cpp2::Empty(*srcObj.opt_field));
-  if (srcObj.req_field) req_field.reset(new  ::cpp2::Empty(*srcObj.req_field));
+  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
+  if (srcObj.opt_field) opt_field.reset(new ::cpp2::Empty(*srcObj.opt_field));
+  if (srcObj.req_field) req_field.reset(new ::cpp2::Empty(*srcObj.req_field));
 }
 
 StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
@@ -1124,7 +1124,7 @@ StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
+StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1216,38 +1216,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRef,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -1276,9 +1276,9 @@ void TccStructTraits<::cpp2::StructWithRefTypeUnique>::translateFieldName(
 namespace cpp2 {
 
 StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& srcObj) {
-  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
-  if (srcObj.opt_field) opt_field.reset(new  ::cpp2::Empty(*srcObj.opt_field));
-  if (srcObj.req_field) req_field.reset(new  ::cpp2::Empty(*srcObj.req_field));
+  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
+  if (srcObj.opt_field) opt_field.reset(new ::cpp2::Empty(*srcObj.opt_field));
+  if (srcObj.req_field) req_field.reset(new ::cpp2::Empty(*srcObj.req_field));
 }
 
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& src) {
@@ -1288,7 +1288,7 @@ StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefT
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
+StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1380,38 +1380,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeUnique,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -1440,7 +1440,7 @@ void TccStructTraits<::cpp2::StructWithRefTypeShared>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg) :
+StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr<::cpp2::Empty> def_field__arg, std::shared_ptr<::cpp2::Empty> opt_field__arg, std::shared_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1532,38 +1532,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeShared,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -1592,7 +1592,7 @@ void TccStructTraits<::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg) :
+StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::Empty> def_field__arg, std::shared_ptr<const ::cpp2::Empty> opt_field__arg, std::shared_ptr<const ::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1684,38 +1684,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefTypeSharedConst,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -1744,7 +1744,7 @@ void TccStructTraits<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translat
 namespace cpp2 {
 
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& srcObj) {
-  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
+  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
 }
 
 StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src) {
@@ -1754,7 +1754,7 @@ StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCt
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg) :
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg) :
     def_field(std::move(def_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {
@@ -1810,14 +1810,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         StructWithRefAndAnnotCppNoexceptMoveCtor,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         StructWithRefAndAnnotCppNoexceptMoveCtor,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Empty>,
+        ::cpp2::Empty>,
     "inconsistent use of nimble option");
 
 } // cpp2

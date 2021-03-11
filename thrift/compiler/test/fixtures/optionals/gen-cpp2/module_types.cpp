@@ -186,7 +186,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 Vehicle::~Vehicle() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, ::std::string licensePlate__arg, ::std::string description__arg, ::std::string name__arg, bool hasAC__arg) :
+Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, ::std::string licensePlate__arg, ::std::string description__arg, ::std::string name__arg, bool hasAC__arg) :
     color(std::move(color__arg)),
     licensePlate(std::move(licensePlate__arg)),
     description(std::move(description__arg)),
@@ -255,11 +255,11 @@ bool Vehicle::operator<(const Vehicle& rhs) const {
   return false;
 }
 
-const  ::cpp2::Color& Vehicle::get_color() const& {
+const ::cpp2::Color& Vehicle::get_color() const& {
   return color;
 }
 
- ::cpp2::Color Vehicle::get_color() && {
+::cpp2::Color Vehicle::get_color() && {
   return std::move(color);
 }
 
@@ -289,14 +289,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Vehicle,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
+        ::cpp2::Color>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Vehicle,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
+        ::cpp2::Color>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -336,7 +336,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 Person::~Person() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, ::std::string name__arg, int16_t age__arg, ::std::string address__arg,  ::cpp2::Color favoriteColor__arg, ::std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, ::std::map< ::cpp2::Animal, ::std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, ::std::vector< ::cpp2::Vehicle> vehicles__arg) :
+Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::std::string name__arg, ::std::int16_t age__arg, ::std::string address__arg, ::cpp2::Color favoriteColor__arg, ::std::set<::cpp2::PersonID> friends__arg, ::cpp2::PersonID bestFriend__arg, ::std::map<::cpp2::Animal, ::std::string> petNames__arg, ::cpp2::Animal afraidOfAnimal__arg, ::std::vector<::cpp2::Vehicle> vehicles__arg) :
     id(std::move(id__arg)),
     name(std::move(name__arg)),
     age(std::move(age__arg)),
@@ -450,35 +450,35 @@ bool Person::operator<(const Person& rhs) const {
   return false;
 }
 
-const  ::cpp2::Color* Person::get_favoriteColor() const& {
+const ::cpp2::Color* Person::get_favoriteColor() const& {
   return favoriteColor_ref().has_value() ? std::addressof(favoriteColor) : nullptr;
 }
 
- ::cpp2::Color* Person::get_favoriteColor() & {
+::cpp2::Color* Person::get_favoriteColor() & {
   return favoriteColor_ref().has_value() ? std::addressof(favoriteColor) : nullptr;
 }
 
-const ::std::set< ::cpp2::PersonID>* Person::get_friends() const& {
+const ::std::set<::cpp2::PersonID>* Person::get_friends() const& {
   return friends_ref().has_value() ? std::addressof(friends) : nullptr;
 }
 
-::std::set< ::cpp2::PersonID>* Person::get_friends() & {
+::std::set<::cpp2::PersonID>* Person::get_friends() & {
   return friends_ref().has_value() ? std::addressof(friends) : nullptr;
 }
 
-const ::std::map< ::cpp2::Animal, ::std::string>* Person::get_petNames() const& {
+const ::std::map<::cpp2::Animal, ::std::string>* Person::get_petNames() const& {
   return petNames_ref().has_value() ? std::addressof(petNames) : nullptr;
 }
 
-::std::map< ::cpp2::Animal, ::std::string>* Person::get_petNames() & {
+::std::map<::cpp2::Animal, ::std::string>* Person::get_petNames() & {
   return petNames_ref().has_value() ? std::addressof(petNames) : nullptr;
 }
 
-const ::std::vector< ::cpp2::Vehicle>* Person::get_vehicles() const& {
+const ::std::vector<::cpp2::Vehicle>* Person::get_vehicles() const& {
   return vehicles_ref().has_value() ? std::addressof(vehicles) : nullptr;
 }
 
-::std::vector< ::cpp2::Vehicle>* Person::get_vehicles() & {
+::std::vector<::cpp2::Vehicle>* Person::get_vehicles() & {
   return vehicles_ref().has_value() ? std::addressof(vehicles) : nullptr;
 }
 
@@ -513,26 +513,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Person,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
+        ::cpp2::Color>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Person,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::cpp2::Vehicle>>,
+        ::std::vector<::cpp2::Vehicle>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Person,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Color>,
+        ::cpp2::Color>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Person,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::cpp2::Vehicle>>,
+        ::std::vector<::cpp2::Vehicle>>,
     "inconsistent use of nimble option");
 
 } // cpp2

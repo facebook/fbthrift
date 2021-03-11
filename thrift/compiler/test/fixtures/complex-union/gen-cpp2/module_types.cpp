@@ -397,7 +397,7 @@ void TccStructTraits<::cpp2::Val>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
+Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg) :
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
     typedefValue(std::move(typedefValue__arg)) {
@@ -448,11 +448,11 @@ bool Val::operator<(const Val& rhs) const {
   return false;
 }
 
-const  ::cpp2::containerTypedef& Val::get_typedefValue() const& {
+const ::cpp2::containerTypedef& Val::get_typedefValue() const& {
   return typedefValue;
 }
 
- ::cpp2::containerTypedef Val::get_typedefValue() && {
+::cpp2::containerTypedef Val::get_typedefValue() && {
   return std::move(typedefValue);
 }
 
@@ -590,26 +590,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -748,7 +748,7 @@ void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg) :
+NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
     num(std::move(num__arg)) {
   __isset.num = true;
 }
@@ -906,14 +906,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         NonCopyableUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::NonCopyableStruct>,
+        ::cpp2::NonCopyableStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         NonCopyableUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::NonCopyableStruct>,
+        ::cpp2::NonCopyableStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

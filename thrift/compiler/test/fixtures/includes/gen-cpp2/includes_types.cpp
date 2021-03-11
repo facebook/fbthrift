@@ -36,7 +36,7 @@ void TccStructTraits<::cpp2::Included>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Included::Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
+Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyTransitiveField(std::move(MyTransitiveField__arg)) {
   __isset.MyIntField = true;
@@ -78,11 +78,11 @@ bool Included::operator<(const Included& rhs) const {
   return false;
 }
 
-const  ::cpp2::Foo& Included::get_MyTransitiveField() const& {
+const ::cpp2::Foo& Included::get_MyTransitiveField() const& {
   return MyTransitiveField;
 }
 
- ::cpp2::Foo Included::get_MyTransitiveField() && {
+::cpp2::Foo Included::get_MyTransitiveField() && {
   return std::move(MyTransitiveField);
 }
 
@@ -109,14 +109,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Included,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Foo>,
+        ::cpp2::Foo>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Included,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Foo>,
+        ::cpp2::Foo>,
     "inconsistent use of nimble option");
 
 } // cpp2

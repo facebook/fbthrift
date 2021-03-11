@@ -33,13 +33,13 @@ class MyServiceSvAsyncIf {
   virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<::std::string>> future_getRandomData() = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() = 0;
-  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_id) = 0;
-  virtual folly::Future<bool> future_hasDataById(int64_t p_id) = 0;
-  virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t p_id) = 0;
-  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t p_id) = 0;
-  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::Future<folly::Unit> future_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
+  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) = 0;
+  virtual folly::Future<bool> future_hasDataById(::std::int64_t p_id) = 0;
+  virtual folly::SemiFuture<bool> semifuture_hasDataById(::std::int64_t p_id) = 0;
+  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) = 0;
+  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
+  virtual folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
 };
 
 class MyServiceAsyncProcessor;
@@ -62,27 +62,27 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<std::unique_ptr<::std::string>> future_getRandomData() override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() override;
   void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
-  virtual bool hasDataById(int64_t /*id*/);
-  folly::Future<bool> future_hasDataById(int64_t p_id) override;
-  folly::SemiFuture<bool> semifuture_hasDataById(int64_t p_id) override;
+  virtual bool hasDataById(::std::int64_t /*id*/);
+  folly::Future<bool> future_hasDataById(::std::int64_t p_id) override;
+  folly::SemiFuture<bool> semifuture_hasDataById(::std::int64_t p_id) override;
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<bool> co_hasDataById(int64_t p_id);
-  virtual folly::coro::Task<bool> co_hasDataById(apache::thrift::RequestParams params, int64_t p_id);
+  virtual folly::coro::Task<bool> co_hasDataById(::std::int64_t p_id);
+  virtual folly::coro::Task<bool> co_hasDataById(apache::thrift::RequestParams params, ::std::int64_t p_id);
 #endif
-  void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_id) override;
-  void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t p_id) override;
-  virtual void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
-  folly::Future<folly::Unit> future_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t p_id, std::unique_ptr<::std::string> p_data) override;
+  void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) override;
+  void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) override;
+  virtual void putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
+  folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
+  folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
+  void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
   void ping() override;
   void getRandomData(::std::string& /*_return*/) override;
-  bool hasDataById(int64_t /*id*/) override;
-  void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
+  bool hasDataById(::std::int64_t /*id*/) override;
+  void putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {

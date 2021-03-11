@@ -36,7 +36,7 @@ void TccStructTraits<::some::ns::IncludedA>::translateFieldName(
 namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-IncludedA::IncludedA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg) :
+IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)) {
   __isset.i32Field = true;

@@ -11,15 +11,15 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::std::map<int32_t, ::std::vector<int32_t>>*>> NestedContainers_mapList_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>*>> NestedContainers_mapList_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_mapList_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::map<int32_t, ::std::set<int32_t>>*>> NestedContainers_mapSet_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>*>> NestedContainers_mapSet_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_mapSet_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>, ::std::vector<::std::map<int32_t, int32_t>>*>> NestedContainers_listMap_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>*>> NestedContainers_listMap_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_listMap_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::vector<::std::set<int32_t>>*>> NestedContainers_listSet_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::vector<::std::set<::std::int32_t>>*>> NestedContainers_listSet_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_listSet_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>>>, ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>*>> NestedContainers_turtles_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>>>, ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>*>> NestedContainers_turtles_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_turtles_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void NestedContainersAsyncProcessor::setUpAndProcess_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -37,7 +37,7 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   NestedContainers_mapList_pargs args;
-  auto uarg_foo = std::make_unique<::std::map<int32_t, ::std::vector<int32_t>>>();
+  auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
   try {
@@ -92,7 +92,7 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   NestedContainers_mapSet_pargs args;
-  auto uarg_foo = std::make_unique<::std::map<int32_t, ::std::set<int32_t>>>();
+  auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
   try {
@@ -147,7 +147,7 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   NestedContainers_listMap_pargs args;
-  auto uarg_foo = std::make_unique<::std::vector<::std::map<int32_t, int32_t>>>();
+  auto uarg_foo = std::make_unique<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
   try {
@@ -202,7 +202,7 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   NestedContainers_listSet_pargs args;
-  auto uarg_foo = std::make_unique<::std::vector<::std::set<int32_t>>>();
+  auto uarg_foo = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
   try {
@@ -257,7 +257,7 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   NestedContainers_turtles_pargs args;
-  auto uarg_foo = std::make_unique<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>>();
+  auto uarg_foo = std::make_unique<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
   try {

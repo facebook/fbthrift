@@ -15,308 +15,308 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor()
 }
 
 
-void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t /*param1*/) {
+void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function void_ret_i16_param is unimplemented"));
 }
 
-void ParamServiceSvIf::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
+void ParamServiceSvIf::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_byte_i16_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_byte_i16_param(p_param1, p_param2);
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_byte_i16_param(p_param1, p_param2), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t p_param1, int16_t p_param2) {
+void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_byte_i16_param(p_param1, p_param2);
   });
 }
 
-void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {
+void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_map_param(std::move(p_param1));
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_map_param(std::move(p_param1));
   });
 }
 
-void ParamServiceSvIf::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
+void ParamServiceSvIf::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_setlist_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
   });
 }
 
-void ParamServiceSvIf::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {
+void ParamServiceSvIf::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_typedef_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_map_typedef_param(p_param1);
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_typedef_param(p_param1), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::simpleTypeDef p_param1) {
+void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_map_typedef_param(p_param1);
   });
 }
 
-void ParamServiceSvIf::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {
+void ParamServiceSvIf::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_enum_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_enum_param(p_param1);
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_enum_param(p_param1), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::MyEnumA p_param1) {
+void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_enum_param(p_param1);
   });
 }
 
-void ParamServiceSvIf::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
+void ParamServiceSvIf::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_struct_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_struct_param(std::move(p_param1));
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_struct_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::valid::ns::MyStruct> p_param1) {
+void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_struct_param(std::move(p_param1));
   });
 }
 
-void ParamServiceSvIf::void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
+void ParamServiceSvIf::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_listunion_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) {
+folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return void_ret_listunion_param(std::move(p_param1));
   });
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) {
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_void_ret_listunion_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> p_param1) {
+void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_listunion_param(std::move(p_param1));
   });
 }
 
-bool ParamServiceSvIf::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
+bool ParamServiceSvIf::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_i32_i64_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) {
+folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return bool_ret_i32_i64_param(p_param1, p_param2);
   });
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) {
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_bool_ret_i32_i64_param(p_param1, p_param2), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t p_param1, int64_t p_param2) {
+void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_bool_ret_i32_i64_param(p_param1, p_param2);
   });
 }
 
-bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {
+bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_map_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return bool_ret_map_param(std::move(p_param1));
   });
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_bool_ret_map_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_bool_ret_map_param(std::move(p_param1));
   });
 }
 
-bool ParamServiceSvIf::bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/) {
+bool ParamServiceSvIf::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_union_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) {
+folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return bool_ret_union_param(std::move(p_param1));
   });
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) {
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_bool_ret_union_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr< ::some::valid::ns::ComplexUnion> p_param1) {
+void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_bool_ret_union_param(std::move(p_param1));
   });
 }
 
-int64_t ParamServiceSvIf::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+::std::int64_t ParamServiceSvIf::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64_ret_float_double_param");
 }
 
-folly::SemiFuture<int64_t> ParamServiceSvIf::semifuture_i64_ret_float_double_param(float p_param1, double p_param2) {
+folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_float_double_param(float p_param1, double p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return i64_ret_float_double_param(p_param1, p_param2);
   });
 }
 
-folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float p_param1, double p_param2) {
+folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float p_param1, double p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_i64_ret_float_double_param(p_param1, p_param2), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float p_param1, double p_param2) {
+void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_i64_ret_float_double_param(p_param1, p_param2);
   });
 }
 
-int64_t ParamServiceSvIf::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+::std::int64_t ParamServiceSvIf::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64_ret_string_typedef_param");
 }
 
-folly::SemiFuture<int64_t> ParamServiceSvIf::semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) {
+folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2));
   });
 }
 
-folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) {
+folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> p_param2) {
+void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2));
   });
 }
 
-void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
+void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/, ::std::int32_t /*param3*/, ::std::int32_t /*param4*/, ::std::int32_t /*param5*/) {
   callback->exception(apache::thrift::TApplicationException("Function i64_ret_i32_i32_i32_i32_i32_param is unimplemented"));
 }
 
-double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
+double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("double_ret_setstruct_param");
 }
 
-folly::SemiFuture<double> ParamServiceSvIf::semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) {
+folly::SemiFuture<double> ParamServiceSvIf::semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return double_ret_setstruct_param(std::move(p_param1));
   });
 }
 
-folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) {
+folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_double_ret_setstruct_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> p_param1) {
+void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_double_ret_setstruct_param(std::move(p_param1));
   });
@@ -364,279 +364,279 @@ void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::
   });
 }
 
-void ParamServiceSvIf::map_ret_bool_param(::std::map<::std::string, int64_t>& /*_return*/, bool /*param1*/) {
+void ParamServiceSvIf::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("map_ret_bool_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> ParamServiceSvIf::semifuture_map_ret_bool_param(bool p_param1) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map<::std::string, int64_t>& _return) { map_ret_bool_param(_return, p_param1); });
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ParamServiceSvIf::semifuture_map_ret_bool_param(bool p_param1) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map<::std::string, ::std::int64_t>& _return) { map_ret_bool_param(_return, p_param1); });
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool p_param1) {
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_map_ret_bool_param(p_param1), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback, bool p_param1) {
+void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_map_ret_bool_param(p_param1);
   });
 }
 
-void ParamServiceSvIf::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {
+void ParamServiceSvIf::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_ret_map_setlist_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector<bool>& _return) { list_ret_map_setlist_param(_return, std::move(p_param1), std::move(p_param2)); });
 }
 
-folly::Future<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::future_list_ret_map_setlist_param(std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+folly::Future<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
   });
 }
 
-void ParamServiceSvIf::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> /*param1*/) {
+void ParamServiceSvIf::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapsetlistmapliststring_ret_listlistlist_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return) { mapsetlistmapliststring_ret_listlistlist_param(_return, std::move(p_param1)); });
+folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return) { mapsetlistmapliststring_ret_listlistlist_param(_return, std::move(p_param1)); });
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) {
+folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> p_param1) {
+void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1));
   });
 }
 
- ::some::valid::ns::simpleTypeDef ParamServiceSvIf::typedef_ret_i32_param(int32_t /*param1*/) {
+::some::valid::ns::simpleTypeDef ParamServiceSvIf::typedef_ret_i32_param(::std::int32_t /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("typedef_ret_i32_param");
 }
 
-folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ParamServiceSvIf::semifuture_typedef_ret_i32_param(int32_t p_param1) {
+folly::SemiFuture<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::semifuture_typedef_ret_i32_param(::std::int32_t p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return typedef_ret_i32_param(p_param1);
   });
 }
 
-folly::Future< ::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typedef_ret_i32_param(int32_t p_param1) {
+folly::Future<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typedef_ret_i32_param(::std::int32_t p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_typedef_ret_i32_param(p_param1), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback, int32_t p_param1) {
+void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_typedef_ret_i32_param(p_param1);
   });
 }
 
-void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> /*param1*/) {
+void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function listtypedef_ret_typedef_param is unimplemented"));
 }
 
- ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
+::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enum_ret_double_param");
 }
 
-folly::SemiFuture< ::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_param(double p_param1) {
+folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_param(double p_param1) {
   return apache::thrift::detail::si::semifuture([&] {
     return enum_ret_double_param(p_param1);
   });
 }
 
-folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double p_param1) {
+folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_param(p_param1), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1) {
+void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_enum_ret_double_param(p_param1);
   });
 }
 
- ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/) {
+::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enum_ret_double_enum_param");
 }
 
-folly::SemiFuture< ::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   return apache::thrift::detail::si::semifuture([&] {
     return enum_ret_double_enum_param(p_param1, p_param2);
   });
 }
 
-folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_enum_param(p_param1, p_param2), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_enum_ret_double_enum_param(p_param1, p_param2);
   });
 }
 
-void ParamServiceSvIf::listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {
+void ParamServiceSvIf::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listenum_ret_map_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> ParamServiceSvIf::semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector< ::some::valid::ns::MyEnumA>& _return) { listenum_ret_map_param(_return, std::move(p_param1)); });
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> ParamServiceSvIf::semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector<::some::valid::ns::MyEnumA>& _return) { listenum_ret_map_param(_return, std::move(p_param1)); });
 }
 
-folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> ParamServiceSvIf::future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> ParamServiceSvIf::future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listenum_ret_map_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> p_param1) {
+void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_listenum_ret_map_param(std::move(p_param1));
   });
 }
 
-void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t /*param1*/) {
+void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function struct_ret_i16_param is unimplemented"));
 }
 
-void ParamServiceSvIf::setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {
+void ParamServiceSvIf::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("setstruct_ret_set_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ParamServiceSvIf::semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::set< ::some::valid::ns::MyStruct>& _return) { setstruct_ret_set_param(_return, std::move(p_param1)); });
+folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ParamServiceSvIf::semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::set<::some::valid::ns::MyStruct>& _return) { setstruct_ret_set_param(_return, std::move(p_param1)); });
 }
 
-folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
+folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_setstruct_ret_set_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) {
+void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_setstruct_ret_set_param(std::move(p_param1));
   });
 }
 
-void ParamServiceSvIf::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {
+void ParamServiceSvIf::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("union_ret_i32_i32_param");
 }
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ParamServiceSvIf::semifuture_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::ComplexUnion& _return) { union_ret_i32_i32_param(_return, p_param1, p_param2); });
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceSvIf::semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::some::valid::ns::ComplexUnion& _return) { union_ret_i32_i32_param(_return, p_param1, p_param2); });
 }
 
-folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ParamServiceSvIf::future_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) {
+folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceSvIf::future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_union_ret_i32_i32_param(p_param1, p_param2), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback, int32_t p_param1, int32_t p_param2) {
+void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_union_ret_i32_i32_param(p_param1, p_param2);
   });
 }
 
-void ParamServiceSvIf::listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
+void ParamServiceSvIf::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listunion_string_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector< ::some::valid::ns::ComplexUnion>& _return) { listunion_string_param(_return, std::move(p_param1)); });
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector<::some::valid::ns::ComplexUnion>& _return) { listunion_string_param(_return, std::move(p_param1)); });
 }
 
-folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listunion_string_param(std::move(p_param1)), std::move(ka));
 }
 
-void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) {
+void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_listunion_string_param(std::move(p_param1));
   });
 }
 
-void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
+void ParamServiceSvNull::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {
+void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
+void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {
+void ParamServiceSvNull::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {
+void ParamServiceSvNull::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
+void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) {
   return;
 }
 
-void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
+void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) {
   return;
 }
 
-bool ParamServiceSvNull::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
+bool ParamServiceSvNull::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) {
   return 0;
 }
 
-bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {
+bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   return 0;
 }
 
-bool ParamServiceSvNull::bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/) {
+bool ParamServiceSvNull::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) {
   return 0;
 }
 
-int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+::std::int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
   return 0;
 }
 
-int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+::std::int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
   return 0;
 }
 
-double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
+double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
   return 0;
 }
 
@@ -644,31 +644,31 @@ void ParamServiceSvNull::string_ret_string_param(::std::string& /*_return*/, std
 
 void ParamServiceSvNull::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
 
-void ParamServiceSvNull::map_ret_bool_param(::std::map<::std::string, int64_t>& /*_return*/, bool /*param1*/) {}
+void ParamServiceSvNull::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {}
 
-void ParamServiceSvNull::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {}
+void ParamServiceSvNull::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {}
 
-void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> /*param1*/) {}
+void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {}
 
- ::some::valid::ns::simpleTypeDef ParamServiceSvNull::typedef_ret_i32_param(int32_t /*param1*/) {
+::some::valid::ns::simpleTypeDef ParamServiceSvNull::typedef_ret_i32_param(::std::int32_t /*param1*/) {
   return 0;
 }
 
- ::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) {
-  return ( ::some::valid::ns::MyEnumA)0;
+::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) {
+  return (::some::valid::ns::MyEnumA)0;
 }
 
- ::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/) {
-  return ( ::some::valid::ns::MyEnumA)0;
+::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) {
+  return (::some::valid::ns::MyEnumA)0;
 }
 
-void ParamServiceSvNull::listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, int64_t>> /*param1*/) {}
+void ParamServiceSvNull::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {}
 
-void ParamServiceSvNull::setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {}
+void ParamServiceSvNull::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {}
 
-void ParamServiceSvNull::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {}
+void ParamServiceSvNull::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {}
 
-void ParamServiceSvNull::listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
+void ParamServiceSvNull::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
 
 
 

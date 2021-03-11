@@ -135,7 +135,7 @@ void TccStructTraits<::test::fixtures::enumstrict::MyStruct>::translateFieldName
 namespace test { namespace fixtures { namespace enumstrict {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::test::fixtures::enumstrict::MyEnum myEnum__arg,  ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg) :
     myEnum(std::move(myEnum__arg)),
     myBigEnum(std::move(myBigEnum__arg)) {
   __isset.myEnum = true;

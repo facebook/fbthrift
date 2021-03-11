@@ -104,21 +104,20 @@ const std::string& TypeResolver::default_type(t_base_type::type btype) {
       static const auto& kValue = *new std::string("bool");
       return kValue;
     }
-    // TODO(afuller): Fully qualify these with '::std::'
     case t_base_type::type::t_byte: {
-      static const auto& kValue = *new std::string("int8_t");
+      static const auto& kValue = *new std::string("::std::int8_t");
       return kValue;
     }
     case t_base_type::type::t_i16: {
-      static const auto& kValue = *new std::string("int16_t");
+      static const auto& kValue = *new std::string("::std::int16_t");
       return kValue;
     }
     case t_base_type::type::t_i32: {
-      static const auto& kValue = *new std::string("int32_t");
+      static const auto& kValue = *new std::string("::std::int32_t");
       return kValue;
     }
     case t_base_type::type::t_i64: {
-      static const auto& kValue = *new std::string("int64_t");
+      static const auto& kValue = *new std::string("::std::int64_t");
       return kValue;
     }
     case t_base_type::type::t_float: {
@@ -196,47 +195,36 @@ std::string TypeResolver::gen_container_type(const t_container* node) {
 std::string TypeResolver::gen_stream_resp_type(const t_stream_response* node) {
   if (node->has_first_response()) {
     return gen_template_type(
-        // TODO(afuller): Add :: prefix.
-        "apache::thrift::ResponseAndServerStream",
+        "::apache::thrift::ResponseAndServerStream",
         {type_name(node->get_first_response_type()),
-         type_name(node->get_elem_type())},
-        ",");
+         type_name(node->get_elem_type())});
   }
   return gen_template_type(
-      // TODO(afuller): Add :: prefix.
-      "apache::thrift::ServerStream",
-      {type_name(node->get_elem_type())},
-      ",");
+      "::apache::thrift::ServerStream", {type_name(node->get_elem_type())});
 }
 
 std::string TypeResolver::gen_sink_type(const t_sink* node) {
   if (node->sink_has_first_response()) {
     return gen_template_type(
-        // TODO(afuller): Add :: prefix.
-        "apache::thrift::ResponseAndSinkConsumer",
+        "::apache::thrift::ResponseAndSinkConsumer",
         {type_name(node->get_first_response_type()),
          type_name(node->get_sink_type()),
-         type_name(node->get_final_response_type())},
-        ",");
+         type_name(node->get_final_response_type())});
   }
   return gen_template_type(
-      // TODO(afuller): Add :: prefix.
-      "apache::thrift::SinkConsumer",
+      "::apache::thrift::SinkConsumer",
       {type_name(node->get_sink_type()),
-       type_name(node->get_final_response_type())},
-      ",");
+       type_name(node->get_final_response_type())});
 }
 
-// TODO(afuller): Remove custom delim.
 std::string TypeResolver::gen_template_type(
     std::string template_name,
-    std::initializer_list<std::string> args,
-    const char* delim) {
+    std::initializer_list<std::string> args) {
   template_name += "<";
-  auto cdelim = "";
+  auto delim = "";
   for (const auto& arg : args) {
-    template_name += cdelim;
-    cdelim = delim;
+    template_name += delim;
+    delim = ", ";
     template_name += arg;
   }
   template_name += ">";
@@ -248,9 +236,7 @@ std::string TypeResolver::gen_namespaced_name(const t_type* node) {
     // No namespace.
     return node->get_name();
   }
-  // TODO(afuller): Remove " " prefix.
-  return " " + get_gen_namespace(*node->get_program()) +
-      "::" + node->get_name();
+  return get_gen_namespace(*node->get_program()) + "::" + node->get_name();
 }
 
 const std::string& TypeResolver::get_namespace(const t_program* program) {

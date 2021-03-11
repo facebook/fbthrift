@@ -60,7 +60,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, int32_t bar__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg);
 
   Foo(Foo&&) = default;
 
@@ -73,7 +73,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t bar;
+  ::std::int32_t bar;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -100,37 +100,37 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> bar_ref() const& {
     return {this->bar, __isset.bar};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> bar_ref() const&& {
     return {std::move(this->bar), __isset.bar};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> bar_ref() & {
     return {this->bar, __isset.bar};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> bar_ref() && {
     return {std::move(this->bar), __isset.bar};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  const int32_t* get_bar() const& {
+  const ::std::int32_t* get_bar() const& {
     return bar_ref() ? std::addressof(bar) : nullptr;
   }
 
-  int32_t* get_bar() & {
+  ::std::int32_t* get_bar() & {
     return bar_ref() ? std::addressof(bar) : nullptr;
   }
-  int32_t* get_bar() && = delete;
+  ::std::int32_t* get_bar() && = delete;
 
-  int32_t& set_bar(int32_t bar_) {
+  ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.bar = true;

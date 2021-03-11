@@ -12,6 +12,6 @@
 
 namespace test { namespace fixtures { namespace enumstrict {
 
-constexpr  ::test::fixtures::enumstrict::MyEnum const module_constants::kOne_;
+constexpr ::test::fixtures::enumstrict::MyEnum const module_constants::kOne_;
 
 }}} // test::fixtures::enumstrict

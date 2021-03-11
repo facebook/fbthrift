@@ -392,7 +392,7 @@ class MyUnion final  {
     __clear();
   }
   union storage_type {
-    int32_t anInteger;
+    ::std::int32_t anInteger;
     ::std::string aString;
 
     storage_type() {}
@@ -417,10 +417,10 @@ class MyUnion final  {
   }
 #endif
 
-  int32_t& set_anInteger(int32_t t = int32_t()) {
+  ::std::int32_t& set_anInteger(::std::int32_t t = ::std::int32_t()) {
     __clear();
     type_ = Type::anInteger;
-    ::new (std::addressof(value_.anInteger)) int32_t(t);
+    ::new (std::addressof(value_.anInteger)) ::std::int32_t(t);
     return value_.anInteger;
   }
 
@@ -445,7 +445,7 @@ class MyUnion final  {
     return value_.aString;
   }
 
-  int32_t const & get_anInteger() const {
+  ::std::int32_t const & get_anInteger() const {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
@@ -455,7 +455,7 @@ class MyUnion final  {
     return value_.aString;
   }
 
-  int32_t & mutable_anInteger() {
+  ::std::int32_t & mutable_anInteger() {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
@@ -465,7 +465,7 @@ class MyUnion final  {
     return value_.aString;
   }
 
-  int32_t move_anInteger() {
+  ::std::int32_t move_anInteger() {
     assert(type_ == Type::anInteger);
     return std::move(value_.anInteger);
   }
@@ -475,22 +475,22 @@ class MyUnion final  {
     return std::move(value_.aString);
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> anInteger_ref() const& {
     return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> anInteger_ref() const&& {
     return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> anInteger_ref() & {
     return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> anInteger_ref() && {
     return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -573,7 +573,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       req_value(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
+  MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg);
 
   MyField(MyField&&) = default;
 
@@ -586,11 +586,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t opt_value;
+  ::std::int64_t opt_value;
  private:
-  int64_t value;
+  ::std::int64_t value;
  public:
-  int64_t req_value;
+  ::std::int64_t req_value;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -618,78 +618,78 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_value_ref() const& {
     return {this->opt_value, __isset.opt_value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_value_ref() const&& {
     return {std::move(this->opt_value), __isset.opt_value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_value_ref() & {
     return {this->opt_value, __isset.opt_value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_value_ref() && {
     return {std::move(this->opt_value), __isset.opt_value};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> value_ref() const& {
     return {this->value, __isset.value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> value_ref() const&& {
     return {std::move(this->value), __isset.value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> value_ref() & {
     return {this->value, __isset.value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_ref() && {
     return {std::move(this->value), __isset.value};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_value_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_value_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_value)};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_value_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_value};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_value_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_value)};
   }
 
-  const int64_t* get_opt_value() const& {
+  const ::std::int64_t* get_opt_value() const& {
     return opt_value_ref() ? std::addressof(opt_value) : nullptr;
   }
 
-  int64_t* get_opt_value() & {
+  ::std::int64_t* get_opt_value() & {
     return opt_value_ref() ? std::addressof(opt_value) : nullptr;
   }
-  int64_t* get_opt_value() && = delete;
+  ::std::int64_t* get_opt_value() && = delete;
 
-  int64_t& set_opt_value(int64_t opt_value_) {
+  ::std::int64_t& set_opt_value(::std::int64_t opt_value_) {
     opt_value = opt_value_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_value = true;
@@ -697,11 +697,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_value;
   }
 
-  int64_t get_value() const {
+  ::std::int64_t get_value() const {
     return value;
   }
 
-  int64_t& set_value(int64_t value_) {
+  ::std::int64_t& set_value(::std::int64_t value_) {
     value = value_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.value = true;
@@ -709,11 +709,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return value;
   }
 
-  int64_t get_req_value() const {
+  ::std::int64_t get_req_value() const {
     return req_value;
   }
 
-  int64_t& set_req_value(int64_t req_value_) {
+  ::std::int64_t& set_req_value(::std::int64_t req_value_) {
     req_value = req_value_;
     return req_value;
   }
@@ -763,11 +763,11 @@ class MyStruct final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
-      ref(std::make_unique< ::cpp2::MyField>()),
-      req_ref(std::make_unique< ::cpp2::MyField>()) {}
+      ref(std::make_unique<::cpp2::MyField>()),
+      req_ref(std::make_unique<::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
+  MyStruct(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyField> opt_ref__arg, std::unique_ptr<::cpp2::MyField> ref__arg, std::unique_ptr<::cpp2::MyField> req_ref__arg);
 
   MyStruct(MyStruct&&) = default;
   MyStruct(const MyStruct& src);
@@ -778,11 +778,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::unique_ptr< ::cpp2::MyField> opt_ref;
+  std::unique_ptr<::cpp2::MyField> opt_ref;
  public:
-  std::unique_ptr< ::cpp2::MyField> ref;
+  std::unique_ptr<::cpp2::MyField> ref;
  public:
-  std::unique_ptr< ::cpp2::MyField> req_ref;
+  std::unique_ptr<::cpp2::MyField> req_ref;
 
  public:
   bool operator==(const MyStruct& rhs) const;
@@ -803,38 +803,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T& opt_ref_ref() & { return opt_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T& opt_ref_ref() const& { return opt_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T&& opt_ref_ref() && { return std::move(opt_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T&& opt_ref_ref() const&& { return std::move(opt_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T& ref_ref() & { return ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T& ref_ref() const& { return ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T&& ref_ref() && { return std::move(ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T&& ref_ref() const&& { return std::move(ref); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T& req_ref_ref() & { return req_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T& req_ref_ref() const& { return req_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T&& req_ref_ref() && { return std::move(req_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyField>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE const T&& req_ref_ref() const&& { return std::move(req_ref); }
 
   template <class Protocol_>
@@ -882,11 +882,11 @@ class StructWithUnion final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithUnion() :
-      u(std::make_unique< ::cpp2::MyUnion>()),
+      u(std::make_unique<::cpp2::MyUnion>()),
       aDouble(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
+  StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg);
 
   StructWithUnion(StructWithUnion&&) = default;
   StructWithUnion(const StructWithUnion& src);
@@ -897,11 +897,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::unique_ptr< ::cpp2::MyUnion> u;
+  std::unique_ptr<::cpp2::MyUnion> u;
  private:
   double aDouble;
  private:
-   ::cpp2::MyField f;
+  ::cpp2::MyField f;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -927,16 +927,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE T& u_ref() & { return u; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE const T& u_ref() const& { return u; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE T&& u_ref() && { return std::move(u); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::MyUnion>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE const T&& u_ref() const&& { return std::move(u); }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -962,22 +962,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyField>
+  template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
     return {this->f, __isset.f};
   }
 
-  template <typename..., typename T =  ::cpp2::MyField>
+  template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f_ref() const&& {
     return {std::move(this->f), __isset.f};
   }
 
-  template <typename..., typename T =  ::cpp2::MyField>
+  template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> f_ref() & {
     return {this->f, __isset.f};
   }
 
-  template <typename..., typename T =  ::cpp2::MyField>
+  template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
     return {std::move(this->f), __isset.f};
   }
@@ -994,11 +994,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return aDouble;
   }
-  const  ::cpp2::MyField& get_f() const&;
-   ::cpp2::MyField get_f() &&;
+  const ::cpp2::MyField& get_f() const&;
+  ::cpp2::MyField get_f() &&;
 
-  template <typename T_StructWithUnion_f_struct_setter =  ::cpp2::MyField>
-   ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
+  template <typename T_StructWithUnion_f_struct_setter = ::cpp2::MyField>
+  ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
     f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.f = true;
@@ -1053,7 +1053,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::RecursiveStruct> mes__arg);
+  RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg);
 
   RecursiveStruct(RecursiveStruct&&) = default;
 
@@ -1066,7 +1066,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  ::std::vector< ::cpp2::RecursiveStruct> mes;
+  ::std::vector<::cpp2::RecursiveStruct> mes;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1093,32 +1093,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
     return {this->mes, __isset.mes};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes_ref() const&& {
     return {std::move(this->mes), __isset.mes};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes_ref() & {
     return {this->mes, __isset.mes};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::RecursiveStruct>>
+  template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
     return {std::move(this->mes), __isset.mes};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const ::std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
-  ::std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
-  ::std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
+  const ::std::vector<::cpp2::RecursiveStruct>* get_mes() const&;
+  ::std::vector<::cpp2::RecursiveStruct>* get_mes() &;
+  ::std::vector<::cpp2::RecursiveStruct>* get_mes() && = delete;
 
-  template <typename T_RecursiveStruct_mes_struct_setter = ::std::vector< ::cpp2::RecursiveStruct>>
-  ::std::vector< ::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
+  template <typename T_RecursiveStruct_mes_struct_setter = ::std::vector<::cpp2::RecursiveStruct>>
+  ::std::vector<::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
     mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mes = true;
@@ -1174,7 +1174,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<int32_t>> list_ref__arg, std::unique_ptr<::std::set<int32_t>> set_ref__arg, std::unique_ptr<::std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<::std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const__arg);
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<::std::int32_t>> list_ref__arg, std::unique_ptr<::std::set<::std::int32_t>> set_ref__arg, std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref__arg, std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const__arg);
 
   StructWithContainers(StructWithContainers&&) = default;
   StructWithContainers(const StructWithContainers& src);
@@ -1188,17 +1188,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~StructWithContainers();
 
  public:
-  std::unique_ptr<::std::vector<int32_t>> list_ref;
+  std::unique_ptr<::std::vector<::std::int32_t>> list_ref;
  public:
-  std::unique_ptr<::std::set<int32_t>> set_ref;
+  std::unique_ptr<::std::set<::std::int32_t>> set_ref;
  public:
-  std::unique_ptr<::std::map<int32_t, int32_t>> map_ref;
+  std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref;
  public:
-  std::unique_ptr<::std::vector<int32_t>> list_ref_unique;
+  std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique;
  public:
-  std::shared_ptr<::std::set<int32_t>> set_ref_shared;
+  std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared;
  public:
-  std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const;
+  std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const;
 
  public:
   bool operator==(const StructWithContainers& rhs) const;
@@ -1219,71 +1219,71 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE T& list_ref_ref() & { return list_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T& list_ref_ref() const& { return list_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE T&& list_ref_ref() && { return std::move(list_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T&& list_ref_ref() const&& { return std::move(list_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& set_ref_ref() & { return set_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& set_ref_ref() const& { return set_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& set_ref_ref() && { return std::move(set_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& set_ref_ref() const&& { return std::move(set_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>
   FOLLY_ERASE T& map_ref_ref() & { return map_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>
   FOLLY_ERASE const T& map_ref_ref() const& { return map_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>
   FOLLY_ERASE T&& map_ref_ref() && { return std::move(map_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>
   FOLLY_ERASE const T&& map_ref_ref() const&& { return std::move(map_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE T& list_ref_unique_ref() & { return list_ref_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T& list_ref_unique_ref() const& { return list_ref_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE T&& list_ref_unique_ref() && { return std::move(list_ref_unique); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<int32_t>>>
+  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T&& list_ref_unique_ref() const&& { return std::move(list_ref_unique); }
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& set_ref_shared_ref() & { return set_ref_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& set_ref_shared_ref() const& { return set_ref_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& set_ref_shared_ref() && { return std::move(set_ref_shared); }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& set_ref_shared_ref() const&& { return std::move(set_ref_shared); }
-  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<::std::int32_t>>>
   FOLLY_ERASE T& list_ref_shared_const_ref() & { return list_ref_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T& list_ref_shared_const_ref() const& { return list_ref_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<::std::int32_t>>>
   FOLLY_ERASE T&& list_ref_shared_const_ref() && { return std::move(list_ref_shared_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::vector<int32_t>>>
+  template <typename ..., typename T = std::shared_ptr<const ::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T&& list_ref_shared_const_ref() const&& { return std::move(list_ref_shared_const); }
 
   template <class Protocol_>
@@ -1331,11 +1331,11 @@ class StructWithSharedConst final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithSharedConst() :
-      shared_const(std::make_shared< ::cpp2::MyField>()),
-      req_shared_const(std::make_shared< ::cpp2::MyField>()) {}
+      shared_const(std::make_shared<::cpp2::MyField>()),
+      req_shared_const(std::make_shared<::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
+  StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const ::cpp2::MyField> shared_const__arg, std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg);
 
   StructWithSharedConst(StructWithSharedConst&&) = default;
 
@@ -1348,11 +1348,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
+  std::shared_ptr<const ::cpp2::MyField> opt_shared_const;
  public:
-  std::shared_ptr<const  ::cpp2::MyField> shared_const;
+  std::shared_ptr<const ::cpp2::MyField> shared_const;
  public:
-  std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
+  std::shared_ptr<const ::cpp2::MyField> req_shared_const;
 
  public:
   bool operator==(const StructWithSharedConst& rhs) const;
@@ -1373,38 +1373,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T& opt_shared_const_ref() & { return opt_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T& opt_shared_const_ref() const& { return opt_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T&& opt_shared_const_ref() && { return std::move(opt_shared_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T&& opt_shared_const_ref() const&& { return std::move(opt_shared_const); }
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T& shared_const_ref() & { return shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T& shared_const_ref() const& { return shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T&& shared_const_ref() && { return std::move(shared_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T&& shared_const_ref() const&& { return std::move(shared_const); }
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T& req_shared_const_ref() & { return req_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T& req_shared_const_ref() const& { return req_shared_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T&& req_shared_const_ref() && { return std::move(req_shared_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::MyField>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE const T&& req_shared_const_ref() const&& { return std::move(req_shared_const); }
 
   template <class Protocol_>
@@ -1530,11 +1530,11 @@ class StructWithRef final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRef() :
-      def_field(std::make_unique< ::cpp2::Empty>()),
-      req_field(std::make_unique< ::cpp2::Empty>()) {}
+      def_field(std::make_unique<::cpp2::Empty>()),
+      req_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
+  StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg);
 
   StructWithRef(StructWithRef&&) = default;
   StructWithRef(const StructWithRef& src);
@@ -1545,11 +1545,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::unique_ptr< ::cpp2::Empty> def_field;
+  std::unique_ptr<::cpp2::Empty> def_field;
  public:
-  std::unique_ptr< ::cpp2::Empty> opt_field;
+  std::unique_ptr<::cpp2::Empty> opt_field;
  public:
-  std::unique_ptr< ::cpp2::Empty> req_field;
+  std::unique_ptr<::cpp2::Empty> req_field;
 
  public:
   bool operator==(const StructWithRef& rhs) const;
@@ -1570,38 +1570,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& req_field_ref() & { return req_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
@@ -1649,11 +1649,11 @@ class StructWithRefTypeUnique final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeUnique() :
-      def_field(std::make_unique< ::cpp2::Empty>()),
-      req_field(std::make_unique< ::cpp2::Empty>()) {}
+      def_field(std::make_unique<::cpp2::Empty>()),
+      req_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
+  StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg);
 
   StructWithRefTypeUnique(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique(const StructWithRefTypeUnique& src);
@@ -1664,11 +1664,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::unique_ptr< ::cpp2::Empty> def_field;
+  std::unique_ptr<::cpp2::Empty> def_field;
  public:
-  std::unique_ptr< ::cpp2::Empty> opt_field;
+  std::unique_ptr<::cpp2::Empty> opt_field;
  public:
-  std::unique_ptr< ::cpp2::Empty> req_field;
+  std::unique_ptr<::cpp2::Empty> req_field;
 
  public:
   bool operator==(const StructWithRefTypeUnique& rhs) const;
@@ -1689,38 +1689,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& req_field_ref() & { return req_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
@@ -1768,11 +1768,11 @@ class StructWithRefTypeShared final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared() :
-      def_field(std::make_shared< ::cpp2::Empty>()),
-      req_field(std::make_shared< ::cpp2::Empty>()) {}
+      def_field(std::make_shared<::cpp2::Empty>()),
+      req_field(std::make_shared<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
+  StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr<::cpp2::Empty> def_field__arg, std::shared_ptr<::cpp2::Empty> opt_field__arg, std::shared_ptr<::cpp2::Empty> req_field__arg);
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) = default;
 
@@ -1785,11 +1785,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::shared_ptr< ::cpp2::Empty> def_field;
+  std::shared_ptr<::cpp2::Empty> def_field;
  public:
-  std::shared_ptr< ::cpp2::Empty> opt_field;
+  std::shared_ptr<::cpp2::Empty> opt_field;
  public:
-  std::shared_ptr< ::cpp2::Empty> req_field;
+  std::shared_ptr<::cpp2::Empty> req_field;
 
  public:
   bool operator==(const StructWithRefTypeShared& rhs) const;
@@ -1810,38 +1810,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& req_field_ref() & { return req_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
@@ -1889,11 +1889,11 @@ class StructWithRefTypeSharedConst final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeSharedConst() :
-      def_field(std::make_shared< ::cpp2::Empty>()),
-      req_field(std::make_shared< ::cpp2::Empty>()) {}
+      def_field(std::make_shared<::cpp2::Empty>()),
+      req_field(std::make_shared<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
+  StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::Empty> def_field__arg, std::shared_ptr<const ::cpp2::Empty> opt_field__arg, std::shared_ptr<const ::cpp2::Empty> req_field__arg);
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) = default;
 
@@ -1906,11 +1906,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::shared_ptr<const  ::cpp2::Empty> def_field;
+  std::shared_ptr<const ::cpp2::Empty> def_field;
  public:
-  std::shared_ptr<const  ::cpp2::Empty> opt_field;
+  std::shared_ptr<const ::cpp2::Empty> opt_field;
  public:
-  std::shared_ptr<const  ::cpp2::Empty> req_field;
+  std::shared_ptr<const ::cpp2::Empty> req_field;
 
  public:
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
@@ -1931,38 +1931,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T& opt_field_ref() & { return opt_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T& opt_field_ref() const& { return opt_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T&& opt_field_ref() && { return std::move(opt_field); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T&& opt_field_ref() const&& { return std::move(opt_field); }
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T& req_field_ref() & { return req_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T& req_field_ref() const& { return req_field; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T&& req_field_ref() && { return std::move(req_field); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::Empty>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE const T&& req_field_ref() const&& { return std::move(req_field); }
 
   template <class Protocol_>
@@ -2010,10 +2010,10 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefAndAnnotCppNoexceptMoveCtor() :
-      def_field(std::make_unique< ::cpp2::Empty>()) {}
+      def_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg);
+  StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept :
       def_field(std::move(other.def_field)) {}
@@ -2026,7 +2026,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END  StructWithRefAndAnnotCppNoexceptMoveCtor(co
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  std::unique_ptr< ::cpp2::Empty> def_field;
+  std::unique_ptr<::cpp2::Empty> def_field;
 
  public:
   bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
@@ -2047,16 +2047,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T& def_field_ref() const& { return def_field; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T&& def_field_ref() && { return std::move(def_field); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::Empty>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE const T&& def_field_ref() const&& { return std::move(def_field); }
 
   template <class Protocol_>

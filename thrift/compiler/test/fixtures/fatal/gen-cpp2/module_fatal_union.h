@@ -185,7 +185,7 @@ class union1_variant_traits {
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::ui,
           __fbthrift_member_ui::getter,
           __fbthrift_member_ui::setter,
@@ -203,7 +203,7 @@ class union1_variant_traits {
           __fbthrift_member_us::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us>>,
       ::fatal::variant_member_descriptor<
-           ::test_cpp2::cpp_reflection::enum1,
+          ::test_cpp2::cpp_reflection::enum1,
            __fbthrift_ids::ue,
           __fbthrift_member_ue::getter,
           __fbthrift_member_ue::setter,
@@ -388,7 +388,7 @@ class union2_variant_traits {
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::ui_2,
           __fbthrift_member_ui_2::getter,
           __fbthrift_member_ui_2::setter,
@@ -406,7 +406,7 @@ class union2_variant_traits {
           __fbthrift_member_us_2::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us_2>>,
       ::fatal::variant_member_descriptor<
-           ::test_cpp2::cpp_reflection::enum1,
+          ::test_cpp2::cpp_reflection::enum1,
            __fbthrift_ids::ue_2,
           __fbthrift_member_ue_2::getter,
           __fbthrift_member_ue_2::setter,
@@ -591,7 +591,7 @@ class union3_variant_traits {
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::ui_3,
           __fbthrift_member_ui_3::getter,
           __fbthrift_member_ui_3::setter,
@@ -609,7 +609,7 @@ class union3_variant_traits {
           __fbthrift_member_us_3::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us_3>>,
       ::fatal::variant_member_descriptor<
-           ::test_cpp2::cpp_reflection::enum1,
+          ::test_cpp2::cpp_reflection::enum1,
            __fbthrift_ids::ue_3,
           __fbthrift_member_ue_3::getter,
           __fbthrift_member_ue_3::setter,
@@ -826,7 +826,7 @@ class unionA_variant_traits {
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::i,
           __fbthrift_member_i::getter,
           __fbthrift_member_i::setter,
@@ -844,13 +844,13 @@ class unionA_variant_traits {
           __fbthrift_member_s::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_s>>,
       ::fatal::variant_member_descriptor<
-           ::test_cpp2::cpp_reflection::enum1,
+          ::test_cpp2::cpp_reflection::enum1,
            __fbthrift_ids::e,
           __fbthrift_member_e::getter,
           __fbthrift_member_e::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_e>>,
       ::fatal::variant_member_descriptor<
-           ::test_cpp2::cpp_reflection::structA,
+          ::test_cpp2::cpp_reflection::structA,
            __fbthrift_ids::a,
           __fbthrift_member_a::getter,
           __fbthrift_member_a::setter,
@@ -1821,169 +1821,169 @@ class union_with_special_names_variant_traits {
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::get,
           __fbthrift_member_get::getter,
           __fbthrift_member_get::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_get>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::getter,
           __fbthrift_member_getter::getter,
           __fbthrift_member_getter::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_getter>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::lists,
           __fbthrift_member_lists::getter,
           __fbthrift_member_lists::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_lists>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::maps,
           __fbthrift_member_maps::getter,
           __fbthrift_member_maps::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_maps>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::name,
           __fbthrift_member_name::getter,
           __fbthrift_member_name::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_name>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::name_to_value,
           __fbthrift_member_name_to_value::getter,
           __fbthrift_member_name_to_value::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_name_to_value>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::names,
           __fbthrift_member_names::getter,
           __fbthrift_member_names::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_names>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::prefix_tree,
           __fbthrift_member_prefix_tree::getter,
           __fbthrift_member_prefix_tree::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_prefix_tree>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::sets,
           __fbthrift_member_sets::getter,
           __fbthrift_member_sets::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_sets>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::setter,
           __fbthrift_member_setter::getter,
           __fbthrift_member_setter::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_setter>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::str,
           __fbthrift_member_str::getter,
           __fbthrift_member_str::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_str>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::strings,
           __fbthrift_member_strings::getter,
           __fbthrift_member_strings::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_strings>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::type,
           __fbthrift_member_type::getter,
           __fbthrift_member_type::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_type>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::value,
           __fbthrift_member_value::getter,
           __fbthrift_member_value::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_value>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::value_to_name,
           __fbthrift_member_value_to_name::getter,
           __fbthrift_member_value_to_name::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_value_to_name>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::values,
           __fbthrift_member_values::getter,
           __fbthrift_member_values::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_values>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::id,
           __fbthrift_member_id::getter,
           __fbthrift_member_id::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_id>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::ids,
           __fbthrift_member_ids::getter,
           __fbthrift_member_ids::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ids>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::descriptor,
           __fbthrift_member_descriptor::getter,
           __fbthrift_member_descriptor::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_descriptor>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::descriptors,
           __fbthrift_member_descriptors::getter,
           __fbthrift_member_descriptors::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_descriptors>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::key,
           __fbthrift_member_key::getter,
           __fbthrift_member_key::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_key>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::keys,
           __fbthrift_member_keys::getter,
           __fbthrift_member_keys::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_keys>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::annotation,
           __fbthrift_member_annotation::getter,
           __fbthrift_member_annotation::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_annotation>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::annotations,
           __fbthrift_member_annotations::getter,
           __fbthrift_member_annotations::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_annotations>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::member,
           __fbthrift_member_member::getter,
           __fbthrift_member_member::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_member>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::members,
           __fbthrift_member_members::getter,
           __fbthrift_member_members::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_members>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::field,
           __fbthrift_member_field::getter,
           __fbthrift_member_field::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_field>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::fields,
           __fbthrift_member_fields::getter,
           __fbthrift_member_fields::setter,

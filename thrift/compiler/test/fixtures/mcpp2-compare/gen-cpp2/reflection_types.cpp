@@ -36,7 +36,7 @@ void TccStructTraits<::cpp2::ReflectionStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
+ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }

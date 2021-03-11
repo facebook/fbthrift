@@ -854,7 +854,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       reason(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SinkException2(apache::thrift::FragileConstructor, int64_t reason__arg);
+  SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg);
 
   SinkException2(SinkException2&&) = default;
 
@@ -867,7 +867,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t reason;
+  ::std::int64_t reason;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -894,32 +894,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reason_ref() const&& {
     return {std::move(this->reason), __isset.reason};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reason_ref() & {
     return {this->reason, __isset.reason};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_reason() const {
+  ::std::int64_t get_reason() const {
     return reason;
   }
 
-  int64_t& set_reason(int64_t reason_) {
+  ::std::int64_t& set_reason(::std::int64_t reason_) {
     reason = reason_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;

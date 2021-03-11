@@ -14,16 +14,16 @@ namespace extra { namespace svc {
 typedef apache::thrift::ThriftPresult<false> ExtraService_simple_function_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> ExtraService_simple_function_presult;
 typedef apache::thrift::ThriftPresult<false> ExtraService_throws_function_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnotherException>> ExtraService_throws_function_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::some::valid::ns::AnException>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::some::valid::ns::AnotherException>> ExtraService_throws_function_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, bool*>> ExtraService_throws_function2_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnotherException>> ExtraService_throws_function2_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::some::valid::ns::AnException>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::some::valid::ns::AnotherException>> ExtraService_throws_function2_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, bool*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::string, ::std::string*>> ExtraService_throws_function3_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, ::std::map<int32_t, ::std::string>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnException>, apache::thrift::FieldData<5, ::apache::thrift::type_class::structure,  ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, ::std::map<::std::int32_t, ::std::string>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::some::valid::ns::AnException>, apache::thrift::FieldData<5, ::apache::thrift::type_class::structure, ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
 typedef apache::thrift::ThriftPresult<false> ExtraService_oneway_void_ret_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::integral, int32_t*>> ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::set<::std::vector<::std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::integral, ::std::int32_t*>> ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::set<::std::vector<::std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector<::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::setUpAndProcess_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -248,7 +248,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<int32_t, ::std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<::std::int32_t, ::std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -256,10 +256,10 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ExtraServiceAsyncProcessor::return_throws_function3(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<int32_t, ::std::string> const& _return) {
+folly::IOBufQueue ExtraServiceAsyncProcessor::return_throws_function3(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::int32_t, ::std::string> const& _return) {
   ProtocolOut_ prot;
   ExtraService_throws_function3_presult result;
-  result.get<0>().value = const_cast<::std::map<int32_t, ::std::string>*>(&_return);
+  result.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("throws_function3", &prot, protoSeqId, ctx, result);
 }
@@ -339,15 +339,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
-  int32_t uarg_param1{0};
+  ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  int32_t uarg_param2{0};
+  ::std::int32_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  int32_t uarg_param3{0};
+  ::std::int32_t uarg_param3{0};
   args.get<2>().value = &uarg_param3;
-  int32_t uarg_param4{0};
+  ::std::int32_t uarg_param4{0};
   args.get<3>().value = &uarg_param4;
-  int32_t uarg_param5{0};
+  ::std::int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
@@ -376,7 +376,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
-  ::std::map<::std::string, int64_t> uarg_param1;
+  ::std::map<::std::string, ::std::int64_t> uarg_param1;
   args.get<0>().value = &uarg_param1;
   ::std::set<::std::vector<::std::string>> uarg_param2;
   args.get<1>().value = &uarg_param2;
@@ -409,7 +409,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_oneway_void_ret_struct_param_pargs args;
-   ::some::valid::ns::MyStruct uarg_param1;
+  ::some::valid::ns::MyStruct uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
   try {
@@ -440,7 +440,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
-  ::std::vector< ::some::valid::ns::ComplexUnion> uarg_param1;
+  ::std::vector<::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {

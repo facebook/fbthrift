@@ -15,53 +15,53 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 }
 
 
-void MyServiceSvIf::first( ::cpp2::annotated_inline_string& /*_return*/) {
+void MyServiceSvIf::first(::cpp2::annotated_inline_string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("first");
 }
 
-folly::SemiFuture<std::unique_ptr< ::cpp2::annotated_inline_string>> MyServiceSvIf::semifuture_first() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::cpp2::annotated_inline_string& _return) { first(_return); });
+folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> MyServiceSvIf::semifuture_first() {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::cpp2::annotated_inline_string& _return) { first(_return); });
 }
 
-folly::Future<std::unique_ptr< ::cpp2::annotated_inline_string>> MyServiceSvIf::future_first() {
+folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> MyServiceSvIf::future_first() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_first(), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::cpp2::annotated_inline_string>>> callback) {
+void MyServiceSvIf::async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_first();
   });
 }
 
-bool MyServiceSvIf::second(int64_t /*count*/) {
+bool MyServiceSvIf::second(::std::int64_t /*count*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("second");
 }
 
-folly::SemiFuture<bool> MyServiceSvIf::semifuture_second(int64_t p_count) {
+folly::SemiFuture<bool> MyServiceSvIf::semifuture_second(::std::int64_t p_count) {
   return apache::thrift::detail::si::semifuture([&] {
     return second(p_count);
   });
 }
 
-folly::Future<bool> MyServiceSvIf::future_second(int64_t p_count) {
+folly::Future<bool> MyServiceSvIf::future_second(::std::int64_t p_count) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_second(p_count), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_count) {
+void MyServiceSvIf::async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_second(p_count);
   });
 }
 
-void MyServiceSvNull::first( ::cpp2::annotated_inline_string& /*_return*/) {}
+void MyServiceSvNull::first(::cpp2::annotated_inline_string& /*_return*/) {}
 
-bool MyServiceSvNull::second(int64_t /*count*/) {
+bool MyServiceSvNull::second(::std::int64_t /*count*/) {
   return 0;
 }
 

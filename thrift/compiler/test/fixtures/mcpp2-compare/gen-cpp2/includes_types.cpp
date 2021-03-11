@@ -69,7 +69,7 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AStruct::AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
+AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
   __isset.FieldA = true;
 }
@@ -152,7 +152,7 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg) :
+AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AStructB::__clear() {
@@ -213,14 +213,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AStructB,
         ::apache::thrift::type_class::structure,
-         ::a::different::ns::AStruct>,
+        ::a::different::ns::AStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AStructB,
         ::apache::thrift::type_class::structure,
-         ::a::different::ns::AStruct>,
+        ::a::different::ns::AStruct>,
     "inconsistent use of nimble option");
 
 }}} // a::different::ns

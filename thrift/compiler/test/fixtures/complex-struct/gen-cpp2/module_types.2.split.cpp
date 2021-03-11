@@ -50,7 +50,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 MyStruct::~MyStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, int8_t MyByteField__arg, int16_t MyShortField__arg, int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<int16_t> lShort__arg, ::std::vector<int32_t> lInteger__arg, ::std::vector<int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<int8_t> lByte__arg, ::std::map<int16_t, ::std::string> mShortString__arg, ::std::map<int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string,  ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<int32_t, int32_t> mIntegerInteger__arg, ::std::map<int32_t, bool> mIntegerBool__arg, ::std::set<int16_t> sShort__arg, ::std::set< ::cpp2::MyStruct> sMyStruct__arg, ::std::set<int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<int8_t> sByte__arg, ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> mListList__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, ::std::int8_t MyByteField__arg, ::std::int16_t MyShortField__arg, ::std::int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<::std::int16_t> lShort__arg, ::std::vector<::std::int32_t> lInteger__arg, ::std::vector<::std::int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<::std::int8_t> lByte__arg, ::std::map<::std::int16_t, ::std::string> mShortString__arg, ::std::map<::std::int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string, ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<::std::int32_t, ::std::int32_t> mIntegerInteger__arg, ::std::map<::std::int32_t, bool> mIntegerBool__arg, ::std::set<::std::int16_t> sShort__arg, ::std::set<::cpp2::MyStruct> sMyStruct__arg, ::std::set<::std::int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<::std::int8_t> sByte__arg, ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> mListList__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
@@ -325,11 +325,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
+const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
   return MyDataField;
 }
 
- ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
+::cpp2::MyDataItem MyStruct::get_MyDataField() && {
   return std::move(MyDataField);
 }
 
@@ -341,27 +341,27 @@ const ::std::vector<double>& MyStruct::get_lDouble() const& {
   return std::move(lDouble);
 }
 
-const ::std::vector<int16_t>& MyStruct::get_lShort() const& {
+const ::std::vector<::std::int16_t>& MyStruct::get_lShort() const& {
   return lShort;
 }
 
-::std::vector<int16_t> MyStruct::get_lShort() && {
+::std::vector<::std::int16_t> MyStruct::get_lShort() && {
   return std::move(lShort);
 }
 
-const ::std::vector<int32_t>& MyStruct::get_lInteger() const& {
+const ::std::vector<::std::int32_t>& MyStruct::get_lInteger() const& {
   return lInteger;
 }
 
-::std::vector<int32_t> MyStruct::get_lInteger() && {
+::std::vector<::std::int32_t> MyStruct::get_lInteger() && {
   return std::move(lInteger);
 }
 
-const ::std::vector<int64_t>& MyStruct::get_lLong() const& {
+const ::std::vector<::std::int64_t>& MyStruct::get_lLong() const& {
   return lLong;
 }
 
-::std::vector<int64_t> MyStruct::get_lLong() && {
+::std::vector<::std::int64_t> MyStruct::get_lLong() && {
   return std::move(lLong);
 }
 
@@ -381,35 +381,35 @@ const ::std::vector<bool>& MyStruct::get_lBool() const& {
   return std::move(lBool);
 }
 
-const ::std::vector<int8_t>& MyStruct::get_lByte() const& {
+const ::std::vector<::std::int8_t>& MyStruct::get_lByte() const& {
   return lByte;
 }
 
-::std::vector<int8_t> MyStruct::get_lByte() && {
+::std::vector<::std::int8_t> MyStruct::get_lByte() && {
   return std::move(lByte);
 }
 
-const ::std::map<int16_t, ::std::string>& MyStruct::get_mShortString() const& {
+const ::std::map<::std::int16_t, ::std::string>& MyStruct::get_mShortString() const& {
   return mShortString;
 }
 
-::std::map<int16_t, ::std::string> MyStruct::get_mShortString() && {
+::std::map<::std::int16_t, ::std::string> MyStruct::get_mShortString() && {
   return std::move(mShortString);
 }
 
-const ::std::map<int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
+const ::std::map<::std::int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
   return mIntegerString;
 }
 
-::std::map<int32_t, ::std::string> MyStruct::get_mIntegerString() && {
+::std::map<::std::int32_t, ::std::string> MyStruct::get_mIntegerString() && {
   return std::move(mIntegerString);
 }
 
-const ::std::map<::std::string,  ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
+const ::std::map<::std::string, ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
   return mStringMyStruct;
 }
 
-::std::map<::std::string,  ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
+::std::map<::std::string, ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
   return std::move(mStringMyStruct);
 }
 
@@ -421,43 +421,43 @@ const ::std::map<::std::string, bool>& MyStruct::get_mStringBool() const& {
   return std::move(mStringBool);
 }
 
-const ::std::map<int32_t, int32_t>& MyStruct::get_mIntegerInteger() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& MyStruct::get_mIntegerInteger() const& {
   return mIntegerInteger;
 }
 
-::std::map<int32_t, int32_t> MyStruct::get_mIntegerInteger() && {
+::std::map<::std::int32_t, ::std::int32_t> MyStruct::get_mIntegerInteger() && {
   return std::move(mIntegerInteger);
 }
 
-const ::std::map<int32_t, bool>& MyStruct::get_mIntegerBool() const& {
+const ::std::map<::std::int32_t, bool>& MyStruct::get_mIntegerBool() const& {
   return mIntegerBool;
 }
 
-::std::map<int32_t, bool> MyStruct::get_mIntegerBool() && {
+::std::map<::std::int32_t, bool> MyStruct::get_mIntegerBool() && {
   return std::move(mIntegerBool);
 }
 
-const ::std::set<int16_t>& MyStruct::get_sShort() const& {
+const ::std::set<::std::int16_t>& MyStruct::get_sShort() const& {
   return sShort;
 }
 
-::std::set<int16_t> MyStruct::get_sShort() && {
+::std::set<::std::int16_t> MyStruct::get_sShort() && {
   return std::move(sShort);
 }
 
-const ::std::set< ::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
+const ::std::set<::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
   return sMyStruct;
 }
 
-::std::set< ::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
+::std::set<::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
   return std::move(sMyStruct);
 }
 
-const ::std::set<int64_t>& MyStruct::get_sLong() const& {
+const ::std::set<::std::int64_t>& MyStruct::get_sLong() const& {
   return sLong;
 }
 
-::std::set<int64_t> MyStruct::get_sLong() && {
+::std::set<::std::int64_t> MyStruct::get_sLong() && {
   return std::move(sLong);
 }
 
@@ -469,19 +469,19 @@ const ::std::set<::std::string>& MyStruct::get_sString() const& {
   return std::move(sString);
 }
 
-const ::std::set<int8_t>& MyStruct::get_sByte() const& {
+const ::std::set<::std::int8_t>& MyStruct::get_sByte() const& {
   return sByte;
 }
 
-::std::set<int8_t> MyStruct::get_sByte() && {
+::std::set<::std::int8_t> MyStruct::get_sByte() && {
   return std::move(sByte);
 }
 
-const ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>>& MyStruct::get_mListList() const& {
+const ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& MyStruct::get_mListList() const& {
   return mListList;
 }
 
-::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> MyStruct::get_mListList() && {
+::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> MyStruct::get_mListList() && {
   return std::move(mListList);
 }
 
@@ -534,14 +534,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -579,7 +579,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 MyStructTypeDef::~MyStructTypeDef() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, int64_t myLongField__arg,  ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg,  ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<int16_t, ::std::string> myMapField__arg,  ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg,  ::cpp2::listTypedef myListTypedef__arg, ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>> myMapListOfTypeDef__arg) :
+MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg, ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<::std::int16_t, ::std::string> myMapField__arg, ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg, ::cpp2::listTypedef myListTypedef__arg, ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> myMapListOfTypeDef__arg) :
     myLongField(std::move(myLongField__arg)),
     myLongTypeDef(std::move(myLongTypeDef__arg)),
     myStringField(std::move(myStringField__arg)),
@@ -684,19 +684,19 @@ bool MyStructTypeDef::operator<(const MyStructTypeDef& rhs) const {
   return false;
 }
 
-const ::std::map<int16_t, ::std::string>& MyStructTypeDef::get_myMapField() const& {
+const ::std::map<::std::int16_t, ::std::string>& MyStructTypeDef::get_myMapField() const& {
   return myMapField;
 }
 
-::std::map<int16_t, ::std::string> MyStructTypeDef::get_myMapField() && {
+::std::map<::std::int16_t, ::std::string> MyStructTypeDef::get_myMapField() && {
   return std::move(myMapField);
 }
 
-const  ::cpp2::mapTypedef& MyStructTypeDef::get_myMapTypedef() const& {
+const ::cpp2::mapTypedef& MyStructTypeDef::get_myMapTypedef() const& {
   return myMapTypedef;
 }
 
- ::cpp2::mapTypedef MyStructTypeDef::get_myMapTypedef() && {
+::cpp2::mapTypedef MyStructTypeDef::get_myMapTypedef() && {
   return std::move(myMapTypedef);
 }
 
@@ -708,19 +708,19 @@ const ::std::vector<double>& MyStructTypeDef::get_myListField() const& {
   return std::move(myListField);
 }
 
-const  ::cpp2::listTypedef& MyStructTypeDef::get_myListTypedef() const& {
+const ::cpp2::listTypedef& MyStructTypeDef::get_myListTypedef() const& {
   return myListTypedef;
 }
 
- ::cpp2::listTypedef MyStructTypeDef::get_myListTypedef() && {
+::cpp2::listTypedef MyStructTypeDef::get_myListTypedef() && {
   return std::move(myListTypedef);
 }
 
-const ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>>& MyStructTypeDef::get_myMapListOfTypeDef() const& {
+const ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& MyStructTypeDef::get_myMapListOfTypeDef() const& {
   return myMapListOfTypeDef;
 }
 
-::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>> MyStructTypeDef::get_myMapListOfTypeDef() && {
+::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> MyStructTypeDef::get_myMapListOfTypeDef() && {
   return std::move(myMapListOfTypeDef);
 }
 
@@ -878,26 +878,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -998,7 +998,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 complexException::~complexException() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-complexException::complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg,  ::cpp2::MyEnum errorEnum__arg,  ::cpp2::MyUnion unionError__arg,  ::cpp2::MyStruct structError__arg, ::std::map<int64_t, ::std::string> lsMap__arg) :
+complexException::complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg, ::cpp2::MyEnum errorEnum__arg, ::cpp2::MyUnion unionError__arg, ::cpp2::MyStruct structError__arg, ::std::map<::std::int64_t, ::std::string> lsMap__arg) :
     message(std::move(message__arg)),
     listStrings(std::move(listStrings__arg)),
     errorEnum(std::move(errorEnum__arg)),
@@ -1084,27 +1084,27 @@ const ::std::vector<::std::string>& complexException::get_listStrings() const& {
   return std::move(listStrings);
 }
 
-const  ::cpp2::MyUnion* complexException::get_unionError() const& {
+const ::cpp2::MyUnion* complexException::get_unionError() const& {
   return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
 }
 
- ::cpp2::MyUnion* complexException::get_unionError() & {
+::cpp2::MyUnion* complexException::get_unionError() & {
   return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
 }
 
-const  ::cpp2::MyStruct& complexException::get_structError() const& {
+const ::cpp2::MyStruct& complexException::get_structError() const& {
   return structError;
 }
 
- ::cpp2::MyStruct complexException::get_structError() && {
+::cpp2::MyStruct complexException::get_structError() && {
   return std::move(structError);
 }
 
-const ::std::map<int64_t, ::std::string>& complexException::get_lsMap() const& {
+const ::std::map<::std::int64_t, ::std::string>& complexException::get_lsMap() const& {
   return lsMap;
 }
 
-::std::map<int64_t, ::std::string> complexException::get_lsMap() && {
+::std::map<::std::int64_t, ::std::string> complexException::get_lsMap() && {
   return std::move(lsMap);
 }
 
@@ -1135,26 +1135,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         complexException,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         complexException,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         complexException,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         complexException,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

@@ -112,7 +112,7 @@ class containerStruct2_struct_traits {
   struct __fbthrift_member_fieldC {
     using owner = ::extra::svc::containerStruct2;
     using name = __fbthrift_strings_extra_services::__fbthrift_hash_7a60aa9f6a5416b61206a441ce84695a835326c0edc0c9b86b92b618f29eb9ed;
-    using type = ::std::set<int32_t>;
+    using type = ::std::set<::std::int32_t>;
     static constexpr ::apache::thrift::field_id_t id = 3;
     static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::fieldC>;
@@ -123,7 +123,7 @@ class containerStruct2_struct_traits {
   struct __fbthrift_member_req_fieldC {
     using owner = ::extra::svc::containerStruct2;
     using name = __fbthrift_strings_extra_services::__fbthrift_hash_bf973e4523774cc2e393efe85aaeaecdfc90a464b96a36f42e93d457237aee7f;
-    using type = ::std::set<int32_t>;
+    using type = ::std::set<::std::int32_t>;
     static constexpr ::apache::thrift::field_id_t id = 103;
     static constexpr auto optional = ::apache::thrift::optionality::required;
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::req_fieldC>;
@@ -134,7 +134,7 @@ class containerStruct2_struct_traits {
   struct __fbthrift_member_opt_fieldC {
     using owner = ::extra::svc::containerStruct2;
     using name = __fbthrift_strings_extra_services::__fbthrift_hash_ec9bc154cafd382fcf46ef9489c25b9df04efacf81018fcf5e4c7ce728f25a1c;
-    using type = ::std::set<int32_t>;
+    using type = ::std::set<::std::int32_t>;
     static constexpr ::apache::thrift::field_id_t id = 203;
     static constexpr auto optional = ::apache::thrift::optionality::optional;
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::opt_fieldC>;

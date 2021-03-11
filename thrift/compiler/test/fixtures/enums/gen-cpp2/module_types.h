@@ -130,7 +130,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg);
+  SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);
 
   SomeStruct(SomeStruct&&) = default;
 
@@ -143,13 +143,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::cpp2::Metasyntactic reasonable;
+  ::cpp2::Metasyntactic reasonable;
  private:
-   ::cpp2::Metasyntactic fine;
+  ::cpp2::Metasyntactic fine;
  private:
-   ::cpp2::Metasyntactic questionable;
+  ::cpp2::Metasyntactic questionable;
  private:
-  ::std::set<int32_t> tags;
+  ::std::set<::std::int32_t> tags;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -179,98 +179,98 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {
     return {this->reasonable, __isset.reasonable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable_ref() const&& {
     return {std::move(this->reasonable), __isset.reasonable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reasonable_ref() & {
     return {this->reasonable, __isset.reasonable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable_ref() && {
     return {std::move(this->reasonable), __isset.reasonable};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine_ref() const& {
     return {this->fine, __isset.fine};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine_ref() const&& {
     return {std::move(this->fine), __isset.fine};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fine_ref() & {
     return {this->fine, __isset.fine};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine_ref() && {
     return {std::move(this->fine), __isset.fine};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
     return {this->questionable, __isset.questionable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable_ref() const&& {
     return {std::move(this->questionable), __isset.questionable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable_ref() & {
     return {this->questionable, __isset.questionable};
   }
 
-  template <typename..., typename T =  ::cpp2::Metasyntactic>
+  template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
     return {std::move(this->questionable), __isset.questionable};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> tags_ref() const& {
     return {this->tags, __isset.tags};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> tags_ref() const&& {
     return {std::move(this->tags), __isset.tags};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> tags_ref() & {
     return {this->tags, __isset.tags};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tags_ref() && {
     return {std::move(this->tags), __isset.tags};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-   ::cpp2::Metasyntactic get_reasonable() const {
+  ::cpp2::Metasyntactic get_reasonable() const {
     return reasonable;
   }
 
-   ::cpp2::Metasyntactic& set_reasonable( ::cpp2::Metasyntactic reasonable_) {
+  ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
     reasonable = reasonable_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reasonable = true;
@@ -278,11 +278,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reasonable;
   }
 
-   ::cpp2::Metasyntactic get_fine() const {
+  ::cpp2::Metasyntactic get_fine() const {
     return fine;
   }
 
-   ::cpp2::Metasyntactic& set_fine( ::cpp2::Metasyntactic fine_) {
+  ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
     fine = fine_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fine = true;
@@ -290,22 +290,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fine;
   }
 
-   ::cpp2::Metasyntactic get_questionable() const {
+  ::cpp2::Metasyntactic get_questionable() const {
     return questionable;
   }
 
-   ::cpp2::Metasyntactic& set_questionable( ::cpp2::Metasyntactic questionable_) {
+  ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
     questionable = questionable_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.questionable = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return questionable;
   }
-  const ::std::set<int32_t>& get_tags() const&;
-  ::std::set<int32_t> get_tags() &&;
+  const ::std::set<::std::int32_t>& get_tags() const&;
+  ::std::set<::std::int32_t> get_tags() &&;
 
-  template <typename T_SomeStruct_tags_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
+  template <typename T_SomeStruct_tags_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.tags = true;

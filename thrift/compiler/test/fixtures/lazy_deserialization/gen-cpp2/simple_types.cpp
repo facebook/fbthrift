@@ -36,7 +36,7 @@ void TccStructTraits<::apache::thrift::test::Foo>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<int32_t> field3__arg, ::std::vector<int32_t> field4__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
@@ -96,11 +96,11 @@ bool Foo::operator<(const Foo& rhs) const {
   return false;
 }
 
-const ::std::vector<int32_t>& Foo::get_field4() const& {
+const ::std::vector<::std::int32_t>& Foo::get_field4() const& {
   return field4;
 }
 
-::std::vector<int32_t> Foo::get_field4() && {
+::std::vector<::std::int32_t> Foo::get_field4() && {
   return std::move(field4);
 }
 

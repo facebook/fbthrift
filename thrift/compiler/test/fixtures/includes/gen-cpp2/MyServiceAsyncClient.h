@@ -29,34 +29,34 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-  virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
  protected:
-  void queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  void queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
  public:
 
-  virtual void sync_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual void sync_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void sync_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual void sync_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
-  virtual folly::Future<folly::Unit> future_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<folly::Unit> semifuture_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::Future<folly::Unit> future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<folly::Unit> semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual folly::Future<folly::Unit> future_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::Future<folly::Unit> future_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_query(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_query(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     return co_query<false>(nullptr, p_s, p_i);
   }
   template <int = 0>
-  folly::coro::Task<void> co_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_query(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     return co_query<true>(&rpcOptions, p_s, p_i);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_query(apache::thrift::RpcOptions* rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_query(apache::thrift::RpcOptions* rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -96,7 +96,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
 
   static folly::exception_wrapper recv_wrapped_query(::apache::thrift::ClientReceiveState& state);
@@ -106,37 +106,37 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_query(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  void queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> queryCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
  protected:
-  void has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  void has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
  public:
 
-  virtual void sync_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual void sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void sync_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual void sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
-  virtual folly::Future<folly::Unit> future_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::Future<folly::Unit> future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual folly::Future<folly::Unit> future_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::Future<folly::Unit> future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_has_arg_docs(const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_has_arg_docs(const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     return co_has_arg_docs<false>(nullptr, p_s, p_i);
   }
   template <int = 0>
-  folly::coro::Task<void> co_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     return co_has_arg_docs<true>(&rpcOptions, p_s, p_i);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_has_arg_docs(apache::thrift::RpcOptions* rpcOptions, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
+  folly::coro::Task<void> co_has_arg_docs(apache::thrift::RpcOptions* rpcOptions, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -176,7 +176,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  virtual void has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
 
 
   static folly::exception_wrapper recv_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state);
@@ -186,7 +186,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i);
+  void has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> has_arg_docsCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

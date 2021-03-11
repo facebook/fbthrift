@@ -14,9 +14,9 @@ namespace test { namespace fixtures { namespace enumstrict {
 
 struct module_constants {
 
-  static constexpr  ::test::fixtures::enumstrict::MyEnum const kOne_ =  ::test::fixtures::enumstrict::MyEnum::ONE;
+  static constexpr ::test::fixtures::enumstrict::MyEnum const kOne_ =  ::test::fixtures::enumstrict::MyEnum::ONE;
 
-  static constexpr  ::test::fixtures::enumstrict::MyEnum kOne() {
+  static constexpr ::test::fixtures::enumstrict::MyEnum kOne() {
     return kOne_;
   }
 

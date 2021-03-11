@@ -201,7 +201,7 @@ void TccStructTraits<::facebook::ns::qwerty::SomeStruct>::translateFieldName(
 namespace facebook { namespace ns { namespace qwerty {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SomeStruct::SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }

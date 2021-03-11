@@ -14,13 +14,13 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static constexpr int32_t const DEFAULT_PORT_NUM_ = 3456;
+  static constexpr ::std::int32_t const DEFAULT_PORT_NUM_ = 3456;
 
-  static constexpr int32_t DEFAULT_PORT_NUM() {
+  static constexpr ::std::int32_t DEFAULT_PORT_NUM() {
     return DEFAULT_PORT_NUM_;
   }
 
-  static  ::cpp2::MyUnion const& constEnumUnion();
+  static ::cpp2::MyUnion const& constEnumUnion();
 
 };
 

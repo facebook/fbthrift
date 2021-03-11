@@ -540,7 +540,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
+structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
@@ -736,14 +736,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         unionA,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         unionA,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -873,7 +873,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 structC::~structC() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<int32_t> j__arg, ::std::vector<int32_t> j1__arg, ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<int32_t> k__arg, ::std::set<int32_t> k1__arg, ::std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<int32_t, int32_t> l__arg, ::std::map<int32_t, int32_t> l1__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, int32_t> n1__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
+structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg, ::test_cpp2::cpp_reflection::enum1 e__arg, ::test_cpp2::cpp_reflection::enum2 f__arg, ::test_cpp2::cpp_reflection::union1 g__arg, ::test_cpp2::cpp_reflection::unionA h__arg, ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<::std::int32_t> j__arg, ::std::vector<::std::int32_t> j1__arg, ::std::vector<::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<::std::int32_t> k__arg, ::std::set<::std::int32_t> k1__arg, ::std::set<::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set<::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<::std::int32_t, ::std::int32_t> l__arg, ::std::map<::std::int32_t, ::std::int32_t> l1__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> m1__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, ::std::int32_t> n1__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> o1__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> o3__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -1167,195 +1167,195 @@ bool structC::operator<(const structC& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
+const ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
   return g;
 }
 
- ::test_cpp2::cpp_reflection::union1 structC::get_g() && {
+::test_cpp2::cpp_reflection::union1 structC::get_g() && {
   return std::move(g);
 }
 
-const  ::test_cpp2::cpp_reflection::unionA& structC::get_h() const& {
+const ::test_cpp2::cpp_reflection::unionA& structC::get_h() const& {
   return h;
 }
 
- ::test_cpp2::cpp_reflection::unionA structC::get_h() && {
+::test_cpp2::cpp_reflection::unionA structC::get_h() && {
   return std::move(h);
 }
 
-const  ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
+const ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
   return i;
 }
 
- ::test_cpp2::cpp_reflection::unionA structC::get_i() && {
+::test_cpp2::cpp_reflection::unionA structC::get_i() && {
   return std::move(i);
 }
 
-const ::std::vector<int32_t>& structC::get_j() const& {
+const ::std::vector<::std::int32_t>& structC::get_j() const& {
   return j;
 }
 
-::std::vector<int32_t> structC::get_j() && {
+::std::vector<::std::int32_t> structC::get_j() && {
   return std::move(j);
 }
 
-const ::std::vector<int32_t>& structC::get_j1() const& {
+const ::std::vector<::std::int32_t>& structC::get_j1() const& {
   return j1;
 }
 
-::std::vector<int32_t> structC::get_j1() && {
+::std::vector<::std::int32_t> structC::get_j1() && {
   return std::move(j1);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
   return j2;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
+::std::vector<::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
   return std::move(j2);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
   return j3;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
+::std::vector<::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
   return std::move(j3);
 }
 
-const ::std::set<int32_t>& structC::get_k() const& {
+const ::std::set<::std::int32_t>& structC::get_k() const& {
   return k;
 }
 
-::std::set<int32_t> structC::get_k() && {
+::std::set<::std::int32_t> structC::get_k() && {
   return std::move(k);
 }
 
-const ::std::set<int32_t>& structC::get_k1() const& {
+const ::std::set<::std::int32_t>& structC::get_k1() const& {
   return k1;
 }
 
-::std::set<int32_t> structC::get_k1() && {
+::std::set<::std::int32_t> structC::get_k1() && {
   return std::move(k1);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
+const ::std::set<::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
   return k2;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
+::std::set<::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
   return std::move(k2);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
+const ::std::set<::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
   return k3;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
+::std::set<::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
   return std::move(k3);
 }
 
-const ::std::map<int32_t, int32_t>& structC::get_l() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& structC::get_l() const& {
   return l;
 }
 
-::std::map<int32_t, int32_t> structC::get_l() && {
+::std::map<::std::int32_t, ::std::int32_t> structC::get_l() && {
   return std::move(l);
 }
 
-const ::std::map<int32_t, int32_t>& structC::get_l1() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& structC::get_l1() const& {
   return l1;
 }
 
-::std::map<int32_t, int32_t> structC::get_l1() && {
+::std::map<::std::int32_t, ::std::int32_t> structC::get_l1() && {
   return std::move(l1);
 }
 
-const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
+const ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
   return l2;
 }
 
-::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
+::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
   return std::move(l2);
 }
 
-const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
+const ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
   return l3;
 }
 
-::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
+::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
   return std::move(l3);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& structC::get_m1() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>& structC::get_m1() const& {
   return m1;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> structC::get_m1() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> structC::get_m1() && {
   return std::move(m1);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
   return m2;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
   return std::move(m2);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
   return m3;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
   return std::move(m3);
 }
 
-const ::std::map<::std::string, int32_t>& structC::get_n1() const& {
+const ::std::map<::std::string, ::std::int32_t>& structC::get_n1() const& {
   return n1;
 }
 
-::std::map<::std::string, int32_t> structC::get_n1() && {
+::std::map<::std::string, ::std::int32_t> structC::get_n1() && {
   return std::move(n1);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
   return n2;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
   return std::move(n2);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
   return n3;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
   return std::move(n3);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& structC::get_o1() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>& structC::get_o1() const& {
   return o1;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> structC::get_o1() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> structC::get_o1() && {
   return std::move(o1);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
   return o2;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
   return std::move(o2);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
   return o3;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
   return std::move(o3);
 }
 
@@ -1410,134 +1410,134 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
-        ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
-        ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1576,7 +1576,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct1::~struct1() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
+struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::enum2 field3__arg, ::test_cpp2::cpp_reflection::union1 field4__arg, ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -1652,19 +1652,19 @@ bool struct1::operator<(const struct1& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
+const ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
   return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
- ::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
+::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
   return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
+const ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
   return field5;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct1::get_field5() && {
+::test_cpp2::cpp_reflection::union2 struct1::get_field5() && {
   return std::move(field5);
 }
 
@@ -1695,26 +1695,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1753,7 +1753,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct2::~struct2() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
+struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -1840,27 +1840,27 @@ bool struct2::operator<(const struct2& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
+const ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
   return fieldE;
 }
 
- ::test_cpp2::cpp_reflection::union1 struct2::get_fieldE() && {
+::test_cpp2::cpp_reflection::union1 struct2::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct2::get_fieldF() const& {
+const ::test_cpp2::cpp_reflection::union2& struct2::get_fieldF() const& {
   return fieldF;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct2::get_fieldF() && {
+::test_cpp2::cpp_reflection::union2 struct2::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const  ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
+const ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
   return fieldG;
 }
 
- ::test_cpp2::cpp_reflection::struct1 struct2::get_fieldG() && {
+::test_cpp2::cpp_reflection::struct1 struct2::get_fieldG() && {
   return std::move(fieldG);
 }
 
@@ -1892,38 +1892,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1962,7 +1962,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct3::~struct3() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
+struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg, ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<::std::int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<::std::int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set<::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -2148,43 +2148,43 @@ bool struct3::operator<(const struct3& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
+const ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
   return fieldE;
 }
 
- ::test_cpp2::cpp_reflection::union1 struct3::get_fieldE() && {
+::test_cpp2::cpp_reflection::union1 struct3::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldF() const& {
+const ::test_cpp2::cpp_reflection::union2& struct3::get_fieldF() const& {
   return fieldF;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct3::get_fieldF() && {
+::test_cpp2::cpp_reflection::union2 struct3::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const  ::test_cpp2::cpp_reflection::struct1& struct3::get_fieldG() const& {
+const ::test_cpp2::cpp_reflection::struct1& struct3::get_fieldG() const& {
   return fieldG;
 }
 
- ::test_cpp2::cpp_reflection::struct1 struct3::get_fieldG() && {
+::test_cpp2::cpp_reflection::struct1 struct3::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
+const ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
   return fieldH;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct3::get_fieldH() && {
+::test_cpp2::cpp_reflection::union2 struct3::get_fieldH() && {
   return std::move(fieldH);
 }
 
-const ::std::vector<int32_t>& struct3::get_fieldI() const& {
+const ::std::vector<::std::int32_t>& struct3::get_fieldI() const& {
   return fieldI;
 }
 
-::std::vector<int32_t> struct3::get_fieldI() && {
+::std::vector<::std::int32_t> struct3::get_fieldI() && {
   return std::move(fieldI);
 }
 
@@ -2204,19 +2204,19 @@ const ::std::vector<::std::string>& struct3::get_fieldK() const& {
   return std::move(fieldK);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
   return fieldL;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
+::std::vector<::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
   return std::move(fieldL);
 }
 
-const ::std::set<int32_t>& struct3::get_fieldM() const& {
+const ::std::set<::std::int32_t>& struct3::get_fieldM() const& {
   return fieldM;
 }
 
-::std::set<int32_t> struct3::get_fieldM() && {
+::std::set<::std::int32_t> struct3::get_fieldM() && {
   return std::move(fieldM);
 }
 
@@ -2236,27 +2236,27 @@ const ::std::set<::std::string>& struct3::get_fieldO() const& {
   return std::move(fieldO);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
+const ::std::set<::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
   return fieldP;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
+::std::set<::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
   return std::move(fieldP);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
   return fieldQ;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
   return std::move(fieldQ);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
   return fieldR;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
   return std::move(fieldR);
 }
 
@@ -2299,98 +2299,98 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2428,7 +2428,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
+  if (srcObj.field3) field3.reset(new ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
 }
 
 struct4& struct4::operator=(const struct4& src) {
@@ -2438,7 +2438,7 @@ struct4& struct4::operator=(const struct4& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
+struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2531,14 +2531,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct4,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct4,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2576,7 +2576,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct5::~struct5() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
+struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::structA field3__arg, ::test_cpp2::cpp_reflection::structB field4__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2644,19 +2644,19 @@ bool struct5::operator<(const struct5& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
+const ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
   return field3;
 }
 
- ::test_cpp2::cpp_reflection::structA struct5::get_field3() && {
+::test_cpp2::cpp_reflection::structA struct5::get_field3() && {
   return std::move(field3);
 }
 
-const  ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
+const ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
   return field4;
 }
 
- ::test_cpp2::cpp_reflection::structB struct5::get_field4() && {
+::test_cpp2::cpp_reflection::structB struct5::get_field4() && {
   return std::move(field4);
 }
 
@@ -2686,26 +2686,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structB>,
+        ::test_cpp2::cpp_reflection::structB>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structB>,
+        ::test_cpp2::cpp_reflection::structB>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2813,7 +2813,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_A_struct>::translateFieldN
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
@@ -2864,19 +2864,19 @@ bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
+const ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
   return b;
 }
 
- ::test_cpp2::cpp_reflection::dep_B_struct dep_A_struct::get_b() && {
+::test_cpp2::cpp_reflection::dep_B_struct dep_A_struct::get_b() && {
   return std::move(b);
 }
 
-const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
+const ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
   return c;
 }
 
- ::test_cpp2::cpp_reflection::dep_C_struct dep_A_struct::get_c() && {
+::test_cpp2::cpp_reflection::dep_C_struct dep_A_struct::get_c() && {
   return std::move(c);
 }
 
@@ -2904,26 +2904,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2952,7 +2952,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_B_struct>::translateFieldN
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
@@ -3003,19 +3003,19 @@ bool dep_B_struct::operator<(const dep_B_struct& rhs) const {
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_B_struct::get_b() const& {
+const ::test_cpp2::cpp_reflection::dep_B_struct& dep_B_struct::get_b() const& {
   return b;
 }
 
- ::test_cpp2::cpp_reflection::dep_B_struct dep_B_struct::get_b() && {
+::test_cpp2::cpp_reflection::dep_B_struct dep_B_struct::get_b() && {
   return std::move(b);
 }
 
-const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
+const ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
   return c;
 }
 
- ::test_cpp2::cpp_reflection::dep_C_struct dep_B_struct::get_c() && {
+::test_cpp2::cpp_reflection::dep_C_struct dep_B_struct::get_c() && {
   return std::move(c);
 }
 
@@ -3043,26 +3043,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -3091,7 +3091,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::annotated>::translateFieldName
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-annotated::annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
+annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) :
     a(std::move(a__arg)) {
   __isset.a = true;
 }
@@ -3462,7 +3462,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_special_names>::tr
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
+struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, ::std::int32_t get__arg, ::std::int32_t getter__arg, ::std::int32_t lists__arg, ::std::int32_t maps__arg, ::std::int32_t name__arg, ::std::int32_t name_to_value__arg, ::std::int32_t names__arg, ::std::int32_t prefix_tree__arg, ::std::int32_t sets__arg, ::std::int32_t setter__arg, ::std::int32_t str__arg, ::std::int32_t strings__arg, ::std::int32_t type__arg, ::std::int32_t value__arg, ::std::int32_t value_to_name__arg, ::std::int32_t values__arg, ::std::int32_t id__arg, ::std::int32_t ids__arg, ::std::int32_t descriptor__arg, ::std::int32_t descriptors__arg, ::std::int32_t key__arg, ::std::int32_t keys__arg, ::std::int32_t annotation__arg, ::std::int32_t annotations__arg, ::std::int32_t member__arg, ::std::int32_t members__arg, ::std::int32_t field__arg, ::std::int32_t fields__arg) :
     get(std::move(get__arg)),
     getter(std::move(getter__arg)),
     lists(std::move(lists__arg)),
@@ -3822,7 +3822,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct_with_indirections::~struct_with_indirections() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
+struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, ::std::int32_t real__arg, ::test_cpp2::cpp_reflection::FakeI32 fake__arg, ::test_cpp2::cpp_reflection::HasANumber number__arg, ::test_cpp2::cpp_reflection::HasAResult result__arg, ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
     real(std::move(real__arg)),
     fake(std::move(fake__arg)),
     number(std::move(number__arg)),

@@ -15,13 +15,13 @@ typedef apache::thrift::ThriftPresult<false> MyService_ping_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_ping_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_getRandomData_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> MyService_getRandomData_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>> MyService_hasDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_hasDataById_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> MyService_hasDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>> MyService_getDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_getDataById_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> MyService_getDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_putDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_putDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_putDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_cppDoNothing_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_cppDoNothing_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -148,7 +148,7 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_hasDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.hasDataById", ctx));
   try {
@@ -205,7 +205,7 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_getDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.getDataById", ctx));
   try {
@@ -262,7 +262,7 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_putDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<::std::string>();
   args.get<1>().value = uarg_data.get();
@@ -319,7 +319,7 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_lobDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<::std::string>();
   args.get<1>().value = uarg_data.get();

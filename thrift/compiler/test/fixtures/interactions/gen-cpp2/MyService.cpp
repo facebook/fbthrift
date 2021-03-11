@@ -54,18 +54,18 @@ void MyServiceSvNull::foo() {
 
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate() {
+folly::coro::Task<::std::int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate() {
   return folly::coro::toTask(semifuture_frobnicate());
 }
 
-folly::coro::Task<int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::std::int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
   return co_frobnicate();
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::SemiFuture<int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
+folly::SemiFuture<::std::int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
 }
-void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -137,18 +137,18 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify() {
+folly::coro::Task<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify() {
   return folly::coro::toTask(semifuture_truthify());
 }
 
-folly::coro::Task<apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify(apache::thrift::RequestParams /* params */) {
   return co_truthify();
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::SemiFuture<apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
+folly::SemiFuture<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_truthify");
 }
-void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<bool>>> callback) {
+void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -178,18 +178,18 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> MyServiceSvIf::MyInteractionIf::co_encode() {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode() {
   return folly::coro::toTask(semifuture_encode());
 }
 
-folly::coro::Task<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> MyServiceSvIf::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
   return co_encode();
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
+folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_encode");
 }
-void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>>> callback) {
+void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -218,7 +218,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
 #endif // FOLLY_HAS_COROUTINES
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+void MyServiceSvIf::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
 }
 
@@ -226,11 +226,11 @@ void MyServiceSvIf::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::t
   LOG(DFATAL) << "Function ping is unimplemented";
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<bool>>> callback) {
+void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function truthify is unimplemented"));
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>>> callback) {
+void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function encode is unimplemented"));
 }
 

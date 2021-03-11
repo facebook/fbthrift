@@ -247,7 +247,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       fieldA(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
+  SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
   SomeStruct(SomeStruct&&) = default;
 
@@ -260,7 +260,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t fieldA;
+  ::std::int32_t fieldA;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -287,32 +287,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_fieldA() const {
+  ::std::int32_t get_fieldA() const {
     return fieldA;
   }
 
-  int32_t& set_fieldA(int32_t fieldA_) {
+  ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;

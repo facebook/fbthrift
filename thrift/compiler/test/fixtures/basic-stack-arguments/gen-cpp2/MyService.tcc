@@ -11,13 +11,13 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>> MyService_hasDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_hasDataById_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> MyService_hasDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>> MyService_getDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_getDataById_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> MyService_getDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_putDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_putDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_putDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::setUpAndProcess_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -34,7 +34,7 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_hasDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.hasDataById", ctx));
   try {
@@ -91,7 +91,7 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_getDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.getDataById", ctx));
   try {
@@ -148,7 +148,7 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_putDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;
   args.get<1>().value = &uarg_data;
@@ -205,7 +205,7 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_lobDataById_pargs args;
-  int64_t uarg_id{0};
+  ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;
   args.get<1>().value = &uarg_data;

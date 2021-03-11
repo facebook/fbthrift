@@ -65,7 +65,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  IncludedB(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg);
+  IncludedB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg);
 
   IncludedB(IncludedB&&) = default;
 
@@ -78,7 +78,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t i32Field;
+  ::std::int32_t i32Field;
  private:
   ::std::string strField;
 
@@ -108,22 +108,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field_ref() const&& {
     return {std::move(this->i32Field), __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> i32Field_ref() & {
     return {this->i32Field, __isset.i32Field};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
@@ -151,11 +151,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_i32Field() const {
+  ::std::int32_t get_i32Field() const {
     return i32Field;
   }
 
-  int32_t& set_i32Field(int32_t i32Field_) {
+  ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;

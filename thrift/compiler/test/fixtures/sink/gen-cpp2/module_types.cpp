@@ -510,7 +510,7 @@ void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SinkException2::SinkException2(apache::thrift::FragileConstructor, int64_t reason__arg) :
+SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
 }

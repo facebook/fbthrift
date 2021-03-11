@@ -29,12 +29,12 @@ namespace cpp2 {
 class MyServiceSvAsyncIf {
  public:
   virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::cpp2::annotated_inline_string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr< ::cpp2::annotated_inline_string>> future_first() = 0;
-  virtual folly::SemiFuture<std::unique_ptr< ::cpp2::annotated_inline_string>> semifuture_first() = 0;
-  virtual void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_count) = 0;
-  virtual folly::Future<bool> future_second(int64_t p_count) = 0;
-  virtual folly::SemiFuture<bool> semifuture_second(int64_t p_count) = 0;
+  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) = 0;
+  virtual folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first() = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first() = 0;
+  virtual void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) = 0;
+  virtual folly::Future<bool> future_second(::std::int64_t p_count) = 0;
+  virtual folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count) = 0;
 };
 
 class MyServiceAsyncProcessor;
@@ -45,20 +45,20 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 
 
-  virtual void first( ::cpp2::annotated_inline_string& /*_return*/);
-  folly::Future<std::unique_ptr< ::cpp2::annotated_inline_string>> future_first() override;
-  folly::SemiFuture<std::unique_ptr< ::cpp2::annotated_inline_string>> semifuture_first() override;
-  void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::cpp2::annotated_inline_string>>> callback) override;
-  virtual bool second(int64_t /*count*/);
-  folly::Future<bool> future_second(int64_t p_count) override;
-  folly::SemiFuture<bool> semifuture_second(int64_t p_count) override;
-  void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_count) override;
+  virtual void first(::cpp2::annotated_inline_string& /*_return*/);
+  folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first() override;
+  folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first() override;
+  void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) override;
+  virtual bool second(::std::int64_t /*count*/);
+  folly::Future<bool> future_second(::std::int64_t p_count) override;
+  folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count) override;
+  void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) override;
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-  void first( ::cpp2::annotated_inline_string& /*_return*/) override;
-  bool second(int64_t /*count*/) override;
+  void first(::cpp2::annotated_inline_string& /*_return*/) override;
+  bool second(::std::int64_t /*count*/) override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -86,7 +86,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_first(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::cpp2::annotated_inline_string const& _return);
+  static folly::IOBufQueue return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_first(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>

@@ -10,34 +10,34 @@
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int32_t*>> PubSubStreamingService_returnstream_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int32_t*>> PubSubStreamingService_returnstream_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
     > PubSubStreamingService_returnstream_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>> PubSubStreamingService_streamthrows_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> PubSubStreamingService_streamthrows_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::FooEx>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::FooEx>>
     > PubSubStreamingService_streamthrows_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>> PubSubStreamingService_boththrows_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> PubSubStreamingService_boththrows_pargs;
 typedef apache::thrift::ThriftPResultStream<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::FooEx>>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::FooEx>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::FooEx>>, 
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::FooEx>>
     > PubSubStreamingService_boththrows_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>> PubSubStreamingService_responseandstreamthrows_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> PubSubStreamingService_responseandstreamthrows_pargs;
 typedef apache::thrift::ThriftPResultStream<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::FooEx>>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::FooEx>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::FooEx>>, 
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::FooEx>>
     > PubSubStreamingService_responseandstreamthrows_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int32_t*>> PubSubStreamingService_returnstreamFast_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int32_t*>> PubSubStreamingService_returnstreamFast_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>>
     > PubSubStreamingService_returnstreamFast_presult;
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   PubSubStreamingService_returnstream_pargs args;
@@ -51,7 +51,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, apache::t
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   PubSubStreamingService_streamthrows_pargs args;
@@ -64,7 +64,7 @@ void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, apache::t
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   PubSubStreamingService_boththrows_pargs args;
@@ -77,7 +77,7 @@ void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, apache::thr
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   PubSubStreamingService_responseandstreamthrows_pargs args;
@@ -90,7 +90,7 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::returnstreamFastT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamFastT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   PubSubStreamingService_returnstreamFast_pargs args;
@@ -105,12 +105,12 @@ void PubSubStreamingServiceAsyncClient::returnstreamFastT(Protocol_* prot, apach
 
 
 
-void PubSubStreamingServiceAsyncClient::returnstream(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstream(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   returnstream(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
 }
 
-void PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto ctx = returnstreamCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -122,7 +122,7 @@ void PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions&
   returnstreamImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_i32_from, p_i32_to);
 }
 
-void PubSubStreamingServiceAsyncClient::returnstreamImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -152,12 +152,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> PubSubStream
       "PubSubStreamingService.returnstream");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_returnstream(int32_t p_i32_from, int32_t p_i32_to) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_returnstream(rpcOptions, p_i32_from, p_i32_to);
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -186,13 +186,13 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_returnstream(rpcOptions, p_i32_from, p_i32_to);
 }
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_returnstream, channel_);
   auto callback = std::move(callbackAndFuture.first);
   returnstream(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
@@ -200,7 +200,7 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreaming
 }
 
 
-folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_returnstream, channel_);
   auto callback = std::move(callbackAndFuture.first);
   returnstream(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
@@ -210,7 +210,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstream(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstream(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -240,8 +240,8 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_returnstream(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ClientBufferedStream<int32_t> _return;
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_returnstream(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ClientBufferedStream<::std::int32_t> _return;
   auto ew = recv_wrapped_returnstream(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -249,20 +249,20 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return _return;
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_instance_returnstream(::apache::thrift::ClientReceiveState& state) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_instance_returnstream(::apache::thrift::ClientReceiveState& state) {
   return recv_returnstream(state);
 }
 
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_returnstream(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_returnstream(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_returnstream(_return, state);
 }
 
-void PubSubStreamingServiceAsyncClient::streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   streamthrows(rpcOptions, std::move(callback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   auto ctx = streamthrowsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -274,7 +274,7 @@ void PubSubStreamingServiceAsyncClient::streamthrows(apache::thrift::RpcOptions&
   streamthrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::streamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::streamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -304,12 +304,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> PubSubStream
       "PubSubStreamingService.streamthrows");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_streamthrows(int32_t p_foo) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_streamthrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_streamthrows(rpcOptions, p_foo);
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -338,13 +338,13 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_streamthrows(rpcOptions, p_foo);
 }
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_streamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   streamthrows(rpcOptions, std::move(callback), p_foo);
@@ -352,7 +352,7 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreaming
 }
 
 
-folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_streamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   streamthrows(rpcOptions, std::move(callback), p_foo);
@@ -362,7 +362,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -392,8 +392,8 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_streamt
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_streamthrows(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ClientBufferedStream<int32_t> _return;
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_streamthrows(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ClientBufferedStream<::std::int32_t> _return;
   auto ew = recv_wrapped_streamthrows(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -401,20 +401,20 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return _return;
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_instance_streamthrows(::apache::thrift::ClientReceiveState& state) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_instance_streamthrows(::apache::thrift::ClientReceiveState& state) {
   return recv_streamthrows(state);
 }
 
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_streamthrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_streamthrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_streamthrows(_return, state);
 }
 
-void PubSubStreamingServiceAsyncClient::boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   boththrows(rpcOptions, std::move(callback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   auto ctx = boththrowsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -426,7 +426,7 @@ void PubSubStreamingServiceAsyncClient::boththrows(apache::thrift::RpcOptions& r
   boththrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::boththrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::boththrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -456,12 +456,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> PubSubStream
       "PubSubStreamingService.boththrows");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_boththrows(int32_t p_foo) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_boththrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_boththrows(rpcOptions, p_foo);
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -490,13 +490,13 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_boththrows(rpcOptions, p_foo);
 }
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_boththrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   boththrows(rpcOptions, std::move(callback), p_foo);
@@ -504,7 +504,7 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreaming
 }
 
 
-folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_boththrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   boththrows(rpcOptions, std::move(callback), p_foo);
@@ -514,7 +514,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_boththrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_boththrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -544,8 +544,8 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_boththr
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_boththrows(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ClientBufferedStream<int32_t> _return;
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_boththrows(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ClientBufferedStream<::std::int32_t> _return;
   auto ew = recv_wrapped_boththrows(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -553,20 +553,20 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return _return;
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_instance_boththrows(::apache::thrift::ClientReceiveState& state) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_instance_boththrows(::apache::thrift::ClientReceiveState& state) {
   return recv_boththrows(state);
 }
 
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_boththrows(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_boththrows(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_boththrows(_return, state);
 }
 
-void PubSubStreamingServiceAsyncClient::responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   responseandstreamthrows(rpcOptions, std::move(callback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_foo) {
   auto ctx = responseandstreamthrowsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -578,7 +578,7 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrows(apache::thrift::
   responseandstreamthrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void PubSubStreamingServiceAsyncClient::responseandstreamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo) {
+void PubSubStreamingServiceAsyncClient::responseandstreamthrowsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -608,12 +608,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> PubSubStream
       "PubSubStreamingService.responseandstreamthrows");
 }
 
-apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreamingServiceAsyncClient::sync_responseandstreamthrows(int32_t p_foo) {
+apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> PubSubStreamingServiceAsyncClient::sync_responseandstreamthrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_responseandstreamthrows(rpcOptions, p_foo);
 }
 
-apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreamingServiceAsyncClient::sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> PubSubStreamingServiceAsyncClient::sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -642,13 +642,13 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
 
 
 
-folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(::std::int32_t p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_responseandstreamthrows(rpcOptions, p_foo);
 }
 
 
-folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_responseandstreamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   responseandstreamthrows(rpcOptions, std::move(callback), p_foo);
@@ -656,7 +656,7 @@ folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_
 }
 
 
-folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t p_foo) {
+folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_responseandstreamthrows, channel_);
   auto callback = std::move(callbackAndFuture.first);
   responseandstreamthrows(rpcOptions, std::move(callback), p_foo);
@@ -666,7 +666,7 @@ folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int3
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -696,8 +696,8 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_respons
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreamingServiceAsyncClient::recv_responseandstreamthrows(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> _return;
+apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> PubSubStreamingServiceAsyncClient::recv_responseandstreamthrows(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> _return;
   auto ew = recv_wrapped_responseandstreamthrows(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -705,20 +705,20 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
   return _return;
 }
 
-apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreamingServiceAsyncClient::recv_instance_responseandstreamthrows(::apache::thrift::ClientReceiveState& state) {
+apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> PubSubStreamingServiceAsyncClient::recv_instance_responseandstreamthrows(::apache::thrift::ClientReceiveState& state) {
   return recv_responseandstreamthrows(state);
 }
 
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_responseandstreamthrows(_return, state);
 }
 
-void PubSubStreamingServiceAsyncClient::returnstreamFast(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamFast(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   returnstreamFast(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
 }
 
-void PubSubStreamingServiceAsyncClient::returnstreamFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto ctx = returnstreamFastCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -730,7 +730,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamFast(apache::thrift::RpcOpti
   returnstreamFastImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_i32_from, p_i32_to);
 }
 
-void PubSubStreamingServiceAsyncClient::returnstreamFastImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to) {
+void PubSubStreamingServiceAsyncClient::returnstreamFastImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -760,12 +760,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> PubSubStream
       "PubSubStreamingService.returnstreamFast");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_returnstreamFast(int32_t p_i32_from, int32_t p_i32_to) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_returnstreamFast(rpcOptions, p_i32_from, p_i32_to);
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::sync_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::sync_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -794,13 +794,13 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstreamFast(int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_returnstreamFast(rpcOptions, p_i32_from, p_i32_to);
 }
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<apache::thrift::ClientBufferedStream<::std::int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_returnstreamFast, channel_);
   auto callback = std::move(callbackAndFuture.first);
   returnstreamFast(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
@@ -808,7 +808,7 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreaming
 }
 
 
-folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, int32_t p_i32_from, int32_t p_i32_to) {
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_returnstreamFast, channel_);
   auto callback = std::move(callbackAndFuture.first);
   returnstreamFast(rpcOptions, std::move(callback), p_i32_from, p_i32_to);
@@ -818,7 +818,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -848,8 +848,8 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_returnstreamFast(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ClientBufferedStream<int32_t> _return;
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_returnstreamFast(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ClientBufferedStream<::std::int32_t> _return;
   auto ew = recv_wrapped_returnstreamFast(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -857,11 +857,11 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return _return;
 }
 
-apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient::recv_instance_returnstreamFast(::apache::thrift::ClientReceiveState& state) {
+apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsyncClient::recv_instance_returnstreamFast(::apache::thrift::ClientReceiveState& state) {
   return recv_returnstreamFast(state);
 }
 
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_returnstreamFast(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_returnstreamFast(_return, state);
 }
 

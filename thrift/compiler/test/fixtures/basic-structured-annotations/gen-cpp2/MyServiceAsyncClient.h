@@ -35,28 +35,28 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void firstImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
-  virtual void sync_first( ::cpp2::annotated_inline_string& _return);
-  virtual void sync_first(apache::thrift::RpcOptions& rpcOptions,  ::cpp2::annotated_inline_string& _return);
+  virtual void sync_first(::cpp2::annotated_inline_string& _return);
+  virtual void sync_first(apache::thrift::RpcOptions& rpcOptions, ::cpp2::annotated_inline_string& _return);
 
-  virtual folly::Future< ::cpp2::annotated_inline_string> future_first();
-  virtual folly::SemiFuture< ::cpp2::annotated_inline_string> semifuture_first();
-  virtual folly::Future< ::cpp2::annotated_inline_string> future_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture< ::cpp2::annotated_inline_string> semifuture_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair< ::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair< ::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<::cpp2::annotated_inline_string> future_first();
+  virtual folly::SemiFuture<::cpp2::annotated_inline_string> semifuture_first();
+  virtual folly::Future<::cpp2::annotated_inline_string> future_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<::cpp2::annotated_inline_string> semifuture_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_first(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::cpp2::annotated_inline_string> co_first() {
+  folly::coro::Task<::cpp2::annotated_inline_string> co_first() {
     return co_first<false>(nullptr);
   }
   template <int = 0>
-  folly::coro::Task< ::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
     return co_first<true>(&rpcOptions);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions* rpcOptions) {
+  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -89,7 +89,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::cpp2::annotated_inline_string _return;
+    ::cpp2::annotated_inline_string _return;
     if (auto ew = recv_wrapped_first(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -101,44 +101,44 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void first(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
 
 
-  static folly::exception_wrapper recv_wrapped_first( ::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_first( ::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_first( ::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_first( ::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void firstT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> firstCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void second(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_count);
-  virtual void second(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_count);
+  virtual void second(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_count);
+  virtual void second(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_count);
  protected:
-  void secondImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t p_count);
+  void secondImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
  public:
 
-  virtual bool sync_second(int64_t p_count);
-  virtual bool sync_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count);
+  virtual bool sync_second(::std::int64_t p_count);
+  virtual bool sync_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
 
-  virtual folly::Future<bool> future_second(int64_t p_count);
-  virtual folly::SemiFuture<bool> semifuture_second(int64_t p_count);
-  virtual folly::Future<bool> future_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count);
-  virtual folly::SemiFuture<bool> semifuture_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count);
-  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count);
-  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count);
+  virtual folly::Future<bool> future_second(::std::int64_t p_count);
+  virtual folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count);
+  virtual folly::Future<bool> future_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
+  virtual folly::SemiFuture<bool> semifuture_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
+  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<bool> co_second(int64_t p_count) {
+  folly::coro::Task<bool> co_second(::std::int64_t p_count) {
     return co_second<false>(nullptr, p_count);
   }
   template <int = 0>
-  folly::coro::Task<bool> co_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count) {
+  folly::coro::Task<bool> co_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
     return co_second<true>(&rpcOptions, p_count);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<bool> co_second(apache::thrift::RpcOptions* rpcOptions, int64_t p_count) {
+  folly::coro::Task<bool> co_second(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_count) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -180,7 +180,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void second(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t p_count);
+  virtual void second(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_count);
 
 
   static folly::exception_wrapper recv_wrapped_second(bool& _return, ::apache::thrift::ClientReceiveState& state);
@@ -190,7 +190,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_second(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void secondT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t p_count);
+  void secondT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> secondCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

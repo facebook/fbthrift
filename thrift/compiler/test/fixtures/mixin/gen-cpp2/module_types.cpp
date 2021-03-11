@@ -115,7 +115,7 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Mixin2::Mixin2(apache::thrift::FragileConstructor,  ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
+Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
     m1(std::move(m1__arg)),
     field2(std::move(field2__arg)) {
   __isset.m1 = true;
@@ -157,11 +157,11 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
   return false;
 }
 
-const  ::cpp2::Mixin1& Mixin2::get_m1() const& {
+const ::cpp2::Mixin1& Mixin2::get_m1() const& {
   return m1;
 }
 
- ::cpp2::Mixin1 Mixin2::get_m1() && {
+::cpp2::Mixin1 Mixin2::get_m1() && {
   return std::move(m1);
 }
 
@@ -188,14 +188,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Mixin2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
+        ::cpp2::Mixin1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Mixin2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
+        ::cpp2::Mixin1>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -303,7 +303,7 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2::Mixin2 m2__arg,  ::cpp2::Mixin3 m3__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg) :
     field4(std::move(field4__arg)),
     m2(std::move(m2__arg)),
     m3(std::move(m3__arg)) {
@@ -354,19 +354,19 @@ bool Foo::operator<(const Foo& rhs) const {
   return false;
 }
 
-const  ::cpp2::Mixin2& Foo::get_m2() const& {
+const ::cpp2::Mixin2& Foo::get_m2() const& {
   return m2;
 }
 
- ::cpp2::Mixin2 Foo::get_m2() && {
+::cpp2::Mixin2 Foo::get_m2() && {
   return std::move(m2);
 }
 
-const  ::cpp2::Mixin3& Foo::get_m3() const& {
+const ::cpp2::Mixin3& Foo::get_m3() const& {
   return m3;
 }
 
- ::cpp2::Mixin3 Foo::get_m3() && {
+::cpp2::Mixin3 Foo::get_m3() && {
   return std::move(m3);
 }
 
@@ -394,26 +394,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin2>,
+        ::cpp2::Mixin2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin3>,
+        ::cpp2::Mixin3>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin2>,
+        ::cpp2::Mixin2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin3>,
+        ::cpp2::Mixin3>,
     "inconsistent use of nimble option");
 
 } // cpp2

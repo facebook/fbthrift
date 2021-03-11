@@ -126,7 +126,7 @@ class NoExceptMoveUnion_variant_traits {
           __fbthrift_member_string_field::setter,
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_string_field>>,
       ::fatal::variant_member_descriptor<
-          int32_t,
+          ::std::int32_t,
            __fbthrift_ids::i32_field,
           __fbthrift_member_i32_field::getter,
           __fbthrift_member_i32_field::setter,

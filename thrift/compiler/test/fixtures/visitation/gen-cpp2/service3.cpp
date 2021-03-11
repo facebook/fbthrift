@@ -38,112 +38,112 @@ void service3SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallb
   });
 }
 
-void service3SvIf::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
+void service3SvIf::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodB");
 }
 
-folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodB(int32_t p_x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   return apache::thrift::detail::si::semifuture([&] {
     return methodB(p_x, std::move(p_y), p_z);
   });
 }
 
-folly::Future<folly::Unit> service3SvIf::future_methodB(int32_t p_x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+folly::Future<folly::Unit> service3SvIf::future_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodB(p_x, std::move(p_y), p_z), std::move(ka));
 }
 
-void service3SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t p_x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+void service3SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodB(p_x, std::move(p_y), p_z);
   });
 }
 
-int32_t service3SvIf::methodC() {
+::std::int32_t service3SvIf::methodC() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodC");
 }
 
-folly::SemiFuture<int32_t> service3SvIf::semifuture_methodC() {
+folly::SemiFuture<::std::int32_t> service3SvIf::semifuture_methodC() {
   return apache::thrift::detail::si::semifuture([&] {
     return methodC();
   });
 }
 
-folly::Future<int32_t> service3SvIf::future_methodC() {
+folly::Future<::std::int32_t> service3SvIf::future_methodC() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodC(), std::move(ka));
 }
 
-void service3SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+void service3SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodC();
   });
 }
 
-int32_t service3SvIf::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
+::std::int32_t service3SvIf::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodD");
 }
 
-folly::SemiFuture<int32_t> service3SvIf::semifuture_methodD(int32_t p_i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+folly::SemiFuture<::std::int32_t> service3SvIf::semifuture_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   return apache::thrift::detail::si::semifuture([&] {
     return methodD(p_i, std::move(p_j), p_k);
   });
 }
 
-folly::Future<int32_t> service3SvIf::future_methodD(int32_t p_i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+folly::Future<::std::int32_t> service3SvIf::future_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodD(p_i, std::move(p_j), p_k), std::move(ka));
 }
 
-void service3SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t p_i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+void service3SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodD(p_i, std::move(p_j), p_k);
   });
 }
 
-void service3SvIf::methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) {
+void service3SvIf::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodE");
 }
 
-folly::SemiFuture<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service3SvIf::semifuture_methodE() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::test_cpp2::cpp_reflection::struct2& _return) { methodE(_return); });
+folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service3SvIf::semifuture_methodE() {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::test_cpp2::cpp_reflection::struct2& _return) { methodE(_return); });
 }
 
-folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service3SvIf::future_methodE() {
+folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service3SvIf::future_methodE() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodE(), std::move(ka));
 }
 
-void service3SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) {
+void service3SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodE();
   });
 }
 
-void service3SvIf::methodF( ::test_cpp2::cpp_reflection::struct3& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
+void service3SvIf::methodF(::test_cpp2::cpp_reflection::struct3& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodF");
 }
 
-folly::SemiFuture<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>> service3SvIf::semifuture_methodF(int32_t p_l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::test_cpp2::cpp_reflection::struct3& _return) { methodF(_return, p_l, std::move(p_m), p_n); });
+folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct3>> service3SvIf::semifuture_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::test_cpp2::cpp_reflection::struct3& _return) { methodF(_return, p_l, std::move(p_m), p_n); });
 }
 
-folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>> service3SvIf::future_methodF(int32_t p_l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct3>> service3SvIf::future_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodF(p_l, std::move(p_m), p_n), std::move(ka));
 }
 
-void service3SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>>> callback, int32_t p_l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+void service3SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct3>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodF(p_l, std::move(p_m), p_n);
   });
@@ -153,21 +153,21 @@ void service3SvNull::methodA() {
   return;
 }
 
-void service3SvNull::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
+void service3SvNull::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
   return;
 }
 
-int32_t service3SvNull::methodC() {
+::std::int32_t service3SvNull::methodC() {
   return 0;
 }
 
-int32_t service3SvNull::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
+::std::int32_t service3SvNull::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
   return 0;
 }
 
-void service3SvNull::methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) {}
+void service3SvNull::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {}
 
-void service3SvNull::methodF( ::test_cpp2::cpp_reflection::struct3& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {}
+void service3SvNull::methodF(::test_cpp2::cpp_reflection::struct3& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {}
 
 
 

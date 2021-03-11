@@ -234,7 +234,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       small_B(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg);
+  SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg);
 
   SmallStruct(SmallStruct&&) = default;
 
@@ -249,7 +249,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   bool small_A;
  private:
-  int32_t small_B;
+  ::std::int32_t small_B;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -299,22 +299,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> small_B_ref() const& {
     return {this->small_B, __isset.small_B};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> small_B_ref() const&& {
     return {std::move(this->small_B), __isset.small_B};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> small_B_ref() & {
     return {this->small_B, __isset.small_B};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_B_ref() && {
     return {std::move(this->small_B), __isset.small_B};
   }
@@ -332,11 +332,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return small_A;
   }
 
-  int32_t get_small_B() const {
+  ::std::int32_t get_small_B() const {
     return small_B;
   }
 
-  int32_t& set_small_B(int32_t small_B_) {
+  ::std::int32_t& set_small_B(::std::int32_t small_B_) {
     small_B = small_B_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.small_B = true;
@@ -392,7 +392,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector< ::cpp2::IndirectionA> fieldN__arg, ::std::vector< ::cpp2::IndirectionB> fieldO__arg, ::std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector<::cpp2::IndirectionA> fieldN__arg, ::std::vector<::cpp2::IndirectionB> fieldO__arg, ::std::vector<::cpp2::IndirectionC> fieldP__arg, ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr<::cpp2::SmallStruct> fieldS__arg, std::shared_ptr<::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr<::cpp2::SmallStruct> fieldX__arg);
 
   containerStruct(containerStruct&&) = default;
   containerStruct(const containerStruct& src);
@@ -410,45 +410,45 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::map<::std::string, bool> fieldB;
  private:
-  ::std::set<int32_t> fieldC;
+  ::std::set<::std::int32_t> fieldC;
  private:
   ::std::string fieldD;
  private:
   ::std::string fieldE;
  private:
-  ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF;
+  ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF;
  private:
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG;
  private:
-  ::std::vector<::std::set<int32_t>> fieldH;
+  ::std::vector<::std::set<::std::int32_t>> fieldH;
  private:
   bool fieldI;
  private:
-  ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
+  ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ;
  private:
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK;
  private:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
  private:
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
  private:
-  ::std::vector< ::cpp2::IndirectionA> fieldN;
+  ::std::vector<::cpp2::IndirectionA> fieldN;
  private:
-  ::std::vector< ::cpp2::IndirectionB> fieldO;
+  ::std::vector<::cpp2::IndirectionB> fieldO;
  private:
-  ::std::vector< ::cpp2::IndirectionC> fieldP;
+  ::std::vector<::cpp2::IndirectionC> fieldP;
  private:
-   ::cpp2::MyEnumA fieldQ;
+  ::cpp2::MyEnumA fieldQ;
  public:
   std::unique_ptr<::std::map<::std::string, bool>> fieldR;
  public:
-  std::unique_ptr< ::cpp2::SmallStruct> fieldS;
+  std::unique_ptr<::cpp2::SmallStruct> fieldS;
  public:
-  std::shared_ptr< ::cpp2::SmallStruct> fieldT;
+  std::shared_ptr<::cpp2::SmallStruct> fieldT;
  public:
-  std::shared_ptr<const  ::cpp2::SmallStruct> fieldU;
+  std::shared_ptr<const ::cpp2::SmallStruct> fieldU;
  public:
-  std::unique_ptr< ::cpp2::SmallStruct> fieldX;
+  std::unique_ptr<::cpp2::SmallStruct> fieldX;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -535,22 +535,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
@@ -601,66 +601,66 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<int32_t>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<int32_t>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<int32_t>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF_ref() & {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<int32_t>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG_ref() & {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
     return {std::move(this->fieldH), __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH_ref() & {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
     return {std::move(this->fieldH), __isset.fieldH};
   }
@@ -689,44 +689,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldJ_ref() const& {
     return {this->fieldJ, __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldJ_ref() const&& {
     return {std::move(this->fieldJ), __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldJ_ref() & {
     return {this->fieldJ, __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ_ref() && {
     return {std::move(this->fieldJ), __isset.fieldJ};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldK_ref() const& {
     return {this->fieldK, __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldK_ref() const&& {
     return {std::move(this->fieldK), __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldK_ref() & {
     return {this->fieldK, __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK_ref() && {
     return {std::move(this->fieldK), __isset.fieldK};
   }
@@ -755,110 +755,110 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldM_ref() const& {
     return {this->fieldM, __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldM_ref() const&& {
     return {std::move(this->fieldM), __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldM_ref() & {
     return {this->fieldM, __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM_ref() && {
     return {std::move(this->fieldM), __isset.fieldM};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionA>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldN_ref() const& {
     return {this->fieldN, __isset.fieldN};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionA>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldN_ref() const&& {
     return {std::move(this->fieldN), __isset.fieldN};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionA>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldN_ref() & {
     return {this->fieldN, __isset.fieldN};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionA>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN_ref() && {
     return {std::move(this->fieldN), __isset.fieldN};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldO_ref() const& {
     return {this->fieldO, __isset.fieldO};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldO_ref() const&& {
     return {std::move(this->fieldO), __isset.fieldO};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldO_ref() & {
     return {this->fieldO, __isset.fieldO};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO_ref() && {
     return {std::move(this->fieldO), __isset.fieldO};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionC>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldP_ref() const& {
     return {this->fieldP, __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionC>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldP_ref() const&& {
     return {std::move(this->fieldP), __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionC>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldP_ref() & {
     return {this->fieldP, __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::cpp2::IndirectionC>>
+  template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP_ref() && {
     return {std::move(this->fieldP), __isset.fieldP};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyEnumA>
+  template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldQ_ref() const& {
     return {this->fieldQ, __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnumA>
+  template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldQ_ref() const&& {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnumA>
+  template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldQ_ref() & {
     return {this->fieldQ, __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnumA>
+  template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ_ref() && {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
@@ -874,49 +874,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE const T&& fieldR_ref() const&& { return std::move(fieldR); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldS_ref() & { return fieldS; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldS_ref() const& { return fieldS; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldS_ref() && { return std::move(fieldS); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldS_ref() const&& { return std::move(fieldS); }
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldT_ref() & { return fieldT; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldT_ref() const& { return fieldT; }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldT_ref() && { return std::move(fieldT); }
 
-  template <typename ..., typename T = std::shared_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldT_ref() const&& { return std::move(fieldT); }
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldU_ref() & { return fieldU; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldU_ref() const& { return fieldU; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldU_ref() && { return std::move(fieldU); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldU_ref() const&& { return std::move(fieldU); }
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldX_ref() & { return fieldX; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldX_ref() const& { return fieldX; }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldX_ref() && { return std::move(fieldX); }
 
-  template <typename ..., typename T = std::unique_ptr< ::cpp2::SmallStruct>>
+  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldX_ref() const&& { return std::move(fieldX); }
 
   bool get_fieldA() const {
@@ -941,11 +941,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
-  const ::std::set<int32_t>& get_fieldC() const&;
-  ::std::set<int32_t> get_fieldC() &&;
+  const ::std::set<::std::int32_t>& get_fieldC() const&;
+  ::std::set<::std::int32_t> get_fieldC() &&;
 
-  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
@@ -986,33 +986,33 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
-  const ::std::vector<::std::vector<::std::vector<int32_t>>>& get_fieldF() const&;
-  ::std::vector<::std::vector<::std::vector<int32_t>>> get_fieldF() &&;
+  const ::std::vector<::std::vector<::std::vector<::std::int32_t>>>& get_fieldF() const&;
+  ::std::vector<::std::vector<::std::vector<::std::int32_t>>> get_fieldF() &&;
 
-  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::vector<int32_t>>>>
-  ::std::vector<::std::vector<::std::vector<int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
+  ::std::vector<::std::vector<::std::vector<::std::int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldF = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldF;
   }
-  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& get_fieldG() const&;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> get_fieldG() &&;
+  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& get_fieldG() const&;
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> get_fieldG() &&;
 
-  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldG = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldG;
   }
-  const ::std::vector<::std::set<int32_t>>& get_fieldH() const&;
-  ::std::vector<::std::set<int32_t>> get_fieldH() &&;
+  const ::std::vector<::std::set<::std::int32_t>>& get_fieldH() const&;
+  ::std::vector<::std::set<::std::int32_t>> get_fieldH() &&;
 
-  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<int32_t>>>
-  ::std::vector<::std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<::std::int32_t>>>
+  ::std::vector<::std::set<::std::int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldH = true;
@@ -1031,22 +1031,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldI;
   }
-  const ::std::map<::std::string, ::std::vector<int32_t>>& get_fieldJ() const&;
-  ::std::map<::std::string, ::std::vector<int32_t>> get_fieldJ() &&;
+  const ::std::map<::std::string, ::std::vector<::std::int32_t>>& get_fieldJ() const&;
+  ::std::map<::std::string, ::std::vector<::std::int32_t>> get_fieldJ() &&;
 
-  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<int32_t>>>
-  ::std::map<::std::string, ::std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
+  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
+  ::std::map<::std::string, ::std::vector<::std::int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldJ = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldJ;
   }
-  const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& get_fieldK() const&;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> get_fieldK() &&;
+  const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& get_fieldK() const&;
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> get_fieldK() &&;
 
-  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
+  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldK = true;
@@ -1064,44 +1064,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldL;
   }
-  const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
+  const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
 
-  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
+  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldM = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldM;
   }
-  const ::std::vector< ::cpp2::IndirectionA>& get_fieldN() const&;
-  ::std::vector< ::cpp2::IndirectionA> get_fieldN() &&;
+  const ::std::vector<::cpp2::IndirectionA>& get_fieldN() const&;
+  ::std::vector<::cpp2::IndirectionA> get_fieldN() &&;
 
-  template <typename T_containerStruct_fieldN_struct_setter = ::std::vector< ::cpp2::IndirectionA>>
-  ::std::vector< ::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
+  template <typename T_containerStruct_fieldN_struct_setter = ::std::vector<::cpp2::IndirectionA>>
+  ::std::vector<::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
     fieldN = std::forward<T_containerStruct_fieldN_struct_setter>(fieldN_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldN = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldN;
   }
-  const ::std::vector< ::cpp2::IndirectionB>& get_fieldO() const&;
-  ::std::vector< ::cpp2::IndirectionB> get_fieldO() &&;
+  const ::std::vector<::cpp2::IndirectionB>& get_fieldO() const&;
+  ::std::vector<::cpp2::IndirectionB> get_fieldO() &&;
 
-  template <typename T_containerStruct_fieldO_struct_setter = ::std::vector< ::cpp2::IndirectionB>>
-  ::std::vector< ::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
+  template <typename T_containerStruct_fieldO_struct_setter = ::std::vector<::cpp2::IndirectionB>>
+  ::std::vector<::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldO = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldO;
   }
-  const ::std::vector< ::cpp2::IndirectionC>& get_fieldP() const&;
-  ::std::vector< ::cpp2::IndirectionC> get_fieldP() &&;
+  const ::std::vector<::cpp2::IndirectionC>& get_fieldP() const&;
+  ::std::vector<::cpp2::IndirectionC> get_fieldP() &&;
 
-  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector< ::cpp2::IndirectionC>>
-  ::std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
+  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector<::cpp2::IndirectionC>>
+  ::std::vector<::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldP = true;
@@ -1109,11 +1109,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldP;
   }
 
-   ::cpp2::MyEnumA get_fieldQ() const {
+  ::cpp2::MyEnumA get_fieldQ() const {
     return fieldQ;
   }
 
-   ::cpp2::MyEnumA& set_fieldQ( ::cpp2::MyEnumA fieldQ_) {
+  ::cpp2::MyEnumA& set_fieldQ(::cpp2::MyEnumA fieldQ_) {
     fieldQ = fieldQ_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldQ = true;

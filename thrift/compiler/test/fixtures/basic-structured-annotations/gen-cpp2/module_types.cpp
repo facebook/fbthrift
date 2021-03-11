@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg) :
+structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
     count(std::move(count__arg)),
     name(std::move(name__arg)) {
   __isset.count = true;
@@ -237,7 +237,7 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, int64_t count__arg) :
+structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
     count(std::move(count__arg)) {
   __isset.count = true;
 }
@@ -316,7 +316,7 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg,  ::cpp2::structured_annotation_recursive recurse__arg,  ::cpp2::structured_annotation_forward forward__arg) :
+structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg) :
     name(std::move(name__arg)),
     recurse(std::move(recurse__arg)),
     forward(std::move(forward__arg)) {
@@ -367,19 +367,19 @@ bool structured_annotation_recursive::operator<(const structured_annotation_recu
   return false;
 }
 
-const  ::cpp2::structured_annotation_recursive& structured_annotation_recursive::get_recurse() const& {
+const ::cpp2::structured_annotation_recursive& structured_annotation_recursive::get_recurse() const& {
   return recurse;
 }
 
- ::cpp2::structured_annotation_recursive structured_annotation_recursive::get_recurse() && {
+::cpp2::structured_annotation_recursive structured_annotation_recursive::get_recurse() && {
   return std::move(recurse);
 }
 
-const  ::cpp2::structured_annotation_forward& structured_annotation_recursive::get_forward() const& {
+const ::cpp2::structured_annotation_forward& structured_annotation_recursive::get_forward() const& {
   return forward;
 }
 
- ::cpp2::structured_annotation_forward structured_annotation_recursive::get_forward() && {
+::cpp2::structured_annotation_forward structured_annotation_recursive::get_forward() && {
   return std::move(forward);
 }
 
@@ -407,26 +407,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_recursive>,
+        ::cpp2::structured_annotation_recursive>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_forward>,
+        ::cpp2::structured_annotation_forward>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_recursive>,
+        ::cpp2::structured_annotation_recursive>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_forward>,
+        ::cpp2::structured_annotation_forward>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -455,7 +455,7 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg,  ::cpp2::structured_annotation_with_default nest__arg) :
+structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
     name(std::move(name__arg)),
     nest(std::move(nest__arg)) {
   __isset.name = true;
@@ -497,11 +497,11 @@ bool structured_annotation_nested::operator<(const structured_annotation_nested&
   return false;
 }
 
-const  ::cpp2::structured_annotation_with_default& structured_annotation_nested::get_nest() const& {
+const ::cpp2::structured_annotation_with_default& structured_annotation_nested::get_nest() const& {
   return nest;
 }
 
- ::cpp2::structured_annotation_with_default structured_annotation_nested::get_nest() && {
+::cpp2::structured_annotation_with_default structured_annotation_nested::get_nest() && {
   return std::move(nest);
 }
 
@@ -528,14 +528,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_nested,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_with_default>,
+        ::cpp2::structured_annotation_with_default>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structured_annotation_nested,
         ::apache::thrift::type_class::structure,
-         ::cpp2::structured_annotation_with_default>,
+        ::cpp2::structured_annotation_with_default>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -564,7 +564,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t annotated_field__arg,  ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, int64_t annotated_nested__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
     annotated_field(std::move(annotated_field__arg)),
     annotated_type(std::move(annotated_type__arg)),
     annotated_recursive(std::move(annotated_recursive__arg)),

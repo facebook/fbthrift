@@ -29,34 +29,34 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-  virtual void void_ret_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t p_param1);
-  virtual void void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t p_param1);
+  virtual void void_ret_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_param1);
+  virtual void void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_param1);
  protected:
-  void void_ret_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int16_t p_param1);
+  void void_ret_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_param1);
  public:
 
-  virtual void sync_void_ret_i16_param(int16_t p_param1);
-  virtual void sync_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
+  virtual void sync_void_ret_i16_param(::std::int16_t p_param1);
+  virtual void sync_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_i16_param(int16_t p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_i16_param(int16_t p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_i16_param(::std::int16_t p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_i16_param(::std::int16_t p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_i16_param(int16_t p_param1) {
+  folly::coro::Task<void> co_void_ret_i16_param(::std::int16_t p_param1) {
     return co_void_ret_i16_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1) {
+  folly::coro::Task<void> co_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1) {
     return co_void_ret_i16_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_i16_param(apache::thrift::RpcOptions* rpcOptions, int16_t p_param1) {
+  folly::coro::Task<void> co_void_ret_i16_param(apache::thrift::RpcOptions* rpcOptions, ::std::int16_t p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -96,7 +96,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int16_t p_param1);
+  virtual void void_ret_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
@@ -106,37 +106,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int16_t p_param1);
+  void void_ret_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_i16_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_byte_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t p_param1, int16_t p_param2);
-  virtual void void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t p_param1, int16_t p_param2);
+  virtual void void_ret_byte_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual void void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_param1, ::std::int16_t p_param2);
  protected:
-  void void_ret_byte_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int8_t p_param1, int16_t p_param2);
+  void void_ret_byte_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_param1, ::std::int16_t p_param2);
  public:
 
-  virtual void sync_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2);
-  virtual void sync_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2);
+  virtual void sync_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual void sync_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2);
 
-  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2);
-  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2);
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_byte_i16_param(int8_t p_param1, int16_t p_param2) {
+  folly::coro::Task<void> co_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
     return co_void_ret_byte_i16_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t p_param1, int16_t p_param2) {
+  folly::coro::Task<void> co_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2) {
     return co_void_ret_byte_i16_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_byte_i16_param(apache::thrift::RpcOptions* rpcOptions, int8_t p_param1, int16_t p_param2) {
+  folly::coro::Task<void> co_void_ret_byte_i16_param(apache::thrift::RpcOptions* rpcOptions, ::std::int8_t p_param1, ::std::int16_t p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -176,7 +176,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_byte_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int8_t p_param1, int16_t p_param2);
+  virtual void void_ret_byte_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int8_t p_param1, ::std::int16_t p_param2);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
@@ -186,37 +186,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_byte_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int8_t p_param1, int16_t p_param2);
+  void void_ret_byte_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_param1, ::std::int16_t p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_byte_i16_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual void void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void void_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual void void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  protected:
-  void void_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void void_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  public:
 
-  virtual void sync_void_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual void sync_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void sync_void_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual void sync_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<void> co_void_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_void_ret_map_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<void> co_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_void_ret_map_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<void> co_void_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -256,7 +256,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void void_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
@@ -266,37 +266,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void void_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_map_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual void void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual void void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual void void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
  protected:
-  void void_ret_map_setlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  void void_ret_map_setlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
  public:
 
-  virtual void sync_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual void sync_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual void sync_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual void sync_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
 
-  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::Future<folly::Unit> future_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
+  folly::coro::Task<void> co_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     return co_void_ret_map_setlist_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
+  folly::coro::Task<void> co_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     return co_void_ret_map_setlist_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
+  folly::coro::Task<void> co_void_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -336,7 +336,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  virtual void void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_map_setlist_param(::apache::thrift::ClientReceiveState& state);
@@ -346,37 +346,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_map_setlist_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
+  void void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_map_setlist_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_map_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::simpleTypeDef p_param1);
-  virtual void void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::simpleTypeDef p_param1);
+  virtual void void_ret_map_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::some::valid::ns::simpleTypeDef p_param1);
+  virtual void void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::some::valid::ns::simpleTypeDef p_param1);
  protected:
-  void void_ret_map_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback,  ::some::valid::ns::simpleTypeDef p_param1);
+  void void_ret_map_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::some::valid::ns::simpleTypeDef p_param1);
  public:
 
-  virtual void sync_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1);
-  virtual void sync_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1);
+  virtual void sync_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1);
+  virtual void sync_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef p_param1) {
+  folly::coro::Task<void> co_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
     return co_void_ret_map_typedef_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1) {
+  folly::coro::Task<void> co_void_ret_map_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::simpleTypeDef p_param1) {
     return co_void_ret_map_typedef_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_map_typedef_param(apache::thrift::RpcOptions* rpcOptions,  ::some::valid::ns::simpleTypeDef p_param1) {
+  folly::coro::Task<void> co_void_ret_map_typedef_param(apache::thrift::RpcOptions* rpcOptions, ::some::valid::ns::simpleTypeDef p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -416,7 +416,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_map_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback,  ::some::valid::ns::simpleTypeDef p_param1);
+  virtual void void_ret_map_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::some::valid::ns::simpleTypeDef p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_map_typedef_param(::apache::thrift::ClientReceiveState& state);
@@ -426,37 +426,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_map_typedef_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_map_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback,  ::some::valid::ns::simpleTypeDef p_param1);
+  void void_ret_map_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::some::valid::ns::simpleTypeDef p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_map_typedef_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_enum_param(std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::MyEnumA p_param1);
-  virtual void void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::MyEnumA p_param1);
+  virtual void void_ret_enum_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::some::valid::ns::MyEnumA p_param1);
+  virtual void void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::some::valid::ns::MyEnumA p_param1);
  protected:
-  void void_ret_enum_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback,  ::some::valid::ns::MyEnumA p_param1);
+  void void_ret_enum_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::some::valid::ns::MyEnumA p_param1);
  public:
 
-  virtual void sync_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1);
-  virtual void sync_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1);
+  virtual void sync_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1);
+  virtual void sync_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_enum_param( ::some::valid::ns::MyEnumA p_param1) {
+  folly::coro::Task<void> co_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
     return co_void_ret_enum_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyEnumA p_param1) {
+  folly::coro::Task<void> co_void_ret_enum_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyEnumA p_param1) {
     return co_void_ret_enum_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_enum_param(apache::thrift::RpcOptions* rpcOptions,  ::some::valid::ns::MyEnumA p_param1) {
+  folly::coro::Task<void> co_void_ret_enum_param(apache::thrift::RpcOptions* rpcOptions, ::some::valid::ns::MyEnumA p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -496,7 +496,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_enum_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback,  ::some::valid::ns::MyEnumA p_param1);
+  virtual void void_ret_enum_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::some::valid::ns::MyEnumA p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_enum_param(::apache::thrift::ClientReceiveState& state);
@@ -506,37 +506,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_enum_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_enum_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback,  ::some::valid::ns::MyEnumA p_param1);
+  void void_ret_enum_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::some::valid::ns::MyEnumA p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_enum_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& p_param1);
-  virtual void void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& p_param1);
+  virtual void void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::MyStruct& p_param1);
+  virtual void void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::MyStruct& p_param1);
  protected:
-  void void_ret_struct_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& p_param1);
+  void void_ret_struct_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::MyStruct& p_param1);
  public:
 
-  virtual void sync_void_ret_struct_param(const  ::some::valid::ns::MyStruct& p_param1);
-  virtual void sync_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1);
+  virtual void sync_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1);
+  virtual void sync_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_struct_param(const  ::some::valid::ns::MyStruct& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(const  ::some::valid::ns::MyStruct& p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_struct_param(const  ::some::valid::ns::MyStruct& p_param1) {
+  folly::coro::Task<void> co_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1) {
     return co_void_ret_struct_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1) {
+  folly::coro::Task<void> co_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1) {
     return co_void_ret_struct_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_struct_param(apache::thrift::RpcOptions* rpcOptions, const  ::some::valid::ns::MyStruct& p_param1) {
+  folly::coro::Task<void> co_void_ret_struct_param(apache::thrift::RpcOptions* rpcOptions, const ::some::valid::ns::MyStruct& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -576,7 +576,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::MyStruct& p_param1);
+  virtual void void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::some::valid::ns::MyStruct& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_struct_param(::apache::thrift::ClientReceiveState& state);
@@ -586,37 +586,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_struct_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_struct_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& p_param1);
+  void void_ret_struct_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::MyStruct& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_struct_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual void void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  virtual void void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual void void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
  protected:
-  void void_ret_listunion_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  void void_ret_listunion_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
  public:
 
-  virtual void sync_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual void sync_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  virtual void sync_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual void sync_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
 
-  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::Future<folly::Unit> future_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::SemiFuture<folly::Unit> semifuture_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
+  folly::coro::Task<void> co_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
     return co_void_ret_listunion_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<void> co_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
+  folly::coro::Task<void> co_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
     return co_void_ret_listunion_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<void> co_void_ret_listunion_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
+  folly::coro::Task<void> co_void_ret_listunion_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -656,7 +656,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  virtual void void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_void_ret_listunion_param(::apache::thrift::ClientReceiveState& state);
@@ -666,37 +666,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_void_ret_listunion_param(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
+  void void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> void_ret_listunion_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int64_t p_param2);
-  virtual void bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int64_t p_param2);
+  virtual void bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual void bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int64_t p_param2);
  protected:
-  void bool_ret_i32_i64_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int64_t p_param2);
+  void bool_ret_i32_i64_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int64_t p_param2);
  public:
 
-  virtual bool sync_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2);
-  virtual bool sync_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2);
+  virtual bool sync_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual bool sync_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2);
 
-  virtual folly::Future<bool> future_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2);
-  virtual folly::Future<bool> future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2);
-  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2);
-  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2);
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2);
+  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_i32_i64_param(int32_t p_param1, int64_t p_param2) {
+  folly::coro::Task<bool> co_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
     return co_bool_ret_i32_i64_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int64_t p_param2) {
+  folly::coro::Task<bool> co_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2) {
     return co_bool_ret_i32_i64_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<bool> co_bool_ret_i32_i64_param(apache::thrift::RpcOptions* rpcOptions, int32_t p_param1, int64_t p_param2) {
+  folly::coro::Task<bool> co_bool_ret_i32_i64_param(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_param1, ::std::int64_t p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -738,7 +738,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void bool_ret_i32_i64_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t p_param1, int64_t p_param2);
+  virtual void bool_ret_i32_i64_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_param1, ::std::int64_t p_param2);
 
 
   static folly::exception_wrapper recv_wrapped_bool_ret_i32_i64_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
@@ -748,37 +748,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_bool_ret_i32_i64_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void bool_ret_i32_i64_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int64_t p_param2);
+  void bool_ret_i32_i64_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int64_t p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bool_ret_i32_i64_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void bool_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual void bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void bool_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual void bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  protected:
-  void bool_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void bool_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  public:
 
-  virtual bool sync_bool_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual bool sync_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual bool sync_bool_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual bool sync_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
-  virtual folly::Future<bool> future_bool_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<bool> future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual folly::Future<bool> future_bool_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<bool> future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_bool_ret_map_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_bool_ret_map_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<bool> co_bool_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -820,7 +820,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void bool_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void bool_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_bool_ret_map_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
@@ -830,37 +830,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_bool_ret_map_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void bool_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void bool_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bool_ret_map_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void bool_ret_union_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual void bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::ComplexUnion& p_param1);
+  virtual void bool_ret_union_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual void bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::ComplexUnion& p_param1);
  protected:
-  void bool_ret_union_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::ComplexUnion& p_param1);
+  void bool_ret_union_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::ComplexUnion& p_param1);
  public:
 
-  virtual bool sync_bool_ret_union_param(const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual bool sync_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1);
+  virtual bool sync_bool_ret_union_param(const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual bool sync_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1);
 
-  virtual folly::Future<bool> future_bool_ret_union_param(const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual folly::Future<bool> future_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1);
-  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::Future<bool> future_bool_ret_union_param(const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::Future<bool> future_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::SemiFuture<bool> semifuture_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1);
+  virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_union_param(const  ::some::valid::ns::ComplexUnion& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_union_param(const ::some::valid::ns::ComplexUnion& p_param1) {
     return co_bool_ret_union_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<bool> co_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_union_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1) {
     return co_bool_ret_union_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<bool> co_bool_ret_union_param(apache::thrift::RpcOptions* rpcOptions, const  ::some::valid::ns::ComplexUnion& p_param1) {
+  folly::coro::Task<bool> co_bool_ret_union_param(apache::thrift::RpcOptions* rpcOptions, const ::some::valid::ns::ComplexUnion& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -902,7 +902,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void bool_ret_union_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::ComplexUnion& p_param1);
+  virtual void bool_ret_union_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::some::valid::ns::ComplexUnion& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_bool_ret_union_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
@@ -912,7 +912,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_bool_ret_union_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void bool_ret_union_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::ComplexUnion& p_param1);
+  void bool_ret_union_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::ComplexUnion& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bool_ret_union_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void i64_ret_float_double_param(std::unique_ptr<apache::thrift::RequestCallback> callback, float p_param1, double p_param2);
@@ -921,28 +921,28 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void i64_ret_float_double_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, float p_param1, double p_param2);
  public:
 
-  virtual int64_t sync_i64_ret_float_double_param(float p_param1, double p_param2);
-  virtual int64_t sync_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
+  virtual ::std::int64_t sync_i64_ret_float_double_param(float p_param1, double p_param2);
+  virtual ::std::int64_t sync_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
 
-  virtual folly::Future<int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2);
-  virtual folly::Future<int64_t> future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
-  virtual folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
-  virtual folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
+  virtual folly::Future<::std::int64_t> future_i64_ret_float_double_param(float p_param1, double p_param2);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_float_double_param(float p_param1, double p_param2);
+  virtual folly::Future<::std::int64_t> future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
+  virtual folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
+  virtual folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_float_double_param(float p_param1, double p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_float_double_param(float p_param1, double p_param2) {
     return co_i64_ret_float_double_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float p_param1, double p_param2) {
     return co_i64_ret_float_double_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<int64_t> co_i64_ret_float_double_param(apache::thrift::RpcOptions* rpcOptions, float p_param1, double p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_float_double_param(apache::thrift::RpcOptions* rpcOptions, float p_param1, double p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -975,7 +975,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    int64_t _return;
+    ::std::int64_t _return;
     if (auto ew = recv_wrapped_i64_ret_float_double_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -987,44 +987,44 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void i64_ret_float_double_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, float p_param1, double p_param2);
 
 
-  static folly::exception_wrapper recv_wrapped_i64_ret_float_double_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int64_t recv_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_i64_ret_float_double_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int64_t recv_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual int64_t recv_instance_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_float_double_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::std::int64_t recv_instance_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_float_double_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void i64_ret_float_double_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, float p_param1, double p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> i64_ret_float_double_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual void i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual void i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual void i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
  protected:
-  void i64_ret_string_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  void i64_ret_string_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
  public:
 
-  virtual int64_t sync_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual int64_t sync_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual ::std::int64_t sync_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual ::std::int64_t sync_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
 
-  virtual folly::Future<int64_t> future_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual folly::Future<int64_t> future_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
-  virtual folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::Future<::std::int64_t> future_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::Future<::std::int64_t> future_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_string_typedef_param(const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2) {
     return co_i64_ret_string_typedef_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_string_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2) {
     return co_i64_ret_string_typedef_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<int64_t> co_i64_ret_string_typedef_param(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_string_typedef_param(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1057,7 +1057,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    int64_t _return;
+    ::std::int64_t _return;
     if (auto ew = recv_wrapped_i64_ret_string_typedef_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1066,47 +1066,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void i64_ret_string_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  virtual void i64_ret_string_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
 
 
-  static folly::exception_wrapper recv_wrapped_i64_ret_string_typedef_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int64_t recv_i64_ret_string_typedef_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_i64_ret_string_typedef_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int64_t recv_i64_ret_string_typedef_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual int64_t recv_instance_i64_ret_string_typedef_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_string_typedef_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::std::int64_t recv_instance_i64_ret_string_typedef_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_string_typedef_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void i64_ret_string_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1, const ::std::set< ::some::valid::ns::mostComplexTypeDef>& p_param2);
+  void i64_ret_string_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1, const ::std::set<::some::valid::ns::mostComplexTypeDef>& p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> i64_ret_string_typedef_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual void i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  virtual void i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual void i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
  protected:
-  void i64_ret_i32_i32_i32_i32_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  void i64_ret_i32_i32_i32_i32_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
  public:
 
-  virtual int64_t sync_i64_ret_i32_i32_i32_i32_i32_param(int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual int64_t sync_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  virtual ::std::int64_t sync_i64_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual ::std::int64_t sync_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
 
-  virtual folly::Future<int64_t> future_i64_ret_i32_i32_i32_i32_i32_param(int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_i32_i32_i32_i32_i32_param(int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual folly::Future<int64_t> future_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual folly::SemiFuture<int64_t> semifuture_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  virtual folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  virtual folly::Future<::std::int64_t> future_i64_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual folly::Future<::std::int64_t> future_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
+  virtual folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
     return co_i64_ret_i32_i32_i32_i32_i32_param<false>(nullptr, p_param1, p_param2, p_param3, p_param4, p_param5);
   }
   template <int = 0>
-  folly::coro::Task<int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
     return co_i64_ret_i32_i32_i32_i32_i32_param<true>(&rpcOptions, p_param1, p_param2, p_param3, p_param4, p_param5);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
+  folly::coro::Task<::std::int64_t> co_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1139,7 +1139,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    int64_t _return;
+    ::std::int64_t _return;
     if (auto ew = recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1148,47 +1148,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void i64_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  virtual void i64_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
 
 
-  static folly::exception_wrapper recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int64_t recv_i64_ret_i32_i32_i32_i32_i32_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int64_t recv_i64_ret_i32_i32_i32_i32_i32_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual int64_t recv_instance_i64_ret_i32_i32_i32_i32_i32_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_i32_i32_i32_i32_i32_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::std::int64_t recv_instance_i64_ret_i32_i32_i32_i32_i32_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_i32_i32_i32_i32_i32_param(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void i64_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
+  void i64_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> i64_ret_i32_i32_i32_i32_i32_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void double_ret_setstruct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual void double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  virtual void double_ret_setstruct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual void double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
  protected:
-  void double_ret_setstruct_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  void double_ret_setstruct_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
  public:
 
-  virtual double sync_double_ret_setstruct_param(const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual double sync_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  virtual double sync_double_ret_setstruct_param(const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual double sync_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
 
-  virtual folly::Future<double> future_double_ret_setstruct_param(const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual folly::Future<double> future_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
-  virtual folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::Future<double> future_double_ret_setstruct_param(const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::Future<double> future_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::SemiFuture<double> semifuture_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
+  virtual folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<double> co_double_ret_setstruct_param(const ::std::set< ::some::valid::ns::MyStruct>& p_param1) {
+  folly::coro::Task<double> co_double_ret_setstruct_param(const ::std::set<::some::valid::ns::MyStruct>& p_param1) {
     return co_double_ret_setstruct_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<double> co_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1) {
+  folly::coro::Task<double> co_double_ret_setstruct_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1) {
     return co_double_ret_setstruct_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<double> co_double_ret_setstruct_param(apache::thrift::RpcOptions* rpcOptions, const ::std::set< ::some::valid::ns::MyStruct>& p_param1) {
+  folly::coro::Task<double> co_double_ret_setstruct_param(apache::thrift::RpcOptions* rpcOptions, const ::std::set<::some::valid::ns::MyStruct>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1230,7 +1230,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void double_ret_setstruct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  virtual void double_ret_setstruct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
 
 
   static folly::exception_wrapper recv_wrapped_double_ret_setstruct_param(double& _return, ::apache::thrift::ClientReceiveState& state);
@@ -1240,7 +1240,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_double_ret_setstruct_param(double& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void double_ret_setstruct_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set< ::some::valid::ns::MyStruct>& p_param1);
+  void double_ret_setstruct_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::some::valid::ns::MyStruct>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> double_ret_setstruct_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void string_ret_string_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1);
@@ -1413,28 +1413,28 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void map_ret_bool_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool p_param1);
  public:
 
-  virtual void sync_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, bool p_param1);
-  virtual void sync_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, int64_t>& _return, bool p_param1);
+  virtual void sync_map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& _return, bool p_param1);
+  virtual void sync_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, ::std::int64_t>& _return, bool p_param1);
 
-  virtual folly::Future<::std::map<::std::string, int64_t>> future_map_ret_bool_param(bool p_param1);
-  virtual folly::SemiFuture<::std::map<::std::string, int64_t>> semifuture_map_ret_bool_param(bool p_param1);
-  virtual folly::Future<::std::map<::std::string, int64_t>> future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
-  virtual folly::SemiFuture<::std::map<::std::string, int64_t>> semifuture_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
-  virtual folly::Future<std::pair<::std::map<::std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
-  virtual folly::SemiFuture<std::pair<::std::map<::std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
+  virtual folly::Future<::std::map<::std::string, ::std::int64_t>> future_map_ret_bool_param(bool p_param1);
+  virtual folly::SemiFuture<::std::map<::std::string, ::std::int64_t>> semifuture_map_ret_bool_param(bool p_param1);
+  virtual folly::Future<::std::map<::std::string, ::std::int64_t>> future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
+  virtual folly::SemiFuture<::std::map<::std::string, ::std::int64_t>> semifuture_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
+  virtual folly::Future<std::pair<::std::map<::std::string, ::std::int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
+  virtual folly::SemiFuture<std::pair<::std::map<::std::string, ::std::int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::map<::std::string, int64_t>> co_map_ret_bool_param(bool p_param1) {
+  folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_map_ret_bool_param(bool p_param1) {
     return co_map_ret_bool_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::map<::std::string, int64_t>> co_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
+  folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
     return co_map_ret_bool_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::map<::std::string, int64_t>> co_map_ret_bool_param(apache::thrift::RpcOptions* rpcOptions, bool p_param1) {
+  folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_map_ret_bool_param(apache::thrift::RpcOptions* rpcOptions, bool p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1467,7 +1467,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::map<::std::string, int64_t> _return;
+    ::std::map<::std::string, ::std::int64_t> _return;
     if (auto ew = recv_wrapped_map_ret_bool_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1479,44 +1479,44 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void map_ret_bool_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_map_ret_bool_param(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void map_ret_bool_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> map_ret_bool_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void list_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual void list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual void list_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual void list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
  protected:
-  void list_ret_map_setlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  void list_ret_map_setlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
  public:
 
-  virtual void sync_list_ret_map_setlist_param(::std::vector<bool>& _return, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual void sync_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector<bool>& _return, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual void sync_list_ret_map_setlist_param(::std::vector<bool>& _return, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual void sync_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector<bool>& _return, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
 
-  virtual folly::Future<::std::vector<bool>> future_list_ret_map_setlist_param(const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual folly::SemiFuture<::std::vector<bool>> semifuture_list_ret_map_setlist_param(const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual folly::Future<::std::vector<bool>> future_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual folly::SemiFuture<::std::vector<bool>> semifuture_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual folly::Future<std::pair<::std::vector<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
-  virtual folly::SemiFuture<std::pair<::std::vector<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::Future<::std::vector<bool>> future_list_ret_map_setlist_param(const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::SemiFuture<::std::vector<bool>> semifuture_list_ret_map_setlist_param(const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::Future<::std::vector<bool>> future_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::SemiFuture<::std::vector<bool>> semifuture_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::Future<std::pair<::std::vector<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual folly::SemiFuture<std::pair<::std::vector<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
+  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
     return co_list_ret_map_setlist_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
+  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
     return co_list_ret_map_setlist_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
+  folly::coro::Task<::std::vector<bool>> co_list_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1558,7 +1558,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void list_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  virtual void list_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
 
 
   static folly::exception_wrapper recv_wrapped_list_ret_map_setlist_param(::std::vector<bool>& _return, ::apache::thrift::ClientReceiveState& state);
@@ -1568,37 +1568,37 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_list_ret_map_setlist_param(::std::vector<bool>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void list_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
+  void list_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::string>>& p_param1, const ::std::vector<::std::string>& p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> list_ret_map_setlist_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual void mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  virtual void mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual void mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
  protected:
-  void mapsetlistmapliststring_ret_listlistlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  void mapsetlistmapliststring_ret_listlistlist_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
  public:
 
-  virtual void sync_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual void sync_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  virtual void sync_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual void sync_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
 
-  virtual folly::Future<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> future_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual folly::SemiFuture<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual folly::Future<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> future_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual folly::SemiFuture<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual folly::Future<std::pair<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
-  virtual folly::SemiFuture<std::pair<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  virtual folly::Future<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> future_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual folly::SemiFuture<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual folly::Future<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> future_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual folly::SemiFuture<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> semifuture_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual folly::Future<std::pair<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
+  virtual folly::SemiFuture<std::pair<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1) {
+  folly::coro::Task<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1) {
     return co_mapsetlistmapliststring_ret_listlistlist_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1) {
+  folly::coro::Task<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1) {
     return co_mapsetlistmapliststring_ret_listlistlist_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1) {
+  folly::coro::Task<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>> co_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1631,7 +1631,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> _return;
+    ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> _return;
     if (auto ew = recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1640,47 +1640,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void mapsetlistmapliststring_ret_listlistlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  virtual void mapsetlistmapliststring_ret_listlistlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void mapsetlistmapliststring_ret_listlistlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& p_param1);
+  void mapsetlistmapliststring_ret_listlistlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> mapsetlistmapliststring_ret_listlistlist_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void typedef_ret_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1);
-  virtual void typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1);
+  virtual void typedef_ret_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1);
+  virtual void typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1);
  protected:
-  void typedef_ret_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1);
+  void typedef_ret_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1);
  public:
 
-  virtual  ::some::valid::ns::simpleTypeDef sync_typedef_ret_i32_param(int32_t p_param1);
-  virtual  ::some::valid::ns::simpleTypeDef sync_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1);
+  virtual ::some::valid::ns::simpleTypeDef sync_typedef_ret_i32_param(::std::int32_t p_param1);
+  virtual ::some::valid::ns::simpleTypeDef sync_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1);
 
-  virtual folly::Future< ::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(int32_t p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(int32_t p_param1);
-  virtual folly::Future< ::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1);
-  virtual folly::Future<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1);
-  virtual folly::SemiFuture<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1);
+  virtual folly::Future<::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(::std::int32_t p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(::std::int32_t p_param1);
+  virtual folly::Future<::some::valid::ns::simpleTypeDef> future_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1);
+  virtual folly::Future<std::pair<::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1);
+  virtual folly::SemiFuture<std::pair<::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(int32_t p_param1) {
+  folly::coro::Task<::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(::std::int32_t p_param1) {
     return co_typedef_ret_i32_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1) {
+  folly::coro::Task<::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1) {
     return co_typedef_ret_i32_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(apache::thrift::RpcOptions* rpcOptions, int32_t p_param1) {
+  folly::coro::Task<::some::valid::ns::simpleTypeDef> co_typedef_ret_i32_param(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1713,7 +1713,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::some::valid::ns::simpleTypeDef _return;
+    ::some::valid::ns::simpleTypeDef _return;
     if (auto ew = recv_wrapped_typedef_ret_i32_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1722,47 +1722,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void typedef_ret_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t p_param1);
+  virtual void typedef_ret_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_typedef_ret_i32_param( ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state);
-  static  ::some::valid::ns::simpleTypeDef recv_typedef_ret_i32_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_typedef_ret_i32_param(::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::some::valid::ns::simpleTypeDef recv_typedef_ret_i32_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual  ::some::valid::ns::simpleTypeDef recv_instance_typedef_ret_i32_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_typedef_ret_i32_param( ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::some::valid::ns::simpleTypeDef recv_instance_typedef_ret_i32_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_typedef_ret_i32_param(::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void typedef_ret_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1);
+  void typedef_ret_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> typedef_ret_i32_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual void listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual void listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual void listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::some::valid::ns::complexStructTypeDef& p_param1);
  protected:
-  void listtypedef_ret_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  void listtypedef_ret_typedef_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::complexStructTypeDef& p_param1);
  public:
 
-  virtual void sync_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual void sync_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::simpleTypeDef>& _return, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual void sync_listtypedef_ret_typedef_param(::std::vector<::some::valid::ns::simpleTypeDef>& _return, const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual void sync_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::some::valid::ns::simpleTypeDef>& _return, const ::some::valid::ns::complexStructTypeDef& p_param1);
 
-  virtual folly::Future<::std::vector< ::some::valid::ns::simpleTypeDef>> future_listtypedef_ret_typedef_param(const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::simpleTypeDef>> semifuture_listtypedef_ret_typedef_param(const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual folly::Future<::std::vector< ::some::valid::ns::simpleTypeDef>> future_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::simpleTypeDef>> semifuture_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::simpleTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::simpleTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::simpleTypeDef>> future_listtypedef_ret_typedef_param(const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::simpleTypeDef>> semifuture_listtypedef_ret_typedef_param(const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::simpleTypeDef>> future_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::simpleTypeDef>> semifuture_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::Future<std::pair<::std::vector<::some::valid::ns::simpleTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::simpleTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(const  ::some::valid::ns::complexStructTypeDef& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(const ::some::valid::ns::complexStructTypeDef& p_param1) {
     return co_listtypedef_ret_typedef_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1) {
     return co_listtypedef_ret_typedef_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::vector< ::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(apache::thrift::RpcOptions* rpcOptions, const  ::some::valid::ns::complexStructTypeDef& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::simpleTypeDef>> co_listtypedef_ret_typedef_param(apache::thrift::RpcOptions* rpcOptions, const ::some::valid::ns::complexStructTypeDef& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1795,7 +1795,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::vector< ::some::valid::ns::simpleTypeDef> _return;
+    ::std::vector<::some::valid::ns::simpleTypeDef> _return;
     if (auto ew = recv_wrapped_listtypedef_ret_typedef_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1804,17 +1804,17 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void listtypedef_ret_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  virtual void listtypedef_ret_typedef_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::some::valid::ns::complexStructTypeDef& p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_listtypedef_ret_typedef_param(::std::vector<::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_listtypedef_ret_typedef_param(::std::vector<::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_listtypedef_ret_typedef_param(::std::vector< ::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_listtypedef_ret_typedef_param(::std::vector<::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_listtypedef_ret_typedef_param(::std::vector<::some::valid::ns::simpleTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void listtypedef_ret_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::complexStructTypeDef& p_param1);
+  void listtypedef_ret_typedef_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::some::valid::ns::complexStructTypeDef& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listtypedef_ret_typedef_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void enum_ret_double_param(std::unique_ptr<apache::thrift::RequestCallback> callback, double p_param1);
@@ -1823,28 +1823,28 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void enum_ret_double_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1);
  public:
 
-  virtual  ::some::valid::ns::MyEnumA sync_enum_ret_double_param(double p_param1);
-  virtual  ::some::valid::ns::MyEnumA sync_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
+  virtual ::some::valid::ns::MyEnumA sync_enum_ret_double_param(double p_param1);
+  virtual ::some::valid::ns::MyEnumA sync_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
 
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1);
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
-  virtual folly::Future<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
-  virtual folly::SemiFuture<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_param(double p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(double p_param1);
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
+  virtual folly::Future<std::pair<::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
+  virtual folly::SemiFuture<std::pair<::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_param(double p_param1) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_param(double p_param1) {
     return co_enum_ret_double_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_param(apache::thrift::RpcOptions& rpcOptions, double p_param1) {
     return co_enum_ret_double_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_param(apache::thrift::RpcOptions* rpcOptions, double p_param1) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_param(apache::thrift::RpcOptions* rpcOptions, double p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1877,7 +1877,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::some::valid::ns::MyEnumA _return;
+    ::some::valid::ns::MyEnumA _return;
     if (auto ew = recv_wrapped_enum_ret_double_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1889,44 +1889,44 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void enum_ret_double_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, double p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_enum_ret_double_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
-  static  ::some::valid::ns::MyEnumA recv_enum_ret_double_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_enum_ret_double_param(::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::some::valid::ns::MyEnumA recv_enum_ret_double_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual  ::some::valid::ns::MyEnumA recv_instance_enum_ret_double_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_enum_ret_double_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::some::valid::ns::MyEnumA recv_instance_enum_ret_double_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_enum_ret_double_param(::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void enum_ret_double_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> enum_ret_double_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void enum_ret_double_enum_param(std::unique_ptr<apache::thrift::RequestCallback> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual void enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  virtual void enum_ret_double_enum_param(std::unique_ptr<apache::thrift::RequestCallback> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual void enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2);
  protected:
-  void enum_ret_double_enum_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  void enum_ret_double_enum_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1, ::some::valid::ns::MyEnumA p_param2);
  public:
 
-  virtual  ::some::valid::ns::MyEnumA sync_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual  ::some::valid::ns::MyEnumA sync_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  virtual ::some::valid::ns::MyEnumA sync_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual ::some::valid::ns::MyEnumA sync_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2);
 
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual folly::Future< ::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual folly::SemiFuture< ::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual folly::Future<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
-  virtual folly::SemiFuture<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::Future<::some::valid::ns::MyEnumA> future_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::SemiFuture<::some::valid::ns::MyEnumA> semifuture_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::Future<std::pair<::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2);
+  virtual folly::SemiFuture<std::pair<::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
     return co_enum_ret_double_enum_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(apache::thrift::RpcOptions& rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
     return co_enum_ret_double_enum_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(apache::thrift::RpcOptions* rpcOptions, double p_param1,  ::some::valid::ns::MyEnumA p_param2) {
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enum_ret_double_enum_param(apache::thrift::RpcOptions* rpcOptions, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -1959,7 +1959,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::some::valid::ns::MyEnumA _return;
+    ::some::valid::ns::MyEnumA _return;
     if (auto ew = recv_wrapped_enum_ret_double_enum_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -1968,47 +1968,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void enum_ret_double_enum_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  virtual void enum_ret_double_enum_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2);
 
 
-  static folly::exception_wrapper recv_wrapped_enum_ret_double_enum_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
-  static  ::some::valid::ns::MyEnumA recv_enum_ret_double_enum_param(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_enum_ret_double_enum_param(::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::some::valid::ns::MyEnumA recv_enum_ret_double_enum_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual  ::some::valid::ns::MyEnumA recv_instance_enum_ret_double_enum_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_enum_ret_double_enum_param( ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::some::valid::ns::MyEnumA recv_instance_enum_ret_double_enum_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_enum_ret_double_enum_param(::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void enum_ret_double_enum_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1,  ::some::valid::ns::MyEnumA p_param2);
+  void enum_ret_double_enum_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, double p_param1, ::some::valid::ns::MyEnumA p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> enum_ret_double_enum_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void listenum_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual void listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void listenum_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual void listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  protected:
-  void listenum_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void listenum_ret_map_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
  public:
 
-  virtual void sync_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual void sync_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::MyEnumA>& _return, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void sync_listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& _return, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual void sync_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::some::valid::ns::MyEnumA>& _return, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
-  virtual folly::Future<::std::vector< ::some::valid::ns::MyEnumA>> future_listenum_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::MyEnumA>> semifuture_listenum_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<::std::vector< ::some::valid::ns::MyEnumA>> future_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::MyEnumA>> semifuture_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::MyEnumA>> future_listenum_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::MyEnumA>> semifuture_listenum_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::MyEnumA>> future_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::MyEnumA>> semifuture_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::Future<std::pair<::std::vector<::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
+  virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_listenum_ret_map_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     return co_listenum_ret_map_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::vector< ::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, int64_t>& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_listenum_ret_map_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -2041,7 +2041,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::vector< ::some::valid::ns::MyEnumA> _return;
+    ::std::vector<::some::valid::ns::MyEnumA> _return;
     if (auto ew = recv_wrapped_listenum_ret_map_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -2050,47 +2050,47 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void listenum_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& p_param1);
+  virtual void listenum_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_listenum_ret_map_param(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void listenum_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1);
+  void listenum_ret_map_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int64_t>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listenum_ret_map_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void struct_ret_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t p_param1);
-  virtual void struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t p_param1);
+  virtual void struct_ret_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_param1);
+  virtual void struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_param1);
  protected:
-  void struct_ret_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int16_t p_param1);
+  void struct_ret_i16_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_param1);
  public:
 
-  virtual void sync_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, int16_t p_param1);
-  virtual void sync_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::MyStruct& _return, int16_t p_param1);
+  virtual void sync_struct_ret_i16_param(::some::valid::ns::MyStruct& _return, ::std::int16_t p_param1);
+  virtual void sync_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::MyStruct& _return, ::std::int16_t p_param1);
 
-  virtual folly::Future< ::some::valid::ns::MyStruct> future_struct_ret_i16_param(int16_t p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::MyStruct> semifuture_struct_ret_i16_param(int16_t p_param1);
-  virtual folly::Future< ::some::valid::ns::MyStruct> future_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::SemiFuture< ::some::valid::ns::MyStruct> semifuture_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::Future<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
-  virtual folly::SemiFuture<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1);
+  virtual folly::Future<::some::valid::ns::MyStruct> future_struct_ret_i16_param(::std::int16_t p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::MyStruct> semifuture_struct_ret_i16_param(::std::int16_t p_param1);
+  virtual folly::Future<::some::valid::ns::MyStruct> future_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::SemiFuture<::some::valid::ns::MyStruct> semifuture_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::Future<std::pair<::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
+  virtual folly::SemiFuture<std::pair<::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyStruct> co_struct_ret_i16_param(int16_t p_param1) {
+  folly::coro::Task<::some::valid::ns::MyStruct> co_struct_ret_i16_param(::std::int16_t p_param1) {
     return co_struct_ret_i16_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::MyStruct> co_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t p_param1) {
+  folly::coro::Task<::some::valid::ns::MyStruct> co_struct_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_param1) {
     return co_struct_ret_i16_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::some::valid::ns::MyStruct> co_struct_ret_i16_param(apache::thrift::RpcOptions* rpcOptions, int16_t p_param1) {
+  folly::coro::Task<::some::valid::ns::MyStruct> co_struct_ret_i16_param(apache::thrift::RpcOptions* rpcOptions, ::std::int16_t p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -2123,7 +2123,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::some::valid::ns::MyStruct _return;
+    ::some::valid::ns::MyStruct _return;
     if (auto ew = recv_wrapped_struct_ret_i16_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -2132,17 +2132,17 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void struct_ret_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int16_t p_param1);
+  virtual void struct_ret_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_struct_ret_i16_param(::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_struct_ret_i16_param(::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_struct_ret_i16_param( ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_struct_ret_i16_param(::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_struct_ret_i16_param(::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void struct_ret_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int16_t p_param1);
+  void struct_ret_i16_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> struct_ret_i16_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void setstruct_ret_set_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::string>& p_param1);
@@ -2151,28 +2151,28 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void setstruct_ret_set_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_param1);
  public:
 
-  virtual void sync_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, const ::std::set<::std::string>& p_param1);
-  virtual void sync_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, ::std::set< ::some::valid::ns::MyStruct>& _return, const ::std::set<::std::string>& p_param1);
+  virtual void sync_setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& _return, const ::std::set<::std::string>& p_param1);
+  virtual void sync_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, ::std::set<::some::valid::ns::MyStruct>& _return, const ::std::set<::std::string>& p_param1);
 
-  virtual folly::Future<::std::set< ::some::valid::ns::MyStruct>> future_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1);
-  virtual folly::SemiFuture<::std::set< ::some::valid::ns::MyStruct>> semifuture_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1);
-  virtual folly::Future<::std::set< ::some::valid::ns::MyStruct>> future_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
-  virtual folly::SemiFuture<::std::set< ::some::valid::ns::MyStruct>> semifuture_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
-  virtual folly::Future<std::pair<::std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
-  virtual folly::SemiFuture<std::pair<::std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
+  virtual folly::Future<::std::set<::some::valid::ns::MyStruct>> future_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1);
+  virtual folly::SemiFuture<::std::set<::some::valid::ns::MyStruct>> semifuture_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1);
+  virtual folly::Future<::std::set<::some::valid::ns::MyStruct>> future_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
+  virtual folly::SemiFuture<::std::set<::some::valid::ns::MyStruct>> semifuture_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
+  virtual folly::Future<std::pair<::std::set<::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
+  virtual folly::SemiFuture<std::pair<::std::set<::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::set< ::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1) {
+  folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(const ::std::set<::std::string>& p_param1) {
     return co_setstruct_ret_set_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::set< ::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1) {
+  folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_param1) {
     return co_setstruct_ret_set_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::set< ::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(apache::thrift::RpcOptions* rpcOptions, const ::std::set<::std::string>& p_param1) {
+  folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_setstruct_ret_set_param(apache::thrift::RpcOptions* rpcOptions, const ::std::set<::std::string>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -2205,7 +2205,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::set< ::some::valid::ns::MyStruct> _return;
+    ::std::set<::some::valid::ns::MyStruct> _return;
     if (auto ew = recv_wrapped_setstruct_ret_set_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -2217,44 +2217,44 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void setstruct_ret_set_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::std::string>& p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_setstruct_ret_set_param(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void setstruct_ret_set_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_param1);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> setstruct_ret_set_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void union_ret_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2);
-  virtual void union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2);
+  virtual void union_ret_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual void union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_param1, ::std::int32_t p_param2);
  protected:
-  void union_ret_i32_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int32_t p_param2);
+  void union_ret_i32_i32_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int32_t p_param2);
  public:
 
-  virtual void sync_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, int32_t p_param1, int32_t p_param2);
-  virtual void sync_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::ComplexUnion& _return, int32_t p_param1, int32_t p_param2);
+  virtual void sync_union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& _return, ::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual void sync_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::some::valid::ns::ComplexUnion& _return, ::std::int32_t p_param1, ::std::int32_t p_param2);
 
-  virtual folly::Future< ::some::valid::ns::ComplexUnion> future_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2);
-  virtual folly::SemiFuture< ::some::valid::ns::ComplexUnion> semifuture_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2);
-  virtual folly::Future< ::some::valid::ns::ComplexUnion> future_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2);
-  virtual folly::SemiFuture< ::some::valid::ns::ComplexUnion> semifuture_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2);
-  virtual folly::Future<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2);
-  virtual folly::SemiFuture<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2);
+  virtual folly::Future<::some::valid::ns::ComplexUnion> future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual folly::SemiFuture<::some::valid::ns::ComplexUnion> semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual folly::Future<::some::valid::ns::ComplexUnion> future_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual folly::SemiFuture<::some::valid::ns::ComplexUnion> semifuture_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual folly::Future<std::pair<::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2);
+  virtual folly::SemiFuture<std::pair<::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(int32_t p_param1, int32_t p_param2) {
+  folly::coro::Task<::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
     return co_union_ret_i32_i32_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
-  folly::coro::Task< ::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2) {
+  folly::coro::Task<::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2) {
     return co_union_ret_i32_i32_param<true>(&rpcOptions, p_param1, p_param2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task< ::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, int32_t p_param1, int32_t p_param2) {
+  folly::coro::Task<::some::valid::ns::ComplexUnion> co_union_ret_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -2287,7 +2287,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-     ::some::valid::ns::ComplexUnion _return;
+    ::some::valid::ns::ComplexUnion _return;
     if (auto ew = recv_wrapped_union_ret_i32_i32_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -2296,17 +2296,17 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void union_ret_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t p_param1, int32_t p_param2);
+  virtual void union_ret_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_param1, ::std::int32_t p_param2);
 
 
-  static folly::exception_wrapper recv_wrapped_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void union_ret_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int32_t p_param2);
+  void union_ret_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_param1, ::std::int32_t p_param2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> union_ret_i32_i32_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void listunion_string_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_param1);
@@ -2315,28 +2315,28 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void listunion_string_paramImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1);
  public:
 
-  virtual void sync_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, const ::std::string& p_param1);
-  virtual void sync_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::ComplexUnion>& _return, const ::std::string& p_param1);
+  virtual void sync_listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& _return, const ::std::string& p_param1);
+  virtual void sync_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::some::valid::ns::ComplexUnion>& _return, const ::std::string& p_param1);
 
-  virtual folly::Future<::std::vector< ::some::valid::ns::ComplexUnion>> future_listunion_string_param(const ::std::string& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::ComplexUnion>> semifuture_listunion_string_param(const ::std::string& p_param1);
-  virtual folly::Future<::std::vector< ::some::valid::ns::ComplexUnion>> future_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::ComplexUnion>> semifuture_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::ComplexUnion>> future_listunion_string_param(const ::std::string& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::ComplexUnion>> semifuture_listunion_string_param(const ::std::string& p_param1);
+  virtual folly::Future<::std::vector<::some::valid::ns::ComplexUnion>> future_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
+  virtual folly::SemiFuture<::std::vector<::some::valid::ns::ComplexUnion>> semifuture_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
+  virtual folly::Future<std::pair<::std::vector<::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
+  virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::ComplexUnion>> co_listunion_string_param(const ::std::string& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_listunion_string_param(const ::std::string& p_param1) {
     return co_listunion_string_param<false>(nullptr, p_param1);
   }
   template <int = 0>
-  folly::coro::Task<::std::vector< ::some::valid::ns::ComplexUnion>> co_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_listunion_string_param(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_param1) {
     return co_listunion_string_param<true>(&rpcOptions, p_param1);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::vector< ::some::valid::ns::ComplexUnion>> co_listunion_string_param(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_param1) {
+  folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_listunion_string_param(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -2369,7 +2369,7 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::vector< ::some::valid::ns::ComplexUnion> _return;
+    ::std::vector<::some::valid::ns::ComplexUnion> _return;
     if (auto ew = recv_wrapped_listunion_string_param(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -2381,11 +2381,11 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void listunion_string_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_param1);
 
 
-  static folly::exception_wrapper recv_wrapped_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void listunion_string_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_param1);

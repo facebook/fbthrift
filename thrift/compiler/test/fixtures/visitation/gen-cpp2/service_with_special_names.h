@@ -30,90 +30,90 @@ namespace test_cpp2 { namespace cpp_reflection {
 class service_with_special_namesSvAsyncIf {
  public:
   virtual ~service_with_special_namesSvAsyncIf() {}
-  virtual void async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_get() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_get() = 0;
-  virtual void async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_getter() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_getter() = 0;
-  virtual void async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_lists() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_lists() = 0;
-  virtual void async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_maps() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_maps() = 0;
-  virtual void async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_name() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_name() = 0;
-  virtual void async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_name_to_value() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_name_to_value() = 0;
-  virtual void async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_names() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_names() = 0;
-  virtual void async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_prefix_tree() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_prefix_tree() = 0;
-  virtual void async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_sets() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_sets() = 0;
-  virtual void async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_setter() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_setter() = 0;
-  virtual void async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_str() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_str() = 0;
-  virtual void async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_strings() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_strings() = 0;
-  virtual void async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_type() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_type() = 0;
-  virtual void async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_value() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_value() = 0;
-  virtual void async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_value_to_name() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_value_to_name() = 0;
-  virtual void async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_values() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_values() = 0;
-  virtual void async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_id() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_id() = 0;
-  virtual void async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_ids() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_ids() = 0;
-  virtual void async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_descriptor() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_descriptor() = 0;
-  virtual void async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_descriptors() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_descriptors() = 0;
-  virtual void async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_key() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_key() = 0;
-  virtual void async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_keys() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_keys() = 0;
-  virtual void async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_annotation() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_annotation() = 0;
-  virtual void async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_annotations() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_annotations() = 0;
-  virtual void async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_member() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_member() = 0;
-  virtual void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_members() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_members() = 0;
-  virtual void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_field() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_field() = 0;
-  virtual void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual folly::Future<int32_t> future_fields() = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_fields() = 0;
+  virtual void async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_get() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_get() = 0;
+  virtual void async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_getter() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_getter() = 0;
+  virtual void async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_lists() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_lists() = 0;
+  virtual void async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_maps() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_maps() = 0;
+  virtual void async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_name() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_name() = 0;
+  virtual void async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_name_to_value() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_name_to_value() = 0;
+  virtual void async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_names() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_names() = 0;
+  virtual void async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_prefix_tree() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_prefix_tree() = 0;
+  virtual void async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_sets() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_sets() = 0;
+  virtual void async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_setter() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_setter() = 0;
+  virtual void async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_str() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_str() = 0;
+  virtual void async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_strings() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_strings() = 0;
+  virtual void async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_type() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_type() = 0;
+  virtual void async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_value() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_value() = 0;
+  virtual void async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_value_to_name() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_value_to_name() = 0;
+  virtual void async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_values() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_values() = 0;
+  virtual void async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_id() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_id() = 0;
+  virtual void async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_ids() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_ids() = 0;
+  virtual void async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_descriptor() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_descriptor() = 0;
+  virtual void async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_descriptors() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_descriptors() = 0;
+  virtual void async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_key() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_key() = 0;
+  virtual void async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_keys() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_keys() = 0;
+  virtual void async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_annotation() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_annotation() = 0;
+  virtual void async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_annotations() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_annotations() = 0;
+  virtual void async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_member() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_member() = 0;
+  virtual void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_members() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_members() = 0;
+  virtual void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_field() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_field() = 0;
+  virtual void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
+  virtual folly::Future<::std::int32_t> future_fields() = 0;
+  virtual folly::SemiFuture<::std::int32_t> semifuture_fields() = 0;
 };
 
 class service_with_special_namesAsyncProcessor;
@@ -124,150 +124,150 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 
 
-  virtual int32_t get();
-  folly::Future<int32_t> future_get() override;
-  folly::SemiFuture<int32_t> semifuture_get() override;
-  void async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t getter();
-  folly::Future<int32_t> future_getter() override;
-  folly::SemiFuture<int32_t> semifuture_getter() override;
-  void async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t lists();
-  folly::Future<int32_t> future_lists() override;
-  folly::SemiFuture<int32_t> semifuture_lists() override;
-  void async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t maps();
-  folly::Future<int32_t> future_maps() override;
-  folly::SemiFuture<int32_t> semifuture_maps() override;
-  void async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t name();
-  folly::Future<int32_t> future_name() override;
-  folly::SemiFuture<int32_t> semifuture_name() override;
-  void async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t name_to_value();
-  folly::Future<int32_t> future_name_to_value() override;
-  folly::SemiFuture<int32_t> semifuture_name_to_value() override;
-  void async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t names();
-  folly::Future<int32_t> future_names() override;
-  folly::SemiFuture<int32_t> semifuture_names() override;
-  void async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t prefix_tree();
-  folly::Future<int32_t> future_prefix_tree() override;
-  folly::SemiFuture<int32_t> semifuture_prefix_tree() override;
-  void async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t sets();
-  folly::Future<int32_t> future_sets() override;
-  folly::SemiFuture<int32_t> semifuture_sets() override;
-  void async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t setter();
-  folly::Future<int32_t> future_setter() override;
-  folly::SemiFuture<int32_t> semifuture_setter() override;
-  void async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t str();
-  folly::Future<int32_t> future_str() override;
-  folly::SemiFuture<int32_t> semifuture_str() override;
-  void async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t strings();
-  folly::Future<int32_t> future_strings() override;
-  folly::SemiFuture<int32_t> semifuture_strings() override;
-  void async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t type();
-  folly::Future<int32_t> future_type() override;
-  folly::SemiFuture<int32_t> semifuture_type() override;
-  void async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t value();
-  folly::Future<int32_t> future_value() override;
-  folly::SemiFuture<int32_t> semifuture_value() override;
-  void async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t value_to_name();
-  folly::Future<int32_t> future_value_to_name() override;
-  folly::SemiFuture<int32_t> semifuture_value_to_name() override;
-  void async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t values();
-  folly::Future<int32_t> future_values() override;
-  folly::SemiFuture<int32_t> semifuture_values() override;
-  void async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t id();
-  folly::Future<int32_t> future_id() override;
-  folly::SemiFuture<int32_t> semifuture_id() override;
-  void async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t ids();
-  folly::Future<int32_t> future_ids() override;
-  folly::SemiFuture<int32_t> semifuture_ids() override;
-  void async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t descriptor();
-  folly::Future<int32_t> future_descriptor() override;
-  folly::SemiFuture<int32_t> semifuture_descriptor() override;
-  void async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t descriptors();
-  folly::Future<int32_t> future_descriptors() override;
-  folly::SemiFuture<int32_t> semifuture_descriptors() override;
-  void async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t key();
-  folly::Future<int32_t> future_key() override;
-  folly::SemiFuture<int32_t> semifuture_key() override;
-  void async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t keys();
-  folly::Future<int32_t> future_keys() override;
-  folly::SemiFuture<int32_t> semifuture_keys() override;
-  void async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t annotation();
-  folly::Future<int32_t> future_annotation() override;
-  folly::SemiFuture<int32_t> semifuture_annotation() override;
-  void async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t annotations();
-  folly::Future<int32_t> future_annotations() override;
-  folly::SemiFuture<int32_t> semifuture_annotations() override;
-  void async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t member();
-  folly::Future<int32_t> future_member() override;
-  folly::SemiFuture<int32_t> semifuture_member() override;
-  void async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t members();
-  folly::Future<int32_t> future_members() override;
-  folly::SemiFuture<int32_t> semifuture_members() override;
-  void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t field();
-  folly::Future<int32_t> future_field() override;
-  folly::SemiFuture<int32_t> semifuture_field() override;
-  void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t fields();
-  folly::Future<int32_t> future_fields() override;
-  folly::SemiFuture<int32_t> semifuture_fields() override;
-  void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+  virtual ::std::int32_t get();
+  folly::Future<::std::int32_t> future_get() override;
+  folly::SemiFuture<::std::int32_t> semifuture_get() override;
+  void async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t getter();
+  folly::Future<::std::int32_t> future_getter() override;
+  folly::SemiFuture<::std::int32_t> semifuture_getter() override;
+  void async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t lists();
+  folly::Future<::std::int32_t> future_lists() override;
+  folly::SemiFuture<::std::int32_t> semifuture_lists() override;
+  void async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t maps();
+  folly::Future<::std::int32_t> future_maps() override;
+  folly::SemiFuture<::std::int32_t> semifuture_maps() override;
+  void async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t name();
+  folly::Future<::std::int32_t> future_name() override;
+  folly::SemiFuture<::std::int32_t> semifuture_name() override;
+  void async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t name_to_value();
+  folly::Future<::std::int32_t> future_name_to_value() override;
+  folly::SemiFuture<::std::int32_t> semifuture_name_to_value() override;
+  void async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t names();
+  folly::Future<::std::int32_t> future_names() override;
+  folly::SemiFuture<::std::int32_t> semifuture_names() override;
+  void async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t prefix_tree();
+  folly::Future<::std::int32_t> future_prefix_tree() override;
+  folly::SemiFuture<::std::int32_t> semifuture_prefix_tree() override;
+  void async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t sets();
+  folly::Future<::std::int32_t> future_sets() override;
+  folly::SemiFuture<::std::int32_t> semifuture_sets() override;
+  void async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t setter();
+  folly::Future<::std::int32_t> future_setter() override;
+  folly::SemiFuture<::std::int32_t> semifuture_setter() override;
+  void async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t str();
+  folly::Future<::std::int32_t> future_str() override;
+  folly::SemiFuture<::std::int32_t> semifuture_str() override;
+  void async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t strings();
+  folly::Future<::std::int32_t> future_strings() override;
+  folly::SemiFuture<::std::int32_t> semifuture_strings() override;
+  void async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t type();
+  folly::Future<::std::int32_t> future_type() override;
+  folly::SemiFuture<::std::int32_t> semifuture_type() override;
+  void async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t value();
+  folly::Future<::std::int32_t> future_value() override;
+  folly::SemiFuture<::std::int32_t> semifuture_value() override;
+  void async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t value_to_name();
+  folly::Future<::std::int32_t> future_value_to_name() override;
+  folly::SemiFuture<::std::int32_t> semifuture_value_to_name() override;
+  void async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t values();
+  folly::Future<::std::int32_t> future_values() override;
+  folly::SemiFuture<::std::int32_t> semifuture_values() override;
+  void async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t id();
+  folly::Future<::std::int32_t> future_id() override;
+  folly::SemiFuture<::std::int32_t> semifuture_id() override;
+  void async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t ids();
+  folly::Future<::std::int32_t> future_ids() override;
+  folly::SemiFuture<::std::int32_t> semifuture_ids() override;
+  void async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t descriptor();
+  folly::Future<::std::int32_t> future_descriptor() override;
+  folly::SemiFuture<::std::int32_t> semifuture_descriptor() override;
+  void async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t descriptors();
+  folly::Future<::std::int32_t> future_descriptors() override;
+  folly::SemiFuture<::std::int32_t> semifuture_descriptors() override;
+  void async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t key();
+  folly::Future<::std::int32_t> future_key() override;
+  folly::SemiFuture<::std::int32_t> semifuture_key() override;
+  void async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t keys();
+  folly::Future<::std::int32_t> future_keys() override;
+  folly::SemiFuture<::std::int32_t> semifuture_keys() override;
+  void async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t annotation();
+  folly::Future<::std::int32_t> future_annotation() override;
+  folly::SemiFuture<::std::int32_t> semifuture_annotation() override;
+  void async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t annotations();
+  folly::Future<::std::int32_t> future_annotations() override;
+  folly::SemiFuture<::std::int32_t> semifuture_annotations() override;
+  void async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t member();
+  folly::Future<::std::int32_t> future_member() override;
+  folly::SemiFuture<::std::int32_t> semifuture_member() override;
+  void async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t members();
+  folly::Future<::std::int32_t> future_members() override;
+  folly::SemiFuture<::std::int32_t> semifuture_members() override;
+  void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t field();
+  folly::Future<::std::int32_t> future_field() override;
+  folly::SemiFuture<::std::int32_t> semifuture_field() override;
+  void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual ::std::int32_t fields();
+  folly::Future<::std::int32_t> future_fields() override;
+  folly::SemiFuture<::std::int32_t> semifuture_fields() override;
+  void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
 };
 
 class service_with_special_namesSvNull : public service_with_special_namesSvIf {
  public:
-  int32_t get() override;
-  int32_t getter() override;
-  int32_t lists() override;
-  int32_t maps() override;
-  int32_t name() override;
-  int32_t name_to_value() override;
-  int32_t names() override;
-  int32_t prefix_tree() override;
-  int32_t sets() override;
-  int32_t setter() override;
-  int32_t str() override;
-  int32_t strings() override;
-  int32_t type() override;
-  int32_t value() override;
-  int32_t value_to_name() override;
-  int32_t values() override;
-  int32_t id() override;
-  int32_t ids() override;
-  int32_t descriptor() override;
-  int32_t descriptors() override;
-  int32_t key() override;
-  int32_t keys() override;
-  int32_t annotation() override;
-  int32_t annotations() override;
-  int32_t member() override;
-  int32_t members() override;
-  int32_t field() override;
-  int32_t fields() override;
+  ::std::int32_t get() override;
+  ::std::int32_t getter() override;
+  ::std::int32_t lists() override;
+  ::std::int32_t maps() override;
+  ::std::int32_t name() override;
+  ::std::int32_t name_to_value() override;
+  ::std::int32_t names() override;
+  ::std::int32_t prefix_tree() override;
+  ::std::int32_t sets() override;
+  ::std::int32_t setter() override;
+  ::std::int32_t str() override;
+  ::std::int32_t strings() override;
+  ::std::int32_t type() override;
+  ::std::int32_t value() override;
+  ::std::int32_t value_to_name() override;
+  ::std::int32_t values() override;
+  ::std::int32_t id() override;
+  ::std::int32_t ids() override;
+  ::std::int32_t descriptor() override;
+  ::std::int32_t descriptors() override;
+  ::std::int32_t key() override;
+  ::std::int32_t keys() override;
+  ::std::int32_t annotation() override;
+  ::std::int32_t annotations() override;
+  ::std::int32_t member() override;
+  ::std::int32_t members() override;
+  ::std::int32_t field() override;
+  ::std::int32_t fields() override;
 };
 
 class service_with_special_namesAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -295,7 +295,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_get(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_get(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_get(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -303,7 +303,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_getter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_getter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getter(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -311,7 +311,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_lists(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_lists(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -319,7 +319,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_maps(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_maps(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_maps(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_maps(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -327,7 +327,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_name(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -335,7 +335,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_name_to_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_name_to_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -343,7 +343,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_names(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_names(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_names(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_names(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -351,7 +351,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_prefix_tree(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_prefix_tree(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -359,7 +359,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_sets(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_sets(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -367,7 +367,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_setter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_setter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_setter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_setter(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -375,7 +375,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_str(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_str(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_str(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_str(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -383,7 +383,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_strings(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_strings(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_strings(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_strings(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -391,7 +391,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_type(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_type(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_type(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_type(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -399,7 +399,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_value(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -407,7 +407,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_value_to_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_value_to_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -415,7 +415,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_values(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_values(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -423,7 +423,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_id(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_id(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_id(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_id(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -431,7 +431,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_ids(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_ids(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_ids(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_ids(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -439,7 +439,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_descriptor(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_descriptor(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -447,7 +447,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_descriptors(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_descriptors(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -455,7 +455,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_key(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_key(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_key(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_key(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -463,7 +463,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_keys(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_keys(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -471,7 +471,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_annotation(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_annotation(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -479,7 +479,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_annotations(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_annotations(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -487,7 +487,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_member(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_member(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_member(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_member(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -495,7 +495,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_members(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_members(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_members(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_members(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -503,7 +503,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_field(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_field(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -511,7 +511,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_fields(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_fields(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::SmallStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg) :
+SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg) :
     small_A(std::move(small_A__arg)),
     small_B(std::move(small_B__arg)) {
   __isset.small_A = true;
@@ -227,10 +227,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldQ = srcObj.__isset.fieldQ;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   if (srcObj.fieldR) fieldR.reset(new ::std::map<::std::string, bool>(*srcObj.fieldR));
-  if (srcObj.fieldS) fieldS.reset(new  ::cpp2::SmallStruct(*srcObj.fieldS));
+  if (srcObj.fieldS) fieldS.reset(new ::cpp2::SmallStruct(*srcObj.fieldS));
   fieldT = srcObj.fieldT;
   fieldU = srcObj.fieldU;
-  if (srcObj.fieldX) fieldX.reset(new  ::cpp2::SmallStruct(*srcObj.fieldX));
+  if (srcObj.fieldX) fieldX.reset(new ::cpp2::SmallStruct(*srcObj.fieldX));
 }
 
 containerStruct& containerStruct::operator=(const containerStruct& src) {
@@ -242,33 +242,33 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
       fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
+      fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
+      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
+  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
   13}}}),
       fieldQ(static_cast< ::cpp2::MyEnumA>(0)),
       fieldR(std::make_unique<::std::map<::std::string, bool>>()),
-      fieldS(std::make_unique< ::cpp2::SmallStruct>()),
-      fieldT(std::make_shared< ::cpp2::SmallStruct>()),
-      fieldU(std::make_shared< ::cpp2::SmallStruct>()),
-      fieldX(std::make_unique< ::cpp2::SmallStruct>()) {}
+      fieldS(std::make_unique<::cpp2::SmallStruct>()),
+      fieldT(std::make_shared<::cpp2::SmallStruct>()),
+      fieldU(std::make_shared<::cpp2::SmallStruct>()),
+      fieldX(std::make_unique<::cpp2::SmallStruct>()) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 containerStruct::~containerStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector< ::cpp2::IndirectionA> fieldN__arg, ::std::vector< ::cpp2::IndirectionB> fieldO__arg, ::std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg) :
+containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector<::cpp2::IndirectionA> fieldN__arg, ::std::vector<::cpp2::IndirectionB> fieldO__arg, ::std::vector<::cpp2::IndirectionC> fieldP__arg, ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr<::cpp2::SmallStruct> fieldS__arg, std::shared_ptr<::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr<::cpp2::SmallStruct> fieldX__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -543,51 +543,51 @@ const ::std::map<::std::string, bool>& containerStruct::get_fieldB() const& {
   return std::move(fieldB);
 }
 
-const ::std::set<int32_t>& containerStruct::get_fieldC() const& {
+const ::std::set<::std::int32_t>& containerStruct::get_fieldC() const& {
   return fieldC;
 }
 
-::std::set<int32_t> containerStruct::get_fieldC() && {
+::std::set<::std::int32_t> containerStruct::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const ::std::vector<::std::vector<::std::vector<int32_t>>>& containerStruct::get_fieldF() const& {
+const ::std::vector<::std::vector<::std::vector<::std::int32_t>>>& containerStruct::get_fieldF() const& {
   return fieldF;
 }
 
-::std::vector<::std::vector<::std::vector<int32_t>>> containerStruct::get_fieldF() && {
+::std::vector<::std::vector<::std::vector<::std::int32_t>>> containerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& containerStruct::get_fieldG() const& {
+const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& containerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> containerStruct::get_fieldG() && {
+::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> containerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const ::std::vector<::std::set<int32_t>>& containerStruct::get_fieldH() const& {
+const ::std::vector<::std::set<::std::int32_t>>& containerStruct::get_fieldH() const& {
   return fieldH;
 }
 
-::std::vector<::std::set<int32_t>> containerStruct::get_fieldH() && {
+::std::vector<::std::set<::std::int32_t>> containerStruct::get_fieldH() && {
   return std::move(fieldH);
 }
 
-const ::std::map<::std::string, ::std::vector<int32_t>>& containerStruct::get_fieldJ() const& {
+const ::std::map<::std::string, ::std::vector<::std::int32_t>>& containerStruct::get_fieldJ() const& {
   return fieldJ;
 }
 
-::std::map<::std::string, ::std::vector<int32_t>> containerStruct::get_fieldJ() && {
+::std::map<::std::string, ::std::vector<::std::int32_t>> containerStruct::get_fieldJ() && {
   return std::move(fieldJ);
 }
 
-const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& containerStruct::get_fieldK() const& {
+const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& containerStruct::get_fieldK() const& {
   return fieldK;
 }
 
-::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> containerStruct::get_fieldK() && {
+::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> containerStruct::get_fieldK() && {
   return std::move(fieldK);
 }
 
@@ -599,35 +599,35 @@ const ::std::set<::std::set<::std::set<bool>>>& containerStruct::get_fieldL() co
   return std::move(fieldL);
 }
 
-const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
+const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
   return fieldM;
 }
 
-::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
+::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
   return std::move(fieldM);
 }
 
-const ::std::vector< ::cpp2::IndirectionA>& containerStruct::get_fieldN() const& {
+const ::std::vector<::cpp2::IndirectionA>& containerStruct::get_fieldN() const& {
   return fieldN;
 }
 
-::std::vector< ::cpp2::IndirectionA> containerStruct::get_fieldN() && {
+::std::vector<::cpp2::IndirectionA> containerStruct::get_fieldN() && {
   return std::move(fieldN);
 }
 
-const ::std::vector< ::cpp2::IndirectionB>& containerStruct::get_fieldO() const& {
+const ::std::vector<::cpp2::IndirectionB>& containerStruct::get_fieldO() const& {
   return fieldO;
 }
 
-::std::vector< ::cpp2::IndirectionB> containerStruct::get_fieldO() && {
+::std::vector<::cpp2::IndirectionB> containerStruct::get_fieldO() && {
   return std::move(fieldO);
 }
 
-const ::std::vector< ::cpp2::IndirectionC>& containerStruct::get_fieldP() const& {
+const ::std::vector<::cpp2::IndirectionC>& containerStruct::get_fieldP() const& {
   return fieldP;
 }
 
-::std::vector< ::cpp2::IndirectionC> containerStruct::get_fieldP() && {
+::std::vector<::cpp2::IndirectionC> containerStruct::get_fieldP() && {
   return std::move(fieldP);
 }
 
@@ -674,50 +674,50 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SmallStruct>,
+        ::cpp2::SmallStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

@@ -11,64 +11,64 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace some { namespace valid { namespace ns {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int16_t*>> ParamService_void_ret_i16_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int16_t*>> ParamService_void_ret_i16_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_i16_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int8_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int16_t*>> ParamService_void_ret_byte_i16_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int8_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int16_t*>> ParamService_void_ret_byte_i16_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_byte_i16_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>> ParamService_void_ret_map_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>> ParamService_void_ret_map_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_map_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::set<::std::vector<::std::string>>*>> ParamService_void_ret_map_setlist_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::set<::std::vector<::std::string>>*>> ParamService_void_ret_map_setlist_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_map_setlist_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral,  ::some::valid::ns::simpleTypeDef*>> ParamService_void_ret_map_typedef_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::some::valid::ns::simpleTypeDef*>> ParamService_void_ret_map_typedef_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_map_typedef_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA*>> ParamService_void_ret_enum_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::enumeration, ::some::valid::ns::MyEnumA*>> ParamService_void_ret_enum_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_enum_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::some::valid::ns::MyStruct*>> ParamService_void_ret_struct_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct*>> ParamService_void_ret_struct_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_struct_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ParamService_void_ret_listunion_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector<::some::valid::ns::ComplexUnion>*>> ParamService_void_ret_listunion_param_pargs;
 typedef apache::thrift::ThriftPresult<true> ParamService_void_ret_listunion_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, int64_t*>> ParamService_bool_ret_i32_i64_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, ::std::int64_t*>> ParamService_bool_ret_i32_i64_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> ParamService_bool_ret_i32_i64_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>> ParamService_bool_ret_map_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>> ParamService_bool_ret_map_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> ParamService_bool_ret_map_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::variant,  ::some::valid::ns::ComplexUnion*>> ParamService_bool_ret_union_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::variant, ::some::valid::ns::ComplexUnion*>> ParamService_bool_ret_union_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> ParamService_bool_ret_union_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::floating_point, float*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::floating_point, double*>> ParamService_i64_ret_float_double_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int64_t*>> ParamService_i64_ret_float_double_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, ::std::set< ::some::valid::ns::mostComplexTypeDef>*>> ParamService_i64_ret_string_typedef_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int64_t*>> ParamService_i64_ret_string_typedef_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::integral, int32_t*>> ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int64_t*>> ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<4, ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::some::valid::ns::MyStruct>*>> ParamService_double_ret_setstruct_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int64_t*>> ParamService_i64_ret_float_double_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, ::std::set<::some::valid::ns::mostComplexTypeDef>*>> ParamService_i64_ret_string_typedef_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int64_t*>> ParamService_i64_ret_string_typedef_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::integral, ::std::int32_t*>> ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int64_t*>> ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<4, ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set<::some::valid::ns::MyStruct>*>> ParamService_double_ret_setstruct_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::floating_point, double*>> ParamService_double_ret_setstruct_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> ParamService_string_ret_string_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> ParamService_string_ret_string_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::binary, ::std::string*>> ParamService_binary_ret_binary_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>> ParamService_binary_ret_binary_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, bool*>> ParamService_map_ret_bool_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>> ParamService_map_ret_bool_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<int32_t, ::std::vector<::std::string>>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>*>> ParamService_list_ret_map_setlist_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>> ParamService_map_ret_bool_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>*>> ParamService_list_ret_map_setlist_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<bool>*>> ParamService_list_ret_map_setlist_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>*>> ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>*>> ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int32_t*>> ParamService_typedef_ret_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral,  ::some::valid::ns::simpleTypeDef*>> ParamService_typedef_ret_i32_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,  ::some::valid::ns::complexStructTypeDef*>> ParamService_listtypedef_ret_typedef_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector< ::some::valid::ns::simpleTypeDef>*>> ParamService_listtypedef_ret_typedef_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>*>> ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>*>> ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>> ParamService_typedef_ret_i32_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::some::valid::ns::simpleTypeDef*>> ParamService_typedef_ret_i32_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>, ::some::valid::ns::complexStructTypeDef*>> ParamService_listtypedef_ret_typedef_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::some::valid::ns::simpleTypeDef>*>> ParamService_listtypedef_ret_typedef_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<3, ::apache::thrift::type_class::floating_point, double*>> ParamService_enum_ret_double_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<3, ::apache::thrift::type_class::floating_point, double*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_enum_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_enum_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int64_t>*>> ParamService_listenum_ret_map_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, ::std::vector< ::some::valid::ns::MyEnumA>*>> ParamService_listenum_ret_map_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int16_t*>> ParamService_struct_ret_i16_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::some::valid::ns::MyStruct*>> ParamService_struct_ret_i16_param_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::enumeration, ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<3, ::apache::thrift::type_class::floating_point, double*>, apache::thrift::FieldData<5, ::apache::thrift::type_class::enumeration, ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_enum_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::enumeration, ::some::valid::ns::MyEnumA*>> ParamService_enum_ret_double_enum_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int64_t>*>> ParamService_listenum_ret_map_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, ::std::vector<::some::valid::ns::MyEnumA>*>> ParamService_listenum_ret_map_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int16_t*>> ParamService_struct_ret_i16_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct*>> ParamService_struct_ret_i16_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<8, ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>*>> ParamService_setstruct_ret_set_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::some::valid::ns::MyStruct>*>> ParamService_setstruct_ret_set_param_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, int32_t*>> ParamService_union_ret_i32_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::variant,  ::some::valid::ns::ComplexUnion*>> ParamService_union_ret_i32_i32_param_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set<::some::valid::ns::MyStruct>*>> ParamService_setstruct_ret_set_param_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<4, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::integral, ::std::int32_t*>> ParamService_union_ret_i32_i32_param_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::variant, ::some::valid::ns::ComplexUnion*>> ParamService_union_ret_i32_i32_param_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> ParamService_listunion_string_param_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ParamService_listunion_string_param_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>, ::std::vector<::some::valid::ns::ComplexUnion>*>> ParamService_listunion_string_param_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -83,7 +83,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_i16_param_pargs args;
-  int16_t uarg_param1{0};
+  ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", ctx));
   try {
@@ -135,9 +135,9 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_byte_i16_param_pargs args;
-  int8_t uarg_param1{0};
+  ::std::int8_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  int16_t uarg_param2{0};
+  ::std::int16_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_byte_i16_param", ctx));
   try {
@@ -192,7 +192,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
+  auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
   try {
@@ -247,7 +247,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_setlist_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
+  auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::set<::std::vector<::std::string>>>();
   args.get<1>().value = uarg_param2.get();
@@ -304,7 +304,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_typedef_param_pargs args;
-   ::some::valid::ns::simpleTypeDef uarg_param1{0};
+  ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", ctx));
   try {
@@ -359,7 +359,7 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_enum_param_pargs args;
-   ::some::valid::ns::MyEnumA uarg_param1{static_cast< ::some::valid::ns::MyEnumA>(0)};
+  ::some::valid::ns::MyEnumA uarg_param1{static_cast<::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", ctx));
   try {
@@ -414,7 +414,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_struct_param_pargs args;
-  auto uarg_param1 = std::make_unique< ::some::valid::ns::MyStruct>();
+  auto uarg_param1 = std::make_unique<::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
   try {
@@ -469,7 +469,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_void_ret_listunion_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::vector< ::some::valid::ns::ComplexUnion>>();
+  auto uarg_param1 = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
   try {
@@ -524,9 +524,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_bool_ret_i32_i64_param_pargs args;
-  int32_t uarg_param1{0};
+  ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  int64_t uarg_param2{0};
+  ::std::int64_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_i32_i64_param", ctx));
   try {
@@ -583,7 +583,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_bool_ret_map_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
+  auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
   try {
@@ -640,7 +640,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_bool_ret_union_param_pargs args;
-  auto uarg_param1 = std::make_unique< ::some::valid::ns::ComplexUnion>();
+  auto uarg_param1 = std::make_unique<::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
   try {
@@ -711,7 +711,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_float_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_float_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -719,10 +719,10 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_float_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_float_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
   ParamService_i64_ret_float_double_param_presult result;
-  result.get<0>().value = const_cast<int64_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("i64_ret_float_double_param", &prot, protoSeqId, ctx, result);
 }
@@ -758,7 +758,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
   ParamService_i64_ret_string_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
-  auto uarg_param2 = std::make_unique<::std::set< ::some::valid::ns::mostComplexTypeDef>>();
+  auto uarg_param2 = std::make_unique<::std::set<::some::valid::ns::mostComplexTypeDef>>();
   args.get<1>().value = uarg_param2.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", ctx));
   try {
@@ -770,7 +770,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_string_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_string_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -778,10 +778,10 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_string_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_string_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
   ParamService_i64_ret_string_typedef_param_presult result;
-  result.get<0>().value = const_cast<int64_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("i64_ret_string_typedef_param", &prot, protoSeqId, ctx, result);
 }
@@ -813,15 +813,15 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
-  int32_t uarg_param1{0};
+  ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  int32_t uarg_param2{0};
+  ::std::int32_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  int32_t uarg_param3{0};
+  ::std::int32_t uarg_param3{0};
   args.get<2>().value = &uarg_param3;
-  int32_t uarg_param4{0};
+  ::std::int32_t uarg_param4{0};
   args.get<3>().value = &uarg_param4;
-  int32_t uarg_param5{0};
+  ::std::int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
@@ -833,15 +833,15 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_i32_i32_i32_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_i64_ret_i32_i32_i32_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
   ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult result;
-  result.get<0>().value = const_cast<int64_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("i64_ret_i32_i32_i32_i32_i32_param", &prot, protoSeqId, ctx, result);
 }
@@ -875,7 +875,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_double_ret_setstruct_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::set< ::some::valid::ns::MyStruct>>();
+  auto uarg_param1 = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
   try {
@@ -1058,7 +1058,7 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_map_ret_bool_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_ret_bool_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>>(std::move(req), std::move(ctxStack), return_map_ret_bool_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_ret_bool_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1066,10 +1066,10 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_map_ret_bool_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, int64_t> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_map_ret_bool_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int64_t> const& _return) {
   ProtocolOut_ prot;
   ParamService_map_ret_bool_param_presult result;
-  result.get<0>().value = const_cast<::std::map<::std::string, int64_t>*>(&_return);
+  result.get<0>().value = const_cast<::std::map<::std::string, ::std::int64_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("map_ret_bool_param", &prot, protoSeqId, ctx, result);
 }
@@ -1103,7 +1103,7 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_list_ret_map_setlist_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>();
+  auto uarg_param1 = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::string>>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::vector<::std::string>>();
   args.get<1>().value = uarg_param2.get();
@@ -1162,7 +1162,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>();
+  auto uarg_param1 = std::make_unique<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
   try {
@@ -1174,7 +1174,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>>(std::move(req), std::move(ctxStack), return_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>>(std::move(req), std::move(ctxStack), return_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1182,10 +1182,10 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_mapsetlistmapliststring_ret_listlistlist_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_mapsetlistmapliststring_ret_listlistlist_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> const& _return) {
   ProtocolOut_ prot;
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult result;
-  result.get<0>().value = const_cast<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>*>(&_return);
+  result.get<0>().value = const_cast<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("mapsetlistmapliststring_ret_listlistlist_param", &prot, protoSeqId, ctx, result);
 }
@@ -1219,7 +1219,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_typedef_ret_i32_param_pargs args;
-  int32_t uarg_param1{0};
+  ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", ctx));
   try {
@@ -1231,7 +1231,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_typedef_ret_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_typedef_ret_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1239,10 +1239,10 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_typedef_ret_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::simpleTypeDef const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_typedef_ret_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::simpleTypeDef const& _return) {
   ProtocolOut_ prot;
   ParamService_typedef_ret_i32_param_presult result;
-  result.get<0>().value = const_cast< ::some::valid::ns::simpleTypeDef*>(&_return);
+  result.get<0>().value = const_cast<::some::valid::ns::simpleTypeDef*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("typedef_ret_i32_param", &prot, protoSeqId, ctx, result);
 }
@@ -1274,7 +1274,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_listtypedef_ret_typedef_param_pargs args;
-  auto uarg_param1 = std::make_unique< ::some::valid::ns::complexStructTypeDef>();
+  auto uarg_param1 = std::make_unique<::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
   try {
@@ -1286,15 +1286,15 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_listtypedef_ret_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::simpleTypeDef> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_listtypedef_ret_typedef_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::simpleTypeDef> const& _return) {
   ProtocolOut_ prot;
   ParamService_listtypedef_ret_typedef_param_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::simpleTypeDef>*>(&_return);
+  result.get<0>().value = const_cast<::std::vector<::some::valid::ns::simpleTypeDef>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("listtypedef_ret_typedef_param", &prot, protoSeqId, ctx, result);
 }
@@ -1340,7 +1340,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1348,10 +1348,10 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_enum_ret_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyEnumA const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_enum_ret_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return) {
   ProtocolOut_ prot;
   ParamService_enum_ret_double_param_presult result;
-  result.get<0>().value = const_cast< ::some::valid::ns::MyEnumA*>(&_return);
+  result.get<0>().value = const_cast<::some::valid::ns::MyEnumA*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("enum_ret_double_param", &prot, protoSeqId, ctx, result);
 }
@@ -1387,7 +1387,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
   ParamService_enum_ret_double_enum_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-   ::some::valid::ns::MyEnumA uarg_param2{static_cast< ::some::valid::ns::MyEnumA>(0)};
+  ::some::valid::ns::MyEnumA uarg_param2{static_cast<::some::valid::ns::MyEnumA>(0)};
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_enum_param", ctx));
   try {
@@ -1399,7 +1399,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1407,10 +1407,10 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_enum_ret_double_enum_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyEnumA const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_enum_ret_double_enum_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return) {
   ProtocolOut_ prot;
   ParamService_enum_ret_double_enum_param_presult result;
-  result.get<0>().value = const_cast< ::some::valid::ns::MyEnumA*>(&_return);
+  result.get<0>().value = const_cast<::some::valid::ns::MyEnumA*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("enum_ret_double_enum_param", &prot, protoSeqId, ctx, result);
 }
@@ -1444,7 +1444,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_listenum_ret_map_param_pargs args;
-  auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
+  auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
   try {
@@ -1456,7 +1456,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_listenum_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_listenum_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1464,10 +1464,10 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_listenum_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::MyEnumA> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_listenum_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::MyEnumA> const& _return) {
   ProtocolOut_ prot;
   ParamService_listenum_ret_map_param_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::MyEnumA>*>(&_return);
+  result.get<0>().value = const_cast<::std::vector<::some::valid::ns::MyEnumA>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("listenum_ret_map_param", &prot, protoSeqId, ctx, result);
 }
@@ -1499,7 +1499,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_struct_ret_i16_param_pargs args;
-  int16_t uarg_param1{0};
+  ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", ctx));
   try {
@@ -1511,15 +1511,15 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_struct_ret_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyStruct const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_struct_ret_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::MyStruct const& _return) {
   ProtocolOut_ prot;
   ParamService_struct_ret_i16_param_presult result;
-  result.get<0>().value = const_cast< ::some::valid::ns::MyStruct*>(&_return);
+  result.get<0>().value = const_cast<::some::valid::ns::MyStruct*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("struct_ret_i16_param", &prot, protoSeqId, ctx, result);
 }
@@ -1565,7 +1565,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_setstruct_ret_set_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_setstruct_ret_set_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1573,10 +1573,10 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_setstruct_ret_set_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set< ::some::valid::ns::MyStruct> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_setstruct_ret_set_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::some::valid::ns::MyStruct> const& _return) {
   ProtocolOut_ prot;
   ParamService_setstruct_ret_set_param_presult result;
-  result.get<0>().value = const_cast<::std::set< ::some::valid::ns::MyStruct>*>(&_return);
+  result.get<0>().value = const_cast<::std::set<::some::valid::ns::MyStruct>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("setstruct_ret_set_param", &prot, protoSeqId, ctx, result);
 }
@@ -1610,9 +1610,9 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ParamService_union_ret_i32_i32_param_pargs args;
-  int32_t uarg_param1{0};
+  ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  int32_t uarg_param2{0};
+  ::std::int32_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.union_ret_i32_i32_param", ctx));
   try {
@@ -1624,7 +1624,7 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_union_ret_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_union_ret_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1632,10 +1632,10 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_union_ret_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::ComplexUnion const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_union_ret_i32_i32_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::some::valid::ns::ComplexUnion const& _return) {
   ProtocolOut_ prot;
   ParamService_union_ret_i32_i32_param_presult result;
-  result.get<0>().value = const_cast< ::some::valid::ns::ComplexUnion*>(&_return);
+  result.get<0>().value = const_cast<::some::valid::ns::ComplexUnion*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("union_ret_i32_i32_param", &prot, protoSeqId, ctx, result);
 }
@@ -1681,7 +1681,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_listunion_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listunion_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_listunion_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listunion_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1689,10 +1689,10 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ParamServiceAsyncProcessor::return_listunion_string_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::ComplexUnion> const& _return) {
+folly::IOBufQueue ParamServiceAsyncProcessor::return_listunion_string_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::ComplexUnion> const& _return) {
   ProtocolOut_ prot;
   ParamService_listunion_string_param_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::ComplexUnion>*>(&_return);
+  result.get<0>().value = const_cast<::std::vector<::some::valid::ns::ComplexUnion>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("listunion_string_param", &prot, protoSeqId, ctx, result);
 }

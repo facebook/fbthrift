@@ -74,7 +74,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<int32_t> field3__arg, ::std::vector<int32_t> field4__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   Foo(Foo&&) = default;
 
@@ -91,9 +91,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string field2;
  private:
-  ::std::vector<int32_t> field3;
+  ::std::vector<::std::int32_t> field3;
  private:
-  ::std::vector<int32_t> field4;
+  ::std::vector<::std::int32_t> field4;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -167,44 +167,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
     return {this->field3, __isset.field3};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3_ref() const&& {
     return {std::move(this->field3), __isset.field3};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field3_ref() & {
     return {this->field3, __isset.field3};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
     return {std::move(this->field3), __isset.field3};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4_ref() const& {
     return {this->field4, __isset.field4};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4_ref() const&& {
     return {std::move(this->field4), __isset.field4};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field4_ref() & {
     return {this->field4, __isset.field4};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4_ref() && {
     return {std::move(this->field4), __isset.field4};
   }
@@ -226,11 +226,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field2;
   }
-  const ::std::vector<int32_t>& get_field4() const&;
-  ::std::vector<int32_t> get_field4() &&;
+  const ::std::vector<::std::int32_t>& get_field4() const&;
+  ::std::vector<::std::int32_t> get_field4() &&;
 
-  template <typename T_Foo_field4_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_field4(T_Foo_field4_struct_setter&& field4_) {
+  template <typename T_Foo_field4_struct_setter = ::std::vector<::std::int32_t>>
+  ::std::vector<::std::int32_t>& set_field4(T_Foo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field4 = true;

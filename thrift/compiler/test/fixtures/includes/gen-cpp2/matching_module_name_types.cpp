@@ -36,7 +36,7 @@ void TccStructTraits<::matching_module_name::MyStruct>::translateFieldName(
 namespace matching_module_name {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg) :
     OtherStructField(std::move(OtherStructField__arg)) {
   __isset.OtherStructField = true;
 }
@@ -69,11 +69,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const  ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() const& {
+const ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() const& {
   return OtherStructField;
 }
 
- ::matching_module_name::OtherStruct MyStruct::get_OtherStructField() && {
+::matching_module_name::OtherStruct MyStruct::get_OtherStructField() && {
   return std::move(OtherStructField);
 }
 
@@ -99,14 +99,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::matching_module_name::OtherStruct>,
+        ::matching_module_name::OtherStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::matching_module_name::OtherStruct>,
+        ::matching_module_name::OtherStruct>,
     "inconsistent use of nimble option");
 
 } // matching_module_name

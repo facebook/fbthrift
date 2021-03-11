@@ -12,8 +12,8 @@
 
 namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyService_first_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string,  ::cpp2::annotated_inline_string*>> MyService_first_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, int64_t*>> MyService_second_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::cpp2::annotated_inline_string*>> MyService_first_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_second_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> MyService_second_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::setUpAndProcess_first(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -41,7 +41,7 @@ void MyServiceAsyncProcessor::process_first(apache::thrift::ResponseChannelReque
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::cpp2::annotated_inline_string>>>(std::move(req), std::move(ctxStack), return_first<ProtocolIn_,ProtocolOut_>, throw_wrapped_first<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>>(std::move(req), std::move(ctxStack), return_first<ProtocolIn_,ProtocolOut_>, throw_wrapped_first<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -49,10 +49,10 @@ void MyServiceAsyncProcessor::process_first(apache::thrift::ResponseChannelReque
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::cpp2::annotated_inline_string const& _return) {
+folly::IOBufQueue MyServiceAsyncProcessor::return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return) {
   ProtocolOut_ prot;
   MyService_first_presult result;
-  result.get<0>().value = const_cast< ::cpp2::annotated_inline_string*>(&_return);
+  result.get<0>().value = const_cast<::cpp2::annotated_inline_string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("first", &prot, protoSeqId, ctx, result);
 }
@@ -86,7 +86,7 @@ void MyServiceAsyncProcessor::process_second(apache::thrift::ResponseChannelRequ
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_second_pargs args;
-  int64_t uarg_count{0};
+  ::std::int64_t uarg_count{0};
   args.get<0>().value = &uarg_count;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.second", ctx));
   try {

@@ -12,61 +12,61 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_get_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_get_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_get_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_getter_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_getter_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_getter_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_lists_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_lists_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_lists_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_maps_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_maps_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_maps_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_name_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_name_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_name_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_name_to_value_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_name_to_value_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_name_to_value_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_names_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_names_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_names_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_prefix_tree_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_prefix_tree_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_prefix_tree_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_sets_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_sets_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_sets_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_setter_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_setter_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_setter_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_str_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_str_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_str_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_strings_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_strings_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_strings_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_type_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_type_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_type_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_value_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_value_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_value_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_value_to_name_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_value_to_name_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_value_to_name_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_values_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_values_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_values_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_id_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_id_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_id_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_ids_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_ids_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_ids_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_descriptor_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_descriptor_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_descriptor_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_descriptors_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_descriptors_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_descriptors_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_key_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_key_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_key_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_keys_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_keys_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_keys_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_annotation_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_annotation_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_annotation_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_annotations_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_annotations_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_annotations_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_member_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_member_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_member_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_members_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_members_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_members_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_field_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_field_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_field_presult;
 typedef apache::thrift::ThriftPresult<false> service_with_special_names_fields_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> service_with_special_names_fields_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> service_with_special_names_fields_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::setUpAndProcess_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -93,7 +93,7 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_get<ProtocolIn_,ProtocolOut_>, throw_wrapped_get<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_get<ProtocolIn_,ProtocolOut_>, throw_wrapped_get<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -101,10 +101,10 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_get(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_get(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_get_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("get", &prot, protoSeqId, ctx, result);
 }
@@ -148,7 +148,7 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_getter<ProtocolIn_,ProtocolOut_>, throw_wrapped_getter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_getter<ProtocolIn_,ProtocolOut_>, throw_wrapped_getter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -156,10 +156,10 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_getter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_getter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_getter_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("getter", &prot, protoSeqId, ctx, result);
 }
@@ -203,7 +203,7 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_lists<ProtocolIn_,ProtocolOut_>, throw_wrapped_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_lists<ProtocolIn_,ProtocolOut_>, throw_wrapped_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -211,10 +211,10 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_lists_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("lists", &prot, protoSeqId, ctx, result);
 }
@@ -258,7 +258,7 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_maps<ProtocolIn_,ProtocolOut_>, throw_wrapped_maps<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_maps<ProtocolIn_,ProtocolOut_>, throw_wrapped_maps<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -266,10 +266,10 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_maps(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_maps(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_maps_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("maps", &prot, protoSeqId, ctx, result);
 }
@@ -313,7 +313,7 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -321,10 +321,10 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_name_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("name", &prot, protoSeqId, ctx, result);
 }
@@ -368,7 +368,7 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_name_to_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_name_to_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_name_to_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_name_to_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -376,10 +376,10 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_name_to_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_name_to_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_name_to_value_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("name_to_value", &prot, protoSeqId, ctx, result);
 }
@@ -423,7 +423,7 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_names<ProtocolIn_,ProtocolOut_>, throw_wrapped_names<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_names<ProtocolIn_,ProtocolOut_>, throw_wrapped_names<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -431,10 +431,10 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_names(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_names(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_names_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("names", &prot, protoSeqId, ctx, result);
 }
@@ -478,7 +478,7 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_prefix_tree<ProtocolIn_,ProtocolOut_>, throw_wrapped_prefix_tree<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_prefix_tree<ProtocolIn_,ProtocolOut_>, throw_wrapped_prefix_tree<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -486,10 +486,10 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_prefix_tree(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_prefix_tree(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_prefix_tree_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("prefix_tree", &prot, protoSeqId, ctx, result);
 }
@@ -533,7 +533,7 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_sets<ProtocolIn_,ProtocolOut_>, throw_wrapped_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sets<ProtocolIn_,ProtocolOut_>, throw_wrapped_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -541,10 +541,10 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_sets_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("sets", &prot, protoSeqId, ctx, result);
 }
@@ -588,7 +588,7 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_setter<ProtocolIn_,ProtocolOut_>, throw_wrapped_setter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_setter<ProtocolIn_,ProtocolOut_>, throw_wrapped_setter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -596,10 +596,10 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_setter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_setter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_setter_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("setter", &prot, protoSeqId, ctx, result);
 }
@@ -643,7 +643,7 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_str<ProtocolIn_,ProtocolOut_>, throw_wrapped_str<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_str<ProtocolIn_,ProtocolOut_>, throw_wrapped_str<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -651,10 +651,10 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_str(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_str(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_str_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("str", &prot, protoSeqId, ctx, result);
 }
@@ -698,7 +698,7 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_strings<ProtocolIn_,ProtocolOut_>, throw_wrapped_strings<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_strings<ProtocolIn_,ProtocolOut_>, throw_wrapped_strings<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -706,10 +706,10 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_strings(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_strings(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_strings_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("strings", &prot, protoSeqId, ctx, result);
 }
@@ -753,7 +753,7 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_type<ProtocolIn_,ProtocolOut_>, throw_wrapped_type<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_type<ProtocolIn_,ProtocolOut_>, throw_wrapped_type<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -761,10 +761,10 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_type(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_type(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_type_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("type", &prot, protoSeqId, ctx, result);
 }
@@ -808,7 +808,7 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -816,10 +816,10 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_value_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("value", &prot, protoSeqId, ctx, result);
 }
@@ -863,7 +863,7 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_value_to_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_value_to_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_value_to_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_value_to_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -871,10 +871,10 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_value_to_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_value_to_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_value_to_name_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("value_to_name", &prot, protoSeqId, ctx, result);
 }
@@ -918,7 +918,7 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_values<ProtocolIn_,ProtocolOut_>, throw_wrapped_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_values<ProtocolIn_,ProtocolOut_>, throw_wrapped_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -926,10 +926,10 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_values_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("values", &prot, protoSeqId, ctx, result);
 }
@@ -973,7 +973,7 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_id<ProtocolIn_,ProtocolOut_>, throw_wrapped_id<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_id<ProtocolIn_,ProtocolOut_>, throw_wrapped_id<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -981,10 +981,10 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_id(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_id(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_id_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("id", &prot, protoSeqId, ctx, result);
 }
@@ -1028,7 +1028,7 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_ids<ProtocolIn_,ProtocolOut_>, throw_wrapped_ids<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_ids<ProtocolIn_,ProtocolOut_>, throw_wrapped_ids<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1036,10 +1036,10 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_ids(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_ids(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_ids_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("ids", &prot, protoSeqId, ctx, result);
 }
@@ -1083,7 +1083,7 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_descriptor<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptor<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_descriptor<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptor<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1091,10 +1091,10 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_descriptor(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_descriptor(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_descriptor_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("descriptor", &prot, protoSeqId, ctx, result);
 }
@@ -1138,7 +1138,7 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_descriptors<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptors<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_descriptors<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptors<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1146,10 +1146,10 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_descriptors(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_descriptors(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_descriptors_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("descriptors", &prot, protoSeqId, ctx, result);
 }
@@ -1193,7 +1193,7 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_key<ProtocolIn_,ProtocolOut_>, throw_wrapped_key<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_key<ProtocolIn_,ProtocolOut_>, throw_wrapped_key<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1201,10 +1201,10 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_key(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_key(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_key_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("key", &prot, protoSeqId, ctx, result);
 }
@@ -1248,7 +1248,7 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_keys<ProtocolIn_,ProtocolOut_>, throw_wrapped_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_keys<ProtocolIn_,ProtocolOut_>, throw_wrapped_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1256,10 +1256,10 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_keys_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("keys", &prot, protoSeqId, ctx, result);
 }
@@ -1303,7 +1303,7 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_annotation<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotation<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_annotation<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotation<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1311,10 +1311,10 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_annotation(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_annotation(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_annotation_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("annotation", &prot, protoSeqId, ctx, result);
 }
@@ -1358,7 +1358,7 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_annotations<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotations<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_annotations<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotations<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1366,10 +1366,10 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_annotations(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_annotations(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_annotations_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("annotations", &prot, protoSeqId, ctx, result);
 }
@@ -1413,7 +1413,7 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_member<ProtocolIn_,ProtocolOut_>, throw_wrapped_member<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_member<ProtocolIn_,ProtocolOut_>, throw_wrapped_member<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1421,10 +1421,10 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_member(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_member(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_member_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("member", &prot, protoSeqId, ctx, result);
 }
@@ -1468,7 +1468,7 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_members<ProtocolIn_,ProtocolOut_>, throw_wrapped_members<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_members<ProtocolIn_,ProtocolOut_>, throw_wrapped_members<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1476,10 +1476,10 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_members(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_members(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_members_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("members", &prot, protoSeqId, ctx, result);
 }
@@ -1523,7 +1523,7 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_field<ProtocolIn_,ProtocolOut_>, throw_wrapped_field<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_field<ProtocolIn_,ProtocolOut_>, throw_wrapped_field<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1531,10 +1531,10 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_field_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("field", &prot, protoSeqId, ctx, result);
 }
@@ -1578,7 +1578,7 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_fields<ProtocolIn_,ProtocolOut_>, throw_wrapped_fields<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_fields<ProtocolIn_,ProtocolOut_>, throw_wrapped_fields<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -1586,10 +1586,10 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue service_with_special_namesAsyncProcessor::return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue service_with_special_namesAsyncProcessor::return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_fields_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("fields", &prot, protoSeqId, ctx, result);
 }

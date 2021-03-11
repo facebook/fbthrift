@@ -681,7 +681,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
+  ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
 
   ContainerStruct(ContainerStruct&&) = default;
 
@@ -697,21 +697,21 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~ContainerStruct();
 
  private:
-  ::std::vector<int32_t> fieldA;
+  ::std::vector<::std::int32_t> fieldA;
  private:
-  std::list<int32_t> fieldB;
+  std::list<::std::int32_t> fieldB;
  private:
-  std::deque<int32_t> fieldC;
+  std::deque<::std::int32_t> fieldC;
  private:
-  folly::fbvector<int32_t> fieldD;
+  folly::fbvector<::std::int32_t> fieldD;
  private:
-  folly::small_vector<int32_t> fieldE;
+  folly::small_vector<::std::int32_t> fieldE;
  private:
-  folly::sorted_vector_set<int32_t> fieldF;
+  folly::sorted_vector_set<::std::int32_t> fieldF;
  private:
-  folly::sorted_vector_map<int32_t, ::std::string> fieldG;
+  folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG;
  private:
-   ::apache::thrift::fixtures::types::SomeMap fieldH;
+  ::apache::thrift::fixtures::types::SomeMap fieldH;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -745,262 +745,262 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB_ref() const& {
     return {this->fieldB, __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB_ref() const&& {
     return {std::move(this->fieldB), __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldB_ref() & {
     return {this->fieldB, __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD_ref() const& {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD_ref() const&& {
     return {std::move(this->fieldD), __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldD_ref() & {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
     return {std::move(this->fieldD), __isset.fieldD};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE_ref() const&& {
     return {std::move(this->fieldE), __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldE_ref() & {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF_ref() & {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG_ref() & {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
     return {std::move(this->fieldH), __isset.fieldH};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH_ref() & {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
     return {std::move(this->fieldH), __isset.fieldH};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const ::std::vector<int32_t>& get_fieldA() const&;
-  ::std::vector<int32_t> get_fieldA() &&;
+  const ::std::vector<::std::int32_t>& get_fieldA() const&;
+  ::std::vector<::std::int32_t> get_fieldA() &&;
 
-  template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
+  template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<::std::int32_t>>
+  ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
-  const std::list<int32_t>& get_fieldB() const&;
-  std::list<int32_t> get_fieldB() &&;
+  const std::list<::std::int32_t>& get_fieldB() const&;
+  std::list<::std::int32_t> get_fieldB() &&;
 
-  template <typename T_ContainerStruct_fieldB_struct_setter = std::list<int32_t>>
-  std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
+  template <typename T_ContainerStruct_fieldB_struct_setter = std::list<::std::int32_t>>
+  std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldB = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
-  const std::deque<int32_t>& get_fieldC() const&;
-  std::deque<int32_t> get_fieldC() &&;
+  const std::deque<::std::int32_t>& get_fieldC() const&;
+  std::deque<::std::int32_t> get_fieldC() &&;
 
-  template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<int32_t>>
-  std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<::std::int32_t>>
+  std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
-  const folly::fbvector<int32_t>& get_fieldD() const&;
-  folly::fbvector<int32_t> get_fieldD() &&;
+  const folly::fbvector<::std::int32_t>& get_fieldD() const&;
+  folly::fbvector<::std::int32_t> get_fieldD() &&;
 
-  template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<int32_t>>
-  folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
+  template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<::std::int32_t>>
+  folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldD = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldD;
   }
-  const folly::small_vector<int32_t>& get_fieldE() const&;
-  folly::small_vector<int32_t> get_fieldE() &&;
+  const folly::small_vector<::std::int32_t>& get_fieldE() const&;
+  folly::small_vector<::std::int32_t> get_fieldE() &&;
 
-  template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<int32_t>>
-  folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
+  template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<::std::int32_t>>
+  folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldE = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
-  const folly::sorted_vector_set<int32_t>& get_fieldF() const&;
-  folly::sorted_vector_set<int32_t> get_fieldF() &&;
+  const folly::sorted_vector_set<::std::int32_t>& get_fieldF() const&;
+  folly::sorted_vector_set<::std::int32_t> get_fieldF() &&;
 
-  template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<int32_t>>
-  folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<::std::int32_t>>
+  folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldF = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldF;
   }
-  const folly::sorted_vector_map<int32_t, ::std::string>& get_fieldG() const&;
-  folly::sorted_vector_map<int32_t, ::std::string> get_fieldG() &&;
+  const folly::sorted_vector_map<::std::int32_t, ::std::string>& get_fieldG() const&;
+  folly::sorted_vector_map<::std::int32_t, ::std::string> get_fieldG() &&;
 
-  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<int32_t, ::std::string>>
-  folly::sorted_vector_map<int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldG = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldG;
   }
-  const  ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
-   ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
+  const ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
+  ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
 
-  template <typename T_ContainerStruct_fieldH_struct_setter =  ::apache::thrift::fixtures::types::SomeMap>
-   ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_ContainerStruct_fieldH_struct_setter = ::apache::thrift::fixtures::types::SomeMap>
+  ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldH = true;
@@ -1175,7 +1175,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
+  VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg);
 
   VirtualStruct(VirtualStruct&&) = default;
 
@@ -1191,7 +1191,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   virtual ~VirtualStruct() {}
 
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1218,32 +1218,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
@@ -1300,7 +1300,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
+  MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
 
   MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
 
@@ -1313,9 +1313,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::apache::thrift::fixtures::types::MyForwardRefEnum a;
+  ::apache::thrift::fixtures::types::MyForwardRefEnum a;
  private:
-   ::apache::thrift::fixtures::types::MyForwardRefEnum b;
+  ::apache::thrift::fixtures::types::MyForwardRefEnum b;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1343,54 +1343,54 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
     return {this->a, __isset.a};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
     return {std::move(this->a), __isset.a};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
     return {this->a, __isset.a};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
     return {std::move(this->a), __isset.a};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
     return {this->b, __isset.b};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b_ref() const&& {
     return {std::move(this->b), __isset.b};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> b_ref() & {
     return {this->b, __isset.b};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b_ref() && {
     return {std::move(this->b), __isset.b};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-   ::apache::thrift::fixtures::types::MyForwardRefEnum get_a() const {
+  ::apache::thrift::fixtures::types::MyForwardRefEnum get_a() const {
     return a;
   }
 
-   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_a( ::apache::thrift::fixtures::types::MyForwardRefEnum a_) {
+  ::apache::thrift::fixtures::types::MyForwardRefEnum& set_a(::apache::thrift::fixtures::types::MyForwardRefEnum a_) {
     a = a_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a = true;
@@ -1398,11 +1398,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a;
   }
 
-   ::apache::thrift::fixtures::types::MyForwardRefEnum get_b() const {
+  ::apache::thrift::fixtures::types::MyForwardRefEnum get_b() const {
     return b;
   }
 
-   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_b( ::apache::thrift::fixtures::types::MyForwardRefEnum b_) {
+  ::apache::thrift::fixtures::types::MyForwardRefEnum& set_b(::apache::thrift::fixtures::types::MyForwardRefEnum b_) {
     b = b_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.b = true;
@@ -1459,7 +1459,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       b(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
+  TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg);
 
   TrivialNumeric(TrivialNumeric&&) = default;
 
@@ -1472,7 +1472,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t a;
+  ::std::int32_t a;
  private:
   bool b;
 
@@ -1502,22 +1502,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
     return {this->a, __isset.a};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
     return {std::move(this->a), __isset.a};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
     return {this->a, __isset.a};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
     return {std::move(this->a), __isset.a};
   }
@@ -1545,11 +1545,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_a() const {
+  ::std::int32_t get_a() const {
     return a;
   }
 
-  int32_t& set_a(int32_t a_) {
+  ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a = true;
@@ -1618,7 +1618,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(true))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
+  TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
 
   TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
 
@@ -1631,9 +1631,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t z;
+  ::std::int32_t z;
  private:
-   ::apache::thrift::fixtures::types::TrivialNumeric n;
+  ::apache::thrift::fixtures::types::TrivialNumeric n;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1661,65 +1661,65 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
     return {this->z, __isset.z};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> z_ref() const&& {
     return {std::move(this->z), __isset.z};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> z_ref() & {
     return {this->z, __isset.z};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> z_ref() && {
     return {std::move(this->z), __isset.z};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TrivialNumeric>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> n_ref() const& {
     return {this->n, __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TrivialNumeric>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n_ref() const&& {
     return {std::move(this->n), __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TrivialNumeric>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> n_ref() & {
     return {this->n, __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TrivialNumeric>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n_ref() && {
     return {std::move(this->n), __isset.n};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_z() const {
+  ::std::int32_t get_z() const {
     return z;
   }
 
-  int32_t& set_z(int32_t z_) {
+  ::std::int32_t& set_z(::std::int32_t z_) {
     z = z_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.z = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return z;
   }
-  const  ::apache::thrift::fixtures::types::TrivialNumeric& get_n() const&;
-   ::apache::thrift::fixtures::types::TrivialNumeric get_n() &&;
+  const ::apache::thrift::fixtures::types::TrivialNumeric& get_n() const&;
+  ::apache::thrift::fixtures::types::TrivialNumeric get_n() &&;
 
-  template <typename T_TrivialNestedWithDefault_n_struct_setter =  ::apache::thrift::fixtures::types::TrivialNumeric>
-   ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
+  template <typename T_TrivialNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::TrivialNumeric>
+  ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
     n = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.n = true;
@@ -1774,7 +1774,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexString() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, int32_t> b__arg);
+  ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg);
 
   ComplexString(ComplexString&&) = default;
 
@@ -1789,7 +1789,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string a;
  private:
-  ::std::map<::std::string, int32_t> b;
+  ::std::map<::std::string, ::std::int32_t> b;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1839,22 +1839,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
     return {this->b, __isset.b};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b_ref() const&& {
     return {std::move(this->b), __isset.b};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> b_ref() & {
     return {this->b, __isset.b};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b_ref() && {
     return {std::move(this->b), __isset.b};
   }
@@ -1876,11 +1876,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a;
   }
-  const ::std::map<::std::string, int32_t>& get_b() const&;
-  ::std::map<::std::string, int32_t> get_b() &&;
+  const ::std::map<::std::string, ::std::int32_t>& get_b() const&;
+  ::std::map<::std::string, ::std::int32_t> get_b() &&;
 
-  template <typename T_ComplexString_b_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
+  template <typename T_ComplexString_b_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  ::std::map<::std::string, ::std::int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
     b = std::forward<T_ComplexString_b_struct_setter>(b_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.b = true;
@@ -1934,10 +1934,10 @@ class ComplexNestedWithDefault final  {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
+  ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg);
 
   ComplexNestedWithDefault(ComplexNestedWithDefault&&) = default;
 
@@ -1952,7 +1952,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string z;
  private:
-   ::apache::thrift::fixtures::types::ComplexString n;
+  ::apache::thrift::fixtures::types::ComplexString n;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2002,22 +2002,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ComplexString>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> n_ref() const& {
     return {this->n, __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ComplexString>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n_ref() const&& {
     return {std::move(this->n), __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ComplexString>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> n_ref() & {
     return {this->n, __isset.n};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ComplexString>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n_ref() && {
     return {std::move(this->n), __isset.n};
   }
@@ -2039,11 +2039,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return z;
   }
-  const  ::apache::thrift::fixtures::types::ComplexString& get_n() const&;
-   ::apache::thrift::fixtures::types::ComplexString get_n() &&;
+  const ::apache::thrift::fixtures::types::ComplexString& get_n() const&;
+  ::apache::thrift::fixtures::types::ComplexString get_n() &&;
 
-  template <typename T_ComplexNestedWithDefault_n_struct_setter =  ::apache::thrift::fixtures::types::ComplexString>
-   ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
+  template <typename T_ComplexNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::ComplexString>
+  ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
     n = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.n = true;
@@ -2103,7 +2103,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       tiny(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg);
+  MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg);
 
   MinPadding(MinPadding&&) = default;
 
@@ -2116,15 +2116,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  int64_t big;
+  ::std::int64_t big;
  public:
-  int32_t biggish;
+  ::std::int32_t biggish;
  public:
-  int16_t medium;
+  ::std::int16_t medium;
  public:
-  int8_t small;
+  ::std::int8_t small;
  public:
-  int8_t tiny;
+  ::std::int8_t tiny;
 
  public:
   bool operator==(const MinPadding& rhs) const;
@@ -2145,143 +2145,143 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->small};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> small_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->small)};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> small_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->small};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> small_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->small)};
   }
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> big_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->big};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> big_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->big)};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> big_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->big};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> big_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->big)};
   }
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> medium_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->medium};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> medium_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->medium)};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> medium_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->medium};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> medium_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->medium)};
   }
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> biggish_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->biggish};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> biggish_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->biggish)};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> biggish_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->biggish};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> biggish_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->biggish)};
   }
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> tiny_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->tiny};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> tiny_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->tiny)};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> tiny_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->tiny};
   }
 
-  template <typename..., typename T = int8_t>
+  template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> tiny_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->tiny)};
   }
 
-  int8_t get_small() const {
+  ::std::int8_t get_small() const {
     return small;
   }
 
-  int8_t& set_small(int8_t small_) {
+  ::std::int8_t& set_small(::std::int8_t small_) {
     small = small_;
     return small;
   }
 
-  int64_t get_big() const {
+  ::std::int64_t get_big() const {
     return big;
   }
 
-  int64_t& set_big(int64_t big_) {
+  ::std::int64_t& set_big(::std::int64_t big_) {
     big = big_;
     return big;
   }
 
-  int16_t get_medium() const {
+  ::std::int16_t get_medium() const {
     return medium;
   }
 
-  int16_t& set_medium(int16_t medium_) {
+  ::std::int16_t& set_medium(::std::int16_t medium_) {
     medium = medium_;
     return medium;
   }
 
-  int32_t get_biggish() const {
+  ::std::int32_t get_biggish() const {
     return biggish;
   }
 
-  int32_t& set_biggish(int32_t biggish_) {
+  ::std::int32_t& set_biggish(::std::int32_t biggish_) {
     biggish = biggish_;
     return biggish;
   }
 
-  int8_t get_tiny() const {
+  ::std::int8_t get_tiny() const {
     return tiny;
   }
 
-  int8_t& set_tiny(int8_t tiny_) {
+  ::std::int8_t& set_tiny(::std::int8_t tiny_) {
     tiny = tiny_;
     return tiny;
   }
@@ -2395,7 +2395,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -2408,13 +2408,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
  private:
-  int64_t majorVer;
+  ::std::int64_t majorVer;
  private:
-   ::apache::thrift::fixtures::types::MyDataItem data;
+  ::apache::thrift::fixtures::types::MyDataItem data;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2426,22 +2426,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   } __isset = {};
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
@@ -2470,54 +2470,54 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer_ref() const&& {
     return {std::move(this->majorVer), __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer_ref() & {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
     return {std::move(this->majorVer), __isset.majorVer};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyDataItem>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> data_ref() const& {
     return {this->data, __isset.data};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyDataItem>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> data_ref() const&& {
     return {std::move(this->data), __isset.data};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyDataItem>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> data_ref() & {
     return {this->data, __isset.data};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::MyDataItem>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> data_ref() && {
     return {std::move(this->data), __isset.data};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
@@ -2542,22 +2542,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
 
-  int64_t get_majorVer() const {
+  ::std::int64_t get_majorVer() const {
     return majorVer;
   }
 
-  int64_t& set_majorVer(int64_t majorVer_) {
+  ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.majorVer = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return majorVer;
   }
-  const  ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
-   ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
+  const ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
+  ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
 
-  template <typename T_MyStruct_data_struct_setter =  ::apache::thrift::fixtures::types::MyDataItem>
-   ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
+  template <typename T_MyStruct_data_struct_setter = ::apache::thrift::fixtures::types::MyDataItem>
+  ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
     data = std::forward<T_MyStruct_data_struct_setter>(data_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.data = true;
@@ -2613,7 +2613,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Renaming(apache::thrift::FragileConstructor, int64_t bar__arg);
+  Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
 
   Renaming(Renaming&&) = default;
 
@@ -2626,7 +2626,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t bar;
+  ::std::int64_t bar;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2653,32 +2653,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
     return {this->bar, __isset.bar};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bar_ref() const&& {
     return {std::move(this->bar), __isset.bar};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> bar_ref() & {
     return {this->bar, __isset.bar};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> bar_ref() && {
     return {std::move(this->bar), __isset.bar};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_bar() const {
+  ::std::int64_t get_bar() const {
     return bar;
   }
 
-  int64_t& set_bar(int64_t bar_) {
+  ::std::int64_t& set_bar(::std::int64_t bar_) {
     bar = bar_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.bar = true;
@@ -2733,7 +2733,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnnotatedTypes() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
+  AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
 
   AnnotatedTypes(AnnotatedTypes&&) = default;
 
@@ -2746,9 +2746,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::apache::thrift::fixtures::types::TBinary binary_field;
+  ::apache::thrift::fixtures::types::TBinary binary_field;
  private:
-   ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
+  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2776,70 +2776,70 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TBinary>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> binary_field_ref() const& {
     return {this->binary_field, __isset.binary_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TBinary>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> binary_field_ref() const&& {
     return {std::move(this->binary_field), __isset.binary_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TBinary>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> binary_field_ref() & {
     return {this->binary_field, __isset.binary_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::TBinary>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> binary_field_ref() && {
     return {std::move(this->binary_field), __isset.binary_field};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_field_ref() const& {
     return {this->list_field, __isset.list_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_field_ref() const&& {
     return {std::move(this->list_field), __isset.list_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> list_field_ref() & {
     return {this->list_field, __isset.list_field};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_field_ref() && {
     return {std::move(this->list_field), __isset.list_field};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  const  ::apache::thrift::fixtures::types::TBinary& get_binary_field() const& {
+  const ::apache::thrift::fixtures::types::TBinary& get_binary_field() const& {
     return binary_field;
   }
 
-   ::apache::thrift::fixtures::types::TBinary get_binary_field() && {
+  ::apache::thrift::fixtures::types::TBinary get_binary_field() && {
     return std::move(binary_field);
   }
 
-  template <typename T_AnnotatedTypes_binary_field_struct_setter =  ::apache::thrift::fixtures::types::TBinary>
-   ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
+  template <typename T_AnnotatedTypes_binary_field_struct_setter = ::apache::thrift::fixtures::types::TBinary>
+  ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
     binary_field = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.binary_field = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return binary_field;
   }
-  const  ::apache::thrift::fixtures::types::SomeListOfTypeMap& get_list_field() const&;
-   ::apache::thrift::fixtures::types::SomeListOfTypeMap get_list_field() &&;
+  const ::apache::thrift::fixtures::types::SomeListOfTypeMap& get_list_field() const&;
+  ::apache::thrift::fixtures::types::SomeListOfTypeMap get_list_field() &&;
 
-  template <typename T_AnnotatedTypes_list_field_struct_setter =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
-   ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
+  template <typename T_AnnotatedTypes_list_field_struct_setter = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
     list_field = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.list_field = true;
@@ -2894,7 +2894,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
+  ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
 
   ForwardUsageStruct(ForwardUsageStruct&&) = default;
 
@@ -2907,7 +2907,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2934,32 +2934,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
     return {this->foo, __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
     return {std::move(this->foo), __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
     return {this->foo, __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
     return {std::move(this->foo), __isset.foo};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
+  const ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
 
-  template <typename T_ForwardUsageStruct_foo_struct_setter =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
-   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
+  template <typename T_ForwardUsageStruct_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
     foo = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.foo = true;
@@ -3014,7 +3014,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageRoot() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
+  ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
 
   ForwardUsageRoot(ForwardUsageRoot&&) = default;
   ForwardUsageRoot(const ForwardUsageRoot& src);
@@ -3025,9 +3025,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct;
+  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct;
  public:
-  std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
+  std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -3054,43 +3054,43 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct_ref() const& {
     return {this->ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> ForwardUsageStruct_ref() const&& {
     return {std::move(this->ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> ForwardUsageStruct_ref() & {
     return {this->ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> ForwardUsageStruct_ref() && {
     return {std::move(this->ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename ..., typename T = std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE T& ForwardUsageByRef_ref() & { return ForwardUsageByRef; }
 
-  template <typename ..., typename T = std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE const T& ForwardUsageByRef_ref() const& { return ForwardUsageByRef; }
 
-  template <typename ..., typename T = std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE T&& ForwardUsageByRef_ref() && { return std::move(ForwardUsageByRef); }
 
-  template <typename ..., typename T = std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE const T&& ForwardUsageByRef_ref() const&& { return std::move(ForwardUsageByRef); }
-  const  ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() const&;
-   ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() &;
-   ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() && = delete;
+  const ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() const&;
+  ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() &;
+  ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() && = delete;
 
-  template <typename T_ForwardUsageRoot_ForwardUsageStruct_struct_setter =  ::apache::thrift::fixtures::types::ForwardUsageStruct>
-   ::apache::thrift::fixtures::types::ForwardUsageStruct& set_ForwardUsageStruct(T_ForwardUsageRoot_ForwardUsageStruct_struct_setter&& ForwardUsageStruct_) {
+  template <typename T_ForwardUsageRoot_ForwardUsageStruct_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  ::apache::thrift::fixtures::types::ForwardUsageStruct& set_ForwardUsageStruct(T_ForwardUsageRoot_ForwardUsageStruct_struct_setter&& ForwardUsageStruct_) {
     ForwardUsageStruct = std::forward<T_ForwardUsageRoot_ForwardUsageStruct_struct_setter>(ForwardUsageStruct_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.ForwardUsageStruct = true;
@@ -3145,7 +3145,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ForwardUsageByRef() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
+  ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
 
   ForwardUsageByRef(ForwardUsageByRef&&) = default;
 
@@ -3158,7 +3158,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -3185,32 +3185,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
     return {this->foo, __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
     return {std::move(this->foo), __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
     return {this->foo, __isset.foo};
   }
 
-  template <typename..., typename T =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
     return {std::move(this->foo), __isset.foo};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
+  const ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
 
-  template <typename T_ForwardUsageByRef_foo_struct_setter =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
-   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageByRef_foo_struct_setter&& foo_) {
+  template <typename T_ForwardUsageByRef_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageByRef_foo_struct_setter&& foo_) {
     foo = std::forward<T_ForwardUsageByRef_foo_struct_setter>(foo_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.foo = true;
@@ -3343,7 +3343,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       boolField(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
+  NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
       boolField(std::move(other.boolField)),
@@ -3358,7 +3358,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t boolField;
+  ::std::int64_t boolField;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -3385,32 +3385,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
     return {std::move(this->boolField), __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> boolField_ref() & {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
     return {std::move(this->boolField), __isset.boolField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_boolField() const {
+  ::std::int64_t get_boolField() const {
     return boolField;
   }
 
-  int64_t& set_boolField(int64_t boolField_) {
+  ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.boolField = true;
@@ -3466,7 +3466,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
+  NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
   NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept;
 
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
@@ -3483,7 +3483,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   bool MyBoolField;
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
  private:
@@ -3497,7 +3497,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::vector<::std::string> MyBinaryListField4;
  private:
-  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
+  ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -3553,22 +3553,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
@@ -3704,22 +3704,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyMapEnumAndInt_ref() const& {
     return {this->MyMapEnumAndInt, __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt_ref() const&& {
     return {std::move(this->MyMapEnumAndInt), __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyMapEnumAndInt_ref() & {
     return {this->MyMapEnumAndInt, __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt_ref() && {
     return {std::move(this->MyMapEnumAndInt), __isset.MyMapEnumAndInt};
   }
@@ -3737,11 +3737,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBoolField;
   }
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
@@ -3842,11 +3842,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBinaryListField4;
   }
-  const ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
-  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
+  const ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
+  ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
 
-  template <typename T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
-  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
+  template <typename T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyMapEnumAndInt = true;
@@ -4007,7 +4007,7 @@ class NoExceptMoveUnion final  {
   }
   union storage_type {
     ::std::string string_field;
-    int32_t i32_field;
+    ::std::int32_t i32_field;
 
     storage_type() {}
     ~storage_type() {}
@@ -4052,10 +4052,10 @@ class NoExceptMoveUnion final  {
     return value_.string_field;
   }
 
-  int32_t& set_i32_field(int32_t t = int32_t()) {
+  ::std::int32_t& set_i32_field(::std::int32_t t = ::std::int32_t()) {
     __clear();
     type_ = Type::i32_field;
-    ::new (std::addressof(value_.i32_field)) int32_t(t);
+    ::new (std::addressof(value_.i32_field)) ::std::int32_t(t);
     return value_.i32_field;
   }
 
@@ -4064,7 +4064,7 @@ class NoExceptMoveUnion final  {
     return value_.string_field;
   }
 
-  int32_t const & get_i32_field() const {
+  ::std::int32_t const & get_i32_field() const {
     assert(type_ == Type::i32_field);
     return value_.i32_field;
   }
@@ -4074,7 +4074,7 @@ class NoExceptMoveUnion final  {
     return value_.string_field;
   }
 
-  int32_t & mutable_i32_field() {
+  ::std::int32_t & mutable_i32_field() {
     assert(type_ == Type::i32_field);
     return value_.i32_field;
   }
@@ -4084,7 +4084,7 @@ class NoExceptMoveUnion final  {
     return std::move(value_.string_field);
   }
 
-  int32_t move_i32_field() {
+  ::std::int32_t move_i32_field() {
     assert(type_ == Type::i32_field);
     return std::move(value_.i32_field);
   }
@@ -4108,22 +4108,22 @@ class NoExceptMoveUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> string_field_ref() && {
     return {std::move(value_.string_field), type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> i32_field_ref() const& {
     return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> i32_field_ref() const&& {
     return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> i32_field_ref() & {
     return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> i32_field_ref() && {
     return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -4192,7 +4192,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<int32_t> aa_list__arg, ::std::set<int32_t> aa_set__arg, ::std::map<int32_t, int32_t> aa_map__arg, ::std::string aa_string__arg, int32_t not_a_container__arg);
+  AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg);
 
   AllocatorAware(AllocatorAware&&) = default;
 
@@ -4233,15 +4233,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~AllocatorAware();
 
  private:
-  ::std::vector<int32_t> aa_list;
+  ::std::vector<::std::int32_t> aa_list;
  private:
-  ::std::set<int32_t> aa_set;
+  ::std::set<::std::int32_t> aa_set;
  private:
-  ::std::map<int32_t, int32_t> aa_map;
+  ::std::map<::std::int32_t, ::std::int32_t> aa_map;
  private:
   ::std::string aa_string;
  private:
-  int32_t not_a_container;
+  ::std::int32_t not_a_container;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -4272,66 +4272,66 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list_ref() const& {
     return {this->aa_list, __isset.aa_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_list_ref() const&& {
     return {std::move(this->aa_list), __isset.aa_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_list_ref() & {
     return {this->aa_list, __isset.aa_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_list_ref() && {
     return {std::move(this->aa_list), __isset.aa_list};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_set_ref() const& {
     return {this->aa_set, __isset.aa_set};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_set_ref() const&& {
     return {std::move(this->aa_set), __isset.aa_set};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_set_ref() & {
     return {this->aa_set, __isset.aa_set};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_set_ref() && {
     return {std::move(this->aa_set), __isset.aa_set};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_map_ref() const& {
     return {this->aa_map, __isset.aa_map};
   }
 
-  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_map_ref() const&& {
     return {std::move(this->aa_map), __isset.aa_map};
   }
 
-  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_map_ref() & {
     return {this->aa_map, __isset.aa_map};
   }
 
-  template <typename..., typename T = ::std::map<int32_t, int32_t>>
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_map_ref() && {
     return {std::move(this->aa_map), __isset.aa_map};
   }
@@ -4360,53 +4360,53 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
     return {this->not_a_container, __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
     return {std::move(this->not_a_container), __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
     return {this->not_a_container, __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
     return {std::move(this->not_a_container), __isset.not_a_container};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const ::std::vector<int32_t>& get_aa_list() const&;
-  ::std::vector<int32_t> get_aa_list() &&;
+  const ::std::vector<::std::int32_t>& get_aa_list() const&;
+  ::std::vector<::std::int32_t> get_aa_list() &&;
 
-  template <typename T_AllocatorAware_aa_list_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
+  template <typename T_AllocatorAware_aa_list_struct_setter = ::std::vector<::std::int32_t>>
+  ::std::vector<::std::int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
     aa_list = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.aa_list = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return aa_list;
   }
-  const ::std::set<int32_t>& get_aa_set() const&;
-  ::std::set<int32_t> get_aa_set() &&;
+  const ::std::set<::std::int32_t>& get_aa_set() const&;
+  ::std::set<::std::int32_t> get_aa_set() &&;
 
-  template <typename T_AllocatorAware_aa_set_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
+  template <typename T_AllocatorAware_aa_set_struct_setter = ::std::set<::std::int32_t>>
+  ::std::set<::std::int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
     aa_set = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.aa_set = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return aa_set;
   }
-  const ::std::map<int32_t, int32_t>& get_aa_map() const&;
-  ::std::map<int32_t, int32_t> get_aa_map() &&;
+  const ::std::map<::std::int32_t, ::std::int32_t>& get_aa_map() const&;
+  ::std::map<::std::int32_t, ::std::int32_t> get_aa_map() &&;
 
-  template <typename T_AllocatorAware_aa_map_struct_setter = ::std::map<int32_t, int32_t>>
-  ::std::map<int32_t, int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
+  template <typename T_AllocatorAware_aa_map_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
+  ::std::map<::std::int32_t, ::std::int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
     aa_map = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.aa_map = true;
@@ -4431,11 +4431,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return aa_string;
   }
 
-  int32_t get_not_a_container() const {
+  ::std::int32_t get_not_a_container() const {
     return not_a_container;
   }
 
-  int32_t& set_not_a_container(int32_t not_a_container_) {
+  ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container = not_a_container_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.not_a_container = true;
@@ -4498,7 +4498,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       not_a_container(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AllocatorAware2(apache::thrift::FragileConstructor, int32_t not_a_container__arg);
+  AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg);
 
   AllocatorAware2(AllocatorAware2&&) = default;
 
@@ -4524,7 +4524,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t not_a_container;
+  ::std::int32_t not_a_container;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -4551,32 +4551,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
     return {this->not_a_container, __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
     return {std::move(this->not_a_container), __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
     return {this->not_a_container, __isset.not_a_container};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
     return {std::move(this->not_a_container), __isset.not_a_container};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_not_a_container() const {
+  ::std::int32_t get_not_a_container() const {
     return not_a_container;
   }
 
-  int32_t& set_not_a_container(int32_t not_a_container_) {
+  ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container = not_a_container_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.not_a_container = true;

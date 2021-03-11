@@ -60,7 +60,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, int32_t bar__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg);
 
   Foo(Foo&&) = default;
 
@@ -73,7 +73,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  int32_t bar;
+  ::std::int32_t bar;
 
  public:
   bool operator==(const Foo& rhs) const;
@@ -94,31 +94,31 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return !(__x < __y);
   }
 #endif
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> bar_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->bar};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> bar_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->bar)};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> bar_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->bar};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> bar_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->bar)};
   }
 
-  int32_t get_bar() const {
+  ::std::int32_t get_bar() const {
     return bar;
   }
 
-  int32_t& set_bar(int32_t bar_) {
+  ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
     return bar;
   }

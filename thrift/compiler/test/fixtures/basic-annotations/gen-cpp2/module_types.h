@@ -285,7 +285,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -301,7 +301,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~MyStruct();
 
  private:
-  int64_t majorVer;
+  ::std::int64_t majorVer;
  private:
   ::std::string package;
  private:
@@ -343,22 +343,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer_ref() const&& {
     return {std::move(this->majorVer), __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer_ref() & {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
     return {std::move(this->majorVer), __isset.majorVer};
   }
@@ -474,11 +474,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_majorVer() const {
+  ::std::int64_t get_majorVer() const {
     return majorVer;
   }
 
-  int64_t& set_majorVer(int64_t majorVer_) {
+  ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.majorVer = true;
@@ -619,7 +619,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       id(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg);
+  SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg);
 
   SecretStruct(SecretStruct&&) = default;
 
@@ -632,7 +632,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t id;
+  ::std::int64_t id;
  private:
   ::std::string password;
 
@@ -662,22 +662,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id_ref() const&& {
     return {std::move(this->id), __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> id_ref() & {
     return {this->id, __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
@@ -705,11 +705,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_id() const {
+  ::std::int64_t get_id() const {
     return id;
   }
 
-  int64_t& set_id(int64_t id_) {
+  ::std::int64_t& set_id(::std::int64_t id_) {
     id = id_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;

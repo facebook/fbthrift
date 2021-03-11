@@ -236,7 +236,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -252,13 +252,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ~MyStruct();
 
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
  private:
-   ::cpp2::MyDataItem MyDataField;
+  ::cpp2::MyDataItem MyDataField;
  private:
-   ::cpp2::MyEnum myEnum;
+  ::cpp2::MyEnum myEnum;
  private:
   bool oneway;
  private:
@@ -297,22 +297,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
@@ -341,44 +341,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField_ref() const& {
     return {this->MyDataField, __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyDataField_ref() const&& {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyDataField_ref() & {
     return {this->MyDataField, __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField_ref() && {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(this->myEnum), __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
@@ -450,11 +450,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
@@ -478,11 +478,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
-  const  ::cpp2::MyDataItem& get_MyDataField() const&;
-   ::cpp2::MyDataItem get_MyDataField() &&;
+  const ::cpp2::MyDataItem& get_MyDataField() const&;
+  ::cpp2::MyDataItem get_MyDataField() &&;
 
-  template <typename T_MyStruct_MyDataField_struct_setter =  ::cpp2::MyDataItem>
-   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
+  template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
+  ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyDataField = true;
@@ -490,11 +490,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyDataField;
   }
 
-   ::cpp2::MyEnum get_myEnum() const {
+  ::cpp2::MyEnum get_myEnum() const {
     return myEnum;
   }
 
-   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum myEnum_) {
+  ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
@@ -711,9 +711,9 @@ class MyUnion final  {
     __clear();
   }
   union storage_type {
-     ::cpp2::MyEnum myEnum;
-     ::cpp2::MyStruct myStruct;
-     ::cpp2::MyDataItem myDataItem;
+    ::cpp2::MyEnum myEnum;
+    ::cpp2::MyStruct myStruct;
+    ::cpp2::MyDataItem myDataItem;
 
     storage_type() {}
     ~storage_type() {}
@@ -737,154 +737,154 @@ class MyUnion final  {
   }
 #endif
 
-   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum t =  ::cpp2::MyEnum()) {
+  ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __clear();
     type_ = Type::myEnum;
-    ::new (std::addressof(value_.myEnum))  ::cpp2::MyEnum(t);
+    ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
-   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct const &t) {
+  ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(t);
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
-   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct&& t) {
+  ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::move(t));
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyStruct, T...>>  ::cpp2::MyStruct& set_myStruct(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
-   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem const &t) {
+  ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(t);
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem&& t) {
+  ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::move(t));
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyDataItem, T...>>  ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::forward<T>(t)...);
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyEnum const & get_myEnum() const {
+  ::cpp2::MyEnum const & get_myEnum() const {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-   ::cpp2::MyStruct const & get_myStruct() const {
+  ::cpp2::MyStruct const & get_myStruct() const {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-   ::cpp2::MyDataItem const & get_myDataItem() const {
+  ::cpp2::MyDataItem const & get_myDataItem() const {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyEnum & mutable_myEnum() {
+  ::cpp2::MyEnum & mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-   ::cpp2::MyStruct & mutable_myStruct() {
+  ::cpp2::MyStruct & mutable_myStruct() {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-   ::cpp2::MyDataItem & mutable_myDataItem() {
+  ::cpp2::MyDataItem & mutable_myDataItem() {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyEnum move_myEnum() {
+  ::cpp2::MyEnum move_myEnum() {
     assert(type_ == Type::myEnum);
     return std::move(value_.myEnum);
   }
 
-   ::cpp2::MyStruct move_myStruct() {
+  ::cpp2::MyStruct move_myStruct() {
     assert(type_ == Type::myStruct);
     return std::move(value_.myStruct);
   }
 
-   ::cpp2::MyDataItem move_myDataItem() {
+  ::cpp2::MyDataItem move_myDataItem() {
     assert(type_ == Type::myDataItem);
     return std::move(value_.myDataItem);
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
     return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myEnum_ref() & {
     return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
     return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
     return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
     return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myStruct_ref() & {
     return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
     return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
     return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myDataItem_ref() & {
     return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }

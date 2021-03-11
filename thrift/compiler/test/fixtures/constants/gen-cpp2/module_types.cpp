@@ -135,7 +135,7 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg, double compensation__arg) :
+Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
     employer(std::move(employer__arg)),
@@ -243,7 +243,7 @@ void TccStructTraits<::cpp2::Range>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Range::Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
+Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
     min(std::move(min__arg)),
     max(std::move(max__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -323,7 +323,7 @@ void TccStructTraits<::cpp2::struct1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
+struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
@@ -412,7 +412,7 @@ void TccStructTraits<::cpp2::struct2>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg) :
+struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -472,19 +472,19 @@ bool struct2::operator<(const struct2& rhs) const {
   return false;
 }
 
-const  ::cpp2::struct1& struct2::get_c() const& {
+const ::cpp2::struct1& struct2::get_c() const& {
   return c;
 }
 
- ::cpp2::struct1 struct2::get_c() && {
+::cpp2::struct1 struct2::get_c() && {
   return std::move(c);
 }
 
-const ::std::vector<int32_t>& struct2::get_d() const& {
+const ::std::vector<::std::int32_t>& struct2::get_d() const& {
   return d;
 }
 
-::std::vector<int32_t> struct2::get_d() && {
+::std::vector<::std::int32_t> struct2::get_d() && {
   return std::move(d);
 }
 
@@ -513,14 +513,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -549,7 +549,7 @@ void TccStructTraits<::cpp2::struct3>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
+struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
@@ -600,11 +600,11 @@ bool struct3::operator<(const struct3& rhs) const {
   return false;
 }
 
-const  ::cpp2::struct2& struct3::get_c() const& {
+const ::cpp2::struct2& struct3::get_c() const& {
   return c;
 }
 
- ::cpp2::struct2 struct3::get_c() && {
+::cpp2::struct2 struct3::get_c() && {
   return std::move(c);
 }
 
@@ -632,14 +632,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
+        ::cpp2::struct2>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
+        ::cpp2::struct2>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -668,7 +668,7 @@ void TccStructTraits<::cpp2::struct4>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct4::struct4(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg, int8_t c__arg) :
+struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
@@ -977,26 +977,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::variant,
-         ::cpp2::union1>,
+        ::cpp2::union1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::variant,
-         ::cpp2::union1>,
+        ::cpp2::union1>,
     "inconsistent use of nimble option");
 
 } // cpp2

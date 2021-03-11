@@ -29,12 +29,12 @@ namespace cpp2 {
 class MyServiceSvAsyncIf {
  public:
   virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
-  virtual folly::Future<folly::Unit> future_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
-  virtual void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
-  virtual folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) = 0;
+  virtual void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
+  virtual folly::Future<folly::Unit> future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
+  virtual void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
+  virtual folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
 };
 
 class MyServiceAsyncProcessor;
@@ -45,20 +45,20 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 
 
-  virtual void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/);
-  folly::Future<folly::Unit> future_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
-  folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
-  void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
-  virtual void has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/);
-  folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
-  folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
-  void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) override;
+  virtual void query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/);
+  folly::Future<folly::Unit> future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  virtual void has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/);
+  folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-  void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) override;
-  void has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) override;
+  void query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) override;
+  void has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {

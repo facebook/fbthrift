@@ -201,7 +201,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor,  ::test::fixtures::enumstrict::MyEnum myEnum__arg,  ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -214,9 +214,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::test::fixtures::enumstrict::MyEnum myEnum;
+  ::test::fixtures::enumstrict::MyEnum myEnum;
  private:
-   ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
+  ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -244,54 +244,54 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(this->myEnum), __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum_ref() const& {
     return {this->myBigEnum, __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myBigEnum_ref() const&& {
     return {std::move(this->myBigEnum), __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myBigEnum_ref() & {
     return {this->myBigEnum, __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum_ref() && {
     return {std::move(this->myBigEnum), __isset.myBigEnum};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-   ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
+  ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
     return myEnum;
   }
 
-   ::test::fixtures::enumstrict::MyEnum& set_myEnum( ::test::fixtures::enumstrict::MyEnum myEnum_) {
+  ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
@@ -299,11 +299,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
   }
 
-   ::test::fixtures::enumstrict::MyBigEnum get_myBigEnum() const {
+  ::test::fixtures::enumstrict::MyBigEnum get_myBigEnum() const {
     return myBigEnum;
   }
 
-   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum( ::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
+  ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myBigEnum = true;

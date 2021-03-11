@@ -20,27 +20,27 @@ struct module_constants {
     return aBool_;
   }
 
-  static constexpr int8_t const aByte_ = static_cast<int8_t>(1);
+  static constexpr ::std::int8_t const aByte_ = static_cast<int8_t>(1);
 
-  static constexpr int8_t aByte() {
+  static constexpr ::std::int8_t aByte() {
     return aByte_;
   }
 
-  static constexpr int16_t const a16BitInt_ = static_cast<int16_t>(12);
+  static constexpr ::std::int16_t const a16BitInt_ = static_cast<int16_t>(12);
 
-  static constexpr int16_t a16BitInt() {
+  static constexpr ::std::int16_t a16BitInt() {
     return a16BitInt_;
   }
 
-  static constexpr int32_t const a32BitInt_ = 123;
+  static constexpr ::std::int32_t const a32BitInt_ = 123;
 
-  static constexpr int32_t a32BitInt() {
+  static constexpr ::std::int32_t a32BitInt() {
     return a32BitInt_;
   }
 
-  static constexpr int64_t const a64BitInt_ = 1234LL;
+  static constexpr ::std::int64_t const a64BitInt_ = 1234LL;
 
-  static constexpr int64_t a64BitInt() {
+  static constexpr ::std::int64_t a64BitInt() {
     return a64BitInt_;
   }
 
@@ -68,35 +68,35 @@ struct module_constants {
 
   static ::std::vector<bool> const& aList();
 
-  static ::std::map<::std::string, int32_t> const& anEmptyMap();
+  static ::std::map<::std::string, ::std::int32_t> const& anEmptyMap();
 
-  static ::std::map<int32_t, ::std::string> const& aMap();
+  static ::std::map<::std::int32_t, ::std::string> const& aMap();
 
   static ::std::set<::std::string> const& aSet();
 
-  static ::std::vector<::std::vector<int32_t>> const& aListOfLists();
+  static ::std::vector<::std::vector<::std::int32_t>> const& aListOfLists();
 
-  static ::std::vector<::std::map<::std::string, int32_t>> const& states();
+  static ::std::vector<::std::map<::std::string, ::std::int32_t>> const& states();
 
-  static ::std::vector< ::some::valid::ns::MyEnumA> const& AConstList();
+  static ::std::vector<::some::valid::ns::MyEnumA> const& AConstList();
 
-  static constexpr int32_t const AnIntegerEnum2_ = 2;
+  static constexpr ::std::int32_t const AnIntegerEnum2_ = 2;
 
-  static constexpr int32_t AnIntegerEnum2() {
+  static constexpr ::std::int32_t AnIntegerEnum2() {
     return AnIntegerEnum2_;
   }
 
-  static ::std::vector<int32_t> const& AnIntegerEnum2();
+  static ::std::vector<::std::int32_t> const& AnIntegerEnum2();
 
-  static constexpr  ::some::valid::ns::MyEnumA const constEnumA_ =  ::some::valid::ns::MyEnumA::fieldB;
+  static constexpr ::some::valid::ns::MyEnumA const constEnumA_ =  ::some::valid::ns::MyEnumA::fieldB;
 
-  static constexpr  ::some::valid::ns::MyEnumA constEnumA() {
+  static constexpr ::some::valid::ns::MyEnumA constEnumA() {
     return constEnumA_;
   }
 
-  static constexpr  ::some::valid::ns::MyEnumA const constEnumB_ = static_cast< ::some::valid::ns::MyEnumA>(3);
+  static constexpr ::some::valid::ns::MyEnumA const constEnumB_ = static_cast< ::some::valid::ns::MyEnumA>(3);
 
-  static constexpr  ::some::valid::ns::MyEnumA constEnumB() {
+  static constexpr ::some::valid::ns::MyEnumA constEnumB() {
     return constEnumB_;
   }
 

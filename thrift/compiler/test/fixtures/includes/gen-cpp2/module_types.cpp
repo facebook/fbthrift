@@ -36,7 +36,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyIncludedField__arg, ::cpp2::Included MyOtherIncludedField__arg, ::cpp2::IncludedInt64 MyIncludedInt__arg) :
     MyIncludedField(std::move(MyIncludedField__arg)),
     MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
     MyIncludedInt(std::move(MyIncludedInt__arg)) {
@@ -87,19 +87,19 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const  ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
+const ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
   return MyIncludedField;
 }
 
- ::cpp2::Included MyStruct::get_MyIncludedField() && {
+::cpp2::Included MyStruct::get_MyIncludedField() && {
   return std::move(MyIncludedField);
 }
 
-const  ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
+const ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
   return MyOtherIncludedField;
 }
 
- ::cpp2::Included MyStruct::get_MyOtherIncludedField() && {
+::cpp2::Included MyStruct::get_MyOtherIncludedField() && {
   return std::move(MyOtherIncludedField);
 }
 
@@ -127,26 +127,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Included>,
+        ::cpp2::Included>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Included>,
+        ::cpp2::Included>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Included>,
+        ::cpp2::Included>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Included>,
+        ::cpp2::Included>,
     "inconsistent use of nimble option");
 
 } // cpp2

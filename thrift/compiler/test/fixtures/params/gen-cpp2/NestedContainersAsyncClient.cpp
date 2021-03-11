@@ -10,23 +10,23 @@
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::std::map<int32_t, ::std::vector<int32_t>>*>> NestedContainers_mapList_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>*>> NestedContainers_mapList_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_mapList_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::map<int32_t, ::std::set<int32_t>>*>> NestedContainers_mapSet_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>*>> NestedContainers_mapSet_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_mapSet_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>, ::std::vector<::std::map<int32_t, int32_t>>*>> NestedContainers_listMap_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>*>> NestedContainers_listMap_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_listMap_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::vector<::std::set<int32_t>>*>> NestedContainers_listSet_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::vector<::std::set<::std::int32_t>>*>> NestedContainers_listSet_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_listSet_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>>>, ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>*>> NestedContainers_turtles_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>>>, ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>*>> NestedContainers_turtles_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_turtles_presult;
 
 template <typename Protocol_>
-void NestedContainersAsyncClient::mapListT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapListT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   NestedContainers_mapList_pargs args;
-  args.get<0>().value = const_cast<::std::map<int32_t, ::std::vector<int32_t>>*>(&p_foo);
+  args.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "mapList";
@@ -35,11 +35,11 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, apache::thrift::RpcO
 }
 
 template <typename Protocol_>
-void NestedContainersAsyncClient::mapSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   NestedContainers_mapSet_pargs args;
-  args.get<0>().value = const_cast<::std::map<int32_t, ::std::set<int32_t>>*>(&p_foo);
+  args.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::set<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "mapSet";
@@ -48,11 +48,11 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, apache::thrift::RpcOp
 }
 
 template <typename Protocol_>
-void NestedContainersAsyncClient::listMapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listMapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   NestedContainers_listMap_pargs args;
-  args.get<0>().value = const_cast<::std::vector<::std::map<int32_t, int32_t>>*>(&p_foo);
+  args.get<0>().value = const_cast<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "listMap";
@@ -61,11 +61,11 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, apache::thrift::RpcO
 }
 
 template <typename Protocol_>
-void NestedContainersAsyncClient::listSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   NestedContainers_listSet_pargs args;
-  args.get<0>().value = const_cast<::std::vector<::std::set<int32_t>>*>(&p_foo);
+  args.get<0>().value = const_cast<::std::vector<::std::set<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "listSet";
@@ -74,11 +74,11 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, apache::thrift::RpcO
 }
 
 template <typename Protocol_>
-void NestedContainersAsyncClient::turtlesT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::turtlesT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   NestedContainers_turtles_pargs args;
-  args.get<0>().value = const_cast<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>*>(&p_foo);
+  args.get<0>().value = const_cast<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "turtles";
@@ -88,12 +88,12 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, apache::thrift::RpcO
 
 
 
-void NestedContainersAsyncClient::mapList(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapList(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   mapList(rpcOptions, std::move(callback), p_foo);
 }
 
-void NestedContainersAsyncClient::mapList(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapList(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   auto ctx = mapListCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -103,7 +103,7 @@ void NestedContainersAsyncClient::mapList(apache::thrift::RpcOptions& rpcOptions
   mapListImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void NestedContainersAsyncClient::mapListImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapListImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -133,12 +133,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContai
       "NestedContainers.mapList");
 }
 
-void NestedContainersAsyncClient::sync_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_mapList(rpcOptions, p_foo);
 }
 
-void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -164,17 +164,17 @@ void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_mapList(rpcOptions, p_foo);
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_mapList(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_mapList, channel_);
@@ -182,14 +182,14 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_mapList, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapList(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_mapList, channel_);
@@ -197,14 +197,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_mapList, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapList(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-void NestedContainersAsyncClient::mapList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   mapList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
 }
 
@@ -255,12 +255,12 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_instance_wrapped_mapL
   return recv_wrapped_mapList(state);
 }
 
-void NestedContainersAsyncClient::mapSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   mapSet(rpcOptions, std::move(callback), p_foo);
 }
 
-void NestedContainersAsyncClient::mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   auto ctx = mapSetCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -270,7 +270,7 @@ void NestedContainersAsyncClient::mapSet(apache::thrift::RpcOptions& rpcOptions,
   mapSetImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void NestedContainersAsyncClient::mapSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -300,12 +300,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContai
       "NestedContainers.mapSet");
 }
 
-void NestedContainersAsyncClient::sync_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_mapSet(rpcOptions, p_foo);
 }
 
-void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -331,17 +331,17 @@ void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOpt
 }
 
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_mapSet(rpcOptions, p_foo);
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_mapSet(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_mapSet, channel_);
@@ -349,14 +349,14 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::th
   return future;
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_mapSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapSet(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_mapSet, channel_);
@@ -364,14 +364,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_mapSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   mapSet(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-void NestedContainersAsyncClient::mapSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::mapSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   mapSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
 }
 
@@ -422,12 +422,12 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_instance_wrapped_mapS
   return recv_wrapped_mapSet(state);
 }
 
-void NestedContainersAsyncClient::listMap(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listMap(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   listMap(rpcOptions, std::move(callback), p_foo);
 }
 
-void NestedContainersAsyncClient::listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   auto ctx = listMapCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -437,7 +437,7 @@ void NestedContainersAsyncClient::listMap(apache::thrift::RpcOptions& rpcOptions
   listMapImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void NestedContainersAsyncClient::listMapImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listMapImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -467,12 +467,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContai
       "NestedContainers.listMap");
 }
 
-void NestedContainersAsyncClient::sync_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_listMap(rpcOptions, p_foo);
 }
 
-void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -498,17 +498,17 @@ void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_listMap(rpcOptions, p_foo);
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_listMap(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_listMap, channel_);
@@ -516,14 +516,14 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_listMap, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listMap(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_listMap, channel_);
@@ -531,14 +531,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_listMap, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listMap(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-void NestedContainersAsyncClient::listMap(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listMap(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   listMap(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
 }
 
@@ -589,12 +589,12 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_instance_wrapped_list
   return recv_wrapped_listMap(state);
 }
 
-void NestedContainersAsyncClient::listSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   listSet(rpcOptions, std::move(callback), p_foo);
 }
 
-void NestedContainersAsyncClient::listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   auto ctx = listSetCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -604,7 +604,7 @@ void NestedContainersAsyncClient::listSet(apache::thrift::RpcOptions& rpcOptions
   listSetImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void NestedContainersAsyncClient::listSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -634,12 +634,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContai
       "NestedContainers.listSet");
 }
 
-void NestedContainersAsyncClient::sync_listSet(const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_listSet(rpcOptions, p_foo);
 }
 
-void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -665,17 +665,17 @@ void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_listSet(rpcOptions, p_foo);
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_listSet(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_listSet, channel_);
@@ -683,14 +683,14 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_listSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listSet(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_listSet, channel_);
@@ -698,14 +698,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<int32_t>>& p_foo) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_listSet, channel_);
   auto callback = std::move(callbackAndFuture.first);
   listSet(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-void NestedContainersAsyncClient::listSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
+void NestedContainersAsyncClient::listSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   listSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
 }
 
@@ -756,12 +756,12 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_instance_wrapped_list
   return recv_wrapped_listSet(state);
 }
 
-void NestedContainersAsyncClient::turtles(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::turtles(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   turtles(rpcOptions, std::move(callback), p_foo);
 }
 
-void NestedContainersAsyncClient::turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   auto ctx = turtlesCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -771,7 +771,7 @@ void NestedContainersAsyncClient::turtles(apache::thrift::RpcOptions& rpcOptions
   turtlesImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
-void NestedContainersAsyncClient::turtlesImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::turtlesImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -801,12 +801,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContai
       "NestedContainers.turtles");
 }
 
-void NestedContainersAsyncClient::sync_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::sync_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_turtles(rpcOptions, p_foo);
 }
 
-void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -832,17 +832,17 @@ void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_turtles(rpcOptions, p_foo);
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_turtles(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_turtles, channel_);
@@ -850,14 +850,14 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::SemiFuture<folly::Unit> NestedContainersAsyncClient::semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_turtles, channel_);
   auto callback = std::move(callbackAndFuture.first);
   turtles(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_turtles, channel_);
@@ -865,14 +865,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_turtles, channel_);
   auto callback = std::move(callbackAndFuture.first);
   turtles(rpcOptions, std::move(callback), p_foo);
   return std::move(callbackAndFuture.second);
 }
 
-void NestedContainersAsyncClient::turtles(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
+void NestedContainersAsyncClient::turtles(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   turtles(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
 }
 

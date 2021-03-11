@@ -15,19 +15,19 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor(
 }
 
 
-void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t /*id*/) {
+void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::TApplicationException("Function hasDataById is unimplemented"));
 }
 
-void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t /*id*/) {
+void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::TApplicationException("Function getDataById is unimplemented"));
 }
 
-void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t /*id*/, const ::std::string& /*data*/) {
+void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
   callback->exception(apache::thrift::TApplicationException("Function putDataById is unimplemented"));
 }
 
-void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, int64_t /*id*/, const ::std::string& /*data*/) {
+void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
   LOG(DFATAL) << "Function lobDataById is unimplemented";
 }
 

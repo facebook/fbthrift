@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::MyStructFloatFieldThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, int64_t myLongField__arg, int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg) :
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg) :
     myLongField(std::move(myLongField__arg)),
     MyByteField(std::move(MyByteField__arg)),
     myStringField(std::move(myStringField__arg)),
@@ -178,7 +178,7 @@ void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, int64_t age__arg, ::std::string name__arg) :
+SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg) :
     age(std::move(age__arg)),
     name(std::move(name__arg)) {
   __isset.age = true;
@@ -338,7 +338,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 ComplexNestedStruct::~ComplexNestedStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector< ::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map< ::cpp2::MyStruct, int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<int32_t, int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<int32_t>, int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, int32_t> mapKeyListValLong__arg, ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> NestedMaps__arg, ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>,  ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
+ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<::std::int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector<::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<::std::int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<::std::int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map<::cpp2::MyStruct, ::std::int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<::std::int32_t>, ::std::int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, ::std::int32_t> mapKeyListValLong__arg, ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> NestedMaps__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<::std::int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>, ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
     setOfSetOfInt(std::move(setOfSetOfInt__arg)),
     listofListOfListOfListOfEnum(std::move(listofListOfListOfListOfEnum__arg)),
     listOfListOfMyStruct(std::move(listOfListOfMyStruct__arg)),
@@ -524,147 +524,147 @@ bool ComplexNestedStruct::operator<(const ComplexNestedStruct& rhs) const {
   return false;
 }
 
-const ::std::set<::std::set<int32_t>>& ComplexNestedStruct::get_setOfSetOfInt() const& {
+const ::std::set<::std::set<::std::int32_t>>& ComplexNestedStruct::get_setOfSetOfInt() const& {
   return setOfSetOfInt;
 }
 
-::std::set<::std::set<int32_t>> ComplexNestedStruct::get_setOfSetOfInt() && {
+::std::set<::std::set<::std::int32_t>> ComplexNestedStruct::get_setOfSetOfInt() && {
   return std::move(setOfSetOfInt);
 }
 
-const ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>>& ComplexNestedStruct::get_listofListOfListOfListOfEnum() const& {
+const ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>& ComplexNestedStruct::get_listofListOfListOfListOfEnum() const& {
   return listofListOfListOfListOfEnum;
 }
 
-::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> ComplexNestedStruct::get_listofListOfListOfListOfEnum() && {
+::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> ComplexNestedStruct::get_listofListOfListOfListOfEnum() && {
   return std::move(listofListOfListOfListOfEnum);
 }
 
-const ::std::vector<::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_listOfListOfMyStruct() const& {
+const ::std::vector<::std::vector<::cpp2::MyStruct>>& ComplexNestedStruct::get_listOfListOfMyStruct() const& {
   return listOfListOfMyStruct;
 }
 
-::std::vector<::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_listOfListOfMyStruct() && {
+::std::vector<::std::vector<::cpp2::MyStruct>> ComplexNestedStruct::get_listOfListOfMyStruct() && {
   return std::move(listOfListOfMyStruct);
 }
 
-const ::std::set<::std::vector<::std::vector<int64_t>>>& ComplexNestedStruct::get_setOfListOfListOfLong() const& {
+const ::std::set<::std::vector<::std::vector<::std::int64_t>>>& ComplexNestedStruct::get_setOfListOfListOfLong() const& {
   return setOfListOfListOfLong;
 }
 
-::std::set<::std::vector<::std::vector<int64_t>>> ComplexNestedStruct::get_setOfListOfListOfLong() && {
+::std::set<::std::vector<::std::vector<::std::int64_t>>> ComplexNestedStruct::get_setOfListOfListOfLong() && {
   return std::move(setOfListOfListOfLong);
 }
 
-const ::std::set<::std::set<::std::set<int64_t>>>& ComplexNestedStruct::get_setOfSetOfsetOfLong() const& {
+const ::std::set<::std::set<::std::set<::std::int64_t>>>& ComplexNestedStruct::get_setOfSetOfsetOfLong() const& {
   return setOfSetOfsetOfLong;
 }
 
-::std::set<::std::set<::std::set<int64_t>>> ComplexNestedStruct::get_setOfSetOfsetOfLong() && {
+::std::set<::std::set<::std::set<::std::int64_t>>> ComplexNestedStruct::get_setOfSetOfsetOfLong() && {
   return std::move(setOfSetOfsetOfLong);
 }
 
-const ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_mapStructListOfListOfLong() const& {
+const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>& ComplexNestedStruct::get_mapStructListOfListOfLong() const& {
   return mapStructListOfListOfLong;
 }
 
-::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_mapStructListOfListOfLong() && {
+::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> ComplexNestedStruct::get_mapStructListOfListOfLong() && {
   return std::move(mapStructListOfListOfLong);
 }
 
-const ::std::map< ::cpp2::MyStruct, int32_t>& ComplexNestedStruct::get_mKeyStructValInt() const& {
+const ::std::map<::cpp2::MyStruct, ::std::int32_t>& ComplexNestedStruct::get_mKeyStructValInt() const& {
   return mKeyStructValInt;
 }
 
-::std::map< ::cpp2::MyStruct, int32_t> ComplexNestedStruct::get_mKeyStructValInt() && {
+::std::map<::cpp2::MyStruct, ::std::int32_t> ComplexNestedStruct::get_mKeyStructValInt() && {
   return std::move(mKeyStructValInt);
 }
 
-const ::std::vector<::std::map<int32_t, int32_t>>& ComplexNestedStruct::get_listOfMapKeyIntValInt() const& {
+const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& ComplexNestedStruct::get_listOfMapKeyIntValInt() const& {
   return listOfMapKeyIntValInt;
 }
 
-::std::vector<::std::map<int32_t, int32_t>> ComplexNestedStruct::get_listOfMapKeyIntValInt() && {
+::std::vector<::std::map<::std::int32_t, ::std::int32_t>> ComplexNestedStruct::get_listOfMapKeyIntValInt() && {
   return std::move(listOfMapKeyIntValInt);
 }
 
-const ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_listOfMapKeyStrValList() const& {
+const ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>& ComplexNestedStruct::get_listOfMapKeyStrValList() const& {
   return listOfMapKeyStrValList;
 }
 
-::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_listOfMapKeyStrValList() && {
+::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> ComplexNestedStruct::get_listOfMapKeyStrValList() && {
   return std::move(listOfMapKeyStrValList);
 }
 
-const ::std::map<::std::set<int32_t>, int64_t>& ComplexNestedStruct::get_mapKeySetValLong() const& {
+const ::std::map<::std::set<::std::int32_t>, ::std::int64_t>& ComplexNestedStruct::get_mapKeySetValLong() const& {
   return mapKeySetValLong;
 }
 
-::std::map<::std::set<int32_t>, int64_t> ComplexNestedStruct::get_mapKeySetValLong() && {
+::std::map<::std::set<::std::int32_t>, ::std::int64_t> ComplexNestedStruct::get_mapKeySetValLong() && {
   return std::move(mapKeySetValLong);
 }
 
-const ::std::map<::std::vector<::std::string>, int32_t>& ComplexNestedStruct::get_mapKeyListValLong() const& {
+const ::std::map<::std::vector<::std::string>, ::std::int32_t>& ComplexNestedStruct::get_mapKeyListValLong() const& {
   return mapKeyListValLong;
 }
 
-::std::map<::std::vector<::std::string>, int32_t> ComplexNestedStruct::get_mapKeyListValLong() && {
+::std::map<::std::vector<::std::string>, ::std::int32_t> ComplexNestedStruct::get_mapKeyListValLong() && {
   return std::move(mapKeyListValLong);
 }
 
-const ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_mapKeyMapValMap() const& {
+const ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& ComplexNestedStruct::get_mapKeyMapValMap() const& {
   return mapKeyMapValMap;
 }
 
-::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_mapKeyMapValMap() && {
+::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> ComplexNestedStruct::get_mapKeyMapValMap() && {
   return std::move(mapKeyMapValMap);
 }
 
-const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& ComplexNestedStruct::get_mapKeySetValMap() const& {
+const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& ComplexNestedStruct::get_mapKeySetValMap() const& {
   return mapKeySetValMap;
 }
 
-::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> ComplexNestedStruct::get_mapKeySetValMap() && {
+::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> ComplexNestedStruct::get_mapKeySetValMap() && {
   return std::move(mapKeySetValMap);
 }
 
-const ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_NestedMaps() const& {
+const ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& ComplexNestedStruct::get_NestedMaps() const& {
   return NestedMaps;
 }
 
-::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_NestedMaps() && {
+::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> ComplexNestedStruct::get_NestedMaps() && {
   return std::move(NestedMaps);
 }
 
-const ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_mapKeyIntValList() const& {
+const ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>& ComplexNestedStruct::get_mapKeyIntValList() const& {
   return mapKeyIntValList;
 }
 
-::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_mapKeyIntValList() && {
+::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> ComplexNestedStruct::get_mapKeyIntValList() && {
   return std::move(mapKeyIntValList);
 }
 
-const ::std::map<int32_t, ::std::set<bool>>& ComplexNestedStruct::get_mapKeyIntValSet() const& {
+const ::std::map<::std::int32_t, ::std::set<bool>>& ComplexNestedStruct::get_mapKeyIntValSet() const& {
   return mapKeyIntValSet;
 }
 
-::std::map<int32_t, ::std::set<bool>> ComplexNestedStruct::get_mapKeyIntValSet() && {
+::std::map<::std::int32_t, ::std::set<bool>> ComplexNestedStruct::get_mapKeyIntValSet() && {
   return std::move(mapKeyIntValSet);
 }
 
-const ::std::map<::std::set<bool>,  ::cpp2::MyEnum>& ComplexNestedStruct::get_mapKeySetValInt() const& {
+const ::std::map<::std::set<bool>, ::cpp2::MyEnum>& ComplexNestedStruct::get_mapKeySetValInt() const& {
   return mapKeySetValInt;
 }
 
-::std::map<::std::set<bool>,  ::cpp2::MyEnum> ComplexNestedStruct::get_mapKeySetValInt() && {
+::std::map<::std::set<bool>, ::cpp2::MyEnum> ComplexNestedStruct::get_mapKeySetValInt() && {
   return std::move(mapKeySetValInt);
 }
 
-const ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>>& ComplexNestedStruct::get_mapKeyListValSet() const& {
+const ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>& ComplexNestedStruct::get_mapKeyListValSet() const& {
   return mapKeyListValSet;
 }
 
-::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> ComplexNestedStruct::get_mapKeyListValSet() && {
+::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> ComplexNestedStruct::get_mapKeyListValSet() && {
   return std::move(mapKeyListValSet);
 }
 
@@ -707,62 +707,62 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
+        ::std::vector<::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
+        ::std::map<::cpp2::MyStruct, ::std::int32_t>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
+        ::std::vector<::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
+        ::std::map<::cpp2::MyStruct, ::std::int32_t>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -791,7 +791,7 @@ void TccStructTraits<::cpp2::reqXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, int32_t errorCode__arg) :
+reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END

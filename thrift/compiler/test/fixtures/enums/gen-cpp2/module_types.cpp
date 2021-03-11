@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg) :
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg) :
     reasonable(std::move(reasonable__arg)),
     fine(std::move(fine__arg)),
     questionable(std::move(questionable__arg)),
@@ -129,11 +129,11 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
   return false;
 }
 
-const ::std::set<int32_t>& SomeStruct::get_tags() const& {
+const ::std::set<::std::int32_t>& SomeStruct::get_tags() const& {
   return tags;
 }
 
-::std::set<int32_t> SomeStruct::get_tags() && {
+::std::set<::std::int32_t> SomeStruct::get_tags() && {
   return std::move(tags);
 }
 

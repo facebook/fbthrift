@@ -171,7 +171,7 @@ class MyUnion;
 namespace cpp2 {
 typedef ::std::string annotated_with_default_string;
 typedef ::std::string annotated_inline_string;
-typedef int64_t annotated_inline_i64;
+typedef ::std::int64_t annotated_inline_i64;
 
 } // cpp2
 // END typedefs
@@ -201,7 +201,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       name(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacaba")) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_inline(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg);
+  structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg);
 
   structured_annotation_inline(structured_annotation_inline&&) = default;
 
@@ -214,7 +214,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t count;
+  ::std::int64_t count;
  private:
   ::std::string name;
 
@@ -244,22 +244,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
     return {this->count, __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
     return {std::move(this->count), __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
     return {this->count, __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
     return {std::move(this->count), __isset.count};
   }
@@ -287,11 +287,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_count() const {
+  ::std::int64_t get_count() const {
     return count;
   }
 
-  int64_t& set_count(int64_t count_) {
+  ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.count = true;
@@ -490,7 +490,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       count(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_forward(apache::thrift::FragileConstructor, int64_t count__arg);
+  structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg);
 
   structured_annotation_forward(structured_annotation_forward&&) = default;
 
@@ -503,7 +503,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t count;
+  ::std::int64_t count;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -530,32 +530,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
     return {this->count, __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
     return {std::move(this->count), __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
     return {this->count, __isset.count};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
     return {std::move(this->count), __isset.count};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_count() const {
+  ::std::int64_t get_count() const {
     return count;
   }
 
-  int64_t& set_count(int64_t count_) {
+  ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.count = true;
@@ -610,7 +610,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_recursive() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg,  ::cpp2::structured_annotation_recursive recurse__arg,  ::cpp2::structured_annotation_forward forward__arg);
+  structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg);
 
   structured_annotation_recursive(structured_annotation_recursive&&) = default;
 
@@ -625,9 +625,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string name;
  private:
-   ::cpp2::structured_annotation_recursive recurse;
+  ::cpp2::structured_annotation_recursive recurse;
  private:
-   ::cpp2::structured_annotation_forward forward;
+  ::cpp2::structured_annotation_forward forward;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -678,44 +678,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse_ref() const& {
     return {this->recurse, __isset.recurse};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse_ref() const&& {
     return {std::move(this->recurse), __isset.recurse};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> recurse_ref() & {
     return {this->recurse, __isset.recurse};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse_ref() && {
     return {std::move(this->recurse), __isset.recurse};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward_ref() const& {
     return {this->forward, __isset.forward};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward_ref() const&& {
     return {std::move(this->forward), __isset.forward};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> forward_ref() & {
     return {this->forward, __isset.forward};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward_ref() && {
     return {std::move(this->forward), __isset.forward};
   }
@@ -737,22 +737,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
-  const  ::cpp2::structured_annotation_recursive& get_recurse() const&;
-   ::cpp2::structured_annotation_recursive get_recurse() &&;
+  const ::cpp2::structured_annotation_recursive& get_recurse() const&;
+  ::cpp2::structured_annotation_recursive get_recurse() &&;
 
-  template <typename T_structured_annotation_recursive_recurse_struct_setter =  ::cpp2::structured_annotation_recursive>
-   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
+  template <typename T_structured_annotation_recursive_recurse_struct_setter = ::cpp2::structured_annotation_recursive>
+  ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.recurse = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return recurse;
   }
-  const  ::cpp2::structured_annotation_forward& get_forward() const&;
-   ::cpp2::structured_annotation_forward get_forward() &&;
+  const ::cpp2::structured_annotation_forward& get_forward() const&;
+  ::cpp2::structured_annotation_forward get_forward() &&;
 
-  template <typename T_structured_annotation_recursive_forward_struct_setter =  ::cpp2::structured_annotation_forward>
-   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
+  template <typename T_structured_annotation_recursive_forward_struct_setter = ::cpp2::structured_annotation_forward>
+  ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.forward = true;
@@ -807,7 +807,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_nested() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg,  ::cpp2::structured_annotation_with_default nest__arg);
+  structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg);
 
   structured_annotation_nested(structured_annotation_nested&&) = default;
 
@@ -822,7 +822,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string name;
  private:
-   ::cpp2::structured_annotation_with_default nest;
+  ::cpp2::structured_annotation_with_default nest;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -872,22 +872,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
     return {this->nest, __isset.nest};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
     return {std::move(this->nest), __isset.nest};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
     return {this->nest, __isset.nest};
   }
 
-  template <typename..., typename T =  ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
     return {std::move(this->nest), __isset.nest};
   }
@@ -909,11 +909,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
-  const  ::cpp2::structured_annotation_with_default& get_nest() const&;
-   ::cpp2::structured_annotation_with_default get_nest() &&;
+  const ::cpp2::structured_annotation_with_default& get_nest() const&;
+  ::cpp2::structured_annotation_with_default get_nest() &&;
 
-  template <typename T_structured_annotation_nested_nest_struct_setter =  ::cpp2::structured_annotation_with_default>
-   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
+  template <typename T_structured_annotation_nested_nest_struct_setter = ::cpp2::structured_annotation_with_default>
+  ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.nest = true;
@@ -970,7 +970,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
       annotated_nested(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t annotated_field__arg,  ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, int64_t annotated_nested__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -983,13 +983,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t annotated_field;
+  ::std::int64_t annotated_field;
  private:
-   ::cpp2::annotated_inline_string annotated_type;
+  ::cpp2::annotated_inline_string annotated_type;
  private:
   ::std::string annotated_recursive;
  private:
-  int64_t annotated_nested;
+  ::std::int64_t annotated_nested;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1019,44 +1019,44 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 #endif
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_field_ref() const& {
     return {this->annotated_field, __isset.annotated_field};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_field_ref() const&& {
     return {std::move(this->annotated_field), __isset.annotated_field};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_field_ref() & {
     return {this->annotated_field, __isset.annotated_field};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_field_ref() && {
     return {std::move(this->annotated_field), __isset.annotated_field};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type_ref() const& {
     return {this->annotated_type, __isset.annotated_type};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type_ref() const&& {
     return {std::move(this->annotated_type), __isset.annotated_type};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_type_ref() & {
     return {this->annotated_type, __isset.annotated_type};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type_ref() && {
     return {std::move(this->annotated_type), __isset.annotated_type};
   }
@@ -1085,32 +1085,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_nested_ref() const& {
     return {this->annotated_nested, __isset.annotated_nested};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_nested_ref() const&& {
     return {std::move(this->annotated_nested), __isset.annotated_nested};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_nested_ref() & {
     return {this->annotated_nested, __isset.annotated_nested};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_nested_ref() && {
     return {std::move(this->annotated_nested), __isset.annotated_nested};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_annotated_field() const {
+  ::std::int64_t get_annotated_field() const {
     return annotated_field;
   }
 
-  int64_t& set_annotated_field(int64_t annotated_field_) {
+  ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
     annotated_field = annotated_field_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_field = true;
@@ -1118,16 +1118,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_field;
   }
 
-  const  ::cpp2::annotated_inline_string& get_annotated_type() const& {
+  const ::cpp2::annotated_inline_string& get_annotated_type() const& {
     return annotated_type;
   }
 
-   ::cpp2::annotated_inline_string get_annotated_type() && {
+  ::cpp2::annotated_inline_string get_annotated_type() && {
     return std::move(annotated_type);
   }
 
-  template <typename T_MyStruct_annotated_type_struct_setter =  ::cpp2::annotated_inline_string>
-   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
+  template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
+  ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_type = true;
@@ -1152,11 +1152,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_recursive;
   }
 
-  int64_t get_annotated_nested() const {
+  ::std::int64_t get_annotated_nested() const {
     return annotated_nested;
   }
 
-  int64_t& set_annotated_nested(int64_t annotated_nested_) {
+  ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
     annotated_nested = annotated_nested_;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_nested = true;
@@ -1445,8 +1445,8 @@ class MyUnion final  {
     __clear();
   }
   union storage_type {
-     ::cpp2::annotated_inline_string first;
-     ::cpp2::annotated_inline_i64 second;
+    ::cpp2::annotated_inline_string first;
+    ::cpp2::annotated_inline_i64 second;
 
     storage_type() {}
     ~storage_type() {}
@@ -1470,99 +1470,99 @@ class MyUnion final  {
   }
 #endif
 
-   ::cpp2::annotated_inline_string& set_first( ::cpp2::annotated_inline_string const &t) {
+  ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string const &t) {
     __clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first))  ::cpp2::annotated_inline_string(t);
+    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(t);
     return value_.first;
   }
 
-   ::cpp2::annotated_inline_string& set_first( ::cpp2::annotated_inline_string&& t) {
+  ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string&& t) {
     __clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first))  ::cpp2::annotated_inline_string(std::move(t));
+    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::move(t));
     return value_.first;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::annotated_inline_string, T...>>  ::cpp2::annotated_inline_string& set_first(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::annotated_inline_string, T...>> ::cpp2::annotated_inline_string& set_first(T&&... t) {
     __clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first))  ::cpp2::annotated_inline_string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::forward<T>(t)...);
     return value_.first;
   }
 
-   ::cpp2::annotated_inline_i64& set_second( ::cpp2::annotated_inline_i64 t =  ::cpp2::annotated_inline_i64()) {
+  ::cpp2::annotated_inline_i64& set_second(::cpp2::annotated_inline_i64 t = ::cpp2::annotated_inline_i64()) {
     __clear();
     type_ = Type::second;
-    ::new (std::addressof(value_.second))  ::cpp2::annotated_inline_i64(t);
+    ::new (std::addressof(value_.second)) ::cpp2::annotated_inline_i64(t);
     return value_.second;
   }
 
-   ::cpp2::annotated_inline_string const & get_first() const {
+  ::cpp2::annotated_inline_string const & get_first() const {
     assert(type_ == Type::first);
     return value_.first;
   }
 
-   ::cpp2::annotated_inline_i64 const & get_second() const {
+  ::cpp2::annotated_inline_i64 const & get_second() const {
     assert(type_ == Type::second);
     return value_.second;
   }
 
-   ::cpp2::annotated_inline_string & mutable_first() {
+  ::cpp2::annotated_inline_string & mutable_first() {
     assert(type_ == Type::first);
     return value_.first;
   }
 
-   ::cpp2::annotated_inline_i64 & mutable_second() {
+  ::cpp2::annotated_inline_i64 & mutable_second() {
     assert(type_ == Type::second);
     return value_.second;
   }
 
-   ::cpp2::annotated_inline_string move_first() {
+  ::cpp2::annotated_inline_string move_first() {
     assert(type_ == Type::first);
     return std::move(value_.first);
   }
 
-   ::cpp2::annotated_inline_i64 move_second() {
+  ::cpp2::annotated_inline_i64 move_second() {
     assert(type_ == Type::second);
     return std::move(value_.second);
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> first_ref() const& {
     return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> first_ref() const&& {
     return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> first_ref() & {
     return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> first_ref() && {
     return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::cpp2::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> second_ref() const& {
     return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::cpp2::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> second_ref() const&& {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::cpp2::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> second_ref() & {
     return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::cpp2::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> second_ref() && {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }

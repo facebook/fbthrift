@@ -47,16 +47,16 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<int32_t> co_frobnicate() {
+  folly::coro::Task<::std::int32_t> co_frobnicate() {
     return co_frobnicate<false>(nullptr);
   }
   template <int = 0>
-  folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<::std::int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
     return co_frobnicate<true>(&rpcOptions);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions* rpcOptions) {
+  folly::coro::Task<::std::int32_t> co_frobnicate(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -89,7 +89,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    int32_t _return;
+    ::std::int32_t _return;
     if (auto ew = recv_wrapped_frobnicate(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -98,11 +98,11 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<int32_t> semifuture_frobnicate();
-  folly::SemiFuture<int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
-  static folly::exception_wrapper recv_wrapped_frobnicate(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -264,16 +264,16 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<int32_t> co_frobnicate() {
+  folly::coro::Task<::std::int32_t> co_frobnicate() {
     return co_frobnicate<false>(nullptr);
   }
   template <int = 0>
-  folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<::std::int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
     return co_frobnicate<true>(&rpcOptions);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions* rpcOptions) {
+  folly::coro::Task<::std::int32_t> co_frobnicate(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -306,7 +306,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    int32_t _return;
+    ::std::int32_t _return;
     if (auto ew = recv_wrapped_frobnicate(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -315,11 +315,11 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<int32_t> semifuture_frobnicate();
-  folly::SemiFuture<int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
-  static folly::exception_wrapper recv_wrapped_frobnicate(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
