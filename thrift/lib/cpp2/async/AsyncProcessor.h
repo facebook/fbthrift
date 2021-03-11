@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/IOWorkerContext.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -433,6 +434,14 @@ class ServerInterface : public virtual AsyncProcessorFactory {
  * client will likely get confused with multiple response messages.
  */
 class HandlerCallbackBase {
+ private:
+  folly::EventBase::EventBaseQueue& getReplyQueue() {
+    auto worker = reinterpret_cast<IOWorkerContext*>(
+        const_cast<Cpp2Worker*>(reqCtx_->getConnectionContext()->getWorker()));
+    DCHECK(worker != nullptr);
+    return worker->getReplyQueue();
+  }
+
  protected:
   using exnw_ptr = void (*)(
       ResponseChannelRequest::UniquePtr,
