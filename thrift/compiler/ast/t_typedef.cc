@@ -23,15 +23,10 @@ namespace thrift {
 namespace compiler {
 
 bool t_typedef::resolve_placeholder() {
-  assert(type_ == nullptr);
+  assert(type_.get_type() == nullptr);
   assert(!defined_);
-  type_ = scope_->get_type(get_program()->get_name() + "." + symbolic_);
-  return type_ != nullptr;
-}
-
-const t_type* t_typedef::get_type() const {
-  assert(type_ != nullptr);
-  return type_;
+  type_.set_type(scope_->get_type(get_program()->get_name() + "." + symbolic_));
+  return type_.get_type() != nullptr;
 }
 
 const std::string* t_typedef::get_first_annotation_or_null(

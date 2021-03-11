@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/compiler/ast/t_container.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -28,14 +29,14 @@ namespace compiler {
  */
 class t_list : public t_container {
  public:
-  explicit t_list(const t_type* elem_type) : elem_type_(elem_type) {}
+  explicit t_list(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
   const t_type* get_elem_type() const {
-    return elem_type_;
+    return elem_type_.get_type();
   }
 
   std::string get_full_name() const override {
-    return "list<" + elem_type_->get_full_name() + ">";
+    return "list<" + elem_type_.get_type()->get_full_name() + ">";
   }
 
   t_type::type get_type_value() const override {
@@ -43,7 +44,13 @@ class t_list : public t_container {
   }
 
  private:
-  const t_type* elem_type_;
+  t_type_ref elem_type_;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+
+  explicit t_list(const t_type* elem_type) : t_list(t_type_ref(elem_type)) {}
 };
 
 } // namespace compiler

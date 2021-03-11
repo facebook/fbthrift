@@ -248,6 +248,32 @@ class t_type : public t_named {
   }
 };
 
+/**
+ * A reference to a thrift type.
+ *
+ * Type references are different from other references because they can be
+ * annotated and unresolved.
+ *
+ * TODO(afuller): Make t_type_ref annotatable and remove anonymous types.
+ * TODO(afuller): Make t_type_ref support an 'unresolved' state, where only the
+ * ident is known, and remove placeholder typedefs.
+ */
+class t_type_ref final {
+ public:
+  t_type_ref() = default;
+  explicit t_type_ref(const t_type* type) : type_(type) {}
+
+  void set_type(const t_type* type) {
+    type_ = type;
+  }
+  const t_type* get_type() const {
+    return type_;
+  }
+
+ private:
+  const t_type* type_ = nullptr;
+};
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

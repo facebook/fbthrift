@@ -125,6 +125,8 @@ class t_annotated : public t_node {
     annotations_[key] = std::move(value);
   }
 
+  // TODO(afuller): Structured annotations can only be placed on named
+  // things. So move structured annotations into t_named.
   const std::vector<const t_const*>& structured_annotations() const {
     return structured_annotations_raw_;
   }

@@ -26,6 +26,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -34,7 +35,6 @@ namespace compiler {
 class t_const;
 class t_enum;
 class t_enum_value;
-class t_type;
 
 /**
  * A const value is something parsed that could be a map, set, list, struct
@@ -54,12 +54,12 @@ class t_const_value {
 
   t_const_value() = default;
 
-  explicit t_const_value(int64_t val) {
+  explicit t_const_value(int64_t val) noexcept {
     set_integer(val);
   }
 
   explicit t_const_value(std::string val) {
-    set_string(val);
+    set_string(std::move(val));
   }
 
   t_const_value(const t_const_value&) = delete;
@@ -68,7 +68,6 @@ class t_const_value {
 
   std::unique_ptr<t_const_value> clone() const {
     auto clone = std::make_unique<t_const_value>();
-
     switch (get_type()) {
       case CV_BOOL:
         clone->set_bool(get_bool());
@@ -111,7 +110,7 @@ class t_const_value {
 
   void set_string(std::string val) {
     valType_ = CV_STRING;
-    stringVal_ = val;
+    stringVal_ = std::move(val);
   }
 
   const std::string& get_string() const {
@@ -207,12 +206,12 @@ class t_const_value {
     return owner_;
   }
 
-  void set_ttype(const t_type* type) {
-    type_ = type;
+  void set_ttype(std::unique_ptr<t_type_ref> type) {
+    type_ = std::move(type);
   }
 
   const t_type* get_ttype() const {
-    return type_;
+    return type_ == nullptr ? nullptr : type_->get_type();
   }
 
   void set_is_enum(bool value = true) {
@@ -256,13 +255,20 @@ class t_const_value {
 
   t_const_value_type valType_ = CV_BOOL;
   t_const* owner_ = nullptr;
-  const t_type* type_ = nullptr;
+  std::unique_ptr<t_type_ref> type_;
 
   bool is_enum_ = false;
   t_enum const* tenum_ = nullptr;
   t_enum_value const* tenum_val_ = nullptr;
 
   t_const_value& operator=(t_const_value&&) = default;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+  void set_ttype(const t_type* type) {
+    type_ = std::make_unique<t_type_ref>(type);
+  }
 };
 
 } // namespace compiler

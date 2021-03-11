@@ -44,18 +44,10 @@ class t_field : public t_named {
    *
    * @param type - A field based on thrift types
    * @param name - The symbolic name of the field
-   */
-  t_field(const t_type* type, std::string name) : t_named(name), type_(type) {}
-
-  /**
-   * Constructor for t_field
-   *
-   * @param type - A field based on thrift types
-   * @param name - The symbolic name of the field
    * @param key  - The numeric identifier of the field
    */
-  t_field(const t_type* type, std::string name, int32_t key)
-      : t_named(name), type_(type), key_(key) {}
+  t_field(t_type_ref type, std::string name, int32_t key = 0)
+      : t_named(std::move(name)), type_(std::move(type)), key_(key) {}
 
   t_field(const t_field&) = delete;
   t_field& operator=(const t_field&) = delete;
@@ -71,11 +63,16 @@ class t_field : public t_named {
     opt_in_req_out = 2,
   };
 
-  /**
-   * t_field setters
-   */
-  void set_value(std::unique_ptr<t_const_value> value) {
+  void set_default_value(std::unique_ptr<t_const_value> value) {
     value_ = std::move(value);
+  }
+
+  const t_const_value* get_default_value() const {
+    return value_.get();
+  }
+
+  t_const_value* get_default_value() {
+    return value_.get();
   }
 
   void set_req(e_req req) {
@@ -90,19 +87,11 @@ class t_field : public t_named {
    * t_field getters
    */
   const t_type* get_type() const {
-    return type_;
+    return type_.get_type();
   }
 
   int32_t get_key() const {
     return key_;
-  }
-
-  const t_const_value* get_value() const {
-    return value_.get();
-  }
-
-  t_const_value* get_value() {
-    return value_.get();
   }
 
   const t_field* get_next() const {
@@ -132,18 +121,38 @@ class t_field : public t_named {
   }
 
  private:
-  const t_type* type_;
-  int32_t key_{0};
-  std::unique_ptr<t_const_value> value_{nullptr};
-  const t_field* next_{nullptr};
+  t_type_ref type_;
+  int32_t key_;
+  std::unique_ptr<t_const_value> value_;
+  const t_field* next_ = nullptr;
 
   e_req req_{e_req::opt_in_req_out};
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+
+  t_field(const t_type* type, std::string name, int32_t key = 0)
+      : t_field(t_type_ref(type), std::move(name), key) {}
+
+  void set_value(std::unique_ptr<t_const_value> value) {
+    set_default_value(std::move(value));
+  }
+
+  const t_const_value* get_value() const {
+    return get_default_value();
+  }
+
+  t_const_value* get_value() {
+    return get_default_value();
+  }
 };
 
 /**
  * A simple struct for the parser to use to store a field ID, and whether or
  * not it was specified by the user or automatically chosen.
  */
+// TODO(afuller): Move to parse_driver.h
 struct t_field_id {
   int64_t value;
   bool auto_assigned;

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include <thrift/compiler/ast/t_scope.h>
@@ -36,11 +37,11 @@ class t_typedef : public t_type {
  public:
   t_typedef(
       t_program* program,
-      const t_type* type,
+      t_type_ref type,
       std::string symbolic,
       t_scope* scope)
       : t_type(program, symbolic),
-        type_(type),
+        type_(std::move(type)),
         symbolic_(std::move(symbolic)),
         scope_(scope),
         defined_(true) {}
@@ -52,7 +53,6 @@ class t_typedef : public t_type {
    */
   t_typedef(t_program* program, const std::string& symbolic, t_scope* scope)
       : t_type(program, symbolic),
-        type_(nullptr),
         symbolic_(symbolic),
         scope_(scope),
         defined_(false) {}
@@ -63,7 +63,9 @@ class t_typedef : public t_type {
    */
   bool resolve_placeholder();
 
-  const t_type* get_type() const;
+  const t_type* get_type() const {
+    return type_.get_type();
+  }
 
   const std::string& get_symbolic() const {
     return symbolic_;
@@ -124,10 +126,21 @@ class t_typedef : public t_type {
   }
 
  private:
-  const t_type* type_;
+  t_type_ref type_;
   std::string symbolic_;
   t_scope* scope_;
   bool defined_{true};
+
+ public:
+  // TODO(afuller): Remove everything below here, as it is just provided for
+  // backwards compatibility.
+
+  t_typedef(
+      t_program* program,
+      const t_type* type,
+      std::string symbolic,
+      t_scope* scope)
+      : t_typedef(program, t_type_ref(type), std::move(symbolic), scope) {}
 };
 
 } // namespace compiler

@@ -20,6 +20,7 @@
 
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -48,12 +49,12 @@ class t_const : public t_named {
    */
   t_const(
       t_program* program,
-      const t_type* type,
+      t_type_ref type,
       std::string name,
       std::unique_ptr<t_const_value> value)
       : t_named(std::move(name)),
         program_(program),
-        type_(type),
+        type_(std::move(type)),
         value_(std::move(value)) {
     // value->get_owner() is set when rhs is referencing another constant.
     if (value_ && value_->get_owner() == nullptr) {
@@ -69,7 +70,7 @@ class t_const : public t_named {
   }
 
   const t_type* get_type() const {
-    return type_;
+    return type_.get_type();
   }
 
   t_const_value* get_value() const {
@@ -78,8 +79,19 @@ class t_const : public t_named {
 
  private:
   t_program* program_;
-  const t_type* type_;
+  t_type_ref type_;
   std::unique_ptr<t_const_value> value_;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+
+  t_const(
+      t_program* program,
+      const t_type* type,
+      std::string name,
+      std::unique_ptr<t_const_value> value)
+      : t_const(program, t_type_ref(type), std::move(name), std::move(value)) {}
 };
 
 } // namespace compiler
