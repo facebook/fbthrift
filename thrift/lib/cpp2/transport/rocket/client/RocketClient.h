@@ -375,21 +375,16 @@ class RocketClient : public folly::DelayedDestruction,
   struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
     template <typename K>
     size_t operator()(const K& key) const {
-      return folly::f14::DefaultHasher<StreamId>::operator()(
-          streamIdResolver_(key));
+      StreamIdResolver resolver;
+      return folly::f14::DefaultHasher<StreamId>::operator()(resolver(key));
     }
-
-   private:
-    StreamIdResolver streamIdResolver_;
   };
   struct StreamMapEquals {
     template <typename A, typename B>
     bool operator()(const A& a, const B& b) const {
-      return streamIdResolver_(a) == streamIdResolver_(b);
+      StreamIdResolver resolver;
+      return resolver(a) == resolver(b);
     }
-
-   private:
-    StreamIdResolver streamIdResolver_;
   };
   using StreamMap = folly::F14FastSet<
       ServerCallbackUniquePtr,
