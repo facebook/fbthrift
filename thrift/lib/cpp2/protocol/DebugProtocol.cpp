@@ -19,6 +19,11 @@
 #include <folly/Conv.h>
 #include <folly/String.h>
 
+DEFINE_bool(
+    thrift_cpp2_debug_skip_list_indices,
+    false,
+    "Wether to skip indices when debug-printing lists (unless overridden)");
+
 namespace apache {
 namespace thrift {
 
@@ -112,10 +117,10 @@ void DebugProtocolWriter::startItem() {
       writePlain(" -> ");
       break;
     case LIST:
-      if (options_.printListIndices) {
-        writeIndented("[{}] = ", ws.index);
-      } else {
+      if (options_.skipListIndices) {
         writeIndent();
+      } else {
+        writeIndented("[{}] = ", ws.index);
       }
       break;
   }

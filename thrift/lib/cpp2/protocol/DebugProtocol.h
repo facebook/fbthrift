@@ -20,9 +20,12 @@
 #include <fmt/core.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+DECLARE_bool(thrift_cpp2_debug_skip_list_indices);
 
 namespace apache {
 namespace thrift {
@@ -31,7 +34,7 @@ class DebugProtocolWriter {
  public:
   struct Options {
     Options() {}
-    bool printListIndices = true;
+    bool skipListIndices = FLAGS_thrift_cpp2_debug_skip_list_indices;
   };
 
   using ProtocolReader = void;
