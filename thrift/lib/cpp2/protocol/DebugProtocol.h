@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 DECLARE_bool(thrift_cpp2_debug_skip_list_indices);
+DECLARE_int64(thrift_cpp2_debug_string_limit);
 
 namespace apache {
 namespace thrift {
@@ -35,6 +36,7 @@ class DebugProtocolWriter {
   struct Options {
     Options() {}
     bool skipListIndices = FLAGS_thrift_cpp2_debug_skip_list_indices;
+    size_t stringLengthLimit = FLAGS_thrift_cpp2_debug_string_limit;
   };
 
   using ProtocolReader = void;

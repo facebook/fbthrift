@@ -23,6 +23,10 @@ DEFINE_bool(
     thrift_cpp2_debug_skip_list_indices,
     false,
     "Wether to skip indices when debug-printing lists (unless overridden)");
+DEFINE_int64(
+    thrift_cpp2_debug_string_limit,
+    256,
+    "Limit on string size when debug-printing thrift, 0 is no limit");
 
 namespace apache {
 namespace thrift {
@@ -447,17 +451,20 @@ uint32_t DebugProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
 }
 
 void DebugProtocolWriter::writeByteRange(folly::ByteRange v) {
-  static constexpr size_t kStringLimit = 256;
   static constexpr size_t kStringPrefixSize = 128;
+  const size_t limit = options_.stringLengthLimit;
 
   auto str = folly::StringPiece(v);
-  std::string toShow = str.str();
-  if (toShow.length() > kStringLimit) {
-    toShow = str.subpiece(0, kStringPrefixSize).str();
-    folly::toAppend("[...](", str.size(), ")", &toShow);
+
+  folly::StringPiece toShow = limit != 0 && str.size() > limit
+      ? str.subpiece(0, std::min(kStringPrefixSize, limit))
+      : str;
+  std::string printed = folly::cEscape<std::string>(toShow);
+  if (toShow.size() < str.size()) {
+    folly::toAppend("[...](", str.size(), ")", &printed);
   }
 
-  writeItem("\"{}\"", folly::cEscape<std::string>(toShow));
+  writeItem("\"{}\"", printed);
 }
 
 } // namespace thrift
