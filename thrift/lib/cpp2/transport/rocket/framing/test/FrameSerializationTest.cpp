@@ -137,6 +137,31 @@ TEST(FrameSerialization, RequestResponseSanity) {
   validate(serializeAndDeserialize(std::move(frame)));
 }
 
+TEST(FrameSerialization, RequestResponseNoHeadroomWriteForSharedBuf) {
+  // Verify headroom write not attampted on shared IOBufs
+  const std::string str = "12345678901234567890abcdef";
+  auto dt = folly::IOBuf::wrapBuffer(str.data(), str.size());
+  auto md = dt->clone();
+  // share the same underlying buffer, but leave enough headroom for
+  // frame header, if it was attempted to be written to the headroom
+  md->trimStart(20);
+  RequestResponseFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(std::move(md), std::move(dt)));
+
+  auto serialBuf = std::move(frame).serialize();
+  // deserialize
+  serialBuf->coalesce();
+  serialBuf->trimStart(Serializer::kBytesForFrameOrMetadataLength);
+  RequestResponseFrame frame2(std::move(serialBuf));
+
+  auto dataAndMetadata = splitMetadataAndData(frame2.payload());
+  // Explicitly check copies in comparison, in case of erroneous write
+  // to headroom original input data would be overwritten.
+  EXPECT_EQ("abcdef", getRange(*dataAndMetadata.first));
+  EXPECT_EQ("12345678901234567890abcdef", getRange(*dataAndMetadata.second));
+}
+
 TEST(FrameSerialization, RequestFnfSanity) {
   RequestFnfFrame frame(
       kTestStreamId, Payload::makeFromMetadataAndData(kMetadata, kData));

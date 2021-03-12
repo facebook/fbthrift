@@ -151,6 +151,7 @@ std::unique_ptr<folly::IOBuf> serializeIntoHeadroomIfPossible(Frame&& frame) {
   constexpr size_t kHeadroomSize =
       Frame::frameHeaderSize() + 2 * Serializer::kBytesForFrameOrMetadataLength;
   if (LIKELY(
+          !frame.payload().buffer()->isSharedOne() &&
           frame.payload().metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
           frame.payload().hasNonemptyMetadata() &&
           frame.payload().buffer()->headroom() >= kHeadroomSize)) {
