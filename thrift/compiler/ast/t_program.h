@@ -152,11 +152,6 @@ class t_program : public t_node {
     cpp_includes_.push_back(std::move(path));
   }
 
-  // Only used in py_frontend.tcc
-  void set_namespace(std::string name) {
-    namespace_ = std::move(name);
-  }
-
   /**
    * Language neutral namespace/packaging
    *
@@ -176,10 +171,6 @@ class t_program : public t_node {
 
   const std::string& name() const {
     return name_;
-  }
-
-  const std::string& get_namespace() const {
-    return namespace_;
   }
 
   const std::string& include_prefix() const {
@@ -329,7 +320,6 @@ class t_program : public t_node {
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};
-  std::string namespace_;
   std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
