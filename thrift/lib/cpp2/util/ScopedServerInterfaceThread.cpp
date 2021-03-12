@@ -54,7 +54,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     configCb(*ts);
   }
   ts_ = ts;
-  sst_.start(ts_);
+  sst_.start(ts_, [ts]() { ts->getEventBaseManager()->clearEventBase(); });
 }
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
