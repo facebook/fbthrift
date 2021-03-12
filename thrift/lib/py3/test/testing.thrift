@@ -281,6 +281,19 @@ struct ComplexRef {
   );
 }
 
+struct StructuredAnnotation {
+  2: map<double, i64> first;
+  3: i64 second;
+  4: list<string> third;
+  5: StructuredAnnotation recurse (cpp.ref = "True");
+}
+
+@StructuredAnnotation{
+  first={1.1: 2},
+  second=3,
+  third=["a", "b"],
+  recurse=StructuredAnnotation{third=["3", "4"]}
+}
 service TestingService {
   string getName();
   string getMethodName();

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from types import MappingProxyType
+
 from libcpp.utility cimport move
 from thrift.py3.types cimport CompiledEnum, Struct
 from thrift.py3.exceptions cimport GeneratedError
@@ -42,6 +44,8 @@ from apache.thrift.metadata.types cimport (
     ThriftTypedefType,
     ThriftSinkType,
     ThriftStreamType,
+    ThriftConstStruct,
+    ThriftConstValue,
 )
 
 
@@ -56,6 +60,16 @@ cpdef enum ThriftKind:
     TYPEDEF = 7
     STREAM = 8
     SINK = 9
+
+
+cpdef enum ThriftConstKind:
+    CV_BOOL = 0
+    CV_INT = 1
+    CV_FLOAT = 2
+    CV_STRING = 3
+    CV_MAP = 4
+    CV_LIST = 5
+    CV_STRUCT = 6
 
 
 cdef class ThriftTypeProxy:
@@ -229,6 +243,7 @@ cdef class ThriftFieldProxy:
     cdef readonly int id
     cdef readonly str name
     cdef readonly int is_optional
+    cdef readonly tuple structuredAnnotations
 
     def __init__(self, ThriftField thriftType not None, ThriftMetadata thriftMeta not None):
         self.type = ThriftTypeProxy.create(thriftType.type, thriftMeta)
@@ -237,16 +252,19 @@ cdef class ThriftFieldProxy:
         self.id = self.thriftType.id
         self.name = self.thriftType.name
         self.is_optional = self.thriftType.is_optional
+        self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
 
 cdef class ThriftStructProxy(ThriftTypeProxy):
     cdef readonly str name
     cdef readonly int is_union
+    cdef readonly tuple structuredAnnotations
 
     def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftMeta.structs[name], thriftMeta)
         self.name = self.thriftType.name
         self.is_union = self.thriftType.is_union
+        self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
         if self.is_union:
             self.kind = ThriftKind.UNION
@@ -259,15 +277,91 @@ cdef class ThriftStructProxy(ThriftTypeProxy):
             yield ThriftFieldProxy(field, self.thriftMeta)
 
 
+cdef class ThriftConstValueProxy:
+    cdef readonly ThriftConstValue thriftType
+    cdef readonly ThriftConstKind kind
+    cdef readonly object type
+    def __init__(self, ThriftConstValue value not None):
+        self.thriftType = value
+        if self.thriftType.type in (ThriftConstValue.Type.cv_bool, ThriftConstValue.Type.cv_integer, ThriftConstValue.Type.cv_double, ThriftConstValue.Type.cv_string):
+            self.type = self.thriftType.value
+            if ThriftConstValue.Type.cv_bool:
+                self.kind = CV_BOOL
+            elif ThriftConstValue.Type.cv_integer:
+                self.kind = CV_INT
+            elif ThriftConstValue.Type.cv_double:
+                self.kind = CV_FLOAT
+            else:
+                self.kind = CV_STRING
+        if self.thriftType.type is ThriftConstValue.Type.cv_struct:
+            self.type = ThriftConstStructProxy(self.thriftType.value)
+            self.kind = CV_STRUCT
+        if self.thriftType.type is ThriftConstValue.Type.cv_list:
+            self.type = tuple(ThriftConstValueProxy(ele) for ele in self.thriftType.value)
+            self.kind = CV_LIST
+        if self.thriftType.type is ThriftConstValue.Type.cv_map:
+            self.type = MappingProxyType({ThriftConstValueProxy(ele.key).type: ThriftConstValueProxy(ele.value) for ele in self.thriftType.value})
+            self.kind = CV_MAP
+
+    def as_bool(self):
+        if self.kind == ThriftConstKind.CV_BOOL:
+            return self.type
+        raise TypeError('Type is not a boolean')
+
+    def as_int(self):
+        if self.kind == ThriftConstKind.CV_INT:
+            return self.type
+        raise TypeError('Type is not an integer')
+
+    def as_float(self):
+        if self.kind == ThriftConstKind.CV_FLOAT:
+            return self.type
+        raise TypeError('Type is not a float')
+
+    def as_string(self):
+        if self.kind == ThriftConstKind.CV_STRING:
+            return self.type
+        raise TypeError('Type is not a string')
+
+    def as_struct(self):
+        if self.kind == ThriftConstKind.CV_STRUCT:
+            return self.type
+        raise TypeError('Type is not a struct')
+
+    def as_list(self):
+        if self.kind == ThriftConstKind.CV_LIST:
+            return self.type
+        raise TypeError('Type is not a list')
+    def as_map(self):
+        if self.kind == ThriftConstKind.CV_MAP:
+            return self.type
+        raise TypeError('Type is not a map')
+
+cdef class ThriftConstStructProxy:
+    cdef readonly ThriftConstStruct thriftType
+    cdef readonly str name
+    cdef readonly ThriftKind kind
+    def __init__(self, ThriftConstStruct struct not None):
+        self.name = struct.type.name
+        self.kind = ThriftKind.STRUCT
+        self.thriftType = struct
+
+    @property
+    def fields(self):
+        return MappingProxyType({key: ThriftConstValueProxy(self.thriftType.fields[key]) for key in self.thriftType.fields})
+
+
 cdef class ThriftExceptionProxy:
     cdef readonly ThriftException thriftType
     cdef readonly ThriftMetadata thriftMeta
     cdef readonly str name
+    cdef readonly tuple structuredAnnotations
 
     def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         self.thriftType = thriftMeta.exceptions[name]
         self.thriftMeta = thriftMeta
         self.name = self.thriftType.name
+        self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
     @property
     def fields(self):
@@ -281,6 +375,7 @@ cdef class ThriftFunctionProxy:
     cdef readonly ThriftMetadata thriftMeta
     cdef readonly ThriftTypeProxy return_type
     cdef readonly int is_oneway
+    cdef readonly tuple structuredAnnotations
 
     def __init__(self, ThriftFunction thriftType not None, ThriftMetadata thriftMeta not None):
         self.name = thriftType.name
@@ -288,6 +383,7 @@ cdef class ThriftFunctionProxy:
         self.thriftMeta = thriftMeta
         self.return_type = ThriftTypeProxy.create(self.thriftType.return_type, self.thriftMeta)
         self.is_oneway = self.thriftType.is_oneway
+        self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
     @property
     def arguments(self):
@@ -305,6 +401,7 @@ cdef class ThriftServiceProxy:
     cdef readonly str name
     cdef readonly ThriftMetadata thriftMeta
     cdef readonly ThriftServiceProxy parent
+    cdef readonly tuple structuredAnnotations
 
     def __init__(self, str name not None, ThriftMetadata thriftMeta not None):
         self.thriftType = thriftMeta.services[name]
@@ -314,6 +411,7 @@ cdef class ThriftServiceProxy:
             self.thriftType.parent,
             self.thriftMeta
         )
+        self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
     @property
     def functions(self):

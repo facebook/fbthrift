@@ -188,3 +188,28 @@ class MetadataTests(unittest.TestCase):
         parent = serv2.parent
         self.assertIsNotNone(parent)
         self.assertEqual(parent.name, "testing.TestingService")
+
+    def test_metadata_structured_annotations(self) -> None:
+        annotations = gen_metadata(TestingService).structuredAnnotations
+        self.assertEqual(len(annotations), 1)
+
+        annotation = annotations[0]
+        self.assertEqual(annotation.name, "testing.StructuredAnnotation")
+        self.assertEqual(len(list(annotation.fields)), 4)
+
+        first = annotation.fields["first"]
+        second = annotation.fields["second"]
+        third = annotation.fields["third"]
+        recurse = annotation.fields["recurse"]
+
+        self.assertEqual(len(list(first.as_map())), 1)
+        self.assertEqual(first.as_map()[1.1].type, 2)
+
+        self.assertEqual(second.type, 3)
+        self.assertEqual(third.as_list()[0].type, "a")
+        self.assertEqual(third.as_list()[1].type, "b")
+
+        recStruct = recurse.as_struct()
+        third = recStruct.fields["third"]
+        self.assertEqual(third.as_list()[0].type, "3")
+        self.assertEqual(third.as_list()[1].type, "4")

@@ -19,6 +19,8 @@ from typing import (
     Type,
     Tuple,
     Union,
+    Mapping,
+    Sequence,
     Optional,
     overload,
 )
@@ -42,6 +44,8 @@ from apache.thrift.metadata.types import (
     ThriftTypedefType,
     ThriftSinkType,
     ThriftStreamType,
+    ThriftConstStruct,
+    ThriftConstValue,
 )
 from thrift.py3.client import Client
 from thrift.py3.exceptions import GeneratedError
@@ -59,6 +63,15 @@ class ThriftKind(Enum):
     TYPEDEF: ThriftKind = ...
     STREAM: ThriftKind = ...
     SINK: ThriftKind = ...
+
+class ThriftConstKind(Enum):
+    CV_BOOL: ThriftConstKind = ...
+    CV_INT: ThriftConstKind = ...
+    CV_FLOAT: ThriftConstKind = ...
+    CV_STRING: ThriftConstKind = ...
+    CV_MAP: ThriftConstKind = ...
+    CV_LIST: ThriftConstKind = ...
+    CV_STRUCT: ThriftConstKind = ...
 
 class Metadata(Protocol):
     def getThriftModuleMetadata(self) -> ThriftMetadata: ...
@@ -124,6 +137,7 @@ class ThriftFieldProxy(Protocol):
     type: ThriftTypeProxy
     thriftType: ThriftField
     thriftMeta: ThriftMetadata
+    structuredAnnotations: Sequence[ThriftConstStructProxy]
 
 class ThriftStructProxy(ThriftTypeProxy):
     thriftType: ThriftStruct
@@ -131,12 +145,41 @@ class ThriftStructProxy(ThriftTypeProxy):
     name: str
     fields: Iterator[ThriftFieldProxy]
     is_union: bool
+    structuredAnnotations: Sequence[ThriftConstStructProxy]
+
+ConstType = Union[  # type: ignore
+    bool,
+    int,
+    float,
+    str,
+    Sequence[ThriftConstValueProxy],
+    Mapping[ConstType, ThriftConstValueProxy],
+    ThriftConstStructProxy,
+]
+
+class ThriftConstValueProxy:
+    thriftType: ThriftConstValue
+    type: ConstType
+    kind: ThriftConstKind
+    def as_bool(self) -> bool: ...
+    def as_int(self) -> int: ...
+    def as_float(self) -> float: ...
+    def as_str(self) -> str: ...
+    def as_list(self) -> Sequence[ThriftConstValueProxy]: ...
+    def as_map(self) -> Mapping[ConstType, ThriftConstValueProxy]: ...
+    def as_struct(self) -> ThriftConstStructProxy: ...
+
+class ThriftConstStructProxy:
+    thriftType: ThriftConstStruct
+    fields: Mapping[str, ThriftConstValueProxy]
+    name: str
 
 class ThriftExceptionProxy(Protocol):
     name: str
     fields: Iterator[ThriftFieldProxy]
     thriftType: ThriftException
     thriftMeta: ThriftMetadata
+    structuredAnnotations: Sequence[ThriftConstStructProxy]
 
 class ThriftFunctionProxy(Protocol):
     name: str
@@ -146,6 +189,7 @@ class ThriftFunctionProxy(Protocol):
     is_oneway: bool
     thriftType: ThriftFunction
     thriftMeta: ThriftMetadata
+    structuredAnnotations: Sequence[ThriftConstStructProxy]
 
 class ThriftServiceProxy(Protocol):
     name: str
@@ -153,6 +197,7 @@ class ThriftServiceProxy(Protocol):
     parent: Optional[ThriftServiceProxy]
     thriftType: ThriftService
     thriftMeta: ThriftMetadata
+    structuredAnnotations: Sequence[ThriftConstStructProxy]
 
 @overload
 def gen_metadata(cls: Metadata) -> ThriftMetadata: ...
