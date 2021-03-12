@@ -19,6 +19,7 @@ set(
   "TMultiplexedProcessor.py"
   "Thrift.py"
   "__init__.py"
+  "async_common.py"
   "protocol/TBinaryProtocol.py"
   "protocol/TCompactProtocol.py"
   "protocol/THeaderProtocol.py"
