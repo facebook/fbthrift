@@ -117,31 +117,31 @@ class t_program : public t_node {
   /**
    * Get program elements
    */
-  const std::vector<t_typedef*>& get_typedefs() const {
+  const std::vector<t_typedef*>& typedefs() const {
     return typedefs_;
   }
-  const std::vector<t_enum*>& get_enums() const {
+  const std::vector<t_enum*>& enums() const {
     return enums_;
   }
-  const std::vector<t_const*>& get_consts() const {
+  const std::vector<t_const*>& consts() const {
     return consts_;
   }
-  const std::vector<t_struct*>& get_structs() const {
+  const std::vector<t_struct*>& structs() const {
     return structs_;
   }
-  const std::vector<t_exception*>& get_xceptions() const {
+  const std::vector<t_exception*>& xceptions() const {
     return xceptions_;
   }
-  const std::vector<t_struct*>& get_objects() const {
+  const std::vector<t_struct*>& objects() const {
     return objects_;
   }
-  const std::vector<t_service*>& get_services() const {
+  const std::vector<t_service*>& services() const {
     return services_;
   }
-  const std::vector<t_typedef*>& get_placeholder_typedefs() const {
+  const std::vector<t_typedef*>& placeholder_typedefs() const {
     return placeholder_typedefs_;
   }
-  const std::vector<t_service*>& get_interactions() const {
+  const std::vector<t_service*>& interactions() const {
     return interactions_;
   }
 
@@ -170,11 +170,11 @@ class t_program : public t_node {
   /**
    * t_program getters
    */
-  const std::string& get_path() const {
+  const std::string& path() const {
     return path_;
   }
 
-  const std::string& get_name() const {
+  const std::string& name() const {
     return name_;
   }
 
@@ -182,7 +182,7 @@ class t_program : public t_node {
     return namespace_;
   }
 
-  const std::string& get_include_prefix() const {
+  const std::string& include_prefix() const {
     return include_prefix_;
   }
 
@@ -191,7 +191,7 @@ class t_program : public t_node {
    * type t_include*, and contains information about the program included, as
    * well as the location of the include statement.
    */
-  const std::vector<t_include*>& get_includes() const {
+  const std::vector<t_include*>& includes() const {
     return includes_;
   }
 
@@ -211,12 +211,12 @@ class t_program : public t_node {
   }
 
   // Only used in py_frontend.tcc
-  const std::map<std::string, std::string>& get_namespaces() const {
+  const std::map<std::string, std::string>& namespaces() const {
     return namespaces_;
   }
 
   // Only used in t_cpp_generator
-  const std::vector<std::string>& get_cpp_includes() const {
+  const std::vector<std::string>& cpp_includes() const {
     return cpp_includes_;
   }
 
@@ -259,6 +259,55 @@ class t_program : public t_node {
    * @param path - A *.thrift file path
    */
   std::string compute_name_from_file_path(std::string path);
+
+  /**
+   * TODO: remove, see: T84718055
+   */
+  const std::vector<t_typedef*>& get_typedefs() const {
+    return typedefs();
+  }
+  const std::vector<t_enum*>& get_enums() const {
+    return enums();
+  }
+  const std::vector<t_const*>& get_consts() const {
+    return consts();
+  }
+  const std::vector<t_struct*>& get_structs() const {
+    return structs();
+  }
+  const std::vector<t_exception*>& get_xceptions() const {
+    return xceptions();
+  }
+  const std::vector<t_struct*>& get_objects() const {
+    return objects();
+  }
+  const std::vector<t_service*>& get_services() const {
+    return services();
+  }
+  const std::vector<t_typedef*>& get_placeholder_typedefs() const {
+    return placeholder_typedefs();
+  }
+  const std::vector<t_service*>& get_interactions() const {
+    return interactions();
+  }
+  const std::string& get_path() const {
+    return path();
+  }
+  const std::string& get_name() const {
+    return name();
+  }
+  const std::string& get_include_prefix() const {
+    return include_prefix();
+  }
+  const std::vector<t_include*>& get_includes() const {
+    return includes();
+  }
+  const std::map<std::string, std::string>& get_namespaces() const {
+    return namespaces();
+  }
+  const std::vector<std::string>& get_cpp_includes() const {
+    return cpp_includes();
+  }
 
  private:
   // All the elements owned by this program.
