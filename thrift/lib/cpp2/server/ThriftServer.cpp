@@ -228,6 +228,8 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 }
 
 void ThriftServer::setup() {
+  THRIFT_SERVER_EVENT(serve).log(*this);
+
   DCHECK(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
@@ -442,7 +444,6 @@ void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
  * Loop and accept incoming connections.
  */
 void ThriftServer::serve() {
-  THRIFT_SERVER_EVENT(serve).log(*this);
   setup();
   if (serverChannel_ != nullptr) {
     // A duplex server (the one running on a client) doesn't uses its own EB
