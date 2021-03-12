@@ -174,6 +174,8 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     return;
   }
 
+  frameHandler_->onBeforeHandleFrame();
+
   folly::io::Cursor cursor(frame.get());
   const auto streamId = readStreamId(cursor);
   FrameType frameType;

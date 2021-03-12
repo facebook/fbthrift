@@ -100,6 +100,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
     return &connContext_;
   }
 
+  void onBeforeHandleFrame() override;
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;

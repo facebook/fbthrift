@@ -357,8 +357,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   folly::RequestContextScopeGuard rctx(reqCtx);
 
-  worker_->getServer()->touchRequestTimestamp();
-
   rocket::Payload debugPayload = payload.clone();
   auto requestPayloadTry =
       unpackAsCompressed<RequestPayload>(std::move(payload));
@@ -572,6 +570,10 @@ void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
   if (cpp2Processor_) {
     cpp2Processor_->terminateInteraction(id, connContext_, *eventBase_);
   }
+}
+
+void ThriftRocketServerHandler::onBeforeHandleFrame() {
+  worker_->getServer()->touchRequestTimestamp();
 }
 } // namespace rocket
 } // namespace thrift

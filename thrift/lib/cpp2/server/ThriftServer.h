@@ -134,6 +134,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::optional<std::chrono::milliseconds> sslHandshakeTimeout_;
   std::atomic<std::chrono::steady_clock::duration::rep> lastRequestTime_;
 
+  // Includes non-request events in Rocket. Only bumped if idleTimeout set.
   std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
   void touchRequestTimestamp() noexcept;
 

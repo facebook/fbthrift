@@ -195,18 +195,15 @@ ThriftServer::IdleServerAction::IdleServerAction(
 void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   try {
     auto const lastRequestTime = server_.lastRequestTime();
-    if (lastRequestTime.time_since_epoch() !=
-        std::chrono::steady_clock::duration::zero()) {
-      auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
-      if (elapsed >= timeout_) {
-        LOG(INFO) << "shutting down server due to inactivity after "
-                  << std::chrono::duration_cast<std::chrono::milliseconds>(
-                         elapsed)
-                         .count()
-                  << "ms";
-        server_.stop();
-        return;
-      }
+    auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
+    if (elapsed >= timeout_) {
+      LOG(INFO) << "shutting down server due to inactivity after "
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                       elapsed)
+                       .count()
+                << "ms";
+      server_.stop();
+      return;
     }
 
     timer_.scheduleTimeout(this, timeout_);
@@ -219,14 +216,14 @@ std::chrono::steady_clock::time_point ThriftServer::lastRequestTime()
     const noexcept {
   return std::chrono::steady_clock::time_point(
       std::chrono::steady_clock::duration(
-          lastRequestTime_.load(std::memory_order_acquire)));
+          lastRequestTime_.load(std::memory_order_relaxed)));
 }
 
 void ThriftServer::touchRequestTimestamp() noexcept {
   if (idleServer_.has_value()) {
     lastRequestTime_.store(
         std::chrono::steady_clock::now().time_since_epoch().count(),
-        std::memory_order_release);
+        std::memory_order_relaxed);
   }
 }
 
