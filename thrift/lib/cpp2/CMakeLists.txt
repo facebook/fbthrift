@@ -87,24 +87,6 @@ target_link_libraries(
     Folly::folly
 )
 
-bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
-add_library(
-  rocketupgrade
-
-  GeneratedCodeHelper.cpp
-  server/RequestsRegistry.cpp
-  util/Checksum.cpp
-  ${RocketUpgrade-cpp2-SOURCES}
-)
-add_dependencies(rocketupgrade RocketUpgrade-cpp2-target)
-target_link_libraries(
-  rocketupgrade
-  PUBLIC
-    Folly::folly
-    wangle::wangle
-    thrift
-)
-
 bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
   thriftprotocol
@@ -138,6 +120,7 @@ target_link_libraries(
     thrift-core
 )
 
+bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
@@ -168,6 +151,7 @@ add_library(
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
   server/RequestDebugLog.cpp
+  server/RequestsRegistry.cpp
   server/BaseThriftServer.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
@@ -202,12 +186,12 @@ add_library(
   util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
+  ${RocketUpgrade-cpp2-SOURCES}
 )
 add_dependencies(
   thriftcpp2
   rpcmetadata
   thriftmetadata
-  rocketupgrade
 )
 target_link_libraries(
   thriftcpp2
@@ -217,7 +201,6 @@ target_link_libraries(
     thriftmetadata
     thriftfrozen2
     thriftprotocol
-    rocketupgrade
 )
 
 # Install includes
@@ -249,7 +232,6 @@ install(
     thriftfrozen2
     thriftprotocol
     thriftcpp2
-    rocketupgrade
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}
 )
