@@ -1322,7 +1322,7 @@ ResponseAndStreamReturnType:
   FieldType "," StreamReturnType
     {
       driver.debug("ResponseAndStreamReturnType -> FieldType, StreamReturnType");
-      $3->set_first_response_type(own($1)->get_type());
+      $3->set_first_response_type(own($1));
       $$ = $3;
     }
 | StreamReturnType
@@ -1335,19 +1335,19 @@ StreamReturnType:
   tok_stream "<" FieldType ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
-    $$ = new t_stream_response(consume($3).get_type());
+    $$ = new t_stream_response(consume($3));
   }
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
-    $$ = new t_stream_response(consume($3).get_type(), $4);
+    $$ = new t_stream_response(consume($3), $4);
   }
 
 ResponseAndSinkReturnType:
   FieldType "," SinkReturnType
     {
       driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
-      $3->set_first_response(own($1)->get_type());
+      $3->set_first_response(own($1));
       $$ = $3;
     }
 | SinkReturnType
@@ -1361,8 +1361,8 @@ SinkReturnType:
     {
       driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
       $$ = new t_sink(
-        consume($3.first).get_type(), $3.second,
-        consume($5.first).get_type(), $5.second);
+        consume($3.first), $3.second,
+        consume($5.first), $5.second);
     }
 SinkFieldType:
   FieldType

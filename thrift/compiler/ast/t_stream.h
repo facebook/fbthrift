@@ -16,8 +16,11 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
+#include <utility>
 
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -26,21 +29,22 @@ namespace compiler {
 
 class t_stream_response : public t_type {
  public:
-  explicit t_stream_response(
-      const t_type* elem_type,
-      t_struct* throws = nullptr)
-      : elem_type_(elem_type), throws_(throws) {}
+  explicit t_stream_response(t_type_ref elem_type, t_struct* throws = nullptr)
+      : elem_type_(std::move(elem_type)), throws_(throws) {}
 
   const t_type* get_elem_type() const {
-    return elem_type_;
+    return elem_type_.get_type();
   }
 
   const t_type* get_first_response_type() const {
-    return first_response_type_;
+    // TODO(afuller): Fix call sites that don't check has_first_response().
+    // assert(first_response_type_ != nullptr);
+    return has_first_response() ? first_response_type_->get_type() : nullptr;
   }
 
-  void set_first_response_type(const t_type* first_response_type) {
-    first_response_type_ = first_response_type;
+  void set_first_response_type(
+      std::unique_ptr<t_type_ref> first_response_type) {
+    first_response_type_ = std::move(first_response_type);
   }
 
   bool is_streamresponse() const override {
@@ -53,10 +57,10 @@ class t_stream_response : public t_type {
 
   std::string get_full_name() const override {
     if (has_first_response()) {
-      return first_response_type_->get_full_name() + ", stream<" +
-          elem_type_->get_full_name() + ">";
+      return first_response_type_->get_type()->get_full_name() + ", stream<" +
+          elem_type_.get_type()->get_full_name() + ">";
     }
-    return "stream<" + elem_type_->get_full_name() + ">";
+    return "stream<" + elem_type_.get_type()->get_full_name() + ">";
   }
 
   type get_type_value() const override {
@@ -71,9 +75,22 @@ class t_stream_response : public t_type {
   }
 
  private:
-  const t_type* first_response_type_{nullptr};
-  const t_type* elem_type_;
+  t_type_ref elem_type_;
   t_struct* throws_;
+  std::unique_ptr<t_type_ref> first_response_type_;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+
+  explicit t_stream_response(
+      const t_type* elem_type,
+      t_struct* throws = nullptr)
+      : t_stream_response(t_type_ref(elem_type), throws) {}
+
+  void set_first_response_type(const t_type* first_response_type) {
+    first_response_type_ = std::make_unique<t_type_ref>(first_response_type);
+  }
 };
 
 } // namespace compiler
