@@ -22,6 +22,7 @@ from typing import (
     Mapping,
     Sequence,
     Optional,
+    TypeVar,
     overload,
 )
 
@@ -199,6 +200,7 @@ class ThriftServiceProxy(Protocol):
     thriftMeta: ThriftMetadata
     structuredAnnotations: Sequence[ThriftConstStructProxy]
 
+TClient = TypeVar("TClient", bound=Client)
 @overload
 def gen_metadata(cls: Metadata) -> ThriftMetadata: ...
 @overload
@@ -209,7 +211,7 @@ def gen_metadata(
 ) -> ThriftExceptionProxy: ...
 @overload
 def gen_metadata(
-    cls: Union[ServiceInterface, Type[ServiceInterface], Client, Type[Client]]
+    cls: Union[ServiceInterface, Type[ServiceInterface], TClient, Type[TClient]]
 ) -> ThriftServiceProxy: ...
 @overload
 def gen_metadata(cls: Union[ThriftEnumClass, Type[ThriftEnumClass]]) -> ThriftEnum: ...

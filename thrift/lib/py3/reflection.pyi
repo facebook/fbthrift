@@ -14,21 +14,25 @@
 
 from collections.abc import Mapping, Sequence, Set
 from enum import Enum
-from typing import Any, NamedTuple, Optional, Tuple, Type, Union, overload
+from typing import Any, NamedTuple, Optional, Tuple, Type, Union, overload, TypeVar
 
 from thrift.py3.client import Client
 from thrift.py3.exceptions import Error
 from thrift.py3.server import ServiceInterface
 from thrift.py3.types import Struct
+
+TClient = TypeVar("TClient", bound=Client)
 @overload
 def inspect(cls: Union[Struct, Type[Struct], Error, Type[Error]]) -> StructSpec: ...
 @overload
 def inspect(
-    cls: Union[ServiceInterface, Type[ServiceInterface], Client, Type[Client]]
+    cls: Union[ServiceInterface, Type[ServiceInterface], TClient, Type[TClient]]
 ) -> InterfaceSpec: ...
 @overload
-# pyre-ignore[2]: it can be anything in the Sequence
-def inspect(cls: Union[Sequence[Any], Type[Sequence[Any]]]) -> ListSpec: ...
+def inspect(
+    # pyre-ignore[2] : it may return anything
+    cls: Union[Sequence[Any], Type[Sequence[Any]]]
+) -> ListSpec: ...
 @overload
 def inspect(cls: Union[Set[Any], Type[Set[Any]]]) -> SetSpec: ...
 @overload
