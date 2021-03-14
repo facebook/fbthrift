@@ -646,6 +646,25 @@ void BinaryProtocolReader::readFieldBeginWithState(StructReadState& state) {
   }
   readI16(state.fieldId);
 }
+
+constexpr std::size_t BinaryProtocolReader::fixedSizeInContainer(TType type) {
+  switch (type) {
+    case TType::T_BOOL:
+    case TType::T_BYTE:
+      return 1;
+    case TType::T_I16:
+      return 2;
+    case TType::T_I32:
+    case TType::T_FLOAT:
+      return 4;
+    case TType::T_I64:
+    case TType::T_DOUBLE:
+      return 8;
+    default:
+      return 0;
+  }
+}
+
 } // namespace thrift
 } // namespace apache
 

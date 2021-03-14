@@ -76,6 +76,8 @@ class VirtualReaderBase {
   virtual void readBinary(apache::thrift::detail::SkipNoopString& str) = 0;
   virtual void readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
   virtual void readBinary(folly::IOBuf& str) = 0;
+  virtual size_t fixedSizeInContainer(TType) const = 0;
+  virtual void skipBytes(size_t bytes) = 0;
   virtual void skip(TType type) = 0;
   virtual const folly::io::Cursor& getCursor() const = 0;
   virtual size_t getCursorPosition() const = 0;
@@ -293,6 +295,12 @@ class VirtualReader : public VirtualReaderBase {
   }
   void readBinary(folly::IOBuf& str) override {
     protocol_.readBinary(str);
+  }
+  size_t fixedSizeInContainer(TType type) const override {
+    return protocol_.fixedSizeInContainer(type);
+  }
+  void skipBytes(size_t bytes) override {
+    protocol_.skipBytes(bytes);
   }
   void skip(TType type) override {
     protocol_.skip(type);

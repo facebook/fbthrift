@@ -330,6 +330,11 @@ class CompactProtocolReader {
   inline void readBinary(StrType& str);
   inline void readBinary(std::unique_ptr<IOBuf>& str);
   inline void readBinary(IOBuf& str);
+
+  static constexpr std::size_t fixedSizeInContainer(TType type);
+  void skipBytes(size_t bytes) {
+    in_.skip(bytes);
+  }
   void skip(TType type) {
     apache::thrift::skip(*this, type);
   }

@@ -124,6 +124,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readStructBegin;
   using CompactProtocolReader::readStructEnd;
   inline void readDouble(double& dub);
+  using CompactProtocolReader::fixedSizeInContainer;
   using CompactProtocolReader::peekList;
   using CompactProtocolReader::peekMap;
   using CompactProtocolReader::peekSet;
@@ -131,6 +132,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readFloat;
   using CompactProtocolReader::readString;
   using CompactProtocolReader::skip;
+  using CompactProtocolReader::skipBytes;
 
   using CompactProtocolReader::getCursor;
   using CompactProtocolReader::getCursorPosition;

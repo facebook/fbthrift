@@ -853,6 +853,20 @@ FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
   }
 }
 
+constexpr std::size_t CompactProtocolReader::fixedSizeInContainer(TType type) {
+  switch (type) {
+    case TType::T_BOOL:
+    case TType::T_BYTE:
+      return 1;
+    case TType::T_FLOAT:
+      return 4;
+    case TType::T_DOUBLE:
+      return 8;
+    default:
+      return 0;
+  }
+}
+
 } // namespace thrift
 } // namespace apache
 

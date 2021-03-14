@@ -221,6 +221,13 @@ class JSONProtocolReaderCommon {
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf>& ser);
 
+  static constexpr std::size_t fixedSizeInContainer(TType) {
+    return 0;
+  }
+  void skipBytes(size_t bytes) {
+    in_.skip(bytes);
+  }
+
  protected:
   enum class ContextType { MAP, ARRAY };
 

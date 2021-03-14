@@ -211,6 +211,18 @@ void skip_n(
     Protocol_& prot,
     uint32_t n,
     std::initializer_list<WireType> types) {
+  size_t sum = 0;
+  bool allFixedSizes = true;
+  for (auto type : types) {
+    auto size = prot.fixedSizeInContainer(type);
+    sum += size;
+    allFixedSizes = allFixedSizes && size;
+  }
+  if (allFixedSizes) {
+    prot.skipBytes(sum * n);
+    return;
+  }
+
   for (uint32_t i = 0; i < n; i++) {
     for (auto type : types) {
       apache::thrift::skip(prot, type);
