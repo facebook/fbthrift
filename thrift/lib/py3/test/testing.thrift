@@ -288,11 +288,11 @@ struct StructuredAnnotation {
   5: StructuredAnnotation recurse (cpp.ref = "True");
 }
 
-@StructuredAnnotation{
-  first={1.1: 2},
-  second=3,
-  third=["a", "b"],
-  recurse=StructuredAnnotation{third=["3", "4"]}
+@StructuredAnnotation {
+  first = {1.1: 2},
+  second = 3,
+  third = ["a", "b"],
+  recurse = StructuredAnnotation {third = ["3", "4"]},
 }
 service TestingService {
   string getName();
