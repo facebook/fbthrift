@@ -220,7 +220,7 @@ install(
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(rpcmetadata thriftmetadata thriftfrozen2 thriftprotocol
-    rocketupgrade thriftcpp2
+    thriftcpp2
     PROPERTIES VERSION ${PROJECT_VERSION}
     )
 endif()
