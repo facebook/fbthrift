@@ -31,6 +31,8 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
+  constexpr bool kIsProtocolSupported =
+      apache::thrift::ProtocolType::T_COMPACT_PROTOCOL == Protocol_::protocolType();
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -46,7 +48,13 @@ void Foo::readNoXfer(Protocol_* iprot) {
     goto _loop;
   }
 _readField_field1:
-  {
+  if constexpr (kIsProtocolSupported) {
+    auto cursor = iprot->getCursor();
+    iprot->skip(apache::thrift::protocol::T_STRING);
+    cursor.clone(__fbthrift_serializedData_.field1, iprot->getCursor() - cursor);
+    __fbthrift_serializedData_.field1.makeManaged();
+    __fbthrift_isDeserialized_.field1 = false;
+  } else {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field1, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
@@ -76,7 +84,13 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  {
+  if constexpr (kIsProtocolSupported) {
+    auto cursor = iprot->getCursor();
+    iprot->skip(apache::thrift::protocol::T_LIST);
+    cursor.clone(__fbthrift_serializedData_.field3, iprot->getCursor() - cursor);
+    __fbthrift_serializedData_.field3.makeManaged();
+    __fbthrift_isDeserialized_.field3 = false;
+  } else {
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);
@@ -168,6 +182,55 @@ _skip:
       goto _loop;
     }
   }
+}
+const ::std::string& Foo::__fbthrift_read_field_field1() const {
+
+  if (__fbthrift_isDeserialized_.field1) {
+    return field1;
+  }
+
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field1);
+  if (!__fbthrift_isDeserialized_.field1) {
+    auto* ptr = &this->field1;
+
+    ::apache::thrift::CompactProtocolReader reader;
+    reader.setInput(&__fbthrift_serializedData_.field1);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::read(reader, *ptr);
+
+
+    __fbthrift_isDeserialized_.field1 = true;
+  }
+  return field1;
+}
+
+::std::string& Foo::__fbthrift_read_field_field1() {
+  std::as_const(*this).__fbthrift_read_field_field1();
+  return field1;
+}
+const ::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() const {
+
+  if (__fbthrift_isDeserialized_.field3) {
+    return field3;
+  }
+
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field3);
+  if (!__fbthrift_isDeserialized_.field3) {
+    auto* ptr = &this->field3;
+    this->field3 = ::std::vector<::std::int32_t>();
+
+    ::apache::thrift::CompactProtocolReader reader;
+    reader.setInput(&__fbthrift_serializedData_.field3);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::read(reader, *ptr);
+
+
+    __fbthrift_isDeserialized_.field3 = true;
+  }
+  return field3;
+}
+
+::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() {
+  std::as_const(*this).__fbthrift_read_field_field3();
+  return field3;
 }
 
 template <class Protocol_>

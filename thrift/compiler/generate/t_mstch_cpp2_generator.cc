@@ -733,6 +733,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
+            {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
             {"struct:fatal_annotations?",
              &mstch_cpp2_struct::has_fatal_annotations},
@@ -849,6 +850,14 @@ class mstch_cpp2_struct : public mstch_struct {
       throw std::runtime_error("No cpp.allocator_via field \"" + *name + "\"");
     }
     return std::string();
+  }
+  mstch::node has_lazy_fields() {
+    for (const auto* field : strct_->get_members()) {
+      if (field_is_lazy(field)) {
+        return true;
+      }
+    }
+    return false;
   }
   mstch::node has_isset_fields() {
     for (const auto* field : strct_->fields()) {

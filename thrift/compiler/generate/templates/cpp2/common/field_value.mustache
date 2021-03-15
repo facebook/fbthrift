@@ -14,17 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields_in_layout_order%><%#field:type%>
- <%field:visibility%>:
-  <%#field:lazy?%>mutable <%/field:lazy?%><% > types/ref_type%> <%field:cpp_name%>;
-<%/field:type%><%/struct:fields_in_layout_order%>
-
- public:
-<%#struct:isset_fields?%>
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-<%#struct:isset_fields%>
-    bool <%field:cpp_name%>;
-<%/struct:isset_fields%>
-  } __isset = {};
-<%/struct:isset_fields?%>
+%><%#field:lazy?%>__fbthrift_read_field_<%field:cpp_name%>()<%/field:lazy?%><%^field:lazy?%><%field:cpp_name%><%/field:lazy?%>

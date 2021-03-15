@@ -17,16 +17,16 @@
 %><%#struct:fields%><%#field:type%>
 <%#field:cpp_ref?%>
   template <typename ..., typename T = <% > types/ref_type%>>
-  FOLLY_ERASE T& <%field:cpp_name%>_ref() & { return <%field:cpp_name%>; }
+  FOLLY_ERASE T& <%field:cpp_name%>_ref() & { return <% > common/field_value%>; }
 
   template <typename ..., typename T = <% > types/ref_type%>>
-  FOLLY_ERASE const T& <%field:cpp_name%>_ref() const& { return <%field:cpp_name%>; }
+  FOLLY_ERASE const T& <%field:cpp_name%>_ref() const& { return <% > common/field_value%>; }
 
   template <typename ..., typename T = <% > types/ref_type%>>
-  FOLLY_ERASE T&& <%field:cpp_name%>_ref() && { return std::move(<%field:cpp_name%>); }
+  FOLLY_ERASE T&& <%field:cpp_name%>_ref() && { return std::move(<% > common/field_value%>); }
 
   template <typename ..., typename T = <% > types/ref_type%>>
-  FOLLY_ERASE const T&& <%field:cpp_name%>_ref() const&& { return std::move(<%field:cpp_name%>); }
+  FOLLY_ERASE const T&& <%field:cpp_name%>_ref() const&& { return std::move(<% > common/field_value%>); }
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
 <%#field:optional?%>
@@ -34,22 +34,22 @@
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
+    return {this-><% > common/field_value%>, __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
+    return {std::move(this-><% > common/field_value%>), __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> <%field:cpp_name%>_ref() & {
-    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
+    return {this-><% > common/field_value%>, __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
+    return {std::move(this-><% > common/field_value%>), __isset.<%field:cpp_name%>};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:optional?%>
@@ -57,22 +57,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%#field:required?%>
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this-><%field:cpp_name%>};
+    return ::apache::thrift::required_field_ref<const T&>{this-><% > common/field_value%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this-><%field:cpp_name%>)};
+    return ::apache::thrift::required_field_ref<const T&&>{std::move(this-><% > common/field_value%>)};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> <%field:cpp_name%>_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this-><%field:cpp_name%>};
+    return ::apache::thrift::required_field_ref<T&>{this-><% > common/field_value%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this-><%field:cpp_name%>)};
+    return ::apache::thrift::required_field_ref<T&&>{std::move(this-><% > common/field_value%>)};
   }
 <%/field:required?%>
 <%^field:required?%>
@@ -80,22 +80,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
+    return {this-><% > common/field_value%>, __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
+    return {std::move(this-><% > common/field_value%>), __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> <%field:cpp_name%>_ref() & {
-    return {this-><%field:cpp_name%>, __isset.<%field:cpp_name%>};
+    return {this-><% > common/field_value%>, __isset.<%field:cpp_name%>};
   }
 
   template <typename..., typename T = <% > types/type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><%field:cpp_name%>), __isset.<%field:cpp_name%>};
+    return {std::move(this-><% > common/field_value%>), __isset.<%field:cpp_name%>};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%><%/field:optional?%>

@@ -87,11 +87,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  ::std::string field1;
+  mutable ::std::string field1;
  private:
   ::std::string field2;
  private:
-  ::std::vector<::std::int32_t> field3;
+  mutable ::std::vector<::std::int32_t> field3;
  private:
   ::std::vector<::std::int32_t> field4;
 
@@ -125,22 +125,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1_ref() const& {
-    return {this->field1, __isset.field1};
+    return {this->__fbthrift_read_field_field1(), __isset.field1};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->field1), __isset.field1};
+    return {std::move(this->__fbthrift_read_field_field1()), __isset.field1};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field1_ref() & {
-    return {this->field1, __isset.field1};
+    return {this->__fbthrift_read_field_field1(), __isset.field1};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1_ref() && {
-    return {std::move(this->field1), __isset.field1};
+    return {std::move(this->__fbthrift_read_field_field1()), __isset.field1};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -169,22 +169,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
-    return {this->field3, __isset.field3};
+    return {this->__fbthrift_read_field_field3(), __isset.field3};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3_ref() const&& {
-    return {std::move(this->field3), __isset.field3};
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.field3};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field3_ref() & {
-    return {this->field3, __isset.field3};
+    return {this->__fbthrift_read_field_field3(), __isset.field3};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
-    return {std::move(this->field3), __isset.field3};
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.field3};
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -248,6 +248,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   uint32_t write(Protocol_* prot_) const;
 
  private:
+ private:
+  mutable struct __fbthrift_SerializedData {
+    folly::IOBuf field1;
+    folly::IOBuf field3;
+  } __fbthrift_serializedData_;
+
+  mutable struct __fbthrift_IsDeserialized {
+    std::atomic<bool> field1{true};
+    std::atomic<bool> field3{true};
+  } __fbthrift_isDeserialized_;
+
+  mutable struct __fbthrift_DeserializationMutex {
+    std::mutex field1;
+    std::mutex field3;
+  } __fbthrift_deserializationMutex_;
+
+  const ::std::string& __fbthrift_read_field_field1() const;
+  ::std::string& __fbthrift_read_field_field1();
+  const ::std::vector<::std::int32_t>& __fbthrift_read_field_field3() const;
+  ::std::vector<::std::int32_t>& __fbthrift_read_field_field3();
+
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 

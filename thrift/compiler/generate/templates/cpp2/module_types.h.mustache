@@ -288,6 +288,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:cpp_methods%>
 
  private:
+<% > module_types_h/lazy_deserialization%>
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
