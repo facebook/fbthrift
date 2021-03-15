@@ -274,11 +274,17 @@ cdef class ThriftServer:
 cdef class ConnectionContext:
     @staticmethod
     cdef ConnectionContext create(Cpp2ConnContext* ctx):
+        cdef const cfollySocketAddress* peer_address
+        cdef const cfollySocketAddress* local_address
         inst = <ConnectionContext>ConnectionContext.__new__(ConnectionContext)
         if ctx:
             inst._ctx = ctx
-            inst._peer_address = _get_SocketAddress(ctx.getPeerAddress())
-            inst._local_address = _get_SocketAddress(ctx.getLocalAddress())
+            peer_address = ctx.getPeerAddress()
+            if not peer_address.empty():
+                inst._peer_address = _get_SocketAddress(peer_address)
+            local_address = ctx.getLocalAddress()
+            if not local_address.empty():
+                inst._local_address = _get_SocketAddress(local_address)
         return inst
 
     @property

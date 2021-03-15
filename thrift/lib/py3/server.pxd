@@ -29,6 +29,7 @@ cdef extern from "thrift/lib/py3/server.h" namespace "::thrift::py3":
     cdef cppclass cfollySocketAddress "folly::SocketAddress":
         uint16_t getPort()
         bint isFamilyInet()
+        bint empty()
         string getAddressStr()
         string getPath()
 
