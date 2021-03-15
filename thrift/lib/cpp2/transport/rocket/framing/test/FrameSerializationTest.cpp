@@ -36,28 +36,31 @@ using namespace apache::thrift::rocket;
 using namespace apache::thrift::rocket::test;
 
 namespace {
-constexpr StreamId kTestStreamId{178};
+constexpr StreamId kTestStreamId{179};
 constexpr folly::StringPiece kMetadata{"metadata"};
 constexpr folly::StringPiece kData{"data"};
 
 template <class Frame>
-Frame serializeAndDeserialize(Frame&& frame) {
+std::unique_ptr<folly::IOBuf> serialize(Frame frame) {
   Serializer writer;
-  std::forward<Frame>(frame).serialize(writer);
+  std::move(frame).serialize(writer);
   auto serializedFrameData = std::move(writer).move();
   serializedFrameData->coalesce();
+  return serializedFrameData;
+}
+
+template <class Frame>
+Frame serializeAndDeserialize(Frame frame) {
+  auto serializedFrameData = serialize(std::move(frame));
+  EXPECT_TRUE(isMaybeRocketFrame(*serializedFrameData));
   // Skip past frame length
   serializedFrameData->trimStart(Serializer::kBytesForFrameOrMetadataLength);
   return Frame(std::move(serializedFrameData));
 }
 
 template <class Frame>
-Frame serializeAndDeserializeFragmented(Frame&& frame) {
-  Serializer writer;
-  std::forward<Frame>(frame).serialize(writer);
-  auto serializedFrameData = std::move(writer).move();
-  serializedFrameData->coalesce();
-
+Frame serializeAndDeserializeFragmented(Frame frame) {
+  auto serializedFrameData = serialize(std::move(frame));
   folly::Optional<Frame> returnFrame;
   folly::io::Cursor cursor(serializedFrameData.get());
   bool hitSplitLogic = false;

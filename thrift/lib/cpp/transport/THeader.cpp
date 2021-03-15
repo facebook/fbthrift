@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/util/THttpParser.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
 
 #include <algorithm>
 #include <cassert>
@@ -212,12 +213,36 @@ CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
   return THRIFT_UNKNOWN_CLIENT_TYPE;
 }
 
-CLIENT_TYPE THeader::getClientType(uint32_t f, uint32_t s) {
-  auto res = analyzeFirst32bit(f);
-  if (res) {
-    return *res;
+CLIENT_TYPE THeader::tryGetClientType(const folly::IOBuf& data) {
+  bool isRocket = apache::thrift::rocket::isMaybeRocketFrame(data);
+
+  folly::io::Cursor cursor(&data);
+  uint32_t word;
+  if (cursor.tryReadBE(word)) {
+    auto res = analyzeFirst32bit(word);
+    if (res) {
+      if (isRocket) {
+        if (*res == CLIENT_TYPE::THRIFT_HTTP_CLIENT_TYPE ||
+            *res == CLIENT_TYPE::THRIFT_HTTP_SERVER_TYPE) {
+          return CLIENT_TYPE::THRIFT_UNKNOWN_CLIENT_TYPE;
+        }
+        return CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE;
+      }
+      return *res;
+    }
   }
-  return analyzeSecond32bit(s);
+  if (cursor.tryReadBE(word)) {
+    auto res = analyzeSecond32bit(word);
+    if (isRocket) {
+      if (res == CLIENT_TYPE::THRIFT_HEADER_CLIENT_TYPE) {
+        return CLIENT_TYPE::THRIFT_UNKNOWN_CLIENT_TYPE;
+      }
+      return CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE;
+    }
+    return res;
+  }
+
+  return CLIENT_TYPE::THRIFT_UNKNOWN_CLIENT_TYPE;
 }
 
 bool THeader::isFramed(CLIENT_TYPE type) {

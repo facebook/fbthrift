@@ -422,7 +422,7 @@ class THeader {
   static const folly::StringPiece getStringTransform(
       const TRANSFORMS transform);
 
-  static CLIENT_TYPE getClientType(uint32_t f, uint32_t s);
+  static CLIENT_TYPE tryGetClientType(const folly::IOBuf& data);
 
   // 0 and 16th bits must be 0 to differentiate from framed & unframed
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
