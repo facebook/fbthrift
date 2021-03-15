@@ -22,6 +22,7 @@
 
 #include <folly/CancellationToken.h>
 #include <folly/MapUtil.h>
+#include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -78,11 +79,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
       apache::thrift::ClientIdentityHook clientIdentityHook = nullptr,
       const Cpp2Worker* worker = nullptr)
-      : userData_(nullptr, no_op_destructor),
-        manager_(manager),
+      : manager_(manager),
         duplexChannel_(duplexChannel),
         peerCert_(peerCert),
-        peerIdentities_(nullptr, [](void*) {}),
         transport_(transport),
         worker_(worker) {
     if (address) {
@@ -177,7 +176,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   /**
    * Get the user data field.
    */
-  virtual void* getUserData() const override {
+  void* getUserData() const override {
     return userData_.get();
   }
 
@@ -185,18 +184,15 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
    * Set the user data field.
    *
    * @param data         The new value for the user data field.
-   * @param destructor   A function pointer to invoke when the connection
-   *                     context is destroyed.  It will be invoked with the
-   *                     contents of the user data field.
    *
    * @return Returns the old user data value.
    */
-  virtual void* setUserData(void* data, void (*destructor)(void*) = nullptr)
-      override {
+  void* setUserData(folly::erased_unique_ptr data) override {
     auto oldData = userData_.release();
-    userData_ = {data, destructor ? destructor : no_op_destructor};
+    userData_ = std::move(data);
     return oldData;
   }
+  using TConnectionContext::setUserData;
 
 #ifndef _WIN32
   struct PeerEffectiveCreds {
@@ -402,14 +398,14 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 #endif
   };
 
-  std::unique_ptr<void, void (*)(void*)> userData_;
+  folly::erased_unique_ptr userData_{folly::empty_erased_unique_ptr()};
   folly::SocketAddress peerAddress_;
   folly::SocketAddress localAddress_;
   folly::EventBaseManager* manager_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
   std::shared_ptr<X509> peerCert_;
-  std::unique_ptr<void, void (*)(void*)> peerIdentities_;
+  folly::erased_unique_ptr peerIdentities_{folly::empty_erased_unique_ptr()};
   std::string securityProtocol_;
   const folly::AsyncTransport* transport_;
   PeerCred peerCred_;
@@ -420,8 +416,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   InterfaceKind interfaceKind_{InterfaceKind::USER};
   std::optional<TransportType> transportType_;
   std::optional<ClientMetadata> clientMetadata_;
-
-  static void no_op_destructor(void* /*ptr*/) {}
 };
 
 class Cpp2ClientRequestContext
@@ -439,9 +433,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   explicit Cpp2RequestContext(
       Cpp2ConnContext* ctx,
       apache::thrift::transport::THeader* header = nullptr)
-      : TConnectionContext(header),
-        ctx_(ctx),
-        requestData_(nullptr, no_op_destructor) {}
+      : TConnectionContext(header), ctx_(ctx) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
     ctx_ = ctx;
@@ -485,12 +477,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getUserData();
   }
 
-  void* setUserData(void* data, void (*destructor)(void*) = nullptr) override {
-    return ctx_->setUserData(data, destructor);
+  void* setUserData(folly::erased_unique_ptr data) override {
+    return ctx_->setUserData(std::move(data));
   }
-
-  typedef void (*void_ptr_destructor)(void*);
-  typedef std::unique_ptr<void, void_ptr_destructor> RequestDataPtr;
+  using TConnectionContext::setUserData;
 
   // This data is set on a per request basis.
   void* getRequestData() const {
@@ -498,12 +488,13 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   // Returns the old request data context so the caller can clean up
-  RequestDataPtr setRequestData(
+  folly::erased_unique_ptr setRequestData(
       void* data,
-      void_ptr_destructor destructor = no_op_destructor) {
-    RequestDataPtr oldData(data, destructor);
-    requestData_.swap(oldData);
-    return oldData;
+      void (*destructor)(void*) = no_op_destructor) {
+    return std::exchange(requestData_, {data, destructor});
+  }
+  folly::erased_unique_ptr setRequestData(folly::erased_unique_ptr data) {
+    return std::exchange(requestData_, std::move(data));
   }
 
   virtual Cpp2ConnContext* getConnectionContext() const {
@@ -567,13 +558,11 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
  protected:
-  static void no_op_destructor(void* /*ptr*/) {}
-
   apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
 
  private:
   Cpp2ConnContext* ctx_;
-  RequestDataPtr requestData_;
+  folly::erased_unique_ptr requestData_{nullptr, nullptr};
   std::chrono::milliseconds requestTimeout_{0};
   std::string methodName_;
   int32_t protoSeqId_{0};

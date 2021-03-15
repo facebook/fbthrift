@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <memory>
 
+#include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -86,15 +87,18 @@ class TConnectionContext {
    *
    * @return Returns the old user data value.
    */
-  virtual void* setUserData(
-      void* /*data*/,
-      void (*)(void*) = nullptr /*destructor*/) {
+  void* setUserData(void* data, void (*destructor)(void*) = nullptr) {
+    return setUserData({data, destructor ? destructor : no_op_destructor});
+  }
+  virtual void* setUserData(folly::erased_unique_ptr) {
     throw std::runtime_error(
         "setUserData is not implemented by this connection context type");
   }
 
  protected:
   apache::thrift::transport::THeader* header_;
+
+  static void no_op_destructor(void* /*ptr*/) {}
 };
 
 } // namespace server

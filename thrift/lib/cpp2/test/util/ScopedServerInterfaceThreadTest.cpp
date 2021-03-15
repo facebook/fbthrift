@@ -20,6 +20,7 @@
 
 #include <folly/executors/GlobalExecutor.h>
 
+#include <folly/Memory.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -152,7 +153,7 @@ TEST(ScopedServerInterfaceThread, newRemoteClient) {
         auto s = static_cast<State*>(c->getUserData());
         if (s == nullptr) {
           s = new State();
-          c->setUserData(s, [](void* _) { delete static_cast<State*>(_); });
+          c->setUserData(folly::to_erased_unique_ptr(s));
         }
         cb->result(++s->requests + a + b);
       });
