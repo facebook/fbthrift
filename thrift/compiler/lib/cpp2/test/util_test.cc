@@ -108,6 +108,10 @@ class TypeResolverTest : public ::testing::Test {
     program_.set_namespace("cpp2", "path.to");
   }
 
+  const std::string& get_type_name(const t_type* node) {
+    return resolver_.get_type_name(node);
+  }
+
  protected:
   cpp2::TypeResolver resolver_;
   t_program program_;
@@ -115,88 +119,86 @@ class TypeResolverTest : public ::testing::Test {
 };
 
 TEST_F(TypeResolverTest, BaseTypes) {
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_void()), "void");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_bool()), "bool");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_byte()), "::std::int8_t");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_i16()), "::std::int16_t");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_i32()), "::std::int32_t");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_i64()), "::std::int64_t");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_float()), "float");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_double()), "double");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_string()), "::std::string");
-  EXPECT_EQ(resolver_.type_name(&t_base_type::t_binary()), "::std::string");
+  EXPECT_EQ(get_type_name(&t_base_type::t_void()), "void");
+  EXPECT_EQ(get_type_name(&t_base_type::t_bool()), "bool");
+  EXPECT_EQ(get_type_name(&t_base_type::t_byte()), "::std::int8_t");
+  EXPECT_EQ(get_type_name(&t_base_type::t_i16()), "::std::int16_t");
+  EXPECT_EQ(get_type_name(&t_base_type::t_i32()), "::std::int32_t");
+  EXPECT_EQ(get_type_name(&t_base_type::t_i64()), "::std::int64_t");
+  EXPECT_EQ(get_type_name(&t_base_type::t_float()), "float");
+  EXPECT_EQ(get_type_name(&t_base_type::t_double()), "double");
+  EXPECT_EQ(get_type_name(&t_base_type::t_string()), "::std::string");
+  EXPECT_EQ(get_type_name(&t_base_type::t_binary()), "::std::string");
 }
 
 TEST_F(TypeResolverTest, Containers) {
   t_map tmap(&t_base_type::t_string(), &t_base_type::t_i32());
-  EXPECT_EQ(
-      resolver_.type_name(&tmap), "::std::map<::std::string, ::std::int32_t>");
+  EXPECT_EQ(get_type_name(&tmap), "::std::map<::std::string, ::std::int32_t>");
   t_list tlist(&t_base_type::t_double());
-  EXPECT_EQ(resolver_.type_name(&tlist), "::std::vector<double>");
+  EXPECT_EQ(get_type_name(&tlist), "::std::vector<double>");
   t_set tset(&tmap);
   EXPECT_EQ(
-      resolver_.type_name(&tset),
+      get_type_name(&tset),
       "::std::set<::std::map<::std::string, ::std::int32_t>>");
 }
 
 TEST_F(TypeResolverTest, Structs) {
   t_struct tstruct(&program_, "Foo");
-  EXPECT_EQ(resolver_.type_name(&tstruct), "::path::to::Foo");
+  EXPECT_EQ(get_type_name(&tstruct), "::path::to::Foo");
   t_union tunion(&program_, "Bar");
-  EXPECT_EQ(resolver_.type_name(&tunion), "::path::to::Bar");
+  EXPECT_EQ(get_type_name(&tunion), "::path::to::Bar");
   t_exception texcept(&program_, "Baz");
-  EXPECT_EQ(resolver_.type_name(&texcept), "::path::to::Baz");
+  EXPECT_EQ(get_type_name(&texcept), "::path::to::Baz");
 }
 
 TEST_F(TypeResolverTest, TypeDefs) {
   t_typedef ttypedef(&program_, &t_base_type::t_bool(), "Foo", &scope_);
-  EXPECT_EQ(resolver_.type_name(&ttypedef), "::path::to::Foo");
+  EXPECT_EQ(get_type_name(&ttypedef), "::path::to::Foo");
 }
 
 TEST_F(TypeResolverTest, CustomTemplate) {
   t_map tmap(&t_base_type::t_string(), &t_base_type::t_i32());
   tmap.set_annotation("cpp.template", "std::unordered_map");
   EXPECT_EQ(
-      resolver_.type_name(&tmap),
+      get_type_name(&tmap),
       "std::unordered_map<::std::string, ::std::int32_t>");
   t_list tlist(&t_base_type::t_double());
   tlist.set_annotation("cpp2.template", "std::list");
-  EXPECT_EQ(resolver_.type_name(&tlist), "std::list<double>");
+  EXPECT_EQ(get_type_name(&tlist), "std::list<double>");
   t_set tset(&t_base_type::t_binary());
   tset.set_annotation("cpp2.template", "::std::unordered_set");
-  EXPECT_EQ(resolver_.type_name(&tset), "::std::unordered_set<::std::string>");
+  EXPECT_EQ(get_type_name(&tset), "::std::unordered_set<::std::string>");
 }
 
 TEST_F(TypeResolverTest, CustomType) {
   t_base_type tui64(t_base_type::t_i64());
   tui64.set_name("ui64");
   tui64.set_annotation("cpp2.type", "::std::uint64_t");
-  EXPECT_EQ(resolver_.type_name(&tui64), "::std::uint64_t");
+  EXPECT_EQ(get_type_name(&tui64), "::std::uint64_t");
 
   t_union tunion(&program_, "Bar");
   tunion.set_annotation("cpp2.type", "Other");
-  EXPECT_EQ(resolver_.type_name(&tunion), "Other");
+  EXPECT_EQ(get_type_name(&tunion), "Other");
 
   t_typedef ttypedef(&program_, &t_base_type::t_bool(), "Foo", &scope_);
   ttypedef.set_annotation("cpp2.type", "Other");
-  EXPECT_EQ(resolver_.type_name(&ttypedef), "Other");
+  EXPECT_EQ(get_type_name(&ttypedef), "Other");
 
   t_map tmap1(&t_base_type::t_string(), &tui64);
   EXPECT_EQ(
-      resolver_.type_name(&tmap1),
-      "::std::map<::std::string, ::std::uint64_t>");
+      get_type_name(&tmap1), "::std::map<::std::string, ::std::uint64_t>");
 
   // Can be combined with template.
   t_map tmap2(tmap1);
   tmap2.set_annotation("cpp.template", "std::unordered_map");
   EXPECT_EQ(
-      resolver_.type_name(&tmap2),
+      get_type_name(&tmap2),
       "std::unordered_map<::std::string, ::std::uint64_t>");
 
   // Custom type overrides template.
   t_map tmap3(tmap2);
   tmap3.set_annotation("cpp.type", "MyMap");
-  EXPECT_EQ(resolver_.type_name(&tmap3), "MyMap");
+  EXPECT_EQ(get_type_name(&tmap3), "MyMap");
 }
 
 } // namespace

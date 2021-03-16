@@ -66,7 +66,7 @@ std::string get_gen_namespace(t_program const& program) {
   return "::" + boost::algorithm::join(components, "::");
 }
 
-const std::string& TypeResolver::type_name(const t_type* node) {
+const std::string& TypeResolver::get_type_name(const t_type* node) {
   auto itr = type_cache_.find(node);
   if (itr == type_cache_.end()) {
     // TODO(afuller): Support adapted types.
@@ -175,16 +175,17 @@ std::string TypeResolver::gen_container_type(const t_container* node) {
     case t_container::type::t_list:
       return gen_template_type(
           template_name,
-          {type_name(static_cast<const t_list*>(node)->get_elem_type())});
+          {get_type_name(static_cast<const t_list*>(node)->get_elem_type())});
     case t_container::type::t_set:
       return gen_template_type(
           template_name,
-          {type_name(static_cast<const t_set*>(node)->get_elem_type())});
+          {get_type_name(static_cast<const t_set*>(node)->get_elem_type())});
     case t_container::type::t_map: {
       const auto* tmap = static_cast<const t_map*>(node);
       return gen_template_type(
           template_name,
-          {type_name(tmap->get_key_type()), type_name(tmap->get_val_type())});
+          {get_type_name(tmap->get_key_type()),
+           get_type_name(tmap->get_val_type())});
     }
   }
   throw std::runtime_error(
@@ -196,25 +197,25 @@ std::string TypeResolver::gen_stream_resp_type(const t_stream_response* node) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
-        {type_name(node->get_first_response_type()),
-         type_name(node->get_elem_type())});
+        {get_type_name(node->get_first_response_type()),
+         get_type_name(node->get_elem_type())});
   }
   return gen_template_type(
-      "::apache::thrift::ServerStream", {type_name(node->get_elem_type())});
+      "::apache::thrift::ServerStream", {get_type_name(node->get_elem_type())});
 }
 
 std::string TypeResolver::gen_sink_type(const t_sink* node) {
   if (node->sink_has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
-        {type_name(node->get_first_response_type()),
-         type_name(node->get_sink_type()),
-         type_name(node->get_final_response_type())});
+        {get_type_name(node->get_first_response_type()),
+         get_type_name(node->get_sink_type()),
+         get_type_name(node->get_final_response_type())});
   }
   return gen_template_type(
       "::apache::thrift::SinkConsumer",
-      {type_name(node->get_sink_type()),
-       type_name(node->get_final_response_type())});
+      {get_type_name(node->get_sink_type()),
+       get_type_name(node->get_final_response_type())});
 }
 
 std::string TypeResolver::gen_template_type(

@@ -44,7 +44,7 @@ std::string get_gen_namespace(t_program const& program);
 class TypeResolver {
  public:
   // Returns c++ type name for the given thrift type.
-  const std::string& type_name(const t_type* node);
+  const std::string& get_type_name(const t_type* node);
 
  private:
   std::unordered_map<const t_program*, std::string> namespace_cache_;
