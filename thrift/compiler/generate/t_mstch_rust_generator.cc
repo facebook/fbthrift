@@ -22,6 +22,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
@@ -534,6 +535,8 @@ class mstch_rust_function : public mstch_function {
             {"function:void?", &mstch_rust_function::rust_void},
             {"function:uniqueExceptions",
              &mstch_rust_function::rust_unique_exceptions},
+            {"function:uniqueStreamExceptions",
+             &mstch_rust_function::rust_unique_stream_exceptions},
             {"function:args_by_name", &mstch_rust_function::rust_args_by_name},
             {"function:returns_by_name",
              &mstch_rust_function::rust_returns_by_name},
@@ -557,11 +560,17 @@ class mstch_rust_function : public mstch_function {
     return function_->get_returntype()->is_void();
   }
   mstch::node rust_unique_exceptions() {
+    return rust_make_unique_exceptions(function_->get_xceptions());
+  }
+  mstch::node rust_unique_stream_exceptions() {
+    return rust_make_unique_exceptions(function_->get_stream_xceptions());
+  }
+  mstch::node rust_make_unique_exceptions(const t_struct* a) {
     // When generating From<> impls for an error type, we must not generate one
     // where more than one variant contains the same type of exception. Find
     // only those exceptions that map uniquely to a variant.
 
-    const auto& exceptions = function_->get_xceptions()->fields();
+    const auto& exceptions = a->fields();
     std::map<const t_type*, unsigned> type_count;
     for (const auto* x : exceptions) {
       type_count[x->get_type()] += 1;
