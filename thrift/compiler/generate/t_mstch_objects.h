@@ -1086,6 +1086,8 @@ class mstch_function : public mstch_base {
             {"function:returns_sink?", &mstch_function::returns_sink},
             {"function:returns_streams?", &mstch_function::returns_stream},
             {"function:returns_stream?", &mstch_function::returns_stream},
+            {"function:stream_has_first_response?",
+             &mstch_function::stream_has_first_response},
             {"function:annotations", &mstch_function::annotations},
             {"function:starts_interaction?",
              &mstch_function::starts_interaction},
@@ -1111,6 +1113,11 @@ class mstch_function : public mstch_base {
   }
   mstch::node has_sink_final_response_exceptions() {
     return function_->get_sink_final_response_xceptions()->has_fields();
+  }
+  mstch::node stream_has_first_response() {
+    auto rettype = function_->get_returntype();
+    auto stream = dynamic_cast<const t_stream_response*>(rettype);
+    return stream && stream->has_first_response();
   }
   mstch::node has_args() {
     if (function_->get_paramlist()->has_fields()) {
