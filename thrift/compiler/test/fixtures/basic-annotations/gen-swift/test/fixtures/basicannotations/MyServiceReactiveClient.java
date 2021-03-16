@@ -419,7 +419,7 @@ public class MyServiceReactiveClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("lobDataById")
-                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_NO_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -439,7 +439,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return lobDataByIdWrapper(id, data,  rpcOptions).map(_p -> _p.getData());
+    return lobDataByIdWrapper(id, data,  rpcOptions).then();
   }
 
   @java.lang.Override
