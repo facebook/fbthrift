@@ -185,7 +185,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncIf {
   public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);
@@ -218,7 +218,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
   public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);
@@ -258,7 +258,7 @@ class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceA
   public async function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);

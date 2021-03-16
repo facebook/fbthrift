@@ -181,7 +181,7 @@ class TestServiceAsyncClient extends \foo\hack_ns\FooHackServiceAsyncClient impl
   public async function ping(string $str_arg): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("TestService", "ping");
     $currentseqid = $this->sendImpl_ping($str_arg);
@@ -213,7 +213,7 @@ class TestServiceClient extends \foo\hack_ns\FooHackServiceClient implements Tes
   public async function ping(string $str_arg): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("TestService", "ping");
     $currentseqid = $this->sendImpl_ping($str_arg);
@@ -252,7 +252,7 @@ class TestServiceAsyncRpcOptionsClient extends \foo\hack_ns\FooHackServiceAsyncR
   public async function ping(\RpcOptions $rpc_options, string $str_arg): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("TestService", "ping");
     $currentseqid = $this->sendImpl_ping($str_arg);

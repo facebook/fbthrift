@@ -879,7 +879,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -906,7 +906,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function getRandomData(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
@@ -933,7 +933,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function hasDataById(int $id): Awaitable<bool> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
@@ -960,7 +960,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function getDataById(int $id): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
@@ -988,7 +988,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function putDataById(int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
@@ -1016,7 +1016,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function lobDataById(int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
@@ -1037,7 +1037,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function doNothing(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
@@ -1069,7 +1069,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -1096,7 +1096,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function getRandomData(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
@@ -1123,7 +1123,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function hasDataById(int $id): Awaitable<bool> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
@@ -1150,7 +1150,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function getDataById(int $id): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
@@ -1178,7 +1178,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function putDataById(int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
@@ -1206,7 +1206,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function lobDataById(int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
@@ -1227,7 +1227,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function doNothing(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
@@ -1299,7 +1299,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -1326,7 +1326,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function getRandomData(\RpcOptions $rpc_options): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
@@ -1353,7 +1353,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function hasDataById(\RpcOptions $rpc_options, int $id): Awaitable<bool> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
@@ -1380,7 +1380,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function getDataById(\RpcOptions $rpc_options, int $id): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
@@ -1408,7 +1408,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
@@ -1436,7 +1436,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function lobDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
@@ -1457,7 +1457,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function doNothing(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();

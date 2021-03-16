@@ -190,7 +190,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   public async function foo(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
@@ -222,7 +222,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public async function foo(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
@@ -261,7 +261,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   public async function foo(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
@@ -304,7 +304,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate");
@@ -430,7 +430,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping");
@@ -504,7 +504,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate");
@@ -630,7 +630,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping");
@@ -704,7 +704,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata(hh_frame_metadata);
+      HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate");
