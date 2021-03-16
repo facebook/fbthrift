@@ -65,11 +65,6 @@ class ScopedServerInterfaceThread {
   const folly::SocketAddress& getAddress() const;
   uint16_t getPort() const;
 
-  template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newStickyClient(
-      folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
-
   /**
    * Creates and returns a new AsyncClientT. Uses the given channelFunc to
    * create a channel for the client by passing it a connected, plaintext
@@ -80,15 +75,38 @@ class ScopedServerInterfaceThread {
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
+  /**
+   * Like newClient but invokes injectFault before each request and
+   * short-circuits the request if it returns an exception.
+   * Useful for testing handling of e.g. TTransportException.
+   */
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClientWithFaultInjection(
       FaultInjectionFunc injectFault,
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
+  /**
+   * Like newClient but sends all requests over a single internal channel
+   */
+  template <class AsyncClientT>
+  std::unique_ptr<AsyncClientT> newStickyClient(
+      folly::Executor* callbackExecutor = nullptr,
+      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
+
+  static std::shared_ptr<RequestChannel> makeTestClientChannel(
+      std::shared_ptr<AsyncProcessorFactory> apf,
+      folly::Executor* callbackExecutor,
+      ScopedServerInterfaceThread::FaultInjectionFunc injectFault);
+
  private:
   std::shared_ptr<BaseThriftServer> ts_;
   util::ScopedServerThread sst_;
+
+  RequestChannel::Ptr newChannel(
+      folly::Executor* callbackExecutor = nullptr,
+      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel,
+      std::weak_ptr<folly::IOExecutor> executor = folly::getIOExecutor()) const;
 
   static RequestChannel::Ptr makeRocketOrHeaderChannel(
       folly::AsyncSocket::UniquePtr socket) {
@@ -101,12 +119,16 @@ class ScopedServerInterfaceThread {
 
 /**
  * Creates a AsyncClientT for a given handler, backed by an internal
- * ScopedServerInterfaceThread.
+ * ScopedServerInterfaceThread, with optional fault injection
+ * (if set, invokes injectFault before each request and
+ * short-circuits the request if it returns an exception.
+ * Useful for testing handling of e.g. TTransportException.)
+ *
  * This is more convenient but offers less control than managing
  * your own ScopedServerInterfaceThread.
  */
 template <class AsyncClientT>
-std::shared_ptr<AsyncClientT> makeTestClient(
+std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
     folly::Executor* callbackExecutor = nullptr,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault = nullptr);

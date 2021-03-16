@@ -117,15 +117,6 @@ class FaultInjectionChannel : public RequestChannel {
   RequestChannel::Ptr client_;
   ScopedServerInterfaceThread::FaultInjectionFunc injectFault_;
 };
-
-template <class AsyncClientT>
-struct TestClientRunner {
-  ScopedServerInterfaceThread runner;
-  std::unique_ptr<AsyncClientT> client;
-
-  explicit TestClientRunner(std::shared_ptr<AsyncProcessorFactory> apf)
-      : runner(std::move(apf)) {}
-};
 } // namespace detail
 
 template <class AsyncClientT>
@@ -134,28 +125,16 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   auto io = folly::getIOExecutor();
   auto sp = std::shared_ptr<folly::EventBase>(io, io->getEventBase());
-  return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
-      callbackExecutor,
-      std::move(sp),
-      [makeChannel = std::move(makeChannel),
-       address = getAddress()](folly::EventBase& eb) mutable {
-        return makeChannel(folly::AsyncSocket::UniquePtr(
-            new folly::AsyncSocket(&eb, address)));
-      }));
+  return std::make_unique<AsyncClientT>(
+      newChannel(callbackExecutor, std::move(makeChannel), std::move(sp)));
 }
 
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
-  return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
-      callbackExecutor,
-      folly::getIOExecutor(),
-      [makeChannel = std::move(makeChannel),
-       address = getAddress()](folly::EventBase& eb) mutable {
-        return makeChannel(folly::AsyncSocket::UniquePtr(
-            new folly::AsyncSocket(&eb, address)));
-      }));
+  return std::make_unique<AsyncClientT>(
+      newChannel(callbackExecutor, std::move(makeChannel)));
 }
 
 template <class AsyncClientT>
@@ -165,34 +144,19 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   return std::make_unique<AsyncClientT>(
-      RequestChannel::Ptr(new ::apache::thrift::detail::FaultInjectionChannel(
-          PooledRequestChannel::newChannel(
-              callbackExecutor,
-              folly::getIOExecutor(),
-              [makeChannel = std::move(makeChannel),
-               address = getAddress()](folly::EventBase& eb) mutable {
-                return makeChannel(folly::AsyncSocket::UniquePtr(
-                    new folly::AsyncSocket(&eb, address)));
-              }),
-          std::move(injectFault))));
+      std::make_shared<apache::thrift::detail::FaultInjectionChannel>(
+          newChannel(callbackExecutor, std::move(makeChannel)),
+          std::move(injectFault)));
 }
 
 template <class AsyncClientT>
-std::shared_ptr<AsyncClientT> makeTestClient(
+std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
-  auto runner = std::make_shared<
-      ::apache::thrift::detail::TestClientRunner<AsyncClientT>>(std::move(apf));
-  runner->client = injectFault
-      ? runner->runner.template newClientWithFaultInjection<AsyncClientT>(
-            std::move(injectFault),
-            callbackExecutor,
-            RocketClientChannel::newChannel)
-      : runner->runner.template newClient<AsyncClientT>(
-            callbackExecutor, RocketClientChannel::newChannel);
-  auto* client = runner->client.get();
-  return {std::move(runner), client};
+  return std::make_unique<AsyncClientT>(
+      ScopedServerInterfaceThread::makeTestClientChannel(
+          std::move(apf), callbackExecutor, std::move(injectFault)));
 }
 
 } // namespace thrift

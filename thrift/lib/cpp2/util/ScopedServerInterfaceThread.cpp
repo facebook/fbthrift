@@ -85,5 +85,46 @@ uint16_t ScopedServerInterfaceThread::getPort() const {
   return getAddress().getPort();
 }
 
+RequestChannel::Ptr ScopedServerInterfaceThread::newChannel(
+    folly::Executor* callbackExecutor,
+    MakeChannelFunc makeChannel,
+    std::weak_ptr<folly::IOExecutor> executor) const {
+  return PooledRequestChannel::newChannel(
+      callbackExecutor,
+      std::move(executor),
+      [makeChannel = std::move(makeChannel),
+       address = getAddress()](folly::EventBase& eb) mutable {
+        return makeChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&eb, address)));
+      });
+}
+
+namespace {
+struct TestClientRunner {
+  ScopedServerInterfaceThread runner;
+  RequestChannel::Ptr channel;
+
+  explicit TestClientRunner(std::shared_ptr<AsyncProcessorFactory> apf)
+      : runner(std::move(apf)) {}
+};
+} // namespace
+
+std::shared_ptr<RequestChannel>
+ScopedServerInterfaceThread::makeTestClientChannel(
+    std::shared_ptr<AsyncProcessorFactory> apf,
+    folly::Executor* callbackExecutor,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
+  auto runner = std::make_shared<TestClientRunner>(std::move(apf));
+  auto innerChannel = runner->runner.newChannel(
+      callbackExecutor, RocketClientChannel::newChannel);
+  if (injectFault) {
+    runner->channel.reset(new apache::thrift::detail::FaultInjectionChannel(
+        std::move(innerChannel), std::move(injectFault)));
+  } else {
+    runner->channel = std::move(innerChannel);
+  }
+  auto* channel = runner->channel.get();
+  return folly::to_shared_ptr_aliasing(std::move(runner), channel);
+}
 } // namespace thrift
 } // namespace apache
