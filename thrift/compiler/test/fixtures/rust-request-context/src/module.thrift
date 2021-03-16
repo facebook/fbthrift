@@ -40,6 +40,9 @@ union MyUnion {
   3: MyDataItem myDataItem;
 }
 
+exception MyException {
+}
+
 service MyService {
   void ping();
   string getRandomData();
@@ -47,4 +50,7 @@ service MyService {
   string getDataById(1: i64 id);
   void putDataById(1: i64 id, 2: string data);
   oneway void lobDataById(1: i64 id, 2: string data);
+  stream<MyStruct> streamById(1: i64 id);
+  stream<MyStruct throws (1: MyException e)> streamByIdWithException(1: i64 id);
+  MyDataItem, stream<MyStruct> streamByIdWithResponse(1: i64 id);
 } (rust.request_context)

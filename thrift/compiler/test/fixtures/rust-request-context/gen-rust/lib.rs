@@ -30,6 +30,10 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct MyException {
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct MyEnum(pub ::std::primitive::i32);
 
@@ -358,6 +362,54 @@ pub mod types {
             ::std::result::Result::Ok(alt.unwrap_or_default())
         }
     }
+
+    impl ::std::default::Default for self::MyException {
+        fn default() -> Self {
+            Self {
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyException {}
+    unsafe impl ::std::marker::Sync for self::MyException {}
+
+    impl ::fbthrift::GetTType for self::MyException {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyException
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyException");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyException
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
 }
 
 pub mod dependencies {
@@ -893,6 +945,392 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum StreamByIdStreamExn {
+            Success(crate::types::MyStruct),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdStreamExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdStreamExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdStreamExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdStreamExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("StreamById");
+                match self {
+                    StreamByIdStreamExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Stream,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    StreamByIdStreamExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdStreamExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Struct, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(StreamByIdStreamExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdStreamExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "StreamByIdStreamExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+
+
+        #[derive(Clone, Debug)]
+        pub enum StreamByIdWithExceptionStreamExn {
+            Success(crate::types::MyStruct),
+            e(crate::types::MyException),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<crate::types::MyException> for StreamByIdWithExceptionStreamExn {
+            fn from(exn: crate::types::MyException) -> Self {
+                StreamByIdWithExceptionStreamExn::e(exn)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithExceptionStreamExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithExceptionStreamExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdWithExceptionStreamExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithExceptionStreamExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("StreamByIdWithException");
+                match self {
+                    StreamByIdWithExceptionStreamExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Stream,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    StreamByIdWithExceptionStreamExn::e(inner) => {
+                        p.write_field_begin(
+                            "e",
+                            ::fbthrift::TType::Struct,
+                            1,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    StreamByIdWithExceptionStreamExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithExceptionStreamExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Struct, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(StreamByIdWithExceptionStreamExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((::fbthrift::TType::Struct, 1), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(StreamByIdWithExceptionStreamExn::e(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdWithExceptionStreamExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "StreamByIdWithExceptionStreamExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+
+
+        #[derive(Clone, Debug)]
+        pub enum StreamByIdWithResponseStreamExn {
+            Success(crate::types::MyStruct),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithResponseStreamExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithResponseStreamExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdWithResponseStreamExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithResponseStreamExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("StreamByIdWithResponse");
+                match self {
+                    StreamByIdWithResponseStreamExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Stream,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    StreamByIdWithResponseStreamExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithResponseStreamExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Struct, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(StreamByIdWithResponseStreamExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdWithResponseStreamExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "StreamByIdWithResponseStreamExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub enum StreamByIdWithResponseExn {
+            Success(crate::types::MyDataItem),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithResponseExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithResponseExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for StreamByIdWithResponseExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for StreamByIdWithResponseExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("StreamByIdWithResponse");
+                match self {
+                    StreamByIdWithResponseExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Struct,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    StreamByIdWithResponseExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for StreamByIdWithResponseExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Struct, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(StreamByIdWithResponseExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "StreamByIdWithResponseExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "StreamByIdWithResponseExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+
     }
 }
 
@@ -943,6 +1381,18 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
+        fn streamById(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>>;
+        fn streamByIdWithException(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>>;
+        fn streamByIdWithResponse(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> MyService for MyServiceImpl<P, T>
@@ -1287,6 +1737,199 @@ pub mod client {
                 }))
                 .boxed()
         }
+        fn streamById(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "streamById",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            use futures::StreamExt;
+
+            self.transport()
+                .call_stream(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|(_initial_response, stream)| ::futures::future::ready({
+                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(
+                        |stream_item_response| {
+                            match stream_item_response {
+                                Err(e) => {
+                                    ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::from(e))
+                                },
+                                Ok(stream_item) => {
+                                    let de = P::deserializer(stream_item);
+                                    move |mut p: P::Deserializer| -> ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError> {
+                                        let p = &mut p;
+                                        let exn: crate::services::my_service::StreamByIdStreamExn = ::fbthrift::Deserialize::read(p)?;
+                                        match exn {
+                                            crate::services::my_service::StreamByIdStreamExn::Success(x) => ::std::result::Result::Ok(x),
+                                            crate::services::my_service::StreamByIdStreamExn::ApplicationException(ae) => {
+                                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::ApplicationException(ae))
+                                            }
+                                        }
+                                    }(de)
+                                }
+                            }
+                        }
+                    ));
+                    ::std::result::Result::Ok(new_stream)
+                }))
+                .boxed()
+        }
+        fn streamByIdWithException(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "streamByIdWithException",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            use futures::StreamExt;
+
+            self.transport()
+                .call_stream(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|(_initial_response, stream)| ::futures::future::ready({
+                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(
+                        |stream_item_response| {
+                            match stream_item_response {
+                                Err(e) => {
+                                    ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::from(e))
+                                },
+                                Ok(stream_item) => {
+                                    let de = P::deserializer(stream_item);
+                                    move |mut p: P::Deserializer| -> ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError> {
+                                        let p = &mut p;
+                                        let exn: crate::services::my_service::StreamByIdWithExceptionStreamExn = ::fbthrift::Deserialize::read(p)?;
+                                        match exn {
+                                            crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(x) => ::std::result::Result::Ok(x),
+                                            crate::services::my_service::StreamByIdWithExceptionStreamExn::e(err) => {
+                                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::e(err))
+                                            }
+                                            crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(ae) => {
+                                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::ApplicationException(ae))
+                                            }
+                                        }
+                                    }(de)
+                                }
+                            }
+                        }
+                    ));
+                    ::std::result::Result::Ok(new_stream)
+                }))
+                .boxed()
+        }
+        fn streamByIdWithResponse(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "streamByIdWithResponse",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
+                    ::fbthrift::Serialize::write(&arg_id, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            use futures::StreamExt;
+
+            self.transport()
+                .call_stream(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|(initial_response, stream)| ::futures::future::ready({
+                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(
+                        |stream_item_response| {
+                            match stream_item_response {
+                                Err(e) => {
+                                    ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::from(e))
+                                },
+                                Ok(stream_item) => {
+                                    let de = P::deserializer(stream_item);
+                                    move |mut p: P::Deserializer| -> ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError> {
+                                        let p = &mut p;
+                                        let exn: crate::services::my_service::StreamByIdWithResponseStreamExn = ::fbthrift::Deserialize::read(p)?;
+                                        match exn {
+                                            crate::services::my_service::StreamByIdWithResponseStreamExn::Success(x) => ::std::result::Result::Ok(x),
+                                            crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(ae) => {
+                                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::ApplicationException(ae))
+                                            }
+                                        }
+                                    }(de)
+                                }
+                            }
+                        }
+                    ));
+                    let de = P::deserializer(initial_response);
+                    move |mut p: P::Deserializer| -> ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::my_service::StreamByIdWithResponseExn = ::fbthrift::Deserialize::read(p)?;
+                                match exn {
+                                    crate::services::my_service::StreamByIdWithResponseExn::Success(x) => ::std::result::Result::Ok((x, new_stream)),
+                                    crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(ae) => {
+                                        ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ApplicationException(ae))
+                                    }
+                                }
+                            }
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ApplicationException(ae))
+                            }
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ThriftError(err))
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
     }
 
     impl<'a, T> MyService for T
@@ -1340,6 +1983,30 @@ pub mod client {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
+            )
+        }
+        fn streamById(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().streamById(
+                arg_id,
+            )
+        }
+        fn streamByIdWithException(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().streamByIdWithException(
+                arg_id,
+            )
+        }
+        fn streamByIdWithResponse(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().streamByIdWithResponse(
+                arg_id,
             )
         }
     }
@@ -2148,6 +2815,9 @@ pub mod mock {
         pub getDataById: r#impl::my_service::getDataById<'mock>,
         pub putDataById: r#impl::my_service::putDataById<'mock>,
         pub lobDataById: r#impl::my_service::lobDataById<'mock>,
+        pub streamById: r#impl::my_service::streamById<'mock>,
+        pub streamByIdWithException: r#impl::my_service::streamByIdWithException<'mock>,
+        pub streamByIdWithResponse: r#impl::my_service::streamByIdWithResponse<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -2160,6 +2830,9 @@ pub mod mock {
                 getDataById: r#impl::my_service::getDataById::unimplemented(),
                 putDataById: r#impl::my_service::putDataById::unimplemented(),
                 lobDataById: r#impl::my_service::lobDataById::unimplemented(),
+                streamById: r#impl::my_service::streamById::unimplemented(),
+                streamByIdWithException: r#impl::my_service::streamByIdWithException::unimplemented(),
+                streamByIdWithResponse: r#impl::my_service::streamByIdWithResponse::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -2214,6 +2887,30 @@ pub mod mock {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
+        }
+        fn streamById(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.streamById.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
+        }
+        fn streamByIdWithException(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.streamByIdWithException.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
+        }
+        fn streamByIdWithResponse(
+            &self,
+            arg_id: ::std::primitive::i64,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.streamByIdWithResponse.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
         }
     }
 
@@ -2483,6 +3180,138 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64, _: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
                 }
             }
+
+            pub struct streamById<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<
+                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>,
+                        crate::errors::my_service::StreamByIdError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> streamById<'mock> {
+                pub fn unimplemented() -> Self {
+                    streamById {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "streamById",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>) {
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| mock(id));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::StreamByIdError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct streamByIdWithException<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<
+                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>,
+                        crate::errors::my_service::StreamByIdWithExceptionError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> streamByIdWithException<'mock> {
+                pub fn unimplemented() -> Self {
+                    streamByIdWithException {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "streamByIdWithException",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>) {
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| mock(id));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::StreamByIdWithExceptionError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct streamByIdWithResponse<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<
+                        (crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>),
+                        crate::errors::my_service::StreamByIdWithResponseError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> streamByIdWithResponse<'mock> {
+                pub fn unimplemented() -> Self {
+                    streamByIdWithResponse {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i64| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "streamByIdWithResponse",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, _value: (crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>)) {
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> (crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| mock(id));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::StreamByIdWithResponseError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
         }
     }
 }
@@ -2502,6 +3331,41 @@ pub mod errors {
 
         pub type LobDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
+        pub type StreamByIdError = ::fbthrift::NonthrowingFunctionError;
+
+        pub type StreamByIdStreamError = ::fbthrift::NonthrowingFunctionError;
+        pub type StreamByIdWithExceptionError = ::fbthrift::NonthrowingFunctionError;
+
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum StreamByIdWithExceptionStreamError {
+            #[error("MyService::streamByIdWithException stream failed with {0:?}")]
+            e(crate::types::MyException),
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl ::std::convert::From<crate::types::MyException> for StreamByIdWithExceptionStreamError {
+            fn from(e: crate::types::MyException) -> Self {
+                StreamByIdWithExceptionStreamError::e(e)
+            }
+        }
+
+        impl ::std::convert::From<::anyhow::Error> for StreamByIdWithExceptionStreamError {
+            fn from(err: ::anyhow::Error) -> Self {
+                StreamByIdWithExceptionStreamError::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for StreamByIdWithExceptionStreamError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                StreamByIdWithExceptionStreamError::ApplicationException(ae)
+            }
+        }
+        pub type StreamByIdWithResponseError = ::fbthrift::NonthrowingFunctionError;
+
+        pub type StreamByIdWithResponseStreamError = ::fbthrift::NonthrowingFunctionError;
     }
 
 }

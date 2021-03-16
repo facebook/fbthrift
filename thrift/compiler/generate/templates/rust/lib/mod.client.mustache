@@ -81,17 +81,17 @@
         }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
         }}::std::marker::Send {{>lib/block}}{{!
 
-        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+        }}{{#service:rustFunctions}}
         fn {{function:name}}(
-            &self,{{!
-            }}{{#function:args}}
-            arg_{{field:name}}: {{>lib/arg}},{{!
-            }}{{/function:args}}
+            &self,
+            {{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},
+            {{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>>;{{!
-        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+        }}{{/service:rustFunctions}}
     }
 
     impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
@@ -102,7 +102,7 @@
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+        }}{{#service:rustFunctions}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -137,6 +137,85 @@
                     p.write_struct_end();
                 },
             ));
+            {{#function:returns_streams?}}
+            use futures::StreamExt;
+
+            self.transport()
+                .call_stream(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|({{^function:stream_has_first_response?}}_{{/function:stream_has_first_response?}}initial_response, stream)| ::futures::future::ready({
+                    let new_stream: {{#function:returnType}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}, crate::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:returnType}} = ::std::boxed::Box::pin(stream.map(
+                        |stream_item_response| {
+                            match stream_item_response {
+                                Err(e) => {
+                                    ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::from(e))
+                                },
+                                Ok(stream_item) => {
+                                    let de = P::deserializer(stream_item);
+                                    move |mut p: P::Deserializer| -> ::std::result::Result<{{!
+                                        }}{{#function:returnType}}{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}{{/function:returnType}}, {{!
+                                        }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError{{!
+                                    }}> {
+                                        let p = &mut p;
+                                        let exn: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn = ::fbthrift::Deserialize::read(p)?;
+                                        match exn {
+                                            {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(x) => ::std::result::Result::Ok(x),
+                                            {{#function:stream_exceptions}}
+                                            {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::{{field:name}}(err) => {
+                                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::{{field:name}}(err))
+                                            }
+                                            {{/function:stream_exceptions}}
+                                            {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(ae) => {
+                                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::ApplicationException(ae))
+                                            }
+                                        }
+                                    }(de)
+                                }
+                            }
+                        }
+                    ));
+                    {{#function:stream_has_first_response?}}
+                    let de = P::deserializer(initial_response);
+                    move |mut p: P::Deserializer| -> ::std::result::Result<{{!
+                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
+                    }}> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn = ::fbthrift::Deserialize::read(p)?;
+                                match exn {
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(x) => ::std::result::Result::Ok((x, new_stream)),
+                                    {{#function:exceptions}}
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{field:name}}(err) => {
+                                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::{{field:name}}(err))
+                                    }
+                                    {{/function:exceptions}}
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae) => {
+                                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
+                                    }
+                                }
+                            }
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(ae))
+                            }
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ThriftError(err))
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                    {{/function:stream_has_first_response?}}
+                    {{^function:stream_has_first_response?}}
+                    ::std::result::Result::Ok(new_stream)
+                    {{/function:stream_has_first_response?}}
+                }))
+                .boxed()
+            {{/function:returns_streams?}}{{^function:returns_streams?}}
             self.transport()
                 .call(request)
                 .map_err(::std::convert::From::from)
@@ -177,8 +256,9 @@
                     }(de)
                 }))
                 .boxed()
+        {{/function:returns_streams?}}
         }
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{/service:rustFunctions}}
     }
 
     impl<'a, T> {{service:name}} for T
@@ -191,12 +271,12 @@
         {{/service:extendedServices}}
         T: ::std::marker::Send,
     {
-        {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#service:rustFunctions}}
         fn {{function:name}}(
-            &self,
-            {{#function:args}}
-            arg_{{field:name}}: {{>lib/arg}},
-            {{/function:args}}
+            &self,{{!
+            }}{{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},{{!
+            }}{{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
@@ -207,7 +287,7 @@
                 {{/function:args}}
             )
         }
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{/service:rustFunctions}}
     }
 
     pub struct make_{{service:name}};

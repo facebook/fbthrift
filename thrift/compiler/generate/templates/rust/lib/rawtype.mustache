@@ -44,7 +44,18 @@
     }}compile_error!("Thrift streaming in Rust is not implemented"){{!
 }}{{/type:stream?}}{{!
 }}{{#type:streamresponse?}}{{!
-    }}compile_error!("Thrift streaming in Rust is not implemented"){{!
+    }}{{#type:streamHasFirstResponse?}}{{!
+        }}({{#type:streamFirstResponseType}}{{>lib/type}}{{/type:streamFirstResponseType}}, {{!
+    }}{{/type:streamHasFirstResponse?}}{{!
+    }}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = {{!
+        }}::std::result::Result<{{!
+            }}{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}, {{!
+            }}crate::{{service:snake}}::{{function:upcamel}}StreamError{{!
+        }}>>{{!
+    }} + ::std::marker::Send + 'static >>{{!
+    }}{{#type:streamHasFirstResponse?}}{{!
+        }}){{!
+    }}{{/type:streamHasFirstResponse?}}{{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:set?}}{{!
     }}{{#type:rust}}::{{type:rust}}{{/type:rust}}{{!

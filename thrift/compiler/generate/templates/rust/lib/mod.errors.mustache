@@ -19,7 +19,7 @@
     {{#program:services}}
     pub mod {{service:snake}} {
 
-        {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#service:rustFunctions}}
         {{#function:exceptions?}}
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
@@ -57,7 +57,43 @@
         pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
         {{/function:exceptions?}}
 
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{#function:returns_stream?}}{{#function:stream_exceptions?}}
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum {{function:upcamel}}StreamError {
+            {{#function:stream_exceptions}}
+            #[error("{{service:name}}::{{function:name}} stream failed with {0:?}")]
+            {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
+            {{/function:stream_exceptions}}
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        {{#function:uniqueStreamExceptions}}
+        impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}StreamError {
+            fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
+                {{function:upcamel}}StreamError::{{field:rust_name}}(e)
+            }
+        }
+
+        {{/function:uniqueStreamExceptions}}
+        impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}StreamError {
+            fn from(err: ::anyhow::Error) -> Self {
+                {{function:upcamel}}StreamError::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}StreamError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                {{function:upcamel}}StreamError::ApplicationException(ae)
+            }
+        }
+        {{/function:stream_exceptions?}}
+        {{^function:stream_exceptions?}}
+        pub type {{function:upcamel}}StreamError = ::fbthrift::NonthrowingFunctionError;
+        {{/function:stream_exceptions?}}{{/function:returns_stream?}}
+        {{/service:rustFunctions}}
     }
 
     {{/program:services}}

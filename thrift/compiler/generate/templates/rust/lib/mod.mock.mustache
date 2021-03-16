@@ -20,9 +20,9 @@
         {{#service:extends}}
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
-        {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#service:rustFunctions}}
         pub {{function:name}}: r#impl::{{service:snake}}::{{function:name}}<'mock>,
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{/service:rustFunctions}}
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -32,10 +32,10 @@
                 {{#service:extends}}
                 parent: {{service:package}}::client::{{service:name}}::mock(),
                 {{/service:extends}}
-                {{#service:rustFunctions}}{{^function:returns_streams?}}
+                {{#service:rustFunctions}}
                 {{function:name}}: {{!
                     }}r#impl::{{service:snake}}::{{function:name}}::unimplemented(),
-                {{/function:returns_streams?}}{{/service:rustFunctions}}
+                {{/service:rustFunctions}}
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -43,7 +43,7 @@
 
     #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+        }}{{#service:rustFunctions}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -73,7 +73,7 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
-        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+        }}{{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}
@@ -97,7 +97,7 @@
     }}{{#program:services}}
         pub mod {{service:snake}} {{>lib/block}}{{!
 
-            }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+            }}{{#service:rustFunctions}}
 
             pub struct {{function:name}}<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
@@ -131,14 +131,18 @@
 
                 pub fn ret({{!
                     }}&self, {{!
-                    }}value: {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                    }}{{#function:returns_stream?}}_{{/function:returns_stream?}}value: {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
                 }}) {
+                    {{#function:returns_stream?}}
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                    {{/function:returns_stream?}}{{^function:returns_stream?}}
                     self.mock(move |{{!
                         }}{{#function:args}}{{!
                         }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
                         }}{{^last?}}, {{/last?}}{{!
                         }}{{/function:args}}{{!
                     }}| value.clone());
+                    {{/function:returns_stream?}}
                 }
 
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut({{!
@@ -201,7 +205,7 @@
                     }}| ::std::result::Result::Err(exception.clone().into()));
                 }
             }{{!
-            }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+            }}{{/service:rustFunctions}}
         }{{!
     }}{{/program:services}}
     }
