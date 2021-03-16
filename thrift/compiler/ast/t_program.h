@@ -251,55 +251,6 @@ class t_program : public t_node {
    */
   std::string compute_name_from_file_path(std::string path);
 
-  /**
-   * TODO: remove, see: T84718055
-   */
-  const std::vector<t_typedef*>& get_typedefs() const {
-    return typedefs();
-  }
-  const std::vector<t_enum*>& get_enums() const {
-    return enums();
-  }
-  const std::vector<t_const*>& get_consts() const {
-    return consts();
-  }
-  const std::vector<t_struct*>& get_structs() const {
-    return structs();
-  }
-  const std::vector<t_exception*>& get_xceptions() const {
-    return xceptions();
-  }
-  const std::vector<t_struct*>& get_objects() const {
-    return objects();
-  }
-  const std::vector<t_service*>& get_services() const {
-    return services();
-  }
-  const std::vector<t_typedef*>& get_placeholder_typedefs() const {
-    return placeholder_typedefs();
-  }
-  const std::vector<t_service*>& get_interactions() const {
-    return interactions();
-  }
-  const std::string& get_path() const {
-    return path();
-  }
-  const std::string& get_name() const {
-    return name();
-  }
-  const std::string& get_include_prefix() const {
-    return include_prefix();
-  }
-  const std::vector<t_include*>& get_includes() const {
-    return includes();
-  }
-  const std::map<std::string, std::string>& get_namespaces() const {
-    return namespaces();
-  }
-  const std::vector<std::string>& get_cpp_includes() const {
-    return cpp_includes();
-  }
-
  private:
   // All the elements owned by this program.
   std::vector<std::unique_ptr<t_node>> nodes_;
