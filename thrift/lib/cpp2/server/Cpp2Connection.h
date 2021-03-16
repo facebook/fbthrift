@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/ManagedConnection.h>
@@ -167,12 +168,11 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         std::shared_ptr<Cpp2Connection> con,
         rocket::Payload&& debugPayload);
 
-    // Delegates to wrapped request.
     bool isActive() const override {
-      return active_;
+      return stateMachine_.isActive();
     }
     void cancel() {
-      active_ = false;
+      (void)stateMachine_.tryCancel(connection_->getWorker()->getEventBase());
     }
 
     bool isOneway() const override {
@@ -224,7 +224,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
 
-    std::atomic<bool> active_{true};
+    RequestStateMachine stateMachine_;
 
     Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 

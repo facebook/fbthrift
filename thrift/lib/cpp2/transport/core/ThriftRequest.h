@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -64,7 +65,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       : serverConfigs_(serverConfigs),
         kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
-        active_(true),
         checksumRequested_(metadata.crc32c_ref().has_value()),
         loadMetric_(
             metadata.loadMetric_ref()
@@ -122,13 +122,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   bool isActive() const final {
-    return active_.load();
+    return stateMachine_.isActive();
   }
 
-  void cancel() {
-    if (active_.exchange(false)) {
-      cancelTimeout();
-    }
+  bool tryCancel() {
+    return stateMachine_.tryCancel(getEventBase());
   }
 
   RpcKind kind() const {
@@ -188,7 +186,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> response,
       StreamServerCallbackPtr stream,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
@@ -209,7 +207,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::detail::ServerStreamFactory&& stream,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
@@ -228,7 +226,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
@@ -249,7 +247,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       closeConnection(std::move(ew));
     }
 
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       sendErrorWrappedInternal(
           std::move(ew), exCode, header_.extractAllWriteHeaders());
@@ -444,8 +442,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!request_->getStartedProcessing() &&
-          request_->active_.exchange(false) && !request_->isOneway()) {
+      if (!request_->getStartedProcessing() && request_->tryCancel() &&
+          !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->queueTimeout();
         }
@@ -465,7 +463,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     TaskTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (request_->active_.exchange(false) && !request_->isOneway()) {
+      if (request_->tryCancel() && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->taskTimeout();
         }
@@ -493,7 +491,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   const RpcKind kind_;
 
  private:
-  std::atomic<bool> active_;
+  RequestStateMachine stateMachine_;
   bool checksumRequested_{false};
   transport::THeader header_;
   folly::Optional<std::string> loadMetric_;

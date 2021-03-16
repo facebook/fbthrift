@@ -97,7 +97,7 @@ void ThriftRequestCore::sendReply(
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t> crc32c) {
   auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
-  if (active_.exchange(false)) {
+  if (tryCancel()) {
     cancelTimeout();
     // Mark processEnd for the request.
     // Note: this processEnd time unfortunately does not account for the time
