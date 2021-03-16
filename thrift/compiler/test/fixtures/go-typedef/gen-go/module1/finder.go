@@ -568,11 +568,11 @@ func (p *FinderByPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderByPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -807,11 +807,11 @@ func (p *FinderAliasByPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderAliasByPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -1046,11 +1046,11 @@ func (p *FinderPreviousPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderPreviousPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -1166,11 +1166,11 @@ func (p *FinderPreviousPlateResult) Read(iprot thrift.Protocol) error {
 
 func (p *FinderPreviousPlateResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  temp := Plate(v)
-  p.Success = &temp
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    temp := Plate(v)
+    p.Success = &temp
+  }
   return nil
 }
 

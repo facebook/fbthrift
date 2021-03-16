@@ -97,10 +97,10 @@ func (p *Foo) Read(iprot thrift.Protocol) error {
 
 func (p *Foo)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.A = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.A = v
+  }
   return nil
 }
 

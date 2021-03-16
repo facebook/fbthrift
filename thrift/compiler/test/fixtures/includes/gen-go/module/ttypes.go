@@ -179,11 +179,11 @@ func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  temp := includes0.IncludedInt64(v)
-  p.MyIncludedInt = temp
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    temp := includes0.IncludedInt64(v)
+    p.MyIncludedInt = temp
+  }
   return nil
 }
 

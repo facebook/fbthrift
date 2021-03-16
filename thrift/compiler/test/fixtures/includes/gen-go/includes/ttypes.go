@@ -140,10 +140,10 @@ func (p *Included) Read(iprot thrift.Protocol) error {
 
 func (p *Included)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.MyIntField = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.MyIntField = v
+  }
   return nil
 }
 

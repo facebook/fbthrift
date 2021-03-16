@@ -267,19 +267,19 @@ func (p *ComplexUnion) Read(iprot thrift.Protocol) error {
 
 func (p *ComplexUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.IntValue = &v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.IntValue = &v
+  }
   return nil
 }
 
 func (p *ComplexUnion)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.StringValue = &v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.StringValue = &v
+  }
   return nil
 }
 
@@ -291,12 +291,12 @@ func (p *ComplexUnion)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]int64, 0, size)
   p.IntListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem0 int64
+    var _elem0 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem0 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem0 = v
+    }
     p.IntListValue = append(p.IntListValue, _elem0)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -313,12 +313,12 @@ func (p *ComplexUnion)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.StringListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem1 string
+    var _elem1 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem1 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
     p.StringListValue = append(p.StringListValue, _elem1)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -335,18 +335,18 @@ func (p *ComplexUnion)  ReadField9(iprot thrift.Protocol) error {
   tMap := make(ContainerTypedef, size)
   p.TypedefValue =  tMap
   for i := 0; i < size; i ++ {
-var _key2 int16
+    var _key2 int16
     if v, err := iprot.ReadI16(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
-var _val3 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
+    var _val3 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val3 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val3 = v
+    }
     p.TypedefValue[_key2] = _val3
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -357,10 +357,10 @@ var _val3 string
 
 func (p *ComplexUnion)  ReadField14(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 14: ", err)
-} else {
-  p.StringRef = &v
-}
+    return thrift.PrependError("error reading field 14: ", err)
+  } else {
+    p.StringRef = &v
+  }
   return nil
 }
 
@@ -622,12 +622,12 @@ func (p *ListUnion)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]int64, 0, size)
   p.IntListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem4 int64
+    var _elem4 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem4 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem4 = v
+    }
     p.IntListValue = append(p.IntListValue, _elem4)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -644,12 +644,12 @@ func (p *ListUnion)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.StringListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem5 string
+    var _elem5 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem5 = v
+    }
     p.StringListValue = append(p.StringListValue, _elem5)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -839,19 +839,19 @@ func (p *DataUnion) Read(iprot thrift.Protocol) error {
 
 func (p *DataUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.BinaryData = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.BinaryData = v
+  }
   return nil
 }
 
 func (p *DataUnion)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.StringData = &v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.StringData = &v
+  }
   return nil
 }
 
@@ -1026,19 +1026,19 @@ func (p *Val) Read(iprot thrift.Protocol) error {
 
 func (p *Val)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.StrVal = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.StrVal = v
+  }
   return nil
 }
 
 func (p *Val)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.IntVal = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.IntVal = v
+  }
   return nil
 }
 
@@ -1050,18 +1050,18 @@ func (p *Val)  ReadField9(iprot thrift.Protocol) error {
   tMap := make(ContainerTypedef, size)
   p.TypedefValue =  tMap
   for i := 0; i < size; i ++ {
-var _key6 int16
+    var _key6 int16
     if v, err := iprot.ReadI16(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key6 = v
-}
-var _val7 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key6 = v
+    }
+    var _val7 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val7 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val7 = v
+    }
     p.TypedefValue[_key6] = _val7
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -1451,19 +1451,19 @@ func (p *VirtualComplexUnion) Read(iprot thrift.Protocol) error {
 
 func (p *VirtualComplexUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.ThingOne = &v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ThingOne = &v
+  }
   return nil
 }
 
 func (p *VirtualComplexUnion)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.ThingTwo = &v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.ThingTwo = &v
+  }
   return nil
 }
 
@@ -1600,10 +1600,10 @@ func (p *NonCopyableStruct) Read(iprot thrift.Protocol) error {
 
 func (p *NonCopyableStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Num = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Num = v
+  }
   return nil
 }
 

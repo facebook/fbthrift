@@ -116,19 +116,19 @@ func (p *Accessory) Read(iprot thrift.Protocol) error {
 
 func (p *Accessory)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.InventoryId = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.InventoryId = v
+  }
   return nil
 }
 
 func (p *Accessory)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 
@@ -269,19 +269,19 @@ func (p *PartName) Read(iprot thrift.Protocol) error {
 
 func (p *PartName)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.InventoryId = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.InventoryId = v
+  }
   return nil
 }
 
 func (p *PartName)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 

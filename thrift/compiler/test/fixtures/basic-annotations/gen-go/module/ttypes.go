@@ -142,10 +142,10 @@ func (p *MyStructNestedAnnotation) Read(iprot thrift.Protocol) error {
 
 func (p *MyStructNestedAnnotation)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 
@@ -358,55 +358,55 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Major = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Major = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Package = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Package = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.AnnotationWithQuote = v
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.AnnotationWithQuote = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Class_ = v
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.Class_ = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.AnnotationWithTrailingComma = v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.AnnotationWithTrailingComma = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 6: ", err)
-} else {
-  p.EmptyAnnotations = v
-}
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    p.EmptyAnnotations = v
+  }
   return nil
 }
 
@@ -595,19 +595,19 @@ func (p *SecretStruct) Read(iprot thrift.Protocol) error {
 
 func (p *SecretStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
 func (p *SecretStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Password = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Password = v
+  }
   return nil
 }
 

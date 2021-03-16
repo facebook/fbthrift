@@ -148,6 +148,9 @@ service ThriftTest {
 
   /* Test oneway void */
   oneway void doTestOneway(1: i32 secondsToSleep);
+
+  /* Test poor naming */
+  void _doTestPoorName();
 }
 
 struct VersioningTestV1 {

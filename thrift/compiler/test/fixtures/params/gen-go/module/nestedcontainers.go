@@ -757,12 +757,12 @@ func (p *NestedContainersMapListArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key2 int32
+    var _key2 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
@@ -770,12 +770,12 @@ var _key2 int32
     tSlice := make([]int32, 0, size)
     _val3 :=  tSlice
     for i := 0; i < size; i ++ {
-var _elem4 int32
+      var _elem4 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem4 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem4 = v
+      }
       _val3 = append(_val3, _elem4)
     }
     if err := iprot.ReadListEnd(); err != nil {
@@ -984,12 +984,12 @@ func (p *NestedContainersMapSetArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key5 int32
+    var _key5 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key5 = v
+    }
     _, size, err := iprot.ReadSetBegin()
     if err != nil {
       return thrift.PrependError("error reading set begin: ", err)
@@ -997,12 +997,12 @@ var _key5 int32
     tSet := make([]int32, 0, size)
     _val6 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem7 int32
+      var _elem7 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem7 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem7 = v
+      }
       _val6 = append(_val6, _elem7)
     }
     if err := iprot.ReadSetEnd(); err != nil {
@@ -1225,18 +1225,18 @@ func (p *NestedContainersListMapArgs)  ReadField1(iprot thrift.Protocol) error {
     tMap := make(map[int32]int32, size)
     _elem8 :=  tMap
     for i := 0; i < size; i ++ {
-var _key9 int32
+      var _key9 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _key9 = v
-}
-var _val10 int32
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _key9 = v
+      }
+      var _val10 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _val10 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _val10 = v
+      }
       _elem8[_key9] = _val10
     }
     if err := iprot.ReadMapEnd(); err != nil {
@@ -1452,12 +1452,12 @@ func (p *NestedContainersListSetArgs)  ReadField1(iprot thrift.Protocol) error {
     tSet := make([]int32, 0, size)
     _elem11 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem12 int32
+      var _elem12 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem12 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem12 = v
+      }
       _elem11 = append(_elem11, _elem12)
     }
     if err := iprot.ReadSetEnd(); err != nil {
@@ -1685,12 +1685,12 @@ func (p *NestedContainersTurtlesArgs)  ReadField1(iprot thrift.Protocol) error {
       tMap := make(map[int32]map[int32][]int32, size)
       _elem14 :=  tMap
       for i := 0; i < size; i ++ {
-var _key15 int32
+        var _key15 int32
         if v, err := iprot.ReadI32(); err != nil {
-        return thrift.PrependError("error reading field 0: ", err)
-} else {
-        _key15 = v
-}
+          return thrift.PrependError("error reading field 0: ", err)
+        } else {
+          _key15 = v
+        }
         _, _, size, err := iprot.ReadMapBegin()
         if err != nil {
           return thrift.PrependError("error reading map begin: ", err)
@@ -1698,12 +1698,12 @@ var _key15 int32
         tMap := make(map[int32][]int32, size)
         _val16 :=  tMap
         for i := 0; i < size; i ++ {
-var _key17 int32
+          var _key17 int32
           if v, err := iprot.ReadI32(); err != nil {
-          return thrift.PrependError("error reading field 0: ", err)
-} else {
-          _key17 = v
-}
+            return thrift.PrependError("error reading field 0: ", err)
+          } else {
+            _key17 = v
+          }
           _, size, err := iprot.ReadSetBegin()
           if err != nil {
             return thrift.PrependError("error reading set begin: ", err)
@@ -1711,12 +1711,12 @@ var _key17 int32
           tSet := make([]int32, 0, size)
           _val18 :=  tSet
           for i := 0; i < size; i ++ {
-var _elem19 int32
+            var _elem19 int32
             if v, err := iprot.ReadI32(); err != nil {
-            return thrift.PrependError("error reading field 0: ", err)
-} else {
-            _elem19 = v
-}
+              return thrift.PrependError("error reading field 0: ", err)
+            } else {
+              _elem19 = v
+            }
             _val18 = append(_val18, _elem19)
           }
           if err := iprot.ReadSetEnd(); err != nil {

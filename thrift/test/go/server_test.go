@@ -176,6 +176,9 @@ func doClientTest(t *testing.T, transportFactory thrift.TransportFactory, protoc
 			t.Fatalf("incorrect response from server on insanity")
 		}
 	}
+
+	// Ensure poorly named method exists
+	_ = client.XDoTestPoorName()
 }
 
 func TestHeaderHeader(t *testing.T) {

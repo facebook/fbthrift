@@ -169,10 +169,10 @@ func (p *Fiery) Read(iprot thrift.Protocol) error {
 
 func (p *Fiery)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Message = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Message = v
+  }
   return nil
 }
 
@@ -291,10 +291,10 @@ func (p *Serious) Read(iprot thrift.Protocol) error {
 
 func (p *Serious)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Sonnet = &v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Sonnet = &v
+  }
   return nil
 }
 
@@ -434,19 +434,19 @@ func (p *ComplexFieldNames) Read(iprot thrift.Protocol) error {
 
 func (p *ComplexFieldNames)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.ErrorMessage = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ErrorMessage = v
+  }
   return nil
 }
 
 func (p *ComplexFieldNames)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.InternalErrorMessage = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.InternalErrorMessage = v
+  }
   return nil
 }
 
@@ -591,19 +591,19 @@ func (p *CustomFieldNames) Read(iprot thrift.Protocol) error {
 
 func (p *CustomFieldNames)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.ErrorMessage = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ErrorMessage = v
+  }
   return nil
 }
 
 func (p *CustomFieldNames)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.InternalErrorMessage = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.InternalErrorMessage = v
+  }
   return nil
 }
 

@@ -461,18 +461,18 @@ func (p *SomeServiceBounceMapArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.M =  tMap
   for i := 0; i < size; i ++ {
-var _key26 int32
+    var _key26 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key26 = v
-}
-var _val27 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key26 = v
+    }
+    var _val27 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val27 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val27 = v
+    }
     p.M[_key26] = _val27
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -607,18 +607,18 @@ func (p *SomeServiceBounceMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key28 int32
+    var _key28 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key28 = v
-}
-var _val29 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key28 = v
+    }
+    var _val29 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val29 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val29 = v
+    }
     p.Success[_key28] = _val29
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -750,12 +750,12 @@ func (p *SomeServiceBinaryKeyedMapArgs)  ReadField1(iprot thrift.Protocol) error
   tSlice := make([]int64, 0, size)
   p.R =  tSlice
   for i := 0; i < size; i ++ {
-var _elem30 int64
+    var _elem30 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem30 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem30 = v
+    }
     p.R = append(p.R, _elem30)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -888,18 +888,18 @@ func (p *SomeServiceBinaryKeyedMapResult)  ReadField0(iprot thrift.Protocol) err
   tMap := make(map[string]int64, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key31 string
+    var _key31 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key31 = v
-}
-var _val32 int64
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key31 = v
+    }
+    var _val32 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val32 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val32 = v
+    }
     p.Success[_key31] = _val32
   }
   if err := iprot.ReadMapEnd(); err != nil {

@@ -272,19 +272,19 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.MyIntField = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.MyIntField = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.MyStringField = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.MyStringField = v
+  }
   return nil
 }
 
@@ -298,38 +298,38 @@ func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  temp := MyEnum(v)
-  p.MyEnum = temp
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.MyEnum = temp
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.Oneway = v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.Oneway = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 6: ", err)
-} else {
-  p.Readonly = v
-}
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    p.Readonly = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 7: ", err)
-} else {
-  p.Idempotent = v
-}
+    return thrift.PrependError("error reading field 7: ", err)
+  } else {
+    p.Idempotent = v
+  }
   return nil
 }
 
@@ -658,11 +658,11 @@ func (p *MyUnion) Read(iprot thrift.Protocol) error {
 
 func (p *MyUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := MyEnum(v)
-  p.MyEnum = &temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.MyEnum = &temp
+  }
   return nil
 }
 

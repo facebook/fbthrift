@@ -452,10 +452,10 @@ func (p *DbMixedStackArgumentsGetDataByKey0Args) Read(iprot thrift.Protocol) err
 
 func (p *DbMixedStackArgumentsGetDataByKey0Args)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Key = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Key = v
+  }
   return nil
 }
 
@@ -569,10 +569,10 @@ func (p *DbMixedStackArgumentsGetDataByKey0Result) Read(iprot thrift.Protocol) e
 
 func (p *DbMixedStackArgumentsGetDataByKey0Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = v
+  }
   return nil
 }
 
@@ -683,10 +683,10 @@ func (p *DbMixedStackArgumentsGetDataByKey1Args) Read(iprot thrift.Protocol) err
 
 func (p *DbMixedStackArgumentsGetDataByKey1Args)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Key = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Key = v
+  }
   return nil
 }
 
@@ -800,10 +800,10 @@ func (p *DbMixedStackArgumentsGetDataByKey1Result) Read(iprot thrift.Protocol) e
 
 func (p *DbMixedStackArgumentsGetDataByKey1Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = v
+  }
   return nil
 }
 

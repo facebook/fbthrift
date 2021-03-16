@@ -511,9 +511,22 @@ std::string t_go_generator::camelcase(const std::string& value) const {
   std::string value2(value);
   std::setlocale(LC_ALL, "C"); // set locale to classic
 
+  if (value.empty()) {
+    return "";
+  }
+
+  std::string::size_type i = 0;
+  if (value2[0] == '_') {
+    // Need a letter, replace '_' with 'x'
+    value2[0] = 'x';
+    if (value2.length() > 1) {
+      value2[1] = toupper(value2[1]);
+    }
+    i++;
+  }
   // as long as we are changing things, let's change _ followed by lowercase to
   // capital and fix common initialisms
-  for (std::string::size_type i = 1; i < value2.size() - 1; ++i) {
+  for (; i < value2.size() - 1; ++i) {
     if (value2[i] == '_') {
       if (islower(value2[i + 1])) {
         value2.replace(i, 2, 1, toupper(value2[i + 1]));
@@ -544,11 +557,11 @@ std::string t_go_generator::publicize(
     value2 = value.substr(dot_pos + 1);
   }
 
+  value2 = camelcase(value2);
+
   if (!isupper(value2[0])) {
     value2[0] = toupper(value2[0]);
   }
-
-  value2 = camelcase(value2);
 
   // final length before further checks, the string may become longer
   size_t len_before = value2.length();
@@ -592,11 +605,11 @@ std::string t_go_generator::privatize(const std::string& value) const {
 
   std::string value2(value);
 
+  value2 = camelcase(value2);
+
   if (!islower(value2[0])) {
     value2[0] = tolower(value2[0]);
   }
-
-  value2 = camelcase(value2);
 
   return value2;
 }
@@ -3554,7 +3567,10 @@ void t_go_generator::generate_deserialize_field(
   (void)coerceData;
   const t_type* orig_type = tfield->get_type();
   const t_type* type = orig_type->get_true_type();
-  string name(prefix + publicize(tfield->get_name()));
+  string name = tfield->get_name();
+  if (prefix != "") {
+    name = prefix + publicize(tfield->get_name());
+  }
 
   if (type->is_void()) {
     throw std::runtime_error(
@@ -3576,7 +3592,8 @@ void t_go_generator::generate_deserialize_field(
       string type_name = inkey ? type_to_go_key_type(tfield->get_type())
                                : type_to_go_type(tfield->get_type());
 
-      out << "var " << tfield->get_name() << " " << type_name << endl;
+      out << indent() << "var " << tfield->get_name() << " " << type_name
+          << endl;
     }
 
     indent(out) << "if v, err := iprot.";
@@ -3640,10 +3657,13 @@ void t_go_generator::generate_deserialize_field(
     }
 
     out << "; err != nil {" << endl;
+    indent_up();
     out << indent() << "return thrift.PrependError(\"error reading field "
         << tfield->get_key() << ": \", err)" << endl;
+    indent_down();
 
-    out << "} else {" << endl;
+    out << indent() << "} else {" << endl;
+    indent_up();
     string wrap;
 
     if (type->is_binary() && inkey) {
@@ -3662,7 +3682,8 @@ void t_go_generator::generate_deserialize_field(
       indent(out) << name << " = " << maybe_address << "temp" << endl;
     }
 
-    out << "}" << endl;
+    indent_down();
+    out << indent() << "}" << endl;
   } else {
     throw std::runtime_error(
         "INVALID TYPE IN generate_deserialize_field '" + type->get_name() +

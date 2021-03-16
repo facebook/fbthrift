@@ -1265,10 +1265,10 @@ func (p *MyServiceGetRandomDataResult) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceGetRandomDataResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -1384,10 +1384,10 @@ func (p *MyServiceSinkArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceSinkArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Sink = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Sink = v
+  }
   return nil
 }
 
@@ -1583,19 +1583,19 @@ func (p *MyServicePutDataByIdArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServicePutDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
 func (p *MyServicePutDataByIdArgs)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Data = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Data = v
+  }
   return nil
 }
 
@@ -1782,10 +1782,10 @@ func (p *MyServiceHasDataByIdArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceHasDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
@@ -1901,10 +1901,10 @@ func (p *MyServiceHasDataByIdResult) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceHasDataByIdResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2020,10 +2020,10 @@ func (p *MyServiceGetDataByIdArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceGetDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
@@ -2139,10 +2139,10 @@ func (p *MyServiceGetDataByIdResult) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceGetDataByIdResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2258,10 +2258,10 @@ func (p *MyServiceDeleteDataByIdArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceDeleteDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
@@ -2457,19 +2457,19 @@ func (p *MyServiceLobDataByIdArgs) Read(iprot thrift.Protocol) error {
 
 func (p *MyServiceLobDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
 func (p *MyServiceLobDataByIdArgs)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Data = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Data = v
+  }
   return nil
 }
 

@@ -209,37 +209,37 @@ func (p *Color) Read(iprot thrift.Protocol) error {
 
 func (p *Color)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Red = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Red = v
+  }
   return nil
 }
 
 func (p *Color)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Green = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Green = v
+  }
   return nil
 }
 
 func (p *Color)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Blue = v
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.Blue = v
+  }
   return nil
 }
 
 func (p *Color)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Alpha = v
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.Alpha = v
+  }
   return nil
 }
 
@@ -510,37 +510,37 @@ func (p *Vehicle)  ReadField1(iprot thrift.Protocol) error {
 
 func (p *Vehicle)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.LicensePlate = &v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.LicensePlate = &v
+  }
   return nil
 }
 
 func (p *Vehicle)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Description = &v
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.Description = &v
+  }
   return nil
 }
 
 func (p *Vehicle)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Name = &v
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.Name = &v
+  }
   return nil
 }
 
 func (p *Vehicle)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.HasAC = v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.HasAC = v
+  }
   return nil
 }
 
@@ -964,38 +964,38 @@ func (p *Person) Read(iprot thrift.Protocol) error {
 
 func (p *Person)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := PersonID(v)
-  p.Id = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := PersonID(v)
+    p.Id = temp
+  }
   return nil
 }
 
 func (p *Person)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 
 func (p *Person)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI16(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Age = &v
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.Age = &v
+  }
   return nil
 }
 
 func (p *Person)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Address = &v
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.Address = &v
+  }
   return nil
 }
 
@@ -1015,13 +1015,13 @@ func (p *Person)  ReadField6(iprot thrift.Protocol) error {
   tSet := make([]PersonID, 0, size)
   p.Friends =  tSet
   for i := 0; i < size; i ++ {
-var _elem0 PersonID
+    var _elem0 PersonID
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    temp := PersonID(v)
-    _elem0 = temp
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      temp := PersonID(v)
+      _elem0 = temp
+    }
     p.Friends = append(p.Friends, _elem0)
   }
   if err := iprot.ReadSetEnd(); err != nil {
@@ -1032,11 +1032,11 @@ var _elem0 PersonID
 
 func (p *Person)  ReadField7(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 7: ", err)
-} else {
-  temp := PersonID(v)
-  p.BestFriend = &temp
-}
+    return thrift.PrependError("error reading field 7: ", err)
+  } else {
+    temp := PersonID(v)
+    p.BestFriend = &temp
+  }
   return nil
 }
 
@@ -1048,19 +1048,19 @@ func (p *Person)  ReadField8(iprot thrift.Protocol) error {
   tMap := make(map[Animal]string, size)
   p.PetNames =  tMap
   for i := 0; i < size; i ++ {
-var _key1 Animal
+    var _key1 Animal
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    temp := Animal(v)
-    _key1 = temp
-}
-var _val2 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      temp := Animal(v)
+      _key1 = temp
+    }
+    var _val2 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val2 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val2 = v
+    }
     p.PetNames[_key1] = _val2
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -1071,11 +1071,11 @@ var _val2 string
 
 func (p *Person)  ReadField9(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 9: ", err)
-} else {
-  temp := Animal(v)
-  p.AfraidOfAnimal = &temp
-}
+    return thrift.PrependError("error reading field 9: ", err)
+  } else {
+    temp := Animal(v)
+    p.AfraidOfAnimal = &temp
+  }
   return nil
 }
 

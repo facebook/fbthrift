@@ -272,41 +272,41 @@ func (p *Automobile) Read(iprot thrift.Protocol) error {
 
 func (p *Automobile)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
 func (p *Automobile)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  temp := Plate(v)
-  p.PreviousPlate = &temp
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    temp := Plate(v)
+    p.PreviousPlate = &temp
+  }
   return nil
 }
 
 func (p *Automobile)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  temp := Plate(v)
-  p.FirstPlate = temp
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    temp := Plate(v)
+    p.FirstPlate = temp
+  }
   return nil
 }
 
 func (p *Automobile)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  temp := Year(v)
-  p.Year = temp
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    temp := Year(v)
+    p.Year = temp
+  }
   return nil
 }
 
@@ -318,12 +318,12 @@ func (p *Automobile)  ReadField5(iprot thrift.Protocol) error {
   tSlice := make(Drivers, 0, size)
   p.Drivers =  tSlice
   for i := 0; i < size; i ++ {
-var _elem1 string
+    var _elem1 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem1 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
     p.Drivers = append(p.Drivers, _elem1)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -360,12 +360,12 @@ func (p *Automobile)  ReadField7(iprot thrift.Protocol) error {
   tMap := make(map[int32]*PartName, size)
   p.PartNames =  tMap
   for i := 0; i < size; i ++ {
-var _key3 int32
+    var _key3 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key3 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key3 = v
+    }
     _val4 := NewPartName()
     if err := _val4.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _val4), err)
@@ -612,19 +612,19 @@ func (p *MapKey) Read(iprot thrift.Protocol) error {
 
 func (p *MapKey)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Num = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Num = v
+  }
   return nil
 }
 
 func (p *MapKey)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Strval = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Strval = v
+  }
   return nil
 }
 
@@ -754,12 +754,12 @@ func (p *MapContainer)  ReadField1(iprot thrift.Protocol) error {
     if err := _key5.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _key5), err)
     }
-var _val6 string
+    var _val6 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val6 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val6 = v
+    }
     p.Mapval[*_key5] = _val6
   }
   if err := iprot.ReadMapEnd(); err != nil {

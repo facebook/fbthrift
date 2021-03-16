@@ -1860,10 +1860,10 @@ func (p *GetEntityGetBoolResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetBoolResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2052,11 +2052,11 @@ func (p *GetEntityGetByteResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetByteResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadByte(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  temp := int8(v)
-  p.Success = &temp
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    temp := int8(v)
+    p.Success = &temp
+  }
   return nil
 }
 
@@ -2245,10 +2245,10 @@ func (p *GetEntityGetI16Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI16Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI16(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2437,10 +2437,10 @@ func (p *GetEntityGetI32Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI32Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2629,10 +2629,10 @@ func (p *GetEntityGetI64Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI64Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2821,10 +2821,10 @@ func (p *GetEntityGetDoubleResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetDoubleResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -3013,10 +3013,10 @@ func (p *GetEntityGetStringResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetStringResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -3203,10 +3203,10 @@ func (p *GetEntityGetBinaryResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetBinaryResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = v
+  }
   return nil
 }
 
@@ -3394,18 +3394,18 @@ func (p *GetEntityGetMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key2 string
+    var _key2 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
-var _val3 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
+    var _val3 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val3 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val3 = v
+    }
     p.Success[_key2] = _val3
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -3608,12 +3608,12 @@ func (p *GetEntityGetSetResult)  ReadField0(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Success =  tSet
   for i := 0; i < size; i ++ {
-var _elem4 string
+    var _elem4 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem4 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem4 = v
+    }
     p.Success = append(p.Success, _elem4)
   }
   if err := iprot.ReadSetEnd(); err != nil {
@@ -3821,12 +3821,12 @@ func (p *GetEntityGetListResult)  ReadField0(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem5 string
+    var _elem5 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem5 = v
+    }
     p.Success = append(p.Success, _elem5)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -3992,28 +3992,28 @@ func (p *GetEntityGetLegacyStuffArgs) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.NumPos = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.NumPos = v
+  }
   return nil
 }
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField_1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field -1: ", err)
-} else {
-  p.NumNeg1 = v
-}
+    return thrift.PrependError("error reading field -1: ", err)
+  } else {
+    p.NumNeg1 = v
+  }
   return nil
 }
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField_2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field -2: ", err)
-} else {
-  p.NumNeg2 = v
-}
+    return thrift.PrependError("error reading field -2: ", err)
+  } else {
+    p.NumNeg2 = v
+  }
   return nil
 }
 
@@ -4153,10 +4153,10 @@ func (p *GetEntityGetLegacyStuffResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetLegacyStuffResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 

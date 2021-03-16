@@ -1197,10 +1197,10 @@ func (p *RaiserGet200Result) Read(iprot thrift.Protocol) error {
 
 func (p *RaiserGet200Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -1473,10 +1473,10 @@ func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {
 
 func (p *RaiserGet500Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 

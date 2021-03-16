@@ -95,10 +95,10 @@ func (p *GetEntityRequest) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityRequest)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
@@ -206,10 +206,10 @@ func (p *GetEntityResponse) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityResponse)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Entity = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Entity = v
+  }
   return nil
 }
 

@@ -181,7 +181,7 @@ func TestSetters(t *testing.T) {
 		t.Fatalf("structs are not equal (should be equal)")
 	}
 
-	wn2.Set_setMe(true)
+	wn2.SetXSetMe(true)
 	if reflect.DeepEqual(wn1, wn2) {
 		t.Fatalf("structs are equal (should be not equal)")
 	}
