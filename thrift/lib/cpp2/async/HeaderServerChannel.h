@@ -173,6 +173,12 @@ class HeaderServerChannel : public ServerChannel,
       return std::move(buf_);
     }
 
+   protected:
+    bool tryStartProcessing() override {
+      DCHECK(false);
+      return true;
+    }
+
    private:
     std::unique_ptr<folly::IOBuf> buf_;
     HeaderServerChannel* channel_;

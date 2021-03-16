@@ -1223,6 +1223,11 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       req_->sendErrorWrapped(std::move(ex), std::move(exCode));
     }
 
+   protected:
+    bool tryStartProcessing() override {
+      return callTryStartProcessing(req_.get());
+    }
+
    private:
     apache::thrift::ResponseChannelRequest::UniquePtr req_;
   };

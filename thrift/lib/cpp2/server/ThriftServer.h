@@ -822,7 +822,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       auto req = stub.getRequest();
       DCHECK(
           req != nullptr || finishedTimestamp_.time_since_epoch().count() != 0);
-      startedProcessing_ = req == nullptr ? true : req->getStartedProcessing();
+      startedProcessing_ = req == nullptr ? true : stub.getStartedProcessing();
     }
 
     const std::string& getMethodName() const {

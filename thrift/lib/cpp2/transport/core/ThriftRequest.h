@@ -292,6 +292,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 #endif
 
+  bool tryStartProcessing() final {
+    return stateMachine_.tryStartProcessing();
+  }
+
   virtual void closeConnection(folly::exception_wrapper) noexcept {
     LOG(FATAL) << "closeConnection not implemented";
   }
@@ -442,8 +446,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!request_->getStartedProcessing() && request_->tryCancel() &&
-          !request_->isOneway()) {
+      if (request_->stateMachine_.tryStopProcessing() &&
+          request_->tryCancel() && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->queueTimeout();
         }

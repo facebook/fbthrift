@@ -627,7 +627,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
-  if (isActive()) {
+  if (tryCancel()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -657,7 +657,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
 void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode) {
-  if (isActive()) {
+  if (tryCancel()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -673,6 +673,10 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 
 void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
+  if (!tryCancel()) {
+    // Timeout was not properly cancelled when request was previously cancelled
+    DCHECK(false);
+  }
   auto* observer = connection_->getWorker()->getServer()->getObserver();
   std::map<std::string, std::string> headers;
   connection_->setServerHeaders(headers);
@@ -687,15 +691,13 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
 }
 
 void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
-  request_->cancel();
   request_->sendTimeoutResponse(
       HeaderServerChannel::HeaderRequest::TimeoutResponseType::TASK);
   request_->connection_->requestTimeoutExpired();
 }
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
-  if (!request_->getStartedProcessing()) {
-    request_->cancel();
+  if (request_->stateMachine_.tryStopProcessing()) {
     request_->sendTimeoutResponse(
         HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
     request_->connection_->queueTimeoutExpired();
@@ -747,10 +749,10 @@ Cpp2Connection::Cpp2Request::~Cpp2Request() {
   connection_->getWorker()->getServer()->decActiveRequests();
 }
 
-// Cancel request is usually called from a different thread than sendReply.
 void Cpp2Connection::Cpp2Request::cancelRequest() {
-  cancelTimeout();
-  cancel();
+  if (tryCancel()) {
+    cancelTimeout();
+  }
 }
 
 Cpp2Connection::Cpp2Sample::Cpp2Sample(

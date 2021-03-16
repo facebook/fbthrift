@@ -464,6 +464,11 @@ class HandlerCallbackBase {
 
   virtual ~HandlerCallbackBase();
 
+  static void releaseRequest(
+      ResponseChannelRequest::UniquePtr request,
+      folly::EventBase* eb,
+      Tile* interaction = nullptr);
+
   void exception(std::exception_ptr ex) {
     doException(ex);
   }

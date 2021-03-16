@@ -76,19 +76,13 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
         ex, std::move(req), ctx, eb, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
     return;
   }
-<%#function:eb%>
-  req->getShouldStartProcessing();
-<%/function:eb%><%^function:eb%>
-  auto shouldStartProcessing = req->getShouldStartProcessing();
-<%/function:eb%>
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb<%#service:interaction?%>, tile<%/service:interaction?%>);
+    return;
+  }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx<%!
   %><%#type:stream_or_sink?%>, <%^function:eb%>apache::thrift::ServerInterface::getBlockingThreadManager(tm)<%/function:eb%><%#function:eb%>eb<%/function:eb%><%/type:stream_or_sink?%><%!
   %><%#service:interaction?%><%^type:stream_or_sink?%><%^type:void?%>, nullptr<%/type:void?%><%/type:stream_or_sink?%>, tile<%/service:interaction?%>);
-<%^function:eb%>
-  if (!shouldStartProcessing || !callback->isRequestActive()) {
-    return;
-  }
-<%/function:eb%>
 <%/function:oneway?%>
   <%^service:interaction?%>iface_<%/service:interaction?%><%#service:interaction?%>static_cast<<%service:parent_service_name%>SvIf::<%service:name%>If*>(tile)<%/service:interaction?%>-><%#function:eb%>async_eb<%/function:eb%><%^function:eb%>async_tm<%/function:eb%>_<%function:cpp_name%>(std::move(callback)<% > service_tcc/get_args_ref%>);
 }

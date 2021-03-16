@@ -42,11 +42,11 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
         ex, std::move(req), ctx, eb, "getDataByKey0");
     return;
   }
-  auto shouldStartProcessing = req->getShouldStartProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataByKey0<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!shouldStartProcessing || !callback->isRequestActive()) {
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataByKey0<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_getDataByKey0(std::move(callback), std::move(uarg_key));
 }
 
@@ -99,11 +99,11 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::
         ex, std::move(req), ctx, eb, "getDataByKey1");
     return;
   }
-  auto shouldStartProcessing = req->getShouldStartProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataByKey1<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey1<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!shouldStartProcessing || !callback->isRequestActive()) {
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataByKey1<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey1<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_getDataByKey1(std::move(callback), std::move(uarg_key));
 }
 

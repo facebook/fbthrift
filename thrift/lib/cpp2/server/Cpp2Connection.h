@@ -168,11 +168,12 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         std::shared_ptr<Cpp2Connection> con,
         rocket::Payload&& debugPayload);
 
-    bool isActive() const override {
+    bool isActive() const final {
       return stateMachine_.isActive();
     }
-    void cancel() {
-      (void)stateMachine_.tryCancel(connection_->getWorker()->getEventBase());
+
+    bool tryCancel() {
+      return stateMachine_.tryCancel(connection_->getWorker()->getEventBase());
     }
 
     bool isOneway() const override {
@@ -205,6 +206,11 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     server::TServerObserver::CallTimestamps& getTimestamps() {
       return static_cast<server::TServerObserver::CallTimestamps&>(
           reqContext_.getTimestamps());
+    }
+
+   protected:
+    bool tryStartProcessing() final {
+      return stateMachine_.tryStartProcessing();
     }
 
    private:

@@ -382,15 +382,32 @@ HandlerCallbackBase::~HandlerCallbackBase() {
       return;
     }
     assert(eb_ != nullptr);
-    if (eb_->inRunningEventBaseThread()) {
-      releaseInteractionInstance();
-      req_.reset();
-    } else {
-      eb_->runInEventBaseThread(
-          [req = std::move(req_),
-           interaction = std::exchange(interaction_, nullptr),
-           eb = getEventBase()] { releaseInteraction(interaction, eb); });
-    }
+    releaseRequest(std::move(req_), eb_, std::exchange(interaction_, nullptr));
+  }
+}
+
+namespace {
+void releaseInteractionInternal(Tile* interaction, folly::EventBase* eb) {
+  if (interaction) {
+    interaction->__fbthrift_releaseRef(*eb);
+  }
+}
+} // namespace
+
+void HandlerCallbackBase::releaseRequest(
+    ResponseChannelRequest::UniquePtr request,
+    folly::EventBase* eb,
+    Tile* interaction) {
+  DCHECK(request);
+  DCHECK(eb != nullptr);
+  if (eb->inRunningEventBaseThread()) {
+    releaseInteractionInternal(interaction, eb);
+    request.reset();
+  } else {
+    eb->runInEventBaseThread(
+        [req = std::move(request), interaction = interaction, eb = eb] {
+          releaseInteractionInternal(interaction, eb);
+        });
   }
 }
 
@@ -530,9 +547,7 @@ void HandlerCallbackBase::sendReply(
 void HandlerCallbackBase::releaseInteraction(
     Tile* interaction,
     folly::EventBase* eb) {
-  if (interaction) {
-    interaction->__fbthrift_releaseRef(*eb);
-  }
+  releaseInteractionInternal(interaction, eb);
 }
 void HandlerCallbackBase::releaseInteractionInstance() {
   releaseInteraction(std::exchange(interaction_, nullptr), getEventBase());

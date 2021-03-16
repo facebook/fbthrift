@@ -154,6 +154,10 @@ class RequestsRegistry {
       return protoId_;
     }
 
+    bool getStartedProcessing() const {
+      return stateMachine_.getStartedProcessing();
+    }
+
    private:
     uint64_t getPayloadSize() const {
       return payload_.dataSize();

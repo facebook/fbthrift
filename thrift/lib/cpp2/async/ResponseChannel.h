@@ -150,21 +150,15 @@ class ResponseChannelRequest {
   }
 
   bool getShouldStartProcessing() {
-    setStartedProcessing();
+    if (!tryStartProcessing()) {
+      return false;
+    }
 
     if (admissionController_ != nullptr) {
       admissionController_->dequeue();
       creationTimestamps_ = std::chrono::steady_clock::now();
     }
-    return isActive();
-  }
-
-  virtual void setStartedProcessing() {
-    startedProcessing_ = true;
-  }
-
-  virtual bool getStartedProcessing() const {
-    return startedProcessing_;
+    return true;
   }
 
   void setAdmissionController(
@@ -177,6 +171,15 @@ class ResponseChannelRequest {
   }
 
  protected:
+  // callTryStartProcessing is a helper method used in ResponseChannelRequest
+  // wrapper subclasses to delegate tryStartProcessing() calls to the wrapped
+  // ResponseChannelRequest. This is necessary due to the protected nature of
+  // tryStartProcessing().
+  static bool callTryStartProcessing(ResponseChannelRequest* request) {
+    return request->tryStartProcessing();
+  }
+  virtual bool tryStartProcessing() = 0;
+
   std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
   bool startedProcessing_{false};
   std::chrono::steady_clock::time_point creationTimestamps_;
