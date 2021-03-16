@@ -723,15 +723,6 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
       // time to the actual start time, and not the queue time.
       ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
     }
-    // Oneway request won't be canceled if expired. see
-    // D1006482 for furhter details.  TODO: fix this
-    if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-      if (!rq->isActive()) {
-        eb->runInEventBaseThread(
-            [rq = std::move(rq)]() mutable { rq.reset(); });
-        return;
-      }
-    }
     (childClass->*processFunc)(
         std::move(rq), std::move(serializedRequest), ctx, eb, tm);
   };

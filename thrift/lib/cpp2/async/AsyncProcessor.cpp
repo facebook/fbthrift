@@ -27,13 +27,6 @@ EventTask::~EventTask() {
 }
 
 void EventTask::run() {
-  if (!oneway_) {
-    if (req_ && !req_->isActive()) {
-      // del on eventbase thread
-      base_->runInEventBaseThread([req = std::move(req_)]() mutable {});
-      return;
-    }
-  }
   taskFunc_(std::move(req_));
 }
 

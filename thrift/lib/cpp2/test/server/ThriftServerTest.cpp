@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <utility>
@@ -288,6 +289,41 @@ TEST(ThriftServer, HeaderTest) {
 }
 
 namespace {
+class ServerErrorCallback : public RequestCallback {
+ private:
+  struct PrivateCtor {};
+
+ public:
+  ServerErrorCallback(
+      PrivateCtor,
+      folly::fibers::Baton& baton,
+      THeader& header,
+      folly::exception_wrapper& ew)
+      : baton_(baton), header_(header), ew_(ew) {}
+
+  static std::unique_ptr<RequestCallback> create(
+      folly::fibers::Baton& baton,
+      THeader& header,
+      folly::exception_wrapper& ew) {
+    return std::make_unique<ServerErrorCallback>(
+        PrivateCtor{}, baton, header, ew);
+  }
+  void requestSent() override {}
+  void replyReceived(ClientReceiveState&& state) override {
+    header_ = *state.extractHeader();
+    ew_ = TestServiceAsyncClient::recv_wrapped_voidResponse(state);
+    baton_.post();
+  }
+  void requestError(ClientReceiveState&&) override {
+    ADD_FAILURE();
+  }
+
+ private:
+  folly::fibers::Baton& baton_;
+  THeader& header_;
+  folly::exception_wrapper& ew_;
+};
+
 void doLoadHeaderTest(bool isRocket) {
   static constexpr int kEmptyMetricLoad = 12345;
 
@@ -388,39 +424,6 @@ void doLoadHeaderTest(bool isRocket) {
     auto [_, header] = client->header_semifuture_voidResponse(options).get();
     checkLoadHeader(*header, kLoadMetric);
   }
-
-  class ServerErrorCallback : public RequestCallback {
-   public:
-    ~ServerErrorCallback() override = default;
-
-    static std::unique_ptr<RequestCallback> create(
-        folly::fibers::Baton& baton,
-        THeader& header,
-        folly::exception_wrapper& ew) {
-      return {new ServerErrorCallback(baton, header, ew), {}};
-    }
-    void requestSent() override {}
-    void replyReceived(ClientReceiveState&& state) override {
-      header_ = *state.extractHeader();
-      ew_ = folly::try_and_catch(
-          [&] { TestServiceAsyncClient::recv_voidResponse(state); });
-      baton_.post();
-    }
-    void requestError(ClientReceiveState&&) override {
-      ADD_FAILURE();
-    }
-
-   private:
-    folly::fibers::Baton& baton_;
-    THeader& header_;
-    folly::exception_wrapper& ew_;
-
-    ServerErrorCallback(
-        folly::fibers::Baton& baton,
-        THeader& header,
-        folly::exception_wrapper& ew)
-        : baton_(baton), header_(header), ew_(ew) {}
-  };
 
   {
     // Force server overload. Load should still be returned on server overload.
@@ -2231,6 +2234,61 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   }
 
   EXPECT_EQ(received_reply, server_reply);
+}
+
+TEST_P(HeaderOrRocket, TaskTimeoutBeforeProcessing) {
+  folly::Baton haltBaton;
+  std::atomic<int> processedCount{0};
+
+  class VoidResponseInterface : public TestServiceSvIf {
+   public:
+    VoidResponseInterface() = delete;
+    VoidResponseInterface(
+        folly::Baton<>& haltBaton,
+        std::atomic<int>& processedCount)
+        : haltBaton_{haltBaton}, processedCount_{processedCount} {}
+
+    void voidResponse() override {
+      processedCount_++;
+      haltBaton_.wait();
+    }
+
+   private:
+    folly::Baton<>& haltBaton_;
+    std::atomic<int>& processedCount_;
+  };
+
+  {
+    ScopedServerInterfaceThread runner(
+        std::make_shared<VoidResponseInterface>(haltBaton, processedCount),
+        "::1",
+        0,
+        [](auto& server) {
+          // Set task timeout and disable queue timeout
+          server.setQueueTimeout(0ms);
+          server.setTaskExpireTime(10ms);
+          server.setUseClientTimeout(false);
+        });
+    auto client = makeClient(runner, folly::getEventBase());
+
+    // Make two requests and test that they time out
+    for (int i = 0; i < 2; ++i) {
+      folly::fibers::Baton baton;
+      THeader th;
+      folly::exception_wrapper ew;
+      client->voidResponse(ServerErrorCallback::create(baton, th, ew));
+      baton.wait();
+      bool matched = ew.with_exception([](const TApplicationException& tae) {
+        EXPECT_EQ(TApplicationException::TIMEOUT, tae.getType());
+      });
+      ASSERT_TRUE(matched);
+      EXPECT_EQ(*folly::get_ptr(th.getHeaders(), "ex"), kTaskExpiredErrorCode);
+    }
+    haltBaton.post();
+  }
+
+  // Assert only one request (the first) was processed
+  EXPECT_EQ(processedCount, 1);
 }
 
 TEST(ThriftServer, RocketOverSSLNoALPN) {
