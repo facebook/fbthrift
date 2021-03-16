@@ -44,8 +44,16 @@ class t_sink : public t_type {
         final_response_type_(std::move(final_response_type)),
         final_response_xceptions_(final_response_xceptions) {}
 
-  void set_first_response(std::unique_ptr<t_type_ref> first_response) {
+  void set_first_response_type(std::unique_ptr<t_type_ref> first_response) {
     first_response_type_ = std::move(first_response);
+  }
+
+  bool has_first_response() const {
+    return first_response_type_ != nullptr;
+  }
+
+  const t_type* get_first_response_type() const {
+    return first_response_type_->get_type();
   }
 
   const t_type* get_sink_type() const {
@@ -66,14 +74,6 @@ class t_sink : public t_type {
 
   bool is_sink() const override {
     return true;
-  }
-
-  const t_type* get_first_response_type() const {
-    return first_response_type_->get_type();
-  }
-
-  bool has_first_response() const {
-    return first_response_type_ != nullptr;
   }
 
   std::string get_full_name() const override {
@@ -111,7 +111,7 @@ class t_sink : public t_type {
             final_response_xceptions) {}
 
   void set_first_response(const t_type* first_response) {
-    first_response_type_ = std::make_unique<t_type_ref>(first_response);
+    set_first_response_type(std::make_unique<t_type_ref>(first_response));
   }
 
   bool sink_has_first_response() const {

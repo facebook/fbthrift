@@ -36,23 +36,23 @@ class t_stream_response : public t_type {
     return elem_type_.get_type();
   }
 
+  void set_first_response_type(
+      std::unique_ptr<t_type_ref> first_response_type) {
+    first_response_type_ = std::move(first_response_type);
+  }
+
+  bool has_first_response() const {
+    return first_response_type_ != nullptr;
+  }
+
   const t_type* get_first_response_type() const {
     // TODO(afuller): Fix call sites that don't check has_first_response().
     // assert(first_response_type_ != nullptr);
     return has_first_response() ? first_response_type_->get_type() : nullptr;
   }
 
-  void set_first_response_type(
-      std::unique_ptr<t_type_ref> first_response_type) {
-    first_response_type_ = std::move(first_response_type);
-  }
-
   bool is_streamresponse() const override {
     return true;
-  }
-
-  bool has_first_response() const {
-    return first_response_type_ != nullptr;
   }
 
   std::string get_full_name() const override {

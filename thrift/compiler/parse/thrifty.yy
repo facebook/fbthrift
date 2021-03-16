@@ -1347,7 +1347,7 @@ ResponseAndSinkReturnType:
   FieldType "," SinkReturnType
     {
       driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
-      $3->set_first_response(own($1));
+      $3->set_first_response_type(own($1));
       $$ = $3;
     }
 | SinkReturnType
