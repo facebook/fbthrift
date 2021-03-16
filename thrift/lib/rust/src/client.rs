@@ -15,6 +15,8 @@
  */
 
 use crate::{Framing, FramingDecoded, FramingEncodedFinal, Protocol};
+use futures::stream::Stream;
+use futures::{future, FutureExt};
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -33,4 +35,33 @@ pub trait Transport: Framing + Send + 'static {
         &self,
         req: FramingEncodedFinal<Self>,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
+
+    fn call_stream(
+        &self,
+        _req: FramingEncodedFinal<Self>,
+    ) -> Pin<
+        Box<
+            dyn Future<
+                    Output = Result<
+                        (
+                            FramingDecoded<Self>,
+                            Pin<
+                                Box<
+                                    dyn Stream<Item = Result<FramingDecoded<Self>, anyhow::Error>>
+                                        + Send
+                                        + 'static,
+                                >,
+                            >,
+                        ),
+                        anyhow::Error,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    > {
+        future::err(anyhow::Error::msg(
+            "Streaming is not supported by this transport",
+        ))
+        .boxed()
+    }
 }
