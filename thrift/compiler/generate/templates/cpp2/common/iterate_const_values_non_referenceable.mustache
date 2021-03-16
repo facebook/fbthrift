@@ -22,7 +22,7 @@ List:
 %><%^type:struct?%><%!
 %><%#value:list?%><%#type:listElemType%><%!
   %>std::initializer_list<<%!
-    %><% > types/type%><%!
+    %><%type:cpp_type%><%!
   %>>{<%!
   %><%#value:listElements%><%!
     %><% > common/iterate_const_values%><%!
@@ -35,7 +35,7 @@ List:
 Set:
 %><%#value:list?%><%#type:setElemType%><%!
   %>std::initializer_list<<%!
-    %><% > types/type%><%!
+    %><%type:cpp_type%><%!
   %>>{<%!
   %><%#value:listElements%><%!
     %><% > common/iterate_const_values%><%!
@@ -48,8 +48,8 @@ Set:
 Map:
 %><%#value:map?%><%!
   %>std::initializer_list<std::pair<<%!
-    %><%#type:keyType%>const <% > types/type%><%/type:keyType%>, <%!
-    %><%#type:valueType%><% > types/type%><%/type:valueType%><%!
+    %><%#type:keyType%>const <%type:cpp_type%><%/type:keyType%>, <%!
+    %><%#type:valueType%><%type:cpp_type%><%/type:valueType%><%!
   %>>>{<%!
   %><%#value:mapElements%><%!
     %>{<%!

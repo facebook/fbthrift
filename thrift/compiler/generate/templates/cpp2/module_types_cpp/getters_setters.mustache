@@ -18,21 +18,21 @@
 <%^type:no_getters_setters?%>
 <%^field:lazy?%>
 <%#field:optional?%><%^field:cpp_ref?%>
-const <% > types/type%>* <%struct:name%>::get_<%field:cpp_name%>() const& {
+const <%type:cpp_type%>* <%struct:name%>::get_<%field:cpp_name%>() const& {
   return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_name%>) : nullptr;
 }
 
-<% > types/type%>* <%struct:name%>::get_<%field:cpp_name%>() & {
+<%type:cpp_type%>* <%struct:name%>::get_<%field:cpp_name%>() & {
   return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_name%>) : nullptr;
 }
 
 <%/field:cpp_ref?%><%/field:optional?%>
 <%^field:optional?%><%^field:cpp_ref?%>
-const <% > types/type%>& <%struct:name%>::get_<%field:cpp_name%>() const& {
+const <%type:cpp_type%>& <%struct:name%>::get_<%field:cpp_name%>() const& {
   return <%field:cpp_name%>;
 }
 
-<% > types/type%> <%struct:name%>::get_<%field:cpp_name%>() && {
+<%type:cpp_type%> <%struct:name%>::get_<%field:cpp_name%>() && {
   return std::move(<%field:cpp_name%>);
 }
 

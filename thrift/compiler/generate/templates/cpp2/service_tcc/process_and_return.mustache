@@ -38,20 +38,20 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
-  <% > types/type%> uarg_<%field:cpp_name%>{0};
+  <%type:cpp_type%> uarg_<%field:cpp_name%>{0};
 <%/type:enum?%>
 <%#type:enum?%>
-  <% > types/type%> uarg_<%field:cpp_name%>{static_cast<<% > types/type%>>(0)};
+  <%type:cpp_type%> uarg_<%field:cpp_name%>{static_cast<<%type:cpp_type%>>(0)};
 <%/type:enum?%>
   args.get<<%field:index%>>().value = &uarg_<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   <%#function:stack_arguments?%>
-  <% > types/type%> uarg_<%field:cpp_name%>;
+  <%type:cpp_type%> uarg_<%field:cpp_name%>;
   args.get<<%field:index%>>().value = &uarg_<%field:cpp_name%>;
   <%/function:stack_arguments?%>
   <%^function:stack_arguments?%>
-  auto uarg_<%field:cpp_name%> = std::make_unique<<% > types/type%>>();
+  auto uarg_<%field:cpp_name%> = std::make_unique<<%type:cpp_type%>>();
   args.get<<%field:index%>>().value = uarg_<%field:cpp_name%>.get();
   <%/function:stack_arguments?%>
 <%/type:resolves_to_complex_return?%>
@@ -96,13 +96,13 @@ folly::IOBufQueue <%service:parent_service_name%>AsyncProcessor::return_<%#servi
 <%/type:void?%>
 <%^type:void?%>
     <%^type:streamresponse?%><%^type:sink?%>
-folly::IOBufQueue <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
+folly::IOBufQueue <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return) {
     <%/type:sink?%><%/type:streamresponse?%>
     <%#type:streamresponse?%>
-apache::thrift::ResponseAndServerStreamFactory <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%>&& _return) {
+apache::thrift::ResponseAndServerStreamFactory <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <%type:cpp_type%>&& _return) {
     <%/type:streamresponse?%>
     <%#type:sink?%>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor) {
     <%/type:sink?%>
 <%/type:void?%>
   ProtocolOut_ prot;
@@ -110,7 +110,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
   using StreamPResultType = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::StreamPResultType;
       <%#type:streamHasFirstResponse?%>
-  result.get<0>().value = const_cast<<% > types/type%>::ResponseType*>(&_return.response);
+  result.get<0>().value = const_cast<<%type:cpp_type%>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
   auto& returnStream = _return.stream;
       <%/type:streamHasFirstResponse?%>
@@ -186,7 +186,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
 <%^function:returns_stream?%><%^function:returns_sink?%>
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
 <%^type:void?%>
-  result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
+  result.get<0>().value = const_cast<<%type:cpp_type%>*>(&_return);
   result.setIsSet(0, true);
 <%/type:void?%>
   return serializeResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result);

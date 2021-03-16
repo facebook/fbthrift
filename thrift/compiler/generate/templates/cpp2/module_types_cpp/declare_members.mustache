@@ -93,7 +93,7 @@ void <%struct:name%>::__clear() {
   if (<%field:cpp_name%>) <%field:cpp_name%>.reset(new typename decltype(<%field:cpp_name%>)::element_type());
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%#field:cpp_ref_shared_or_shared_const?%>
-  if (<%field:cpp_name%>) <%field:cpp_name%> = std::make_shared<<% > types/type%>>();
+  if (<%field:cpp_name%>) <%field:cpp_name%> = std::make_shared<<%type:cpp_type%>>();
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%/field:optional?%>
 <%#field:optional?%>

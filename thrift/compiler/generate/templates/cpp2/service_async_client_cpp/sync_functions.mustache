@@ -25,7 +25,7 @@
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
+void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_<%function:cpp_name%>(rpcOptions, _return<%function:comma%><% > service_common/param_list%>);
 <%/type:resolves_to_complex_return?%>
@@ -35,7 +35,7 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<% > types/type%>& 
 <% > types/semi_type%> <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
+void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&returnState);

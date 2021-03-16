@@ -28,7 +28,7 @@ folly::SemiFuture<<% > service_common/async_return_type %>> <%service:name%>SvIf
   });
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  return apache::thrift::detail::si::semifuture_returning<%^function:stack_arguments?%>_uptr<%/function:stack_arguments?%>([&](<% > types/type%>& _return) { <%function:cpp_name%>(_return<%function:comma%><% > service_common/param_list_move%>); });
+  return apache::thrift::detail::si::semifuture_returning<%^function:stack_arguments?%>_uptr<%/function:stack_arguments?%>([&](<%type:cpp_type%>& _return) { <%function:cpp_name%>(_return<%function:comma%><% > service_common/param_list_move%>); });
 <%/type:resolves_to_complex_return?%>
 }
 

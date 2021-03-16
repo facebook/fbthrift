@@ -21,7 +21,7 @@
 <%/field:cpp_ref_unique_either?%>
 <%#field:cpp_ref_unique_either?%>
   if (srcObj.<%field:cpp_name%>) <%#field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%>.reset(new <% > types/type%>(*srcObj.<%field:cpp_name%>));
+    %><%field:cpp_name%>.reset(new <%type:cpp_type%>(*srcObj.<%field:cpp_name%>));
 <%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
     %><%field:cpp_name%> = srcObj.<%field:cpp_name%>->clone();
 <%/field:cpp_ref_unique?%>

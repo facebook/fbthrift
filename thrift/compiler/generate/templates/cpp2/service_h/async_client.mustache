@@ -48,8 +48,8 @@
   virtual <% > types/semi_type%> sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void sync_<%function:cpp_name%>(<% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
-  virtual void sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual void sync_<%function:cpp_name%>(<%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual void sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
 
 <%^type:streamresponse?%>
@@ -179,10 +179,10 @@
   virtual <% > types/semi_type%> recv_instance_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
 <%/service:interaction?%><%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  static void recv_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_<%function:cpp_name%>(<%type:cpp_type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%^service:interaction?%>
   // Mock friendly virtual instance method
-  virtual void recv_instance_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_<%function:cpp_name%>(<%type:cpp_type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/service:interaction?%><%/type:resolves_to_complex_return?%>
 <%^service:interaction?%>
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state);

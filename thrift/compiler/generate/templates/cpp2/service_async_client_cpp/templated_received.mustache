@@ -28,7 +28,7 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* 
   args.get<<%field:index%>>().value = &p_<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  args.get<<%field:index%>>().value = const_cast<<% > types/type%>*>(&p_<%field:cpp_name%>);
+  args.get<<%field:index%>>().value = const_cast<<%type:cpp_type%>*>(&p_<%field:cpp_name%>);
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args%><%!
 

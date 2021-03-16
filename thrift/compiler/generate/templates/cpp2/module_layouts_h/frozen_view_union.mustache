@@ -37,13 +37,13 @@
 
 <%#struct:fields%><%#field:type%>
 <%#field:cpp_ref_unique?%>
-    typename Layout<std::unique_ptr<<% > types/type%>>>::View get_<%field:cpp_name%>() const {
+    typename Layout<std::unique_ptr<<%type:cpp_type%>>>::View get_<%field:cpp_name%>() const {
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
-    typename Layout<std::shared_ptr<<% > types/type%>>>::View get_<%field:cpp_name%>() const {
+    typename Layout<std::shared_ptr<<%type:cpp_type%>>>::View get_<%field:cpp_name%>() const {
 <%/field:cpp_ref_shared?%>
 <%^field:cpp_ref_unique?%><%^field:cpp_ref_shared?%>
-    typename Layout<<% > types/type%>>::View get_<%field:cpp_name%>() const {
+    typename Layout<<%type:cpp_type%>>::View get_<%field:cpp_name%>() const {
 <%/field:cpp_ref_shared?%><%/field:cpp_ref_unique?%>
       assert(type_ == <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>);
       return this->layout_-><%field:cpp_name%>Field.layout.view(

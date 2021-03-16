@@ -22,7 +22,7 @@
   return;
 <%/type:void?%>
 <%#type:enum?%>
-  return (<% > types/type%>)0;
+  return (<%type:cpp_type%>)0;
 <%/type:enum?%>
 <%#type:streamresponse?%>
   return {};

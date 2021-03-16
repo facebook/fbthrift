@@ -221,7 +221,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         <%struct:name%>,
         <%type:type_class%>,
-        <% > types/type%>>,
+        <%type:cpp_type%>>,
     "inconsistent use of json option");
 <%/type:transitively_refers_to_struct?%>
 <%/field:type%>
@@ -236,7 +236,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         <%struct:name%>,
         <%type:type_class%>,
-        <% > types/type%>>,
+        <%type:cpp_type%>>,
     "inconsistent use of nimble option");
 <%/type:transitively_refers_to_struct?%>
 <%/field:type%>

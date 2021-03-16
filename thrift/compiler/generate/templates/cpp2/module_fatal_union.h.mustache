@@ -142,7 +142,7 @@ class <%struct:name%>_variant_traits {
   using descriptors = ::fatal::list<
       <%#struct:fields%>
       ::fatal::variant_member_descriptor<
-          <%#field:type%><% > types/type%><%/field:type%>,
+          <%#field:type%><%type:cpp_type%><%/field:type%>,
            __fbthrift_ids::<%field:cpp_name%>,
           __fbthrift_member_<%field:cpp_name%>::getter,
           __fbthrift_member_<%field:cpp_name%>::setter,

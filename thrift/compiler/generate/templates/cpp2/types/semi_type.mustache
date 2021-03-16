@@ -16,11 +16,11 @@
 
 %><%#type:streamresponse?%><%!
   %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndClientBufferedStream<<%!
-  %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
-  %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+  %><%#type:streamFirstResponseType%><%type:cpp_type%><%/type:streamFirstResponseType%>,<%!
+  %><%#type:streamElemType%><%type:cpp_type%><%/type:streamElemType%>><%!
   %><%/type:streamHasFirstResponse?%><%!
   %><%^type:streamHasFirstResponse?%>apache::thrift::ClientBufferedStream<<%!
-  %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+  %><%#type:streamElemType%><%type:cpp_type%><%/type:streamElemType%>><%!
   %><%/type:streamHasFirstResponse?%><%!
 %><%/type:streamresponse?%><%!
 
@@ -28,18 +28,18 @@
   %><%#type:sink?%><%!
     %><%#type:sinkHasFirstResponse?%><%!
       %>apache::thrift::ResponseAndClientSink<<%!
-      %><%#type:sinkFirstResponseType%><% >types/type%><%/type:sinkFirstResponseType%>, <%!
-      %><%#type:sinkElemType%><% >types/type%><%/type:sinkElemType%>, <%!
-      %><%#type:sinkFinalResponseType%><% >types/type%><%/type:sinkFinalResponseType%>><%!
+      %><%#type:sinkFirstResponseType%><%type:cpp_type%><%/type:sinkFirstResponseType%>, <%!
+      %><%#type:sinkElemType%><%type:cpp_type%><%/type:sinkElemType%>, <%!
+      %><%#type:sinkFinalResponseType%><%type:cpp_type%><%/type:sinkFinalResponseType%>><%!
     %><%/type:sinkHasFirstResponse?%><%!
 
     %><%^type:sinkHasFirstResponse?%><%!
       %>apache::thrift::ClientSink<<%!
-      %><%#type:sinkElemType%><% >types/type%><%/type:sinkElemType%>, <%!
-      %><%#type:sinkFinalResponseType%><% >types/type%><%/type:sinkFinalResponseType%>><%!
+      %><%#type:sinkElemType%><%type:cpp_type%><%/type:sinkElemType%>, <%!
+      %><%#type:sinkFinalResponseType%><%type:cpp_type%><%/type:sinkFinalResponseType%>><%!
     %><%/type:sinkHasFirstResponse?%><%!
   %><%/type:sink?%><%!
   %><%^type:sink?%><%!
-    %><% > types/type%><%!
+    %><%type:cpp_type%><%!
   %><%/type:sink?%><%!
 %><%/type:streamresponse?%>

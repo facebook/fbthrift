@@ -25,14 +25,14 @@ auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > ty
 %><%^field:cpp_ref?%><%!
 %><%#type:resolves_to_container?%><%!
 %><%#type:cpp_use_allocator?%>
-this-><%field:cpp_name%> = <% > types/type%>(this->get_allocator());
+this-><%field:cpp_name%> = <%type:cpp_type%>(this->get_allocator());
 <%/type:cpp_use_allocator?%>
 <%^type:cpp_use_allocator?%>
-this-><%field:cpp_name%> = <% > types/type%>();
+this-><%field:cpp_name%> = <%type:cpp_type%>();
 <%/type:cpp_use_allocator?%><%!
 %><%/type:resolves_to_container?%>
 <%/field:cpp_ref?%><%!
-%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this-><%field:cpp_name%><%/field:cpp_ref?%>, _readState);<%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <%type:cpp_type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this-><%field:cpp_name%><%/field:cpp_ref?%>, _readState);<%!
 %><%#field:cpp_ref?%>
 this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/field:cpp_ref?%><%!
