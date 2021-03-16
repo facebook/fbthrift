@@ -4663,6 +4663,13 @@ void t_hack_generator::_generate_service_client_child_fn(
 
   indent_up();
 
+  indent(out) << "$hh_frame_metadata = $this->getHHFrameMetadata();\n";
+  indent(out) << "if ($hh_frame_metadata !== null) {\n";
+  indent_up();
+  indent(out) << "HH\\set_frame_metadata(hh_frame_metadata);\n";
+  indent_down();
+  indent(out) << "}\n";
+
   if (tservice->is_interaction()) {
     if (!rpc_options) {
       throw std::runtime_error("Interaction methods require rpc_options");

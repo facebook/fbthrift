@@ -205,6 +205,10 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -233,6 +237,10 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -266,6 +274,10 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -294,6 +306,10 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -335,6 +351,10 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -363,6 +383,10 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;

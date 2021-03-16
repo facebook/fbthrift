@@ -188,6 +188,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   foo();
    */
   public async function foo(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
     $channel = $this->channel_;
@@ -216,6 +220,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   foo();
    */
   public async function foo(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
     $channel = $this->channel_;
@@ -251,6 +259,10 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
    *   foo();
    */
   public async function foo(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
     $channel = $this->channel_;
@@ -290,6 +302,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
    *   frobnicate();
    */
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
@@ -412,6 +428,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
    *   ping();
    */
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping");
     $currentseqid = $this->sendImpl_ping();
@@ -482,6 +502,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    *   frobnicate();
    */
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
@@ -604,6 +628,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    *   ping();
    */
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping");
     $currentseqid = $this->sendImpl_ping();
@@ -674,6 +702,10 @@ class MyService_SerialInteraction extends \ThriftClientBase {
    *   frobnicate();
    */
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();

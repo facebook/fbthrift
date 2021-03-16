@@ -306,6 +306,10 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
    *   getDataByKey0(1: string key);
    */
   public async function getDataByKey0(string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
     $channel = $this->channel_;
@@ -329,6 +333,10 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
    *   getDataByKey1(1: string key);
    */
   public async function getDataByKey1(string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
     $channel = $this->channel_;
@@ -357,6 +365,10 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
    *   getDataByKey0(1: string key);
    */
   public async function getDataByKey0(string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
     $channel = $this->channel_;
@@ -380,6 +392,10 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
    *   getDataByKey1(1: string key);
    */
   public async function getDataByKey1(string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
     $channel = $this->channel_;
@@ -421,6 +437,10 @@ class DbMixedStackArgumentsAsyncRpcOptionsClient extends \ThriftClientBase imple
    *   getDataByKey0(1: string key);
    */
   public async function getDataByKey0(\RpcOptions $rpc_options, string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
     $channel = $this->channel_;
@@ -444,6 +464,10 @@ class DbMixedStackArgumentsAsyncRpcOptionsClient extends \ThriftClientBase imple
    *   getDataByKey1(1: string key);
    */
   public async function getDataByKey1(\RpcOptions $rpc_options, string $key): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
     $channel = $this->channel_;

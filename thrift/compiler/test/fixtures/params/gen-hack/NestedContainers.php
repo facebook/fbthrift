@@ -673,6 +673,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -696,6 +700,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -719,6 +727,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -742,6 +754,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -765,6 +781,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -793,6 +813,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -816,6 +840,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -839,6 +867,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -862,6 +894,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -885,6 +921,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -944,6 +984,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -967,6 +1011,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -990,6 +1038,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -1013,6 +1065,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -1036,6 +1092,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;

@@ -304,6 +304,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   first();
    */
   public async function first(): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "first");
     $currentseqid = $this->sendImpl_first();
     $channel = $this->channel_;
@@ -327,6 +331,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   second(1: i64 count);
    */
   public async function second(int $count): Awaitable<bool> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "second");
     $currentseqid = $this->sendImpl_second($count);
     $channel = $this->channel_;
@@ -355,6 +363,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   first();
    */
   public async function first(): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "first");
     $currentseqid = $this->sendImpl_first();
     $channel = $this->channel_;
@@ -378,6 +390,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   second(1: i64 count);
    */
   public async function second(int $count): Awaitable<bool> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "second");
     $currentseqid = $this->sendImpl_second($count);
     $channel = $this->channel_;
@@ -419,6 +435,10 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
    *   first();
    */
   public async function first(\RpcOptions $rpc_options): Awaitable<string> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "first");
     $currentseqid = $this->sendImpl_first();
     $channel = $this->channel_;
@@ -442,6 +462,10 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
    *   second(1: i64 count);
    */
   public async function second(\RpcOptions $rpc_options, int $count): Awaitable<bool> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      HH\set_frame_metadata(hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyService", "second");
     $currentseqid = $this->sendImpl_second($count);
     $channel = $this->channel_;
