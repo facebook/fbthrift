@@ -577,9 +577,9 @@ EnumDefList:
         assert(y_enum_name != nullptr);
         std::string type_prefix = std::string(y_enum_name) + ".";
         driver.scope_cache->add_constant(
-            driver.program->get_name() + "." + $2->get_name(), tconst.get());
+            driver.program->name() + "." + $2->get_name(), tconst.get());
         driver.scope_cache->add_constant(
-            driver.program->get_name() + "." + type_prefix + $2->get_name(), tconst.get());
+            driver.program->name() + "." + type_prefix + $2->get_name(), tconst.get());
 
         $$->append(own($2), std::move(tconst));
       } else {
@@ -695,7 +695,7 @@ ConstValue:
       t_const* constant = driver.scope_cache->get_constant($1);
       driver.validate_not_ambiguous_enum($1);
       if (constant == nullptr) {
-        auto name_with_program_name = driver.program->get_name() + "." + $1;
+        auto name_with_program_name = driver.program->name() + "." + $1;
         constant = driver.scope_cache->get_constant(name_with_program_name);
         driver.validate_not_ambiguous_enum(name_with_program_name);
       }
@@ -987,7 +987,7 @@ Extends:
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = driver.scope_cache->get_service($2);
         if (!$$) {
-          $$ = driver.scope_cache->get_service(driver.program->get_name() + "." + $2);
+          $$ = driver.scope_cache->get_service(driver.program->name() + "." + $2);
         }
         if (!$$) {
           driver.failure("Service \"%s\" has not been defined.", $2.c_str());

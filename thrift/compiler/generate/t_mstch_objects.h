@@ -187,7 +187,7 @@ class service_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const {
-    std::string service_id = program->get_path() + service->get_name();
+    std::string service_id = program->path() + service->get_name();
     auto itr = cache->services_.find(service_id);
     if (itr == cache->services_.end()) {
       itr = cache->services_.emplace_hint(
@@ -241,7 +241,7 @@ class program_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) {
-    const auto& id = program->get_path();
+    const auto& id = program->path();
     auto itr = cache->programs_.find(id);
     if (itr == cache->programs_.end()) {
       itr = cache->programs_.emplace_hint(
@@ -1358,32 +1358,31 @@ class mstch_program : public mstch_base {
   }
 
   mstch::node name() {
-    return program_->get_name();
+    return program_->name();
   }
   mstch::node path() {
-    return program_->get_path();
+    return program_->path();
   }
   mstch::node include_prefix() {
-    return program_->get_include_prefix();
+    return program_->include_prefix();
   }
   mstch::node has_enums() {
-    return !program_->get_enums().empty();
+    return !program_->enums().empty();
   }
   mstch::node has_structs() {
-    return !program_->get_structs().empty() ||
-        !program_->get_xceptions().empty();
+    return !program_->structs().empty() || !program_->xceptions().empty();
   }
   mstch::node has_services() {
-    return !program_->get_services().empty();
+    return !program_->services().empty();
   }
   mstch::node has_typedefs() {
-    return !program_->get_typedefs().empty();
+    return !program_->typedefs().empty();
   }
   mstch::node has_constants() {
-    return !program_->get_consts().empty();
+    return !program_->consts().empty();
   }
   mstch::node has_unions() {
-    auto& structs = program_->get_structs();
+    auto& structs = program_->structs();
     return std::any_of(
         structs.cbegin(), structs.cend(), std::mem_fn(&t_struct::is_union));
   }

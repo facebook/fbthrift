@@ -120,34 +120,34 @@ void dump_docstrings(t_program* program) {
   if (!progdoc.empty()) {
     printf("Whole program doc:\n%s\n", progdoc.c_str());
   }
-  for (auto* td : program->get_typedefs()) {
+  for (auto* td : program->typedefs()) {
     if (td->has_doc()) {
       printf(
           "typedef %s:\n%s\n", td->get_name().c_str(), td->get_doc().c_str());
     }
   }
-  for (auto* en : program->get_enums()) {
+  for (auto* en : program->enums()) {
     if (en->has_doc()) {
       printf("enum %s:\n%s\n", en->get_name().c_str(), en->get_doc().c_str());
     }
   }
-  for (auto* co : program->get_consts()) {
+  for (auto* co : program->consts()) {
     if (co->has_doc()) {
       printf("const %s:\n%s\n", co->get_name().c_str(), co->get_doc().c_str());
     }
   }
-  for (auto* st : program->get_structs()) {
+  for (auto* st : program->structs()) {
     if (st->has_doc()) {
       printf("struct %s:\n%s\n", st->get_name().c_str(), st->get_doc().c_str());
     }
   }
-  for (auto* xn : program->get_xceptions()) {
+  for (auto* xn : program->xceptions()) {
     if (xn->has_doc()) {
       printf(
           "xception %s:\n%s\n", xn->get_name().c_str(), xn->get_doc().c_str());
     }
   }
-  for (auto* sv : program->get_services()) {
+  for (auto* sv : program->services()) {
     if (sv->has_doc()) {
       printf(
           "service %s:\n%s\n", sv->get_name().c_str(), sv->get_doc().c_str());

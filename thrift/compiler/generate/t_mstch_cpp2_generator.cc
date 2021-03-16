@@ -546,7 +546,7 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node program_name() {
     std::string name;
     if (auto prog = type_->get_program()) {
-      name = prog->get_name();
+      name = prog->name();
     }
     return name;
   }
@@ -907,7 +907,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::to_string(strct_->get_type_id());
   }
   mstch::node metadata_name() {
-    return strct_->get_program()->get_name() + "_" + strct_->get_name();
+    return strct_->get_program()->name() + "_" + strct_->get_name();
   }
 
   mstch::node get_num_union_members() {
@@ -1117,10 +1117,10 @@ class mstch_cpp2_service : public mstch_service {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
   mstch::node program_name() {
-    return service_->get_program()->get_name();
+    return service_->get_program()->name();
   }
   mstch::node program_path() {
-    return service_->get_program()->get_path();
+    return service_->get_program()->path();
   }
   mstch::node cpp_includes() {
     return t_mstch_cpp2_generator::cpp_includes(service_->get_program());
@@ -1159,7 +1159,7 @@ class mstch_cpp2_service : public mstch_service {
     return false;
   }
   mstch::node metadata_name() {
-    return service_->get_program()->get_name() + "_" + service_->get_name();
+    return service_->get_program()->name() + "_" + service_->get_name();
   }
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");
@@ -1272,7 +1272,7 @@ class mstch_cpp2_program : public mstch_program {
 
   std::vector<const t_typedef*> alias_to_struct() {
     std::vector<const t_typedef*> result;
-    for (const t_typedef* i : program_->get_typedefs()) {
+    for (const t_typedef* i : program_->typedefs()) {
       const t_type* alias = i->get_type();
       if (alias->is_typedef() && alias->has_annotation("cpp.type")) {
         const t_type* ttype = i->get_type()->get_true_type();
@@ -1300,14 +1300,14 @@ class mstch_cpp2_program : public mstch_program {
   }
   std::vector<std::string> get_fatal_enum_names() {
     std::vector<std::string> result;
-    for (const auto* enm : program_->get_enums()) {
+    for (const auto* enm : program_->enums()) {
       result.push_back(get_fatal_string_short_id(enm->get_name()));
     }
     return result;
   }
   std::vector<std::string> get_fatal_union_names() {
     std::vector<std::string> result;
-    for (const auto* obj : program_->get_objects()) {
+    for (const auto* obj : program_->objects()) {
       if (obj->is_union()) {
         result.push_back(get_fatal_string_short_id(obj->get_name()));
       }
@@ -1316,7 +1316,7 @@ class mstch_cpp2_program : public mstch_program {
   }
   std::vector<std::string> get_fatal_struct_names() {
     std::vector<std::string> result;
-    for (const auto* obj : program_->get_objects()) {
+    for (const auto* obj : program_->objects()) {
       if (!obj->is_union()) {
         result.push_back(get_fatal_string_short_id(obj->get_name()));
       }
@@ -1329,14 +1329,14 @@ class mstch_cpp2_program : public mstch_program {
   }
   std::vector<std::string> get_fatal_constant_names() {
     std::vector<std::string> result;
-    for (const auto* cnst : program_->get_consts()) {
+    for (const auto* cnst : program_->consts()) {
       result.push_back(get_fatal_string_short_id(cnst->get_name()));
     }
     return result;
   }
   std::vector<std::string> get_fatal_service_names() {
     std::vector<std::string> result;
-    for (const auto* service : program_->get_services()) {
+    for (const auto* service : program_->services()) {
       result.push_back(get_fatal_string_short_id(service->get_name()));
     }
     return result;
@@ -1364,15 +1364,15 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node cpp_declare_hash() {
     bool cpp_declare_in_structs = std::any_of(
-        program_->get_structs().begin(),
-        program_->get_structs().end(),
+        program_->structs().begin(),
+        program_->structs().end(),
         [](const auto* strct) {
           return strct->has_annotation(
               {"cpp.declare_hash", "cpp2.declare_hash"});
         });
     bool cpp_declare_in_typedefs = std::any_of(
-        program_->get_typedefs().begin(),
-        program_->get_typedefs().end(),
+        program_->typedefs().begin(),
+        program_->typedefs().end(),
         [](const auto* typedf) {
           return typedf->get_type()->has_annotation(
               {"cpp.declare_hash", "cpp2.declare_hash"});
@@ -1392,9 +1392,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node fatal_languages() {
     mstch::array a;
-    size_t size = program_->get_namespaces().size();
+    size_t size = program_->namespaces().size();
     size_t idx = 0;
-    for (const auto& pair : program_->get_namespaces()) {
+    for (const auto& pair : program_->namespaces()) {
       a.push_back(mstch::map{
           {"language:safe_name", get_fatal_string_short_id(pair.first)},
           {"language:safe_namespace",
@@ -1423,16 +1423,16 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node fatal_identifiers() {
     std::map<std::string, std::string> unique_names;
     unique_names.emplace(
-        get_fatal_string_short_id(program_->get_name()), program_->get_name());
+        get_fatal_string_short_id(program_->name()), program_->name());
     // languages and namespaces
-    for (const auto& pair : program_->get_namespaces()) {
+    for (const auto& pair : program_->namespaces()) {
       unique_names.emplace(get_fatal_string_short_id(pair.first), pair.first);
       unique_names.emplace(
           get_fatal_namesoace_name_short_id(pair.first, pair.second),
           get_fatal_namesoace(pair.first, pair.second));
     }
     // enums
-    for (const auto* enm : program_->get_enums()) {
+    for (const auto* enm : program_->enums()) {
       collect_fatal_string_annotated(unique_names, enm);
       unique_names.emplace(
           get_fatal_string_short_id(enm->get_name()), enm->get_name());
@@ -1441,7 +1441,7 @@ class mstch_cpp2_program : public mstch_program {
       }
     }
     // structs, unions and exceptions
-    for (const auto* obj : program_->get_objects()) {
+    for (const auto* obj : program_->objects()) {
       if (obj->is_union()) {
         // When generating <program_name>_fatal_union.h, we will generate
         // <union_name>_Type_enum_traits
@@ -1453,12 +1453,12 @@ class mstch_cpp2_program : public mstch_program {
       }
     }
     // consts
-    for (const auto* cnst : program_->get_consts()) {
+    for (const auto* cnst : program_->consts()) {
       unique_names.emplace(
           get_fatal_string_short_id(cnst->get_name()), cnst->get_name());
     }
     // services
-    for (const auto* service : program_->get_services()) {
+    for (const auto* service : program_->services()) {
       // function annotations are not currently included.
       unique_names.emplace(
           get_fatal_string_short_id(service->get_name()), service->get_name());
@@ -1489,7 +1489,7 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node fatal_data_member() {
     std::unordered_set<std::string> fields;
     std::vector<const std::string*> ordered_fields;
-    for (const t_struct* s : program_->get_objects()) {
+    for (const t_struct* s : program_->objects()) {
       if (!s->is_union()) {
         for (const t_field* f : s->fields()) {
           auto result = fields.insert(cpp2::get_name(f));
@@ -1528,8 +1528,8 @@ class mstch_cpp2_program : public mstch_program {
   }
 
   void init_objects_enums() {
-    const auto& prog_objects = program_->get_objects();
-    const auto& prog_enums = program_->get_enums();
+    const auto& prog_objects = program_->objects();
+    const auto& prog_enums = program_->enums();
 
     if (!split_id_) {
       objects_ = gen_sorted_objects(program_, prog_objects);
@@ -1819,7 +1819,7 @@ void t_mstch_cpp2_generator::generate_program() {
   }
   generate_structs(program);
   generate_constants(program);
-  for (const auto* service : program->get_services()) {
+  for (const auto* service : program->services()) {
     generate_service(service);
   }
   generate_metadata(program);
@@ -1848,7 +1848,7 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
 }
 
 void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_constants.h", name + "_constants.h");
@@ -1856,7 +1856,7 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_metadata.h", name + "_metadata.h");
@@ -1866,14 +1866,14 @@ void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
 }
 
 void t_mstch_cpp2_generator::generate_sinit(t_program const* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_sinit.cpp", name + "_sinit.cpp");
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   // Combo include: all
@@ -1891,7 +1891,7 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_visitation.h", name + "_visitation.h");
@@ -1904,7 +1904,7 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_data.h", name + "_data.h");
@@ -1986,7 +1986,7 @@ mstch::array t_mstch_cpp2_generator::get_namespace_array(
 
 mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
   mstch::array a{};
-  for (auto include : program->get_cpp_includes()) {
+  for (auto include : program->cpp_includes()) {
     mstch::map cpp_include;
     if (include.at(0) != '<') {
       include = "\"" + include + "\"";
@@ -2000,7 +2000,7 @@ mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
 mstch::node t_mstch_cpp2_generator::include_prefix(
     t_program const* program,
     std::string& include_prefix) {
-  auto prefix = program->get_include_prefix();
+  auto prefix = program->include_prefix();
   if (prefix.empty()) {
     if (include_prefix.empty()) {
       return prefix;
@@ -2091,7 +2091,7 @@ class splits_validator : public validator {
   bool visit(t_program* program) override {
     set_program(program);
     const int32_t object_count =
-        program->get_objects().size() + program->get_enums().size();
+        program->objects().size() + program->enums().size();
     if (split_count_ != 0 && split_count_ > object_count) {
       add_error(
           boost::none,

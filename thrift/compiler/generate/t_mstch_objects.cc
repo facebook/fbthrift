@@ -190,8 +190,8 @@ mstch::node mstch_enum::values() {
 
 mstch::node mstch_type::get_struct() {
   if (type_->is_struct() || type_->is_xception()) {
-    std::string id = type_->get_program()->get_name() +
-        get_type_namespace(type_->get_program());
+    std::string id =
+        type_->get_program()->name() + get_type_namespace(type_->get_program());
     return generate_elements_cached(
         std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
         generators_->struct_generator_.get(),
@@ -203,8 +203,8 @@ mstch::node mstch_type::get_struct() {
 
 mstch::node mstch_type::get_enum() {
   if (resolved_type_->is_enum()) {
-    std::string id = type_->get_program()->get_name() +
-        get_type_namespace(type_->get_program());
+    std::string id =
+        type_->get_program()->name() + get_type_namespace(type_->get_program());
     return generate_elements_cached(
         std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
         generators_->enum_generator_.get(),
@@ -585,7 +585,7 @@ mstch::node mstch_service::extends() {
 
 mstch::node mstch_service::generate_cached_extended_service(
     const t_service* service) {
-  std::string id = service->get_program()->get_name() +
+  std::string id = service->get_program()->name() +
       get_service_namespace(service->get_program());
   size_t element_index = 0;
   size_t element_count = 1;
@@ -619,7 +619,7 @@ mstch::node mstch_const::program() {
 }
 
 mstch::node mstch_program::has_thrift_uris() {
-  for (const auto& strct : program_->get_structs()) {
+  for (const auto& strct : program_->structs()) {
     if (strct->has_annotation("thrift.uri")) {
       return true;
     }
@@ -628,7 +628,7 @@ mstch::node mstch_program::has_thrift_uris() {
 }
 
 mstch::node mstch_program::structs() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
       get_program_objects(),
       generators_->struct_generator_.get(),
@@ -637,7 +637,7 @@ mstch::node mstch_program::structs() {
 }
 
 mstch::node mstch_program::enums() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
       get_program_enums(),
       generators_->enum_generator_.get(),
@@ -646,21 +646,21 @@ mstch::node mstch_program::enums() {
 }
 
 mstch::node mstch_program::services() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
-      program_->get_services(),
+      program_->services(),
       generators_->service_generator_.get(),
       cache_->services_,
       id);
 }
 
 mstch::node mstch_program::typedefs() {
-  return generate_typedefs(program_->get_typedefs());
+  return generate_typedefs(program_->typedefs());
 }
 
 mstch::node mstch_program::constants() {
   mstch::array a;
-  const auto& container = program_->get_consts();
+  const auto& container = program_->consts();
   for (size_t i = 0; i < container.size(); ++i) {
     auto pos = element_position(i, container.size());
     a.push_back(generators_->const_generator_->generate(
@@ -676,10 +676,10 @@ mstch::node mstch_program::constants() {
 }
 
 const std::vector<t_struct*>& mstch_program::get_program_objects() {
-  return program_->get_objects();
+  return program_->objects();
 }
 const std::vector<t_enum*>& mstch_program::get_program_enums() {
-  return program_->get_enums();
+  return program_->enums();
 }
 
 } // namespace compiler

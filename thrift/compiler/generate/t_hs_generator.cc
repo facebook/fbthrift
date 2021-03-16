@@ -361,7 +361,7 @@ string t_hs_generator::hs_imports() {
 
   for (const auto& program_include : includes) {
     auto module_prefix = get_module_prefix(program_include);
-    auto base_name = capitalize(program_include->get_name()) + "_Types";
+    auto base_name = capitalize(program_include->name()) + "_Types";
     result += "import qualified " + module_prefix + base_name;
     result += " as " + base_name + "\n";
   }
@@ -562,7 +562,7 @@ string t_hs_generator::render_const_value(
       if (val == value->get_integer()) {
         const t_program* prog = type->get_program();
         if (prog != nullptr)
-          out << capitalize(prog->get_name()) << "_Types.";
+          out << capitalize(prog->name()) << "_Types.";
         out << capitalize(c_iter->get_name());
         break;
       }
@@ -1522,8 +1522,7 @@ void t_hs_generator::generate_service_fuzzer(const t_service* tservice) {
   for (const auto& program_include : includes) {
     f_service_fuzzer_ << "import qualified "
                       << get_module_prefix(program_include)
-                      << capitalize(program_include->get_name()) << "_Types"
-                      << nl;
+                      << capitalize(program_include->name()) << "_Types" << nl;
   }
 
   // Generate non-specific body code
@@ -2098,9 +2097,9 @@ string t_hs_generator::type_name_qualifier(const t_type* ttype) {
   const t_program* program = ttype->get_program();
 
   if (ttype->is_service()) {
-    return capitalize(program->get_name()) + "_Iface.";
+    return capitalize(program->name()) + "_Iface.";
   } else {
-    return capitalize(program->get_name()) + "_Types.";
+    return capitalize(program->name()) + "_Types.";
   }
 }
 

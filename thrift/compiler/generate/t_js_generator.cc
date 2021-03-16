@@ -231,7 +231,7 @@ class t_js_generator : public t_oop_generator {
   std::string js_type_namespace(const t_program* p) {
     if (gen_node_) {
       if (p != nullptr && p != program_) {
-        return p->get_name() + "_ttypes.";
+        return p->name() + "_ttypes.";
       }
       return "ttypes.";
     }
@@ -293,7 +293,7 @@ void t_js_generator::init_generator() {
   string outdir = get_out_dir();
 
   // Make output file
-  string f_types_name = outdir + program_->get_name() + "_types.js";
+  string f_types_name = outdir + program_->name() + "_types.js";
   f_types_.open(f_types_name.c_str());
 
   // Print header
@@ -338,8 +338,8 @@ string t_js_generator::render_includes() {
     const vector<t_program*>& includes = program_->get_included_programs();
     string result = "";
     for (size_t i = 0; i < includes.size(); ++i) {
-      result += "var " + includes[i]->get_name() + "_ttypes = require('" +
-          js_node_module(includes[i]) + "/" + includes[i]->get_name() +
+      result += "var " + includes[i]->name() + "_ttypes = require('" +
+          js_node_module(includes[i]) + "/" + includes[i]->name() +
           "_types')\n";
     }
     if (includes.size() > 0) {
@@ -803,8 +803,7 @@ void t_js_generator::generate_service(const t_service* tservice) {
                  << ".Processor" << endl;
     }
 
-    f_service_ << "var ttypes = require('./" + program_->get_name() +
-            "_types');"
+    f_service_ << "var ttypes = require('./" + program_->name() + "_types');"
                << endl;
   }
 

@@ -89,15 +89,15 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
   const auto pyNamespaces = get_py_namespace(program, "");
   mstch::array includeNamespaces;
   for (const auto included_program : program.get_included_programs()) {
-    if (included_program->get_path() == program.get_path()) {
+    if (included_program->path() == program.path()) {
       continue;
     }
     const auto ns = get_py_namespace(*included_program);
-    auto const hasServices = included_program->get_services().size() > 0;
-    auto const hasStructs = included_program->get_objects().size() > 0;
-    auto const hasEnums = included_program->get_enums().size() > 0;
-    auto const hasTypedefs = included_program->get_typedefs().size() > 0;
-    auto const hasConsts = included_program->get_consts().size() > 0;
+    auto const hasServices = included_program->services().size() > 0;
+    auto const hasStructs = included_program->objects().size() > 0;
+    auto const hasEnums = included_program->enums().size() > 0;
+    auto const hasTypedefs = included_program->typedefs().size() > 0;
+    auto const hasConsts = included_program->consts().size() > 0;
     auto const hasTypes = hasStructs || hasEnums || hasTypedefs || hasConsts;
     const mstch::map include_ns{
         {"includeNamespace", ns},
@@ -154,8 +154,8 @@ mstch::map t_mstch_pyi_generator::extend_type(const t_type& type) {
   const auto program = type_program ? type_program : get_program();
   const auto modulePath = get_py_namespace(*program, "ttypes");
   bool externalProgram = false;
-  const auto& prog_path = program->get_path();
-  if (prog_path != get_program()->get_path()) {
+  const auto& prog_path = program->path();
+  if (prog_path != get_program()->path()) {
     externalProgram = true;
   }
 
@@ -171,14 +171,14 @@ mstch::map t_mstch_pyi_generator::extend_service(const t_service& service) {
   const auto program = service.get_program();
   const auto& pyNamespaces = get_py_namespace(*program);
   bool externalProgram = false;
-  const auto& prog_path = program->get_path();
-  if (prog_path != get_program()->get_path()) {
+  const auto& prog_path = program->path();
+  if (prog_path != get_program()->path()) {
     externalProgram = true;
   }
   mstch::map result{
       {"externalProgram?", externalProgram},
       {"pyNamespaces", pyNamespaces},
-      {"programName", program->get_name()},
+      {"programName", program->name()},
   };
 
   return result;
@@ -220,7 +220,7 @@ void t_mstch_pyi_generator::generate_ttypes(const t_program& program) {
 void t_mstch_pyi_generator::generate_services(const t_program& program) {
   auto path = package_to_path(program);
   std::string template_ = "service.pyi";
-  for (const auto service : program.get_services()) {
+  for (const auto service : program.services()) {
     std::string module = service->get_name() + ".pyi";
     mstch::map extra{
         {"service", dump(*service)},
@@ -246,7 +246,7 @@ mstch::array t_mstch_pyi_generator::get_return_types(const t_program& program) {
   mstch::array distinct_return_types;
   std::set<string> visited_names;
 
-  for (const auto service : program.get_services()) {
+  for (const auto service : program.services()) {
     for (const auto function : service->get_functions()) {
       const auto returntype = function->get_returntype();
       string flat_name = flatten_type_name(*returntype);
@@ -271,7 +271,7 @@ void t_mstch_pyi_generator::add_container_types(
   vector<const t_type*> move_container_types;
   std::set<string> visited_names;
 
-  for (const auto service : program.get_services()) {
+  for (const auto service : program.services()) {
     for (const auto function : service->get_functions()) {
       for (const auto param : function->get_paramlist()->fields()) {
         load_container_type(container_types, visited_names, param->get_type());
@@ -280,13 +280,13 @@ void t_mstch_pyi_generator::add_container_types(
       load_container_type(container_types, visited_names, return_type);
     }
   }
-  for (const auto object : program.get_objects()) {
+  for (const auto object : program.objects()) {
     for (const auto field : object->fields()) {
       auto ref_type = field->get_type();
       load_container_type(container_types, visited_names, ref_type);
     }
   }
-  for (const auto constant : program.get_consts()) {
+  for (const auto constant : program.consts()) {
     const auto const_type = constant->get_type();
     load_container_type(container_types, visited_names, const_type);
   }
@@ -370,7 +370,7 @@ vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
       ? py_asyncio_namespace
       : py_namespace;
 
-  const auto& name = program.get_name();
+  const auto& name = program.name();
   vector<string> ns = split_namespace(_namespace);
   if (ns.empty()) {
     ns.push_back(name);

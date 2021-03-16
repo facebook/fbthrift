@@ -101,7 +101,7 @@ void t_json_generator::generate_program() {
   string module_name = program_->get_namespace("json");
   string fname = get_out_dir();
   if (module_name.empty()) {
-    module_name = program_->get_name();
+    module_name = program_->name();
   }
   string mangled_module_name = module_name;
   boost::filesystem::create_directory(fname);
@@ -124,21 +124,21 @@ void t_json_generator::generate_program() {
                  << "generated\": 0}," << endl;
   indent(f_out_) << "\"thrift_module\" : \"" << module_name << "\"";
 
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     f_out_ << "," << endl << indent() << "\"constants\" : {" << endl;
     indent_up();
-    vector<t_const*> consts = program_->get_consts();
+    vector<t_const*> consts = program_->consts();
     generate_consts(consts);
     f_out_ << endl;
     indent_down();
     indent(f_out_) << "}";
   }
 
-  if (!program_->get_enums().empty()) {
+  if (!program_->enums().empty()) {
     f_out_ << "," << endl << indent() << "\"enumerations\" : {" << endl;
     indent_up();
     // Generate enums
-    vector<t_enum*> enums = program_->get_enums();
+    vector<t_enum*> enums = program_->enums();
     vector<t_enum*>::iterator en_iter;
     for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
       if (en_iter != enums.begin()) {
@@ -151,11 +151,11 @@ void t_json_generator::generate_program() {
     indent(f_out_) << "}";
   }
 
-  if (!program_->get_typedefs().empty()) {
+  if (!program_->typedefs().empty()) {
     f_out_ << "," << endl << indent() << "\"typedefs\" : {" << endl;
     indent_up();
     // Generate typedefs
-    vector<t_typedef*> typedefs = program_->get_typedefs();
+    vector<t_typedef*> typedefs = program_->typedefs();
     vector<t_typedef*>::iterator td_iter;
     for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
       if (td_iter != typedefs.begin()) {
@@ -168,11 +168,11 @@ void t_json_generator::generate_program() {
     indent(f_out_) << "}";
   }
 
-  if (!program_->get_objects().empty()) {
+  if (!program_->objects().empty()) {
     f_out_ << "," << endl << indent() << "\"structs\" : {" << endl;
     indent_up();
     // Generate structs and exceptions in declared order
-    vector<t_struct*> objects = program_->get_objects();
+    vector<t_struct*> objects = program_->objects();
     vector<t_struct*>::iterator o_iter;
     for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
       if (o_iter != objects.begin()) {
@@ -189,11 +189,11 @@ void t_json_generator::generate_program() {
     indent(f_out_) << "}";
   }
 
-  if (!program_->get_services().empty()) {
+  if (!program_->services().empty()) {
     f_out_ << "," << endl << indent() << "\"services\" : {" << endl;
     indent_up();
     // Generate services
-    vector<t_service*> services = program_->get_services();
+    vector<t_service*> services = program_->services();
     vector<t_service*>::iterator sv_iter;
     for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
       service_name_ = get_service_name(*sv_iter);
@@ -285,7 +285,7 @@ string t_json_generator::type_to_spec_args(const t_type* ttype) {
       ttype->is_enum() || ttype->is_typedef()) {
     string module = "";
     if (ttype->get_program() != program_) {
-      module = ttype->get_program()->get_name() + ".";
+      module = ttype->get_program()->name() + ".";
     }
     return "\"" + module + ttype->get_name() + "\"";
   } else if (ttype->is_map()) {
@@ -321,8 +321,8 @@ string t_json_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     const string& json_namespace = program->get_namespace("json");
-    return (!json_namespace.empty() ? json_namespace : program->get_name()) +
-        "." + ttype->get_name();
+    return (!json_namespace.empty() ? json_namespace : program->name()) + "." +
+        ttype->get_name();
   }
   return ttype->get_name();
 }

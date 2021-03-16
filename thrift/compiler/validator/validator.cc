@@ -48,7 +48,7 @@ void validator::add_error(
     boost::optional<int> const lineno,
     std::string const& message) {
   diagnostics_->emplace_back(
-      diagnostic::type::failure, program_->get_path(), lineno, message);
+      diagnostic::type::failure, program_->path(), lineno, message);
 }
 
 void validator::set_program(t_program* const program) {
@@ -346,14 +346,14 @@ bool field_names_uniqueness_validator::visit(t_struct* s) {
 bool struct_names_uniqueness_validator::visit(t_program* p) {
   set_program(p);
   std::set<std::string> seen;
-  for (auto* object : p->get_objects()) {
+  for (auto* object : p->objects()) {
     if (!seen.emplace(object->get_name()).second) {
       add_error(
           object->get_lineno(),
           "Redefinition of type `" + object->get_name() + "`.");
     }
   }
-  for (auto* interaction : p->get_interactions()) {
+  for (auto* interaction : p->interactions()) {
     if (!seen.emplace(interaction->get_name()).second) {
       add_error(
           interaction->get_lineno(),
@@ -365,7 +365,7 @@ bool struct_names_uniqueness_validator::visit(t_program* p) {
 
 bool interactions_validator::visit(t_program* p) {
   set_program(p);
-  for (auto* interaction : p->get_interactions()) {
+  for (auto* interaction : p->interactions()) {
     for (auto* func : interaction->get_functions()) {
       auto ret = func->get_returntype();
       if (ret->is_service() &&

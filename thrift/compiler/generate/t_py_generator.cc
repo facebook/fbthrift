@@ -378,7 +378,7 @@ std::string t_py_generator::get_real_py_module(const t_program* program) {
 
   std::string real_module = program->get_namespace("py");
   if (real_module.empty()) {
-    return program->get_name();
+    return program->name();
   }
   return real_module;
 }
@@ -784,7 +784,7 @@ void t_py_generator::init_generator() {
   f_init.open(f_init_name.c_str());
   record_genfile(f_init_name);
   f_init << py_autogen_comment() << "__all__ = ['ttypes', 'constants'";
-  vector<t_service*> services = program_->get_services();
+  vector<t_service*> services = program_->services();
   vector<t_service*>::iterator sv_iter;
   for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
     f_init << ", '" << (*sv_iter)->get_name() << "'";
@@ -815,15 +815,15 @@ void t_py_generator::init_generator() {
 string t_py_generator::render_ttype_declarations(const char* delimiter) {
   std::ostringstream out;
   out << delimiter << "UTF8STRINGS" << delimiter;
-  for (const auto& en : program_->get_enums()) {
+  for (const auto& en : program_->enums()) {
     out << ", " << delimiter << rename_reserved_keywords(en->get_name())
         << delimiter;
   }
-  for (const auto& object : program_->get_objects()) {
+  for (const auto& object : program_->objects()) {
     out << ", " << delimiter << rename_reserved_keywords(object->get_name())
         << delimiter;
   }
-  for (const auto& td : program_->get_typedefs()) {
+  for (const auto& td : program_->typedefs()) {
     out << ", " << delimiter << rename_reserved_keywords(td->get_symbolic())
         << delimiter;
   }

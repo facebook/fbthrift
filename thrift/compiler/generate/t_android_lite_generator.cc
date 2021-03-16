@@ -54,7 +54,7 @@ class t_android_lite_generator : public t_java_generator {
             option_string) {
     // parse arguments
     package_name_ = program_->get_namespace("android_lite");
-    program_name_ = capitalize(get_program()->get_name());
+    program_name_ = capitalize(get_program()->name());
     out_dir_base_ = "gen-android";
     annotate_ = option_is_specified(parsed_options, "annotate");
   }
@@ -300,7 +300,7 @@ void t_android_lite_generator::write_class_file() {
   indent_up();
   // Break the abstraction a little so that we can output all the enums in one
   // list at the top of the file.
-  vector<t_struct*> structs = get_program()->get_structs();
+  vector<t_struct*> structs = get_program()->structs();
   indent(out_class) << "public enum EventType {" << endl;
   indent_up();
   if (!structs.empty()) {
@@ -416,7 +416,7 @@ string t_android_lite_generator::type_name(
   ttype = ttype->get_true_type();
   if (ttype->is_struct() || ttype->is_enum()) {
     string suffix = ttype->is_struct() ? "Logger" : "Enum";
-    string name = capitalize(ttype->get_program()->get_name()) + suffix;
+    string name = capitalize(ttype->get_program()->name()) + suffix;
     string package = ttype->get_program()->get_namespace("android_lite");
     return package.empty() || package == package_name_ ? name
                                                        : package + "." + name;
@@ -429,14 +429,14 @@ string t_android_lite_generator::type_name(
 string t_android_lite_generator::full_property_name(
     const t_struct* tstruct,
     const t_field* tfield) {
-  return capitalize(tstruct->get_program()->get_name()) + "." +
+  return capitalize(tstruct->get_program()->name()) + "." +
       tstruct->get_name() + "_" + tfield->get_name();
 }
 
 string t_android_lite_generator::full_enum_name(
     const t_enum* tenum,
     int offset) {
-  return capitalize(tenum->get_program()->get_name()) + "Enum." +
+  return capitalize(tenum->get_program()->name()) + "Enum." +
       tenum->get_name() + "_" + tenum->find_value(offset)->get_name();
 }
 
@@ -849,7 +849,7 @@ void t_android_lite_generator::print_const_value(
       out << ";" << endl;
     }
   } else if (type->is_struct()) {
-    string eventType_key = capitalize(type->get_program()->get_name()) +
+    string eventType_key = capitalize(type->get_program()->name()) +
         ".EventType." + type->get_name();
     out << name << " = new " << type_name(type, false, true) << "("
         << eventType_key << ");" << endl;

@@ -192,33 +192,33 @@ void t_ocaml_generator::generate_program() {
   init_generator();
 
   // Generate enums
-  for (auto* en : program_->get_enums()) {
+  for (auto* en : program_->enums()) {
     generate_enum(en);
   }
 
   // Generate structs
-  for (auto* st : program_->get_structs()) {
+  for (auto* st : program_->structs()) {
     generate_struct(st);
   }
 
   // Generate xceptions
-  for (auto* x : program_->get_xceptions()) {
+  for (auto* x : program_->xceptions()) {
     generate_xception(x);
   }
 
   // Generate typedefs
-  for (auto td : program_->get_typedefs()) {
+  for (auto td : program_->typedefs()) {
     generate_typedef(td);
   }
 
   // Generate services
-  for (auto* sv : program_->get_services()) {
+  for (auto* sv : program_->services()) {
     service_name_ = get_service_name(sv);
     generate_service(sv);
   }
 
   // Generate constants
-  generate_consts(program_->get_consts());
+  generate_consts(program_->consts());
 
   // Close the generator
   close_generator();
@@ -1571,7 +1571,7 @@ string t_ocaml_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     if (!ttype->is_service()) {
-      prefix = capitalize(program->get_name()) + "_types.";
+      prefix = capitalize(program->name()) + "_types.";
     }
   }
 

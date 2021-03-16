@@ -326,7 +326,7 @@ class t_php_generator : public t_oop_generator {
   std::string php_path(const t_program* p) {
     std::string ns = p->get_namespace("php_path");
     if (ns.empty()) {
-      return p->get_name();
+      return p->name();
     }
 
     // Transform the java-style namespace into a path.
@@ -336,7 +336,7 @@ class t_php_generator : public t_oop_generator {
       }
     }
 
-    return ns + '/' + p->get_name();
+    return ns + '/' + p->name();
   }
 
   std::string php_path(const t_service* s) {
@@ -706,7 +706,7 @@ void t_php_generator::init_generator() {
     // Include other Thrift includes
     const vector<t_program*>& includes = program_->get_included_programs();
     for (size_t i = 0; i < includes.size(); ++i) {
-      string package = includes[i]->get_name();
+      string package = includes[i]->name();
       string prefix = php_path(includes[i]);
       f_types_ << "require_once $GLOBALS['THRIFT_ROOT'].'/packages/" << prefix
                << "/" << package << "_types.php';" << endl;
@@ -715,7 +715,7 @@ void t_php_generator::init_generator() {
   f_types_ << endl;
 
   // Print header
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     string f_consts_name = get_out_dir() + program_name_ + "_constants.php";
     f_consts_.open(f_consts_name.c_str());
     record_genfile(f_consts_name);
@@ -772,7 +772,7 @@ void t_php_generator::close_generator() {
   f_types_ << "?>" << endl;
   f_types_.close();
 
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     // write out the values array
     indent_up();
     f_consts_ << endl;

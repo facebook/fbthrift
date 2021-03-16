@@ -497,7 +497,7 @@ class t_hack_generator : public t_oop_generator {
   std::string php_path(const t_program* p) {
     std::string ns = p->get_namespace("php_path");
     if (ns.empty()) {
-      return p->get_name();
+      return p->name();
     }
 
     // Transform the java-style namespace into a path.
@@ -507,7 +507,7 @@ class t_hack_generator : public t_oop_generator {
       }
     }
 
-    return ns + '/' + p->get_name();
+    return ns + '/' + p->name();
   }
 
   std::string php_path(const t_service* s) {
@@ -1020,7 +1020,7 @@ void t_hack_generator::init_generator() {
   }
 
   // Print header
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     std::string f_consts_name =
         get_out_dir() + program_name_ + "_constants.php";
     f_consts_.open(f_consts_name.c_str());
@@ -1046,7 +1046,7 @@ void t_hack_generator::close_generator() {
   // Close types file
   f_types_.close();
 
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     // write out the values array
     indent_up();
     f_consts_ << "\n";
@@ -1057,7 +1057,7 @@ void t_hack_generator::close_generator() {
     indent_up();
     f_consts_ << indent() << "return dict[\n";
     indent_up();
-    for (const auto& tconst : program_->get_consts()) {
+    for (const auto& tconst : program_->consts()) {
       if (tconst->structured_annotations().empty()) {
         continue;
       }

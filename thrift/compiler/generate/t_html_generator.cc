@@ -97,7 +97,7 @@ void t_html_generator::generate_program_toc_rows(
   for (vector<t_program*>::iterator iter = finished.begin();
        iter != finished.end();
        iter++) {
-    if (tprog->get_path() == (*iter)->get_path()) {
+    if (tprog->path() == (*iter)->path()) {
       return;
     }
   }
@@ -115,10 +115,10 @@ void t_html_generator::generate_program_toc_rows(
  * Emits the Table of Contents links at the top of the module's page
  */
 void t_html_generator::generate_program_toc_row(const t_program* tprog) {
-  string fname = tprog->get_name() + ".html";
-  f_out_ << "<tr>" << endl << "<td>" << tprog->get_name() << "</td><td>";
-  if (!tprog->get_services().empty()) {
-    vector<t_service*> services = tprog->get_services();
+  string fname = tprog->name() + ".html";
+  f_out_ << "<tr>" << endl << "<td>" << tprog->name() << "</td><td>";
+  if (!tprog->services().empty()) {
+    vector<t_service*> services = tprog->services();
     vector<t_service*>::iterator sv_iter;
     for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
       string name = get_service_name(*sv_iter);
@@ -144,8 +144,8 @@ void t_html_generator::generate_program_toc_row(const t_program* tprog) {
   }
   f_out_ << "</td>" << endl << "<td>";
   map<string, string> data_types;
-  if (!tprog->get_enums().empty()) {
-    vector<t_enum*> enums = tprog->get_enums();
+  if (!tprog->enums().empty()) {
+    vector<t_enum*> enums = tprog->enums();
     vector<t_enum*>::iterator en_iter;
     for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
       string name = (*en_iter)->get_name();
@@ -156,8 +156,8 @@ void t_html_generator::generate_program_toc_row(const t_program* tprog) {
       data_types.insert(pair<string, string>(name, html));
     }
   }
-  if (!tprog->get_typedefs().empty()) {
-    vector<t_typedef*> typedefs = tprog->get_typedefs();
+  if (!tprog->typedefs().empty()) {
+    vector<t_typedef*> typedefs = tprog->typedefs();
     vector<t_typedef*>::iterator td_iter;
     for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
       string name = (*td_iter)->get_symbolic();
@@ -168,8 +168,8 @@ void t_html_generator::generate_program_toc_row(const t_program* tprog) {
       data_types.insert(pair<string, string>(name, html));
     }
   }
-  if (!tprog->get_objects().empty()) {
-    vector<t_struct*> objects = tprog->get_objects();
+  if (!tprog->objects().empty()) {
+    vector<t_struct*> objects = tprog->objects();
     vector<t_struct*>::iterator o_iter;
     for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
       string name = (*o_iter)->get_name();
@@ -186,9 +186,9 @@ void t_html_generator::generate_program_toc_row(const t_program* tprog) {
     f_out_ << dt_iter->second << "<br/>" << endl;
   }
   f_out_ << "</td>" << endl << "<td><code>";
-  if (!tprog->get_consts().empty()) {
+  if (!tprog->consts().empty()) {
     map<string, string> const_html;
-    vector<t_const*> consts = tprog->get_consts();
+    vector<t_const*> consts = tprog->consts();
     vector<t_const*>::iterator con_iter;
     for (con_iter = consts.begin(); con_iter != consts.end(); ++con_iter) {
       string name = (*con_iter)->get_name();
@@ -212,53 +212,53 @@ void t_html_generator::generate_program_toc_row(const t_program* tprog) {
 void t_html_generator::generate_program() {
   // Make output directory
   boost::filesystem::create_directory(get_out_dir());
-  string fname = get_out_dir() + program_->get_name() + ".html";
+  string fname = get_out_dir() + program_->name() + ".html";
   f_out_.open(fname.c_str());
   record_genfile(fname);
   f_out_ << "<html><head>" << endl;
   f_out_ << "<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
          << endl;
-  f_out_ << "<title>Thrift module: " << program_->get_name()
+  f_out_ << "<title>Thrift module: " << program_->name()
          << "</title></head><body>" << endl
-         << "<h1>Thrift module: " << program_->get_name() << "</h1>" << endl;
+         << "<h1>Thrift module: " << program_->name() << "</h1>" << endl;
 
   print_doc(program_);
 
   generate_program_toc();
 
-  if (!program_->get_consts().empty()) {
+  if (!program_->consts().empty()) {
     f_out_ << "<hr/><h2 id=\"Constants\">Constants</h2>" << endl;
-    vector<t_const*> consts = program_->get_consts();
+    vector<t_const*> consts = program_->consts();
     f_out_ << "<table>";
     f_out_ << "<tr><th>Constant</th><th>Type</th><th>Value</th></tr>" << endl;
     generate_consts(consts);
     f_out_ << "</table>";
   }
 
-  if (!program_->get_enums().empty()) {
+  if (!program_->enums().empty()) {
     f_out_ << "<hr/><h2 id=\"Enumerations\">Enumerations</h2>" << endl;
     // Generate enums
-    vector<t_enum*> enums = program_->get_enums();
+    vector<t_enum*> enums = program_->enums();
     vector<t_enum*>::iterator en_iter;
     for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
       generate_enum(*en_iter);
     }
   }
 
-  if (!program_->get_typedefs().empty()) {
+  if (!program_->typedefs().empty()) {
     f_out_ << "<hr/><h2 id=\"Typedefs\">Type declarations</h2>" << endl;
     // Generate typedefs
-    vector<t_typedef*> typedefs = program_->get_typedefs();
+    vector<t_typedef*> typedefs = program_->typedefs();
     vector<t_typedef*>::iterator td_iter;
     for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
       generate_typedef(*td_iter);
     }
   }
 
-  if (!program_->get_objects().empty()) {
+  if (!program_->objects().empty()) {
     f_out_ << "<hr/><h2 id=\"Structs\">Data structures</h2>" << endl;
     // Generate structs and exceptions in declared order
-    vector<t_struct*> objects = program_->get_objects();
+    vector<t_struct*> objects = program_->objects();
     vector<t_struct*>::iterator o_iter;
     for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
       if ((*o_iter)->is_xception()) {
@@ -269,10 +269,10 @@ void t_html_generator::generate_program() {
     }
   }
 
-  if (!program_->get_services().empty()) {
+  if (!program_->services().empty()) {
     f_out_ << "<hr/><h2 id=\"Services\">Services</h2>" << endl;
     // Generate services
-    vector<t_service*> services = program_->get_services();
+    vector<t_service*> services = program_->services();
     vector<t_service*>::iterator sv_iter;
     for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
       service_name_ = get_service_name(*sv_iter);
@@ -380,7 +380,7 @@ int t_html_generator::print_type(const t_type* ttype) {
     f_out_ << ttype->get_name();
     len = ttype->get_name().size();
   } else {
-    string prog_name = ttype->get_program()->get_name();
+    string prog_name = ttype->get_program()->name();
     const string& type_name = ttype->get_name();
     f_out_ << "<a href=\"" << prog_name << ".html#";
     if (ttype->is_typedef()) {

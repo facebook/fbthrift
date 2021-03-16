@@ -70,7 +70,7 @@ class json_experimental_program : public mstch_program {
         {
             {"program:py_namespace",
              &json_experimental_program::get_py_namespace},
-            {"program:namespaces", &json_experimental_program::get_namespaces},
+            {"program:namespaces", &json_experimental_program::namespaces},
             {"program:namespaces?", &json_experimental_program::has_namespaces},
             {"program:docstring?", &json_experimental_program::has_docstring},
             {"program:docstring", &json_experimental_program::get_docstring},
@@ -81,17 +81,17 @@ class json_experimental_program : public mstch_program {
   mstch::node get_py_namespace() {
     return program_->get_namespace("py");
   }
-  mstch::node get_namespaces() {
+  mstch::node namespaces() {
     mstch::array result;
-    auto last = program_->get_namespaces().size();
-    for (auto it : program_->get_namespaces()) {
+    auto last = program_->namespaces().size();
+    for (auto it : program_->namespaces()) {
       result.push_back(mstch::map{
           {"key", it.first}, {"value", it.second}, {"last?", (--last) == 0}});
     }
     return result;
   }
   mstch::node has_namespaces() {
-    return !program_->get_namespaces().empty();
+    return !program_->namespaces().empty();
   }
   mstch::node has_docstring() {
     return !program_->get_doc().empty();
@@ -101,7 +101,7 @@ class json_experimental_program : public mstch_program {
   }
 
   mstch::node include_prefix() {
-    auto prefix = program_->get_include_prefix();
+    auto prefix = program_->include_prefix();
     if (!prefix.empty()) {
       if (boost::filesystem::path(prefix).has_root_directory()) {
         return cache_->parsed_options_["include_prefix"];
@@ -511,7 +511,7 @@ class field_json_experimental_generator : public field_generator {
 void t_json_experimental_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
-  std::string fname = program->get_name();
+  std::string fname = program->name();
   fname += ".json";
   auto output =
       generators_->program_generator_->generate(program, generators_, cache_);

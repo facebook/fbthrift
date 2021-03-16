@@ -78,7 +78,7 @@ std::string t_type::make_full_name(const char* prefix) const {
   std::ostringstream os;
   os << prefix << " ";
   if (program_) {
-    os << program_->get_name() << ".";
+    os << program_->name() << ".";
   }
   os << name_;
   return os.str();

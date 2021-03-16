@@ -289,9 +289,9 @@ bool generate(
   // Oooohh, recursive code generation, hot!!
   if (params.gen_recurse) {
     // Add the path we are about to generate.
-    already_generated.emplace(program->get_path());
+    already_generated.emplace(program->path());
     for (const auto& include : program->get_included_programs()) {
-      if (!already_generated.count(include->get_path()) &&
+      if (!already_generated.count(include->path()) &&
           !generate(params, include, already_generated)) {
         return false;
       }
@@ -300,7 +300,7 @@ bool generate(
 
   // Generate code!
   try {
-    pverbose("Program: %s\n", program->get_path().c_str());
+    pverbose("Program: %s\n", program->path().c_str());
 
     if (dump_docs) {
       dump_docstrings(program);
@@ -442,7 +442,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   } catch (const std::exception& e) {
     result.diagnostics.push_back(diagnostic_message(
         diagnostic_level::FAILURE,
-        program->get_root_program()->get_path(),
+        program->get_root_program()->path(),
         0,
         {},
         e.what()));

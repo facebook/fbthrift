@@ -44,13 +44,13 @@ void t_concat_generator::generate_program() {
   init_generator();
 
   // Generate enums
-  vector<t_enum*> enums = program_->get_enums();
+  vector<t_enum*> enums = program_->enums();
   vector<t_enum*>::iterator en_iter;
   for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
     generate_enum(*en_iter);
   }
 
-  vector<t_struct*> objects = program_->get_objects();
+  vector<t_struct*> objects = program_->objects();
 
   // Generate forward declarations. Typedefs may use these
   for (auto& object : objects) {
@@ -58,7 +58,7 @@ void t_concat_generator::generate_program() {
   }
 
   // Generate typedefs
-  vector<t_typedef*> typedefs = program_->get_typedefs();
+  vector<t_typedef*> typedefs = program_->typedefs();
   vector<t_typedef*>::iterator td_iter;
   for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
     generate_typedef(*td_iter);
@@ -73,7 +73,7 @@ void t_concat_generator::generate_program() {
   }
 
   // Generate constants
-  vector<t_const*> consts = program_->get_consts();
+  vector<t_const*> consts = program_->consts();
   generate_consts(consts);
 
   // Generate structs, exceptions, and unions in declared order
@@ -86,7 +86,7 @@ void t_concat_generator::generate_program() {
   }
 
   // Generate services
-  vector<t_service*> services = program_->get_services();
+  vector<t_service*> services = program_->services();
   vector<t_service*>::iterator sv_iter;
   for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
     service_name_ = get_service_name(*sv_iter);

@@ -80,7 +80,7 @@ class t_generator {
    * Method to get the program name, may be overridden
    */
   virtual std::string get_program_name(t_program* program) {
-    return program->get_name();
+    return program->name();
   }
 
   const t_program* get_program(void) const {

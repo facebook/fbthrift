@@ -105,7 +105,7 @@ class t_d_generator : public t_oop_generator {
     const vector<t_program*>& includes = program_->get_included_programs();
     for (size_t i = 0; i < includes.size(); ++i) {
       f_types_ << "import " << render_package(*(includes[i]))
-               << includes[i]->get_name() << "_types;" << endl;
+               << includes[i]->name() << "_types;" << endl;
     }
     if (!includes.empty())
       f_types_ << endl;
@@ -225,7 +225,7 @@ class t_d_generator : public t_oop_generator {
 
     for (size_t i = 0; i < includes.size(); ++i) {
       f_service << "import " << render_package(*(includes[i]))
-                << includes[i]->get_name() << "_types;" << endl;
+                << includes[i]->name() << "_types;" << endl;
     }
 
     const t_service* extends_service = tservice->get_extends();
@@ -266,7 +266,7 @@ class t_d_generator : public t_oop_generator {
       f_service << endl;
     for (const auto* et : exception_types) {
       indent(f_service) << "alias " << render_package(*et->get_program())
-                        << et->get_program()->get_name() << "_types"
+                        << et->get_program()->name() << "_types"
                         << "." << et->get_name() << " " << et->get_name() << ";"
                         << endl;
     }
@@ -689,7 +689,7 @@ class t_d_generator : public t_oop_generator {
         type_name = render_package(*type_program) + ttype->get_name() + "." +
             ttype->get_name();
       } else {
-        type_name = render_package(*type_program) + type_program->get_name() +
+        type_name = render_package(*type_program) + type_program->name() +
             "_types." + ttype->get_name();
       }
     } else {

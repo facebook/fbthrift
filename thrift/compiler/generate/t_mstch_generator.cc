@@ -78,15 +78,15 @@ t_mstch_generator::t_mstch_generator(
 
 mstch::map t_mstch_generator::dump(const t_program& program) {
   mstch::map result{
-      {"name", program.get_name()},
-      {"path", program.get_path()},
+      {"name", program.name()},
+      {"path", program.path()},
       {"outPath", context_.get_out_path()},
-      {"includePrefix", program.get_include_prefix()},
-      {"structs", dump_elems(program.get_objects())},
-      {"enums", dump_elems(program.get_enums())},
-      {"services", dump_elems(program.get_services())},
-      {"typedefs", dump_elems(program.get_typedefs())},
-      {"constants", dump_elems(program.get_consts())},
+      {"includePrefix", program.include_prefix()},
+      {"structs", dump_elems(program.objects())},
+      {"enums", dump_elems(program.enums())},
+      {"services", dump_elems(program.services())},
+      {"typedefs", dump_elems(program.typedefs())},
+      {"constants", dump_elems(program.consts())},
   };
 
   mstch::map extension = extend_program(program);
@@ -514,7 +514,7 @@ void t_mstch_generator::render_to_file(
 
 const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
     t_program const* program) {
-  const auto& id = program->get_path();
+  const auto& id = program->path();
   auto itr = cache_->programs_.find(id);
   if (itr == cache_->programs_.end()) {
     itr = cache_->programs_

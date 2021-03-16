@@ -200,7 +200,7 @@ std::string get_import_name(
     return options.current_crate;
   }
 
-  auto program_name = program->get_name();
+  auto program_name = program->name();
   auto crate_name = options.cratemap.find(program_name);
   if (crate_name != options.cratemap.end()) {
     return crate_name->second;
@@ -252,7 +252,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     }
 
     if (options_.multifile_mode) {
-      options_.current_crate = "crate::" + mangle(program->get_name());
+      options_.current_crate = "crate::" + mangle(program->name());
     } else {
       options_.current_crate = "crate";
     }
@@ -300,12 +300,12 @@ class mstch_rust_program : public mstch_program {
         });
   }
   mstch::node rust_has_types() {
-    return !program_->get_structs().empty() || !program_->get_enums().empty() ||
-        !program_->get_typedefs().empty() || !program_->get_xceptions().empty();
+    return !program_->structs().empty() || !program_->enums().empty() ||
+        !program_->typedefs().empty() || !program_->xceptions().empty();
   }
   mstch::node rust_structs_or_enums() {
-    return !program_->get_structs().empty() || !program_->get_enums().empty() ||
-        !program_->get_xceptions().empty();
+    return !program_->structs().empty() || !program_->enums().empty() ||
+        !program_->xceptions().empty();
   }
   mstch::node rust_serde() {
     return options_.serde;
@@ -318,7 +318,7 @@ class mstch_rust_program : public mstch_program {
   }
   mstch::node rust_crate() {
     if (options_.multifile_mode) {
-      return "crate::" + mangle(program_->get_name());
+      return "crate::" + mangle(program_->name());
     }
     return std::string("crate");
   }
@@ -334,7 +334,7 @@ class mstch_rust_program : public mstch_program {
     return includes;
   }
   mstch::node rust_any_service_without_parent() {
-    for (const t_service* service : program_->get_services()) {
+    for (const t_service* service : program_->services()) {
       if (service->get_extends() == nullptr) {
         return true;
       }
@@ -343,12 +343,12 @@ class mstch_rust_program : public mstch_program {
   }
   template <typename F>
   void foreach_type(F&& f) const {
-    for (const auto* strct : program_->get_structs()) {
+    for (const auto* strct : program_->structs()) {
       for (const auto* field : strct->fields()) {
         f(field->get_type());
       }
     }
-    for (const auto* service : program_->get_services()) {
+    for (const auto* service : program_->services()) {
       for (const auto* function : service->get_functions()) {
         for (const auto* param : function->get_paramlist()->fields()) {
           f(param->get_type());
@@ -356,7 +356,7 @@ class mstch_rust_program : public mstch_program {
         f(function->get_returntype());
       }
     }
-    for (auto typedf : program_->get_typedefs()) {
+    for (auto typedf : program_->typedefs()) {
       f(typedf);
     }
   }
@@ -495,7 +495,7 @@ class mstch_rust_service : public mstch_service {
       }
       if (parent_service->get_program() != service->get_program()) {
         type_prefix +=
-            "::dependencies::" + parent_service->get_program()->get_name();
+            "::dependencies::" + parent_service->get_program()->name();
       }
       mstch::map node;
       node["extendedService:packagePrefix"] = type_prefix;

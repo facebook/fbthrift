@@ -88,7 +88,7 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse(
 
 void parsing_driver::parse_file() {
   // Get scope file path
-  std::string path = program->get_path();
+  std::string path = program->path();
 
   // Skip on already parsed files
   if (already_parsed_paths_.count(path)) {
@@ -126,10 +126,10 @@ void parsing_driver::parse_file() {
     circular_deps_.insert(path);
 
     // Fail on circular dependencies
-    if (circular_deps_.count(included_program->get_path())) {
+    if (circular_deps_.count(included_program->path())) {
       failure(
           "Circular dependency found: file `%s` is already parsed.",
-          included_program->get_path().c_str());
+          included_program->path().c_str());
     }
 
     // This must be after the previous circular include check, since the emitted
@@ -164,7 +164,7 @@ void parsing_driver::parse_file() {
     failure(x.c_str());
   }
 
-  for (auto td : program->get_placeholder_typedefs()) {
+  for (auto td : program->placeholder_typedefs()) {
     if (!td->resolve_placeholder()) {
       failure("Type `%s` not defined.", td->get_symbolic().c_str());
     }
@@ -200,7 +200,7 @@ std::string parsing_driver::include_file(const std::string& filename) {
   } else { // relative path, start searching
     // new search path with current dir global
     std::vector<std::string> sp = params.incl_searchpath;
-    sp.insert(sp.begin(), directory_name(program->get_path()));
+    sp.insert(sp.begin(), directory_name(program->path()));
 
     // iterate through paths
     std::vector<std::string>::iterator it;
@@ -697,7 +697,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
   // Try to resolve the type
   const t_type* type = scope_cache->get_type(name);
   if (type == nullptr) {
-    type = scope_cache->get_type(program->get_name() + "." + name);
+    type = scope_cache->get_type(program->name() + "." + name);
   }
   if (type == nullptr) {
     // TODO(afuller): Remove this special case for const, which requires a
@@ -712,7 +712,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
     // declared type.
     type = scope_cache->get_interaction(name);
     if (type == nullptr) {
-      type = scope_cache->get_interaction(program->get_name() + "." + name);
+      type = scope_cache->get_interaction(program->name() + "." + name);
     }
   }
 

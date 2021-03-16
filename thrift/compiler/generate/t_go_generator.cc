@@ -348,7 +348,7 @@ class t_go_generator : public t_concat_generator {
       return real_module;
     }
 
-    return lowercase(program->get_name());
+    return lowercase(program->name());
   }
 
  private:
@@ -830,7 +830,7 @@ void t_go_generator::init_generator() {
   f_consts_name_ = package_dir_ + "/" + "constants.go";
   f_consts_.open(f_consts_name_.c_str());
 
-  vector<t_service*> services = program_->get_services();
+  vector<t_service*> services = program_->services();
   vector<t_service*>::iterator sv_iter;
 
   for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {

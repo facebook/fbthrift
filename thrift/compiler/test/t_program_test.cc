@@ -70,7 +70,7 @@ TEST(TProgram, AddInclude) {
 
   auto included_names = std::vector<std::string>();
   for (auto include : includes) {
-    included_names.push_back(include->get_name());
+    included_names.push_back(include->name());
   }
   EXPECT_EQ(expect, included_names);
 }
@@ -84,9 +84,9 @@ TEST(TProgram, SetIncludePrefix) {
   const std::string expect = "/this/is/a/dir/";
 
   program.set_include_prefix(dir_path_1);
-  EXPECT_EQ(expect, program.get_include_prefix());
+  EXPECT_EQ(expect, program.include_prefix());
   program.set_include_prefix(dir_path_2);
-  EXPECT_EQ(expect, program.get_include_prefix());
+  EXPECT_EQ(expect, program.include_prefix());
 }
 
 TEST(TProgram, ComputeNameFromFilePath) {

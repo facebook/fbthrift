@@ -120,7 +120,7 @@ static void match_type_with_const_value(
       auto str = value->get_string();
       auto constant = program->scope()->get_constant(str);
       if (!constant) {
-        auto full_str = program->get_name() + "." + str;
+        auto full_str = program->name() + "." + str;
         constant = program->scope()->get_constant(full_str);
       }
       if (!constant) {

@@ -555,7 +555,7 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations);
 
   std::string scoped_name(const t_named& node) {
-    return program->get_name() + "." + node.get_name();
+    return program->name() + "." + node.get_name();
   }
 
   template <typename... Arg>
@@ -600,7 +600,7 @@ class parsing_driver {
 
     return diagnostic_message{
         level,
-        program->get_path(),
+        program->path(),
         scanner->get_lineno(),
         scanner->get_text(),
         message};

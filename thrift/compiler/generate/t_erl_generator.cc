@@ -234,8 +234,8 @@ string t_erl_generator::render_includes() {
   const vector<t_program*>& includes = program_->get_included_programs();
   string result = "";
   for (size_t i = 0; i < includes.size(); ++i) {
-    result += "-include(\"" + uncapitalize(includes[i]->get_name()) +
-        "_types.hrl\").\n";
+    result +=
+        "-include(\"" + uncapitalize(includes[i]->name()) + "_types.hrl\").\n";
   }
   if (includes.size() > 0) {
     result += "\n";
@@ -946,7 +946,7 @@ std::string t_erl_generator::generate_type_term(
 }
 
 std::string t_erl_generator::type_module(const t_type* ttype) {
-  return uncapitalize(ttype->get_program()->get_name()) + "_types";
+  return uncapitalize(ttype->get_program()->name()) + "_types";
 }
 
 THRIFT_REGISTER_GENERATOR(erl, "Erlang", "");

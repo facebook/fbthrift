@@ -129,7 +129,7 @@ class t_concat_generator : public t_generator {
     // program.
     const t_program* program = ttype->get_program();
     if (program != nullptr && program != program_) {
-      full_name = program->get_name() + "." + full_name;
+      full_name = program->name() + "." + full_name;
     }
     return full_name;
   }

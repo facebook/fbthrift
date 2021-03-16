@@ -39,7 +39,7 @@ std::string get_namespace_or_default(const t_program& prog) {
   if (prog_namespace != "") {
     return prog_namespace;
   } else {
-    throw std::runtime_error{"No namespace 'java.swift' in " + prog.get_name()};
+    throw std::runtime_error{"No namespace 'java.swift' in " + prog.name()};
   }
 }
 
@@ -107,7 +107,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const t_program* program,
       const std::vector<T*>& items,
       const std::string& tpl_path) {
-    const auto& id = program->get_path();
+    const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
@@ -136,7 +136,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       Cache& c,
       const t_program* program,
       const std::vector<T*>& services) {
-    const auto& id = program->get_path();
+    const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
@@ -260,11 +260,11 @@ class t_mstch_swift_generator : public t_mstch_generator {
   }
 
   void generate_constants(const t_program* program) {
-    if (program->get_consts().empty()) {
+    if (program->consts().empty()) {
       // Only generate Constants.java if we actually have constants
       return;
     }
-    auto name = program->get_name();
+    auto name = program->name();
     const auto& prog = cached_program(program);
 
     auto package_dir = boost::filesystem::path{
@@ -276,7 +276,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
   void generate_placeholder(const t_program* program) {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
-    auto placeholder_file_name = ".generated_" + program->get_name();
+    auto placeholder_file_name = ".generated_" + program->name();
     write_output(package_dir / placeholder_file_name, "");
   }
 };
@@ -1107,8 +1107,8 @@ class const_value_swift_generator : public const_value_generator {
 void t_mstch_swift_generator::generate_program() {
   set_mstch_generators();
 
-  auto name = get_program()->get_name();
-  const auto& id = get_program()->get_path();
+  auto name = get_program()->name();
+  const auto& id = get_program()->path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] = generators_->program_generator_->generate(
         get_program(), generators_, cache_);
@@ -1118,24 +1118,24 @@ void t_mstch_swift_generator::generate_program() {
       generators_->struct_generator_.get(),
       cache_->structs_,
       get_program(),
-      get_program()->get_objects(),
+      get_program()->objects(),
       "Object");
   generate_items(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->get_services(),
+      get_program()->services(),
       "Service");
   generate_client(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->get_services());
+      get_program()->services());
   generate_items(
       generators_->enum_generator_.get(),
       cache_->enums_,
       get_program(),
-      get_program()->get_enums(),
+      get_program()->enums(),
       "Enum");
   generate_constants(get_program());
   generate_placeholder(get_program());

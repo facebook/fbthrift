@@ -184,7 +184,7 @@ void t_st_generator::init_generator() {
   generate_class_side_definition();
 
   // Generate enums
-  vector<t_enum*> enums = program_->get_enums();
+  vector<t_enum*> enums = program_->enums();
   vector<t_enum*>::iterator en_iter;
   for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
     generate_enum(*en_iter);
@@ -1088,7 +1088,7 @@ string t_st_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     if (!ttype->is_service()) {
-      prefix = program->get_name() + "_types.";
+      prefix = program->name() + "_types.";
     }
   }
 

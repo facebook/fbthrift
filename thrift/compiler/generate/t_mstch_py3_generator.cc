@@ -48,7 +48,7 @@ std::vector<std::string> get_py3_namespace(const t_program* prog) {
 
 std::vector<std::string> get_py3_namespace_with_name(const t_program* prog) {
   auto ns = get_py3_namespace(prog);
-  ns.push_back(prog->get_name());
+  ns.push_back(prog->name());
   return ns;
 }
 
@@ -251,7 +251,7 @@ class mstch_py3_type : public mstch_type {
     }
     const t_program* typeProgram = type_->get_program();
     if (typeProgram && typeProgram != prog_) {
-      custom_prefix += typeProgram->get_name() + "_";
+      custom_prefix += typeProgram->name() + "_";
     }
     custom_prefix += extra;
     cachedProps_.flatName = std::move(custom_prefix);
@@ -428,7 +428,7 @@ class mstch_py3_program : public mstch_program {
 
   mstch::node getCppIncludes() {
     mstch::array a;
-    for (const auto& include : program_->get_cpp_includes()) {
+    for (const auto& include : program_->cpp_includes()) {
       a.push_back(include);
     }
     return a;
@@ -500,7 +500,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node hasServiceFunctions() {
-    const auto& services = program_->get_services();
+    const auto& services = program_->services();
     return std::any_of(services.begin(), services.end(), [](const auto& s) {
       return !s->get_functions().empty();
     });
@@ -533,13 +533,13 @@ class mstch_py3_program : public mstch_program {
     for (const t_program* included_program :
          program_->get_included_programs()) {
       bool hasTypes =
-          !(included_program->get_objects().empty() &&
-            included_program->get_enums().empty() &&
-            included_program->get_typedefs().empty() &&
-            included_program->get_consts().empty());
-      includeNamespaces_[included_program->get_path()] = Namespace{
+          !(included_program->objects().empty() &&
+            included_program->enums().empty() &&
+            included_program->typedefs().empty() &&
+            included_program->consts().empty());
+      includeNamespaces_[included_program->path()] = Namespace{
           get_py3_namespace_with_name(included_program),
-          !included_program->get_services().empty(),
+          !included_program->services().empty(),
           hasTypes,
       };
     }
@@ -548,7 +548,7 @@ class mstch_py3_program : public mstch_program {
   void add_typedef_namespace(const t_type* type) {
     auto prog = type->get_program();
     if (prog && prog != program_) {
-      const auto& path = prog->get_path();
+      const auto& path = prog->path();
       if (includeNamespaces_.find(path) != includeNamespaces_.end()) {
         return;
       }
@@ -561,7 +561,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   void visit_types_for_services() {
-    for (const auto* service : program_->get_services()) {
+    for (const auto* service : program_->services()) {
       for (const auto* function : service->get_functions()) {
         for (const auto* field : function->get_paramlist()->fields()) {
           visit_type(field->get_type());
@@ -579,7 +579,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   void visit_types_for_objects() {
-    for (const auto& object : program_->get_objects()) {
+    for (const auto& object : program_->objects()) {
       for (const auto& field : object->fields()) {
         visit_type(field->get_type());
       }
@@ -587,19 +587,19 @@ class mstch_py3_program : public mstch_program {
   }
 
   void visit_types_for_constants() {
-    for (const auto& constant : program_->get_consts()) {
+    for (const auto& constant : program_->consts()) {
       visit_type(constant->get_type());
     }
   }
 
   void visit_types_for_typedefs() {
-    for (const auto typedef_def : program_->get_typedefs()) {
+    for (const auto typedef_def : program_->typedefs()) {
       visit_type(typedef_def->get_type());
     }
   }
 
   void visit_types_for_mixin_fields() {
-    for (const auto& strct : program_->get_structs()) {
+    for (const auto& strct : program_->structs()) {
       for (const auto& m : cpp2::get_mixins_and_members(*strct)) {
         visit_type(m.member->get_type());
       }
@@ -771,11 +771,11 @@ class mstch_py3_service : public mstch_service {
   }
 
   mstch::node programName() {
-    return service_->get_program()->get_name();
+    return service_->get_program()->name();
   }
 
   mstch::node includePrefix() {
-    return service_->get_program()->get_include_prefix();
+    return service_->get_program()->include_prefix();
   }
 
   mstch::node get_supported_functions() {
@@ -1128,7 +1128,7 @@ class program_py3_generator : public program_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    const std::string& id = program->get_path();
+    const std::string& id = program->path();
     auto it = cache->programs_.find(id);
     if (it != cache->programs_.end()) {
       return it->second;
@@ -1275,12 +1275,11 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
 
     std::string filepath_delimiters("\\/.");
     std::vector<std::string> fields;
-    boost::split(
-        fields, prog->get_path(), boost::is_any_of(filepath_delimiters));
+    boost::split(fields, prog->path(), boost::is_any_of(filepath_delimiters));
     for (const auto& field : fields) {
       if (py3_reserved_keys.find(field) != py3_reserved_keys.end()) {
         std::ostringstream ss;
-        ss << "Path '" << prog->get_path() << "' contains reserved keyword '"
+        ss << "Path '" << prog->path() << "' contains reserved keyword '"
            << field << "'";
         add_error(boost::none, ss.str());
       }
@@ -1440,7 +1439,7 @@ void t_mstch_py3_generator::generate_file(
     const std::string& file,
     const boost::filesystem::path& base = {}) {
   auto program = get_program();
-  const auto& name = program->get_name();
+  const auto& name = program->name();
   auto nodePtr =
       generators_->program_generator_->generate(program, generators_, cache_);
   render_to_file(nodePtr, file, base / name / file);
@@ -1492,7 +1491,7 @@ void t_mstch_py3_generator::generate_types() {
 }
 
 void t_mstch_py3_generator::generate_services() {
-  if (get_program()->get_services().empty()) {
+  if (get_program()->services().empty()) {
     // There is no need to generate empty / broken code for non existent
     // services.
     return;
