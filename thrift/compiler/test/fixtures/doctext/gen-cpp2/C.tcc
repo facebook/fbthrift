@@ -38,9 +38,9 @@ void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePt
         ex, std::move(req), ctx, eb, "f");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_f<ProtocolIn_,ProtocolOut_>, throw_wrapped_f<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_f(std::move(callback));

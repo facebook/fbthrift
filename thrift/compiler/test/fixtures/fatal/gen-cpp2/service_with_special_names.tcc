@@ -92,9 +92,9 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
         ex, std::move(req), ctx, eb, "get");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_get<ProtocolIn_,ProtocolOut_>, throw_wrapped_get<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_get(std::move(callback));
@@ -147,9 +147,9 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
         ex, std::move(req), ctx, eb, "getter");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_getter<ProtocolIn_,ProtocolOut_>, throw_wrapped_getter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_getter(std::move(callback));
@@ -202,9 +202,9 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
         ex, std::move(req), ctx, eb, "lists");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_lists<ProtocolIn_,ProtocolOut_>, throw_wrapped_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_lists(std::move(callback));
@@ -257,9 +257,9 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
         ex, std::move(req), ctx, eb, "maps");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_maps<ProtocolIn_,ProtocolOut_>, throw_wrapped_maps<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_maps(std::move(callback));
@@ -312,9 +312,9 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
         ex, std::move(req), ctx, eb, "name");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_name(std::move(callback));
@@ -367,9 +367,9 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
         ex, std::move(req), ctx, eb, "name_to_value");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_name_to_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_name_to_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_name_to_value(std::move(callback));
@@ -422,9 +422,9 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
         ex, std::move(req), ctx, eb, "names");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_names<ProtocolIn_,ProtocolOut_>, throw_wrapped_names<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_names(std::move(callback));
@@ -477,9 +477,9 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
         ex, std::move(req), ctx, eb, "prefix_tree");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_prefix_tree<ProtocolIn_,ProtocolOut_>, throw_wrapped_prefix_tree<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_prefix_tree(std::move(callback));
@@ -532,9 +532,9 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
         ex, std::move(req), ctx, eb, "sets");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sets<ProtocolIn_,ProtocolOut_>, throw_wrapped_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_sets(std::move(callback));
@@ -587,9 +587,9 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
         ex, std::move(req), ctx, eb, "setter");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_setter<ProtocolIn_,ProtocolOut_>, throw_wrapped_setter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_setter(std::move(callback));
@@ -642,9 +642,9 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
         ex, std::move(req), ctx, eb, "str");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_str<ProtocolIn_,ProtocolOut_>, throw_wrapped_str<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_str(std::move(callback));
@@ -697,9 +697,9 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
         ex, std::move(req), ctx, eb, "strings");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_strings<ProtocolIn_,ProtocolOut_>, throw_wrapped_strings<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_strings(std::move(callback));
@@ -752,9 +752,9 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
         ex, std::move(req), ctx, eb, "type");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_type<ProtocolIn_,ProtocolOut_>, throw_wrapped_type<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_type(std::move(callback));
@@ -807,9 +807,9 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
         ex, std::move(req), ctx, eb, "value");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_value(std::move(callback));
@@ -862,9 +862,9 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
         ex, std::move(req), ctx, eb, "value_to_name");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_value_to_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_value_to_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_value_to_name(std::move(callback));
@@ -917,9 +917,9 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
         ex, std::move(req), ctx, eb, "values");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_values<ProtocolIn_,ProtocolOut_>, throw_wrapped_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_values(std::move(callback));
@@ -972,9 +972,9 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
         ex, std::move(req), ctx, eb, "id");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_id<ProtocolIn_,ProtocolOut_>, throw_wrapped_id<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_id(std::move(callback));
@@ -1027,9 +1027,9 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
         ex, std::move(req), ctx, eb, "ids");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_ids<ProtocolIn_,ProtocolOut_>, throw_wrapped_ids<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_ids(std::move(callback));
@@ -1082,9 +1082,9 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
         ex, std::move(req), ctx, eb, "descriptor");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_descriptor<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptor<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_descriptor(std::move(callback));
@@ -1137,9 +1137,9 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
         ex, std::move(req), ctx, eb, "descriptors");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_descriptors<ProtocolIn_,ProtocolOut_>, throw_wrapped_descriptors<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_descriptors(std::move(callback));
@@ -1192,9 +1192,9 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
         ex, std::move(req), ctx, eb, "key");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_key<ProtocolIn_,ProtocolOut_>, throw_wrapped_key<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_key(std::move(callback));
@@ -1247,9 +1247,9 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
         ex, std::move(req), ctx, eb, "keys");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_keys<ProtocolIn_,ProtocolOut_>, throw_wrapped_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_keys(std::move(callback));
@@ -1302,9 +1302,9 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
         ex, std::move(req), ctx, eb, "annotation");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_annotation<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotation<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_annotation(std::move(callback));
@@ -1357,9 +1357,9 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
         ex, std::move(req), ctx, eb, "annotations");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_annotations<ProtocolIn_,ProtocolOut_>, throw_wrapped_annotations<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_annotations(std::move(callback));
@@ -1412,9 +1412,9 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
         ex, std::move(req), ctx, eb, "member");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_member<ProtocolIn_,ProtocolOut_>, throw_wrapped_member<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_member(std::move(callback));
@@ -1467,9 +1467,9 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
         ex, std::move(req), ctx, eb, "members");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_members<ProtocolIn_,ProtocolOut_>, throw_wrapped_members<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_members(std::move(callback));
@@ -1522,9 +1522,9 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
         ex, std::move(req), ctx, eb, "field");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_field<ProtocolIn_,ProtocolOut_>, throw_wrapped_field<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_field(std::move(callback));
@@ -1577,9 +1577,9 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
         ex, std::move(req), ctx, eb, "fields");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_fields<ProtocolIn_,ProtocolOut_>, throw_wrapped_fields<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_fields(std::move(callback));

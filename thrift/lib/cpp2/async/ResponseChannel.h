@@ -149,12 +149,18 @@ class ResponseChannelRequest {
     }
   }
 
-  virtual void setStartedProcessing() {
-    startedProcessing_ = true;
+  bool getShouldStartProcessing() {
+    setStartedProcessing();
+
     if (admissionController_ != nullptr) {
       admissionController_->dequeue();
       creationTimestamps_ = std::chrono::steady_clock::now();
     }
+    return isActive();
+  }
+
+  virtual void setStartedProcessing() {
+    startedProcessing_ = true;
   }
 
   virtual bool getStartedProcessing() const {

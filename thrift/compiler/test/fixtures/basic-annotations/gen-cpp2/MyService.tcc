@@ -49,9 +49,9 @@ void MyServiceAsyncProcessor::process_ping(apache::thrift::ResponseChannelReques
         ex, std::move(req), ctx, eb, "ping");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_ping<ProtocolIn_,ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_ping(std::move(callback));
@@ -102,9 +102,9 @@ void MyServiceAsyncProcessor::process_getRandomData(apache::thrift::ResponseChan
         ex, std::move(req), ctx, eb, "getRandomData");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getRandomData<ProtocolIn_,ProtocolOut_>, throw_wrapped_getRandomData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_getRandomData(std::move(callback));
@@ -159,9 +159,9 @@ void MyServiceAsyncProcessor::process_hasDataById(apache::thrift::ResponseChanne
         ex, std::move(req), ctx, eb, "hasDataById");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
@@ -216,9 +216,9 @@ void MyServiceAsyncProcessor::process_getDataById(apache::thrift::ResponseChanne
         ex, std::move(req), ctx, eb, "getDataById");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
@@ -275,9 +275,9 @@ void MyServiceAsyncProcessor::process_putDataById(apache::thrift::ResponseChanne
         ex, std::move(req), ctx, eb, "putDataById");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_data));
@@ -361,9 +361,9 @@ void MyServiceAsyncProcessor::process_cppDoNothing(apache::thrift::ResponseChann
         ex, std::move(req), ctx, eb, "doNothing");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_cppDoNothing<ProtocolIn_,ProtocolOut_>, throw_wrapped_cppDoNothing<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_cppDoNothing(std::move(callback));

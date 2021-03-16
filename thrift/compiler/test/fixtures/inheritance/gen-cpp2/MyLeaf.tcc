@@ -38,9 +38,9 @@ void MyLeafAsyncProcessor::process_do_leaf(apache::thrift::ResponseChannelReques
         ex, std::move(req), ctx, eb, "do_leaf");
     return;
   }
-  req->setStartedProcessing();
+  auto shouldStartProcessing = req->getShouldStartProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_leaf<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
+  if (!shouldStartProcessing || !callback->isRequestActive()) {
     return;
   }
   iface_->async_tm_do_leaf(std::move(callback));
