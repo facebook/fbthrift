@@ -18,13 +18,13 @@ public class SinkServiceReactiveClient
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
 
-  private static final TField _method_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _method_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final TField _methodAndReponse_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodAndReponse_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final TField _methodThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_EXCEPTION_READERS = new HashMap<>();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final com.facebook.swift.transport.payload.Reader _methodThrow_EXCEPTION_READER0 =
@@ -37,10 +37,10 @@ public class SinkServiceReactiveClient
             }
           };
 
-  private static final TField _methodSinkThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodSinkThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final TField _methodFinalThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodFinalThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
   private static final com.facebook.swift.transport.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 =
@@ -53,7 +53,7 @@ public class SinkServiceReactiveClient
             }
           };
 
-  private static final TField _methodBothThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodBothThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
   private static final com.facebook.swift.transport.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 =
@@ -66,7 +66,7 @@ public class SinkServiceReactiveClient
             }
           };
 
-  private static final TField _methodFast_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)1);
+  private static final TField _methodFast_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
@@ -697,7 +697,17 @@ public class SinkServiceReactiveClient
       return methodFast( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
-  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      Map<String, String> headers = new HashMap<>();
+      if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
+          headers.putAll(rpcOptions.getRequestHeaders());
+      }
+      if (_headers != null && !_headers.isEmpty()) {
+          headers.putAll(_headers);
+      }
+      if (_persistentHeaders != null && !_persistentHeaders.isEmpty()) {
+          headers.putAll(_persistentHeaders);
+      }
+      return headers;
   }
 }

@@ -150,7 +150,17 @@ public class LegacyServiceReactiveClient
   }
 
 
-  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      Map<String, String> headers = new HashMap<>();
+      if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
+          headers.putAll(rpcOptions.getRequestHeaders());
+      }
+      if (_headers != null && !_headers.isEmpty()) {
+          headers.putAll(_headers);
+      }
+      if (_persistentHeaders != null && !_persistentHeaders.isEmpty()) {
+          headers.putAll(_persistentHeaders);
+      }
+      return headers;
   }
 }

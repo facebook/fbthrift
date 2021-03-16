@@ -93,7 +93,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
   {{#function:returnType}}{{#type:sinkElemType}}
-  private static final TField _{{function:javaName}}_SINK_TFIELD = new TField("payload", TType.{{> TType}}, (short)1);
+  private static final TField _{{function:javaName}}_SINK_TFIELD = new TField("payload", TType.{{> TType}}, (short)0);
   {{/type:sinkElemType}}{{/function:returnType}}
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:sink_final_response_exceptions?}}new HashMap<>();{{/function:sink_final_response_exceptions?}}{{^function:sink_final_response_exceptions?}}java.util.Collections.emptyMap();{{/function:sink_final_response_exceptions?}}
@@ -492,8 +492,18 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   }
 
   {{/service:sinkFunctions}}
-  private static Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return rpcOptions.getRequestHeaders() != null ? rpcOptions.getRequestHeaders() : java.util.Collections.emptyMap();
+  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      Map<String, String> headers = new HashMap<>();
+      if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
+          headers.putAll(rpcOptions.getRequestHeaders());
+      }
+      if (_headers != null && !_headers.isEmpty()) {
+          headers.putAll(_headers);
+      }
+      if (_persistentHeaders != null && !_persistentHeaders.isEmpty()) {
+          headers.putAll(_persistentHeaders);
+      }
+      return headers;
   }
 }
 {{/service:disableReactive?}}
