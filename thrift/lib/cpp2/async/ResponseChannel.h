@@ -79,8 +79,6 @@ class ResponseChannelRequest {
 
   virtual bool isActive() const = 0;
 
-  virtual void cancel() = 0;
-
   virtual bool isOneway() const = 0;
 
   virtual bool isStream() const {

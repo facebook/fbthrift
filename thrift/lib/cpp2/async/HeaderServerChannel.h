@@ -112,9 +112,6 @@ class HeaderServerChannel : public ServerChannel,
       DCHECK(false);
       return true;
     }
-    void cancel() override {
-      DCHECK(false);
-    }
 
     bool isOneway() const override {
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;

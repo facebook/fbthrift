@@ -125,7 +125,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     return active_.load();
   }
 
-  void cancel() override {
+  void cancel() {
     if (active_.exchange(false)) {
       cancelTimeout();
     }

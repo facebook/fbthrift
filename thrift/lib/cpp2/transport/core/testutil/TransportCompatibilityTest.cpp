@@ -1207,10 +1207,6 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       return req_->isActive();
     }
 
-    void cancel() override {
-      return req_->cancel();
-    }
-
     bool isOneway() const override {
       return req_->isOneway();
     }

@@ -171,7 +171,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     bool isActive() const override {
       return active_;
     }
-    void cancel() override {
+    void cancel() {
       active_ = false;
     }
 

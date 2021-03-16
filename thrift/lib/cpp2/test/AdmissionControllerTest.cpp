@@ -37,7 +37,6 @@ class DummyRequest : public ResponseChannelRequest {
   bool isActive() const override {
     return true;
   }
-  void cancel() override {}
   bool isOneway() const override {
     return false;
   }
