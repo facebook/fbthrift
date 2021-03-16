@@ -390,11 +390,11 @@ StreamChannelStatus RocketClient::handleExtFrame(
     return StreamChannelStatus::Alive;
   }
 
-  serverCallback.onStreamError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          "Unsupported frame type: handleExtFrame"));
+  close(transport::TTransportException(
+      transport::TTransportException::TTransportExceptionType::NOT_SUPPORTED,
+      fmt::format(
+          "Received unhandleable ext frame type ({}) without ignore flag",
+          static_cast<uint32_t>(extFrame.extFrameType()))));
   return StreamChannelStatus::ContractViolation;
 }
 

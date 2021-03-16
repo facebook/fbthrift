@@ -316,6 +316,13 @@ void RocketServerConnection::handleUntrackedFrame(
           return;
         }
         default:
+          if (!extFrame.hasIgnore()) {
+            close(folly::make_exception_wrapper<RocketException>(
+                ErrorCode::INVALID,
+                fmt::format(
+                    "Received unhandleable ext frame type ({}) without ignore flag",
+                    static_cast<uint32_t>(extFrame.extFrameType()))));
+          }
           return;
       }
     }
