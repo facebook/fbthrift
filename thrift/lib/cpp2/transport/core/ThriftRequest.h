@@ -489,9 +489,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
  protected:
   server::ServerConfigs& serverConfigs_;
   const RpcKind kind_;
+  RequestStateMachine stateMachine_;
 
  private:
-  RequestStateMachine stateMachine_;
   bool checksumRequested_{false};
   transport::THeader header_;
   folly::Optional<std::string> loadMetric_;

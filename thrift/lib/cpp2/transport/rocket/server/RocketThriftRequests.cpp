@@ -417,7 +417,8 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   scheduleTimeouts();
 }
 
@@ -473,7 +474,8 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   scheduleTimeouts();
 }
 
@@ -524,7 +526,8 @@ ThriftServerRequestStream::ThriftServerRequestStream(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   if (auto compressionConfig = getCompressionConfig()) {
     clientCallback_->setCompressionConfig(*compressionConfig);
   }
@@ -637,7 +640,8 @@ ThriftServerRequestSink::ThriftServerRequestSink(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   if (auto compressionConfig = getCompressionConfig()) {
     clientCallback_->setCompressionConfig(*compressionConfig);
   }

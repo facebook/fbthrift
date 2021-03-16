@@ -602,7 +602,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       reqContext_,
       std::move(rctx),
       protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }

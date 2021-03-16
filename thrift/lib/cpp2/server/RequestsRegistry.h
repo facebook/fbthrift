@@ -22,6 +22,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <array>
 #include <chrono>
@@ -86,7 +87,8 @@ class RequestsRegistry {
         const Cpp2RequestContext& reqContext,
         std::shared_ptr<folly::RequestContext> rctx,
         protocol::PROTOCOL_TYPES protoId,
-        rocket::Payload&& debugPayload)
+        rocket::Payload&& debugPayload,
+        RequestStateMachine& stateMachine)
         : req_(&req),
           reqContext_(&reqContext),
           rctx_(std::move(rctx)),
@@ -94,7 +96,8 @@ class RequestsRegistry {
           payload_(std::move(debugPayload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          rootRequestContextId_(rctx_->getRootId()) {
+          rootRequestContextId_(rctx_->getRootId()),
+          stateMachine_(stateMachine) {
       reqRegistry.registerStub(*this);
     }
 
@@ -179,6 +182,7 @@ class RequestsRegistry {
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
     size_t refCount_{1};
+    RequestStateMachine& stateMachine_;
   };
 
   class Deleter {

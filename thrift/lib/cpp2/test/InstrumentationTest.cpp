@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DebugTestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/InstrumentationTestService.h>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <algorithm>
@@ -747,7 +748,8 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
           mockReqCtx_,
           std::make_shared<folly::RequestContext>(0),
           apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL,
-          rocket::Payload());
+          rocket::Payload(),
+          stateMachine_);
     }
 
     auto registry() {
@@ -764,6 +766,9 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
             MessageChannel::SendCallback*,
             folly::Optional<uint32_t>));
     MOCK_METHOD2(sendErrorWrapped, void(folly::exception_wrapper, std::string));
+
+   private:
+    RequestStateMachine stateMachine_;
   };
 };
 
