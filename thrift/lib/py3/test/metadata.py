@@ -51,7 +51,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(len(list(hardStructInstance.fields)), 5)
 
         field = hardStruct.fields[2]
-        _, _, fieldClass, *rest = hardStructClass.fields
+        _, typedef, fieldClass, *rest = hardStructClass.fields
         _, _, fieldInstance, *rest = hardStructClass.fields
         self.assertEqual(field.name, "name")
         self.assertEqual(field.is_optional, False)
@@ -65,6 +65,8 @@ class MetadataTests(unittest.TestCase):
             fieldInstance.type.as_primitive(),
             ThriftPrimitiveType.THRIFT_STRING_TYPE,
         )
+        self.assertEqual(typedef.type.kind, ThriftKind.TYPEDEF)
+        self.assertEqual(typedef.type.as_typedef().underlyingType.kind, ThriftKind.LIST)
 
         self.assertEqual(meta.structs["testing.EmptyUnion"].is_union, True)
 
