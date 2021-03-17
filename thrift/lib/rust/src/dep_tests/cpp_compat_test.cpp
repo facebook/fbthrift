@@ -47,7 +47,7 @@ TEST(JsonTest, structKey) {
 
 TEST(JsonTest, weirdText) {
   azw::SubStruct stru;
-  stru.opt_def_ref() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
+  stru.optDef_ref() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
   stru.bin_ref() = "1234";
 
   SubStruct outStruct;
@@ -55,17 +55,17 @@ TEST(JsonTest, weirdText) {
   auto t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(stru);
   ASSERT_EQ(
       t,
-      "{\"opt_def\":\"stuff\\twith\\nescape\\\\characters'...\\\"lots{of}fun</xml>\","
+      "{\"optDef\":\"stuff\\twith\\nescape\\\\characters'...\\\"lots{of}fun</xml>\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(t, outStruct);
   ASSERT_EQ(stru, outStruct);
 
-  stru.opt_def_ref() = "UNICODE\U0001F60AUH OH";
+  stru.optDef_ref() = "UNICODE\U0001F60AUH OH";
   t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(stru);
   ASSERT_EQ(
       t,
-      "{\"opt_def\":\"UNICODE\xf0\x9f\x98\x8aUH OH\","
+      "{\"optDef\":\"UNICODE\xf0\x9f\x98\x8aUH OH\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(t, outStruct);
@@ -74,13 +74,13 @@ TEST(JsonTest, weirdText) {
 
 TEST(JsonTest, skipComplex) {
   azw::SubStruct stru;
-  stru.opt_def_ref() = "thing";
+  stru.optDef_ref() = "thing";
   stru.bin_ref() = "1234";
 
   SubStruct outStruct;
 
   std::string input(
-      "{\"opt_def\":\"thing\","
+      "{\"optDef\":\"thing\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\","
       "\"extra\":[1, {\"thing\":\"thing2\"}],"
       "\"extra_map\":{\"thing\":null,\"thing2\":2},"
@@ -144,7 +144,7 @@ TEST(JsonTest, nullStuff) {
   SubStruct outStruct;
 
   std::string input(
-      "{\"opt_def\":null,"
+      "{\"optDef\":null,"
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);

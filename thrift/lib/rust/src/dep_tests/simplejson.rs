@@ -64,7 +64,7 @@ fn test_large_roundtrip() -> Result<()> {
         "foo":"foo",
         "m":{"m1":1,"m2":2},
         "bar":"test",
-        "s":{"opt_def":"IAMOPT","req_def":"IAMREQ","bin":""},
+        "s":{"optDef":"IAMOPT","req_def":"IAMREQ","bin":""},
         "l":[{"num":1,"two":2},{"num":2,"two":3}],
         "u":{"un1":{"one":1}},
         "e":2,
@@ -100,7 +100,7 @@ fn test_struct_key() -> Result<()> {
         key_map: Some(h),
         // In rust we need to specify optionals with defaults as None
         // instead of relying on ..Default::default()
-        opt_def: None,
+        optDef: None,
         ..Default::default()
     };
 
@@ -129,14 +129,14 @@ fn test_weird_text() -> Result<()> {
     // See the `weirdText` test in cpp_compat_test
 
     let mut sub = SubStruct {
-        opt_def: Some("stuff\twith\nescape\\characters'...\"lots{of}fun</xml>".to_string()),
+        optDef: Some("stuff\twith\nescape\\characters'...\"lots{of}fun</xml>".to_string()),
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let s = String::from_utf8(serialize(&sub).to_vec()).unwrap();
     let expected_string = r#"{
-        "opt_def":"stuff\twith\nescape\\characters'...\"lots{of}fun</xml>",
+        "optDef":"stuff\twith\nescape\\characters'...\"lots{of}fun</xml>",
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -147,11 +147,11 @@ fn test_weird_text() -> Result<()> {
     assert_eq!(sub, deserialize(s).unwrap());
 
     // Unicode escaping
-    sub.opt_def = Some("UNICODE\u{1F60A}UH OH".to_string());
+    sub.optDef = Some("UNICODE\u{1F60A}UH OH".to_string());
 
     let s = String::from_utf8(serialize(&sub).to_vec()).unwrap();
     let expected_string = r#"{
-        "opt_def":"UNICODE😊UH OH",
+        "optDef":"UNICODE😊UH OH",
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -170,13 +170,13 @@ fn test_skip_complex() -> Result<()> {
     // See the `skipComplex` test in cpp_compat_test
 
     let sub = SubStruct {
-        opt_def: Some("thing".to_string()),
+        optDef: Some("thing".to_string()),
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let input = r#"{
-        "opt_def":"thing",
+        "optDef":"thing",
         "req_def":"IAMREQ",
         "bin":"MTIzNA",
         "extra":[1,{"thing":"thing2"}],
@@ -251,13 +251,13 @@ fn test_null_stuff() -> Result<()> {
     // See the `nullStuff` test in cpp_compat_test
 
     let sub = SubStruct {
-        opt_def: None,
+        optDef: None,
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let input = r#"{
-        "opt_def":null,
+        "optDef":null,
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -302,7 +302,7 @@ fn infinite_spaces() -> Result<()> {
          "foo"  :  "foo" ,
           "m" : { "m1" :  1   , "m2" : 2 }  ,
         "bar":"test",
-        "s":{"opt_def":  "IAMOPT"  ,"req_def":  "IAMREQ","bin": ""  },
+        "s":{"optDef":  "IAMOPT"  ,"req_def":  "IAMREQ","bin": ""  },
         "l":[{"num":1,"two":2},{"num"  :2 ," two" : 3 } ],
         "u":{"un1":{"one":  1  } },
         "e":  2  ,

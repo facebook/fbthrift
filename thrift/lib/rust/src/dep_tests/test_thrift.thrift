@@ -23,7 +23,7 @@ struct Small {
 
 struct SubStruct {
   // @lint-ignore FBTHRIFTSANITY6
-  1: optional string opt_def = "IAMOPT";
+  1: optional string optDef = "IAMOPT";
   2: required string req_def = "IAMREQ";
   // @lint-ignore FBTHRIFTSANITY4
   3: optional map<Small, i32> key_map;
