@@ -95,10 +95,13 @@ add_library(
   protocol/CompactProtocol.cpp
   protocol/CompactV1Protocol.cpp
   protocol/DebugProtocol.cpp
-  protocol/JSONProtocolCommon.cpp
   protocol/JSONProtocol.cpp
+  protocol/JSONProtocolCommon.cpp
   protocol/Serializer.cpp
+  protocol/TableBasedSerializer.cpp
   protocol/VirtualProtocol.cpp
+  protocol/nimble/DecodeNimbleBlock.cpp
+  protocol/nimble/EncodeNimbleBlock.cpp
 
   ../cpp/protocol/TDebugProtocol.cpp
   ../cpp/protocol/TJSONProtocol.cpp
@@ -124,6 +127,7 @@ bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
+  FieldRef.cpp
   Flags.cpp
   GeneratedCodeHelper.cpp
   PluggableFunction.cpp
@@ -139,33 +143,42 @@ add_library(
   async/HeaderChannelTrait.cpp
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
+  async/HibernatingRequestChannel.cpp
   async/Interaction.cpp
+  async/PooledRequestChannel.cpp
+  async/ReconnectingRequestChannel.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  async/RetryingRequestChannel.cpp
   async/RocketClientChannel.cpp
   async/RpcTypes.cpp
   async/ServerGeneratorStream.cpp
   async/ServerSinkBridge.cpp
+  async/ThreadBoundAdaptorChannel.cpp
+  gen/module_metadata_cpp.cpp
+  gen/module_types_cpp.cpp
+  reflection/internal/legacy_reflection_type_id.cpp
   security/SSLUtil.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
-  server/RequestDebugLog.cpp
-  server/RequestsRegistry.cpp
   server/BaseThriftServer.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
   server/LoggingEvent.cpp
   server/LoggingEventHelper.cpp
+  server/RequestDebugLog.cpp
+  server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
   server/ThriftServer.cpp
+  server/admission_strategy/AdmissionStrategy.cpp
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
-  transport/core/ThriftProcessor.cpp
-  transport/core/ThriftRequest.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
+  transport/core/ThriftProcessor.cpp
+  transport/core/ThriftRequest.cpp
   transport/rocket/PayloadUtils.cpp
   transport/rocket/Types.cpp
   transport/rocket/client/RequestContext.cpp
@@ -185,8 +198,10 @@ add_library(
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
   util/Checksum.cpp
+  util/DebugString.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
+  visitation/visit_by_thrift_field_metadata.cpp
   ${RocketUpgrade-cpp2-SOURCES}
 )
 add_dependencies(
