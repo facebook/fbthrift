@@ -90,7 +90,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> foo( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return fooWrapper( rpcOptions).map(_p -> _p.getData());
+    return fooWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

@@ -105,7 +105,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> ping( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return pingWrapper( rpcOptions).map(_p -> _p.getData());
+    return pingWrapper( rpcOptions).then();
   }
 
   @java.lang.Override
@@ -227,7 +227,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> sink(final long sink,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return sinkWrapper(sink,  rpcOptions).map(_p -> _p.getData());
+    return sinkWrapper(sink,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -301,7 +301,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return putDataByIdWrapper(id, data,  rpcOptions).map(_p -> _p.getData());
+    return putDataByIdWrapper(id, data,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -498,7 +498,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> deleteDataById(final long id,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return deleteDataByIdWrapper(id,  rpcOptions).map(_p -> _p.getData());
+    return deleteDataByIdWrapper(id,  rpcOptions).then();
   }
 
   @java.lang.Override

@@ -239,7 +239,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   @java.lang.Override
   public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions){{#function:oneway?}}.then(){{/function:oneway?}}{{!
-        }}{{^function:oneway?}}.map(_p -> _p.getData()){{/function:oneway?}};
+        }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
+        }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
   }
 
   @java.lang.Override

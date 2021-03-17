@@ -90,7 +90,7 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> pang( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return pangWrapper( rpcOptions).map(_p -> _p.getData());
+    return pangWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

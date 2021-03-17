@@ -90,7 +90,7 @@ public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReact
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> doLeaf( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return doLeafWrapper( rpcOptions).map(_p -> _p.getData());
+    return doLeafWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

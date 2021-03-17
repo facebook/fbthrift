@@ -91,7 +91,7 @@ public class MyServicePrioParentReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> ping( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return pingWrapper( rpcOptions).map(_p -> _p.getData());
+    return pingWrapper( rpcOptions).then();
   }
 
   @java.lang.Override
@@ -147,7 +147,7 @@ public class MyServicePrioParentReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> pong( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return pongWrapper( rpcOptions).map(_p -> _p.getData());
+    return pongWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

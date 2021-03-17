@@ -90,7 +90,7 @@ public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReact
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> doMid( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return doMidWrapper( rpcOptions).map(_p -> _p.getData());
+    return doMidWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

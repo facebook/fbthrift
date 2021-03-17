@@ -90,7 +90,7 @@ public class MyRootReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> doRoot( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return doRootWrapper( rpcOptions).map(_p -> _p.getData());
+    return doRootWrapper( rpcOptions).then();
   }
 
   @java.lang.Override

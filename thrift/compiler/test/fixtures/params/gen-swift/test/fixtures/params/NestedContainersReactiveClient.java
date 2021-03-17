@@ -118,7 +118,7 @@ public class NestedContainersReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return mapListWrapper(foo,  rpcOptions).map(_p -> _p.getData());
+    return mapListWrapper(foo,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -193,7 +193,7 @@ public class NestedContainersReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return mapSetWrapper(foo,  rpcOptions).map(_p -> _p.getData());
+    return mapSetWrapper(foo,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -267,7 +267,7 @@ public class NestedContainersReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return listMapWrapper(foo,  rpcOptions).map(_p -> _p.getData());
+    return listMapWrapper(foo,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -340,7 +340,7 @@ public class NestedContainersReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return listSetWrapper(foo,  rpcOptions).map(_p -> _p.getData());
+    return listSetWrapper(foo,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -429,7 +429,7 @@ public class NestedContainersReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return turtlesWrapper(foo,  rpcOptions).map(_p -> _p.getData());
+    return turtlesWrapper(foo,  rpcOptions).then();
   }
 
   @java.lang.Override

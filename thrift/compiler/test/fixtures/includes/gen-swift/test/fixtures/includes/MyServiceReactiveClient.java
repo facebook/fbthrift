@@ -113,7 +113,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> query(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return queryWrapper(s, i,  rpcOptions).map(_p -> _p.getData());
+    return queryWrapper(s, i,  rpcOptions).then();
   }
 
   @java.lang.Override
@@ -187,7 +187,7 @@ public class MyServiceReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> hasArgDocs(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return hasArgDocsWrapper(s, i,  rpcOptions).map(_p -> _p.getData());
+    return hasArgDocsWrapper(s, i,  rpcOptions).then();
   }
 
   @java.lang.Override

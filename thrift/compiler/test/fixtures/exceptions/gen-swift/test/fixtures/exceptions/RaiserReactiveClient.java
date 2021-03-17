@@ -159,7 +159,7 @@ public class RaiserReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> doBland( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return doBlandWrapper( rpcOptions).map(_p -> _p.getData());
+    return doBlandWrapper( rpcOptions).then();
   }
 
   @java.lang.Override
@@ -215,7 +215,7 @@ public class RaiserReactiveClient
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> doRaise( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return doRaiseWrapper( rpcOptions).map(_p -> _p.getData());
+    return doRaiseWrapper( rpcOptions).then();
   }
 
   @java.lang.Override
