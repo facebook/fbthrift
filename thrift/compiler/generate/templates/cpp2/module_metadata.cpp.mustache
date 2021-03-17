@@ -124,10 +124,10 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "<%function:name%>";
-<%#function:returnType%>
+<%#function:return_type%>
   auto func_ret_type = <% > metadata/type_gen%>;
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
-<%/function:returnType%>
+<%/function:return_type%>
 <%#function:args%>
   <% > metadata/func_field_gen%>
 func.arguments_ref()->push_back(std::move(<% > metadata/func_field_name%>));

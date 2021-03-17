@@ -15,11 +15,11 @@
   limitations under the License.
 
 }}{{#type:streamresponse?}}{{!
-    }}{{#type:streamHasFirstResponse?}}com.facebook.swift.transport.model.StreamResponse<{{!
-    }}{{#type:streamFirstResponseType}}{{ >BoxedType}}{{/type:streamFirstResponseType}},{{!
-    }}{{#type:streamElemType}}{{ >BoxedType}}{{/type:streamElemType}}>{{!
-    }}{{/type:streamHasFirstResponse?}}{{!
-    }}{{^type:streamHasFirstResponse?}}{{!
-    }}{{#type:streamElemType}}com.facebook.swift.transport.model.StreamResponse<Void, {{ >BoxedType}}>{{/type:streamElemType}}{{!
-    }}{{/type:streamHasFirstResponse?}}{{!
+    }}{{#type:stream_has_first_response?}}com.facebook.swift.transport.model.StreamResponse<{{!
+    }}{{#type:stream_first_response_type}}{{ >BoxedType}}{{/type:stream_first_response_type}},{{!
+    }}{{#type:stream_elem_type}}{{ >BoxedType}}{{/type:stream_elem_type}}>{{!
+    }}{{/type:stream_has_first_response?}}{{!
+    }}{{^type:stream_has_first_response?}}{{!
+    }}{{#type:stream_elem_type}}com.facebook.swift.transport.model.StreamResponse<Void, {{ >BoxedType}}>{{/type:stream_elem_type}}{{!
+    }}{{/type:stream_has_first_response?}}{{!
 }}{{/type:streamresponse?}}

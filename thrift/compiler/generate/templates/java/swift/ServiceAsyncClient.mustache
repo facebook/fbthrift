@@ -96,20 +96,20 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:supportedFunctions}}
 
     @java.lang.Override
-    public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
         return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
     }
 
     @java.lang.Override
-    public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
         return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
     }
 
     @java.lang.Override
-    public ListenableFuture<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}
+    public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
         try {

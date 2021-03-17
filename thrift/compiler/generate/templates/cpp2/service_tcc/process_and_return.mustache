@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
+%><%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, <%^function:eb%>tm<%/function:eb%><%#function:eb%>nullptr<%/function:eb%>, <% > types/function_kind%>, iface_<%#service:interaction?%>, "<%service:name%>"<%/service:interaction?%>)) {
@@ -107,14 +107,14 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
 <%#function:returns_stream?%>
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
   using StreamPResultType = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::StreamPResultType;
-      <%#type:streamHasFirstResponse?%>
+      <%#type:stream_has_first_response?%>
   result.get<0>().value = const_cast<<%type:cpp_type%>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
   auto& returnStream = _return.stream;
-      <%/type:streamHasFirstResponse?%>
-      <%^type:streamHasFirstResponse?%>
+      <%/type:stream_has_first_response?%>
+      <%^type:stream_has_first_response?%>
   auto& returnStream = _return;
-      <%/type:streamHasFirstResponse?%>
+      <%/type:stream_has_first_response?%>
 
       <%^function:stream_exceptions?%>
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
@@ -141,10 +141,10 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
   using SinkPResultType = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::SinkPResultType;
   using FinalResponsePResultType = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FinalResponsePResultType;
-  <%#type:sinkHasFirstResponse?%>
+  <%#type:sink_has_first_response?%>
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
-  <%/type:sinkHasFirstResponse?%>
+  <%/type:sink_has_first_response?%>
 
   <%^function:sink_final_response_exceptions?%>
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
@@ -171,12 +171,12 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
       SinkPResultType,
       FinalResponsePResultType,
       ExMapType>(
-  <%#type:sinkHasFirstResponse?%>
+  <%#type:sink_has_first_response?%>
       std::move(_return.sinkConsumer),
-  <%/type:sinkHasFirstResponse?%>
-  <%^type:sinkHasFirstResponse?%>
+  <%/type:sink_has_first_response?%>
+  <%^type:sink_has_first_response?%>
       std::move(_return),
-  <%/type:sinkHasFirstResponse?%>
+  <%/type:sink_has_first_response?%>
       std::move(executor));
 
   return {serializeResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
@@ -212,24 +212,24 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
     result.setIsSet(<%field:index_plus_one%>, true);
   <%/function:returns_sink?%><%/function:returns_stream?%>
   <%#function:returns_stream?%>
-  <%#type:streamHasFirstResponse?%>
+  <%#type:stream_has_first_response?%>
     result.fields.get<<%field:index_plus_one%>>().ref() = e;
     result.fields.setIsSet(<%field:index_plus_one%>, true);
-  <%/type:streamHasFirstResponse?%>
-  <%^type:streamHasFirstResponse?%>
+  <%/type:stream_has_first_response?%>
+  <%^type:stream_has_first_response?%>
     result.fields.get<<%field:index%>>().ref() = e;
     result.fields.setIsSet(<%field:index%>, true);
-  <%/type:streamHasFirstResponse?%>
+  <%/type:stream_has_first_response?%>
   <%/function:returns_stream?%>
   <%#function:returns_sink?%>
-  <%#type:sinkHasFirstResponse?%>
+  <%#type:sink_has_first_response?%>
     result.fields.get<<%field:index_plus_one%>>().ref() = e;
     result.fields.setIsSet(<%field:index_plus_one%>, true);
-  <%/type:sinkHasFirstResponse?%>
-  <%^type:sinkHasFirstResponse?%>
+  <%/type:sink_has_first_response?%>
+  <%^type:sink_has_first_response?%>
     result.fields.get<<%field:index%>>().ref() = e;
     result.fields.setIsSet(<%field:index%>, true);
-  <%/type:sinkHasFirstResponse?%>
+  <%/type:sink_has_first_response?%>
   <%/function:returns_sink?%>
 <%/type:void?%>
   }
@@ -262,4 +262,4 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
 }
 
 <%/function:oneway?%>
-<%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
+<%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>

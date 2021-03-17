@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#type:typedef?%><%!
-%>std::make_unique<Typedef>("<%type:program_name%>.<%type:name%>", <%#type:typedefType%><% > metadata/type_gen%><%/type:typedefType%>)<%!
+%>std::make_unique<Typedef>("<%type:program_name%>.<%type:name%>", <%#type:typedef_type%><% > metadata/type_gen%><%/type:typedef_type%>)<%!
 %><%/type:typedef?%><%!
 %><%^type:typedef?%><%!
 %><%#type:base?%><%!
@@ -32,16 +32,16 @@
 %><%#type:void?%>ThriftPrimitiveType::THRIFT_VOID_TYPE<%/type:void?%>)<%!
 %><%/type:base?%><%!
 %><%^type:base?%><%!
-%><%#type:list?%>std::make_unique<List>(<%#type:listElemType%><% > metadata/type_gen%><%/type:listElemType%>)<%/type:list?%><%!
-%><%#type:set?%>std::make_unique<Set>(<%#type:setElemType%><% > metadata/type_gen%><%/type:setElemType%>)<%/type:set?%><%!
-%><%#type:map?%>std::make_unique<Map>(<%#type:keyType%><% > metadata/type_gen%><%/type:keyType%>, <%#type:valueType%><% > metadata/type_gen%><%/type:valueType%>)<%/type:map?%><%!
+%><%#type:list?%>std::make_unique<List>(<%#type:list_elem_type%><% > metadata/type_gen%><%/type:list_elem_type%>)<%/type:list?%><%!
+%><%#type:set?%>std::make_unique<Set>(<%#type:set_elem_type%><% > metadata/type_gen%><%/type:set_elem_type%>)<%/type:set?%><%!
+%><%#type:map?%>std::make_unique<Map>(<%#type:key_type%><% > metadata/type_gen%><%/type:key_type%>, <%#type:value_type%><% > metadata/type_gen%><%/type:value_type%>)<%/type:map?%><%!
 %><%#type:enum?%>std::make_unique<Enum<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%#type:enum%><%enum:name%><%/type:enum%>")<%/type:enum?%><%!
 %><%#type:struct?%><%!
 %><%#type:union?%>std::make_unique<Union<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>")<%/type:union?%><%!
 %><%^type:union?%>std::make_unique<Struct<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>")<%/type:union?%><%!
 %><%/type:struct?%><%!
 %><%#type:streamresponse?%><%!
-%>std::make_unique<Stream>(<%#type:streamElemType%><% > metadata/type_gen%><%/type:streamElemType%><%#type:streamFirstResponse?%>, <%#type:streamFirstResponseType%><% > metadata/type_gen%><%/type:streamFirstResponseType%><%/type:streamFirstResponse?%>)<%!
+%>std::make_unique<Stream>(<%#type:stream_elem_type%><% > metadata/type_gen%><%/type:stream_elem_type%><%#type:streamFirstResponse?%>, <%#type:stream_first_response_type%><% > metadata/type_gen%><%/type:stream_first_response_type%><%/type:streamFirstResponse?%>)<%!
 %><%/type:streamresponse?%><%!
-%><%#type:sink?%>std::make_unique<Sink>(<%#type:sinkElemType%><% > metadata/type_gen%><%/type:sinkElemType%>, <%#type:sinkFinalResponseType%><% > metadata/type_gen%><%/type:sinkFinalResponseType%><%#type:sinkHasFirstResponse?%>, <%#type:sinkFirstResponseType%><% > metadata/type_gen%><%/type:sinkFirstResponseType%><%/type:sinkHasFirstResponse?%>)<%/type:sink?%><%!
+%><%#type:sink?%>std::make_unique<Sink>(<%#type:sink_elem_type%><% > metadata/type_gen%><%/type:sink_elem_type%>, <%#type:sink_final_response_type%><% > metadata/type_gen%><%/type:sink_final_response_type%><%#type:sink_has_first_response?%>, <%#type:sink_first_response_type%><% > metadata/type_gen%><%/type:sink_first_response_type%><%/type:sink_has_first_response?%>)<%/type:sink?%><%!
 %><%/type:base?%><%/type:typedef?%>

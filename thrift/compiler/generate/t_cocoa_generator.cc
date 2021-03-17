@@ -2340,7 +2340,7 @@ void t_cocoa_generator::generate_deserialize_container(
   // Declare variables, read header
   if (ttype->is_map()) {
     indent(out)
-        << "[inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &"
+        << "[inProtocol readMapBeginReturningKeyType: NULL value_type: NULL size: &"
         << size << "];" << std::endl;
     indent(out) << "NSMutableDictionary * " << fieldName
                 << " = [[NSMutableDictionary alloc] initWithCapacity: " << size
@@ -2438,9 +2438,9 @@ void t_cocoa_generator::generate_deserialize_map_element(
     const std::string& fieldName) {
   std::string key = tmp("_key");
   std::string val = tmp("_val");
-  const t_type* keyType = tmap->get_key_type();
+  const t_type* key_type = tmap->get_key_type();
   const t_type* valType = tmap->get_val_type();
-  t_field fkey(keyType, key);
+  t_field fkey(key_type, key);
   t_field fval(valType, val);
 
   generate_deserialize_field(out, &fkey, key);
@@ -2448,11 +2448,12 @@ void t_cocoa_generator::generate_deserialize_map_element(
 
   indent(out) << "[" << fieldName
               << " setObject: " << containerize(valType, val)
-              << " forKey: " << containerize(keyType, key) << "];" << std::endl;
+              << " forKey: " << containerize(key_type, key) << "];"
+              << std::endl;
 
-  if (type_can_be_null(keyType)) {
-    if (!(keyType->get_true_type()->is_string_or_binary())) {
-      indent(out) << "[" << containerize(keyType, key) << " release_stub];"
+  if (type_can_be_null(key_type)) {
+    if (!(key_type->get_true_type()->is_string_or_binary())) {
+      indent(out) << "[" << containerize(key_type, key) << " release_stub];"
                   << std::endl;
     }
   }
@@ -2616,7 +2617,7 @@ void t_cocoa_generator::generate_serialize_container(
   if (ttype->is_map()) {
     indent(out) << "[outProtocol writeMapBeginWithKeyType: "
                 << type_to_enum(((t_map*)ttype)->get_key_type())
-                << " valueType: "
+                << " value_type: "
                 << type_to_enum(((t_map*)ttype)->get_val_type())
                 << " size: (int)[" << fieldName << " count]];" << std::endl;
   } else if (ttype->is_set()) {

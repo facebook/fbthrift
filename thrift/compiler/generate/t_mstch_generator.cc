@@ -121,7 +121,7 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
       {"index_plus_one", std::to_string(index + 1)},
       {"required?", req == t_field::e_req::required},
       {"optional?", req == t_field::e_req::optional},
-      {"optInReqOut?", req == t_field::e_req::opt_in_req_out},
+      {"opt_in_req_out?", req == t_field::e_req::opt_in_req_out},
       {"annotations", dump_elems(field.annotations())},
   };
 
@@ -175,19 +175,20 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
     result.emplace("service", dump(dynamic_cast<const t_service&>(type)));
   } else if (type.is_list()) {
     result.emplace(
-        "listElemType",
+        "list_elem_type",
         dump(*dynamic_cast<const t_list&>(type).get_elem_type()));
   } else if (type.is_set()) {
     result.emplace(
-        "setElemType", dump(*dynamic_cast<const t_set&>(type).get_elem_type()));
+        "set_elem_type",
+        dump(*dynamic_cast<const t_set&>(type).get_elem_type()));
   } else if (type.is_map()) {
     result.emplace(
-        "keyType", dump(*dynamic_cast<const t_map&>(type).get_key_type()));
+        "key_type", dump(*dynamic_cast<const t_map&>(type).get_key_type()));
     result.emplace(
-        "valueType", dump(*dynamic_cast<const t_map&>(type).get_val_type()));
+        "value_type", dump(*dynamic_cast<const t_map&>(type).get_val_type()));
   } else if (type.is_typedef()) {
     result.emplace(
-        "typedefType", dump(*dynamic_cast<const t_typedef&>(type).get_type()));
+        "typedef_type", dump(*dynamic_cast<const t_typedef&>(type).get_type()));
   }
 
   mstch::map extension = extend_type(type);
@@ -238,7 +239,7 @@ mstch::map t_mstch_generator::dump(const t_function& function) {
   mstch::map result{
       {"name", function.get_name()},
       {"oneway?", function.is_oneway()},
-      {"returnType", dump(*function.get_returntype())},
+      {"return_type", dump(*function.get_returntype())},
       {"exceptions", dump_elems(function.get_xceptions()->fields())},
       {"exceptions?", function.get_xceptions()->has_fields()},
       {"annotations", dump_elems(function.annotations())},
@@ -288,12 +289,12 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
   switch (type) {
     case cv::CV_DOUBLE:
       result.emplace("value", format_double_string(value.get_double()));
-      result.emplace("doubleValue", format_double_string(value.get_double()));
+      result.emplace("double_value", format_double_string(value.get_double()));
       result.emplace("nonzero?", value.get_double() != 0.0);
       break;
     case cv::CV_BOOL:
       result.emplace("value", std::to_string(value.get_bool()));
-      result.emplace("boolValue", value.get_bool() == true);
+      result.emplace("bool_value", value.get_bool() == true);
       result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:
@@ -302,18 +303,18 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
         result.emplace("enum_value_name", value.get_enum_value()->get_name());
       }
       result.emplace("value", std::to_string(value.get_integer()));
-      result.emplace("integerValue", std::to_string(value.get_integer()));
+      result.emplace("integer_value", std::to_string(value.get_integer()));
       result.emplace("nonzero?", value.get_integer() != 0);
       break;
     case cv::CV_STRING:
       result.emplace("value", value.get_string());
-      result.emplace("stringValue", value.get_string());
+      result.emplace("string_value", value.get_string());
       break;
     case cv::CV_MAP:
-      result.emplace("mapElements", dump_elems(value.get_map()));
+      result.emplace("map_elements", dump_elems(value.get_map()));
       break;
     case cv::CV_LIST:
-      result.emplace("listElements", dump_elems(value.get_list()));
+      result.emplace("list_elements", dump_elems(value.get_list()));
       break;
     default:
       std::ostringstream err;

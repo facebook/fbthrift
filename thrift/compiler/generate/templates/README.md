@@ -69,7 +69,7 @@ For example, if you want to access an integer `42` which is held in the
 
 ```
 <%#program:constants%><%#constant:value%><%#value:integer?%>
-  <%value:integerValue%>
+  <%value:integer_value%>
 <%/value:integer?%><%/constant:value%><%/program:constants%>
 ```
 ```
@@ -92,7 +92,7 @@ comments and indentation is used:
   %>These are your constant integers: <%!
   %><%#constant:value%><%!
     %><%#value:integer?%><%!
-      %><%value:integerValue%><%!
+      %><%value:integer_value%><%!
     %><%/value:integer?%><%!
     %><%^value:integer?%><%!
       %>Not an integer<%!

@@ -27,7 +27,7 @@
 <% > service_async_client_cpp/templated_received%>
 
 
-<%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
+<%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 <% > service_async_client_cpp/function_implementation%>
 
 
@@ -64,7 +64,7 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::
   return <%type:name%>(channel_, "<%type:name%>");
 }
 <%/function:starts_interaction?%>
-<%/function:returnType%><%/service:functions%>
+<%/function:return_type%><%/service:functions%>
 
 <%#service:interactions%>
 
@@ -72,7 +72,7 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::
 
 <% > service_async_client_cpp/templated_received%>
 
-<%#service:functions%><%#function:returnType%>
+<%#service:functions%><%#function:return_type%>
 <% > service_async_client_cpp/function_implementation%>
 
 <%^function:returns_sink?%>
@@ -87,7 +87,7 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::
 <% > service_async_client_cpp/received%>
 <%/function:oneway?%>
 
-<%/function:returnType%><%/service:functions%>
+<%/function:return_type%><%/service:functions%>
 
 <%/service:interactions%>
 <% > common/namespace_cpp2_end%>

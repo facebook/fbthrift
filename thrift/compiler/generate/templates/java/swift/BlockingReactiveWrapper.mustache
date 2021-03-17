@@ -39,7 +39,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
 
     {{#service:supportedFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         {{#function:voidType}}
         return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
@@ -63,14 +63,14 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
     {{/service:supportedFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException();
     }
 
     {{/service:streamingFunctions}}
     {{#service:sinkFunctions}}
     @java.lang.Override
-    public {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads) {
+    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#type:sink_elem_type}}{{ >BoxedType}}{{/type:sink_elem_type}}{{/function:return_type}}> payloads) {
         throw new UnsupportedOperationException();
     }
 

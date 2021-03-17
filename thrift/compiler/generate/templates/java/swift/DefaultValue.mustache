@@ -26,14 +26,14 @@
 
 
 }}{{#type:typedef?}}{{!
-}}{{#type:typedefType}}{{> DefaultValue}}{{/type:typedefType}}{{!
+}}{{#type:typedef_type}}{{> DefaultValue}}{{/type:typedef_type}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
     Integer constants
-  }}{{#type:byte?}}(byte){{value:integerValue}}{{/type:byte?}}{{!
-  }}{{#type:i16?}}(short){{value:integerValue}}{{/type:i16?}}{{!
-  }}{{#type:i32?}}{{value:integerValue}}{{/type:i32?}}{{!
-  }}{{#type:i64?}}{{value:integerValue}}L{{/type:i64?}}{{!
+  }}{{#type:byte?}}(byte){{value:integer_value}}{{/type:byte?}}{{!
+  }}{{#type:i16?}}(short){{value:integer_value}}{{/type:i16?}}{{!
+  }}{{#type:i32?}}{{value:integer_value}}{{/type:i32?}}{{!
+  }}{{#type:i64?}}{{value:integer_value}}L{{/type:i64?}}{{!
 
     Boolean constants
   }}{{#type:bool?}}{{!
@@ -43,12 +43,12 @@
 
     Floating point constants
   }}{{#type:double?}}{{!
-  }}{{#value:double?}}(double){{value:doubleValue}}{{/value:double?}}{{!
-    }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
+  }}{{#value:double?}}(double){{value:double_value}}{{/value:double?}}{{!
+    }}{{#value:integer?}}{{value:integer_value}}.0{{/value:integer?}}{{!
   }}{{/type:double?}}{{!
   }}{{#type:float?}}{{!
-  }}{{#value:double?}}(float){{value:doubleValue}}{{/value:double?}}{{!
-  }}{{#value:integer?}}(float){{value:integerValue}}.0{{/value:integer?}}{{!
+  }}{{#value:double?}}(float){{value:double_value}}{{/value:double?}}{{!
+  }}{{#value:integer?}}(float){{value:integer_value}}.0{{/value:integer?}}{{!
   }}{{/type:float?}}{{!
 
     String constants
@@ -58,11 +58,11 @@
     Map constants
   }}{{#type:map?}}{{!
 
-      }}{{#struct:asBean?}}com.google.common.collect.Maps.newHashMap({{/struct:asBean?}}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
-        {{#value:mapElements}}
-        .put({{#element:key}}{{#type:keyType}}{{> DefaultValue}}{{/type:keyType}}{{/element:key}}, {{!
-        }}{{#element:value}}{{#type:valueType}}{{> DefaultValue}}{{/type:valueType}}{{/element:value}})
-        {{/value:mapElements}}
+      }}{{#struct:asBean?}}com.google.common.collect.Maps.newHashMap({{/struct:asBean?}}ImmutableMap.<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}>builder()
+        {{#value:map_elements}}
+        .put({{#element:key}}{{#type:key_type}}{{> DefaultValue}}{{/type:key_type}}{{/element:key}}, {{!
+        }}{{#element:value}}{{#type:value_type}}{{> DefaultValue}}{{/type:value_type}}{{/element:value}})
+        {{/value:map_elements}}
         .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:map?}}{{!
@@ -70,10 +70,10 @@
     List constants
   }}{{#type:list?}}{{!
 
-      }}{{#struct:asBean?}}com.google.common.collect.Lists.newArrayList({{/struct:asBean?}}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
-        {{#value:listElements}}
-        .add({{#type:listElemType}}{{> DefaultValue}}{{/type:listElemType}})
-        {{/value:listElements}}
+      }}{{#struct:asBean?}}com.google.common.collect.Lists.newArrayList({{/struct:asBean?}}ImmutableList.<{{#type:list_elem_type}}{{> BoxedType}}{{/type:list_elem_type}}>builder()
+        {{#value:list_elements}}
+        .add({{#type:list_elem_type}}{{> DefaultValue}}{{/type:list_elem_type}})
+        {{/value:list_elements}}
         .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:list?}}{{!
@@ -81,10 +81,10 @@
     Set constants
   }}{{#type:set?}}{{!
 
-      }}{{#struct:asBean?}}com.google.common.collect.Sets.newHashSet({{/struct:asBean?}}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
-        {{#value:listElements}}
-        .add({{#type:setElemType}}{{> DefaultValue}}{{/type:setElemType}})
-        {{/value:listElements}}
+      }}{{#struct:asBean?}}com.google.common.collect.Sets.newHashSet({{/struct:asBean?}}ImmutableSet.<{{#type:set_elem_type}}{{> BoxedType}}{{/type:set_elem_type}}>builder()
+        {{#value:list_elements}}
+        .add({{#type:set_elem_type}}{{> DefaultValue}}{{/type:set_elem_type}})
+        {{/value:list_elements}}
         .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:set?}}{{!

@@ -611,9 +611,9 @@ string t_st_generator::map_writer(const t_map* tmap, string fname) {
   string key = temp_name();
   string val = temp_name();
 
-  out << "[oprot writeMapBegin: (TMap new keyType: "
+  out << "[oprot writeMapBegin: (TMap new key_type: "
       << type_to_enum(tmap->get_key_type())
-      << "; valueType: " << type_to_enum(tmap->get_val_type())
+      << "; value_type: " << type_to_enum(tmap->get_val_type())
       << "; size: " << fname << " size)." << endl;
   indent_up();
 

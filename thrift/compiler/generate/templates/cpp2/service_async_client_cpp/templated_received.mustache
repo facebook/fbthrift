@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
+%><%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 template <typename Protocol_>
 void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%#service:interaction?%>
@@ -40,4 +40,4 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* 
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
-<%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
+<%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>

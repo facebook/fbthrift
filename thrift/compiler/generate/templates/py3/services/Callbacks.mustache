@@ -35,18 +35,18 @@ sets the converted value on that promise.
 cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[{{#function:returnType}}{{!
+    cFollyPromise[{{#function:return_type}}{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
-        }}{{/function:returnType}}]{{!
+        }}{{/function:return_type}}]{{!
     }} cPromise{{#function:args}},
     {{#field:type}}{{!
             }}{{^function:stack_arguments?}}{{> services/CythonFieldType}}{{/function:stack_arguments?}}{{!
             }}{{#function:stack_arguments?}}{{> types/CythonCppType}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
-    {{#function:returnType}}
+    {{#function:return_type}}
     cdef {{> services/PromiseName}} __promise = {{> services/PromiseName}}.create(cmove(cPromise))
-    {{/function:returnType}}
+    {{/function:return_type}}
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
             }}{{^function:stack_arguments?}}{{> CythonCppToPython}}{{/function:stack_arguments?}}{{!
@@ -72,7 +72,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 async def {{service:name}}_{{function:name}}_coro(
     object self,
     object ctx,
-    {{#function:returnType}}{{> services/PromiseName}}{{/function:returnType}}{{!
+    {{#function:return_type}}{{> services/PromiseName}}{{/function:return_type}}{{!
     }} promise{{#function:args}},
     {{field:py_name}}{{/function:args}}
 ):
@@ -84,11 +84,11 @@ async def {{service:name}}_{{function:name}}_coro(
         else:
             result = await self.{{function:name}}({{#function:args}}
                       {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
-        {{#function:returnType}}
+        {{#function:return_type}}
         {{#type:container?}}
         result = {{> types/CythonPythonType}}(result)
         {{/type:container?}}
-        {{/function:returnType}}
+        {{/function:return_type}}
     {{#function:exceptions}}
     {{#field:type}}
     except {{> types/CythonPythonType}} as ex:
@@ -109,7 +109,7 @@ async def {{service:name}}_{{function:name}}_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue({{#function:returnType}}{{> services/CythonReturnValue}}{{/function:returnType}})
+        promise.cPromise.setValue({{#function:return_type}}{{> services/CythonReturnValue}}{{/function:return_type}})
 
 {{/service:supportedFunctions}}
 {{/program:services}}

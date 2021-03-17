@@ -20,8 +20,8 @@
         }}{{#value:inner}}{{>lib/value}}{{/value:inner}}{{!
     }}){{!
 }}{{/value:newtype?}}{{!
-}}{{#value:bool?}}{{value:boolValue}}{{/value:bool?}}{{!
-}}{{#value:integer?}}{{value:integerValue}}{{/value:integer?}}{{!
+}}{{#value:bool?}}{{value:bool_value}}{{/value:bool?}}{{!
+}}{{#value:integer?}}{{value:integer_value}}{{/value:integer?}}{{!
 }}{{#value:floatingPoint?}}{{value:floatingPointValue}}{{/value:floatingPoint?}}{{!
 }}{{#value:string?}}{{!
     }}{{#value:empty?}}::std::string::String::new(){{/value:empty?}}{{!
@@ -38,9 +38,9 @@
     }}{{#value:empty?}}::std::vec::Vec::new(){{/value:empty?}}{{!
     }}{{^value:empty?}}{{!
         }}vec![{{!
-        }}{{#value:listElements}}
+        }}{{#value:list_elements}}
         {{value:indent}}{{>lib/value}},{{!
-        }}{{/value:listElements}}
+        }}{{/value:list_elements}}
         {{value:indent}}]{{!
     }}{{/value:empty?}}{{!
 }}{{/value:list?}}{{!
@@ -118,7 +118,7 @@
 }}{{#value:enum?}}{{!
     }}{{value:enumPackage}}::types::{{value:enumName}}{{!
     }}{{#value:enumVariant}}::{{value:enumVariant}}{{/value:enumVariant}}{{!
-    }}{{^value:enumVariant}}({{value:integerValue}}){{/value:enumVariant}}{{!
+    }}{{^value:enumVariant}}({{value:integer_value}}){{/value:enumVariant}}{{!
 }}{{/value:enum?}}{{!
 }}{{/value:type}}{{!
 }}

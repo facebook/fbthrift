@@ -88,7 +88,7 @@
             arg_{{field:name}}: {{>lib/arg}},
             {{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>>;{{!
         }}{{/service:rustFunctions}}
@@ -109,7 +109,7 @@
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
             use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
@@ -144,7 +144,7 @@
                 .call_stream(request)
                 .map_err(::std::convert::From::from)
                 .and_then(|({{^function:stream_has_first_response?}}_{{/function:stream_has_first_response?}}initial_response, stream)| ::futures::future::ready({
-                    let new_stream: {{#function:returnType}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}, crate::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:returnType}} = ::std::boxed::Box::pin(stream.map(
+                    let new_stream: {{#function:return_type}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, crate::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:return_type}} = ::std::boxed::Box::pin(stream.map(
                         |stream_item_response| {
                             match stream_item_response {
                                 Err(e) => {
@@ -153,7 +153,7 @@
                                 Ok(stream_item) => {
                                     let de = P::deserializer(stream_item);
                                     move |mut p: P::Deserializer| -> ::std::result::Result<{{!
-                                        }}{{#function:returnType}}{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}{{/function:returnType}}, {{!
+                                        }}{{#function:return_type}}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}{{/function:return_type}}, {{!
                                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError{{!
                                     }}> {
                                         let p = &mut p;
@@ -177,7 +177,7 @@
                     {{#function:stream_has_first_response?}}
                     let de = P::deserializer(initial_response);
                     move |mut p: P::Deserializer| -> ::std::result::Result<{{!
-                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
                         let p = &mut p;
@@ -222,7 +222,7 @@
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> ::std::result::Result<{{!
-                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
                         let p = &mut p;
@@ -278,7 +278,7 @@
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
             self.as_ref().{{function:name}}(

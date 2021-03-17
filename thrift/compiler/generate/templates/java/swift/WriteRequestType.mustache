@@ -15,56 +15,56 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> WriteRequestType}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> WriteRequestType}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> WriteRequestType}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteRequestType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteRequestType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteRequestType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:setElemType}}{{> TType}}{{/type:setElemType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:setElemType}}{{> Type}}{{/type:setElemType}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{> TType}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{field:setIsNested}}{{type:setIsNotMap}}{{!
-          }}{{#type:setElemType}}{{!
+          }}{{#type:set_elem_type}}{{!
           }}{{#type:isContainer?}}{{!
           }}{{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
           {{/type:isContainer?}}{{!
           }}{{^type:isContainer?}}{{> WriteRequestType}}
-          {{/type:isContainer?}}{{/type:setElemType}}
+          {{/type:isContainer?}}{{/type:set_elem_type}}
         }
         oprot.writeSetEnd();{{!
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:listElemType}}{{> TType}}{{/type:listElemType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:listElemType}}{{> Type}}{{/type:listElemType}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{field:setIsNested}}{{type:setIsNotMap}}{{!
-          }}{{#type:listElemType}}{{!
+          }}{{#type:list_elem_type}}{{!
           }}{{#type:isContainer?}}{{!
           }}{{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
           {{/type:isContainer?}}{{!
           }}{{^type:isContainer?}}{{> WriteRequestType}}
-          {{/type:isContainer?}}{{/type:listElemType}}
+          {{/type:isContainer?}}{{/type:list_elem_type}}
         }
         oprot.writeListEnd();{{!
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:keyType}}{{> TType}}{{/type:keyType}}, TType.{{#type:valueType}}{{> TType}}{{/type:valueType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for (Map.Entry<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
+}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type}}, TType.{{#type:value_type}}{{> TType}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
           {{field:setIsNested}}{{!
 
-          }}{{#type:keyType}}{{type:setIsMapKey}}{{!
+          }}{{#type:key_type}}{{type:setIsMapKey}}{{!
           }}{{#type:isContainer?}}{{!
           }}{{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
           {{/type:isContainer?}}{{!
           }}{{^type:isContainer?}}{{> WriteRequestType}}
-          {{/type:isContainer?}}{{/type:keyType}}{{!
+          {{/type:isContainer?}}{{/type:key_type}}{{!
 
-          }}{{#type:valueType}}{{type:setIsMapValue}}{{!
+          }}{{#type:value_type}}{{type:setIsMapValue}}{{!
           }}{{#type:isContainer?}}
           {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
           {{/type:isContainer?}}{{!
           }}{{^type:isContainer?}}{{> WriteRequestType}}{{!
-          }}{{/type:isContainer?}}{{/type:valueType}}
+          }}{{/type:isContainer?}}{{/type:value_type}}
         }
         oprot.writeMapEnd();{{!
 }}{{/type:map?}}{{!

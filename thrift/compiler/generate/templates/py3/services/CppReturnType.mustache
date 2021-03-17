@@ -15,13 +15,13 @@
   limitations under the License.
 
 }}{{!
-Cpp type for returnType in services
+Cpp type for return_type in services
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}apache::thrift::ResponseAndServerStream<{{!
-    }}{{#type:streamFirstResponseType}}{{ >types/CppValueType}}{{/type:streamFirstResponseType}},{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}apache::thrift::ServerStream<{{/type:streamHasFirstResponse?}}{{!
-  }}{{#type:streamElemType}}{{ >types/CppValueType}}{{/type:streamElemType}}>{{!
+  }}{{#type:stream_has_first_response?}}apache::thrift::ResponseAndServerStream<{{!
+    }}{{#type:stream_first_response_type}}{{ >types/CppValueType}}{{/type:stream_first_response_type}},{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{^type:stream_has_first_response?}}apache::thrift::ServerStream<{{/type:stream_has_first_response?}}{{!
+  }}{{#type:stream_elem_type}}{{ >types/CppValueType}}{{/type:stream_elem_type}}>{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{!
   }}{{^function:stack_arguments?}}{{> types/CppArgType}}{{/function:stack_arguments?}}{{!

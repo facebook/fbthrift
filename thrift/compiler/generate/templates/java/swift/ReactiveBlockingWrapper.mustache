@@ -37,7 +37,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
 
   {{#service:supportedFunctions}}
   @java.lang.Override
-  public {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
   Exceptions
   }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}

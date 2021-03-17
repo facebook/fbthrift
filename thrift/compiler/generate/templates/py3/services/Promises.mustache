@@ -27,7 +27,7 @@ executing.
 }}
 
 {{#program:unique_functions_by_return_type}}
-{{#function:returnType}}
+{{#function:return_type}}
 
 @cython.auto_pickle(False)
 cdef class {{> services/PromiseName}}:
@@ -43,5 +43,5 @@ cdef class {{> services/PromiseName}}:
         }}{{> services/PromiseName}})
         inst.cPromise = cmove(cPromise)
         return inst
-{{/function:returnType}}
+{{/function:return_type}}
 {{/program:unique_functions_by_return_type}}

@@ -354,7 +354,7 @@ class t_go_generator : public t_concat_generator {
  private:
   struct MethodDefinition {
     string name;
-    string returnType;
+    string return_type;
   };
 
   vector<MethodDefinition> common_client_methods_;
@@ -2441,7 +2441,7 @@ void t_go_generator::generate_service_client_common_methods(
     bool isThreadsafe) {
   for (auto& method : common_client_methods_) {
     f_service_ << indent() << "func(client *" << clientTypeName << ") "
-               << method.name << "() " << method.returnType << " {" << endl;
+               << method.name << "() " << method.return_type << " {" << endl;
 
     indent_up();
     if (isThreadsafe) {
@@ -4468,9 +4468,9 @@ string t_go_generator::type_to_go_type_with_opt(
     return "*" + publicize(type_name(type));
   } else if (type->is_map()) {
     const t_map* t = (t_map*)type;
-    string keyType = type_to_go_key_type(t->get_key_type());
-    string valueType = type_to_go_type(t->get_val_type());
-    return maybe_pointer + string("map[") + keyType + "]" + valueType;
+    string key_type = type_to_go_key_type(t->get_key_type());
+    string value_type = type_to_go_type(t->get_val_type());
+    return maybe_pointer + string("map[") + key_type + "]" + value_type;
   } else if (type->is_set()) {
     const t_set* t = (t_set*)type;
     string elemType = type_to_go_type(t->get_elem_type());

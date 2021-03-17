@@ -40,16 +40,16 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
                       exception = { {{/first?}}
                           @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
                       }{{/last?}}{{/function:exceptions}})
-        ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+        ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
             @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
 
-        default ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+        default ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
             @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default ListenableFuture<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}
+        default ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
             @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
@@ -61,7 +61,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{#service:interactions}}
         public class {{service:name}} implements java.io.Closeable {
             {{#service:supportedFunctions}}
-            ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+            ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
             final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
                 throw new UnsupportedOperationException();
             }
@@ -87,12 +87,12 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
                   exception = { {{/first?}}
                       @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
                   }{{/last?}}{{/function:exceptions}})
-    {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
+    {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
         @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
 
-    default {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
+    default {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
         @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
@@ -100,7 +100,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         throw new UnsupportedOperationException();
     }
 
-    default ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}Wrapper({{#function:args}}
+    default ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
         @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
@@ -114,37 +114,37 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         @java.lang.Override void close();
 
         {{#service:supportedFunctions}}
-        reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
-        default reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default reactor.core.publisher.Mono<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         {{/service:supportedFunctions}}
         {{#service:streamingFunctions}}
-        reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
-        default reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default reactor.core.publisher.Flux<ResponseWrapper<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         {{/service:streamingFunctions}}
         {{#service:sinkFunctions}}
-        {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads);
+        {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#type:sink_elem_type}}{{ >BoxedType}}{{/type:sink_elem_type}}{{/function:return_type}}> payloads);
 
-        default {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, RpcOptions rpcOptions) {
+        default {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#type:sink_elem_type}}{{ >BoxedType}}{{/type:sink_elem_type}}{{/function:return_type}}> payloads, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default {{#function:returnType}}{{> SinkWrapperReturnType}}{{/function:returnType}} {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads, RpcOptions rpcOptions) {
+        default {{#function:return_type}}{{> SinkWrapperReturnType}}{{/function:return_type}} {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#type:sink_elem_type}}{{ >BoxedType}}{{/type:sink_elem_type}}{{/function:return_type}}> payloads, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
@@ -152,7 +152,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{#service:interactions}}
         public class {{service:name}} implements reactor.core.Disposable {
             {{#service:supportedFunctions}}
-            ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+            ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
             final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
                 throw new UnsupportedOperationException();
             }
@@ -173,7 +173,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     {{#service:interactions}}
     public class {{service:name}} implements java.io.Closeable {
         {{#service:supportedFunctions}}
-        {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
+        {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
             throw new UnsupportedOperationException();
         }

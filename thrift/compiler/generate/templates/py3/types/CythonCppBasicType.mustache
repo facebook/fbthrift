@@ -52,14 +52,14 @@ annotation).
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
 }}{{/type:defaultTemplate?}}{{/type:container?}}{{!
 }}{{#type:list?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
+  }}{{#type:list_elem_type}}{{> types/CythonCppType}}{{/type:list_elem_type}}{{!
 }}]{{/type:list?}}{{!
 }}{{#type:set?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
+  }}{{#type:set_elem_type}}{{> types/CythonCppType}}{{/type:set_elem_type}}{{!
 }}]{{/type:set?}}{{!
 }}{{#type:map?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
+  }}{{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}},{{!
+  }}{{#type:value_type}}{{> types/CythonCppType}}{{/type:value_type}}{{!
 }}]{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!

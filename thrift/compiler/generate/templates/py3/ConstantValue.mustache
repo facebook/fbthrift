@@ -29,27 +29,27 @@ file.
   }}{{^value:nonzero?}}False{{/value:nonzero?}}{{/constant:value}}
 {{/type:bool?}}
 {{#type:byte?}}
-{{constant:name}} = {{#constant:value}}{{value:integerValue}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}{{value:integer_value}}{{/constant:value}}
 {{/type:byte?}}
 {{#type:i16?}}
-{{constant:name}} = {{#constant:value}}{{value:integerValue}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}{{value:integer_value}}{{/constant:value}}
 {{/type:i16?}}
 {{#type:i32?}}
-{{constant:name}} = {{#constant:value}}{{value:integerValue}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}{{value:integer_value}}{{/constant:value}}
 {{/type:i32?}}
 {{#type:i64?}}
-{{constant:name}} = {{#constant:value}}{{value:integerValue}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}{{value:integer_value}}{{/constant:value}}
 {{/type:i64?}}
 {{#type:double?}}
 {{constant:name}} = {{#constant:value}}{{!
-}}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
-}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+}}{{#value:integer?}}{{value:integer_value}}.0{{/value:integer?}}{{!
+}}{{#value:double?}}{{value:double_value}}{{/value:double?}}{{!
 }}{{/constant:value}}
 {{/type:double?}}
 {{#type:float?}}
 {{constant:name}} = {{#constant:value}}{{!
-}}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
-}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+}}{{#value:integer?}}{{value:integer_value}}.0{{/value:integer?}}{{!
+}}{{#value:double?}}{{value:double_value}}{{/value:double?}}{{!
 }}{{/constant:value}}
 {{/type:float?}}
 {{#type:string?}}

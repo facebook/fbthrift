@@ -56,18 +56,18 @@ class {{service:name}}Interface(
     def pass_context_{{function:name}}(
         fn: _typing.Callable[
                 [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-                _typing.Coroutine[_typing.Any, _typing.Any, {{#function:returnType}}{{> services/ReturnTypePEP484Type}}{{/function:returnType}}]
+                _typing.Coroutine[_typing.Any, _typing.Any, {{#function:return_type}}{{> services/ReturnTypePEP484Type}}{{/function:return_type}}]
         ]
     ) -> _typing.Callable[
         [_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-        _typing.Coroutine[_typing.Any, _typing.Any, {{#function:returnType}}{{> services/ReturnTypePEP484Type}}{{/function:returnType}}]
+        _typing.Coroutine[_typing.Any, _typing.Any, {{#function:return_type}}{{> services/ReturnTypePEP484Type}}{{/function:return_type}}]
     ]: ...
 
     @abstractmethod
     async def {{function:name}}(
         self{{#function:args}},
         {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
-    ) -> {{#function:returnType}}{{> services/ReturnTypePEP484Type}}{{/function:returnType}}: ...
+    ) -> {{#function:return_type}}{{> services/ReturnTypePEP484Type}}{{/function:return_type}}: ...
     {{/service:supportedFunctions}}
     pass
 

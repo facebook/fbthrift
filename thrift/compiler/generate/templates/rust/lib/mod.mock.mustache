@@ -50,7 +50,7 @@
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
@@ -107,7 +107,7 @@
                         }}{{^last?}}, {{/last?}}{{!
                         }}{{/function:args}}{{!
                     }}) -> ::std::result::Result<
-                        {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
+                        {{#function:return_type}}{{>lib/type}}{{/function:return_type}},
                         {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -131,7 +131,7 @@
 
                 pub fn ret({{!
                     }}&self, {{!
-                    }}{{#function:returns_stream?}}_{{/function:returns_stream?}}value: {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                    }}{{#function:returns_stream?}}_{{/function:returns_stream?}}value: {{#function:return_type}}{{>lib/type}}{{/function:return_type}}{{!
                 }}) {
                     {{#function:returns_stream?}}
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
@@ -150,7 +150,7 @@
                     }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
-                }}) -> {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                }}) -> {{#function:return_type}}{{>lib/type}}{{/function:return_type}}{{!
                     }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
                 }}{
                     let mut closure = self.closure.lock().unwrap();
@@ -173,7 +173,7 @@
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
                 }}) -> ::std::result::Result<{{!
-                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>{{!
                     }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
                 }}{

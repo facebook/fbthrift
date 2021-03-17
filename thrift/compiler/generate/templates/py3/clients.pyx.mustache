@@ -154,7 +154,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}](
+        bridgeFutureWith[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}](
             self._executor,
             down_cast_ptr[c{{service:name}}ClientWrapper, cClientWrapper](self._client.get()).{{function:cppName}}(rpc_options._cpp_obj, {{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}

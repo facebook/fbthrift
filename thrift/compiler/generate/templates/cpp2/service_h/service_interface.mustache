@@ -31,7 +31,7 @@
     std::terminate();
   }
 <%/service:interaction?%>
-<%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
+<%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 <%^function:eb%><%^service:interaction?%>
   virtual <% > service_common/function_return_type %> <%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>);
   folly::Future<<% > service_common/async_return_type %>> future_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
@@ -59,6 +59,6 @@
 <%/function:starts_interaction?%><%#function:starts_interaction?%>
   virtual std::unique_ptr<<%type:name%>If> <%function:cpp_name%>();
 <%/function:starts_interaction?%>
-<%/function:returnType%>
+<%/function:return_type%>
 <%/service:functions%>
 };

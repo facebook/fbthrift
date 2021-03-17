@@ -3668,7 +3668,7 @@ void t_hack_generator::generate_php_docstring(
  * <Original docstring goes here>
  *
  * Original thrift definition:-
- * returnType
+ * return_type
  *   functionName(1: argType1 arg_name1,
  *                2: argType2 arg_name2)
  *   throws (1: exceptionType1 ex_name1,

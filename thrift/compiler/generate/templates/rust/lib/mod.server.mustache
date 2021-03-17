@@ -31,7 +31,7 @@
             _{{field:name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
             }}{{/function:args}}
         ) -> ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
             ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(

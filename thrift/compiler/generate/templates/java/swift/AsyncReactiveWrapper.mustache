@@ -37,21 +37,21 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
 
     {{#service:supportedFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     }
 
     {{/service:supportedFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException();
     }
 
     {{/service:streamingFunctions}}
     {{#service:sinkFunctions}}
     @java.lang.Override
-    public {{#function:returnType}}{{> SinkReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:returnType}}{{#type:sinkElemType}}{{ >BoxedType}}{{/type:sinkElemType}}{{/function:returnType}}> payloads) {
+    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#type:sink_elem_type}}{{ >BoxedType}}{{/type:sink_elem_type}}{{/function:return_type}}> payloads) {
         throw new UnsupportedOperationException();
     }
 

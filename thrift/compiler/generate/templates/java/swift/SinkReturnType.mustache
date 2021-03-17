@@ -15,11 +15,11 @@
   limitations under the License.
 
 }}{{#type:sink?}}{{!
-    }}{{#type:sinkHasFirstResponse?}}reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<{{!
-    }}{{#type:sinkFirstResponseType}}{{ >BoxedType}}{{/type:sinkFirstResponseType}},{{!
-    }}{{#type:sinkFinalResponseType}}{{ >BoxedType}}{{/type:sinkFinalResponseType}}>>{{!
-    }}{{/type:sinkHasFirstResponse?}}{{!
-    }}{{^type:sinkHasFirstResponse?}}{{!
-    }}{{#type:sinkFinalResponseType}}reactor.core.publisher.Mono<{{ >BoxedType}}>{{/type:sinkFinalResponseType}}{{!
-    }}{{/type:sinkHasFirstResponse?}}{{!
+    }}{{#type:sink_has_first_response?}}reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<{{!
+    }}{{#type:sink_first_response_type}}{{ >BoxedType}}{{/type:sink_first_response_type}},{{!
+    }}{{#type:sink_final_response_type}}{{ >BoxedType}}{{/type:sink_final_response_type}}>>{{!
+    }}{{/type:sink_has_first_response?}}{{!
+    }}{{^type:sink_has_first_response?}}{{!
+    }}{{#type:sink_final_response_type}}reactor.core.publisher.Mono<{{ >BoxedType}}>{{/type:sink_final_response_type}}{{!
+    }}{{/type:sink_has_first_response?}}{{!
 }}{{/type:sink?}}

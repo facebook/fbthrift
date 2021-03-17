@@ -21,7 +21,7 @@
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}StreamExn {
-            Success({{#function:returnType}}{{#type:streamElemType}}{{>lib/type}}{{/type:streamElemType}}{{/function:returnType}}),{{!
+            Success({{#function:return_type}}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}{{/function:return_type}}),{{!
             }}{{#function:stream_exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:stream_exceptions}}
@@ -56,7 +56,7 @@
                     {{function:upcamel}}StreamExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            {{#function:returnType}}{{>lib/ttype}}{{/function:returnType}},
+                            {{#function:return_type}}{{>lib/ttype}}{{/function:return_type}},
                             0i16,
                         );
                         inner.write(p);
@@ -109,7 +109,7 @@
                             p.read_field_end()?;
                             break;
                         }
-                        (({{#function:returnType}}{{#type:streamElemType}}{{>lib/ttype}}{{/type:streamElemType}}{{/function:returnType}}, 0i32), false) => {
+                        (({{#function:return_type}}{{#type:stream_elem_type}}{{>lib/ttype}}{{/type:stream_elem_type}}{{/function:return_type}}, 0i32), false) => {
                             once = true;
                             alt = {{!
                                 }}{{^function:void?}}::std::option::Option::Some({{/function:void?}}{{!
@@ -160,7 +160,7 @@
         {{#function:stream_has_first_response?}}
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
-            Success({{#function:returnType}}{{#type:streamFirstResponseType}}{{>lib/type}}{{/type:streamFirstResponseType}}{{/function:returnType}}),{{!
+            Success({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}}),{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
@@ -195,7 +195,7 @@
                     {{function:upcamel}}Exn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            {{#function:returnType}}{{#type:streamFirstResponseType}}{{>lib/ttype}}{{/type:streamFirstResponseType}}{{/function:returnType}},
+                            {{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/ttype}}{{/type:stream_first_response_type}}{{/function:return_type}},
                             0i16,
                         );
                         inner.write(p);
@@ -248,7 +248,7 @@
                             p.read_field_end()?;
                             break;
                         }
-                        (({{#function:returnType}}{{#type:streamFirstResponseType}}{{>lib/ttype}}{{/type:streamFirstResponseType}}{{/function:returnType}}, 0i32), false) => {
+                        (({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/ttype}}{{/type:stream_first_response_type}}{{/function:return_type}}, 0i32), false) => {
                             once = true;
                             alt = {{!
                                 }}{{^function:void?}}::std::option::Option::Some({{/function:void?}}{{!
@@ -301,7 +301,7 @@
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
-            Success({{#function:returnType}}{{>lib/type}}{{/function:returnType}}),{{!
+            Success({{#function:return_type}}{{>lib/type}}{{/function:return_type}}),{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
@@ -336,7 +336,7 @@
                     {{function:upcamel}}Exn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            {{#function:returnType}}{{>lib/ttype}}{{/function:returnType}},
+                            {{#function:return_type}}{{>lib/ttype}}{{/function:return_type}},
                             0i16,
                         );
                         inner.write(p);
@@ -389,7 +389,7 @@
                             p.read_field_end()?;
                             break;
                         }
-                        (({{#function:returnType}}{{>lib/ttype}}{{/function:returnType}}, 0i32), false) => {
+                        (({{#function:return_type}}{{>lib/ttype}}{{/function:return_type}}, 0i32), false) => {
                             once = true;
                             alt = {{!
                                 }}{{^function:void?}}::std::option::Option::Some({{/function:void?}}{{!

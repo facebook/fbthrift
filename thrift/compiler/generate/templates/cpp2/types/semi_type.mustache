@@ -15,29 +15,29 @@
   limitations under the License.
 
 %><%#type:streamresponse?%><%!
-  %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndClientBufferedStream<<%!
-  %><%#type:streamFirstResponseType%><%type:cpp_type%><%/type:streamFirstResponseType%>,<%!
-  %><%#type:streamElemType%><%type:cpp_type%><%/type:streamElemType%>><%!
-  %><%/type:streamHasFirstResponse?%><%!
-  %><%^type:streamHasFirstResponse?%>apache::thrift::ClientBufferedStream<<%!
-  %><%#type:streamElemType%><%type:cpp_type%><%/type:streamElemType%>><%!
-  %><%/type:streamHasFirstResponse?%><%!
+  %><%#type:stream_has_first_response?%>apache::thrift::ResponseAndClientBufferedStream<<%!
+  %><%#type:stream_first_response_type%><%type:cpp_type%><%/type:stream_first_response_type%>,<%!
+  %><%#type:stream_elem_type%><%type:cpp_type%><%/type:stream_elem_type%>><%!
+  %><%/type:stream_has_first_response?%><%!
+  %><%^type:stream_has_first_response?%>apache::thrift::ClientBufferedStream<<%!
+  %><%#type:stream_elem_type%><%type:cpp_type%><%/type:stream_elem_type%>><%!
+  %><%/type:stream_has_first_response?%><%!
 %><%/type:streamresponse?%><%!
 
 %><%^type:streamresponse?%><%!
   %><%#type:sink?%><%!
-    %><%#type:sinkHasFirstResponse?%><%!
+    %><%#type:sink_has_first_response?%><%!
       %>apache::thrift::ResponseAndClientSink<<%!
-      %><%#type:sinkFirstResponseType%><%type:cpp_type%><%/type:sinkFirstResponseType%>, <%!
-      %><%#type:sinkElemType%><%type:cpp_type%><%/type:sinkElemType%>, <%!
-      %><%#type:sinkFinalResponseType%><%type:cpp_type%><%/type:sinkFinalResponseType%>><%!
-    %><%/type:sinkHasFirstResponse?%><%!
+      %><%#type:sink_first_response_type%><%type:cpp_type%><%/type:sink_first_response_type%>, <%!
+      %><%#type:sink_elem_type%><%type:cpp_type%><%/type:sink_elem_type%>, <%!
+      %><%#type:sink_final_response_type%><%type:cpp_type%><%/type:sink_final_response_type%>><%!
+    %><%/type:sink_has_first_response?%><%!
 
-    %><%^type:sinkHasFirstResponse?%><%!
+    %><%^type:sink_has_first_response?%><%!
       %>apache::thrift::ClientSink<<%!
-      %><%#type:sinkElemType%><%type:cpp_type%><%/type:sinkElemType%>, <%!
-      %><%#type:sinkFinalResponseType%><%type:cpp_type%><%/type:sinkFinalResponseType%>><%!
-    %><%/type:sinkHasFirstResponse?%><%!
+      %><%#type:sink_elem_type%><%type:cpp_type%><%/type:sink_elem_type%>, <%!
+      %><%#type:sink_final_response_type%><%type:cpp_type%><%/type:sink_final_response_type%>><%!
+    %><%/type:sink_has_first_response?%><%!
   %><%/type:sink?%><%!
   %><%^type:sink?%><%!
     %><%type:cpp_type%><%!

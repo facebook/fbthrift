@@ -15,9 +15,9 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadReturnTypeContainerNestedValue}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 
@@ -30,7 +30,7 @@
             }}
             for (int _i{{function:nestedDepth}} = 0; (_set{{function:nestedDepth}}.size < 0) ? oprot.peekSet() : (_i{{function:nestedDepth}} < _set{{function:nestedDepth}}.size); _i{{function:nestedDepth}}++) {
                 {{function:setIsNested}}
-                {{#type:setElemType}}
+                {{#type:set_elem_type}}
                 {{#type:isContainer?}}
                 {{function:nestedDepth++}}{{> ReadReturnTypeContainerNestedValue }}{{function:nestedDepth--}}
                 {{/type:isContainer?}}
@@ -38,7 +38,7 @@
                 {{function:nestedDepth++}}{{> Type}} _value{{function:nestedDepth}} = {{> ReadReturnType}};{{function:nestedDepth--}}
                 {{/type:isContainer?}}
                 {{function:nestedDepth++}}_key{{function:prevNestedDepth}}.add(_value{{function:nestedDepth}});{{function:nestedDepth--}}
-                {{/type:setElemType}}
+                {{/type:set_elem_type}}
             }
             oprot.readSetEnd();
             }
@@ -53,7 +53,7 @@
             }}
             for (int _i{{function:nestedDepth}} = 0; (_list{{function:nestedDepth}}.size < 0) ? oprot.peekList() : (_i{{function:nestedDepth}} < _list{{function:nestedDepth}}.size); _i{{function:nestedDepth}}++) {
                 {{function:setIsNested}}
-                {{#type:listElemType}}
+                {{#type:list_elem_type}}
                 {{#type:isContainer?}}
                 {{function:nestedDepth++}}{{> ReadReturnTypeContainerNestedValue }}{{function:nestedDepth--}}
                 {{/type:isContainer?}}
@@ -61,7 +61,7 @@
                 {{function:nestedDepth++}}{{> Type}} _value{{function:nestedDepth}} = {{> ReadReturnType}};{{function:nestedDepth--}}
                 {{/type:isContainer?}}
                 {{function:nestedDepth++}}_key{{function:prevNestedDepth}}.add(_value{{function:nestedDepth}});{{function:nestedDepth--}}
-                {{/type:listElemType}}
+                {{/type:list_elem_type}}
             }
             oprot.readListEnd();
             }
@@ -76,23 +76,23 @@
             }}
             for (int _i{{function:nestedDepth}} = 0; (_map{{function:nestedDepth}}.size < 0) ? oprot.peekMap() : (_i{{function:nestedDepth}} < _map{{function:nestedDepth}}.size); _i{{function:nestedDepth}}++) {
                 {{function:setIsNested}}
-                {{#type:keyType}}
+                {{#type:key_type}}
                 {{#type:isContainer?}}
                 {{function:nestedDepth++}}{{> ReadReturnTypeContainerNestedKey }}{{function:nestedDepth--}}
                 {{/type:isContainer?}}
                 {{^type:isContainer?}}
                 {{function:nestedDepth++}}{{> Type}} _key{{function:nestedDepth}} = {{> ReadReturnType}};{{function:nestedDepth--}}
                 {{/type:isContainer?}}
-                {{/type:keyType}}
+                {{/type:key_type}}
 
-                {{#type:valueType}}
+                {{#type:value_type}}
                 {{#type:isContainer?}}
                 {{function:nestedDepth++}}{{> ReadReturnTypeContainerNestedValue }}{{function:nestedDepth--}}
                 {{/type:isContainer?}}
                 {{^type:isContainer?}}
                 {{function:nestedDepth++}}{{> Type}} _value{{function:nestedDepth}} = {{> ReadReturnType}};{{function:nestedDepth--}}
                 {{/type:isContainer?}}
-                {{/type:valueType}}
+                {{/type:value_type}}
                 {{function:nestedDepth++}}_key{{function:prevNestedDepth}}.put(_key{{function:nestedDepth}}, _value{{function:nestedDepth}});{{function:nestedDepth--}}
             }
             oprot.readMapEnd();

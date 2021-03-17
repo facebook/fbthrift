@@ -20,7 +20,7 @@ Used for overriding methods with (thread="eb") annotation
 
 }}std::unique_ptr<{{!
 }}{{#function:oneway?}}apache::thrift::HandlerCallbackBase{{/function:oneway?}}{{!
-}}{{^function:oneway?}}apache::thrift::HandlerCallback<{{#function:returnType}}{{!
+}}{{^function:oneway?}}apache::thrift::HandlerCallback<{{#function:return_type}}{{!
 }}{{#type:void?}}void{{/type:void?}}{{!
 }}{{^type:void?}}{{> services/CppReturnType}}{{/type:void?}}{{!
-}}{{/function:returnType}}>{{/function:oneway?}}>
+}}{{/function:return_type}}>{{/function:oneway?}}>

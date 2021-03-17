@@ -76,7 +76,7 @@ void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^functio
      {{#field:type}}{{> CppFieldCapture}}{{/field:type}}{{/function:args}}
     ]() mutable {
         auto [promise, future] = folly::makePromiseContract<{{!
-            }}{{#function:returnType}}{{> services/CppReturnType}}{{/function:returnType}}>();
+            }}{{#function:return_type}}{{> services/CppReturnType}}{{/function:return_type}}>();
         call_cy_{{service:name}}_{{function:name}}(
             this->if_object,
             ctx,
@@ -85,7 +85,7 @@ void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^functio
 {{/field:type}}{{/function:args}}
         );
         std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<{{!
-            }}{{#function:returnType}}{{> services/CppReturnType}}{{/function:returnType}}>&& t) {
+            }}{{#function:return_type}}{{> services/CppReturnType}}{{/function:return_type}}>&& t) {
           (void)t;
           {{^function:oneway?}}callback->complete(std::move(t));{{/function:oneway?}}
         });

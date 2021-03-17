@@ -29,7 +29,7 @@
 <% > service_h/async_client%>
 <%/service:interactions%>
 
-<%#service:functions%><%#function:returnType%>
+<%#service:functions%><%#function:return_type%>
 <%#function:starts_interaction?%>
   <%type:name%> <%function:cpp_name%>();
 <%/function:starts_interaction?%><%^function:starts_interaction?%>
@@ -193,5 +193,5 @@
   void <%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> <%function:cpp_name%>Ctx(apache::thrift::RpcOptions* rpcOptions);
  public:
-<%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
+<%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
 };

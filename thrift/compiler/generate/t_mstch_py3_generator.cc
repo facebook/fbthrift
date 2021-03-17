@@ -570,10 +570,10 @@ class mstch_py3_program : public mstch_program {
           const t_type* exType = field->get_type();
           streamExceptions_.emplace(visit_type(field->get_type()), exType);
         }
-        const t_type* returnType = function->get_returntype();
+        const t_type* return_type = function->get_returntype();
         auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
         uniqueFunctionsByReturnType_.insert(
-            {{visit_type(returnType), sa}, function});
+            {{visit_type(return_type), sa}, function});
       }
     }
   }

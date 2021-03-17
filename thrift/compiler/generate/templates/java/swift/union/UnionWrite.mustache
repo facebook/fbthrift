@@ -28,13 +28,13 @@ public void write0(TProtocol oprot) throws TException {
     {{> FieldType}} _iter{{field:nestedDepth}} = ({{> FieldType}})this.value;
     {{/field:isContainer?}}{{!
 
-    }}{{#type:typedefType}}
+    }}{{#type:typedef_type}}
     {{> FieldType}} _iter{{field:nestedDepth}} = ({{> FieldType}})this.value;
-    {{/type:typedefType}}{{!
+    {{/type:typedef_type}}{{!
 
-    }}{{^field:isContainer?}}{{^type:typedefType}}
+    }}{{^field:isContainer?}}{{^type:typedef_type}}
     {{> FieldType}} {{field:javaName}} = ({{> FieldType}})this.value;
-    {{/type:typedefType}}{{/field:isContainer?}}{{!
+    {{/type:typedef_type}}{{/field:isContainer?}}{{!
 
     }}{{#field:type}}
     {{field:nestedDepth++}}{{> WriteType }}{{field:nestedDepth--}}

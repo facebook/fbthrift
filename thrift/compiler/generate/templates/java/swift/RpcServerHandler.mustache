@@ -94,10 +94,10 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
         {{function:unsetIsNested}}
         {{^function:voidType}}
-        {{#function:returnType}}
+        {{#function:return_type}}
         {{> Type}} _iter0 = ({{> Type}})_r;
         {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
-        {{/function:returnType}}
+        {{/function:return_type}}
         {{/function:voidType}}
 
         {{#function:voidType}}

@@ -50,12 +50,12 @@
     {
         fn write(&self, p: &mut P) {
             p.write_set_begin(
-                <{{#type:setElemType}}{{>lib/type}}{{/type:setElemType}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:set_elem_type}}{{>lib/type}}{{/type:set_elem_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#type:setElemType}}{{>lib/write}}{{/type:setElemType}}(v, p);
+                {{#type:set_elem_type}}{{>lib/write}}{{/type:set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
@@ -79,7 +79,7 @@
                 if !more {
                     break;
                 }
-                {{#type:setElemType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:setElemType}}?;
+                {{#type:set_elem_type}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:set_elem_type}}?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -102,15 +102,15 @@
     {
         fn write(&self, p: &mut P) {
             p.write_map_begin(
-                <{{#type:keyType}}{{>lib/type}}{{/type:keyType}} as ::fbthrift::GetTType>::TTYPE,
-                <{{#type:valueType}}{{>lib/type}}{{/type:valueType}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:key_type}}{{>lib/type}}{{/type:key_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:value_type}}{{>lib/type}}{{/type:value_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#type:keyType}}{{>lib/write}}{{/type:keyType}}(k, p);
+                {{#type:key_type}}{{>lib/write}}{{/type:key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#type:valueType}}{{>lib/write}}{{/type:valueType}}(v, p);
+                {{#type:value_type}}{{>lib/write}}{{/type:value_type}}(v, p);
             }
             p.write_map_end();
         }
@@ -134,9 +134,9 @@
                 if !more {
                     break;
                 }
-                {{#type:keyType}}let k: {{>lib/type}} = {{>lib/read}}(p){{/type:keyType}}?;
+                {{#type:key_type}}let k: {{>lib/type}} = {{>lib/read}}(p){{/type:key_type}}?;
                 p.read_map_value_begin()?;
-                {{#type:valueType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:valueType}}?;
+                {{#type:value_type}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:value_type}}?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 

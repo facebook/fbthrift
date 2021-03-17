@@ -37,7 +37,7 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
 
   {{#service:supportedFunctions}}
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
   }
 

@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:returnType%><%^function:starts_interaction?%>
+%><%#function:return_type%><%^function:starts_interaction?%>
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -42,4 +42,4 @@
   std::unique_ptr<apache::thrift::Tile> <%function:cpp_name%>() {
     return iface_-><%function:cpp_name%>();
   }
-<%/function:starts_interaction?%><%/function:returnType%>
+<%/function:starts_interaction?%><%/function:return_type%>

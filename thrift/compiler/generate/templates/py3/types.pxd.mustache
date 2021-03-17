@@ -159,10 +159,10 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
         __required_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:required?}}
-        {{#field:optInReqOut?}}
+        {{#field:opt_in_req_out?}}
         __field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
-        {{/field:optInReqOut?}}
+        {{/field:opt_in_req_out?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields_and_mixin_fields}}
     {{#struct:fields}}
@@ -282,13 +282,13 @@ cdef class ServerStream__{{type:flat_name}}(ServerStream):
 {{#program:response_and_stream_types}}
 
 cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndClientBufferedStream):
-    cdef ClientBufferedStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}} _stream
-    cdef {{#type:streamFirstResponseType}}{{ > types/CythonPythonType}}{{/type:streamFirstResponseType}} _response
+    cdef ClientBufferedStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}} _stream
+    cdef {{#type:stream_first_response_type}}{{ > types/CythonPythonType}}{{/type:stream_first_response_type}} _response
 
     @staticmethod
     cdef create(cResponseAndClientBufferedStream[{{!
-        }}{{#type:streamFirstResponseType}}{{ > types/CythonCppType}}{{/type:streamFirstResponseType}}, {{!
-        }}{{#type:streamElemType}}{{ > types/CythonCppType}}{{/type:streamElemType}}]& c_obj, __RpcOptions rpc_options)
+        }}{{#type:stream_first_response_type}}{{ > types/CythonCppType}}{{/type:stream_first_response_type}}, {{!
+        }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options)
 
 
 cdef class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndServerStream):

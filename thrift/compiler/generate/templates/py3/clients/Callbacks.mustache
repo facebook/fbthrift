@@ -28,7 +28,7 @@ executed in the asyncio loop.
 {{#program:services}}
 {{#service:supportedFunctions}}
 cdef void {{service:name}}_{{function:name}}_callback(
-    cFollyTry[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}]&& result,
+    cFollyTry[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  {{! so client lives on until we exit }}
@@ -48,7 +48,7 @@ cdef void {{service:name}}_{{function:name}}_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})
+            pyfuture.set_result({{#function:return_type}}{{> clients/CythonCppValueToReturnValue}}{{/function:return_type}})
         except Exception as ex:
             {{! Most likely this is only ever unicode decode errors }}
             pyfuture.set_exception(ex.with_traceback(None))

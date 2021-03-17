@@ -23,22 +23,22 @@
 }{{/type:service?}}{{!
 }}{{#type:list?}}{
   "type" : "list",
-{{#type:listElemType}}
+{{#type:list_elem_type}}
   "inner_type" : {{> Types}}
-{{/type:listElemType}}
+{{/type:list_elem_type}}
 }{{/type:list?}}{{!
 }}{{#type:set?}}{
   "type" : "set",
-{{#type:setElemType}}
+{{#type:set_elem_type}}
   "inner_type" : {{> Types}}
-{{/type:setElemType}}
+{{/type:set_elem_type}}
 }{{/type:set?}}{{!
 }}{{#type:map?}}{
   "type" : "map",
-{{#type:keyType}}
+{{#type:key_type}}
   "key_type" : {{> Types}},
-{{/type:keyType}}
-{{#type:valueType}}
+{{/type:key_type}}
+{{#type:value_type}}
   "value_type" : {{> Types}}
-{{/type:valueType}}
+{{/type:value_type}}
 }{{/type:map?}}

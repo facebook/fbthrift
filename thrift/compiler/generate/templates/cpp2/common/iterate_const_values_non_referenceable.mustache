@@ -20,50 +20,50 @@ Containers:
 
 List:
 %><%^type:struct?%><%!
-%><%#value:list?%><%#type:listElemType%><%!
+%><%#value:list?%><%#type:list_elem_type%><%!
   %>std::initializer_list<<%!
     %><%type:cpp_type%><%!
   %>>{<%!
-  %><%#value:listElements%><%!
+  %><%#value:list_elements%><%!
     %><% > common/iterate_const_values%><%!
     %><%^last?%>,
   <%/last?%><%!
-  %><%/value:listElements%><%!
+  %><%/value:list_elements%><%!
   %>}<%!
-%><%/type:listElemType%><%/value:list?%><%!
+%><%/type:list_elem_type%><%/value:list?%><%!
 
 Set:
-%><%#value:list?%><%#type:setElemType%><%!
+%><%#value:list?%><%#type:set_elem_type%><%!
   %>std::initializer_list<<%!
     %><%type:cpp_type%><%!
   %>>{<%!
-  %><%#value:listElements%><%!
+  %><%#value:list_elements%><%!
     %><% > common/iterate_const_values%><%!
     %><%^last?%>,
   <%/last?%><%!
-  %><%/value:listElements%><%!
+  %><%/value:list_elements%><%!
   %>}<%!
-%><%/type:setElemType%><%/value:list?%><%!
+%><%/type:set_elem_type%><%/value:list?%><%!
 
 Map:
 %><%#value:map?%><%!
   %>std::initializer_list<std::pair<<%!
-    %><%#type:keyType%>const <%type:cpp_type%><%/type:keyType%>, <%!
-    %><%#type:valueType%><%type:cpp_type%><%/type:valueType%><%!
+    %><%#type:key_type%>const <%type:cpp_type%><%/type:key_type%>, <%!
+    %><%#type:value_type%><%type:cpp_type%><%/type:value_type%><%!
   %>>>{<%!
-  %><%#value:mapElements%><%!
+  %><%#value:map_elements%><%!
     %>{<%!
-      %><%#element:key%><%#type:keyType%><%!
+      %><%#element:key%><%#type:key_type%><%!
         %><% > common/iterate_const_values%><%!
-      %><%/type:keyType%><%/element:key%><%!
+      %><%/type:key_type%><%/element:key%><%!
       %>, <%!
-      %><%#element:value%><%#type:valueType%><%!
+      %><%#element:value%><%#type:value_type%><%!
         %><% > common/iterate_const_values%><%!
-      %><%/type:valueType%><%/element:value%><%!
+      %><%/type:value_type%><%/element:value%><%!
     %>}<%!
     %><%^last?%>,
   <%/last?%><%!
-  %><%/value:mapElements%><%!
+  %><%/value:map_elements%><%!
   %>}<%!
 %><%/value:map?%><%!
 %><%/type:struct?%><%!

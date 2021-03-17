@@ -459,7 +459,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
                 raise TypeError("If you really want to pass a string into a {{> types/PEP484Type}} field, explicitly convert it first.")
             {{/type:containerOfString?}}
             for item in items:
-                {{#type:listElemType}}
+                {{#type:list_elem_type}}
                 {{#type:container?}}
                 if item is None:
                     raise TypeError("None is not of the type {{> types/PEP484Type}}")
@@ -475,7 +475,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
                 {{/type:integer?}}
                 {{/type:container?}}
                 deref(c_inst).push_back({{> CythonPythonToCppItem}})
-                {{/type:listElemType}}
+                {{/type:list_elem_type}}
         return c_inst
 
     cdef _get_slice(self, slice index_obj):
@@ -486,17 +486,17 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         )
 
     cdef _get_single_item(self, size_t index):
-        {{#type:listElemType}}
+        {{#type:list_elem_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
         __list_getitem(self._cpp_obj, index, citem)
         return {{> ContainerCythonCppToPythonItem}}
-        {{/type:listElemType}}
+        {{/type:list_elem_type}}
 
     cdef _check_item_type(self, item):
         if not self or item is None:
             return
-        {{#type:listElemType}}
+        {{#type:list_elem_type}}
         if isinstance(item, {{> types/PythonType}}):
             return item
         {{#type:container?}}
@@ -505,7 +505,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         except:
             pass
         {{/type:container?}}
-        {{/type:listElemType}}
+        {{/type:list_elem_type}}
 
     def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
@@ -513,9 +513,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         if item is None:
             raise err
         cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
-        {{#type:listElemType}}
+        {{#type:list_elem_type}}
         cdef {{>types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
-        {{/type:listElemType}}
+        {{/type:list_elem_type}}
         cdef std_libcpp.optional[size_t] found = __list_index[{{> types/CythonCppType}}](self._cpp_obj, indices[0], indices[1], citem)
         if not found.has_value():
             raise err
@@ -525,9 +525,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         item = self._check_item_type(item)
         if item is None:
             return 0
-        {{#type:listElemType}}
+        {{#type:list_elem_type}}
         cdef {{>types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
-        {{/type:listElemType}}
+        {{/type:list_elem_type}}
         return __list_count[{{>types/CythonCppType}}](self._cpp_obj, citem)
 
     @staticmethod
@@ -547,7 +547,7 @@ Sequence.register({{> types/CythonPythonType}})
                 raise TypeError("If you really want to pass a string into a {{> types/PEP484Type}} field, explicitly convert it first.")
             {{/type:containerOfString?}}
             for item in items:
-                {{#type:setElemType}}
+                {{#type:set_elem_type}}
                 {{#type:container?}}
                 if item is None:
                     raise TypeError("None is not of type {{> types/PEP484Type}}")
@@ -563,13 +563,13 @@ Sequence.register({{> types/CythonPythonType}})
                 {{/type:integer?}}
                 {{/type:container?}}
                 deref(c_inst).insert({{> CythonPythonToCppItem}})
-                {{/type:setElemType}}
+                {{/type:set_elem_type}}
         return c_inst
 
     def __contains__(self, item):
         if not self or item is None:
             return False
-        {{#type:setElemType}}
+        {{#type:set_elem_type}}
         {{#type:container?}}
         try:
             if not isinstance(item, {{> types/PythonType}}):
@@ -580,20 +580,20 @@ Sequence.register({{> types/CythonPythonType}})
         if not isinstance(item, {{> types/PythonType}}):
             return False
         return pbool(deref(self._cpp_obj).count({{>CythonPythonToCppItem}}))
-        {{/type:setElemType}}
+        {{/type:set_elem_type}}
 
 
     def __iter__(self):
         if not self:
             return
         cdef __set_iter[{{> types/CythonCppType}}] itr = __set_iter[{{> types/CythonCppType}}](self._cpp_obj)
-        {{#type:setElemType}}
+        {{#type:set_elem_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNext(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-        {{/type:setElemType}}
+        {{/type:set_elem_type}}
 
     def __hash__(self):
         return super().__hash__()
@@ -631,7 +631,7 @@ Set.register({{> types/CythonPythonType}})
         cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
             for key, item in items.items():
-                {{#type:keyType}}
+                {{#type:key_type}}
                 {{#type:container?}}
                 if key is None:
                     raise TypeError("None is not of type {{> types/PEP484Type}}")
@@ -646,8 +646,8 @@ Set.register({{> types/CythonPythonType}})
                 key = <{{> types/CythonPythonType}}> key
                 {{/type:integer?}}
                 {{/type:container?}}
-                {{/type:keyType}}
-                {{#type:valueType}}
+                {{/type:key_type}}
+                {{#type:value_type}}
                 {{#type:container?}}
                 if item is None:
                     raise TypeError("None is not of type {{> types/PEP484Type}}")
@@ -662,18 +662,18 @@ Set.register({{> types/CythonPythonType}})
                 item = <{{> types/CythonPythonType}}> item
                 {{/type:integer?}}
                 {{/type:container?}}
-                {{/type:valueType}}
+                {{/type:value_type}}
 
                 deref(c_inst)[{{!
-                    }}{{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}}{{!
+                    }}{{#type:key_type}}{{> CythonPythonToCppKey}}{{/type:key_type}}{{!
                     }}] = {{!
-                    }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}
+                    }}{{#type:value_type}}{{> CythonPythonToCppItem}}{{/type:value_type}}
         return c_inst
 
     cdef _check_key_type(self, key):
         if not self or key is None:
             return
-        {{#type:keyType}}
+        {{#type:key_type}}
         if isinstance(key, {{> types/PythonType}}):
             return key
         {{#type:container?}}
@@ -682,79 +682,79 @@ Set.register({{> types/CythonPythonType}})
         except:
             pass
         {{/type:container?}}
-        {{/type:keyType}}
+        {{/type:key_type}}
 
     def __getitem__(self, key):
         err = KeyError(f'{key}')
         key = self._check_key_type(key)
         if key is None:
             raise err
-        {{#type:keyType}}
+        {{#type:key_type}}
         cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
-        {{/type:keyType}}
+        {{/type:key_type}}
         if not __map_contains(self._cpp_obj, ckey):
             raise err
-        {{#type:valueType}}
+        {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
         __map_getitem(self._cpp_obj, ckey, citem)
         return {{> ContainerCythonCppToPythonItem}}
-        {{/type:valueType}}
+        {{/type:value_type}}
 
     def __iter__(self):
         if not self:
             return
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
-        {{#type:keyType}}
+        {{#type:key_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextKey(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-        {{/type:keyType}}
+        {{/type:key_type}}
 
     def __contains__(self, key):
         key = self._check_key_type(key)
         if key is None:
             return False
-        {{#type:keyType}}
+        {{#type:key_type}}
         cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
-        {{/type:keyType}}
+        {{/type:key_type}}
         return __map_contains(self._cpp_obj, ckey)
 
     def values(self):
         if not self:
             return
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
-        {{#type:valueType}}
+        {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextValue(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-        {{/type:valueType}}
+        {{/type:value_type}}
 
     def items(self):
         if not self:
             return
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
-        {{#type:keyType}}
+        {{#type:key_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} ckey{{#type:number?}} = 0{{/type:number?}}
-        {{/type:keyType}}
-        {{#type:valueType}}
+        {{/type:key_type}}
+        {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
             }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
-        {{/type:valueType}}
+        {{/type:value_type}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextItem(self._cpp_obj, ckey, citem)
             yield ({{!
-              }}{{#type:keyType}}{{!
+              }}{{#type:key_type}}{{!
               }}{{> ContainerCythonCppToPythonKey}}{{!
-              }}{{/type:keyType}}, {{!
-              }}{{#type:valueType}}{{!
+              }}{{/type:key_type}}, {{!
+              }}{{#type:value_type}}{{!
               }}{{> ContainerCythonCppToPythonItem}}{{!
-              }}{{/type:valueType}})
+              }}{{/type:value_type}})
 
     @staticmethod
     def __get_reflection__():
@@ -833,16 +833,16 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
 
     @staticmethod
     cdef create(cResponseAndClientBufferedStream[{{!
-            }}{{#type:streamFirstResponseType}}{{ > types/CythonCppType}}{{/type:streamFirstResponseType}}, {{!
-            }}{{#type:streamElemType}}{{ > types/CythonCppType}}{{/type:streamElemType}}]& c_obj, __RpcOptions rpc_options):
+            }}{{#type:stream_first_response_type}}{{ > types/CythonCppType}}{{/type:stream_first_response_type}}, {{!
+            }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options):
         __fbthrift_inst = ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}()
-        __fbthrift_inst._stream = ClientBufferedStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}}.create(
+        __fbthrift_inst._stream = ClientBufferedStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}}.create(
             c_obj.stream, rpc_options,
         )
-{{#type:streamFirstResponseType}}
+{{#type:stream_first_response_type}}
         cdef {{> types/CythonCppType}} _value = c_obj.response
         __fbthrift_inst._response = {{> stream/CythonCppValueToPythonValue}}
-{{/type:streamFirstResponseType}}
+{{/type:stream_first_response_type}}
         return __fbthrift_inst
 
     def __iter__(self):

@@ -15,9 +15,9 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> ReadReturnType }}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> ReadReturnType }}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> ReadReturnType }}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}{{> ReadReturnTypeContainer}}{{/type:set?}}{{!

@@ -112,29 +112,29 @@ cdef __StructSpec get_reflection__{{struct:name}}():
 {{#program:containerTypes}}
 {{#type:list?}}
 cdef __ListSpec get_reflection__{{type:flat_name}}():
-    {{#type:listElemType}}
+    {{#type:list_elem_type}}
     return __ListSpec.create(
         value={{> types/PythonType}},
         kind={{> types/ThriftNumberType}},
     )
-    {{/type:listElemType}}
+    {{/type:list_elem_type}}
 {{/type:list?}}
 {{#type:set?}}
 cdef __SetSpec get_reflection__{{type:flat_name}}():
-    {{#type:setElemType}}
+    {{#type:set_elem_type}}
     return __SetSpec.create(
         value={{> types/PythonType}},
         kind={{> types/ThriftNumberType}},
      )
-    {{/type:setElemType}}
+    {{/type:set_elem_type}}
 {{/type:set?}}
 {{#type:map?}}
 cdef __MapSpec get_reflection__{{type:flat_name}}():
     return __MapSpec.create(
-        key={{#type:keyType}}{{> types/PythonType}}{{/type:keyType}},
-        key_kind={{#type:keyType}}{{> types/ThriftNumberType}}{{/type:keyType}},
-        value={{#type:valueType}}{{> types/PythonType}}{{/type:valueType}},
-        value_kind={{#type:valueType}}{{> types/ThriftNumberType}}{{/type:valueType}},
+        key={{#type:key_type}}{{> types/PythonType}}{{/type:key_type}},
+        key_kind={{#type:key_type}}{{> types/ThriftNumberType}}{{/type:key_type}},
+        value={{#type:value_type}}{{> types/PythonType}}{{/type:value_type}},
+        value_kind={{#type:value_type}}{{> types/ThriftNumberType}}{{/type:value_type}},
     )
 {{/type:map?}}
 

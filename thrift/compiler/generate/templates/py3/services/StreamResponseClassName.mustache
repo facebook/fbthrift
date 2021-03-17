@@ -18,9 +18,9 @@
 
 Stream response class name.
 }}{{> common/ModulePath}}.{{!
-}}{{#type:streamHasFirstResponse?}}{{!
+}}{{#type:stream_has_first_response?}}{{!
 }}ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}{{!
-}}{{/type:streamHasFirstResponse?}}{{!
-}}{{^type:streamHasFirstResponse?}}{{!
-}}ServerStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}}{{!
-}}{{/type:streamHasFirstResponse?}}
+}}{{/type:stream_has_first_response?}}{{!
+}}{{^type:stream_has_first_response?}}{{!
+}}ServerStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}}{{!
+}}{{/type:stream_has_first_response?}}

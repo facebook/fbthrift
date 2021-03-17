@@ -25,9 +25,9 @@ public void write0(TProtocol oprot) throws TException {
     {{> FieldType}} _iter{{field:nestedDepth}} = this.{{field:javaName}};
     {{/field:isContainer?}}{{!
 
-    }}{{#type:typedefType}}
+    }}{{#type:typedef_type}}
     {{> FieldType}} _iter{{field:nestedDepth}} = this.{{field:javaName}};
-    {{/type:typedefType}}{{!
+    {{/type:typedef_type}}{{!
 
     }}{{#field:type}}
     {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
