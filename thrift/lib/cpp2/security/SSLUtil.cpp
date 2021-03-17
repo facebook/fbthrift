@@ -47,18 +47,20 @@ class StopTLSSocket : public folly::AsyncSocket {
 
 folly::AsyncSocket::UniquePtr moveToPlaintext(
     folly::AsyncTransportWrapper* transport) {
+  // Grab certs from transport
+  auto selfCert = folly::ssl::BasicTransportCertificate::create(
+      transport->getSelfCertificate());
+  auto peerCert = folly::ssl::BasicTransportCertificate::create(
+      transport->getPeerCertificate());
+
   auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
   DCHECK(sock);
-  // Grab certs + fd from sock
-  auto selfCert =
-      folly::ssl::BasicTransportCertificate::create(sock->getSelfCertificate());
-  auto peerCert =
-      folly::ssl::BasicTransportCertificate::create(sock->getPeerCertificate());
+
   auto eb = sock->getEventBase();
   auto fd = sock->detachNetworkSocket();
   auto zcId = sock->getZeroCopyBufId();
 
-  // create new socket make sure not to throw until
+  // create new socket make sure not to throw
   auto stopTLSSocket = new StopTLSSocket(eb, fd, zcId);
   stopTLSSocket->setApplicationProtocol(transport->getApplicationProtocol());
   auto plaintextTransport = folly::AsyncSocket::UniquePtr(stopTLSSocket);
