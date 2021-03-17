@@ -37,6 +37,7 @@ class Foo;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Foo final  {
  private:
@@ -55,7 +56,6 @@ class Foo final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -70,7 +70,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t bar;
@@ -99,7 +98,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> bar_ref() const& {
     return {this->bar, __isset.bar};
@@ -119,7 +117,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> bar_ref() && {
     return {std::move(this->bar), __isset.bar};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::int32_t* get_bar() const& {
     return bar_ref() ? std::addressof(bar) : nullptr;
@@ -132,9 +129,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.bar = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return bar;
   }
 
@@ -163,3 +158,4 @@ uint32_t Foo::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

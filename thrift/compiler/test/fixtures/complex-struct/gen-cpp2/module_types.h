@@ -653,6 +653,7 @@ typedef ::std::map<::std::int32_t, ::std::int64_t> FMap;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyStructFloatFieldThrowExp final  {
  private:
@@ -671,7 +672,6 @@ class MyStructFloatFieldThrowExp final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructFloatFieldThrowExp() :
       myLongField(0),
       MyByteField(0),
@@ -688,7 +688,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) = default;
 
   MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t myLongField;
@@ -726,7 +725,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
     return {this->myLongField, __isset.myLongField};
@@ -746,9 +744,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongField_ref() && {
     return {std::move(this->myLongField), __isset.myLongField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyByteField_ref() const& {
     return {this->MyByteField, __isset.MyByteField};
@@ -768,9 +764,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyByteField_ref() && {
     return {std::move(this->MyByteField), __isset.MyByteField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField_ref() const& {
     return {this->myStringField, __isset.myStringField};
@@ -790,9 +784,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField_ref() && {
     return {std::move(this->myStringField), __isset.myStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myFloatField_ref() const& {
     return {this->myFloatField, __isset.myFloatField};
@@ -812,7 +804,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myFloatField_ref() && {
     return {std::move(this->myFloatField), __isset.myFloatField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_myLongField() const {
     return myLongField;
@@ -820,9 +811,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongField;
   }
 
@@ -832,9 +821,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int8_t& set_MyByteField(::std::int8_t MyByteField_) {
     MyByteField = MyByteField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyByteField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyByteField;
   }
 
@@ -849,9 +836,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructFloatFieldThrowExp_myStringField_struct_setter = ::std::string>
   ::std::string& set_myStringField(T_MyStructFloatFieldThrowExp_myStringField_struct_setter&& myStringField_) {
     myStringField = std::forward<T_MyStructFloatFieldThrowExp_myStringField_struct_setter>(myStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myStringField;
   }
 
@@ -861,9 +846,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   float& set_myFloatField(float myFloatField_) {
     myFloatField = myFloatField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myFloatField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myFloatField;
   }
 
@@ -910,7 +893,6 @@ class MyStructMapFloatThrowExp final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructMapFloatThrowExp() :
       myLongField(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -925,7 +907,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) = default;
 
   MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t myLongField;
@@ -957,7 +938,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
     return {this->myLongField, __isset.myLongField};
@@ -977,9 +957,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongField_ref() && {
     return {std::move(this->myLongField), __isset.myLongField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapListOfFloats_ref() const& {
     return {this->mapListOfFloats, __isset.mapListOfFloats};
@@ -999,7 +977,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapListOfFloats_ref() && {
     return {std::move(this->mapListOfFloats), __isset.mapListOfFloats};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_myLongField() const {
     return myLongField;
@@ -1007,9 +984,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongField;
   }
   const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>& get_mapListOfFloats() const&;
@@ -1018,9 +993,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>>
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>& set_mapListOfFloats(T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter&& mapListOfFloats_) {
     mapListOfFloats = std::forward<T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter>(mapListOfFloats_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapListOfFloats = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapListOfFloats;
   }
 
@@ -1067,7 +1040,6 @@ class MyDataItem final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1081,7 +1053,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const MyDataItem& rhs) const;
 #ifndef SWIG
@@ -1146,7 +1117,6 @@ class MyStruct final  {
  public:
 
   MyStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1160,7 +1130,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~MyStruct();
@@ -1273,7 +1242,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
@@ -1293,9 +1261,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->MyStringField, __isset.MyStringField};
@@ -1315,9 +1281,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->MyStringField), __isset.MyStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField_ref() const& {
     return {this->MyDataField, __isset.MyDataField};
@@ -1337,9 +1301,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField_ref() && {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
@@ -1359,9 +1321,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
     return {this->MyBoolField, __isset.MyBoolField};
@@ -1381,9 +1341,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField_ref() && {
     return {std::move(this->MyBoolField), __isset.MyBoolField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyByteField_ref() const& {
     return {this->MyByteField, __isset.MyByteField};
@@ -1403,9 +1361,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyByteField_ref() && {
     return {std::move(this->MyByteField), __isset.MyByteField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyShortField_ref() const& {
     return {this->MyShortField, __isset.MyShortField};
@@ -1425,9 +1381,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyShortField_ref() && {
     return {std::move(this->MyShortField), __isset.MyShortField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyLongField_ref() const& {
     return {this->MyLongField, __isset.MyLongField};
@@ -1447,9 +1401,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyLongField_ref() && {
     return {std::move(this->MyLongField), __isset.MyLongField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDoubleField_ref() const& {
     return {this->MyDoubleField, __isset.MyDoubleField};
@@ -1469,9 +1421,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDoubleField_ref() && {
     return {std::move(this->MyDoubleField), __isset.MyDoubleField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lDouble_ref() const& {
     return {this->lDouble, __isset.lDouble};
@@ -1491,9 +1441,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lDouble_ref() && {
     return {std::move(this->lDouble), __isset.lDouble};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lShort_ref() const& {
     return {this->lShort, __isset.lShort};
@@ -1513,9 +1461,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lShort_ref() && {
     return {std::move(this->lShort), __isset.lShort};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lInteger_ref() const& {
     return {this->lInteger, __isset.lInteger};
@@ -1535,9 +1481,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lInteger_ref() && {
     return {std::move(this->lInteger), __isset.lInteger};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lLong_ref() const& {
     return {this->lLong, __isset.lLong};
@@ -1557,9 +1501,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lLong_ref() && {
     return {std::move(this->lLong), __isset.lLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lString_ref() const& {
     return {this->lString, __isset.lString};
@@ -1579,9 +1521,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lString_ref() && {
     return {std::move(this->lString), __isset.lString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lBool_ref() const& {
     return {this->lBool, __isset.lBool};
@@ -1601,9 +1541,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lBool_ref() && {
     return {std::move(this->lBool), __isset.lBool};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::int8_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lByte_ref() const& {
     return {this->lByte, __isset.lByte};
@@ -1623,9 +1561,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lByte_ref() && {
     return {std::move(this->lByte), __isset.lByte};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mShortString_ref() const& {
     return {this->mShortString, __isset.mShortString};
@@ -1645,9 +1581,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mShortString_ref() && {
     return {std::move(this->mShortString), __isset.mShortString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mIntegerString_ref() const& {
     return {this->mIntegerString, __isset.mIntegerString};
@@ -1667,9 +1601,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mIntegerString_ref() && {
     return {std::move(this->mIntegerString), __isset.mIntegerString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, ::cpp2::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mStringMyStruct_ref() const& {
     return {this->mStringMyStruct, __isset.mStringMyStruct};
@@ -1689,9 +1621,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mStringMyStruct_ref() && {
     return {std::move(this->mStringMyStruct), __isset.mStringMyStruct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mStringBool_ref() const& {
     return {this->mStringBool, __isset.mStringBool};
@@ -1711,9 +1641,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mStringBool_ref() && {
     return {std::move(this->mStringBool), __isset.mStringBool};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mIntegerInteger_ref() const& {
     return {this->mIntegerInteger, __isset.mIntegerInteger};
@@ -1733,9 +1661,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mIntegerInteger_ref() && {
     return {std::move(this->mIntegerInteger), __isset.mIntegerInteger};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mIntegerBool_ref() const& {
     return {this->mIntegerBool, __isset.mIntegerBool};
@@ -1755,9 +1681,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mIntegerBool_ref() && {
     return {std::move(this->mIntegerBool), __isset.mIntegerBool};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sShort_ref() const& {
     return {this->sShort, __isset.sShort};
@@ -1777,9 +1701,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sShort_ref() && {
     return {std::move(this->sShort), __isset.sShort};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::cpp2::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sMyStruct_ref() const& {
     return {this->sMyStruct, __isset.sMyStruct};
@@ -1799,9 +1721,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sMyStruct_ref() && {
     return {std::move(this->sMyStruct), __isset.sMyStruct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sLong_ref() const& {
     return {this->sLong, __isset.sLong};
@@ -1821,9 +1741,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sLong_ref() && {
     return {std::move(this->sLong), __isset.sLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sString_ref() const& {
     return {this->sString, __isset.sString};
@@ -1843,9 +1761,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sString_ref() && {
     return {std::move(this->sString), __isset.sString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::int8_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sByte_ref() const& {
     return {this->sByte, __isset.sByte};
@@ -1865,9 +1781,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sByte_ref() && {
     return {std::move(this->sByte), __isset.sByte};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mListList_ref() const& {
     return {this->mListList, __isset.mListList};
@@ -1887,7 +1801,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mListList_ref() && {
     return {std::move(this->mListList), __isset.mListList};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_MyIntField() const {
     return MyIntField;
@@ -1895,9 +1808,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
 
@@ -1912,9 +1823,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
   const ::cpp2::MyDataItem& get_MyDataField() const&;
@@ -1923,9 +1832,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyDataField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyDataField;
   }
 
@@ -1935,9 +1842,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
   }
 
@@ -1947,9 +1852,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField = MyBoolField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyBoolField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBoolField;
   }
 
@@ -1959,9 +1862,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int8_t& set_MyByteField(::std::int8_t MyByteField_) {
     MyByteField = MyByteField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyByteField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyByteField;
   }
 
@@ -1971,9 +1872,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int16_t& set_MyShortField(::std::int16_t MyShortField_) {
     MyShortField = MyShortField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyShortField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyShortField;
   }
 
@@ -1983,9 +1882,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_MyLongField(::std::int64_t MyLongField_) {
     MyLongField = MyLongField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyLongField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyLongField;
   }
 
@@ -1995,9 +1892,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_MyDoubleField(double MyDoubleField_) {
     MyDoubleField = MyDoubleField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyDoubleField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyDoubleField;
   }
   const ::std::vector<double>& get_lDouble() const&;
@@ -2006,9 +1901,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lDouble_struct_setter = ::std::vector<double>>
   ::std::vector<double>& set_lDouble(T_MyStruct_lDouble_struct_setter&& lDouble_) {
     lDouble = std::forward<T_MyStruct_lDouble_struct_setter>(lDouble_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lDouble = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lDouble;
   }
   const ::std::vector<::std::int16_t>& get_lShort() const&;
@@ -2017,9 +1910,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lShort_struct_setter = ::std::vector<::std::int16_t>>
   ::std::vector<::std::int16_t>& set_lShort(T_MyStruct_lShort_struct_setter&& lShort_) {
     lShort = std::forward<T_MyStruct_lShort_struct_setter>(lShort_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lShort = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lShort;
   }
   const ::std::vector<::std::int32_t>& get_lInteger() const&;
@@ -2028,9 +1919,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lInteger_struct_setter = ::std::vector<::std::int32_t>>
   ::std::vector<::std::int32_t>& set_lInteger(T_MyStruct_lInteger_struct_setter&& lInteger_) {
     lInteger = std::forward<T_MyStruct_lInteger_struct_setter>(lInteger_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lInteger = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lInteger;
   }
   const ::std::vector<::std::int64_t>& get_lLong() const&;
@@ -2039,9 +1928,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lLong_struct_setter = ::std::vector<::std::int64_t>>
   ::std::vector<::std::int64_t>& set_lLong(T_MyStruct_lLong_struct_setter&& lLong_) {
     lLong = std::forward<T_MyStruct_lLong_struct_setter>(lLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lLong;
   }
   const ::std::vector<::std::string>& get_lString() const&;
@@ -2050,9 +1937,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lString_struct_setter = ::std::vector<::std::string>>
   ::std::vector<::std::string>& set_lString(T_MyStruct_lString_struct_setter&& lString_) {
     lString = std::forward<T_MyStruct_lString_struct_setter>(lString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lString;
   }
   const ::std::vector<bool>& get_lBool() const&;
@@ -2061,9 +1946,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lBool_struct_setter = ::std::vector<bool>>
   ::std::vector<bool>& set_lBool(T_MyStruct_lBool_struct_setter&& lBool_) {
     lBool = std::forward<T_MyStruct_lBool_struct_setter>(lBool_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lBool = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lBool;
   }
   const ::std::vector<::std::int8_t>& get_lByte() const&;
@@ -2072,9 +1955,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_lByte_struct_setter = ::std::vector<::std::int8_t>>
   ::std::vector<::std::int8_t>& set_lByte(T_MyStruct_lByte_struct_setter&& lByte_) {
     lByte = std::forward<T_MyStruct_lByte_struct_setter>(lByte_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lByte = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lByte;
   }
   const ::std::map<::std::int16_t, ::std::string>& get_mShortString() const&;
@@ -2083,9 +1964,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mShortString_struct_setter = ::std::map<::std::int16_t, ::std::string>>
   ::std::map<::std::int16_t, ::std::string>& set_mShortString(T_MyStruct_mShortString_struct_setter&& mShortString_) {
     mShortString = std::forward<T_MyStruct_mShortString_struct_setter>(mShortString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mShortString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mShortString;
   }
   const ::std::map<::std::int32_t, ::std::string>& get_mIntegerString() const&;
@@ -2094,9 +1973,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mIntegerString_struct_setter = ::std::map<::std::int32_t, ::std::string>>
   ::std::map<::std::int32_t, ::std::string>& set_mIntegerString(T_MyStruct_mIntegerString_struct_setter&& mIntegerString_) {
     mIntegerString = std::forward<T_MyStruct_mIntegerString_struct_setter>(mIntegerString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mIntegerString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mIntegerString;
   }
   const ::std::map<::std::string, ::cpp2::MyStruct>& get_mStringMyStruct() const&;
@@ -2105,9 +1982,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mStringMyStruct_struct_setter = ::std::map<::std::string, ::cpp2::MyStruct>>
   ::std::map<::std::string, ::cpp2::MyStruct>& set_mStringMyStruct(T_MyStruct_mStringMyStruct_struct_setter&& mStringMyStruct_) {
     mStringMyStruct = std::forward<T_MyStruct_mStringMyStruct_struct_setter>(mStringMyStruct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mStringMyStruct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mStringMyStruct;
   }
   const ::std::map<::std::string, bool>& get_mStringBool() const&;
@@ -2116,9 +1991,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mStringBool_struct_setter = ::std::map<::std::string, bool>>
   ::std::map<::std::string, bool>& set_mStringBool(T_MyStruct_mStringBool_struct_setter&& mStringBool_) {
     mStringBool = std::forward<T_MyStruct_mStringBool_struct_setter>(mStringBool_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mStringBool = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mStringBool;
   }
   const ::std::map<::std::int32_t, ::std::int32_t>& get_mIntegerInteger() const&;
@@ -2127,9 +2000,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mIntegerInteger_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
   ::std::map<::std::int32_t, ::std::int32_t>& set_mIntegerInteger(T_MyStruct_mIntegerInteger_struct_setter&& mIntegerInteger_) {
     mIntegerInteger = std::forward<T_MyStruct_mIntegerInteger_struct_setter>(mIntegerInteger_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mIntegerInteger = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mIntegerInteger;
   }
   const ::std::map<::std::int32_t, bool>& get_mIntegerBool() const&;
@@ -2138,9 +2009,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mIntegerBool_struct_setter = ::std::map<::std::int32_t, bool>>
   ::std::map<::std::int32_t, bool>& set_mIntegerBool(T_MyStruct_mIntegerBool_struct_setter&& mIntegerBool_) {
     mIntegerBool = std::forward<T_MyStruct_mIntegerBool_struct_setter>(mIntegerBool_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mIntegerBool = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mIntegerBool;
   }
   const ::std::set<::std::int16_t>& get_sShort() const&;
@@ -2149,9 +2018,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_sShort_struct_setter = ::std::set<::std::int16_t>>
   ::std::set<::std::int16_t>& set_sShort(T_MyStruct_sShort_struct_setter&& sShort_) {
     sShort = std::forward<T_MyStruct_sShort_struct_setter>(sShort_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sShort = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sShort;
   }
   const ::std::set<::cpp2::MyStruct>& get_sMyStruct() const&;
@@ -2160,9 +2027,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_sMyStruct_struct_setter = ::std::set<::cpp2::MyStruct>>
   ::std::set<::cpp2::MyStruct>& set_sMyStruct(T_MyStruct_sMyStruct_struct_setter&& sMyStruct_) {
     sMyStruct = std::forward<T_MyStruct_sMyStruct_struct_setter>(sMyStruct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sMyStruct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sMyStruct;
   }
   const ::std::set<::std::int64_t>& get_sLong() const&;
@@ -2171,9 +2036,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_sLong_struct_setter = ::std::set<::std::int64_t>>
   ::std::set<::std::int64_t>& set_sLong(T_MyStruct_sLong_struct_setter&& sLong_) {
     sLong = std::forward<T_MyStruct_sLong_struct_setter>(sLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sLong;
   }
   const ::std::set<::std::string>& get_sString() const&;
@@ -2182,9 +2045,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_sString_struct_setter = ::std::set<::std::string>>
   ::std::set<::std::string>& set_sString(T_MyStruct_sString_struct_setter&& sString_) {
     sString = std::forward<T_MyStruct_sString_struct_setter>(sString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sString;
   }
   const ::std::set<::std::int8_t>& get_sByte() const&;
@@ -2193,9 +2054,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_sByte_struct_setter = ::std::set<::std::int8_t>>
   ::std::set<::std::int8_t>& set_sByte(T_MyStruct_sByte_struct_setter&& sByte_) {
     sByte = std::forward<T_MyStruct_sByte_struct_setter>(sByte_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sByte = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sByte;
   }
   const ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& get_mListList() const&;
@@ -2204,9 +2063,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_mListList_struct_setter = ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>>
   ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& set_mListList(T_MyStruct_mListList_struct_setter&& mListList_) {
     mListList = std::forward<T_MyStruct_mListList_struct_setter>(mListList_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mListList = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mListList;
   }
 
@@ -2253,7 +2110,6 @@ class SimpleStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SimpleStruct() :
       age(60LL),
       name(apache::thrift::StringTraits< std::string>::fromStringLiteral("Batman")) {}
@@ -2269,7 +2125,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SimpleStruct& operator=(SimpleStruct&&) = default;
 
   SimpleStruct& operator=(const SimpleStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t age;
@@ -2301,7 +2156,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> age_ref() const& {
     return {this->age, __isset.age};
@@ -2321,9 +2175,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> age_ref() && {
     return {std::move(this->age), __isset.age};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -2343,7 +2195,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_age() const {
     return age;
@@ -2351,9 +2202,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_age(::std::int64_t age_) {
     age = age_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.age = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return age;
   }
 
@@ -2368,9 +2217,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_SimpleStruct_name_struct_setter = ::std::string>
   ::std::string& set_name(T_SimpleStruct_name_struct_setter&& name_) {
     name = std::forward<T_SimpleStruct_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -2418,7 +2265,6 @@ class ComplexNestedStruct final  {
  public:
 
   ComplexNestedStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2432,7 +2278,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedStruct& operator=(ComplexNestedStruct&&) = default;
 
   ComplexNestedStruct& operator=(const ComplexNestedStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~ComplexNestedStruct();
@@ -2515,7 +2360,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> setOfSetOfInt_ref() const& {
     return {this->setOfSetOfInt, __isset.setOfSetOfInt};
@@ -2535,9 +2379,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> setOfSetOfInt_ref() && {
     return {std::move(this->setOfSetOfInt), __isset.setOfSetOfInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listofListOfListOfListOfEnum_ref() const& {
     return {this->listofListOfListOfListOfEnum, __isset.listofListOfListOfListOfEnum};
@@ -2557,9 +2399,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listofListOfListOfListOfEnum_ref() && {
     return {std::move(this->listofListOfListOfListOfEnum), __isset.listofListOfListOfListOfEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::vector<::cpp2::MyStruct>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listOfListOfMyStruct_ref() const& {
     return {this->listOfListOfMyStruct, __isset.listOfListOfMyStruct};
@@ -2579,9 +2419,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listOfListOfMyStruct_ref() && {
     return {std::move(this->listOfListOfMyStruct), __isset.listOfListOfMyStruct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::vector<::std::vector<::std::int64_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> setOfListOfListOfLong_ref() const& {
     return {this->setOfListOfListOfLong, __isset.setOfListOfListOfLong};
@@ -2601,9 +2439,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> setOfListOfListOfLong_ref() && {
     return {std::move(this->setOfListOfListOfLong), __isset.setOfListOfListOfLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::set<::std::set<::std::int64_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> setOfSetOfsetOfLong_ref() const& {
     return {this->setOfSetOfsetOfLong, __isset.setOfSetOfsetOfLong};
@@ -2623,9 +2459,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> setOfSetOfsetOfLong_ref() && {
     return {std::move(this->setOfSetOfsetOfLong), __isset.setOfSetOfsetOfLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapStructListOfListOfLong_ref() const& {
     return {this->mapStructListOfListOfLong, __isset.mapStructListOfListOfLong};
@@ -2645,9 +2479,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapStructListOfListOfLong_ref() && {
     return {std::move(this->mapStructListOfListOfLong), __isset.mapStructListOfListOfLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::cpp2::MyStruct, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mKeyStructValInt_ref() const& {
     return {this->mKeyStructValInt, __isset.mKeyStructValInt};
@@ -2667,9 +2499,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mKeyStructValInt_ref() && {
     return {std::move(this->mKeyStructValInt), __isset.mKeyStructValInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listOfMapKeyIntValInt_ref() const& {
     return {this->listOfMapKeyIntValInt, __isset.listOfMapKeyIntValInt};
@@ -2689,9 +2519,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listOfMapKeyIntValInt_ref() && {
     return {std::move(this->listOfMapKeyIntValInt), __isset.listOfMapKeyIntValInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listOfMapKeyStrValList_ref() const& {
     return {this->listOfMapKeyStrValList, __isset.listOfMapKeyStrValList};
@@ -2711,9 +2539,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listOfMapKeyStrValList_ref() && {
     return {std::move(this->listOfMapKeyStrValList), __isset.listOfMapKeyStrValList};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::set<::std::int32_t>, ::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeySetValLong_ref() const& {
     return {this->mapKeySetValLong, __isset.mapKeySetValLong};
@@ -2733,9 +2559,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeySetValLong_ref() && {
     return {std::move(this->mapKeySetValLong), __isset.mapKeySetValLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::vector<::std::string>, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeyListValLong_ref() const& {
     return {this->mapKeyListValLong, __isset.mapKeyListValLong};
@@ -2755,9 +2579,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeyListValLong_ref() && {
     return {std::move(this->mapKeyListValLong), __isset.mapKeyListValLong};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeyMapValMap_ref() const& {
     return {this->mapKeyMapValMap, __isset.mapKeyMapValMap};
@@ -2777,9 +2599,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeyMapValMap_ref() && {
     return {std::move(this->mapKeyMapValMap), __isset.mapKeyMapValMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeySetValMap_ref() const& {
     return {this->mapKeySetValMap, __isset.mapKeySetValMap};
@@ -2799,9 +2619,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeySetValMap_ref() && {
     return {std::move(this->mapKeySetValMap), __isset.mapKeySetValMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> NestedMaps_ref() const& {
     return {this->NestedMaps, __isset.NestedMaps};
@@ -2821,9 +2639,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> NestedMaps_ref() && {
     return {std::move(this->NestedMaps), __isset.NestedMaps};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeyIntValList_ref() const& {
     return {this->mapKeyIntValList, __isset.mapKeyIntValList};
@@ -2843,9 +2659,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeyIntValList_ref() && {
     return {std::move(this->mapKeyIntValList), __isset.mapKeyIntValList};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::set<bool>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeyIntValSet_ref() const& {
     return {this->mapKeyIntValSet, __isset.mapKeyIntValSet};
@@ -2865,9 +2679,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeyIntValSet_ref() && {
     return {std::move(this->mapKeyIntValSet), __isset.mapKeyIntValSet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::set<bool>, ::cpp2::MyEnum>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeySetValInt_ref() const& {
     return {this->mapKeySetValInt, __isset.mapKeySetValInt};
@@ -2887,9 +2699,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeySetValInt_ref() && {
     return {std::move(this->mapKeySetValInt), __isset.mapKeySetValInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapKeyListValSet_ref() const& {
     return {this->mapKeyListValSet, __isset.mapKeyListValSet};
@@ -2909,16 +2719,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapKeyListValSet_ref() && {
     return {std::move(this->mapKeyListValSet), __isset.mapKeyListValSet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::std::set<::std::set<::std::int32_t>>& get_setOfSetOfInt() const&;
   ::std::set<::std::set<::std::int32_t>> get_setOfSetOfInt() &&;
 
   template <typename T_ComplexNestedStruct_setOfSetOfInt_struct_setter = ::std::set<::std::set<::std::int32_t>>>
   ::std::set<::std::set<::std::int32_t>>& set_setOfSetOfInt(T_ComplexNestedStruct_setOfSetOfInt_struct_setter&& setOfSetOfInt_) {
     setOfSetOfInt = std::forward<T_ComplexNestedStruct_setOfSetOfInt_struct_setter>(setOfSetOfInt_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.setOfSetOfInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return setOfSetOfInt;
   }
   const ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>& get_listofListOfListOfListOfEnum() const&;
@@ -2927,9 +2734,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>>
   ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>& set_listofListOfListOfListOfEnum(T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter&& listofListOfListOfListOfEnum_) {
     listofListOfListOfListOfEnum = std::forward<T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter>(listofListOfListOfListOfEnum_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listofListOfListOfListOfEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listofListOfListOfListOfEnum;
   }
   const ::std::vector<::std::vector<::cpp2::MyStruct>>& get_listOfListOfMyStruct() const&;
@@ -2938,9 +2743,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter = ::std::vector<::std::vector<::cpp2::MyStruct>>>
   ::std::vector<::std::vector<::cpp2::MyStruct>>& set_listOfListOfMyStruct(T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter&& listOfListOfMyStruct_) {
     listOfListOfMyStruct = std::forward<T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter>(listOfListOfMyStruct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listOfListOfMyStruct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listOfListOfMyStruct;
   }
   const ::std::set<::std::vector<::std::vector<::std::int64_t>>>& get_setOfListOfListOfLong() const&;
@@ -2949,9 +2752,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter = ::std::set<::std::vector<::std::vector<::std::int64_t>>>>
   ::std::set<::std::vector<::std::vector<::std::int64_t>>>& set_setOfListOfListOfLong(T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter&& setOfListOfListOfLong_) {
     setOfListOfListOfLong = std::forward<T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter>(setOfListOfListOfLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.setOfListOfListOfLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return setOfListOfListOfLong;
   }
   const ::std::set<::std::set<::std::set<::std::int64_t>>>& get_setOfSetOfsetOfLong() const&;
@@ -2960,9 +2761,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter = ::std::set<::std::set<::std::set<::std::int64_t>>>>
   ::std::set<::std::set<::std::set<::std::int64_t>>>& set_setOfSetOfsetOfLong(T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter&& setOfSetOfsetOfLong_) {
     setOfSetOfsetOfLong = std::forward<T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter>(setOfSetOfsetOfLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.setOfSetOfsetOfLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return setOfSetOfsetOfLong;
   }
   const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>& get_mapStructListOfListOfLong() const&;
@@ -2971,9 +2770,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>& set_mapStructListOfListOfLong(T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter&& mapStructListOfListOfLong_) {
     mapStructListOfListOfLong = std::forward<T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter>(mapStructListOfListOfLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapStructListOfListOfLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapStructListOfListOfLong;
   }
   const ::std::map<::cpp2::MyStruct, ::std::int32_t>& get_mKeyStructValInt() const&;
@@ -2982,9 +2779,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mKeyStructValInt_struct_setter = ::std::map<::cpp2::MyStruct, ::std::int32_t>>
   ::std::map<::cpp2::MyStruct, ::std::int32_t>& set_mKeyStructValInt(T_ComplexNestedStruct_mKeyStructValInt_struct_setter&& mKeyStructValInt_) {
     mKeyStructValInt = std::forward<T_ComplexNestedStruct_mKeyStructValInt_struct_setter>(mKeyStructValInt_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mKeyStructValInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mKeyStructValInt;
   }
   const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& get_listOfMapKeyIntValInt() const&;
@@ -2993,9 +2788,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter = ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>
   ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& set_listOfMapKeyIntValInt(T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter&& listOfMapKeyIntValInt_) {
     listOfMapKeyIntValInt = std::forward<T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter>(listOfMapKeyIntValInt_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listOfMapKeyIntValInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listOfMapKeyIntValInt;
   }
   const ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>& get_listOfMapKeyStrValList() const&;
@@ -3004,9 +2797,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter = ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>
   ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>& set_listOfMapKeyStrValList(T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter&& listOfMapKeyStrValList_) {
     listOfMapKeyStrValList = std::forward<T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter>(listOfMapKeyStrValList_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listOfMapKeyStrValList = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listOfMapKeyStrValList;
   }
   const ::std::map<::std::set<::std::int32_t>, ::std::int64_t>& get_mapKeySetValLong() const&;
@@ -3015,9 +2806,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeySetValLong_struct_setter = ::std::map<::std::set<::std::int32_t>, ::std::int64_t>>
   ::std::map<::std::set<::std::int32_t>, ::std::int64_t>& set_mapKeySetValLong(T_ComplexNestedStruct_mapKeySetValLong_struct_setter&& mapKeySetValLong_) {
     mapKeySetValLong = std::forward<T_ComplexNestedStruct_mapKeySetValLong_struct_setter>(mapKeySetValLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeySetValLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeySetValLong;
   }
   const ::std::map<::std::vector<::std::string>, ::std::int32_t>& get_mapKeyListValLong() const&;
@@ -3026,9 +2815,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeyListValLong_struct_setter = ::std::map<::std::vector<::std::string>, ::std::int32_t>>
   ::std::map<::std::vector<::std::string>, ::std::int32_t>& set_mapKeyListValLong(T_ComplexNestedStruct_mapKeyListValLong_struct_setter&& mapKeyListValLong_) {
     mapKeyListValLong = std::forward<T_ComplexNestedStruct_mapKeyListValLong_struct_setter>(mapKeyListValLong_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeyListValLong = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeyListValLong;
   }
   const ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& get_mapKeyMapValMap() const&;
@@ -3037,9 +2824,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeyMapValMap_struct_setter = ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
   ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& set_mapKeyMapValMap(T_ComplexNestedStruct_mapKeyMapValMap_struct_setter&& mapKeyMapValMap_) {
     mapKeyMapValMap = std::forward<T_ComplexNestedStruct_mapKeyMapValMap_struct_setter>(mapKeyMapValMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeyMapValMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeyMapValMap;
   }
   const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_mapKeySetValMap() const&;
@@ -3048,9 +2833,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeySetValMap_struct_setter = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_mapKeySetValMap(T_ComplexNestedStruct_mapKeySetValMap_struct_setter&& mapKeySetValMap_) {
     mapKeySetValMap = std::forward<T_ComplexNestedStruct_mapKeySetValMap_struct_setter>(mapKeySetValMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeySetValMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeySetValMap;
   }
   const ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& get_NestedMaps() const&;
@@ -3059,9 +2842,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_NestedMaps_struct_setter = ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
   ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& set_NestedMaps(T_ComplexNestedStruct_NestedMaps_struct_setter&& NestedMaps_) {
     NestedMaps = std::forward<T_ComplexNestedStruct_NestedMaps_struct_setter>(NestedMaps_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.NestedMaps = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return NestedMaps;
   }
   const ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>& get_mapKeyIntValList() const&;
@@ -3070,9 +2851,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeyIntValList_struct_setter = ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>
   ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>& set_mapKeyIntValList(T_ComplexNestedStruct_mapKeyIntValList_struct_setter&& mapKeyIntValList_) {
     mapKeyIntValList = std::forward<T_ComplexNestedStruct_mapKeyIntValList_struct_setter>(mapKeyIntValList_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeyIntValList = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeyIntValList;
   }
   const ::std::map<::std::int32_t, ::std::set<bool>>& get_mapKeyIntValSet() const&;
@@ -3081,9 +2860,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeyIntValSet_struct_setter = ::std::map<::std::int32_t, ::std::set<bool>>>
   ::std::map<::std::int32_t, ::std::set<bool>>& set_mapKeyIntValSet(T_ComplexNestedStruct_mapKeyIntValSet_struct_setter&& mapKeyIntValSet_) {
     mapKeyIntValSet = std::forward<T_ComplexNestedStruct_mapKeyIntValSet_struct_setter>(mapKeyIntValSet_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeyIntValSet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeyIntValSet;
   }
   const ::std::map<::std::set<bool>, ::cpp2::MyEnum>& get_mapKeySetValInt() const&;
@@ -3092,9 +2869,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeySetValInt_struct_setter = ::std::map<::std::set<bool>, ::cpp2::MyEnum>>
   ::std::map<::std::set<bool>, ::cpp2::MyEnum>& set_mapKeySetValInt(T_ComplexNestedStruct_mapKeySetValInt_struct_setter&& mapKeySetValInt_) {
     mapKeySetValInt = std::forward<T_ComplexNestedStruct_mapKeySetValInt_struct_setter>(mapKeySetValInt_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeySetValInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeySetValInt;
   }
   const ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>& get_mapKeyListValSet() const&;
@@ -3103,9 +2878,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexNestedStruct_mapKeyListValSet_struct_setter = ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>>
   ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>& set_mapKeyListValSet(T_ComplexNestedStruct_mapKeyListValSet_struct_setter&& mapKeyListValSet_) {
     mapKeyListValSet = std::forward<T_ComplexNestedStruct_mapKeyListValSet_struct_setter>(mapKeyListValSet_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapKeyListValSet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapKeyListValSet;
   }
 
@@ -3716,7 +3489,6 @@ class defaultStruct final  {
  public:
 
   defaultStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -3730,7 +3502,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   defaultStruct& operator=(defaultStruct&&) = default;
 
   defaultStruct& operator=(const defaultStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~defaultStruct();
@@ -3825,7 +3596,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongDFset_ref() const& {
     return {this->myLongDFset, __isset.myLongDFset};
@@ -3845,9 +3615,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongDFset_ref() && {
     return {std::move(this->myLongDFset), __isset.myLongDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongDF_ref() const& {
     return {this->myLongDF, __isset.myLongDF};
@@ -3867,9 +3635,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongDF_ref() && {
     return {std::move(this->myLongDF), __isset.myLongDF};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> portDFset_ref() const& {
     return {this->portDFset, __isset.portDFset};
@@ -3889,9 +3655,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> portDFset_ref() && {
     return {std::move(this->portDFset), __isset.portDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> portNum_ref() const& {
     return {this->portNum, __isset.portNum};
@@ -3911,9 +3675,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> portNum_ref() && {
     return {std::move(this->portNum), __isset.portNum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBinaryDFset_ref() const& {
     return {this->myBinaryDFset, __isset.myBinaryDFset};
@@ -3933,9 +3695,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBinaryDFset_ref() && {
     return {std::move(this->myBinaryDFset), __isset.myBinaryDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBinary_ref() const& {
     return {this->myBinary, __isset.myBinary};
@@ -3955,9 +3715,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBinary_ref() && {
     return {std::move(this->myBinary), __isset.myBinary};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myByteDFSet_ref() const& {
     return {this->myByteDFSet, __isset.myByteDFSet};
@@ -3977,9 +3735,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myByteDFSet_ref() && {
     return {std::move(this->myByteDFSet), __isset.myByteDFSet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myByte_ref() const& {
     return {this->myByte, __isset.myByte};
@@ -3999,9 +3755,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myByte_ref() && {
     return {std::move(this->myByte), __isset.myByte};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myDoubleDFset_ref() const& {
     return {this->myDoubleDFset, __isset.myDoubleDFset};
@@ -4021,9 +3775,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myDoubleDFset_ref() && {
     return {std::move(this->myDoubleDFset), __isset.myDoubleDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myDoubleDFZero_ref() const& {
     return {this->myDoubleDFZero, __isset.myDoubleDFZero};
@@ -4043,9 +3795,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myDoubleDFZero_ref() && {
     return {std::move(this->myDoubleDFZero), __isset.myDoubleDFZero};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myDouble_ref() const& {
     return {this->myDouble, __isset.myDouble};
@@ -4065,9 +3815,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myDouble_ref() && {
     return {std::move(this->myDouble), __isset.myDouble};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
     return {this->field3, __isset.field3};
@@ -4087,9 +3835,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
     return {std::move(this->field3), __isset.field3};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::cpp2::MyEnum>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myList_ref() const& {
     return {this->myList, __isset.myList};
@@ -4109,9 +3855,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myList_ref() && {
     return {std::move(this->myList), __isset.myList};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mySet_ref() const& {
     return {this->mySet, __isset.mySet};
@@ -4131,9 +3875,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mySet_ref() && {
     return {std::move(this->mySet), __isset.mySet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::SimpleStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> simpleStruct_ref() const& {
     return {this->simpleStruct, __isset.simpleStruct};
@@ -4153,9 +3895,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> simpleStruct_ref() && {
     return {std::move(this->simpleStruct), __isset.simpleStruct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::cpp2::SimpleStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listStructDFset_ref() const& {
     return {this->listStructDFset, __isset.listStructDFset};
@@ -4175,9 +3915,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listStructDFset_ref() && {
     return {std::move(this->listStructDFset), __isset.listStructDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myUnion_ref() const& {
     return {this->myUnion, __isset.myUnion};
@@ -4197,9 +3935,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myUnion_ref() && {
     return {std::move(this->myUnion), __isset.myUnion};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::cpp2::MyUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listUnionDFset_ref() const& {
     return {this->listUnionDFset, __isset.listUnionDFset};
@@ -4219,9 +3955,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listUnionDFset_ref() && {
     return {std::move(this->listUnionDFset), __isset.listUnionDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapNestlistStructDfSet_ref() const& {
     return {this->mapNestlistStructDfSet, __isset.mapNestlistStructDfSet};
@@ -4241,9 +3975,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapNestlistStructDfSet_ref() && {
     return {std::move(this->mapNestlistStructDfSet), __isset.mapNestlistStructDfSet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapJavaTypeDFset_ref() const& {
     return {this->mapJavaTypeDFset, __isset.mapJavaTypeDFset};
@@ -4263,9 +3995,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapJavaTypeDFset_ref() && {
     return {std::move(this->mapJavaTypeDFset), __isset.mapJavaTypeDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int64_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> emptyMap_ref() const& {
     return {this->emptyMap, __isset.emptyMap};
@@ -4285,9 +4015,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> emptyMap_ref() && {
     return {std::move(this->emptyMap), __isset.emptyMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> enumMapDFset_ref() const& {
     return {this->enumMapDFset, __isset.enumMapDFset};
@@ -4307,7 +4035,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> enumMapDFset_ref() && {
     return {std::move(this->enumMapDFset), __isset.enumMapDFset};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_myLongDFset() const {
     return myLongDFset;
@@ -4315,9 +4042,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_myLongDFset(::std::int64_t myLongDFset_) {
     myLongDFset = myLongDFset_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongDFset;
   }
 
@@ -4327,9 +4052,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_myLongDF(::std::int64_t myLongDF_) {
     myLongDF = myLongDF_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongDF = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongDF;
   }
 
@@ -4339,9 +4062,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_portDFset(::std::int32_t portDFset_) {
     portDFset = portDFset_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.portDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return portDFset;
   }
 
@@ -4351,9 +4072,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_portNum(::std::int32_t portNum_) {
     portNum = portNum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.portNum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return portNum;
   }
 
@@ -4368,9 +4087,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_myBinaryDFset_struct_setter = ::std::string>
   ::std::string& set_myBinaryDFset(T_defaultStruct_myBinaryDFset_struct_setter&& myBinaryDFset_) {
     myBinaryDFset = std::forward<T_defaultStruct_myBinaryDFset_struct_setter>(myBinaryDFset_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myBinaryDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myBinaryDFset;
   }
 
@@ -4385,9 +4102,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_myBinary_struct_setter = ::std::string>
   ::std::string& set_myBinary(T_defaultStruct_myBinary_struct_setter&& myBinary_) {
     myBinary = std::forward<T_defaultStruct_myBinary_struct_setter>(myBinary_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myBinary = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myBinary;
   }
 
@@ -4397,9 +4112,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int8_t& set_myByteDFSet(::std::int8_t myByteDFSet_) {
     myByteDFSet = myByteDFSet_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myByteDFSet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myByteDFSet;
   }
 
@@ -4409,9 +4122,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int8_t& set_myByte(::std::int8_t myByte_) {
     myByte = myByte_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myByte = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myByte;
   }
 
@@ -4421,9 +4132,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_myDoubleDFset(double myDoubleDFset_) {
     myDoubleDFset = myDoubleDFset_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myDoubleDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myDoubleDFset;
   }
 
@@ -4433,9 +4142,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_myDoubleDFZero(double myDoubleDFZero_) {
     myDoubleDFZero = myDoubleDFZero_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myDoubleDFZero = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myDoubleDFZero;
   }
 
@@ -4445,9 +4152,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_myDouble(double myDouble_) {
     myDouble = myDouble_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myDouble = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myDouble;
   }
   const ::std::map<::std::int32_t, ::std::string>& get_field3() const&;
@@ -4456,9 +4161,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_field3_struct_setter = ::std::map<::std::int32_t, ::std::string>>
   ::std::map<::std::int32_t, ::std::string>& set_field3(T_defaultStruct_field3_struct_setter&& field3_) {
     field3 = std::forward<T_defaultStruct_field3_struct_setter>(field3_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.field3 = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return field3;
   }
   const ::std::vector<::cpp2::MyEnum>& get_myList() const&;
@@ -4467,9 +4170,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_myList_struct_setter = ::std::vector<::cpp2::MyEnum>>
   ::std::vector<::cpp2::MyEnum>& set_myList(T_defaultStruct_myList_struct_setter&& myList_) {
     myList = std::forward<T_defaultStruct_myList_struct_setter>(myList_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myList = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myList;
   }
   const ::std::set<::std::string>& get_mySet() const&;
@@ -4478,9 +4179,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_mySet_struct_setter = ::std::set<::std::string>>
   ::std::set<::std::string>& set_mySet(T_defaultStruct_mySet_struct_setter&& mySet_) {
     mySet = std::forward<T_defaultStruct_mySet_struct_setter>(mySet_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mySet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mySet;
   }
   const ::cpp2::SimpleStruct& get_simpleStruct() const&;
@@ -4489,9 +4188,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_simpleStruct_struct_setter = ::cpp2::SimpleStruct>
   ::cpp2::SimpleStruct& set_simpleStruct(T_defaultStruct_simpleStruct_struct_setter&& simpleStruct_) {
     simpleStruct = std::forward<T_defaultStruct_simpleStruct_struct_setter>(simpleStruct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.simpleStruct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return simpleStruct;
   }
   const ::std::vector<::cpp2::SimpleStruct>& get_listStructDFset() const&;
@@ -4500,9 +4197,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_listStructDFset_struct_setter = ::std::vector<::cpp2::SimpleStruct>>
   ::std::vector<::cpp2::SimpleStruct>& set_listStructDFset(T_defaultStruct_listStructDFset_struct_setter&& listStructDFset_) {
     listStructDFset = std::forward<T_defaultStruct_listStructDFset_struct_setter>(listStructDFset_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listStructDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listStructDFset;
   }
   const ::cpp2::MyUnion& get_myUnion() const&;
@@ -4511,9 +4206,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_myUnion_struct_setter = ::cpp2::MyUnion>
   ::cpp2::MyUnion& set_myUnion(T_defaultStruct_myUnion_struct_setter&& myUnion_) {
     myUnion = std::forward<T_defaultStruct_myUnion_struct_setter>(myUnion_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myUnion = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myUnion;
   }
   const ::std::vector<::cpp2::MyUnion>& get_listUnionDFset() const&;
@@ -4522,9 +4215,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_listUnionDFset_struct_setter = ::std::vector<::cpp2::MyUnion>>
   ::std::vector<::cpp2::MyUnion>& set_listUnionDFset(T_defaultStruct_listUnionDFset_struct_setter&& listUnionDFset_) {
     listUnionDFset = std::forward<T_defaultStruct_listUnionDFset_struct_setter>(listUnionDFset_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listUnionDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listUnionDFset;
   }
   const ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>& get_mapNestlistStructDfSet() const&;
@@ -4533,9 +4224,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_mapNestlistStructDfSet_struct_setter = ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>
   ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>& set_mapNestlistStructDfSet(T_defaultStruct_mapNestlistStructDfSet_struct_setter&& mapNestlistStructDfSet_) {
     mapNestlistStructDfSet = std::forward<T_defaultStruct_mapNestlistStructDfSet_struct_setter>(mapNestlistStructDfSet_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapNestlistStructDfSet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapNestlistStructDfSet;
   }
   const ::std::map<::std::int64_t, ::std::string>& get_mapJavaTypeDFset() const&;
@@ -4544,9 +4233,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_mapJavaTypeDFset_struct_setter = ::std::map<::std::int64_t, ::std::string>>
   ::std::map<::std::int64_t, ::std::string>& set_mapJavaTypeDFset(T_defaultStruct_mapJavaTypeDFset_struct_setter&& mapJavaTypeDFset_) {
     mapJavaTypeDFset = std::forward<T_defaultStruct_mapJavaTypeDFset_struct_setter>(mapJavaTypeDFset_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mapJavaTypeDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mapJavaTypeDFset;
   }
   const ::std::map<::std::int64_t, ::std::int32_t>& get_emptyMap() const&;
@@ -4555,9 +4242,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_emptyMap_struct_setter = ::std::map<::std::int64_t, ::std::int32_t>>
   ::std::map<::std::int64_t, ::std::int32_t>& set_emptyMap(T_defaultStruct_emptyMap_struct_setter&& emptyMap_) {
     emptyMap = std::forward<T_defaultStruct_emptyMap_struct_setter>(emptyMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.emptyMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return emptyMap;
   }
   const ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& get_enumMapDFset() const&;
@@ -4566,9 +4251,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_defaultStruct_enumMapDFset_struct_setter = ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>
   ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& set_enumMapDFset(T_defaultStruct_enumMapDFset_struct_setter&& enumMapDFset_) {
     enumMapDFset = std::forward<T_defaultStruct_enumMapDFset_struct_setter>(enumMapDFset_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.enumMapDFset = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return enumMapDFset;
   }
 
@@ -4616,7 +4299,6 @@ class MyStructTypeDef final  {
  public:
 
   MyStructTypeDef();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4630,7 +4312,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructTypeDef& operator=(MyStructTypeDef&&) = default;
 
   MyStructTypeDef& operator=(const MyStructTypeDef&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~MyStructTypeDef();
@@ -4686,7 +4367,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
     return {this->myLongField, __isset.myLongField};
@@ -4706,9 +4386,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongField_ref() && {
     return {std::move(this->myLongField), __isset.myLongField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::longTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongTypeDef_ref() const& {
     return {this->myLongTypeDef, __isset.myLongTypeDef};
@@ -4728,9 +4406,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myLongTypeDef_ref() && {
     return {std::move(this->myLongTypeDef), __isset.myLongTypeDef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField_ref() const& {
     return {this->myStringField, __isset.myStringField};
@@ -4750,9 +4426,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField_ref() && {
     return {std::move(this->myStringField), __isset.myStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::stringTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringTypedef_ref() const& {
     return {this->myStringTypedef, __isset.myStringTypedef};
@@ -4772,9 +4446,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringTypedef_ref() && {
     return {std::move(this->myStringTypedef), __isset.myStringTypedef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myMapField_ref() const& {
     return {this->myMapField, __isset.myMapField};
@@ -4794,9 +4466,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myMapField_ref() && {
     return {std::move(this->myMapField), __isset.myMapField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::mapTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myMapTypedef_ref() const& {
     return {this->myMapTypedef, __isset.myMapTypedef};
@@ -4816,9 +4486,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myMapTypedef_ref() && {
     return {std::move(this->myMapTypedef), __isset.myMapTypedef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myListField_ref() const& {
     return {this->myListField, __isset.myListField};
@@ -4838,9 +4506,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myListField_ref() && {
     return {std::move(this->myListField), __isset.myListField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::listTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myListTypedef_ref() const& {
     return {this->myListTypedef, __isset.myListTypedef};
@@ -4860,9 +4526,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myListTypedef_ref() && {
     return {std::move(this->myListTypedef), __isset.myListTypedef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myMapListOfTypeDef_ref() const& {
     return {this->myMapListOfTypeDef, __isset.myMapListOfTypeDef};
@@ -4882,7 +4546,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myMapListOfTypeDef_ref() && {
     return {std::move(this->myMapListOfTypeDef), __isset.myMapListOfTypeDef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_myLongField() const {
     return myLongField;
@@ -4890,9 +4553,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongField;
   }
 
@@ -4902,9 +4563,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::longTypeDef& set_myLongTypeDef(::cpp2::longTypeDef myLongTypeDef_) {
     myLongTypeDef = myLongTypeDef_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myLongTypeDef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myLongTypeDef;
   }
 
@@ -4919,9 +4578,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myStringField_struct_setter = ::std::string>
   ::std::string& set_myStringField(T_MyStructTypeDef_myStringField_struct_setter&& myStringField_) {
     myStringField = std::forward<T_MyStructTypeDef_myStringField_struct_setter>(myStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myStringField;
   }
 
@@ -4936,9 +4593,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myStringTypedef_struct_setter = ::cpp2::stringTypedef>
   ::cpp2::stringTypedef& set_myStringTypedef(T_MyStructTypeDef_myStringTypedef_struct_setter&& myStringTypedef_) {
     myStringTypedef = std::forward<T_MyStructTypeDef_myStringTypedef_struct_setter>(myStringTypedef_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myStringTypedef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myStringTypedef;
   }
   const ::std::map<::std::int16_t, ::std::string>& get_myMapField() const&;
@@ -4947,9 +4602,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myMapField_struct_setter = ::std::map<::std::int16_t, ::std::string>>
   ::std::map<::std::int16_t, ::std::string>& set_myMapField(T_MyStructTypeDef_myMapField_struct_setter&& myMapField_) {
     myMapField = std::forward<T_MyStructTypeDef_myMapField_struct_setter>(myMapField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myMapField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myMapField;
   }
   const ::cpp2::mapTypedef& get_myMapTypedef() const&;
@@ -4958,9 +4611,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myMapTypedef_struct_setter = ::cpp2::mapTypedef>
   ::cpp2::mapTypedef& set_myMapTypedef(T_MyStructTypeDef_myMapTypedef_struct_setter&& myMapTypedef_) {
     myMapTypedef = std::forward<T_MyStructTypeDef_myMapTypedef_struct_setter>(myMapTypedef_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myMapTypedef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myMapTypedef;
   }
   const ::std::vector<double>& get_myListField() const&;
@@ -4969,9 +4620,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myListField_struct_setter = ::std::vector<double>>
   ::std::vector<double>& set_myListField(T_MyStructTypeDef_myListField_struct_setter&& myListField_) {
     myListField = std::forward<T_MyStructTypeDef_myListField_struct_setter>(myListField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myListField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myListField;
   }
   const ::cpp2::listTypedef& get_myListTypedef() const&;
@@ -4980,9 +4629,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myListTypedef_struct_setter = ::cpp2::listTypedef>
   ::cpp2::listTypedef& set_myListTypedef(T_MyStructTypeDef_myListTypedef_struct_setter&& myListTypedef_) {
     myListTypedef = std::forward<T_MyStructTypeDef_myListTypedef_struct_setter>(myListTypedef_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myListTypedef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myListTypedef;
   }
   const ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& get_myMapListOfTypeDef() const&;
@@ -4991,9 +4638,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructTypeDef_myMapListOfTypeDef_struct_setter = ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>>
   ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& set_myMapListOfTypeDef(T_MyStructTypeDef_myMapListOfTypeDef_struct_setter&& myMapListOfTypeDef_) {
     myMapListOfTypeDef = std::forward<T_MyStructTypeDef_myMapListOfTypeDef_struct_setter>(myMapListOfTypeDef_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myMapListOfTypeDef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myMapListOfTypeDef;
   }
 
@@ -5477,7 +5122,6 @@ class TypeRemapped final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TypeRemapped() :
       BigInteger(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -5492,7 +5136,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TypeRemapped& operator=(TypeRemapped&&) = default;
 
   TypeRemapped& operator=(const TypeRemapped&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::map<::std::int64_t, ::std::string> lsMap;
@@ -5530,7 +5173,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lsMap_ref() const& {
     return {this->lsMap, __isset.lsMap};
@@ -5550,9 +5192,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lsMap_ref() && {
     return {std::move(this->lsMap), __isset.lsMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int32_t, ::cpp2::FMap>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> ioMap_ref() const& {
     return {this->ioMap, __isset.ioMap};
@@ -5572,9 +5212,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> ioMap_ref() && {
     return {std::move(this->ioMap), __isset.ioMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> BigInteger_ref() const& {
     return {this->BigInteger, __isset.BigInteger};
@@ -5594,9 +5232,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> BigInteger_ref() && {
     return {std::move(this->BigInteger), __isset.BigInteger};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> binaryTestBuffer_ref() const& {
     return {this->binaryTestBuffer, __isset.binaryTestBuffer};
@@ -5616,16 +5252,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> binaryTestBuffer_ref() && {
     return {std::move(this->binaryTestBuffer), __isset.binaryTestBuffer};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::std::map<::std::int64_t, ::std::string>& get_lsMap() const&;
   ::std::map<::std::int64_t, ::std::string> get_lsMap() &&;
 
   template <typename T_TypeRemapped_lsMap_struct_setter = ::std::map<::std::int64_t, ::std::string>>
   ::std::map<::std::int64_t, ::std::string>& set_lsMap(T_TypeRemapped_lsMap_struct_setter&& lsMap_) {
     lsMap = std::forward<T_TypeRemapped_lsMap_struct_setter>(lsMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lsMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lsMap;
   }
   const ::std::map<::std::int32_t, ::cpp2::FMap>& get_ioMap() const&;
@@ -5634,9 +5267,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_TypeRemapped_ioMap_struct_setter = ::std::map<::std::int32_t, ::cpp2::FMap>>
   ::std::map<::std::int32_t, ::cpp2::FMap>& set_ioMap(T_TypeRemapped_ioMap_struct_setter&& ioMap_) {
     ioMap = std::forward<T_TypeRemapped_ioMap_struct_setter>(ioMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.ioMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return ioMap;
   }
 
@@ -5646,9 +5277,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_BigInteger(::std::int32_t BigInteger_) {
     BigInteger = BigInteger_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.BigInteger = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return BigInteger;
   }
 
@@ -5663,9 +5292,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_TypeRemapped_binaryTestBuffer_struct_setter = ::std::string>
   ::std::string& set_binaryTestBuffer(T_TypeRemapped_binaryTestBuffer_struct_setter&& binaryTestBuffer_) {
     binaryTestBuffer = std::forward<T_TypeRemapped_binaryTestBuffer_struct_setter>(binaryTestBuffer_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.binaryTestBuffer = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return binaryTestBuffer;
   }
 
@@ -5712,7 +5339,6 @@ class emptyXcep final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   emptyXcep() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -5726,7 +5352,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   emptyXcep& operator=(emptyXcep&&) = default;
 
   emptyXcep& operator=(const emptyXcep&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const emptyXcep& rhs) const;
 #ifndef SWIG
@@ -5794,7 +5419,6 @@ class reqXcep final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   reqXcep() :
       errorCode(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -5809,7 +5433,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   reqXcep& operator=(reqXcep&&) = default;
 
   reqXcep& operator=(const reqXcep&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string message;
@@ -5944,7 +5567,6 @@ class optXcep final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   optXcep() :
       errorCode(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -5959,7 +5581,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   optXcep& operator=(optXcep&&) = default;
 
   optXcep& operator=(const optXcep&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string message;
@@ -5991,7 +5612,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> message_ref() const& {
     return {this->message, __isset.message};
@@ -6011,9 +5631,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> message_ref() && {
     return {std::move(this->message), __isset.message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> errorCode_ref() const& {
     return {this->errorCode, __isset.errorCode};
@@ -6033,7 +5651,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> errorCode_ref() && {
     return {std::move(this->errorCode), __isset.errorCode};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string* get_message() const& {
     return message_ref() ? std::addressof(message) : nullptr;
@@ -6047,9 +5664,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_optXcep_message_struct_setter = ::std::string>
   ::std::string& set_message(T_optXcep_message_struct_setter&& message_) {
     message = std::forward<T_optXcep_message_struct_setter>(message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return message;
   }
 
@@ -6064,9 +5679,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_errorCode(::std::int32_t errorCode_) {
     errorCode = errorCode_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.errorCode = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return errorCode;
   }
 
@@ -6118,7 +5731,6 @@ class complexException final : public apache::thrift::TException {
  public:
 
   complexException();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6132,7 +5744,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   complexException& operator=(complexException&&) = default;
 
   complexException& operator=(const complexException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~complexException();
@@ -6179,7 +5790,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {
     return {this->message, __isset.message};
@@ -6199,9 +5809,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
     return {std::move(this->message), __isset.message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> listStrings_ref() const& {
     return {this->listStrings, __isset.listStrings};
@@ -6221,9 +5829,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listStrings_ref() && {
     return {std::move(this->listStrings), __isset.listStrings};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> errorEnum_ref() const& {
     return {this->errorEnum, __isset.errorEnum};
@@ -6243,9 +5849,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> errorEnum_ref() && {
     return {std::move(this->errorEnum), __isset.errorEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> unionError_ref() const& {
     return {this->unionError, __isset.unionError};
@@ -6265,9 +5869,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> unionError_ref() && {
     return {std::move(this->unionError), __isset.unionError};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structError_ref() const& {
     return {this->structError, __isset.structError};
@@ -6287,9 +5889,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structError_ref() && {
     return {std::move(this->structError), __isset.structError};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lsMap_ref() const& {
     return {this->lsMap, __isset.lsMap};
@@ -6309,7 +5909,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lsMap_ref() && {
     return {std::move(this->lsMap), __isset.lsMap};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_message() const& {
     return message;
@@ -6322,9 +5921,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_complexException_message_struct_setter = ::std::string>
   ::std::string& set_message(T_complexException_message_struct_setter&& message_) {
     message = std::forward<T_complexException_message_struct_setter>(message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return message;
   }
   const ::std::vector<::std::string>& get_listStrings() const&;
@@ -6333,9 +5930,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_complexException_listStrings_struct_setter = ::std::vector<::std::string>>
   ::std::vector<::std::string>& set_listStrings(T_complexException_listStrings_struct_setter&& listStrings_) {
     listStrings = std::forward<T_complexException_listStrings_struct_setter>(listStrings_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.listStrings = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return listStrings;
   }
 
@@ -6345,9 +5940,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::MyEnum& set_errorEnum(::cpp2::MyEnum errorEnum_) {
     errorEnum = errorEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.errorEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return errorEnum;
   }
   const ::cpp2::MyUnion* get_unionError() const&;
@@ -6357,9 +5950,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_complexException_unionError_struct_setter = ::cpp2::MyUnion>
   ::cpp2::MyUnion& set_unionError(T_complexException_unionError_struct_setter&& unionError_) {
     unionError = std::forward<T_complexException_unionError_struct_setter>(unionError_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.unionError = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return unionError;
   }
   const ::cpp2::MyStruct& get_structError() const&;
@@ -6368,9 +5959,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_complexException_structError_struct_setter = ::cpp2::MyStruct>
   ::cpp2::MyStruct& set_structError(T_complexException_structError_struct_setter&& structError_) {
     structError = std::forward<T_complexException_structError_struct_setter>(structError_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.structError = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return structError;
   }
   const ::std::map<::std::int64_t, ::std::string>& get_lsMap() const&;
@@ -6379,9 +5968,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_complexException_lsMap_struct_setter = ::std::map<::std::int64_t, ::std::string>>
   ::std::map<::std::int64_t, ::std::string>& set_lsMap(T_complexException_lsMap_struct_setter&& lsMap_) {
     lsMap = std::forward<T_complexException_lsMap_struct_setter>(lsMap_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.lsMap = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return lsMap;
   }
 
@@ -6414,6 +6001,7 @@ uint32_t complexException::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

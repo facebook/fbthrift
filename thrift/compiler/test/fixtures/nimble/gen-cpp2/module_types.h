@@ -52,6 +52,7 @@ class BasicTypes;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class BasicTypes final  {
  private:
@@ -70,7 +71,6 @@ class BasicTypes final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BasicTypes() :
       first(0),
       second(0),
@@ -88,7 +88,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BasicTypes& operator=(BasicTypes&&) = default;
 
   BasicTypes& operator=(const BasicTypes&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::int32_t first;
@@ -144,7 +143,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->first)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> second_ref() const& {
     return {this->second, __isset.second};
@@ -164,9 +162,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> second_ref() && {
     return {std::move(this->second), __isset.second};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> third_ref() const& {
     return {this->third, __isset.third};
@@ -186,9 +182,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> third_ref() && {
     return {std::move(this->third), __isset.third};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> isTrue_ref() const& {
     return {this->isTrue, __isset.isTrue};
@@ -208,7 +202,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue_ref() && {
     return {std::move(this->isTrue), __isset.isTrue};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_first() const {
     return first;
@@ -230,9 +223,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_second(::std::int32_t second_) {
     second = second_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.second = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return second;
   }
 
@@ -247,9 +238,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_third(::std::int64_t third_) {
     third = third_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.third = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return third;
   }
 
@@ -259,9 +248,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_isTrue(bool isTrue_) {
     isTrue = isTrue_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.isTrue = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return isTrue;
   }
 
@@ -290,3 +277,4 @@ uint32_t BasicTypes::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

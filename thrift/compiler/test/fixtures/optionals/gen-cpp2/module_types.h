@@ -184,6 +184,7 @@ typedef ::std::int64_t PersonID;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Color final  {
  private:
@@ -202,7 +203,6 @@ class Color final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color() :
       red(0),
       green(0),
@@ -220,7 +220,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color& operator=(Color&&) = default;
 
   Color& operator=(const Color&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   double red;
@@ -258,7 +257,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> red_ref() const& {
     return {this->red, __isset.red};
@@ -278,9 +276,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> red_ref() && {
     return {std::move(this->red), __isset.red};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> green_ref() const& {
     return {this->green, __isset.green};
@@ -300,9 +296,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> green_ref() && {
     return {std::move(this->green), __isset.green};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> blue_ref() const& {
     return {this->blue, __isset.blue};
@@ -322,9 +316,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> blue_ref() && {
     return {std::move(this->blue), __isset.blue};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> alpha_ref() const& {
     return {this->alpha, __isset.alpha};
@@ -344,7 +336,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> alpha_ref() && {
     return {std::move(this->alpha), __isset.alpha};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double get_red() const {
     return red;
@@ -352,9 +343,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_red(double red_) {
     red = red_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.red = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return red;
   }
 
@@ -364,9 +353,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_green(double green_) {
     green = green_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.green = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return green;
   }
 
@@ -376,9 +363,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_blue(double blue_) {
     blue = blue_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.blue = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return blue;
   }
 
@@ -388,9 +373,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_alpha(double alpha_) {
     alpha = alpha_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.alpha = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return alpha;
   }
 
@@ -438,7 +421,6 @@ class Vehicle final  {
  public:
 
   Vehicle();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -452,7 +434,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Vehicle& operator=(Vehicle&&) = default;
 
   Vehicle& operator=(const Vehicle&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~Vehicle();
@@ -496,7 +477,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> color_ref() const& {
     return {this->color, __isset.color};
@@ -516,9 +496,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> color_ref() && {
     return {std::move(this->color), __isset.color};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> licensePlate_ref() const& {
     return {this->licensePlate, __isset.licensePlate};
@@ -538,9 +516,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> licensePlate_ref() && {
     return {std::move(this->licensePlate), __isset.licensePlate};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> description_ref() const& {
     return {this->description, __isset.description};
@@ -560,9 +536,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> description_ref() && {
     return {std::move(this->description), __isset.description};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -582,9 +556,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> hasAC_ref() const& {
     return {this->hasAC, __isset.hasAC};
@@ -604,16 +576,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> hasAC_ref() && {
     return {std::move(this->hasAC), __isset.hasAC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::cpp2::Color& get_color() const&;
   ::cpp2::Color get_color() &&;
 
   template <typename T_Vehicle_color_struct_setter = ::cpp2::Color>
   ::cpp2::Color& set_color(T_Vehicle_color_struct_setter&& color_) {
     color = std::forward<T_Vehicle_color_struct_setter>(color_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.color = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return color;
   }
 
@@ -629,9 +598,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Vehicle_licensePlate_struct_setter = ::std::string>
   ::std::string& set_licensePlate(T_Vehicle_licensePlate_struct_setter&& licensePlate_) {
     licensePlate = std::forward<T_Vehicle_licensePlate_struct_setter>(licensePlate_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.licensePlate = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return licensePlate;
   }
 
@@ -647,9 +614,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Vehicle_description_struct_setter = ::std::string>
   ::std::string& set_description(T_Vehicle_description_struct_setter&& description_) {
     description = std::forward<T_Vehicle_description_struct_setter>(description_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.description = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return description;
   }
 
@@ -665,9 +630,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Vehicle_name_struct_setter = ::std::string>
   ::std::string& set_name(T_Vehicle_name_struct_setter&& name_) {
     name = std::forward<T_Vehicle_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -682,9 +645,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_hasAC(bool hasAC_) {
     hasAC = hasAC_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.hasAC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return hasAC;
   }
 
@@ -732,7 +693,6 @@ class Person final  {
  public:
 
   Person();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -746,7 +706,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Person& operator=(Person&&) = default;
 
   Person& operator=(const Person&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~Person();
@@ -805,7 +764,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
@@ -825,9 +783,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -847,9 +803,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> age_ref() const& {
     return {this->age, __isset.age};
@@ -869,9 +823,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> age_ref() && {
     return {std::move(this->age), __isset.age};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> address_ref() const& {
     return {this->address, __isset.address};
@@ -891,9 +843,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> address_ref() && {
     return {std::move(this->address), __isset.address};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> favoriteColor_ref() const& {
     return {this->favoriteColor, __isset.favoriteColor};
@@ -913,9 +863,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> favoriteColor_ref() && {
     return {std::move(this->favoriteColor), __isset.favoriteColor};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::cpp2::PersonID>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> friends_ref() const& {
     return {this->friends, __isset.friends};
@@ -935,9 +883,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> friends_ref() && {
     return {std::move(this->friends), __isset.friends};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> bestFriend_ref() const& {
     return {this->bestFriend, __isset.bestFriend};
@@ -957,9 +903,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> bestFriend_ref() && {
     return {std::move(this->bestFriend), __isset.bestFriend};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::cpp2::Animal, ::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> petNames_ref() const& {
     return {this->petNames, __isset.petNames};
@@ -979,9 +923,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> petNames_ref() && {
     return {std::move(this->petNames), __isset.petNames};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Animal>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> afraidOfAnimal_ref() const& {
     return {this->afraidOfAnimal, __isset.afraidOfAnimal};
@@ -1001,9 +943,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> afraidOfAnimal_ref() && {
     return {std::move(this->afraidOfAnimal), __isset.afraidOfAnimal};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::cpp2::Vehicle>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> vehicles_ref() const& {
     return {this->vehicles, __isset.vehicles};
@@ -1023,7 +963,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> vehicles_ref() && {
     return {std::move(this->vehicles), __isset.vehicles};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::PersonID get_id() const {
     return id;
@@ -1031,9 +970,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::PersonID& set_id(::cpp2::PersonID id_) {
     id = id_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return id;
   }
 
@@ -1048,9 +985,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_name_struct_setter = ::std::string>
   ::std::string& set_name(T_Person_name_struct_setter&& name_) {
     name = std::forward<T_Person_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -1065,9 +1000,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int16_t& set_age(::std::int16_t age_) {
     age = age_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.age = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return age;
   }
 
@@ -1083,9 +1016,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_address_struct_setter = ::std::string>
   ::std::string& set_address(T_Person_address_struct_setter&& address_) {
     address = std::forward<T_Person_address_struct_setter>(address_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.address = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return address;
   }
   const ::cpp2::Color* get_favoriteColor() const&;
@@ -1095,9 +1026,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_favoriteColor_struct_setter = ::cpp2::Color>
   ::cpp2::Color& set_favoriteColor(T_Person_favoriteColor_struct_setter&& favoriteColor_) {
     favoriteColor = std::forward<T_Person_favoriteColor_struct_setter>(favoriteColor_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.favoriteColor = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return favoriteColor;
   }
   const ::std::set<::cpp2::PersonID>* get_friends() const&;
@@ -1107,9 +1036,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_friends_struct_setter = ::std::set<::cpp2::PersonID>>
   ::std::set<::cpp2::PersonID>& set_friends(T_Person_friends_struct_setter&& friends_) {
     friends = std::forward<T_Person_friends_struct_setter>(friends_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.friends = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return friends;
   }
 
@@ -1124,9 +1051,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::PersonID& set_bestFriend(::cpp2::PersonID bestFriend_) {
     bestFriend = bestFriend_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.bestFriend = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return bestFriend;
   }
   const ::std::map<::cpp2::Animal, ::std::string>* get_petNames() const&;
@@ -1136,9 +1061,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_petNames_struct_setter = ::std::map<::cpp2::Animal, ::std::string>>
   ::std::map<::cpp2::Animal, ::std::string>& set_petNames(T_Person_petNames_struct_setter&& petNames_) {
     petNames = std::forward<T_Person_petNames_struct_setter>(petNames_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.petNames = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return petNames;
   }
 
@@ -1153,9 +1076,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::Animal& set_afraidOfAnimal(::cpp2::Animal afraidOfAnimal_) {
     afraidOfAnimal = afraidOfAnimal_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.afraidOfAnimal = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return afraidOfAnimal;
   }
   const ::std::vector<::cpp2::Vehicle>* get_vehicles() const&;
@@ -1165,9 +1086,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Person_vehicles_struct_setter = ::std::vector<::cpp2::Vehicle>>
   ::std::vector<::cpp2::Vehicle>& set_vehicles(T_Person_vehicles_struct_setter&& vehicles_) {
     vehicles = std::forward<T_Person_vehicles_struct_setter>(vehicles_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.vehicles = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return vehicles;
   }
 
@@ -1196,3 +1115,4 @@ uint32_t Person::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

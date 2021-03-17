@@ -42,6 +42,7 @@ class IncludedA;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace ns {
 class IncludedA final  {
  private:
@@ -60,7 +61,6 @@ class IncludedA final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   IncludedA() :
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -75,7 +75,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   IncludedA& operator=(IncludedA&&) = default;
 
   IncludedA& operator=(const IncludedA&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t i32Field;
@@ -107,7 +106,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
     return {this->i32Field, __isset.i32Field};
@@ -127,9 +125,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field_ref() && {
     return {std::move(this->i32Field), __isset.i32Field};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strField_ref() const& {
     return {this->strField, __isset.strField};
@@ -149,7 +145,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField_ref() && {
     return {std::move(this->strField), __isset.strField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_i32Field() const {
     return i32Field;
@@ -157,9 +152,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.i32Field = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return i32Field;
   }
 
@@ -174,9 +167,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_IncludedA_strField_struct_setter = ::std::string>
   ::std::string& set_strField(T_IncludedA_strField_struct_setter&& strField_) {
     strField = std::forward<T_IncludedA_strField_struct_setter>(strField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.strField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return strField;
   }
 
@@ -205,3 +196,4 @@ uint32_t IncludedA::read(Protocol_* iprot) {
 }
 
 }} // some::ns
+THRIFT_IGNORE_ISSET_USE_WARNING_END

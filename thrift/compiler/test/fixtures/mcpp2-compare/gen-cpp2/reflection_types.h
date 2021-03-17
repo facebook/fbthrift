@@ -37,6 +37,7 @@ class ReflectionStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class ReflectionStruct final  {
  private:
@@ -55,7 +56,6 @@ class ReflectionStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct() :
       fieldA(5) {}
   // FragileConstructor for use in initialization lists only.
@@ -70,7 +70,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct& operator=(ReflectionStruct&&) = default;
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t fieldA;
@@ -99,7 +98,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
@@ -119,7 +117,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_fieldA() const {
     return fieldA;
@@ -127,9 +124,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -158,3 +153,4 @@ uint32_t ReflectionStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

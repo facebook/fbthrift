@@ -87,6 +87,7 @@ class A;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class A final  {
  private:
@@ -105,7 +106,6 @@ class A final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A() :
       useless_field(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -120,7 +120,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A& operator=(A&&) = default;
 
   A& operator=(const A&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t useless_field;
@@ -149,7 +148,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {
     return {this->useless_field, __isset.useless_field};
@@ -169,7 +167,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> useless_field_ref() && {
     return {std::move(this->useless_field), __isset.useless_field};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_useless_field() const {
     return useless_field;
@@ -177,9 +174,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
     useless_field = useless_field_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.useless_field = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return useless_field;
   }
 
@@ -208,3 +203,4 @@ uint32_t A::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

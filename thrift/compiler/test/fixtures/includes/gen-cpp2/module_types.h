@@ -48,6 +48,7 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyStruct final  {
  private:
@@ -66,7 +67,6 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyIntField>(2LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyTransitiveField>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))))),
       MyIncludedInt(42LL) {}
@@ -82,7 +82,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::cpp2::Included MyIncludedField;
@@ -117,7 +116,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedField_ref() const& {
     return {this->MyIncludedField, __isset.MyIncludedField};
@@ -137,9 +135,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField_ref() && {
     return {std::move(this->MyIncludedField), __isset.MyIncludedField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyOtherIncludedField_ref() const& {
     return {this->MyOtherIncludedField, __isset.MyOtherIncludedField};
@@ -159,9 +155,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField_ref() && {
     return {std::move(this->MyOtherIncludedField), __isset.MyOtherIncludedField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt_ref() const& {
     return {this->MyIncludedInt, __isset.MyIncludedInt};
@@ -181,16 +175,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
     return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::cpp2::Included& get_MyIncludedField() const&;
   ::cpp2::Included get_MyIncludedField() &&;
 
   template <typename T_MyStruct_MyIncludedField_struct_setter = ::cpp2::Included>
   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
     MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIncludedField;
   }
   const ::cpp2::Included& get_MyOtherIncludedField() const&;
@@ -199,9 +190,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_MyOtherIncludedField_struct_setter = ::cpp2::Included>
   ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
     MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyOtherIncludedField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyOtherIncludedField;
   }
 
@@ -211,9 +200,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::IncludedInt64& set_MyIncludedInt(::cpp2::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIncludedInt;
   }
 
@@ -242,3 +229,4 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

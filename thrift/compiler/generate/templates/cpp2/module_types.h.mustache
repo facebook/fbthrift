@@ -62,6 +62,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(<%field:cpp_name%>);
 
 <% > module_types_h/hash_and_equal_to%>
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#program:structs%>
 <% > common/namespace_cpp2_begin%>
 
@@ -167,7 +168,6 @@ class <%struct:name%> <%!
 <%#struct:is_large?%>
   <%struct:name%>();
 <%/struct:is_large?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%^struct:is_large?%>
   <% > module_types_h/base_ctor%>
 <%/struct:is_large?%>
@@ -228,7 +228,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#struct:fields_contain_cpp_ref_unique_either?%>
   <%struct:name%>& operator=(const <%struct:name%>& src);
 <%/struct:fields_contain_cpp_ref_unique_either?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:cpp_noncopyable%>
   void __clear();
 <%^struct:virtual%>
@@ -316,6 +315,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 
 <% > module_types_h/frozen%>
 <%/program:structs%>
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 <% > module_types_h/declare_union_types%><%!
 
 %><%#program:tablebased?%>

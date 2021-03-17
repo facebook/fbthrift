@@ -224,6 +224,7 @@ class SomeStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct final  {
  private:
@@ -242,7 +243,6 @@ class SomeStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
       fieldA(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -257,7 +257,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct& operator=(SomeStruct&&) = default;
 
   SomeStruct& operator=(const SomeStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t fieldA;
@@ -286,7 +285,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
@@ -306,7 +304,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_fieldA() const {
     return fieldA;
@@ -314,9 +311,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -345,3 +340,4 @@ uint32_t SomeStruct::read(Protocol_* iprot) {
 }
 
 }}} // facebook::ns::qwerty
+THRIFT_IGNORE_ISSET_USE_WARNING_END

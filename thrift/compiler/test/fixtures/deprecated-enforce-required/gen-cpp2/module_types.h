@@ -37,6 +37,7 @@ class Foo;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Foo final  {
  private:
@@ -55,7 +56,6 @@ class Foo final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -70,7 +70,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::int32_t bar;
@@ -148,3 +147,4 @@ uint32_t Foo::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

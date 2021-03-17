@@ -73,6 +73,7 @@ class SinkException2;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class InitialResponse final  {
  private:
@@ -91,7 +92,6 @@ class InitialResponse final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -105,7 +105,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse& operator=(InitialResponse&&) = default;
 
   InitialResponse& operator=(const InitialResponse&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string content;
@@ -134,7 +133,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -154,7 +152,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -167,9 +164,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_InitialResponse_content_struct_setter = ::std::string>
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
     content = std::forward<T_InitialResponse_content_struct_setter>(content_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -216,7 +211,6 @@ class FinalResponse final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -230,7 +224,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse& operator=(FinalResponse&&) = default;
 
   FinalResponse& operator=(const FinalResponse&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string content;
@@ -259,7 +252,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -279,7 +271,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -292,9 +283,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_FinalResponse_content_struct_setter = ::std::string>
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
     content = std::forward<T_FinalResponse_content_struct_setter>(content_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -341,7 +330,6 @@ class SinkPayload final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -355,7 +343,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload& operator=(SinkPayload&&) = default;
 
   SinkPayload& operator=(const SinkPayload&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string content;
@@ -384,7 +371,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
     return {this->content, __isset.content};
@@ -404,7 +390,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
     return {std::move(this->content), __isset.content};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_content() const& {
     return content;
@@ -417,9 +402,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_SinkPayload_content_struct_setter = ::std::string>
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
     content = std::forward<T_SinkPayload_content_struct_setter>(content_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.content = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return content;
   }
 
@@ -466,7 +449,6 @@ class CompatibleWithKeywordSink final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -480,7 +462,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) = default;
 
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string sink;
@@ -509,7 +490,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sink_ref() const& {
     return {this->sink, __isset.sink};
@@ -529,7 +509,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sink_ref() && {
     return {std::move(this->sink), __isset.sink};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_sink() const& {
     return sink;
@@ -542,9 +521,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_CompatibleWithKeywordSink_sink_struct_setter = ::std::string>
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
     sink = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sink = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sink;
   }
 
@@ -591,7 +568,6 @@ class InitialException final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -605,7 +581,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException& operator=(InitialException&&) = default;
 
   InitialException& operator=(const InitialException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string reason;
@@ -634,7 +609,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -654,7 +628,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -667,9 +640,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_InitialException_reason_struct_setter = ::std::string>
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
     reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 
@@ -720,7 +691,6 @@ class SinkException1 final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -734,7 +704,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1& operator=(SinkException1&&) = default;
 
   SinkException1& operator=(const SinkException1&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string reason;
@@ -763,7 +732,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -783,7 +751,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -796,9 +763,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_SinkException1_reason_struct_setter = ::std::string>
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
     reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 
@@ -849,7 +814,6 @@ class SinkException2 final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2() :
       reason(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -864,7 +828,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2& operator=(SinkException2&&) = default;
 
   SinkException2& operator=(const SinkException2&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t reason;
@@ -893,7 +856,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
     return {this->reason, __isset.reason};
@@ -913,7 +875,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reason_ref() && {
     return {std::move(this->reason), __isset.reason};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_reason() const {
     return reason;
@@ -921,9 +882,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_reason(::std::int64_t reason_) {
     reason = reason_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.reason = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return reason;
   }
 
@@ -956,3 +915,4 @@ uint32_t SinkException2::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -33,6 +33,7 @@ class Nada;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Empty final  {
  private:
@@ -51,7 +52,6 @@ class Empty final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -65,7 +65,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Empty& rhs) const;
 #ifndef SWIG
@@ -254,6 +253,7 @@ uint32_t Nada::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

@@ -265,6 +265,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyUnion final  {
  private:
@@ -566,7 +567,6 @@ class MyField final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyField() :
       opt_value(0),
       value(0),
@@ -583,7 +583,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyField& operator=(MyField&&) = default;
 
   MyField& operator=(const MyField&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t opt_value;
@@ -617,7 +616,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_value_ref() const& {
     return {this->opt_value, __isset.opt_value};
@@ -637,9 +635,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_value_ref() && {
     return {std::move(this->opt_value), __isset.opt_value};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> value_ref() const& {
     return {this->value, __isset.value};
@@ -659,7 +655,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_ref() && {
     return {std::move(this->value), __isset.value};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_value_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_value};
@@ -691,9 +686,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_opt_value(::std::int64_t opt_value_) {
     opt_value = opt_value_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_value = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_value;
   }
 
@@ -703,9 +696,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_value(::std::int64_t value_) {
     value = value_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.value = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return value;
   }
 
@@ -761,7 +752,6 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       ref(std::make_unique<::cpp2::MyField>()),
       req_ref(std::make_unique<::cpp2::MyField>()) {}
@@ -775,7 +765,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   MyStruct& operator=(MyStruct&&) = default;
   MyStruct& operator=(const MyStruct& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr<::cpp2::MyField> opt_ref;
@@ -880,7 +869,6 @@ class StructWithUnion final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithUnion() :
       u(std::make_unique<::cpp2::MyUnion>()),
       aDouble(0) {}
@@ -894,7 +882,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithUnion& operator=(StructWithUnion&&) = default;
   StructWithUnion& operator=(const StructWithUnion& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr<::cpp2::MyUnion> u;
@@ -939,7 +926,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE const T&& u_ref() const&& { return std::move(u); }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aDouble_ref() const& {
     return {this->aDouble, __isset.aDouble};
@@ -959,9 +945,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aDouble_ref() && {
     return {std::move(this->aDouble), __isset.aDouble};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
     return {this->f, __isset.f};
@@ -981,7 +965,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
     return {std::move(this->f), __isset.f};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double get_aDouble() const {
     return aDouble;
@@ -989,9 +972,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   double& set_aDouble(double aDouble_) {
     aDouble = aDouble_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.aDouble = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return aDouble;
   }
   const ::cpp2::MyField& get_f() const&;
@@ -1000,9 +981,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_StructWithUnion_f_struct_setter = ::cpp2::MyField>
   ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
     f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.f = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return f;
   }
 
@@ -1049,7 +1028,6 @@ class RecursiveStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1063,7 +1041,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   RecursiveStruct& operator=(RecursiveStruct&&) = default;
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::vector<::cpp2::RecursiveStruct> mes;
@@ -1092,7 +1069,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
     return {this->mes, __isset.mes};
@@ -1112,7 +1088,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
     return {std::move(this->mes), __isset.mes};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::std::vector<::cpp2::RecursiveStruct>* get_mes() const&;
   ::std::vector<::cpp2::RecursiveStruct>* get_mes() &;
   ::std::vector<::cpp2::RecursiveStruct>* get_mes() && = delete;
@@ -1120,9 +1095,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_RecursiveStruct_mes_struct_setter = ::std::vector<::cpp2::RecursiveStruct>>
   ::std::vector<::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
     mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.mes = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return mes;
   }
 
@@ -1170,7 +1143,6 @@ class StructWithContainers final  {
  public:
 
   StructWithContainers();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1182,7 +1154,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithContainers& operator=(StructWithContainers&&) = default;
   StructWithContainers& operator=(const StructWithContainers& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~StructWithContainers();
@@ -1329,7 +1300,6 @@ class StructWithSharedConst final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithSharedConst() :
       shared_const(std::make_shared<::cpp2::MyField>()),
       req_shared_const(std::make_shared<::cpp2::MyField>()) {}
@@ -1345,7 +1315,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
 
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::shared_ptr<const ::cpp2::MyField> opt_shared_const;
@@ -1450,7 +1419,6 @@ class Empty final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1464,7 +1432,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Empty& rhs) const;
 #ifndef SWIG
@@ -1528,7 +1495,6 @@ class StructWithRef final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRef() :
       def_field(std::make_unique<::cpp2::Empty>()),
       req_field(std::make_unique<::cpp2::Empty>()) {}
@@ -1542,7 +1508,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithRef& operator=(StructWithRef&&) = default;
   StructWithRef& operator=(const StructWithRef& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr<::cpp2::Empty> def_field;
@@ -1647,7 +1612,6 @@ class StructWithRefTypeUnique final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeUnique() :
       def_field(std::make_unique<::cpp2::Empty>()),
       req_field(std::make_unique<::cpp2::Empty>()) {}
@@ -1661,7 +1625,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr<::cpp2::Empty> def_field;
@@ -1766,7 +1729,6 @@ class StructWithRefTypeShared final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared() :
       def_field(std::make_shared<::cpp2::Empty>()),
       req_field(std::make_shared<::cpp2::Empty>()) {}
@@ -1782,7 +1744,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) = default;
 
   StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::shared_ptr<::cpp2::Empty> def_field;
@@ -1887,7 +1848,6 @@ class StructWithRefTypeSharedConst final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeSharedConst() :
       def_field(std::make_shared<::cpp2::Empty>()),
       req_field(std::make_shared<::cpp2::Empty>()) {}
@@ -1903,7 +1863,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) = default;
 
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::shared_ptr<const ::cpp2::Empty> def_field;
@@ -2008,22 +1967,18 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   StructWithRefAndAnnotCppNoexceptMoveCtor() :
       def_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept :
       def_field(std::move(other.def_field)) {}
-
-THRIFT_IGNORE_ISSET_USE_WARNING_END  StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
+  StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
 
 
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) = default;
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr<::cpp2::Empty> def_field;
@@ -2084,6 +2039,7 @@ uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

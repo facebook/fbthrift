@@ -49,6 +49,7 @@ class MyException;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyStruct final  {
  private:
@@ -68,7 +69,6 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -82,7 +82,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string myString;
@@ -111,7 +110,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myString_ref() const& {
     return {this->myString, __isset.myString};
@@ -131,7 +129,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString_ref() && {
     return {std::move(this->myString), __isset.myString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_myString() const& {
     return myString;
@@ -144,9 +141,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_myString_struct_setter = ::std::string>
   ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyStruct_myString_struct_setter>(myString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myString;
   }
 
@@ -415,7 +410,6 @@ class MyException final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -429,7 +423,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyException& operator=(MyException&&) = default;
 
   MyException& operator=(const MyException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string myString;
@@ -458,7 +451,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myString_ref() const& {
     return {this->myString, __isset.myString};
@@ -478,7 +470,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString_ref() && {
     return {std::move(this->myString), __isset.myString};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_myString() const& {
     return myString;
@@ -491,9 +482,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyException_myString_struct_setter = ::std::string>
   ::std::string& set_myString(T_MyException_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyException_myString_struct_setter>(myString_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myString = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myString;
   }
 
@@ -526,6 +515,7 @@ uint32_t MyException::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

@@ -131,6 +131,7 @@ class SecretStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyStructNestedAnnotation final  {
  private:
@@ -149,7 +150,6 @@ class MyStructNestedAnnotation final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -163,7 +163,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) = default;
 
   MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string name;
@@ -192,7 +191,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -212,7 +210,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -225,9 +222,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -281,7 +276,6 @@ class MyStruct final  {
  public:
 
   MyStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -295,7 +289,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~MyStruct();
@@ -342,7 +335,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
     return {this->majorVer, __isset.majorVer};
@@ -362,9 +354,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
     return {std::move(this->majorVer), __isset.majorVer};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> package_ref() const& {
     return {this->package, __isset.package};
@@ -384,9 +374,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> package_ref() && {
     return {std::move(this->package), __isset.package};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_quote_ref() const& {
     return {this->annotation_with_quote, __isset.annotation_with_quote};
@@ -406,9 +394,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote_ref() && {
     return {std::move(this->annotation_with_quote), __isset.annotation_with_quote};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> class__ref() const& {
     return {this->class_, __isset.class_};
@@ -428,9 +414,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> class__ref() && {
     return {std::move(this->class_), __isset.class_};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_trailing_comma_ref() const& {
     return {this->annotation_with_trailing_comma, __isset.annotation_with_trailing_comma};
@@ -450,9 +434,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_trailing_comma_ref() && {
     return {std::move(this->annotation_with_trailing_comma), __isset.annotation_with_trailing_comma};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> empty_annotations_ref() const& {
     return {this->empty_annotations, __isset.empty_annotations};
@@ -472,7 +454,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations_ref() && {
     return {std::move(this->empty_annotations), __isset.empty_annotations};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_majorVer() const {
     return majorVer;
@@ -480,9 +461,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.majorVer = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return majorVer;
   }
 
@@ -497,9 +476,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_package_struct_setter = ::std::string>
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.package = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return package;
   }
 
@@ -514,9 +491,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotation_with_quote = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotation_with_quote;
   }
 
@@ -531,9 +506,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_class__struct_setter = ::std::string>
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
     class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.class_ = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return class_;
   }
 
@@ -548,9 +521,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_annotation_with_trailing_comma_struct_setter = ::std::string>
   ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
     annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotation_with_trailing_comma = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotation_with_trailing_comma;
   }
 
@@ -565,9 +536,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_empty_annotations_struct_setter = ::std::string>
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.empty_annotations = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return empty_annotations;
   }
 
@@ -614,7 +583,6 @@ class SecretStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -629,7 +597,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct& operator=(SecretStruct&&) = default;
 
   SecretStruct& operator=(const SecretStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t id;
@@ -661,7 +628,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
@@ -681,9 +647,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> password_ref() const& {
     return {this->password, __isset.password};
@@ -703,7 +667,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> password_ref() && {
     return {std::move(this->password), __isset.password};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_id() const {
     return id;
@@ -711,9 +674,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_id(::std::int64_t id_) {
     id = id_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return id;
   }
 
@@ -728,9 +689,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_SecretStruct_password_struct_setter = ::std::string>
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
     password = std::forward<T_SecretStruct_password_struct_setter>(password_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.password = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return password;
   }
 
@@ -759,3 +718,4 @@ uint32_t SecretStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

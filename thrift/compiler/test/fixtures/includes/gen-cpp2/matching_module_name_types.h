@@ -38,6 +38,7 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace matching_module_name {
 class MyStruct final  {
  private:
@@ -56,7 +57,6 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -70,7 +70,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::matching_module_name::OtherStruct OtherStructField;
@@ -99,7 +98,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField_ref() const& {
     return {this->OtherStructField, __isset.OtherStructField};
@@ -119,16 +117,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField_ref() && {
     return {std::move(this->OtherStructField), __isset.OtherStructField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   const ::matching_module_name::OtherStruct& get_OtherStructField() const&;
   ::matching_module_name::OtherStruct get_OtherStructField() &&;
 
   template <typename T_MyStruct_OtherStructField_struct_setter = ::matching_module_name::OtherStruct>
   ::matching_module_name::OtherStruct& set_OtherStructField(T_MyStruct_OtherStructField_struct_setter&& OtherStructField_) {
     OtherStructField = std::forward<T_MyStruct_OtherStructField_struct_setter>(OtherStructField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.OtherStructField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return OtherStructField;
   }
 
@@ -157,3 +152,4 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // matching_module_name
+THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -98,6 +98,7 @@ typedef ::std::int64_t IncludedInt64;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace a { namespace different { namespace ns {
 class AStruct final  {
  private:
@@ -116,7 +117,6 @@ class AStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct() :
       FieldA(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -131,7 +131,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct& operator=(AStruct&&) = default;
 
   AStruct& operator=(const AStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int32_t FieldA;
@@ -160,7 +159,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
     return {this->FieldA, __isset.FieldA};
@@ -180,7 +178,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
     return {std::move(this->FieldA), __isset.FieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t get_FieldA() const {
     return FieldA;
@@ -188,9 +185,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.FieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return FieldA;
   }
 
@@ -237,7 +232,6 @@ class AStructB final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :
       FieldA(std::make_shared<::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
@@ -252,7 +246,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB& operator=(AStructB&&) = default;
 
   AStructB& operator=(const AStructB&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
@@ -313,3 +306,4 @@ uint32_t AStructB::read(Protocol_* iprot) {
 }
 
 }}} // a::different::ns
+THRIFT_IGNORE_ISSET_USE_WARNING_END

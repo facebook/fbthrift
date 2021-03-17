@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+%>
 <%struct:name%>(<%struct:name%>&& other) noexcept :
 <%#struct:fields_in_layout_order%>
       <%field:cpp_name%>(std::move(other.<%field:cpp_name%>))<%^last?%>,<%/last?%><%!
@@ -24,4 +24,3 @@
 <%#struct:isset_fields?%>
       __isset(other.__isset) {}<%!
 %><%/struct:isset_fields?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_END

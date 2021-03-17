@@ -47,6 +47,7 @@ typedef ::cpp2::Foo TransitiveFoo;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Included final  {
  private:
@@ -65,7 +66,6 @@ class Included final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included() :
       MyIntField(0LL),
       MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))) {}
@@ -81,7 +81,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included& operator=(Included&&) = default;
 
   Included& operator=(const Included&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t MyIntField;
@@ -113,7 +112,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
@@ -133,9 +131,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyTransitiveField_ref() const& {
     return {this->MyTransitiveField, __isset.MyTransitiveField};
@@ -155,7 +151,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyTransitiveField_ref() && {
     return {std::move(this->MyTransitiveField), __isset.MyTransitiveField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_MyIntField() const {
     return MyIntField;
@@ -163,9 +158,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
   const ::cpp2::Foo& get_MyTransitiveField() const&;
@@ -174,9 +167,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Included_MyTransitiveField_struct_setter = ::cpp2::Foo>
   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyTransitiveField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyTransitiveField;
   }
 
@@ -205,3 +196,4 @@ uint32_t Included::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

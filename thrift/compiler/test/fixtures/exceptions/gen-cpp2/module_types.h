@@ -66,6 +66,7 @@ class CustomFieldNames;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class Banal final : public apache::thrift::TException {
  private:
@@ -84,7 +85,6 @@ class Banal final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Banal() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -98,7 +98,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Banal& operator=(Banal&&) = default;
 
   Banal& operator=(const Banal&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const Banal& rhs) const;
 #ifndef SWIG
@@ -166,7 +165,6 @@ class Fiery final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery() {}
 
   explicit Fiery(const std::string& __message) :
@@ -186,7 +184,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Fiery& operator=(Fiery&&) = default;
 
   Fiery& operator=(const Fiery&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   ::std::string message;
@@ -291,7 +288,6 @@ class Serious final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious() {}
 
   explicit Serious(const std::string& __message) :
@@ -311,7 +307,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Serious& operator=(Serious&&) = default;
 
   Serious& operator=(const Serious&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string sonnet;
@@ -340,7 +335,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> sonnet_ref() const& {
     return {this->sonnet, __isset.sonnet};
@@ -360,7 +354,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> sonnet_ref() && {
     return {std::move(this->sonnet), __isset.sonnet};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string* get_sonnet() const& {
     return sonnet_ref() ? std::addressof(sonnet) : nullptr;
@@ -374,9 +367,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_Serious_sonnet_struct_setter = ::std::string>
   ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
     sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.sonnet = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return sonnet;
   }
 
@@ -427,7 +418,6 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexFieldNames() {}
 
   explicit ComplexFieldNames(const std::string& __message) :
@@ -447,7 +437,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexFieldNames& operator=(ComplexFieldNames&&) = default;
 
   ComplexFieldNames& operator=(const ComplexFieldNames&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string error_message;
@@ -479,7 +468,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
     return {this->error_message, __isset.error_message};
@@ -499,9 +487,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
     return {std::move(this->error_message), __isset.error_message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
     return {this->internal_error_message, __isset.internal_error_message};
@@ -521,7 +507,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
     return {std::move(this->internal_error_message), __isset.internal_error_message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_error_message() const& {
     return error_message;
@@ -534,9 +519,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexFieldNames_error_message_struct_setter = ::std::string>
   ::std::string& set_error_message(T_ComplexFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.error_message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return error_message;
   }
 
@@ -551,9 +534,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_ComplexFieldNames_internal_error_message_struct_setter = ::std::string>
   ::std::string& set_internal_error_message(T_ComplexFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.internal_error_message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return internal_error_message;
   }
 
@@ -604,7 +585,6 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CustomFieldNames() {}
 
   explicit CustomFieldNames(const std::string& __message) :
@@ -624,7 +604,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CustomFieldNames& operator=(CustomFieldNames&&) = default;
 
   CustomFieldNames& operator=(const CustomFieldNames&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string error_message;
@@ -656,7 +635,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
     return {this->error_message, __isset.error_message};
@@ -676,9 +654,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
     return {std::move(this->error_message), __isset.error_message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
     return {this->internal_error_message, __isset.internal_error_message};
@@ -698,7 +674,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
     return {std::move(this->internal_error_message), __isset.internal_error_message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_error_message() const& {
     return error_message;
@@ -711,9 +686,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_CustomFieldNames_error_message_struct_setter = ::std::string>
   ::std::string& set_error_message(T_CustomFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.error_message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return error_message;
   }
 
@@ -728,9 +701,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_CustomFieldNames_internal_error_message_struct_setter = ::std::string>
   ::std::string& set_internal_error_message(T_CustomFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.internal_error_message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return internal_error_message;
   }
 
@@ -763,3 +734,4 @@ uint32_t CustomFieldNames::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

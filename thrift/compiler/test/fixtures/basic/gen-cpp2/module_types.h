@@ -135,6 +135,7 @@ class MyUnion;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class MyDataItem final  {
  private:
@@ -153,7 +154,6 @@ class MyDataItem final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -167,7 +167,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
   bool operator==(const MyDataItem& rhs) const;
 #ifndef SWIG
@@ -232,7 +231,6 @@ class MyStruct final  {
  public:
 
   MyStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -246,7 +244,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~MyStruct();
@@ -296,7 +293,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
@@ -316,9 +312,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->MyStringField, __isset.MyStringField};
@@ -338,9 +332,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->MyStringField), __isset.MyStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField_ref() const& {
     return {this->MyDataField, __isset.MyDataField};
@@ -360,9 +352,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField_ref() && {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
@@ -382,9 +372,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> oneway_ref() const& {
     return {this->oneway, __isset.oneway};
@@ -404,9 +392,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> oneway_ref() && {
     return {std::move(this->oneway), __isset.oneway};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> readonly_ref() const& {
     return {this->readonly, __isset.readonly};
@@ -426,9 +412,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> readonly_ref() && {
     return {std::move(this->readonly), __isset.readonly};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> idempotent_ref() const& {
     return {this->idempotent, __isset.idempotent};
@@ -448,7 +432,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent_ref() && {
     return {std::move(this->idempotent), __isset.idempotent};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_MyIntField() const {
     return MyIntField;
@@ -456,9 +439,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
 
@@ -473,9 +454,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
   const ::cpp2::MyDataItem& get_MyDataField() const&;
@@ -484,9 +463,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyDataField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyDataField;
   }
 
@@ -496,9 +473,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
   }
 
@@ -508,9 +483,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_oneway(bool oneway_) {
     oneway = oneway_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.oneway = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return oneway;
   }
 
@@ -520,9 +493,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_readonly(bool readonly_) {
     readonly = readonly_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.readonly = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return readonly;
   }
 
@@ -532,9 +503,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool& set_idempotent(bool idempotent_) {
     idempotent = idempotent_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.idempotent = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return idempotent;
   }
 
@@ -923,6 +892,7 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

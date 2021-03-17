@@ -38,9 +38,7 @@
   <%type:cpp_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> <%field:cpp_name%>_) {
     <%field:cpp_name%> = <%field:cpp_name%>_;
 <%^field:required?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -70,9 +68,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -93,9 +89,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.<%field:cpp_name%> = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%>
     return <%field:cpp_name%>;
   }

@@ -177,6 +177,7 @@ typedef ::std::int64_t annotated_inline_i64;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
 class structured_annotation_inline final  {
  private:
@@ -195,7 +196,6 @@ class structured_annotation_inline final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_inline() :
       count(0),
       name(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacaba")) {}
@@ -211,7 +211,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_inline& operator=(structured_annotation_inline&&) = default;
 
   structured_annotation_inline& operator=(const structured_annotation_inline&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t count;
@@ -243,7 +242,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
     return {this->count, __isset.count};
@@ -263,9 +261,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
     return {std::move(this->count), __isset.count};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -285,7 +281,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_count() const {
     return count;
@@ -293,9 +288,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.count = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return count;
   }
 
@@ -310,9 +303,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_inline_name_struct_setter = ::std::string>
   ::std::string& set_name(T_structured_annotation_inline_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -359,7 +350,6 @@ class structured_annotation_with_default final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_with_default() :
       name(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacabadabacaba")) {}
   // FragileConstructor for use in initialization lists only.
@@ -374,7 +364,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_with_default& operator=(structured_annotation_with_default&&) = default;
 
   structured_annotation_with_default& operator=(const structured_annotation_with_default&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string name;
@@ -403,7 +392,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -423,7 +411,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -436,9 +423,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_with_default_name_struct_setter = ::std::string>
   ::std::string& set_name(T_structured_annotation_with_default_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -485,7 +470,6 @@ class structured_annotation_forward final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_forward() :
       count(0) {}
   // FragileConstructor for use in initialization lists only.
@@ -500,7 +484,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_forward& operator=(structured_annotation_forward&&) = default;
 
   structured_annotation_forward& operator=(const structured_annotation_forward&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t count;
@@ -529,7 +512,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
     return {this->count, __isset.count};
@@ -549,7 +531,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
     return {std::move(this->count), __isset.count};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_count() const {
     return count;
@@ -557,9 +538,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.count = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return count;
   }
 
@@ -606,7 +585,6 @@ class structured_annotation_recursive final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_recursive() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -620,7 +598,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_recursive& operator=(structured_annotation_recursive&&) = default;
 
   structured_annotation_recursive& operator=(const structured_annotation_recursive&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string name;
@@ -655,7 +632,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -675,9 +651,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse_ref() const& {
     return {this->recurse, __isset.recurse};
@@ -697,9 +671,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse_ref() && {
     return {std::move(this->recurse), __isset.recurse};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward_ref() const& {
     return {this->forward, __isset.forward};
@@ -719,7 +691,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward_ref() && {
     return {std::move(this->forward), __isset.forward};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -732,9 +703,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_recursive_name_struct_setter = ::std::string>
   ::std::string& set_name(T_structured_annotation_recursive_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
   const ::cpp2::structured_annotation_recursive& get_recurse() const&;
@@ -743,9 +712,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_recursive_recurse_struct_setter = ::cpp2::structured_annotation_recursive>
   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.recurse = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return recurse;
   }
   const ::cpp2::structured_annotation_forward& get_forward() const&;
@@ -754,9 +721,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_recursive_forward_struct_setter = ::cpp2::structured_annotation_forward>
   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.forward = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return forward;
   }
 
@@ -803,7 +768,6 @@ class structured_annotation_nested final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_nested() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -817,7 +781,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structured_annotation_nested& operator=(structured_annotation_nested&&) = default;
 
   structured_annotation_nested& operator=(const structured_annotation_nested&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string name;
@@ -849,7 +812,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -869,9 +831,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
     return {this->nest, __isset.nest};
@@ -891,7 +851,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
     return {std::move(this->nest), __isset.nest};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -904,9 +863,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_nested_name_struct_setter = ::std::string>
   ::std::string& set_name(T_structured_annotation_nested_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
   const ::cpp2::structured_annotation_with_default& get_nest() const&;
@@ -915,9 +872,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_structured_annotation_nested_nest_struct_setter = ::cpp2::structured_annotation_with_default>
   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.nest = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return nest;
   }
 
@@ -964,7 +919,6 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       annotated_field(0),
       annotated_nested(0) {}
@@ -980,7 +934,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::int64_t annotated_field;
@@ -1018,7 +971,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_field_ref() const& {
     return {this->annotated_field, __isset.annotated_field};
@@ -1038,9 +990,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_field_ref() && {
     return {std::move(this->annotated_field), __isset.annotated_field};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type_ref() const& {
     return {this->annotated_type, __isset.annotated_type};
@@ -1060,9 +1010,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type_ref() && {
     return {std::move(this->annotated_type), __isset.annotated_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_recursive_ref() const& {
     return {this->annotated_recursive, __isset.annotated_recursive};
@@ -1082,9 +1030,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_recursive_ref() && {
     return {std::move(this->annotated_recursive), __isset.annotated_recursive};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_nested_ref() const& {
     return {this->annotated_nested, __isset.annotated_nested};
@@ -1104,7 +1050,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_nested_ref() && {
     return {std::move(this->annotated_nested), __isset.annotated_nested};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t get_annotated_field() const {
     return annotated_field;
@@ -1112,9 +1057,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
     annotated_field = annotated_field_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_field = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_field;
   }
 
@@ -1129,9 +1072,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_type;
   }
 
@@ -1146,9 +1087,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyStruct_annotated_recursive_struct_setter = ::std::string>
   ::std::string& set_annotated_recursive(T_MyStruct_annotated_recursive_struct_setter&& annotated_recursive_) {
     annotated_recursive = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_recursive = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_recursive;
   }
 
@@ -1158,9 +1097,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
     annotated_nested = annotated_nested_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotated_nested = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotated_nested;
   }
 
@@ -1207,7 +1144,6 @@ class MyException final : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1221,7 +1157,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyException& operator=(MyException&&) = default;
 
   MyException& operator=(const MyException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   ::std::string context;
@@ -1250,7 +1185,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> context_ref() const& {
     return {this->context, __isset.context};
@@ -1270,7 +1204,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> context_ref() && {
     return {std::move(this->context), __isset.context};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_context() const& {
     return context;
@@ -1283,9 +1216,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename T_MyException_context_struct_setter = ::std::string>
   ::std::string& set_context(T_MyException_context_struct_setter&& context_) {
     context = std::forward<T_MyException_context_struct_setter>(context_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.context = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return context;
   }
 
@@ -1601,6 +1532,7 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 
