@@ -18,7 +18,6 @@
 
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/AsyncSocket.h>
-#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 namespace apache {
