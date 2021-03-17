@@ -157,6 +157,7 @@ add_library(
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
   server/LoggingEvent.cpp
+  server/LoggingEventHelper.cpp
   server/ServerInstrumentation.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp

@@ -131,10 +131,5 @@ const LoggingEventRegistry& getLoggingEventRegistry();
 
 void useMockLoggingEventRegistry();
 
-void logSetupConnectionEventsOnce(
-    folly::once_flag& flag,
-    std::string_view methodName,
-    const ConnectionLoggingContext& context);
-
 } // namespace thrift
 } // namespace apache

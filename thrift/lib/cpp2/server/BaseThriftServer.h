@@ -127,6 +127,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::optional<std::string> wrapper;
     std::optional<std::string> languageFramework;
     std::optional<std::set<std::string>> modules;
+    std::optional<std::string> tlsConfigSource;
 
     void addModule(std::string_view name) {
       if (!modules) {

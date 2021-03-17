@@ -84,34 +84,5 @@ const LoggingEventRegistry& getLoggingEventRegistry() {
   return registryStorage.get().getRegistry();
 }
 
-void logSetupConnectionEventsOnce(
-    folly::once_flag& flag,
-    std::string_view methodName,
-    const ConnectionLoggingContext& context) {
-  static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
-    if (methodName == "getCounters" || methodName == "getStatus" ||
-        methodName == "getRegexCounters") {
-      return false;
-    }
-    try {
-      if (auto transport = context.getTransport()) {
-        const auto& protocol = context.getSecurityProtocol();
-        if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS") {
-          if (!transport->getPeerCertificate()) {
-            THRIFT_CONNECTION_EVENT(tls.no_peer_cert).log(context);
-          }
-        } else {
-          THRIFT_CONNECTION_EVENT(non_tls).log(context);
-        }
-      }
-    } catch (...) {
-      LOG(ERROR)
-          << "Exception thrown during Thrift server connection events logging: "
-          << folly::exceptionStr(std::current_exception());
-    }
-    return true;
-  }));
-}
-
 } // namespace thrift
 } // namespace apache
