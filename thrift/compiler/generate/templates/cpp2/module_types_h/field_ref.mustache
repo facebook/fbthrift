@@ -53,6 +53,7 @@
 <%/field:optional?%>
 <%^field:optional?%>
 <%#field:required?%>
+
   template <typename..., typename T = <%type:cpp_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> <%field:cpp_name%>_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this-><% > common/field_value%>};

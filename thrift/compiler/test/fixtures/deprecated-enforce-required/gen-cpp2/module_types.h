@@ -93,6 +93,7 @@ class Foo final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> bar_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->bar};

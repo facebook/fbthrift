@@ -652,6 +652,7 @@ class MyField final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_ref() && {
     return {std::move(this->value), __isset.value};
   }
+
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_value_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_value};

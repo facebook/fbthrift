@@ -1586,6 +1586,7 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
     return {std::move(this->MyBinaryField2), __isset.MyBinaryField2};
   }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
@@ -4299,6 +4300,7 @@ class AnException final : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
     return {std::move(this->code), __isset.code};
   }
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_code_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_code};
@@ -4338,6 +4340,7 @@ class AnException final : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message2_ref() && {
     return {std::move(this->message2), __isset.message2};
   }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_message_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_message};
@@ -4417,6 +4420,7 @@ class AnException final : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_map_ref() && {
     return {std::move(this->exception_map), __isset.exception_map};
   }
+
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_exception_map_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_exception_map};
@@ -4841,6 +4845,7 @@ class AnotherException : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
     return {std::move(this->code), __isset.code};
   }
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_code_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_code};
@@ -5150,6 +5155,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
+
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldA_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldA};
@@ -5209,6 +5215,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
+
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldB_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldB};
@@ -5268,6 +5275,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
+
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldC_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
@@ -5347,6 +5355,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldE_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldE};
@@ -5646,6 +5655,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldR_ref() && {
     return {std::move(this->fieldR), __isset.fieldR};
   }
+
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldR_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldR};
@@ -5765,6 +5775,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldV_ref() && {
     return {std::move(this->fieldV), __isset.fieldV};
   }
+
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldV_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldV};
@@ -5844,6 +5855,7 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldX_ref() && {
     return {std::move(this->fieldX), __isset.fieldX};
   }
+
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldX_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldX};
@@ -6651,6 +6663,7 @@ class MyIncludedStruct final  {
 
   template <typename ..., typename T = std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE const T&& ARefField_ref() const&& { return std::move(ARefField); }
+
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->ARequiredField};
@@ -8387,6 +8400,7 @@ AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexc
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> intField_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->intField};

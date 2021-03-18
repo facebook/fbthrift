@@ -349,6 +349,7 @@ class Internship final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> weeks_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->weeks};
@@ -566,6 +567,7 @@ class Range final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> min_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->min};
@@ -585,6 +587,7 @@ class Range final  {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> min_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->min)};
   }
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> max_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->max};

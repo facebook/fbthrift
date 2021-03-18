@@ -5455,6 +5455,7 @@ class reqXcep final : public apache::thrift::TException {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> message_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->message};
@@ -5474,6 +5475,7 @@ class reqXcep final : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> message_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->message)};
   }
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> errorCode_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->errorCode};

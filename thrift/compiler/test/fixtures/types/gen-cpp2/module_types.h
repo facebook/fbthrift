@@ -2033,6 +2033,7 @@ class MinPadding final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->small};
@@ -2052,6 +2053,7 @@ class MinPadding final  {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> small_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->small)};
   }
+
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> big_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->big};
@@ -2071,6 +2073,7 @@ class MinPadding final  {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> big_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->big)};
   }
+
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> medium_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->medium};
@@ -2090,6 +2093,7 @@ class MinPadding final  {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> medium_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->medium)};
   }
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> biggish_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->biggish};
@@ -2109,6 +2113,7 @@ class MinPadding final  {
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> biggish_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->biggish)};
   }
+
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> tiny_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->tiny};
@@ -3471,6 +3476,7 @@ class NoexceptMoveComplexStruct final  {
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
     return {std::move(this->MyBinaryField2), __isset.MyBinaryField2};
   }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};

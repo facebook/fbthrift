@@ -4182,6 +4182,7 @@ class struct1 final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
@@ -4241,6 +4242,7 @@ class struct1 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2_ref() && {
     return {std::move(this->field2), __isset.field2};
   }
+
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field3_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field3};
@@ -5443,6 +5445,7 @@ class struct4 final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
@@ -5647,6 +5650,7 @@ class struct5 final  {
     return !(__x < __y);
   }
 #endif
+
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};

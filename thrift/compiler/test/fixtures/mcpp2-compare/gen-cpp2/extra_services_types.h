@@ -213,6 +213,7 @@ class containerStruct2 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
+
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldA_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldA};
@@ -272,6 +273,7 @@ class containerStruct2 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
+
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldB_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldB};
@@ -331,6 +333,7 @@ class containerStruct2 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
+
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldC_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
@@ -410,6 +413,7 @@ class containerStruct2 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldE_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldE};
