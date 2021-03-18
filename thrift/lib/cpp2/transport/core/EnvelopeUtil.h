@@ -27,7 +27,7 @@ namespace thrift {
 class EnvelopeUtil {
  public:
   struct Envelope {
-    int16_t protocolId;
+    protocol::PROTOCOL_TYPES protocolId;
     std::string methodName;
   };
 
