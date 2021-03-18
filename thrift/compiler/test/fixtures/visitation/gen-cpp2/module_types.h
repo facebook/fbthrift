@@ -886,25 +886,16 @@ enum class enum_with_special_names {
 
 
 }} // test_cpp2::cpp_reflection
+
 namespace std {
-
-
-template<> struct hash<typename ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum1> {};
-template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum1> {};
-
-
-template<> struct hash<typename ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum2> {};
-template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum2> {};
-
-
-template<> struct hash<typename ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum3> {};
-template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum3> {};
-
-
-template<> struct hash<typename ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum_with_special_names> {};
-template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum_with_special_names> {};
-
-
+template<> struct hash<::test_cpp2::cpp_reflection::enum1> :
+  ::apache::thrift::detail::enum_hash<::test_cpp2::cpp_reflection::enum1> {};
+template<> struct hash<::test_cpp2::cpp_reflection::enum2> :
+  ::apache::thrift::detail::enum_hash<::test_cpp2::cpp_reflection::enum2> {};
+template<> struct hash<::test_cpp2::cpp_reflection::enum3> :
+  ::apache::thrift::detail::enum_hash<::test_cpp2::cpp_reflection::enum3> {};
+template<> struct hash<::test_cpp2::cpp_reflection::enum_with_special_names> :
+  ::apache::thrift::detail::enum_hash<::test_cpp2::cpp_reflection::enum_with_special_names> {};
 } // std
 
 namespace apache { namespace thrift {

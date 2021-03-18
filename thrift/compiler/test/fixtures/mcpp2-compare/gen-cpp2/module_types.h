@@ -896,25 +896,16 @@ enum class MyEnumB {
 
 
 }}} // some::valid::ns
+
 namespace std {
-
-
-template<> struct hash<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumA> {};
-template<> struct equal_to<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumA> {};
-
-
-template<> struct hash<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum> {};
-template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum> {};
-
-
-template<> struct hash<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum2> {};
-template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum2> {};
-
-
-template<> struct hash<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumB> {};
-template<> struct equal_to<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumB> {};
-
-
+template<> struct hash<::some::valid::ns::MyEnumA> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::MyEnumA> {};
+template<> struct hash<::some::valid::ns::AnnotatedEnum> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::AnnotatedEnum> {};
+template<> struct hash<::some::valid::ns::AnnotatedEnum2> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::AnnotatedEnum2> {};
+template<> struct hash<::some::valid::ns::MyEnumB> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::MyEnumB> {};
 } // std
 
 namespace apache { namespace thrift {

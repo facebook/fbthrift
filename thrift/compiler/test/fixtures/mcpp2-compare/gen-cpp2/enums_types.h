@@ -64,29 +64,18 @@ enum class AnEnumE {
 
 
 }}} // facebook::ns::qwerty
+
 namespace std {
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumA> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumA> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumB> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumB> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumC> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumC> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumD> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumD> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumE> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumE> {};
-
-
+template<> struct hash<::facebook::ns::qwerty::AnEnumA> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumA> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumB> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumB> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumC> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumC> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumD> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumD> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumE> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumE> {};
 } // std
 
 namespace apache { namespace thrift {

@@ -127,13 +127,10 @@ enum class Animal {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::Animal> : public apache::thrift::detail::enum_hash<typename ::cpp2::Animal> {};
-template<> struct equal_to<typename ::cpp2::Animal> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::Animal> {};
-
-
+template<> struct hash<::cpp2::Animal> :
+  ::apache::thrift::detail::enum_hash<::cpp2::Animal> {};
 } // std
 
 namespace apache { namespace thrift {

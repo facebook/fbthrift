@@ -73,21 +73,14 @@ enum class MyBigEnum {
 
 
 }}} // test::fixtures::enumstrict
+
 namespace std {
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::EmptyEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::EmptyEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::EmptyEnum> {};
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::MyEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::MyEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::MyEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::MyEnum> {};
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::MyBigEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::MyBigEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::MyBigEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::MyBigEnum> {};
-
-
+template<> struct hash<::test::fixtures::enumstrict::EmptyEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::EmptyEnum> {};
+template<> struct hash<::test::fixtures::enumstrict::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::MyEnum> {};
+template<> struct hash<::test::fixtures::enumstrict::MyBigEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::MyBigEnum> {};
 } // std
 
 namespace apache { namespace thrift {

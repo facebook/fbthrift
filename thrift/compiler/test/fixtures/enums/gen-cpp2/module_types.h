@@ -53,13 +53,10 @@ enum class Metasyntactic {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::Metasyntactic> : public apache::thrift::detail::enum_hash<typename ::cpp2::Metasyntactic> {};
-template<> struct equal_to<typename ::cpp2::Metasyntactic> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::Metasyntactic> {};
-
-
+template<> struct hash<::cpp2::Metasyntactic> :
+  ::apache::thrift::detail::enum_hash<::cpp2::Metasyntactic> {};
 } // std
 
 namespace apache { namespace thrift {

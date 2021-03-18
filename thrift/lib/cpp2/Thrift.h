@@ -131,13 +131,6 @@ struct enum_hash {
   }
 };
 
-template <typename T>
-struct enum_equal_to {
-  bool operator()(T t0, T t1) const {
-    return t0 == t1;
-  }
-};
-
 } // namespace detail
 
 namespace detail {

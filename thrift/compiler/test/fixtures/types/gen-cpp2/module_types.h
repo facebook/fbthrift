@@ -366,25 +366,16 @@ enum class MyEnumA {
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace std {
-
-
-template<> struct hash<typename ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::has_bitwise_ops> {};
-template<> struct equal_to<typename ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::has_bitwise_ops> {};
-
-
-template<> struct hash<typename ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::is_unscoped> {};
-template<> struct equal_to<typename ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::is_unscoped> {};
-
-
-template<> struct hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
-template<> struct equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
-
-
-template<> struct hash<typename ::apache::thrift::fixtures::types::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::MyEnumA> {};
-template<> struct equal_to<typename ::apache::thrift::fixtures::types::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::MyEnumA> {};
-
-
+template<> struct hash<::apache::thrift::fixtures::types::has_bitwise_ops> :
+  ::apache::thrift::detail::enum_hash<::apache::thrift::fixtures::types::has_bitwise_ops> {};
+template<> struct hash<::apache::thrift::fixtures::types::is_unscoped> :
+  ::apache::thrift::detail::enum_hash<::apache::thrift::fixtures::types::is_unscoped> {};
+template<> struct hash<::apache::thrift::fixtures::types::MyForwardRefEnum> :
+  ::apache::thrift::detail::enum_hash<::apache::thrift::fixtures::types::MyForwardRefEnum> {};
+template<> struct hash<::apache::thrift::fixtures::types::MyEnumA> :
+  ::apache::thrift::detail::enum_hash<::apache::thrift::fixtures::types::MyEnumA> {};
 } // std
 
 namespace apache { namespace thrift {

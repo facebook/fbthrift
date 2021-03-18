@@ -106,13 +106,10 @@ enum class ExampleEnum {
 
 
 }}} // test::fixtures::tablebased
+
 namespace std {
-
-
-template<> struct hash<typename ::test::fixtures::tablebased::ExampleEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::tablebased::ExampleEnum> {};
-template<> struct equal_to<typename ::test::fixtures::tablebased::ExampleEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::tablebased::ExampleEnum> {};
-
-
+template<> struct hash<::test::fixtures::tablebased::ExampleEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::tablebased::ExampleEnum> {};
 } // std
 
 namespace apache { namespace thrift {

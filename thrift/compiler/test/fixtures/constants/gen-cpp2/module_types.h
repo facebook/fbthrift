@@ -169,21 +169,14 @@ enum class Company {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename ::cpp2::EmptyEnum> {};
-template<> struct equal_to<typename ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::EmptyEnum> {};
-
-
-template<> struct hash<typename ::cpp2::City> : public apache::thrift::detail::enum_hash<typename ::cpp2::City> {};
-template<> struct equal_to<typename ::cpp2::City> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::City> {};
-
-
-template<> struct hash<typename ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename ::cpp2::Company> {};
-template<> struct equal_to<typename ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::Company> {};
-
-
+template<> struct hash<::cpp2::EmptyEnum> :
+  ::apache::thrift::detail::enum_hash<::cpp2::EmptyEnum> {};
+template<> struct hash<::cpp2::City> :
+  ::apache::thrift::detail::enum_hash<::cpp2::City> {};
+template<> struct hash<::cpp2::Company> :
+  ::apache::thrift::detail::enum_hash<::cpp2::Company> {};
 } // std
 
 namespace apache { namespace thrift {

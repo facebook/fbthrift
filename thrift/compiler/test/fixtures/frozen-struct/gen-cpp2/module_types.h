@@ -72,13 +72,10 @@ enum class EnumB {
 
 
 }} // some::ns
+
 namespace std {
-
-
-template<> struct hash<typename ::some::ns::EnumB> : public apache::thrift::detail::enum_hash<typename ::some::ns::EnumB> {};
-template<> struct equal_to<typename ::some::ns::EnumB> : public apache::thrift::detail::enum_equal_to<typename ::some::ns::EnumB> {};
-
-
+template<> struct hash<::some::ns::EnumB> :
+  ::apache::thrift::detail::enum_hash<::some::ns::EnumB> {};
 } // std
 
 namespace apache { namespace thrift {

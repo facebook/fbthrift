@@ -35,13 +35,10 @@ enum class B {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::B> : public apache::thrift::detail::enum_hash<typename ::cpp2::B> {};
-template<> struct equal_to<typename ::cpp2::B> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::B> {};
-
-
+template<> struct hash<::cpp2::B> :
+  ::apache::thrift::detail::enum_hash<::cpp2::B> {};
 } // std
 
 namespace apache { namespace thrift {

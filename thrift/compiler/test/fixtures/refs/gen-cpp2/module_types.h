@@ -201,13 +201,10 @@ enum class TypedEnum : short {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::TypedEnum> : public apache::thrift::detail::enum_hash<typename ::cpp2::TypedEnum> {};
-template<> struct equal_to<typename ::cpp2::TypedEnum> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::TypedEnum> {};
-
-
+template<> struct hash<::cpp2::TypedEnum> :
+  ::apache::thrift::detail::enum_hash<::cpp2::TypedEnum> {};
 } // std
 
 namespace apache { namespace thrift {

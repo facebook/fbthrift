@@ -152,13 +152,10 @@ enum class MyEnumA {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::cpp2::MyEnumA> {};
-template<> struct equal_to<typename ::cpp2::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::MyEnumA> {};
-
-
+template<> struct hash<::cpp2::MyEnumA> :
+  ::apache::thrift::detail::enum_hash<::cpp2::MyEnumA> {};
 } // std
 
 namespace apache { namespace thrift {

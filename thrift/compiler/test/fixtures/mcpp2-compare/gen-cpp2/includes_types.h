@@ -42,13 +42,10 @@ enum class AnEnum {
 
 
 }}} // a::different::ns
+
 namespace std {
-
-
-template<> struct hash<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_hash<typename ::a::different::ns::AnEnum> {};
-template<> struct equal_to<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_equal_to<typename ::a::different::ns::AnEnum> {};
-
-
+template<> struct hash<::a::different::ns::AnEnum> :
+  ::apache::thrift::detail::enum_hash<::a::different::ns::AnEnum> {};
 } // std
 
 namespace apache { namespace thrift {
