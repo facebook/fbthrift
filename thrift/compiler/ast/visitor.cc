@@ -94,8 +94,8 @@ void visitor::recurse(t_program* const program) {
   for (auto* tstruct : program->structs()) {
     visit_and_recurse(tstruct);
   }
-  for (auto* txception : program->xceptions()) {
-    visit_and_recurse(txception);
+  for (auto* texception : program->exceptions()) {
+    visit_and_recurse(texception);
   }
   for (auto* tconst : program->consts()) {
     visit_and_recurse(tconst);

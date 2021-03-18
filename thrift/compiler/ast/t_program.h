@@ -86,9 +86,15 @@ class t_program : public t_node {
     structs_.push_back(ts.get());
     nodes_.push_back(std::move(ts));
   }
+  // TODO: remove "xception" function once everything changed to "exception"
   void add_xception(std::unique_ptr<t_exception> tx) {
     objects_.push_back(tx.get());
-    xceptions_.push_back(tx.get());
+    exceptions_.push_back(tx.get());
+    nodes_.push_back(std::move(tx));
+  }
+  void add_exception(std::unique_ptr<t_exception> tx) {
+    objects_.push_back(tx.get());
+    exceptions_.push_back(tx.get());
     nodes_.push_back(std::move(tx));
   }
   void add_service(std::unique_ptr<t_service> ts) {
@@ -129,8 +135,12 @@ class t_program : public t_node {
   const std::vector<t_struct*>& structs() const {
     return structs_;
   }
+  // TODO: remove "xception" function once everything changed to "exception"
   const std::vector<t_exception*>& xceptions() const {
-    return xceptions_;
+    return exceptions_;
+  }
+  const std::vector<t_exception*>& exceptions() const {
+    return exceptions_;
   }
   const std::vector<t_struct*>& objects() const {
     return objects_;
@@ -262,12 +272,12 @@ class t_program : public t_node {
   std::vector<t_enum*> enums_;
   std::vector<t_const*> consts_;
   std::vector<t_struct*> structs_;
-  std::vector<t_exception*> xceptions_;
+  std::vector<t_exception*> exceptions_;
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
   std::vector<t_service*> interactions_;
   std::vector<t_typedef*> placeholder_typedefs_;
-  std::vector<t_struct*> objects_; // structs_ + xceptions_
+  std::vector<t_struct*> objects_; // structs_ + exceptions_
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};

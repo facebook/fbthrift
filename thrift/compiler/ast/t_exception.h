@@ -52,7 +52,13 @@ class t_exception : public t_struct {
  public:
   using t_struct::t_struct;
 
+  // TODO: remove old function "xception" once everything has been swtiched to
+  // "exception"
   bool is_xception() const override {
+    return is_exception();
+  }
+
+  bool is_exception() const override {
     return true;
   }
 

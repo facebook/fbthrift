@@ -77,7 +77,7 @@ class t_struct : public t_type {
   }
 
   bool is_struct() const override {
-    return !is_xception();
+    return !is_exception();
   }
 
   std::string get_full_name() const override {

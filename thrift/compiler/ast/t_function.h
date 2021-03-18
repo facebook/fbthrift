@@ -53,29 +53,29 @@ class t_function : public t_named {
    * @param return_type      - The type of the value that will be returned
    * @param name             - The symbolic name of the function
    * @param paramlist        - The parameters that are passed to the functions
-   * @param xceptions        - Declare the exceptions that function might throw
-   * @param stream_xceptions - Exceptions to be sent via the stream
+   * @param exceptions        - Declare the exceptions that function might throw
+   * @param stream_exceptions - Exceptions to be sent via the stream
    * @param qualifier        - The qualifier of the function, if any.
    */
   t_function(
       t_type_ref return_type,
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
-      std::unique_ptr<t_struct> xceptions = nullptr,
-      std::unique_ptr<t_struct> stream_xceptions = nullptr,
+      std::unique_ptr<t_struct> exceptions = nullptr,
+      std::unique_ptr<t_struct> stream_exceptions = nullptr,
       t_function_qualifier qualifier = t_function_qualifier::none)
       : t_named(std::move(name)),
         return_type_(std::move(return_type)),
         paramlist_(std::move(paramlist)),
-        xceptions_(std::move(xceptions)),
-        stream_xceptions_(std::move(stream_xceptions)),
+        exceptions_(std::move(exceptions)),
+        stream_exceptions_(std::move(stream_exceptions)),
         qualifier_(qualifier) {
     // sinks are supposed to use the other ctor
     assert(
         return_type_.get_type() == nullptr ||
         !return_type_.get_type()->is_sink());
     if (is_oneway()) {
-      if (!xceptions_->get_members().empty()) {
+      if (!exceptions_->get_members().empty()) {
         throw std::string("Oneway methods can't throw exceptions.");
       }
 
@@ -85,18 +85,18 @@ class t_function : public t_named {
       }
     }
 
-    if (!xceptions_) {
-      xceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!exceptions_) {
+      exceptions_ = std::make_unique<t_struct>(nullptr);
     }
 
-    if (!stream_xceptions_) {
-      stream_xceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!stream_exceptions_) {
+      stream_exceptions_ = std::make_unique<t_struct>(nullptr);
     }
 
-    sink_xceptions_ = std::make_unique<t_struct>(nullptr);
-    sink_final_response_xceptions_ = std::make_unique<t_struct>(nullptr);
+    sink_exceptions_ = std::make_unique<t_struct>(nullptr);
+    sink_final_response_exceptions_ = std::make_unique<t_struct>(nullptr);
 
-    if (!stream_xceptions_->get_members().empty()) {
+    if (!stream_exceptions_->get_members().empty()) {
       if (return_type_.get_type() == nullptr ||
           !return_type_.get_type()->is_streamresponse()) {
         throw std::string("`stream throws` only valid on stream methods");
@@ -108,25 +108,25 @@ class t_function : public t_named {
       const t_sink* return_type,
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
-      std::unique_ptr<t_struct> xceptions)
+      std::unique_ptr<t_struct> exceptions)
       : t_named(std::move(name)),
         return_type_(return_type),
         paramlist_(std::move(paramlist)),
-        xceptions_(std::move(xceptions)),
-        sink_xceptions_(
-            std::unique_ptr<t_struct>(return_type->get_sink_xceptions())),
-        sink_final_response_xceptions_(std::unique_ptr<t_struct>(
-            return_type->get_final_response_xceptions())),
+        exceptions_(std::move(exceptions)),
+        sink_exceptions_(
+            std::unique_ptr<t_struct>(return_type->get_sink_exceptions())),
+        sink_final_response_exceptions_(std::unique_ptr<t_struct>(
+            return_type->get_final_response_exceptions())),
         qualifier_(t_function_qualifier::none) {
-    if (!xceptions_) {
-      xceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!exceptions_) {
+      exceptions_ = std::make_unique<t_struct>(nullptr);
     }
-    stream_xceptions_ = std::make_unique<t_struct>(nullptr);
-    if (!sink_xceptions_) {
-      sink_xceptions_ = std::make_unique<t_struct>(nullptr);
+    stream_exceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!sink_exceptions_) {
+      sink_exceptions_ = std::make_unique<t_struct>(nullptr);
     }
-    if (!sink_final_response_xceptions_) {
-      sink_final_response_xceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!sink_final_response_exceptions_) {
+      sink_final_response_exceptions_ = std::make_unique<t_struct>(nullptr);
     }
   }
 
@@ -141,20 +141,40 @@ class t_function : public t_named {
     return paramlist_.get();
   }
 
+  // TODO: remove "xception" function once everything changed to "exception"
   t_struct* get_xceptions() const {
-    return xceptions_.get();
+    return get_exceptions();
   }
 
+  t_struct* get_exceptions() const {
+    return exceptions_.get();
+  }
+
+  // TODO: remove "xception" function once everything changed to "exception"
   t_struct* get_stream_xceptions() const {
-    return stream_xceptions_.get();
+    return get_stream_exceptions();
   }
 
+  t_struct* get_stream_exceptions() const {
+    return stream_exceptions_.get();
+  }
+
+  // TODO: remove "xception" function once everything changed to "exception"
   t_struct* get_sink_xceptions() const {
-    return sink_xceptions_.get();
+    return get_sink_exceptions();
   }
 
+  t_struct* get_sink_exceptions() const {
+    return sink_exceptions_.get();
+  }
+
+  // TODO: remove "xception" function once everything changed to "exception"
   t_struct* get_sink_final_response_xceptions() const {
-    return sink_final_response_xceptions_.get();
+    return get_sink_final_response_exceptions();
+  }
+
+  t_struct* get_sink_final_response_exceptions() const {
+    return sink_final_response_exceptions_.get();
   }
 
   bool is_oneway() const {
@@ -185,10 +205,10 @@ class t_function : public t_named {
  private:
   t_type_ref return_type_;
   std::unique_ptr<t_paramlist> paramlist_;
-  std::unique_ptr<t_struct> xceptions_;
-  std::unique_ptr<t_struct> stream_xceptions_;
-  std::unique_ptr<t_struct> sink_xceptions_;
-  std::unique_ptr<t_struct> sink_final_response_xceptions_;
+  std::unique_ptr<t_struct> exceptions_;
+  std::unique_ptr<t_struct> stream_exceptions_;
+  std::unique_ptr<t_struct> sink_exceptions_;
+  std::unique_ptr<t_struct> sink_final_response_exceptions_;
   t_function_qualifier qualifier_;
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
@@ -201,15 +221,15 @@ class t_function : public t_named {
       const t_type* return_type,
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
-      std::unique_ptr<t_struct> xceptions = nullptr,
-      std::unique_ptr<t_struct> stream_xceptions = nullptr,
+      std::unique_ptr<t_struct> exceptions = nullptr,
+      std::unique_ptr<t_struct> stream_exceptions = nullptr,
       t_function_qualifier qualifier = t_function_qualifier::none)
       : t_function(
             t_type_ref(return_type),
             std::move(name),
             std::move(paramlist),
-            std::move(xceptions),
-            std::move(stream_xceptions),
+            std::move(exceptions),
+            std::move(stream_exceptions),
             qualifier) {}
 
   const t_type* get_returntype() const {

@@ -134,7 +134,12 @@ class t_type : public t_named {
   virtual bool is_union() const {
     return false;
   }
+  // TODO: remove old function "xception" once everything has been swtiched to
+  // "exception"
   virtual bool is_xception() const {
+    return is_exception();
+  }
+  virtual bool is_exception() const {
     return false;
   }
   virtual bool is_container() const {

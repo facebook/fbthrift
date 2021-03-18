@@ -36,13 +36,13 @@ class t_sink : public t_type {
  public:
   explicit t_sink(
       t_type_ref sink_type,
-      t_struct* sink_xceptions,
+      t_struct* sink_exceptions,
       t_type_ref final_response_type,
-      t_struct* final_response_xceptions)
+      t_struct* final_response_exceptions)
       : sink_type_(std::move(sink_type)),
-        sink_xceptions_(sink_xceptions),
+        sink_exceptions_(sink_exceptions),
         final_response_type_(std::move(final_response_type)),
-        final_response_xceptions_(final_response_xceptions) {}
+        final_response_exceptions_(final_response_exceptions) {}
 
   void set_first_response_type(std::unique_ptr<t_type_ref> first_response) {
     first_response_type_ = std::move(first_response);
@@ -60,16 +60,28 @@ class t_sink : public t_type {
     return sink_type_.get_type();
   }
 
+  // TODO: remove old function "xception" once everything has been swtiched to
+  // "exception"
   t_struct* get_sink_xceptions() const {
-    return sink_xceptions_;
+    return get_sink_exceptions();
+  }
+
+  t_struct* get_sink_exceptions() const {
+    return sink_exceptions_;
   }
 
   const t_type* get_final_response_type() const {
     return final_response_type_.get_type();
   }
 
+  // TODO: remove old function "xception" once everything has been swtiched to
+  // "exception"
   t_struct* get_final_response_xceptions() const {
-    return final_response_xceptions_;
+    return get_final_response_exceptions();
+  }
+
+  t_struct* get_final_response_exceptions() const {
+    return final_response_exceptions_;
   }
 
   bool is_sink() const override {
@@ -90,9 +102,9 @@ class t_sink : public t_type {
 
  private:
   t_type_ref sink_type_;
-  t_struct* sink_xceptions_;
+  t_struct* sink_exceptions_;
   t_type_ref final_response_type_;
-  t_struct* final_response_xceptions_;
+  t_struct* final_response_exceptions_;
   std::unique_ptr<t_type_ref> first_response_type_;
 
  public:
@@ -101,14 +113,14 @@ class t_sink : public t_type {
 
   explicit t_sink(
       const t_type* sink_type,
-      t_struct* sink_xceptions,
+      t_struct* sink_exceptions,
       const t_type* final_response_type,
-      t_struct* final_response_xceptions)
+      t_struct* final_response_exceptions)
       : t_sink(
             t_type_ref(sink_type),
-            sink_xceptions,
+            sink_exceptions,
             t_type_ref(final_response_type),
-            final_response_xceptions) {}
+            final_response_exceptions) {}
 
   void set_first_response(const t_type* first_response) {
     set_first_response_type(std::make_unique<t_type_ref>(first_response));
