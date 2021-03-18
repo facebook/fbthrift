@@ -931,6 +931,12 @@ abstract class AbstractTSimpleJSONProtocol extends TProtocol {
 
   public abstract byte[] readBinary() throws TException;
 
+  @Override
+  public void skipBinary() throws TException {
+    // use readString to skip bytes to prevent an error when Base64 encoding
+    readString();
+  }
+
   public static class CollectionMapKeyException extends TException {
     public CollectionMapKeyException(String message) {
       super(message);

@@ -170,6 +170,15 @@ public abstract class TProtocol {
   public abstract byte[] readBinary() throws TException;
 
   /**
+   * Skips a binary or string field
+   *
+   * @throws TException
+   */
+  public void skipBinary() throws TException {
+    readBinary();
+  }
+
+  /**
    * Reset any internal state back to a blank slate. This method only needs to be implemented for
    * stateful protocols.
    */

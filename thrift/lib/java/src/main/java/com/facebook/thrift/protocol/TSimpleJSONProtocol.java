@@ -322,6 +322,11 @@ public class TSimpleJSONProtocol extends TProtocol {
     return delegate.readBinary();
   }
 
+  @Override
+  public void skipBinary() throws TException {
+    delegate.skipBinary();
+  }
+
   public static byte getTypeIDForPeekedByte(byte peekedByte) throws TException {
     return AbstractTSimpleJSONProtocol.getTypeIDForPeekedByte(peekedByte);
   }
