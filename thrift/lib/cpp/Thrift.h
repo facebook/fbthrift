@@ -219,6 +219,42 @@ class TLibraryException : public TException {
   std::string message_;
 };
 
+class FOLLY_EXPORT AppBaseError : public std::runtime_error {
+ public:
+  AppBaseError(const std::string& name, const std::string& what)
+      : std::runtime_error(what), name_(name) {}
+
+  AppBaseError(std::string&& name, std::string&& what)
+      : std::runtime_error(what), name_(std::move(name)) {}
+
+  virtual const char* name() const noexcept {
+    return name_.c_str();
+  }
+
+  virtual bool isClientError() const noexcept = 0;
+
+ private:
+  std::string name_;
+};
+
+class FOLLY_EXPORT AppServerError : public AppBaseError {
+ public:
+  using AppBaseError::AppBaseError;
+
+  bool isClientError() const noexcept override {
+    return false;
+  }
+};
+
+class FOLLY_EXPORT AppClientError : public AppBaseError {
+ public:
+  using AppBaseError::AppBaseError;
+
+  bool isClientError() const noexcept override {
+    return true;
+  }
+};
+
 } // namespace thrift
 } // namespace apache
 
