@@ -25,7 +25,7 @@ void logTlsNoPeerCertEvent(const ConnectionLoggingContext& context) {
   DCHECK(context.getWorker() && context.getWorker()->getServer());
   const auto& configSource =
       context.getWorker()->getServer()->metadata().tlsConfigSource;
-  if (configSource && *configSource == "default") {
+  if (configSource && *configSource == kDefaultTLSConfigSource) {
     THRIFT_CONNECTION_EVENT(tls.no_peer_cert.config_default).log(context);
   } else {
     THRIFT_CONNECTION_EVENT(tls.no_peer_cert.config_manual).log(context);

@@ -24,6 +24,8 @@
 namespace apache {
 namespace thrift {
 
+inline constexpr std::string_view kDefaultTLSConfigSource = "default";
+
 void logSetupConnectionEventsOnce(
     folly::once_flag& flag,
     std::string_view methodName,
