@@ -71,8 +71,8 @@ class RequestContextQueue {
 
   void markAsResponded(RequestContext& req) noexcept;
 
-  void failAllScheduledWrites(transport::TTransportException ex);
-  void failAllSentWrites(transport::TTransportException ex);
+  void failAllScheduledWrites(folly::exception_wrapper ew);
+  void failAllSentWrites(folly::exception_wrapper ew);
 
   RequestContext* getRequestResponseContext(StreamId streamId);
 
@@ -105,9 +105,7 @@ class RequestContextQueue {
   // writeSuccess() or writeErr() was called.
   RequestContext::Queue writeSentQueue_;
 
-  void failQueue(
-      RequestContext::Queue& queue,
-      transport::TTransportException ex);
+  void failQueue(RequestContext::Queue& queue, folly::exception_wrapper ew);
 
   void removeFromWriteSendingQueue(RequestContext& req) noexcept;
 

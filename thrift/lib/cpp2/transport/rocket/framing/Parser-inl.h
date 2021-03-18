@@ -192,6 +192,7 @@ void Parser<T>::readBufferAvailable(
         currentFrameLength_ = Serializer::kBytesForFrameOrMetadataLength +
             readFrameOrMetadataSize(cursor);
         if (!owner_.incMemoryUsage(currentFrameLength_)) {
+          currentFrameLength_ = 0;
           return;
         }
       }

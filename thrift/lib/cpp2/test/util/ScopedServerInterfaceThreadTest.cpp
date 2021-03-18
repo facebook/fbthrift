@@ -252,10 +252,10 @@ TEST(ScopedServerInterfaceThread, TransportMemLimit) {
   try {
     cli->sync_largeRequest(std::move(request));
     ADD_FAILURE();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::TApplicationException& ex) {
     EXPECT_EQ(
-        apache::thrift::transport::TTransportException::
-            TTransportExceptionType::EXCEEDED_INGRESS_MEM_LIMIT,
+        apache::thrift::TApplicationException::TApplicationExceptionType::
+            LOADSHEDDING,
         ex.getType());
   }
 }

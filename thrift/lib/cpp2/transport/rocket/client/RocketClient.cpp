@@ -135,10 +135,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         }
       } break;
       case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
-        auto ex = transport::TTransportException(
-            apache::thrift::transport::TTransportException::
-                EXCEEDED_INGRESS_MEM_LIMIT,
-            "Exceeded ingress memory limit");
+        auto ex = RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
         if (state_ == ConnectionState::ERROR) {
           error_ = std::move(ex);
         } else {
@@ -973,14 +970,14 @@ void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   closeNowImpl();
 }
 
-void RocketClient::close(transport::TTransportException ex) noexcept {
+void RocketClient::close(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
   if (state_ != ConnectionState::CONNECTED) {
     return;
   }
 
-  error_ = std::move(ex);
+  error_ = std::move(ew);
   state_ = ConnectionState::ERROR;
 
   writeLoopCallback_.cancelLoopCallback();

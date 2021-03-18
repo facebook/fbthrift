@@ -73,6 +73,21 @@ folly::Try<FirstResponsePayload> decodeResponseError(
     case rocket::ErrorCode::INVALID:
     case rocket::ErrorCode::REJECTED:
       break;
+    case rocket::ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
+      ResponseRpcMetadata metadata;
+      metadata.otherMetadata_ref().ensure()["ex"] =
+          kServerIngressMemoryLimitExceededErrorCode;
+
+      return folly::Try<FirstResponsePayload>(FirstResponsePayload(
+          LegacySerializedResponse(
+              protocolId,
+              methodName,
+              TApplicationException(
+                  TApplicationException::LOADSHEDDING,
+                  "Exceeded Ingress Memory Limit"))
+              .buffer,
+          std::move(metadata)));
+    }
     default:
       return folly::Try<FirstResponsePayload>(
           folly::make_exception_wrapper<TApplicationException>(fmt::format(
@@ -934,8 +949,7 @@ bool RocketClientChannel::preSendValidation(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::NOT_OPEN,
             folly::sformat(
-                "Connection not open: {}",
-                rclient_->getLastTransportError().what())));
+                "Connection not open: {}", rclient_->getLastError().what())));
     return false;
   }
 

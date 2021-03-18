@@ -57,11 +57,10 @@ class TTransportException : public apache::thrift::TLibraryException {
     NETWORK_ERROR = 15,
     EARLY_DATA_REJECTED = 16,
     STREAMING_CONTRACT_VIOLATION = 17,
-    EXCEEDED_INGRESS_MEM_LIMIT = 18,
     // Remember to update TTransportExceptionTypeSize if you add an entry here
   };
 
-  using TTransportExceptionTypeSize = std::integral_constant<std::size_t, 19>;
+  using TTransportExceptionTypeSize = std::integral_constant<std::size_t, 18>;
 
   TTransportException()
       : apache::thrift::TLibraryException(),
@@ -167,8 +166,6 @@ class TTransportException : public apache::thrift::TLibraryException {
           return "TTransportException: Early data rejected";
         case STREAMING_CONTRACT_VIOLATION:
           return "TTransportException: Streaming contract violation";
-        case EXCEEDED_INGRESS_MEM_LIMIT:
-          return "TTransportException: Ingress memory limit hit";
         default:
           return "TTransportException: (Invalid exception type)";
       }

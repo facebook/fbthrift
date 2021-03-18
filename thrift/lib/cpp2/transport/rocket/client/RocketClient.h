@@ -154,7 +154,7 @@ class RocketClient : public folly::DelayedDestruction,
     return state_ == ConnectionState::CONNECTED;
   }
 
-  const transport::TTransportException& getLastTransportError() const {
+  folly::exception_wrapper getLastError() const {
     return error_;
   }
 
@@ -247,7 +247,7 @@ class RocketClient : public folly::DelayedDestruction,
   void terminateInteraction(int64_t id);
 
   // Request connection close and fail all the requests.
-  void close(apache::thrift::transport::TTransportException ex) noexcept;
+  void close(folly::exception_wrapper ex) noexcept;
 
   bool incMemoryUsage(uint32_t) {
     return true;
@@ -274,7 +274,7 @@ class RocketClient : public folly::DelayedDestruction,
   };
   // Client must be constructed with an already open socket
   ConnectionState state_{ConnectionState::CONNECTED};
-  transport::TTransportException error_;
+  folly::exception_wrapper error_;
 
   RequestContextQueue queue_;
 

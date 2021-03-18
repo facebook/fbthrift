@@ -68,6 +68,7 @@ extern const std::string kInteractionIdUnknownErrorCode;
 extern const std::string kInteractionConstructorErrorErrorCode;
 extern const std::string kConnectionClosingErrorCode;
 extern const std::string kRequestParsingErrorCode;
+extern const std::string kServerIngressMemoryLimitExceededErrorCode;
 
 namespace apache {
 namespace thrift {
