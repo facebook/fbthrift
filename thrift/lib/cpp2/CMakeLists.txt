@@ -157,7 +157,6 @@ add_library(
   async/ThreadBoundAdaptorChannel.cpp
   gen/module_metadata_cpp.cpp
   gen/module_types_cpp.cpp
-  reflection/internal/legacy_reflection_type_id.cpp
   security/SSLUtil.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
