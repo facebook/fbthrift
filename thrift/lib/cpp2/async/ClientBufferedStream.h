@@ -206,10 +206,7 @@ class ClientBufferedStream {
     };
 
     while (true) {
-      if ((co_await folly::coro::co_current_cancellation_token)
-              .isCancellationRequested()) {
-        co_yield folly::coro::co_cancelled;
-      }
+      co_await folly::coro::co_safe_point;
       if (queue.empty()) {
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
@@ -309,10 +306,7 @@ class ClientBufferedStream {
     };
 
     while (true) {
-      if ((co_await folly::coro::co_current_cancellation_token)
-              .isCancellationRequested()) {
-        co_yield folly::coro::co_cancelled;
-      }
+      co_await folly::coro::co_safe_point;
 
       {
         // Always check for new buffered messages to update queue size
