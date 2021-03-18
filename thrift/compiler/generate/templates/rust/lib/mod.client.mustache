@@ -112,7 +112,7 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
@@ -144,7 +144,7 @@
                 .call_stream(request)
                 .map_err(::std::convert::From::from)
                 .and_then(|({{^function:stream_has_first_response?}}_{{/function:stream_has_first_response?}}initial_response, stream)| ::futures::future::ready({
-                    let new_stream: {{#function:return_type}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, crate::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:return_type}} = ::std::boxed::Box::pin(stream.map(
+                    let new_stream: {{#function:return_type}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:return_type}} = ::std::boxed::Box::pin(stream.map(
                         |stream_item_response| {
                             match stream_item_response {
                                 Err(e) => {
@@ -180,6 +180,7 @@
                         }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
+                        use ::fbthrift::{ProtocolReader as _};
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -225,6 +226,7 @@
                         }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
                     }}> {
+                        use ::fbthrift::{ProtocolReader as _};
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {

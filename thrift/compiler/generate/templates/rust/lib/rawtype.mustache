@@ -50,7 +50,7 @@
     }}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = {{!
         }}::std::result::Result<{{!
             }}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, {{!
-            }}crate::{{service:snake}}::{{function:upcamel}}StreamError{{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError{{!
         }}>>{{!
     }} + ::std::marker::Send + 'static >>{{!
     }}{{#type:stream_has_first_response?}}{{!
