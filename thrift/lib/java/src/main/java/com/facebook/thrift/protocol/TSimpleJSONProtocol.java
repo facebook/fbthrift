@@ -35,12 +35,22 @@ public class TSimpleJSONProtocol extends TProtocol {
 
   /** Factory */
   public static class Factory implements TProtocolFactory {
+    private final boolean useBase64;
+
+    public Factory() {
+      this(false);
+    }
+
+    public Factory(boolean useBase64) {
+      this.useBase64 = useBase64;
+    }
+
     public TProtocol getProtocol(TTransport trans) {
-      return new TSimpleJSONProtocol(trans);
+      return new TSimpleJSONProtocol(trans, this.useBase64);
     }
 
     public TProtocol getProtocol(TTransport trans, boolean useBase64) {
-      return new TSimpleJSONProtocol(trans, useBase64);
+      return new TSimpleJSONProtocol(trans, this.useBase64 || useBase64);
     }
   }
 
