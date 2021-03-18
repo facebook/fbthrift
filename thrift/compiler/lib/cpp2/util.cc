@@ -66,7 +66,7 @@ std::string get_gen_namespace(t_program const& program) {
   return "::" + boost::algorithm::join(components, "::");
 }
 
-const std::string& TypeResolver::get_type_name(const t_type* node) {
+const std::string& type_resolver::get_type_name(const t_type* node) {
   auto itr = type_cache_.find(node);
   if (itr == type_cache_.end()) {
     // TODO(afuller): Support adapted types.
@@ -75,7 +75,7 @@ const std::string& TypeResolver::get_type_name(const t_type* node) {
   return itr->second;
 }
 
-const std::string& TypeResolver::default_template(t_container::type ctype) {
+const std::string& type_resolver::default_template(t_container::type ctype) {
   switch (ctype) {
     case t_container::type::t_list: {
       static const auto& kValue = *new std::string("::std::vector");
@@ -94,7 +94,7 @@ const std::string& TypeResolver::default_template(t_container::type ctype) {
       "unknown container type: " + std::to_string(static_cast<int>(ctype)));
 }
 
-const std::string& TypeResolver::default_type(t_base_type::type btype) {
+const std::string& type_resolver::default_type(t_base_type::type btype) {
   switch (btype) {
     case t_base_type::type::t_void: {
       static const auto& kValue = *new std::string("void");
@@ -138,7 +138,7 @@ const std::string& TypeResolver::default_type(t_base_type::type btype) {
       "unknown base type: " + std::to_string(static_cast<int>(btype)));
 }
 
-std::string TypeResolver::gen_native_type(const t_type* node) {
+std::string type_resolver::gen_native_type(const t_type* node) {
   if (const auto* type = find_type(node)) {
     // Return the override.
     return *type;
@@ -166,7 +166,7 @@ std::string TypeResolver::gen_native_type(const t_type* node) {
   return gen_namespaced_name(node);
 }
 
-std::string TypeResolver::gen_container_type(const t_container* node) {
+std::string type_resolver::gen_container_type(const t_container* node) {
   const auto* val = find_template(node);
   const auto& template_name =
       val ? *val : default_template(node->container_type());
@@ -193,7 +193,7 @@ std::string TypeResolver::gen_container_type(const t_container* node) {
       std::to_string(static_cast<int>(node->container_type())));
 }
 
-std::string TypeResolver::gen_stream_resp_type(const t_stream_response* node) {
+std::string type_resolver::gen_stream_resp_type(const t_stream_response* node) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
@@ -204,7 +204,7 @@ std::string TypeResolver::gen_stream_resp_type(const t_stream_response* node) {
       "::apache::thrift::ServerStream", {get_type_name(node->get_elem_type())});
 }
 
-std::string TypeResolver::gen_sink_type(const t_sink* node) {
+std::string type_resolver::gen_sink_type(const t_sink* node) {
   if (node->sink_has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
@@ -218,7 +218,7 @@ std::string TypeResolver::gen_sink_type(const t_sink* node) {
        get_type_name(node->get_final_response_type())});
 }
 
-std::string TypeResolver::gen_template_type(
+std::string type_resolver::gen_template_type(
     std::string template_name,
     std::initializer_list<std::string> args) {
   template_name += "<";
@@ -232,7 +232,7 @@ std::string TypeResolver::gen_template_type(
   return template_name;
 }
 
-std::string TypeResolver::gen_namespaced_name(const t_type* node) {
+std::string type_resolver::gen_namespaced_name(const t_type* node) {
   if (node->get_program() == nullptr) {
     // No namespace.
     return node->get_name();
@@ -240,7 +240,7 @@ std::string TypeResolver::gen_namespaced_name(const t_type* node) {
   return get_gen_namespace(*node->get_program()) + "::" + node->get_name();
 }
 
-const std::string& TypeResolver::get_namespace(const t_program* program) {
+const std::string& type_resolver::get_namespace(const t_program* program) {
   auto itr = namespace_cache_.find(program);
   if (itr == namespace_cache_.end()) {
     itr = namespace_cache_.emplace_hint(

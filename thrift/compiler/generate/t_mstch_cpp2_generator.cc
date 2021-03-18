@@ -500,7 +500,7 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node cpp_type() {
     // TODO(afuller): Use a shared resolver.
-    cpp2::TypeResolver resolver;
+    cpp2::type_resolver resolver;
     return resolver.get_type_name(type_);
   }
   mstch::node resolved_cpp_type() {

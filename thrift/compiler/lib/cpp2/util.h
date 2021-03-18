@@ -41,7 +41,7 @@ std::string get_gen_namespace(t_program const& program);
 
 // A class that resolves c++ type names from thrift types and caches the
 // results.
-class TypeResolver {
+class type_resolver {
  public:
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type* node);
