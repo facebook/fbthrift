@@ -252,7 +252,11 @@ class RequestsRegistry {
   }
 
   void registerStub(DebugStub& req) {
-    requestCounter_.increment();
+    if (req.getMethodName() != "getCounters" &&
+        req.getMethodName() != "getStatus" &&
+        req.getMethodName() != "getRegexCounters") {
+      requestCounter_.increment();
+    }
     uint64_t payloadSize = req.getPayloadSize();
     reqActiveList_.push_back(req);
     if (payloadSize > payloadMemoryLimitPerRequest_) {
