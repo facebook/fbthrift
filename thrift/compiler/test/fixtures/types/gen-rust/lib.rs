@@ -2461,8 +2461,13 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.bounce_map";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "bounce_map",
@@ -2481,7 +2486,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -2518,8 +2523,13 @@ pub mod client {
             &self,
             arg_r: &[::std::primitive::i64],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.binary_keyed_map";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -2538,7 +2548,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);

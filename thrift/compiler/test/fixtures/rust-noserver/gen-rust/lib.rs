@@ -954,8 +954,13 @@ pub mod client {
     {        fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.ping";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "ping",
@@ -971,7 +976,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1007,8 +1012,13 @@ pub mod client {
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.getRandomData";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getRandomData",
@@ -1024,7 +1034,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1061,8 +1071,13 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.hasDataById";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "hasDataById",
@@ -1081,7 +1096,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1118,8 +1133,13 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.getDataById";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataById",
@@ -1138,7 +1158,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1176,8 +1196,13 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.putDataById";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "putDataById",
@@ -1199,7 +1224,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1237,8 +1262,13 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.lobDataById";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "lobDataById",
@@ -1260,7 +1290,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);

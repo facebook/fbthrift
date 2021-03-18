@@ -493,8 +493,13 @@ pub mod client {
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::nested_containers::MapListError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.mapList";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "mapList",
@@ -513,7 +518,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -550,8 +555,13 @@ pub mod client {
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::nested_containers::MapSetError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.mapSet";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "mapSet",
@@ -570,7 +580,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -607,8 +617,13 @@ pub mod client {
             &self,
             arg_foo: &[::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::nested_containers::ListMapError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.listMap";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "listMap",
@@ -627,7 +642,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -664,8 +679,13 @@ pub mod client {
             &self,
             arg_foo: &[::std::collections::BTreeSet<::std::primitive::i32>],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::nested_containers::ListSetError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.listSet";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "listSet",
@@ -684,7 +704,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -721,8 +741,13 @@ pub mod client {
             &self,
             arg_foo: &[::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::nested_containers::TurtlesError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.turtles";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "turtles",
@@ -741,7 +766,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);

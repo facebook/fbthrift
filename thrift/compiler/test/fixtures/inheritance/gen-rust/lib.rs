@@ -311,8 +311,13 @@ pub mod client {
     {        fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyRoot";
+                METHOD_NAME = "MyRoot.do_root";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_root",
@@ -328,7 +333,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -463,8 +468,13 @@ pub mod client {
     {        fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyNode";
+                METHOD_NAME = "MyNode.do_mid";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_mid",
@@ -480,7 +490,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -629,8 +639,13 @@ pub mod client {
     {        fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "MyLeaf";
+                METHOD_NAME = "MyLeaf.do_leaf";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "do_leaf",
@@ -646,7 +661,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);

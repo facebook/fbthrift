@@ -859,8 +859,13 @@ pub mod client {
     {        fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "Raiser";
+                METHOD_NAME = "Raiser.doBland";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "doBland",
@@ -876,7 +881,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -912,8 +917,13 @@ pub mod client {
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "Raiser";
+                METHOD_NAME = "Raiser.doRaise";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "doRaise",
@@ -929,7 +939,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -974,8 +984,13 @@ pub mod client {
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "Raiser";
+                METHOD_NAME = "Raiser.get200";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "get200",
@@ -991,7 +1006,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1027,8 +1042,13 @@ pub mod client {
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "Raiser";
+                METHOD_NAME = "Raiser.get500";
+            }
             let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "get500",
@@ -1044,7 +1064,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(request)
+                .call(&SERVICE_NAME, &METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
