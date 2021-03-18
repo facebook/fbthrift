@@ -308,7 +308,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
   public async function bounce_map(Map<int, string> $m): Awaitable<Map<int, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $currentseqid = $this->sendImpl_bounce_map($m);
@@ -335,7 +335,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
   public async function binary_keyed_map(KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
@@ -367,7 +367,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
   public async function bounce_map(Map<int, string> $m): Awaitable<Map<int, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $currentseqid = $this->sendImpl_bounce_map($m);
@@ -394,7 +394,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
   public async function binary_keyed_map(KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
@@ -439,7 +439,7 @@ class SomeServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Some
   public async function bounce_map(\RpcOptions $rpc_options, Map<int, string> $m): Awaitable<Map<int, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $currentseqid = $this->sendImpl_bounce_map($m);
@@ -466,7 +466,7 @@ class SomeServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Some
   public async function binary_keyed_map(\RpcOptions $rpc_options, KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $currentseqid = $this->sendImpl_binary_keyed_map($r);

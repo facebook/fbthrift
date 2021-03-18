@@ -292,7 +292,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -319,7 +319,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
   public async function pong(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
@@ -351,7 +351,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -378,7 +378,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
   public async function pong(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
@@ -423,7 +423,7 @@ class MyServicePrioParentAsyncRpcOptionsClient extends \ThriftClientBase impleme
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
@@ -450,7 +450,7 @@ class MyServicePrioParentAsyncRpcOptionsClient extends \ThriftClientBase impleme
   public async function pong(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();

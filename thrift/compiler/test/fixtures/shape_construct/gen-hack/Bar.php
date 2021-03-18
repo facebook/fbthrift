@@ -205,7 +205,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
   public async function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
@@ -241,7 +241,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   public async function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
@@ -284,7 +284,7 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
   public async function baz(\RpcOptions $rpc_options, Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);

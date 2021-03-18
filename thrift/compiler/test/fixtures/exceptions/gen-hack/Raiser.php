@@ -600,7 +600,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function doBland(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $currentseqid = $this->sendImpl_doBland();
@@ -630,7 +630,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function doRaise(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $currentseqid = $this->sendImpl_doRaise();
@@ -657,7 +657,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function get200(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $currentseqid = $this->sendImpl_get200();
@@ -687,7 +687,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
   public async function get500(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $currentseqid = $this->sendImpl_get500();
@@ -719,7 +719,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function doBland(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $currentseqid = $this->sendImpl_doBland();
@@ -749,7 +749,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function doRaise(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $currentseqid = $this->sendImpl_doRaise();
@@ -776,7 +776,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function get200(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $currentseqid = $this->sendImpl_get200();
@@ -806,7 +806,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   public async function get500(): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $currentseqid = $this->sendImpl_get500();
@@ -863,7 +863,7 @@ class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsy
   public async function doBland(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
     $currentseqid = $this->sendImpl_doBland();
@@ -893,7 +893,7 @@ class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsy
   public async function doRaise(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
     $currentseqid = $this->sendImpl_doRaise();
@@ -920,7 +920,7 @@ class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsy
   public async function get200(\RpcOptions $rpc_options): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get200");
     $currentseqid = $this->sendImpl_get200();
@@ -950,7 +950,7 @@ class RaiserAsyncRpcOptionsClient extends \ThriftClientBase implements RaiserAsy
   public async function get500(\RpcOptions $rpc_options): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Raiser", "get500");
     $currentseqid = $this->sendImpl_get500();

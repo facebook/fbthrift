@@ -171,7 +171,7 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
   public async function pang(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
@@ -203,7 +203,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
   public async function pang(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
@@ -242,7 +242,7 @@ class MyServicePrioChildAsyncRpcOptionsClient extends MyServicePrioParentAsyncRp
   public async function pang(\RpcOptions $rpc_options): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();

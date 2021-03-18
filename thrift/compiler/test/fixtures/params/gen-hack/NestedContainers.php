@@ -675,7 +675,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
@@ -702,7 +702,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
@@ -729,7 +729,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
@@ -756,7 +756,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
@@ -783,7 +783,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
@@ -815,7 +815,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
@@ -842,7 +842,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
@@ -869,7 +869,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
@@ -896,7 +896,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
@@ -923,7 +923,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
@@ -986,7 +986,7 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
   public async function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
@@ -1013,7 +1013,7 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
   public async function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
@@ -1040,7 +1040,7 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
   public async function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
@@ -1067,7 +1067,7 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
   public async function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
@@ -1094,7 +1094,7 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
   public async function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
-      HH\set_frame_metadata($hh_frame_metadata);
+      \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
