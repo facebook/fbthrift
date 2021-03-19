@@ -69,8 +69,15 @@ std::string get_gen_namespace(t_program const& program) {
 const std::string& type_resolver::get_type_name(const t_type* node) {
   auto itr = type_cache_.find(node);
   if (itr == type_cache_.end()) {
-    // TODO(afuller): Support adapted types.
-    itr = type_cache_.emplace_hint(itr, node, gen_native_type(node));
+    itr = type_cache_.emplace(node, gen_type(node)).first;
+  }
+  return itr->second;
+}
+
+const std::string& type_resolver::get_native_type_name(const t_type* node) {
+  auto itr = native_type_cache_.find(node);
+  if (itr == native_type_cache_.end()) {
+    itr = native_type_cache_.emplace(node, gen_native_type(node)).first;
   }
   return itr->second;
 }
@@ -138,7 +145,21 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
       "unknown base type: " + std::to_string(static_cast<int>(btype)));
 }
 
+std::string type_resolver::gen_type(const t_type* node) {
+  std::string type = gen_type_impl(node, &type_resolver::get_type_name);
+  if (const auto* adapter = find_adapter(node); enable_adpaters_ && adapter) {
+    return gen_adapted_type(*adapter, std::move(type));
+  }
+  return type;
+}
+
 std::string type_resolver::gen_native_type(const t_type* node) {
+  return gen_type_impl(node, &type_resolver::get_native_type_name);
+}
+
+std::string type_resolver::gen_type_impl(
+    const t_type* node,
+    TypeResolveFn resolve_fn) {
   if (const auto* type = find_type(node)) {
     // Return the override.
     return *type;
@@ -151,22 +172,24 @@ std::string type_resolver::gen_native_type(const t_type* node) {
 
   // Containers have fixed template mappings.
   if (const auto* tcontainer = dynamic_cast<const t_container*>(node)) {
-    return gen_container_type(tcontainer);
+    return gen_container_type(tcontainer, resolve_fn);
   }
 
   // Streaming types have special handling.
   if (const auto* tstream_res = dynamic_cast<const t_stream_response*>(node)) {
-    return gen_stream_resp_type(tstream_res);
+    return gen_stream_resp_type(tstream_res, resolve_fn);
   }
   if (const auto* tsink = dynamic_cast<const t_sink*>((node))) {
-    return gen_sink_type(tsink);
+    return gen_sink_type(tsink, resolve_fn);
   }
 
   // For everything else, just use namespaced name.
   return gen_namespaced_name(node);
 }
 
-std::string type_resolver::gen_container_type(const t_container* node) {
+std::string type_resolver::gen_container_type(
+    const t_container* node,
+    TypeResolveFn resolve_fn) {
   const auto* val = find_template(node);
   const auto& template_name =
       val ? *val : default_template(node->container_type());
@@ -175,17 +198,19 @@ std::string type_resolver::gen_container_type(const t_container* node) {
     case t_container::type::t_list:
       return gen_template_type(
           template_name,
-          {get_type_name(static_cast<const t_list*>(node)->get_elem_type())});
+          {resolve(
+              resolve_fn, static_cast<const t_list*>(node)->get_elem_type())});
     case t_container::type::t_set:
       return gen_template_type(
           template_name,
-          {get_type_name(static_cast<const t_set*>(node)->get_elem_type())});
+          {resolve(
+              resolve_fn, static_cast<const t_set*>(node)->get_elem_type())});
     case t_container::type::t_map: {
       const auto* tmap = static_cast<const t_map*>(node);
       return gen_template_type(
           template_name,
-          {get_type_name(tmap->get_key_type()),
-           get_type_name(tmap->get_val_type())});
+          {resolve(resolve_fn, tmap->get_key_type()),
+           resolve(resolve_fn, tmap->get_val_type())});
     }
   }
   throw std::runtime_error(
@@ -193,29 +218,41 @@ std::string type_resolver::gen_container_type(const t_container* node) {
       std::to_string(static_cast<int>(node->container_type())));
 }
 
-std::string type_resolver::gen_stream_resp_type(const t_stream_response* node) {
+std::string type_resolver::gen_stream_resp_type(
+    const t_stream_response* node,
+    TypeResolveFn resolve_fn) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
-        {get_type_name(node->get_first_response_type()),
-         get_type_name(node->get_elem_type())});
+        {resolve(resolve_fn, node->get_first_response_type()),
+         resolve(resolve_fn, node->get_elem_type())});
   }
   return gen_template_type(
-      "::apache::thrift::ServerStream", {get_type_name(node->get_elem_type())});
+      "::apache::thrift::ServerStream",
+      {resolve(resolve_fn, node->get_elem_type())});
 }
 
-std::string type_resolver::gen_sink_type(const t_sink* node) {
-  if (node->sink_has_first_response()) {
+std::string type_resolver::gen_sink_type(
+    const t_sink* node,
+    TypeResolveFn resolve_fn) {
+  if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
-        {get_type_name(node->get_first_response_type()),
-         get_type_name(node->get_sink_type()),
-         get_type_name(node->get_final_response_type())});
+        {resolve(resolve_fn, node->get_first_response_type()),
+         resolve(resolve_fn, node->get_sink_type()),
+         resolve(resolve_fn, node->get_final_response_type())});
   }
   return gen_template_type(
       "::apache::thrift::SinkConsumer",
-      {get_type_name(node->get_sink_type()),
-       get_type_name(node->get_final_response_type())});
+      {resolve(resolve_fn, node->get_sink_type()),
+       resolve(resolve_fn, node->get_final_response_type())});
+}
+
+std::string type_resolver::gen_adapted_type(
+    const std::string& adapter,
+    const std::string& native_type) {
+  return gen_template_type(
+      "::apache::thrift::adapt_detail::adapted_t", {adapter, native_type});
 }
 
 std::string type_resolver::gen_template_type(

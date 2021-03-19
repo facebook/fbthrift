@@ -112,8 +112,12 @@ class TypeResolverTest : public ::testing::Test {
     return resolver_.get_type_name(node);
   }
 
+  const std::string& get_native_type_name(const t_type* node) {
+    return resolver_.get_native_type_name(node);
+  }
+
  protected:
-  cpp2::type_resolver resolver_;
+  cpp2::type_resolver resolver_{/*enable_adapters=*/true};
   t_program program_;
   t_scope scope_;
 };
@@ -131,6 +135,26 @@ TEST_F(TypeResolverTest, BaseTypes) {
   EXPECT_EQ(get_type_name(&t_base_type::t_binary()), "::std::string");
 }
 
+TEST_F(TypeResolverTest, BaseTypes_Adapter) {
+  t_base_type dbl(t_base_type::t_double());
+  dbl.set_annotation("cpp.adapter", "DblAdapter");
+  // The native type is the default, double.
+  EXPECT_EQ(get_native_type_name(&dbl), "double");
+  // The c++ type is adapted.
+  EXPECT_EQ(
+      get_type_name(&dbl),
+      "::apache::thrift::adapt_detail::adapted_t<DblAdapter, double>");
+
+  // cpp.type overrides the 'default' native type.
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+  EXPECT_EQ(get_native_type_name(&ui64), "uint64_t");
+  EXPECT_EQ(
+      get_type_name(&ui64),
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+}
+
 TEST_F(TypeResolverTest, Containers) {
   t_map tmap(&t_base_type::t_string(), &t_base_type::t_i32());
   EXPECT_EQ(get_type_name(&tmap), "::std::map<::std::string, ::std::int32_t>");
@@ -140,6 +164,58 @@ TEST_F(TypeResolverTest, Containers) {
   EXPECT_EQ(
       get_type_name(&tset),
       "::std::set<::std::map<::std::string, ::std::int32_t>>");
+}
+
+TEST_F(TypeResolverTest, Containers_CustomTemplate) {
+  t_map tmap(&t_base_type::t_string(), &t_base_type::t_i32());
+  tmap.set_annotation("cpp.template", "std::unordered_map");
+  EXPECT_EQ(
+      get_type_name(&tmap),
+      "std::unordered_map<::std::string, ::std::int32_t>");
+  t_list tlist(&t_base_type::t_double());
+  tlist.set_annotation("cpp2.template", "std::list");
+  EXPECT_EQ(get_type_name(&tlist), "std::list<double>");
+  t_set tset(&t_base_type::t_binary());
+  tset.set_annotation("cpp2.template", "::std::unordered_set");
+  EXPECT_EQ(get_type_name(&tset), "::std::unordered_set<::std::string>");
+}
+
+TEST_F(TypeResolverTest, Containers_Adapter) {
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+
+  // Adapters work on container type arguments.
+  t_map tmap(&t_base_type::t_i16(), &ui64);
+  tmap.set_annotation("cpp.adapter", "MapAdapter");
+  EXPECT_EQ(
+      get_native_type_name(&tmap), "::std::map<::std::int16_t, uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&tmap),
+      "::apache::thrift::adapt_detail::adapted_t<"
+      "MapAdapter, "
+      "::std::map<::std::int16_t, ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
+
+  // The container can also be addapted.
+  t_set tset(&ui64);
+  tset.set_annotation("cpp.adapter", "SetAdapter");
+  tset.set_annotation("cpp.template", "std::unordered_set");
+  // The template argument is respected for both native and adapted types.
+  EXPECT_EQ(get_native_type_name(&tset), "std::unordered_set<uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&tset),
+      "::apache::thrift::adapt_detail::adapted_t<"
+      "SetAdapter, "
+      "std::unordered_set<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
+
+  // cpp.type on the container overrides the 'default' native type.
+  t_list tlist(&ui64);
+  tlist.set_annotation("cpp.adapter", "ListAdapter");
+  tlist.set_annotation("cpp.type", "MyList");
+  EXPECT_EQ(get_native_type_name(&tlist), "MyList");
+  EXPECT_EQ(
+      get_type_name(&tlist),
+      "::apache::thrift::adapt_detail::adapted_t<ListAdapter, MyList>");
 }
 
 TEST_F(TypeResolverTest, Structs) {
@@ -156,18 +232,28 @@ TEST_F(TypeResolverTest, TypeDefs) {
   EXPECT_EQ(get_type_name(&ttypedef), "::path::to::Foo");
 }
 
-TEST_F(TypeResolverTest, CustomTemplate) {
-  t_map tmap(&t_base_type::t_string(), &t_base_type::t_i32());
-  tmap.set_annotation("cpp.template", "std::unordered_map");
+TEST_F(TypeResolverTest, TypeDefs_Adapter) {
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+
+  // Type defs can refer to adatped types.
+  t_typedef ttypedef1(&program_, &ui64, "MyHash", &scope_);
+  // It does not affect the type name.
+  EXPECT_EQ(get_native_type_name(&ttypedef1), "::path::to::MyHash");
+  EXPECT_EQ(get_type_name(&ttypedef1), "::path::to::MyHash");
+  // It is the refered to type that has the adapter.
   EXPECT_EQ(
-      get_type_name(&tmap),
-      "std::unordered_map<::std::string, ::std::int32_t>");
-  t_list tlist(&t_base_type::t_double());
-  tlist.set_annotation("cpp2.template", "std::list");
-  EXPECT_EQ(get_type_name(&tlist), "std::list<double>");
-  t_set tset(&t_base_type::t_binary());
-  tset.set_annotation("cpp2.template", "::std::unordered_set");
-  EXPECT_EQ(get_type_name(&tset), "::std::unordered_set<::std::string>");
+      get_type_name(ttypedef1.get_type()),
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+
+  // Type defs can also be adapted.
+  t_typedef ttypedef2(ttypedef1);
+  ttypedef2.set_annotation("cpp.adapter", "TypeDefAdapter");
+  EXPECT_EQ(get_native_type_name(&ttypedef2), "::path::to::MyHash");
+  EXPECT_EQ(
+      get_type_name(&ttypedef2),
+      "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
 }
 
 TEST_F(TypeResolverTest, CustomType) {
@@ -199,6 +285,58 @@ TEST_F(TypeResolverTest, CustomType) {
   t_map tmap3(tmap2);
   tmap3.set_annotation("cpp.type", "MyMap");
   EXPECT_EQ(get_type_name(&tmap3), "MyMap");
+}
+
+TEST_F(TypeResolverTest, StreamingRes) {
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+
+  t_stream_response res1(&ui64);
+  EXPECT_EQ(
+      get_native_type_name(&res1), "::apache::thrift::ServerStream<uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&res1),
+      "::apache::thrift::ServerStream<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+
+  t_stream_response res2(&ui64);
+  res2.set_first_response_type(&ui64);
+  EXPECT_EQ(
+      get_native_type_name(&res2),
+      "::apache::thrift::ResponseAndServerStream<uint64_t, uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&res2),
+      "::apache::thrift::ResponseAndServerStream<"
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+}
+
+TEST_F(TypeResolverTest, StreamingSink) {
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+
+  t_sink req1(&ui64, nullptr, &ui64, nullptr);
+  EXPECT_EQ(
+      get_native_type_name(&req1),
+      "::apache::thrift::SinkConsumer<uint64_t, uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&req1),
+      "::apache::thrift::SinkConsumer<"
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+
+  t_sink req2(&ui64, nullptr, &ui64, nullptr);
+  req2.set_first_response(&ui64);
+  EXPECT_EQ(
+      get_native_type_name(&req2),
+      "::apache::thrift::ResponseAndSinkConsumer<uint64_t, uint64_t, uint64_t>");
+  EXPECT_EQ(
+      get_type_name(&req2),
+      "::apache::thrift::ResponseAndSinkConsumer<"
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
+      "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
 }
 
 } // namespace

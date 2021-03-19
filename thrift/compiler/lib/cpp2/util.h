@@ -43,15 +43,31 @@ std::string get_gen_namespace(t_program const& program);
 // results.
 class type_resolver {
  public:
+  type_resolver() = default;
+  // TODO(afuller): Support adapter in code gen and remove constructor.
+  explicit type_resolver(bool enable_adpaters)
+      : enable_adpaters_(enable_adpaters) {}
+
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type* node);
 
+  // Returns the c++ type that the runtime knows how to handle.
+  const std::string& get_native_type_name(const t_type* node);
+
  private:
+  using TypeResolveFn =
+      const std::string& (type_resolver::*)(const t_type* node);
+
+  bool enable_adpaters_ = false;
   std::unordered_map<const t_program*, std::string> namespace_cache_;
   std::unordered_map<const t_type*, std::string> type_cache_;
+  std::unordered_map<const t_type*, std::string> native_type_cache_;
 
   static const std::string* find_type(const t_type* node) {
     return node->get_annotation_or_null({"cpp.type", "cpp2.type"});
+  }
+  static const std::string* find_adapter(const t_type* node) {
+    return node->get_annotation_or_null("cpp.adapter");
   }
   static const std::string* find_template(const t_type* node) {
     return node->get_annotation_or_null({"cpp.template", "cpp2.template"});
@@ -63,14 +79,28 @@ class type_resolver {
   const std::string& get_namespace(const t_program* program);
 
   // Generatating functions.
+  std::string gen_type(const t_type* node);
   std::string gen_native_type(const t_type* node);
-  std::string gen_container_type(const t_container* node);
-  std::string gen_sink_type(const t_sink* node);
-  std::string gen_stream_resp_type(const t_stream_response* node);
-  std::string gen_template_type(
+  std::string gen_type_impl(const t_type* node, TypeResolveFn resolve_fn);
+  std::string gen_container_type(
+      const t_container* node,
+      TypeResolveFn resolve_fn);
+  std::string gen_sink_type(const t_sink* node, TypeResolveFn resolve_fn);
+  std::string gen_stream_resp_type(
+      const t_stream_response* node,
+      TypeResolveFn resolve_fn);
+
+  static std::string gen_template_type(
       std::string template_name,
       std::initializer_list<std::string> args);
-  std::string gen_namespaced_name(const t_type* node);
+  static std::string gen_adapted_type(
+      const std::string& adapter,
+      const std::string& native_type);
+  static std::string gen_namespaced_name(const t_type* node);
+
+  const std::string& resolve(TypeResolveFn resolve_fn, const t_type* node) {
+    return (this->*resolve_fn)(node);
+  }
 };
 
 /*
