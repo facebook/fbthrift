@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -38,15 +37,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-import thrift.test.Empty;
-import thrift.test.RandomStuff;
-import thrift.test.StructWithAUnion;
-import thrift.test.TestUnion;
+import thrift.test.proto.Empty;
+import thrift.test.union.RandomStuff;
+import thrift.test.union.StructWithAUnion;
+import thrift.test.union.TestUnion;
 
 public class UnionTest {
 
   @Test
-  public void testBasic() throws Exception {
+  public void testBasic() {
     TestUnion union = new TestUnion();
     assertThat(union.isSet(), is(false));
     assertThat(union.getFieldValue(), is(nullValue()));
@@ -78,7 +77,7 @@ public class UnionTest {
   }
 
   @Test
-  public void testEquality() throws Exception {
+  public void testEquality() {
     TestUnion union = new TestUnion(TestUnion.I32_FIELD, 25);
     TestUnion otherUnion = new TestUnion(TestUnion.STRING_FIELD, "blah!!!");
     assertThat(union, is(not(equalTo(otherUnion))));
@@ -91,7 +90,7 @@ public class UnionTest {
   }
 
   @Test
-  public void testSerialization() throws Exception {
+  public void testSerialization() {
     TestUnion union = new TestUnion(TestUnion.I32_FIELD, 25);
 
     TMemoryBuffer buf = new TMemoryBuffer(0);
@@ -102,7 +101,7 @@ public class UnionTest {
     u2.read(proto);
     assertThat(u2, equalTo(union));
 
-    StructWithAUnion swau = new StructWithAUnion(u2);
+    StructWithAUnion swau = StructWithAUnion.builder().setTest_union(u2).build();
     buf = new TMemoryBuffer(0);
     proto = new TBinaryProtocol(buf);
     swau.write(proto);
@@ -120,7 +119,7 @@ public class UnionTest {
   }
 
   @Test
-  public void testJSONSerialization() throws Exception {
+  public void testJSONSerialization() {
     TDeserializer deserializer = new TDeserializer(new TCompactJSONProtocol.Factory());
 
     TSerializer serializer = new TSerializer(new TCompactJSONProtocol.Factory());
@@ -140,8 +139,17 @@ public class UnionTest {
     assertThat(union3, equalTo(union2));
 
     // Serialize union with inner list then deserialize it. Should be the same.
-    List<RandomStuff> randomList = new ArrayList<RandomStuff>();
-    randomList.add(new RandomStuff(1, 2, 3, 4, new ArrayList<Integer>(), null, 10l, 10.5));
+    List<RandomStuff> randomList = new ArrayList<>();
+    randomList.add(
+        RandomStuff.builder()
+            .setA(1)
+            .setB(2)
+            .setC(3)
+            .setD(4)
+            .setMyintlist(new ArrayList<>())
+            .setBigint(10L)
+            .setTriple(10.5)
+            .build());
     TestUnion unionWithList = new TestUnion(TestUnion.STRUCT_LIST, randomList);
     String unionWithListJSON = serializer.toString(unionWithList, "UTF-8");
     TestUnion unionWithList2 = new TestUnion();
@@ -150,7 +158,7 @@ public class UnionTest {
     assertThat(unionWithList2.getStruct_list(), equalTo(randomList));
 
     // Serialize struct with union then deserialize it. Should be the same.
-    StructWithAUnion swau = new StructWithAUnion(union2);
+    StructWithAUnion swau = StructWithAUnion.builder().setTest_union(union2).build();
     String swauJSON = serializer.toString(swau, "UTF-8");
     StructWithAUnion swau2 = new StructWithAUnion();
     deserializer.fromString(swau2, swauJSON);
@@ -158,7 +166,7 @@ public class UnionTest {
   }
 
   @Test(expected = TProtocolException.class)
-  public void testEmptyUnionBinarySerialization() throws Exception {
+  public void testEmptyUnionBinarySerialization() {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol binaryProto = new TBinaryProtocol(buf);
     TestUnion emptyUnion = new TestUnion();
@@ -168,7 +176,7 @@ public class UnionTest {
   }
 
   @Test(expected = TProtocolException.class)
-  public void testEmptyUnionCompactSerialization() throws Exception {
+  public void testEmptyUnionCompactSerialization() {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocolFactory compactFactory = new TCompactProtocol.Factory();
     TProtocol compactProto = compactFactory.getProtocol(buf);
@@ -179,7 +187,7 @@ public class UnionTest {
   }
 
   @Test(expected = TTransportException.class)
-  public void testEmptyUnionBinaryDeserialization() throws Exception {
+  public void testEmptyUnionBinaryDeserialization() {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol binaryProto = new TBinaryProtocol(buf);
     TestUnion emptyUnion = new TestUnion();
@@ -189,7 +197,7 @@ public class UnionTest {
   }
 
   @Test(expected = TTransportException.class)
-  public void testEmptyUnionCompactDeserialization() throws Exception {
+  public void testEmptyUnionCompactDeserialization() {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocolFactory compactFactory = new TCompactProtocol.Factory();
     TProtocol compactProto = compactFactory.getProtocol(buf);
@@ -200,7 +208,7 @@ public class UnionTest {
   }
 
   @Test
-  public void testAndroidUnion() throws Exception {
+  public void testAndroidUnion() {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocolFactory factory = new TCompactProtocol.Factory();
     TProtocol proto = factory.getProtocol(buf);
@@ -216,17 +224,17 @@ public class UnionTest {
   }
 
   @Test
-  public void testInvalidUnion() throws Exception {
+  public void testInvalidUnion() {
     try {
       MySimpleUnion invalidUnion = new MySimpleUnion(1, null);
-      assertFalse(true);
+      fail();
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(), equalTo("TUnion value for field id '1' can't be null!"));
     }
   }
 
   @Test
-  public void testToStringOnEmptyUnion() throws Exception {
+  public void testToStringOnEmptyUnion() {
     MySimpleUnion union = new MySimpleUnion();
     assertThat(union.toString(), equalTo("<MySimpleUnion uninitialized>"));
 
@@ -236,7 +244,7 @@ public class UnionTest {
   }
 
   @Test
-  public void testUnionConstructor() throws Exception {
+  public void testUnionConstructor() {
     MySimpleUnion union =
         new MySimpleUnion(MySimpleUnion.CASEFOUR, new MySimpleStruct(1L, "blabla"));
     com.facebook.thrift.android.test.MySimpleUnion androidUnion =
@@ -251,7 +259,7 @@ public class UnionTest {
   }
 
   @Test
-  public void union_shouldReturnTheRightName() throws Exception {
+  public void union_shouldReturnTheRightName() {
     com.facebook.thrift.javaswift.test.MySimpleUnion union =
         com.facebook.thrift.javaswift.test.MySimpleUnion.fromCaseOne(1);
     assertThat(union.getThriftName(), equalTo("caseOne"));

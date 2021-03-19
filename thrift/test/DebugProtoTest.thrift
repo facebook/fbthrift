@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 apache.thrift.test
-namespace java thrift.test
+namespace java thrift.test.proto
 
 struct Reserved {
   1: string from;

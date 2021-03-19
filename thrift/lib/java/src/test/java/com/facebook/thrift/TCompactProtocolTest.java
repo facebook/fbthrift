@@ -34,11 +34,11 @@ import com.facebook.thrift.transport.TMemoryBuffer;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-import thrift.test.CompactProtoTestStruct;
-import thrift.test.HolyMoley;
-import thrift.test.Nesting;
-import thrift.test.OneOfEach;
-import thrift.test.Srv;
+import thrift.test.proto.CompactProtoTestStruct;
+import thrift.test.proto.HolyMoley;
+import thrift.test.proto.Nesting;
+import thrift.test.proto.OneOfEach;
+import thrift.test.proto.Srv;
 
 public class TCompactProtocolTest {
 
