@@ -738,10 +738,10 @@ void fromDebugString(folly::StringPiece text, ProtocolWriter& outProtoWriter) {
 // others if it makes sense.
 template std::string toDebugString<CompactProtocolReader>(
     CompactProtocolReader& inProtoReader,
-    DebugStringParams p = {});
+    DebugStringParams p);
 template std::string toDebugString<BinaryProtocolReader>(
     BinaryProtocolReader& inProtoReader,
-    DebugStringParams p = {});
+    DebugStringParams p);
 template void fromDebugString<class CompactProtocolWriter>(
     folly::StringPiece text,
     CompactProtocolWriter& outProtoWriter);
