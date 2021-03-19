@@ -223,6 +223,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_service(t_service const* service);
 
   std::shared_ptr<cpp2_generator_context> context_;
+  cpp2::type_resolver resolver_;
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -383,8 +384,9 @@ class mstch_cpp2_type : public mstch_type {
       t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_type(type, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      cpp2::type_resolver& resolver)
+      : mstch_type(type, generators, cache, pos), resolver_(resolver) {
     register_methods(
         this,
         {
@@ -407,6 +409,8 @@ class mstch_cpp2_type : public mstch_type {
             {"type:transitively_refers_to_struct?",
              &mstch_cpp2_type::transitively_refers_to_struct},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
+            {"type:cpp_native_type", &mstch_cpp2_type::cpp_native_type},
+            {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
@@ -499,9 +503,13 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_type() {
-    // TODO(afuller): Use a shared resolver.
-    cpp2::type_resolver resolver;
-    return resolver.get_type_name(type_);
+    return resolver_.get_type_name(type_);
+  }
+  mstch::node cpp_native_type() {
+    return resolver_.get_native_type_name(type_);
+  }
+  mstch::node cpp_adapter() {
+    return cpp2::type_resolver::find_adapter(type_);
   }
   mstch::node resolved_cpp_type() {
     return cpp2::get_type(resolved_type_);
@@ -550,6 +558,9 @@ class mstch_cpp2_type : public mstch_type {
     }
     return name;
   }
+
+ private:
+  cpp2::type_resolver& resolver_;
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -1628,16 +1639,20 @@ class enum_value_cpp2_generator : public enum_value_generator {
 
 class type_cpp2_generator : public type_generator {
  public:
-  type_cpp2_generator() = default;
-  ~type_cpp2_generator() override = default;
+  explicit type_cpp2_generator(cpp2::type_resolver& resolver) noexcept
+      : resolver_(resolver) {}
   std::shared_ptr<mstch_base> generate(
       t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_type>(type, generators, cache, pos);
+    return std::make_shared<mstch_cpp2_type>(
+        type, generators, cache, pos, resolver_);
   }
+
+ private:
+  cpp2::type_resolver& resolver_;
 };
 
 class field_cpp2_generator : public field_generator {
@@ -1830,7 +1845,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_cpp2_generator>());
-  generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
+  generators_->set_type_generator(
+      std::make_unique<type_cpp2_generator>(resolver_));
   generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
   generators_->set_function_generator(
       std::make_unique<function_cpp2_generator>());
