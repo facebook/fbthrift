@@ -134,13 +134,13 @@ class Cpp2Worker : public wangle::Acceptor,
     return requestsRegistry_;
   }
 
-  bool isStopping() {
-    return stopping_;
+  bool isStopping() const {
+    return stopping_.load(std::memory_order_relaxed);
   }
 
   struct ActiveRequestsDecrement {
     void operator()(Cpp2Worker* worker) {
-      if (--worker->activeRequests_ == 0 && worker->stopping_) {
+      if (--worker->activeRequests_ == 0 && worker->isStopping()) {
         worker->stopBaton_.post();
       }
     }
@@ -264,9 +264,11 @@ class Cpp2Worker : public wangle::Acceptor,
   void useExistingChannel(
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
+  void cancelQueuedRequests();
+
   uint32_t activeRequests_;
   RequestsRegistry* requestsRegistry_;
-  bool stopping_{false};
+  std::atomic<bool> stopping_{false};
   folly::Baton<> stopBaton_;
   int64_t ingressMemoryUsage_{0};
 

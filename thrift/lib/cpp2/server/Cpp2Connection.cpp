@@ -690,6 +690,12 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
   cancelTimeout();
 }
 
+void Cpp2Connection::Cpp2Request::sendQueueTimeoutResponse() {
+  sendTimeoutResponse(
+      HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
+  connection_->queueTimeoutExpired();
+}
+
 void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
   request_->sendTimeoutResponse(
       HeaderServerChannel::HeaderRequest::TimeoutResponseType::TASK);
@@ -698,9 +704,7 @@ void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (request_->stateMachine_.tryStopProcessing()) {
-    request_->sendTimeoutResponse(
-        HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
-    request_->connection_->queueTimeoutExpired();
+    request_->sendQueueTimeoutResponse();
   }
 }
 

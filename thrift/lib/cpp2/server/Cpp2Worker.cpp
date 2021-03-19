@@ -26,6 +26,7 @@
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -351,10 +352,11 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
 
 void Cpp2Worker::requestStop() {
   getEventBase()->runInEventBaseThreadAndWait([&] {
-    if (stopping_) {
+    if (isStopping()) {
       return;
     }
-    stopping_ = true;
+    cancelQueuedRequests();
+    stopping_.store(true, std::memory_order_relaxed);
     if (activeRequests_ == 0) {
       stopBaton_.post();
     }
@@ -369,8 +371,19 @@ bool Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
   return true;
 }
 
+void Cpp2Worker::cancelQueuedRequests() {
+  auto eb = getEventBase();
+  eb->dcheckIsInEventBaseThread();
+  for (auto& stub : requestsRegistry_->getActive()) {
+    if (stub.stateMachine_.isActive() &&
+        stub.stateMachine_.tryStopProcessing()) {
+      stub.req_->sendQueueTimeoutResponse();
+    }
+  }
+}
+
 Cpp2Worker::ActiveRequestsGuard Cpp2Worker::getActiveRequestsGuard() {
-  DCHECK(!stopping_ || activeRequests_);
+  DCHECK(!isStopping() || activeRequests_);
   ++activeRequests_;
   return Cpp2Worker::ActiveRequestsGuard(this);
 }

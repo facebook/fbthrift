@@ -79,11 +79,12 @@ class RequestsRegistry {
    */
   class DebugStub {
     friend class RequestsRegistry;
+    friend class Cpp2Worker;
 
    public:
     DebugStub(
         RequestsRegistry& reqRegistry,
-        const ResponseChannelRequest& req,
+        ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
         std::shared_ptr<folly::RequestContext> rctx,
         protocol::PROTOCOL_TYPES protoId,
@@ -173,7 +174,7 @@ class RequestsRegistry {
 
     std::string methodNameIfFinished_;
     folly::SocketAddress peerAddressIfFinished_;
-    const ResponseChannelRequest* req_;
+    ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
     std::shared_ptr<folly::RequestContext> rctx_;
     const protocol::PROTOCOL_TYPES protoId_;

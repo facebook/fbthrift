@@ -254,6 +254,21 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
+  void sendQueueTimeoutResponse() final {
+    if (tryCancel() && !isOneway()) {
+      cancelTimeout();
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->queueTimeout();
+      }
+      sendErrorWrappedInternal(
+          TApplicationException(
+              TApplicationException::TApplicationExceptionType::TIMEOUT,
+              "Queue Timeout"),
+          kServerQueueTimeoutErrorCode,
+          {});
+    }
+  }
+
   bool isReplyChecksumNeeded() const override {
     return checksumRequested_;
   }
@@ -446,17 +461,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (request_->stateMachine_.tryStopProcessing() &&
-          request_->tryCancel() && !request_->isOneway()) {
-        if (auto* observer = serverConfigs_.getObserver()) {
-          observer->queueTimeout();
-        }
-        request_->sendErrorWrappedInternal(
-            TApplicationException(
-                TApplicationException::TApplicationExceptionType::TIMEOUT,
-                "Queue Timeout"),
-            kServerQueueTimeoutErrorCode,
-            {});
+      if (request_->stateMachine_.tryStopProcessing()) {
+        request_->sendQueueTimeoutResponse();
       }
     }
     friend class ThriftRequestCore;

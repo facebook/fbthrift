@@ -55,6 +55,7 @@
 #include <thrift/lib/cpp2/async/RocketClientTestChannel.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
@@ -1082,6 +1083,56 @@ TEST_P(HeaderOrRocket, CancellationTest) {
   // connection.
   wasCancelled = handlers[0]->cancelBaton.try_wait_for(10s);
   EXPECT_TRUE(wasCancelled);
+}
+
+TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
+  class BlockInterface : public TestServiceSvIf {
+   public:
+    folly::Baton<> started, resume;
+    bool once{true};
+    void voidResponse() override {
+      if (once) {
+        once = false;
+        started.post();
+        resume.wait();
+        // Wait for the server to start shutdown
+        auto worker = getRequestContext()->getConnectionContext()->getWorker();
+        while (!worker->isStopping()) {
+          std::this_thread::yield();
+        }
+      }
+    }
+  };
+
+  auto blockIf = std::make_shared<BlockInterface>();
+  auto runner = std::make_unique<ScopedServerInterfaceThread>(blockIf);
+  auto client = makeClient(*runner.get(), folly::getEventBase());
+
+  auto first = client->semifuture_voidResponse();
+  // Wait for the first request to start processing
+  blockIf->started.wait();
+
+  // Send second request
+  folly::fibers::Baton baton;
+  THeader th;
+  folly::exception_wrapper ew;
+  client->voidResponse(ServerErrorCallback::create(baton, th, ew));
+
+  // Wait for the second connection to reach the server
+  while (runner->getThriftServer().getActiveRequests() < 2) {
+    std::this_thread::yield();
+  }
+  blockIf->resume.post();
+  // Initiate server shutdown
+  runner.reset();
+  std::move(first).get();
+
+  baton.wait();
+  ASSERT_TRUE(ew.with_exception([](const TApplicationException& tae) {
+    EXPECT_EQ(TApplicationException::TIMEOUT, tae.getType());
+  }));
+  EXPECT_EQ(
+      *folly::get_ptr(th.getHeaders(), "ex"), kServerQueueTimeoutErrorCode);
 }
 
 INSTANTIATE_TEST_CASE_P(

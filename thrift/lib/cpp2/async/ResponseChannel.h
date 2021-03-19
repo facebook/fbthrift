@@ -139,6 +139,8 @@ class ResponseChannelRequest {
       folly::exception_wrapper ex,
       std::string exCode) = 0;
 
+  virtual void sendQueueTimeoutResponse() {}
+
   virtual ~ResponseChannelRequest() {
     if (admissionController_ != nullptr) {
       if (!startedProcessing_) {

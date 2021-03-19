@@ -190,6 +190,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         folly::Optional<uint32_t> crc32c = folly::none) override;
     void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode)
         override;
+    void sendQueueTimeoutResponse() override;
     void sendTimeoutResponse(
         apache::thrift::HeaderServerChannel::HeaderRequest::TimeoutResponseType
             responseType);
