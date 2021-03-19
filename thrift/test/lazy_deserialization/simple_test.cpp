@@ -16,6 +16,7 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/test/lazy_deserialization/MemberAccessor.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
 
 namespace apache::thrift::test {
@@ -57,5 +58,33 @@ TEST(Serialization, LazyFooToFoo) {
   EXPECT_EQ(foo.field2_ref(), lazyFoo->field2_ref());
   EXPECT_EQ(foo.field3_ref(), lazyFoo->field3_ref());
   EXPECT_EQ(foo.field4_ref(), lazyFoo->field4_ref());
+}
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFoo, field4);
+
+TEST(Serialization, CheckDataMember) {
+  auto foo = gen<LazyFoo>();
+  auto s = apache::thrift::CompactSerializer::serialize<std::string>(*foo);
+
+  LazyFoo lazyFoo;
+  apache::thrift::CompactSerializer::deserialize(s, lazyFoo);
+
+  EXPECT_EQ(get_field1(lazyFoo), foo->field1_ref());
+  EXPECT_EQ(get_field2(lazyFoo), foo->field2_ref());
+  EXPECT_TRUE(get_field3(lazyFoo).empty());
+  EXPECT_TRUE(get_field4(lazyFoo).empty());
+
+  EXPECT_EQ(lazyFoo.field1_ref(), foo->field1_ref());
+  EXPECT_EQ(lazyFoo.field2_ref(), foo->field2_ref());
+  EXPECT_EQ(lazyFoo.field3_ref(), foo->field3_ref());
+  EXPECT_EQ(lazyFoo.field4_ref(), foo->field4_ref());
+
+  EXPECT_EQ(get_field1(lazyFoo), foo->field1_ref());
+  EXPECT_EQ(get_field2(lazyFoo), foo->field2_ref());
+  EXPECT_EQ(get_field3(lazyFoo), foo->field3_ref());
+  EXPECT_EQ(get_field4(lazyFoo), foo->field4_ref());
 }
 } // namespace apache::thrift::test
