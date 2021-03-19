@@ -92,10 +92,10 @@ class CompilerTest(unittest.TestCase):
 
                 msg = ["Difference found in " + gen + ":"]
                 for line in difflib.unified_diff(
-                    geng.splitlines(),
                     genf.splitlines(),
-                    geng_path,
+                    geng.splitlines(),
                     genf_path,
+                    geng_path,
                     lineterm="",
                 ):
                     msg.append(line)
