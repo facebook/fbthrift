@@ -25,6 +25,7 @@
 
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_container.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_stream.h>
@@ -39,29 +40,41 @@ std::vector<std::string> get_gen_namespace_components(t_program const& program);
 
 std::string get_gen_namespace(t_program const& program);
 
+enum class reference_type {
+  none = 0, // Not a reference.
+  unique,
+  shared_const,
+  shared_mutable,
+
+  // TODO(afuller): Remove this and always throw an exception instead.
+  unrecognized, // Got some unrecognized string value.
+};
+
 // A class that resolves c++ type names from thrift types and caches the
 // results.
 class type_resolver {
  public:
   type_resolver() = default;
   // TODO(afuller): Support adapter in code gen and remove constructor.
-  explicit type_resolver(bool enable_adpaters)
-      : enable_adpaters_(enable_adpaters) {}
+  explicit type_resolver(bool enable_adapters)
+      : enable_adapters_(enable_adapters) {}
 
   // Returns c++ type name for the given thrift type.
-  const std::string& get_type_name(const t_type* node);
+  const std::string& get_type_name(const t_type* node) {
+    return get_or_gen(type_cache_, node, &type_resolver::gen_type);
+  }
 
   // Returns the c++ type that the runtime knows how to handle.
-  const std::string& get_native_type_name(const t_type* node);
+  const std::string& get_native_type_name(const t_type* node) {
+    return get_or_gen(
+        native_type_cache_, node, &type_resolver::gen_native_type);
+  }
 
- private:
-  using TypeResolveFn =
-      const std::string& (type_resolver::*)(const t_type* node);
-
-  bool enable_adpaters_ = false;
-  std::unordered_map<const t_program*, std::string> namespace_cache_;
-  std::unordered_map<const t_type*, std::string> type_cache_;
-  std::unordered_map<const t_type*, std::string> native_type_cache_;
+  // Returns the c++ type that should be used to store the field's value.
+  //
+  // This differs from the type name, when a 'cpp.ref' or 'cpp.ref_type'
+  // annotation is applied to the field.
+  const std::string& get_storage_type_name(const t_field* node);
 
   static const std::string* find_type(const t_type* node) {
     return node->get_annotation_or_null({"cpp.type", "cpp2.type"});
@@ -72,15 +85,37 @@ class type_resolver {
   static const std::string* find_template(const t_type* node) {
     return node->get_annotation_or_null({"cpp.template", "cpp2.template"});
   }
+  static reference_type find_ref_type(const t_field* node);
+
+ private:
+  using TypeResolveFn =
+      const std::string& (type_resolver::*)(const t_type* node);
+  template <typename... Args>
+  using TypeGenFn = std::string (type_resolver::*)(Args...);
+
+  bool enable_adapters_ = false;
+  std::unordered_map<const t_program*, std::string> namespace_cache_;
+  std::unordered_map<const t_type*, std::string> type_cache_;
+  std::unordered_map<const t_type*, std::string> native_type_cache_;
+  // TODO(afuller): Use a custom key type with a std::unordered_map (std::pair
+  // does not have an std::hash specialization).
+  std::map<std::pair<const t_type*, reference_type>, std::string>
+      storage_type_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);
+  static const std::string& reference_template(reference_type ref_type);
 
   const std::string& get_namespace(const t_program* program);
 
   // Generatating functions.
   std::string gen_type(const t_type* node);
-  std::string gen_native_type(const t_type* node);
+  std::string gen_native_type(const t_type* node) {
+    return gen_type_impl(node, &type_resolver::get_native_type_name);
+  }
+  std::string gen_storage_type(
+      const std::pair<const t_type*, reference_type>& ref_type);
+
   std::string gen_type_impl(const t_type* node, TypeResolveFn resolve_fn);
   std::string gen_container_type(
       const t_container* node,
@@ -101,6 +136,15 @@ class type_resolver {
   const std::string& resolve(TypeResolveFn resolve_fn, const t_type* node) {
     return (this->*resolve_fn)(node);
   }
+
+  template <typename C, typename K, typename A>
+  const std::string& get_or_gen(C& cache, const K& key, TypeGenFn<A> gen) {
+    auto itr = cache.find(key);
+    if (itr == cache.end()) {
+      itr = cache.emplace(key, (this->*gen)(key)).first;
+    }
+    return itr->second;
+  }
 };
 
 /*
@@ -117,6 +161,7 @@ bool is_orderable(t_type const& type);
 /**
  * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
  */
+// TODO(afuller): Replace with type_resolver::get_type_name.
 std::string const& get_type(const t_type* type);
 
 /**
@@ -128,7 +173,10 @@ bool is_implicit_ref(const t_type* type);
 /**
  * If the field has cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type.
  */
-bool is_explicit_ref(const t_field* f);
+// TODO(afuller): Remove by acutally inlining function.
+inline bool is_explicit_ref(const t_field* f) {
+  return type_resolver::find_ref_type(f) != reference_type::none;
+}
 
 inline bool is_ref(const t_field* f) {
   return is_explicit_ref(f) || is_implicit_ref(f->get_type());
@@ -137,12 +185,16 @@ inline bool is_ref(const t_field* f) {
 /**
  * The value of cpp.ref_type/cpp2.ref_type.
  */
+// TODO(afuller): Replace with type_resolver::find_ref_type.
 std::string const& get_ref_type(const t_field* f);
 
 /**
  * If the field has cpp.ref/cpp2.ref or cpp.ref_type/cpp2.ref_type == "unique".
  */
-bool is_unique_ref(const t_field* f);
+// TODO(afuller): Remove by acutally inlining function.
+inline bool is_unique_ref(const t_field* f) {
+  return type_resolver::find_ref_type(f) == reference_type::unique;
+}
 
 template <typename Node>
 const std::string& get_name(const Node* node) {

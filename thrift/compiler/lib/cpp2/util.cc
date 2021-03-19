@@ -24,6 +24,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_set.h>
@@ -39,6 +40,19 @@ namespace {
 
 static bool is_dot(char const c) {
   return c == '.';
+}
+
+const std::string& value_or_empty(const std::string* value) {
+  if (value != nullptr) {
+    return *value;
+  }
+
+  static std::string& kEmpty = *new std::string;
+  return kEmpty;
+}
+
+const std::string* find_ref_type_annot(const t_annotated* node) {
+  return node->get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 
 } // namespace
@@ -66,20 +80,47 @@ std::string get_gen_namespace(t_program const& program) {
   return "::" + boost::algorithm::join(components, "::");
 }
 
-const std::string& type_resolver::get_type_name(const t_type* node) {
-  auto itr = type_cache_.find(node);
-  if (itr == type_cache_.end()) {
-    itr = type_cache_.emplace(node, gen_type(node)).first;
+reference_type type_resolver::find_ref_type(const t_field* node) {
+  // Look for a specific ref type annotation.
+  if (const std::string* ref_type = find_ref_type_annot(node)) {
+    if (*ref_type == "unique") {
+      return reference_type::unique;
+    } else if (*ref_type == "shared") {
+      // TODO(afuller): The 'default' should be const, as mutable shared
+      // pointers are 'dangerous' if the pointee is not thread safe.
+      return reference_type::shared_mutable;
+    } else if (*ref_type == "shared_const") {
+      return reference_type::shared_const;
+    } else if (*ref_type == "shared_mutable") {
+      return reference_type::shared_mutable;
+    } else {
+      return reference_type::unrecognized;
+    }
   }
-  return itr->second;
+
+  // Look for the generic annotations, which implies unique.
+  if (node->has_annotation({"cpp.ref", "cpp2.ref"})) {
+    // TODO(afuller): Seems like this should really be a 'boxed' reference type
+    // (e.g. a deep copy smart pointer) by default, so both recursion and copy
+    // constructors would work. Maybe that would let us also remove most or all
+    // uses of 'shared' (which can lead to reference cycles).
+    return reference_type::unique;
+  }
+
+  return reference_type::none;
 }
 
-const std::string& type_resolver::get_native_type_name(const t_type* node) {
-  auto itr = native_type_cache_.find(node);
-  if (itr == native_type_cache_.end()) {
-    itr = native_type_cache_.emplace(node, gen_native_type(node)).first;
+const std::string& type_resolver::get_storage_type_name(const t_field* node) {
+  auto ref_type = find_ref_type(node);
+  if (ref_type == reference_type::none) {
+    // The storage type is just the type name.
+    return get_type_name(node->get_type());
   }
-  return itr->second;
+
+  return get_or_gen(
+      storage_type_cache_,
+      std::make_pair(node->get_type(), ref_type),
+      &type_resolver::gen_storage_type);
 }
 
 const std::string& type_resolver::default_template(t_container::type ctype) {
@@ -147,14 +188,26 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 
 std::string type_resolver::gen_type(const t_type* node) {
   std::string type = gen_type_impl(node, &type_resolver::get_type_name);
-  if (const auto* adapter = find_adapter(node); enable_adpaters_ && adapter) {
+  if (const auto* adapter = find_adapter(node); enable_adapters_ && adapter) {
     return gen_adapted_type(*adapter, std::move(type));
   }
   return type;
 }
 
-std::string type_resolver::gen_native_type(const t_type* node) {
-  return gen_type_impl(node, &type_resolver::get_native_type_name);
+std::string type_resolver::gen_storage_type(
+    const std::pair<const t_type*, reference_type>& ref_type) {
+  const std::string& type_name = get_type_name(ref_type.first);
+  // TODO(afuller): Add '::' prefix.
+  switch (ref_type.second) {
+    case reference_type::unique:
+      return gen_template_type("std::unique_ptr", {type_name});
+    case reference_type::shared_mutable:
+      return gen_template_type("std::shared_ptr", {type_name});
+    case reference_type::shared_const:
+      return gen_template_type("std::shared_ptr", {"const " + type_name});
+    default:
+      throw std::runtime_error("unknown cpp ref_type");
+  }
 }
 
 std::string type_resolver::gen_type_impl(
@@ -361,7 +414,11 @@ bool is_orderable(t_type const& type) {
 }
 
 std::string const& get_type(const t_type* type) {
-  return type->get_annotation({"cpp.type", "cpp2.type"});
+  return value_or_empty(type_resolver::find_type(type));
+}
+
+std::string const& get_ref_type(const t_field* f) {
+  return value_or_empty(find_ref_type_annot(f));
 }
 
 bool is_implicit_ref(const t_type* type) {
@@ -369,20 +426,6 @@ bool is_implicit_ref(const t_type* type) {
   return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
       get_type(resolved_typedef).find("std::unique_ptr") != std::string::npos &&
       get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
-}
-
-bool is_explicit_ref(const t_field* f) {
-  return f->has_annotation(
-      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
-}
-
-std::string const& get_ref_type(const t_field* f) {
-  return f->get_annotation({"cpp.ref_type", "cpp2.ref_type"});
-}
-
-bool is_unique_ref(const t_field* f) {
-  return f->has_annotation({"cpp.ref", "cpp2.ref"}) ||
-      get_ref_type(f) == "unique";
 }
 
 bool is_stack_arguments(

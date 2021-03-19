@@ -17,6 +17,7 @@
 #include <thrift/compiler/lib/cpp2/util.h>
 
 #include <memory>
+#include <stdexcept>
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -114,6 +115,10 @@ class TypeResolverTest : public ::testing::Test {
 
   const std::string& get_native_type_name(const t_type* node) {
     return resolver_.get_native_type_name(node);
+  }
+
+  const std::string& get_storage_type_name(const t_field* node) {
+    return resolver_.get_storage_type_name(node);
   }
 
  protected:
@@ -337,6 +342,72 @@ TEST_F(TypeResolverTest, StreamingSink) {
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>, "
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+}
+
+TEST_F(TypeResolverTest, StorageType) {
+  t_base_type ui64(t_base_type::t_i64());
+  ui64.set_annotation("cpp.type", "uint64_t");
+  ui64.set_annotation("cpp.adapter", "HashAdapter");
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+  }
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp.ref", "");
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp2.ref", ""); // Works with cpp2.
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp.ref_type", "unique");
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp2.ref_type", "shared"); // Works with cpp2.
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp.ref_type", "shared_mutable");
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  {
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp.ref_type", "shared_const");
+    EXPECT_EQ(
+        get_storage_type_name(&ui64_field),
+        "std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  { // Unrecognized throws an exception.
+    t_field ui64_field(&ui64, "hash", 1);
+    ui64_field.set_annotation("cpp.ref_type", "blah");
+    EXPECT_THROW(get_storage_type_name(&ui64_field), std::runtime_error);
+  }
 }
 
 } // namespace
