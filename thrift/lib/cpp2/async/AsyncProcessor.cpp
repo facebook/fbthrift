@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/io/async/EventBaseAtomicNotificationQueue.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace apache {
@@ -456,7 +457,7 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
             TApplicationException::LOADSHEDDING, message),
         kAppOverloadedErrorCode);
   } else {
-    eb_->runInEventBaseThread(
+    getReplyQueue().putMessage(
         [message,
          interaction = std::exchange(interaction_, nullptr),
          req = std::move(req_),
@@ -477,7 +478,7 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
     releaseInteractionInstance();
     std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
   } else {
-    getEventBase()->runInEventBaseThread(
+    getReplyQueue().putMessage(
         [req = std::move(req_),
          queue = std::move(queue),
          crc32c,
@@ -500,10 +501,10 @@ void HandlerCallbackBase::sendReply(
     std::exchange(req_, {})->sendStreamReply(
         queue.move(), std::move(stream), crc32c);
   } else {
-    getEventBase()->runInEventBaseThread([req = std::move(req_),
-                                          queue = std::move(queue),
-                                          stream = std::move(stream),
-                                          crc32c]() mutable {
+    getReplyQueue().putMessage([req = std::move(req_),
+                                queue = std::move(queue),
+                                stream = std::move(stream),
+                                crc32c]() mutable {
       req->sendStreamReply(queue.move(), std::move(stream), crc32c);
     });
   }
@@ -524,13 +525,12 @@ void HandlerCallbackBase::sendReply(
     std::exchange(req_, {})->sendSinkReply(
         queue.move(), std::move(sinkConsumer), crc32c);
   } else {
-    getEventBase()->runInEventBaseThread(
-        [req = std::move(req_),
-         queue = std::move(queue),
-         sinkConsumer = std::move(sinkConsumer),
-         crc32c]() mutable {
-          req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
-        });
+    getReplyQueue().putMessage([req = std::move(req_),
+                                queue = std::move(queue),
+                                sinkConsumer = std::move(sinkConsumer),
+                                crc32c]() mutable {
+      req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
+    });
   }
 #else
   std::terminate();

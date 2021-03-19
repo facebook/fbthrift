@@ -27,6 +27,7 @@
 #include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
+#include <thrift/lib/cpp2/server/IOWorkerContext.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
@@ -48,7 +49,8 @@ class ThriftServer;
  * connection to a Cpp2Worker running in another thread.  There should
  * typically be around one Cpp2Worker thread per core.
  */
-class Cpp2Worker : public wangle::Acceptor,
+class Cpp2Worker : public IOWorkerContext,
+                   public wangle::Acceptor,
                    private wangle::PeekingAcceptorHandshakeHelper::PeekCallback,
                    public std::enable_shared_from_this<Cpp2Worker> {
  protected:
@@ -82,6 +84,7 @@ class Cpp2Worker : public wangle::Acceptor,
   static std::shared_ptr<Cpp2Worker> createDummy(folly::EventBase* eventBase) {
     std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(nullptr, {}));
     worker->Acceptor::init(nullptr, eventBase);
+    worker->IOWorkerContext::init(*eventBase);
     return worker;
   }
 
@@ -93,6 +96,7 @@ class Cpp2Worker : public wangle::Acceptor,
       override {
     securityProtocolCtxManager_.addPeeker(this);
     Acceptor::init(serverSocket, eventBase, stats, fizzContext);
+    IOWorkerContext::init(*eventBase);
   }
 
   /*
