@@ -252,22 +252,7 @@ class RequestsRegistry {
     return reqFinishedList_;
   }
 
-  void registerStub(DebugStub& req) {
-    if (req.getMethodName() != "getCounters" &&
-        req.getMethodName() != "getStatus" &&
-        req.getMethodName() != "getRegexCounters") {
-      requestCounter_.increment();
-    }
-    uint64_t payloadSize = req.getPayloadSize();
-    reqActiveList_.push_back(req);
-    if (payloadSize > payloadMemoryLimitPerRequest_) {
-      req.releasePayload();
-      return;
-    }
-    reqPayloadList_.push_back(req);
-    payloadMemoryUsage_ += payloadSize;
-    evictStubPayloads();
-  }
+  void registerStub(DebugStub& req);
 
   const RecentRequestCounter& getRequestCounter() const {
     return requestCounter_;
