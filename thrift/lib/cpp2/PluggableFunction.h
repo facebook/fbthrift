@@ -107,12 +107,12 @@ template <typename Ret, typename... Args>
 auto registerPluggableFunction(
     folly::StringPiece name,
     Ret (*defaultImpl)(Args...)) {
-  return detail::PluggableFunction(name, defaultImpl);
+  return apache::thrift::detail::PluggableFunction(name, defaultImpl);
 }
 
 template <typename Ret, typename... Args>
 auto setPluggableFunction(folly::StringPiece name, Ret (*impl)(Args...)) {
-  return detail::SetterPluggableFunction(name, impl);
+  return apache::thrift::detail::SetterPluggableFunction(name, impl);
 }
 
 #define THRIFT_PLUGGABLE_FUNC(_name) THRIFT__PLUGGABLE_FUNC_##_name
