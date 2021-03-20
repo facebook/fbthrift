@@ -79,8 +79,8 @@ Please install the following dependencies before building Facebook Thrift:
 ### Build
 
     git clone https://github.com/facebook/fbthrift
-    cd build
-    cmake .. # Add -DOPENSSL_ROOT_DIR for macOS. Usually in /usr/local/ssl
+    cd fbthrift
+    cmake .
     make # or cmake --build .
 
 This will create:
