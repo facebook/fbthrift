@@ -44,6 +44,13 @@ class IncludedB;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace ns {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class IncludedB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -88,23 +95,7 @@ class IncludedB final  {
     bool strField;
   } __isset = {};
   bool operator==(const IncludedB& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const IncludedB& __x, const IncludedB& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const IncludedB& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const IncludedB& __x, const IncludedB& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const IncludedB& __x, const IncludedB& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const IncludedB& __x, const IncludedB& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {

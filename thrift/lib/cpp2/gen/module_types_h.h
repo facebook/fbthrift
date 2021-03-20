@@ -213,6 +213,23 @@ FOLLY_ERASE constexpr S make_constant(
   return s;
 }
 
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator!=(const T& lhs, const T& rhs) {
+  return !(lhs == rhs);
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator>(const T& lhs, const T& rhs) {
+  return rhs < lhs;
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator<=(const T& lhs, const T& rhs) {
+  return !(rhs < lhs);
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator>=(const T& lhs, const T& rhs) {
+  return !(lhs < rhs);
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

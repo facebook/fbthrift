@@ -1037,6 +1037,13 @@ typedef CppHasAPhrase HasAPhrase;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class union1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1214,23 +1221,7 @@ class union1 final  {
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const union1& __x, const union1& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const union1& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const union1& __x, const union1& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const union1& __x, const union1& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const union1& __x, const union1& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::int32_t& set_ui(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -1446,6 +1437,13 @@ uint32_t union1::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class union2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1623,23 +1621,7 @@ class union2 final  {
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const union2& __x, const union2& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const union2& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const union2& __x, const union2& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const union2& __x, const union2& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const union2& __x, const union2& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::int32_t& set_ui_2(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -1855,6 +1837,13 @@ uint32_t union2::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class union3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2032,23 +2021,7 @@ class union3 final  {
     ~storage_type() {}
   } ;
   bool operator==(const union3& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const union3& __x, const union3& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const union3& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const union3& __x, const union3& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const union3& __x, const union3& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const union3& __x, const union3& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::int32_t& set_ui_3(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -2264,6 +2237,13 @@ uint32_t union3::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class structA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2308,23 +2288,7 @@ class structA final  {
     bool b;
   } __isset = {};
   bool operator==(const structA& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const structA& __x, const structA& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const structA& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const structA& __x, const structA& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const structA& __x, const structA& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const structA& __x, const structA& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -2417,6 +2381,13 @@ uint32_t structA::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class unionA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2616,23 +2587,7 @@ class unionA final  {
     ~storage_type() {}
   } ;
   bool operator==(const unionA& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const unionA& __x, const unionA& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const unionA& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const unionA& __x, const unionA& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const unionA& __x, const unionA& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const unionA& __x, const unionA& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -2903,6 +2858,13 @@ uint32_t unionA::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class structB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2948,23 +2910,7 @@ class structB final  {
     bool d;
   } __isset = {};
   bool operator==(const structB& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const structB& __x, const structB& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const structB& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const structB& __x, const structB& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const structB& __x, const structB& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const structB& __x, const structB& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> c_ref() const& {
@@ -3052,6 +2998,13 @@ uint32_t structB::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class structC final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3183,23 +3136,7 @@ class structC final  {
     bool o3;
   } __isset = {};
   bool operator==(const structC& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const structC& __x, const structC& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const structC& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const structC& __x, const structC& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const structC& __x, const structC& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const structC& __x, const structC& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -4108,6 +4045,13 @@ uint32_t structC::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4165,23 +4109,7 @@ class struct1 final  {
     bool field5;
   } __isset = {};
   bool operator==(const struct1& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct1& __x, const struct1& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct1& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct1& __x, const struct1& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct1& __x, const struct1& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct1& __x, const struct1& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
@@ -4392,6 +4320,13 @@ uint32_t struct1::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4454,23 +4389,7 @@ class struct2 final  {
     bool fieldG;
   } __isset = {};
   bool operator==(const struct2& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct2& __x, const struct2& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct2& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct2& __x, const struct2& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct2& __x, const struct2& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct2& __x, const struct2& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -4710,6 +4629,13 @@ uint32_t struct2::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4805,23 +4731,7 @@ class struct3 final  {
     bool fieldR;
   } __isset = {};
   bool operator==(const struct3& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct3& __x, const struct3& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct3& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct3& __x, const struct3& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct3& __x, const struct3& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct3& __x, const struct3& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -5380,6 +5290,13 @@ uint32_t struct3::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct4 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5428,23 +5345,7 @@ class struct4 final  {
     bool field2;
   } __isset = {};
   bool operator==(const struct4& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct4& __x, const struct4& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct4& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct4& __x, const struct4& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct4& __x, const struct4& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct4& __x, const struct4& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
@@ -5578,6 +5479,13 @@ uint32_t struct4::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct5 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5633,23 +5541,7 @@ class struct5 final  {
     bool field4;
   } __isset = {};
   bool operator==(const struct5& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct5& __x, const struct5& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct5& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct5& __x, const struct5& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct5& __x, const struct5& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct5& __x, const struct5& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
@@ -5830,6 +5722,13 @@ uint32_t struct5::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct_binary final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5870,23 +5769,7 @@ class struct_binary final  {
     bool bi;
   } __isset = {};
   bool operator==(const struct_binary& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct_binary& __x, const struct_binary& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct_binary& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct_binary& __x, const struct_binary& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct_binary& __x, const struct_binary& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct_binary& __x, const struct_binary& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bi_ref() const& {
@@ -5949,6 +5832,13 @@ uint32_t struct_binary::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class dep_A_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5996,23 +5886,7 @@ class dep_A_struct final  {
     bool i_a;
   } __isset = {};
   bool operator==(const dep_A_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const dep_A_struct& __x, const dep_A_struct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const dep_A_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const dep_A_struct& __x, const dep_A_struct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const dep_A_struct& __x, const dep_A_struct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const dep_A_struct& __x, const dep_A_struct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
@@ -6128,6 +6002,13 @@ uint32_t dep_A_struct::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class dep_B_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6175,23 +6056,7 @@ class dep_B_struct final  {
     bool i_a;
   } __isset = {};
   bool operator==(const dep_B_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const dep_B_struct& __x, const dep_B_struct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const dep_B_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const dep_B_struct& __x, const dep_B_struct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const dep_B_struct& __x, const dep_B_struct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const dep_B_struct& __x, const dep_B_struct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
@@ -6307,6 +6172,13 @@ uint32_t dep_B_struct::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class annotated final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6348,23 +6220,7 @@ class annotated final  {
     bool a;
   } __isset = {};
   bool operator==(const annotated& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const annotated& __x, const annotated& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const annotated& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const annotated& __x, const annotated& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const annotated& __x, const annotated& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const annotated& __x, const annotated& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -6422,6 +6278,13 @@ uint32_t annotated::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class union_with_special_names final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7127,23 +6990,7 @@ class union_with_special_names final  {
     ~storage_type() {}
   } ;
   bool operator==(const union_with_special_names& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const union_with_special_names& __x, const union_with_special_names& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const union_with_special_names& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const union_with_special_names& __x, const union_with_special_names& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const union_with_special_names& __x, const union_with_special_names& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const union_with_special_names& __x, const union_with_special_names& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::int32_t& set_get(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -8329,6 +8176,13 @@ uint32_t union_with_special_names::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct_with_special_names final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8478,23 +8332,7 @@ class struct_with_special_names final  {
     bool fields;
   } __isset = {};
   bool operator==(const struct_with_special_names& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct_with_special_names& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct_with_special_names& __x, const struct_with_special_names& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct_with_special_names& __x, const struct_with_special_names& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> get_ref() const& {
@@ -9362,6 +9200,13 @@ uint32_t struct_with_special_names::read(Protocol_* iprot) {
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class struct_with_indirections final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -9418,23 +9263,7 @@ class struct_with_indirections final  {
     bool phrase;
   } __isset = {};
   bool operator==(const struct_with_indirections& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const struct_with_indirections& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const struct_with_indirections& __x, const struct_with_indirections& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const struct_with_indirections& __x, const struct_with_indirections& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> real_ref() const& {

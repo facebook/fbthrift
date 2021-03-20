@@ -66,6 +66,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#program:structs%>
 <% > common/namespace_cpp2_begin%>
 
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class <%struct:name%> <%!
 %><%^struct:virtual%>final <%/struct:virtual%><%#struct:exception?%><%!
 %>: public apache::thrift::TException<%/struct:exception?%> {

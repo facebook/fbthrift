@@ -526,6 +526,13 @@ template<> struct equal_to<typename ::apache::thrift::fixtures::types::decorated
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class decorated_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -566,23 +573,7 @@ class decorated_struct final  {
     bool field;
   } __isset = {};
   bool operator==(const decorated_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const decorated_struct& __x, const decorated_struct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const decorated_struct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const decorated_struct& __x, const decorated_struct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const decorated_struct& __x, const decorated_struct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const decorated_struct& __x, const decorated_struct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_ref() const& {
@@ -645,6 +636,13 @@ uint32_t decorated_struct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -710,23 +708,7 @@ class ContainerStruct final  {
     bool fieldH;
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -986,6 +968,13 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class CppTypeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1026,23 +1015,7 @@ class CppTypeStruct final  {
     bool fieldA;
   } __isset = {};
   bool operator==(const CppTypeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const CppTypeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const CppTypeStruct& __x, const CppTypeStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const CppTypeStruct& __x, const CppTypeStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -1099,6 +1072,13 @@ uint32_t CppTypeStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class VirtualStruct  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1143,23 +1123,7 @@ class VirtualStruct  {
     bool MyIntField;
   } __isset = {};
   bool operator==(const VirtualStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const VirtualStruct& __x, const VirtualStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const VirtualStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const VirtualStruct& __x, const VirtualStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const VirtualStruct& __x, const VirtualStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const VirtualStruct& __x, const VirtualStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
@@ -1217,6 +1181,13 @@ uint32_t VirtualStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class MyStructWithForwardRefEnum final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1262,23 +1233,7 @@ class MyStructWithForwardRefEnum final  {
     bool b;
   } __isset = {};
   bool operator==(const MyStructWithForwardRefEnum& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const MyStructWithForwardRefEnum& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStructWithForwardRefEnum& __x, const MyStructWithForwardRefEnum& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1366,6 +1321,13 @@ uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class TrivialNumeric final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1411,23 +1373,7 @@ class TrivialNumeric final  {
     bool b;
   } __isset = {};
   bool operator==(const TrivialNumeric& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const TrivialNumeric& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const TrivialNumeric& __x, const TrivialNumeric& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const TrivialNumeric& __x, const TrivialNumeric& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1515,6 +1461,13 @@ uint32_t TrivialNumeric::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class TrivialNestedWithDefault final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1560,23 +1513,7 @@ class TrivialNestedWithDefault final  {
     bool n;
   } __isset = {};
   bool operator==(const TrivialNestedWithDefault& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const TrivialNestedWithDefault& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const TrivialNestedWithDefault& __x, const TrivialNestedWithDefault& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
@@ -1663,6 +1600,13 @@ uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ComplexString final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1706,23 +1650,7 @@ class ComplexString final  {
     bool b;
   } __isset = {};
   bool operator==(const ComplexString& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ComplexString& __x, const ComplexString& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ComplexString& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ComplexString& __x, const ComplexString& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ComplexString& __x, const ComplexString& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ComplexString& __x, const ComplexString& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1814,6 +1742,13 @@ uint32_t ComplexString::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ComplexNestedWithDefault final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1859,23 +1794,7 @@ class ComplexNestedWithDefault final  {
     bool n;
   } __isset = {};
   bool operator==(const ComplexNestedWithDefault& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ComplexNestedWithDefault& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ComplexNestedWithDefault& __x, const ComplexNestedWithDefault& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
@@ -1967,6 +1886,13 @@ uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class MinPadding final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2016,23 +1942,7 @@ class MinPadding final  {
 
  public:
   bool operator==(const MinPadding& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MinPadding& __x, const MinPadding& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const MinPadding& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MinPadding& __x, const MinPadding& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MinPadding& __x, const MinPadding& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MinPadding& __x, const MinPadding& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small_ref() const& {
@@ -2205,6 +2115,13 @@ uint32_t MinPadding::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2263,6 +2180,13 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2464,6 +2388,13 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Renaming final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2505,23 +2436,7 @@ class Renaming final  {
     bool bar;
   } __isset = {};
   bool operator==(const Renaming& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Renaming& __x, const Renaming& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Renaming& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Renaming& __x, const Renaming& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Renaming& __x, const Renaming& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Renaming& __x, const Renaming& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
@@ -2579,6 +2494,13 @@ uint32_t Renaming::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class AnnotatedTypes final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2622,23 +2544,7 @@ class AnnotatedTypes final  {
     bool list_field;
   } __isset = {};
   bool operator==(const AnnotatedTypes& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const AnnotatedTypes& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AnnotatedTypes& __x, const AnnotatedTypes& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> binary_field_ref() const& {
@@ -2730,6 +2636,13 @@ uint32_t AnnotatedTypes::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ForwardUsageStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2770,23 +2683,7 @@ class ForwardUsageStruct final  {
     bool foo;
   } __isset = {};
   bool operator==(const ForwardUsageStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ForwardUsageStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ForwardUsageStruct& __x, const ForwardUsageStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
@@ -2844,6 +2741,13 @@ uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ForwardUsageRoot final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2884,23 +2788,7 @@ class ForwardUsageRoot final  {
     bool ForwardUsageStruct;
   } __isset = {};
   bool operator==(const ForwardUsageRoot& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ForwardUsageRoot& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ForwardUsageRoot& __x, const ForwardUsageRoot& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct_ref() const& {
@@ -2969,6 +2857,13 @@ uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class ForwardUsageByRef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3009,23 +2904,7 @@ class ForwardUsageByRef final  {
     bool foo;
   } __isset = {};
   bool operator==(const ForwardUsageByRef& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const ForwardUsageByRef& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ForwardUsageByRef& __x, const ForwardUsageByRef& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
@@ -3083,6 +2962,13 @@ uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class NoexceptMoveEmpty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3114,23 +3000,7 @@ class NoexceptMoveEmpty final  {
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
   void __clear();
   bool operator==(const NoexceptMoveEmpty& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const NoexceptMoveEmpty& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NoexceptMoveEmpty& __x, const NoexceptMoveEmpty& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -3158,6 +3028,13 @@ uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class NoexceptMoveSimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3199,23 +3076,7 @@ NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
     bool boolField;
   } __isset = {};
   bool operator==(const NoexceptMoveSimpleStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const NoexceptMoveSimpleStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NoexceptMoveSimpleStruct& __x, const NoexceptMoveSimpleStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
@@ -3273,6 +3134,13 @@ uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class NoexceptMoveComplexStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3339,23 +3207,7 @@ class NoexceptMoveComplexStruct final  {
     bool MyMapEnumAndInt;
   } __isset = {};
   bool operator==(const NoexceptMoveComplexStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const NoexceptMoveComplexStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NoexceptMoveComplexStruct& __x, const NoexceptMoveComplexStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
@@ -3676,6 +3528,13 @@ uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class NoExceptMoveUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3809,23 +3668,7 @@ class NoExceptMoveUnion final  {
     ~storage_type() {}
   } ;
   bool operator==(const NoExceptMoveUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const NoExceptMoveUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NoExceptMoveUnion& __x, const NoExceptMoveUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   ::std::string& set_string_field(::std::string const &t) {
     __clear();
@@ -3959,6 +3802,13 @@ uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class AllocatorAware final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4047,23 +3897,7 @@ class AllocatorAware final  {
     bool not_a_container;
   } __isset = {};
   bool operator==(const AllocatorAware& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AllocatorAware& __x, const AllocatorAware& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const AllocatorAware& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AllocatorAware& __x, const AllocatorAware& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AllocatorAware& __x, const AllocatorAware& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AllocatorAware& __x, const AllocatorAware& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list_ref() const& {
@@ -4243,6 +4077,13 @@ uint32_t AllocatorAware::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class AllocatorAware2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4304,23 +4145,7 @@ class AllocatorAware2 final  {
     bool not_a_container;
   } __isset = {};
   bool operator==(const AllocatorAware2& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const AllocatorAware2& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AllocatorAware2& __x, const AllocatorAware2& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AllocatorAware2& __x, const AllocatorAware2& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {

@@ -215,6 +215,13 @@ class SomeStruct;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace facebook { namespace ns { namespace qwerty {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class SomeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -256,23 +263,7 @@ class SomeStruct final  {
     bool fieldA;
   } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const SomeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const SomeStruct& __x, const SomeStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
