@@ -183,13 +183,6 @@ typedef ::std::int64_t PersonID;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Color final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -243,7 +236,23 @@ class Color final  {
     bool alpha;
   } __isset = {};
   bool operator==(const Color& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Color& __x, const Color& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Color& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Color& __x, const Color& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Color& __x, const Color& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Color& __x, const Color& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> red_ref() const& {
@@ -391,13 +400,6 @@ uint32_t Color::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Vehicle final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -454,7 +456,23 @@ class Vehicle final  {
     bool hasAC;
   } __isset = {};
   bool operator==(const Vehicle& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Vehicle& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Vehicle& __x, const Vehicle& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Vehicle& __x, const Vehicle& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> color_ref() const& {
@@ -654,13 +672,6 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Person final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -732,7 +743,23 @@ class Person final  {
     bool vehicles;
   } __isset = {};
   bool operator==(const Person& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Person& __x, const Person& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Person& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Person& __x, const Person& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Person& __x, const Person& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Person& __x, const Person& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {

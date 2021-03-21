@@ -68,13 +68,6 @@ class CustomFieldNames;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Banal final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -107,7 +100,23 @@ class Banal final : public apache::thrift::TException {
   Banal& operator=(const Banal&) = default;
   void __clear();
   bool operator==(const Banal& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Banal& __x, const Banal& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Banal& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Banal& __x, const Banal& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Banal& __x, const Banal& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Banal& __x, const Banal& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -139,13 +148,6 @@ uint32_t Banal::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Fiery final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -188,7 +190,23 @@ class Fiery final : public apache::thrift::TException {
 
  public:
   bool operator==(const Fiery& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Fiery& __x, const Fiery& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Fiery& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Fiery& __x, const Fiery& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Fiery& __x, const Fiery& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Fiery& __x, const Fiery& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> message_ref() const& {
@@ -254,13 +272,6 @@ uint32_t Fiery::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Serious final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -307,7 +318,23 @@ class Serious final : public apache::thrift::TException {
     bool sonnet;
   } __isset = {};
   bool operator==(const Serious& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Serious& __x, const Serious& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Serious& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Serious& __x, const Serious& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Serious& __x, const Serious& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Serious& __x, const Serious& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> sonnet_ref() const& {
@@ -375,13 +402,6 @@ uint32_t Serious::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class ComplexFieldNames final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -431,7 +451,23 @@ class ComplexFieldNames final : public apache::thrift::TException {
     bool internal_error_message;
   } __isset = {};
   bool operator==(const ComplexFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ComplexFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ComplexFieldNames& __x, const ComplexFieldNames& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
@@ -533,13 +569,6 @@ uint32_t ComplexFieldNames::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class CustomFieldNames final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -589,7 +618,23 @@ class CustomFieldNames final : public apache::thrift::TException {
     bool internal_error_message;
   } __isset = {};
   bool operator==(const CustomFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const CustomFieldNames& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const CustomFieldNames& __x, const CustomFieldNames& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {

@@ -57,13 +57,6 @@ class BigStruct;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace module2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -107,7 +100,23 @@ class Struct final  {
     bool second;
   } __isset = {};
   bool operator==(const Struct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Struct& __x, const Struct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Struct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Struct& __x, const Struct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Struct& __x, const Struct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Struct& __x, const Struct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> first_ref() const& {
@@ -193,13 +202,6 @@ uint32_t Struct::read(Protocol_* iprot) {
 
 } // module2
 namespace module2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class BigStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -244,7 +246,23 @@ class BigStruct final  {
     bool id;
   } __isset = {};
   bool operator==(const BigStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const BigStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const BigStruct& __x, const BigStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const BigStruct& __x, const BigStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> s_ref() const& {

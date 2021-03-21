@@ -49,13 +49,6 @@ typedef ::cpp2::Foo TransitiveFoo;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class Included final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -101,7 +94,23 @@ class Included final  {
     bool MyTransitiveField;
   } __isset = {};
   bool operator==(const Included& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const Included& __x, const Included& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const Included& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const Included& __x, const Included& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const Included& __x, const Included& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const Included& __x, const Included& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {

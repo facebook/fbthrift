@@ -162,13 +162,6 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class TrivialTypesStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -223,7 +216,23 @@ class TrivialTypesStruct final  {
     bool fieldE;
   } __isset = {};
   bool operator==(const TrivialTypesStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const TrivialTypesStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldA_ref() const& {
@@ -426,13 +435,6 @@ uint32_t TrivialTypesStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class ContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -498,7 +500,23 @@ class ContainerStruct final  {
     bool fieldH;
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ContainerStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ContainerStruct& __x, const ContainerStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -760,13 +778,6 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class ExampleUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -900,7 +911,23 @@ class ExampleUnion final  {
     ~storage_type() {}
   } ;
   bool operator==(const ExampleUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ExampleUnion& __x, const ExampleUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ExampleUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ExampleUnion& __x, const ExampleUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ExampleUnion& __x, const ExampleUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ExampleUnion& __x, const ExampleUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
     __clear();

@@ -130,13 +130,6 @@ class SecretStruct;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class MyStructNestedAnnotation final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -177,7 +170,23 @@ class MyStructNestedAnnotation final  {
     bool name;
   } __isset = {};
   bool operator==(const MyStructNestedAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStructNestedAnnotation& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
@@ -240,13 +249,6 @@ uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -312,7 +314,23 @@ class MyStruct final  {
     bool empty_annotations;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const MyStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
@@ -545,13 +563,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class SecretStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -596,7 +607,23 @@ class SecretStruct final  {
     bool password;
   } __isset = {};
   bool operator==(const SecretStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SecretStruct& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SecretStruct& __x, const SecretStruct& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SecretStruct& __x, const SecretStruct& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {

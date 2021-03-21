@@ -100,13 +100,6 @@ class containerStruct2;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace extra { namespace svc {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class containerStruct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -183,7 +176,23 @@ class containerStruct2 final  {
     bool opt_fieldE;
   } __isset = {};
   bool operator==(const containerStruct2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const containerStruct2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const containerStruct2& __x, const containerStruct2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const containerStruct2& __x, const containerStruct2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

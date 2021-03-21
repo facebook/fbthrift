@@ -124,13 +124,6 @@ class ModuleB;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace ns {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class ModuleA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -190,7 +183,23 @@ class ModuleA final  {
     bool inclBField;
   } __isset = {};
   bool operator==(const ModuleA& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ModuleA& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ModuleA& __x, const ModuleA& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ModuleA& __x, const ModuleA& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
@@ -399,13 +408,6 @@ uint32_t ModuleA::read(Protocol_* iprot) {
 
 }} // some::ns
 namespace some { namespace ns {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class ModuleB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -451,7 +453,23 @@ class ModuleB final  {
     bool inclEnumB;
   } __isset = {};
   bool operator==(const ModuleB& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const ModuleB& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const ModuleB& __x, const ModuleB& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const ModuleB& __x, const ModuleB& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {

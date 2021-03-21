@@ -86,13 +86,6 @@ class A;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class A final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -134,7 +127,23 @@ class A final  {
     bool useless_field;
   } __isset = {};
   bool operator==(const A& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const A& __x, const A& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const A& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const A& __x, const A& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const A& __x, const A& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const A& __x, const A& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {

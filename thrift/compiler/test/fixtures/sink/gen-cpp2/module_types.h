@@ -75,13 +75,6 @@ class SinkException2;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class InitialResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -122,7 +115,23 @@ class InitialResponse final  {
     bool content;
   } __isset = {};
   bool operator==(const InitialResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const InitialResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const InitialResponse& __x, const InitialResponse& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const InitialResponse& __x, const InitialResponse& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -185,13 +194,6 @@ uint32_t InitialResponse::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class FinalResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -232,7 +234,23 @@ class FinalResponse final  {
     bool content;
   } __isset = {};
   bool operator==(const FinalResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const FinalResponse& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const FinalResponse& __x, const FinalResponse& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const FinalResponse& __x, const FinalResponse& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -295,13 +313,6 @@ uint32_t FinalResponse::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class SinkPayload final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -342,7 +353,23 @@ class SinkPayload final  {
     bool content;
   } __isset = {};
   bool operator==(const SinkPayload& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkPayload& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkPayload& __x, const SinkPayload& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkPayload& __x, const SinkPayload& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -405,13 +432,6 @@ uint32_t SinkPayload::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class CompatibleWithKeywordSink final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -452,7 +472,23 @@ class CompatibleWithKeywordSink final  {
     bool sink;
   } __isset = {};
   bool operator==(const CompatibleWithKeywordSink& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const CompatibleWithKeywordSink& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const CompatibleWithKeywordSink& __x, const CompatibleWithKeywordSink& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sink_ref() const& {
@@ -515,13 +551,6 @@ uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class InitialException final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -562,7 +591,23 @@ class InitialException final : public apache::thrift::TException {
     bool reason;
   } __isset = {};
   bool operator==(const InitialException& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const InitialException& __x, const InitialException& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const InitialException& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const InitialException& __x, const InitialException& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const InitialException& __x, const InitialException& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const InitialException& __x, const InitialException& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
@@ -629,13 +674,6 @@ uint32_t InitialException::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class SinkException1 final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -676,7 +714,23 @@ class SinkException1 final : public apache::thrift::TException {
     bool reason;
   } __isset = {};
   bool operator==(const SinkException1& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkException1& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkException1& __x, const SinkException1& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkException1& __x, const SinkException1& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
@@ -743,13 +797,6 @@ uint32_t SinkException1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
 class SinkException2 final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -791,7 +838,23 @@ class SinkException2 final : public apache::thrift::TException {
     bool reason;
   } __isset = {};
   bool operator==(const SinkException2& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__x == __y);
+  }
+#endif
   bool operator<(const SinkException2& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const SinkException2& __x, const SinkException2& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const SinkException2& __x, const SinkException2& __y) {
+    return !(__x < __y);
+  }
+#endif
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {

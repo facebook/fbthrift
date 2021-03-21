@@ -16,5 +16,10 @@
 
 %><%!
 %>  bool operator==(const <%struct:name%>& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const <%struct:name%>& __x, const <%struct:name%>& __y) {
+    return !(__x == __y);
+  }
+#endif
 <%!
 %>
