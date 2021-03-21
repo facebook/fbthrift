@@ -270,12 +270,12 @@ std::pair<Struct3, std::string> test_data_1() {
   pod.fieldG_ref().ensure();
   pod.fieldG_ref()->field0 = 98;
   pod.fieldG_ref()->field1_ref() = "hello, world";
-  pod.fieldG_ref()->__isset.field2 = true;
+  pod.fieldG_ref()->field2_ref().ensure();
   *pod.fieldG_ref()->field2_ref() = Enum1::field2;
   pod.fieldG_ref()->field3 = Enum2::field0_2;
   pod.fieldG_ref()->field4_ref() = {};
   pod.fieldG_ref()->field4_ref()->set_ui(19937);
-  pod.fieldG_ref()->__isset.field5 = true;
+  pod.fieldG_ref()->field5_ref().ensure();
   pod.fieldG_ref()->field5_ref()->set_ue_2(Enum1::field1);
   // fieldH intentionally left empty
   pod.fieldI_ref().ensure();

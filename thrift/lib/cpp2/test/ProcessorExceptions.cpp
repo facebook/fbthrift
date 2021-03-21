@@ -113,7 +113,8 @@ TEST(ProcessorExceptionTest, throw_if_inner_required_missing) {
 
 TEST(ProcessorExceptionTest, throw_if_inner_field_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.i_ref()->__isset.i = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.i_ref()->i_ref()); }),
       TApplicationException);
 }
 
@@ -140,7 +141,9 @@ TEST(ProcessorExceptionTest, throw_if_list_of_struct_required_missing) {
 
 TEST(ProcessorExceptionTest, throw_if_list_inner_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { (*a.li_ref())[0].__isset.i = false; }),
+      call_return42([](MyArgs2& a) {
+        apache::thrift::unset_unsafe((*a.li_ref())[0].i_ref());
+      }),
       TApplicationException);
 }
 
@@ -153,7 +156,9 @@ TEST(ProcessorExceptionTest, throw_if_map_of_struct_required_missing) {
 
 TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { (*a.mi_ref())[11].__isset.i = false; }),
+      call_return42([](MyArgs2& a) {
+        apache::thrift::unset_unsafe((*a.mi_ref())[11].i_ref());
+      }),
       TApplicationException);
 }
 
