@@ -807,7 +807,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_cpp_ref_unique_either() {
     for (auto const* f : strct_->fields()) {
-      if (is_cpp_ref_unique_either(f)) {
+      if (is_cpp_ref_unique_either(f) || field_is_lazy(f)) {
         return true;
       }
     }

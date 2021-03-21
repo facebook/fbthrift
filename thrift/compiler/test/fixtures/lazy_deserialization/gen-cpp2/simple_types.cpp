@@ -35,6 +35,37 @@ void TccStructTraits<::apache::thrift::test::Foo>::translateFieldName(
 
 namespace apache { namespace thrift { namespace test {
 
+Foo::Foo(const Foo& srcObj) {
+  srcObj.field1_ref();
+  __fbthrift_isDeserialized_.field1 = true;
+  __fbthrift_serializedData_.field1.clear();
+  field1 = srcObj.field1;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.field1 = srcObj.__isset.field1;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  field2 = srcObj.field2;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.field2 = srcObj.__isset.field2;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  srcObj.field3_ref();
+  __fbthrift_isDeserialized_.field3 = true;
+  __fbthrift_serializedData_.field3.clear();
+  field3 = srcObj.field3;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.field3 = srcObj.__isset.field3;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  field4 = srcObj.field4;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.field4 = srcObj.__isset.field4;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+Foo& Foo::operator=(const Foo& src) {
+  Foo tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),

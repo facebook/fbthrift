@@ -77,13 +77,11 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   Foo(Foo&&) = default;
-
-  Foo(const Foo&) = default;
+  Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) = default;
-
-  Foo& operator=(const Foo&) = default;
+  Foo& operator=(const Foo& src);
   void __clear();
  private:
   mutable ::std::string field1;

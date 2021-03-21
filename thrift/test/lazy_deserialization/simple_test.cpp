@@ -34,6 +34,17 @@ std::unique_ptr<Struct> gen() {
   return obj;
 }
 
+TEST(Serialization, Copyable) {
+  auto foo = gen<LazyFoo>();
+  LazyFoo bar = *foo, baz;
+  baz = *foo;
+
+  EXPECT_EQ(bar.field1_ref(), baz.field1_ref());
+  EXPECT_EQ(bar.field2_ref(), baz.field2_ref());
+  EXPECT_EQ(bar.field3_ref(), baz.field3_ref());
+  EXPECT_EQ(bar.field4_ref(), baz.field4_ref());
+}
+
 TEST(Serialization, FooToLazyFoo) {
   auto foo = gen<Foo>();
   auto s = apache::thrift::CompactSerializer::serialize<std::string>(*foo);
