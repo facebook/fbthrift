@@ -729,8 +729,8 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::fields_in_layout_order},
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
-            {"struct:fields_contain_cpp_ref_unique_either?",
-             &mstch_cpp2_struct::has_cpp_ref_unique_either},
+            {"struct:nondefault_copy_ctor_and_assignment?",
+             &mstch_cpp2_struct::nondefault_copy_ctor_and_assignment},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
@@ -805,7 +805,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return context_->is_orderable(*strct_) &&
         !strct_->has_annotation("no_default_comparators");
   }
-  mstch::node has_cpp_ref_unique_either() {
+  mstch::node nondefault_copy_ctor_and_assignment() {
     for (auto const* f : strct_->fields()) {
       if (is_cpp_ref_unique_either(f) || field_is_lazy(f)) {
         return true;

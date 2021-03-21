@@ -201,13 +201,13 @@ class <%struct:name%> <%!
   <%struct:name%>(<%struct:name%>&&) = default;
 <%/struct:cpp_noexcept_move_ctor%>
 <%^struct:cpp_noncopyable%>
-<%^struct:fields_contain_cpp_ref_unique_either?%>
+<%^struct:nondefault_copy_ctor_and_assignment?%>
 
   <%struct:name%>(const <%struct:name%>&) = default;
-<%/struct:fields_contain_cpp_ref_unique_either?%>
-<%#struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
+<%#struct:nondefault_copy_ctor_and_assignment?%>
   <%struct:name%>(const <%struct:name%>& src);
-<%/struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
 
 <%#struct:cpp_allocator%>
@@ -221,13 +221,13 @@ class <%struct:name%> <%!
   <%struct:name%>& operator=(<%struct:name%>&&) = default;
 <%/struct:cpp_noexcept_move%>
 <%^struct:cpp_noncopyable%>
-<%^struct:fields_contain_cpp_ref_unique_either?%>
+<%^struct:nondefault_copy_ctor_and_assignment?%>
 
   <%struct:name%>& operator=(const <%struct:name%>&) = default;
-<%/struct:fields_contain_cpp_ref_unique_either?%>
-<%#struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
+<%#struct:nondefault_copy_ctor_and_assignment?%>
   <%struct:name%>& operator=(const <%struct:name%>& src);
-<%/struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
   void __clear();
 <%^struct:virtual%>

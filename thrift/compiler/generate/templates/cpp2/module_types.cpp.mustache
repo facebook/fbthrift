@@ -109,14 +109,14 @@ const char* <%struct:name%>::__fbthrift_cpp2_gen_thrift_uri() {
 <%/struct:thrift_uri%>
 <%^struct:union?%>
 <%^struct:cpp_noncopyable%>
-<%#struct:fields_contain_cpp_ref_unique_either?%>
+<%#struct:nondefault_copy_ctor_and_assignment?%>
 <% > module_types_cpp/copy_ctor%>
 
 
 <% > module_types_cpp/assign_overload%>
 
 
-<%/struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
 <% > module_types_cpp/declare_members%>
 
