@@ -332,8 +332,8 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedStruct::ComplexNestedStruct() {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ComplexNestedStruct::~ComplexNestedStruct() {}
 

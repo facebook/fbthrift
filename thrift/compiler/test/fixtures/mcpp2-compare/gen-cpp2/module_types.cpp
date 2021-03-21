@@ -399,9 +399,7 @@ MyStruct::MyStruct() :
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
   { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
   {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
@@ -413,7 +411,9 @@ MyStruct::MyStruct(MyStruct&& other) noexcept :
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 MyStruct::~MyStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1145,8 +1145,8 @@ AnException::AnException() :
   2,
   3}),
       enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnException::~AnException() {}
 
@@ -1650,8 +1650,8 @@ containerStruct::containerStruct() :
    ::some::valid::ns::MyEnumA::fieldA}),
       fieldAC( ::some::valid::ns::MyEnumB::AField),
       fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct::~containerStruct() {}
 
@@ -2744,9 +2744,7 @@ AnnotatedStruct::AnnotatedStruct() :
       iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
       iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
       struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
     no_annotation(std::move(other.no_annotation)),
     cpp_unique_ref(std::move(other.cpp_unique_ref)),
@@ -2789,7 +2787,9 @@ AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
     iobuf_ptr_val(std::move(other.iobuf_ptr_val)),
     struct_struct(std::move(other.struct_struct)),
     __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 AnnotatedStruct::~AnnotatedStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

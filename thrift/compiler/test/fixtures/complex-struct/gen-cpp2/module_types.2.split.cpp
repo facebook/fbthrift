@@ -44,8 +44,8 @@ MyStruct::MyStruct() :
       MyShortField(0),
       MyLongField(0),
       MyDoubleField(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 
@@ -573,8 +573,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
       myLongField(0),
       myLongTypeDef(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStructTypeDef::~MyStructTypeDef() {}
 
@@ -992,8 +992,8 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException() :
       errorEnum( ::cpp2::MyEnum::MyValue1) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 complexException::~complexException() {}
 

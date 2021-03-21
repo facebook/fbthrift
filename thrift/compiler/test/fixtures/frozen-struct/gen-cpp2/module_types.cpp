@@ -71,8 +71,8 @@ namespace some { namespace ns {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA() :
       i32Field(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ModuleA::~ModuleA() {}
 

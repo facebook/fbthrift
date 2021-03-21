@@ -248,8 +248,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct() {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
 
@@ -2000,9 +2000,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
   { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
@@ -2014,7 +2012,9 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2314,8 +2314,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware() :
       not_a_container(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AllocatorAware::~AllocatorAware() {}
 

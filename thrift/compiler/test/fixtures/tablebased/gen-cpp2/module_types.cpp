@@ -142,8 +142,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialTypesStruct::TrivialTypesStruct() :
       fieldA(0),
       fieldE( ::test::fixtures::tablebased::ExampleEnum::ZERO) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
@@ -317,8 +317,8 @@ namespace test { namespace fixtures { namespace tablebased {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct() {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
 

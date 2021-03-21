@@ -139,8 +139,8 @@ MyStruct::MyStruct() :
       oneway(0),
       readonly(0),
       idempotent(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 

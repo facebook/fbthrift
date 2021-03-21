@@ -173,8 +173,8 @@ defaultStruct::defaultStruct() :
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("HASWELL"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue3},
   {128,  ::cpp2::MyEnum::MyValue3},
   {256,  ::cpp2::MyEnum::MyValue3}}}}) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 defaultStruct::~defaultStruct() {}
 

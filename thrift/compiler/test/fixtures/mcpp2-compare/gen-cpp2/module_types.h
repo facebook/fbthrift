@@ -1290,7 +1290,7 @@ class ASimpleStructNoexcept final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
-ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
+  ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
       boolField(std::move(other.boolField)),
       __isset(other.__isset) {}
   ASimpleStructNoexcept(const ASimpleStructNoexcept&) = default;
@@ -8368,9 +8368,9 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg);
-AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
+  AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
       intField(std::move(other.intField)) {}
-
+  
   AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
 
 

@@ -17,13 +17,14 @@
 %><%#struct:is_large?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_h/base_ctor%>
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%#struct:cpp_noexcept_move_ctor%>
 <%#struct:fields?%>
-<% > module_types_cpp/move_ctor%>
+<%struct:name%>::<% > module_types_cpp/move_ctor%>
+
 <%/struct:fields?%>
 <%/struct:cpp_noexcept_move_ctor%>
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%struct:name%>::~<%struct:name%>() {}
 

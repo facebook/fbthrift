@@ -711,8 +711,8 @@ StructWithContainers::StructWithContainers() :
       list_ref_unique(std::make_unique<::std::vector<::std::int32_t>>()),
       set_ref_shared(std::make_shared<::std::set<::std::int32_t>>()),
       list_ref_shared_const(std::make_shared<::std::vector<::std::int32_t>>()) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 StructWithContainers::~StructWithContainers() {}
 

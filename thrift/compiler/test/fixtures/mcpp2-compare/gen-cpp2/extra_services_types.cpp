@@ -55,8 +55,8 @@ containerStruct2::containerStruct2() :
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct2::~containerStruct2() {}
 

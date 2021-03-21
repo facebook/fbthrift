@@ -3180,7 +3180,7 @@ class NoexceptMoveSimpleStruct final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
-NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
+  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
       boolField(std::move(other.boolField)),
       __isset(other.__isset) {}
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;

@@ -180,8 +180,8 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle() :
       hasAC(false) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Vehicle::~Vehicle() {}
 
@@ -330,8 +330,8 @@ Person::Person() :
       age(0),
       bestFriend(0),
       afraidOfAnimal(static_cast< ::cpp2::Animal>(0)) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Person::~Person() {}
 
