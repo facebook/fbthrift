@@ -45,6 +45,12 @@ T exchange(T& obj, U&& new_value) {
 
 #endif
 
+template <typename T>
+T const& empty_instance() {
+  static T const& instance = *new T();
+  return instance;
+}
+
 //  strip_left_margin
 //
 //  Looks for the least indented non-whitespace-only line and removes its amount

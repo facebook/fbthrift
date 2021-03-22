@@ -43,12 +43,7 @@ static bool is_dot(char const c) {
 }
 
 const std::string& value_or_empty(const std::string* value) {
-  if (value != nullptr) {
-    return *value;
-  }
-
-  static std::string& kEmpty = *new std::string;
-  return kEmpty;
+  return value ? *value : empty_instance<std::string>();
 }
 
 const std::string* find_ref_type_annot(const t_annotated* node) {
