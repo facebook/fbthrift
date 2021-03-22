@@ -332,6 +332,8 @@ void ScopedServerThread::stop() {
 void ScopedServerThread::join() {
   if (thread_) {
     thread_->join();
+    // Make sure we don't try to join the thread again from the destructor.
+    thread_ = nullptr;
   }
   if (helper_) {
     helper_->releaseServer();
