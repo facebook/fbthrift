@@ -37,7 +37,8 @@ using apache::thrift::ServerEventHandler;
 using apache::thrift::ThriftServer;
 
 constexpr std::string_view kServe = "serve";
-constexpr std::string_view kNonTls = "non_tls";
+// Note not setting a ssl config is seen as a manual override
+constexpr std::string_view kNonTls = "non_tls.manual_policy";
 
 class TestServerEventHandler : public ServerEventHandler {
  public:

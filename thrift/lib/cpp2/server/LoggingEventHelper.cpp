@@ -31,6 +31,20 @@ void logTlsNoPeerCertEvent(const ConnectionLoggingContext& context) {
     THRIFT_CONNECTION_EVENT(tls.no_peer_cert.config_manual).log(context);
   }
 }
+
+void logNonTLSEvent(const ConnectionLoggingContext& context) {
+  DCHECK(context.getWorker() && context.getWorker()->getServer());
+  auto server = context.getWorker()->getServer();
+  // There's actually no point in logging these at all as wangle will not set
+  // up tls if theres no config.
+  if (!server->getSSLConfig() || server->isSSLPolicySet() ||
+      (server->isPlaintextAllowedOnLoopback() &&
+       context.getPeerAddress()->isLoopbackAddress())) {
+    THRIFT_CONNECTION_EVENT(non_tls.manual_policy).log(context);
+  } else {
+    THRIFT_CONNECTION_EVENT(non_tls).log(context);
+  }
+}
 } // namespace
 
 void logSetupConnectionEventsOnce(
@@ -50,7 +64,7 @@ void logSetupConnectionEventsOnce(
             logTlsNoPeerCertEvent(context);
           }
         } else {
-          THRIFT_CONNECTION_EVENT(non_tls).log(context);
+          logNonTLSEvent(context);
         }
       }
     } catch (...) {
