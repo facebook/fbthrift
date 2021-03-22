@@ -25,7 +25,14 @@ enum Numberz {
   EIGHT = 8,
 }
 
+union Unionz {
+  1: i64 fieldOne;
+  2: string fieldTwo;
+}
+
 typedef i64 UserId
+typedef Xtruct XtructDef
+typedef Unionz UnionzDef
 
 struct Bonk {
   1: string message;
