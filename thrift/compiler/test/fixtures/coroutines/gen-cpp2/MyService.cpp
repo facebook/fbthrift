@@ -41,6 +41,7 @@ folly::coro::Task<void> MyServiceSvIf::co_ping(apache::thrift::RequestParams /* 
   return co_ping();
 }
 #endif // FOLLY_HAS_COROUTINES
+
 void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -116,6 +117,7 @@ folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestPar
   return co_hasDataById(p_id);
 }
 #endif // FOLLY_HAS_COROUTINES
+
 void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based

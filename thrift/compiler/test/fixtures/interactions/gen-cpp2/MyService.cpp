@@ -14,12 +14,15 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
   return std::make_unique<MyServiceAsyncProcessor>(this);
 }
 
+
 std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
 }
+
 std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceSvIf::createMyInteractionFast() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteractionFast");
 }
+
 std::unique_ptr<MyServiceSvIf::SerialInteractionIf> MyServiceSvIf::createSerialInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createSerialInteraction");
 }
@@ -65,6 +68,7 @@ folly::coro::Task<::std::int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate(
 folly::SemiFuture<::std::int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
 }
+
 void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -106,6 +110,7 @@ folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_ping(apache::thrift::
 folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_ping");
 }
+
 void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -148,6 +153,7 @@ folly::coro::Task<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInterac
 folly::SemiFuture<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_truthify");
 }
+
 void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -189,6 +195,7 @@ folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, :
 folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_encode");
 }
+
 void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -246,6 +253,7 @@ folly::coro::Task<void> MyServiceSvIf::SerialInteractionIf::co_frobnicate(apache
 folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_frobnicate() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
 }
+
 void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based

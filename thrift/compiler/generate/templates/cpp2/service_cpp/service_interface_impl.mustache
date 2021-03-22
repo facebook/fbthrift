@@ -15,7 +15,9 @@
   limitations under the License.
 
 %><%#service:functions%><%#function:return_type%>
-<%^function:starts_interaction?%><%^function:eb%><%^service:interaction?%>
+<%^function:starts_interaction?%>
+<%^function:eb%>
+<%^service:interaction?%>
 
 <% > service_common/function_return_type %> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
@@ -38,8 +40,8 @@ folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::fu
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), std::move(ka));
 }
-
 <%#function:coroutine?%>
+
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   return folly::coro::toTask(future_<%function:cpp_name%>(<% > service_common/param_list_move%>));
@@ -50,7 +52,8 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
-<%/service:interaction?%><%#service:interaction?%>
+<%/service:interaction?%>
+<%#service:interaction?%>
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
@@ -65,24 +68,20 @@ folly::SemiFuture<<% > service_common/async_return_type %>> <%service:parent_ser
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_<%function:name%>");
 }
 <%/service:interaction?%>
-<%^function:coroutine?%>
 <%#function:oneway?%>
+
 void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
-  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
-<%/function:oneway?%><%^function:oneway?%>
-void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
 <%/function:oneway?%>
+<%^function:oneway?%>
+
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+<%/function:oneway?%>
+<%^function:coroutine?%>
+  apache::thrift::detail::si::<%#function:oneway?%>async_tm_oneway<%/function:oneway?%><%^function:oneway?%>async_tm<%/function:oneway?%>(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
-}
 <%/function:coroutine?%>
 <%#function:coroutine?%>
-<%#function:oneway?%>
-void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
-<%/function:oneway?%><%^function:oneway?%>
-void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
-<%/function:oneway?%>
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -96,11 +95,7 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
     auto scope = params.getRequestContext()->getRequestExecutionScope();
-<%#function:oneway?%>
-    apache::thrift::detail::si::async_tm_oneway_coro_start(
-<%/function:oneway?%><%^function:oneway?%>
-    apache::thrift::detail::si::async_tm_coro_start(
-<%/function:oneway?%>
+    apache::thrift::detail::si::<%#function:oneway?%>async_tm_oneway_coro_start<%/function:oneway?%><%^function:oneway?%>async_tm_coro_start<%/function:oneway?%>(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
       params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
@@ -112,36 +107,42 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
   apache::thrift::detail::si::<%#function:oneway?%>async_tm_oneway<%/function:oneway?%><%^function:oneway?%>async_tm<%/function:oneway?%>(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
-<%/service:interaction?%><%#service:interaction?%>
+<%/service:interaction?%>
+<%#service:interaction?%>
   apache::thrift::detail::si::<%#function:oneway?%>async_tm_oneway<%/function:oneway?%><%^function:oneway?%>async_tm<%/function:oneway?%>(this, std::move(callback), [&] {
 <%#function:oneway?%>
     return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
       return semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>);
     }), getThreadManager());
   });
-<%/function:oneway?%><%^function:oneway?%>
+<%/function:oneway?%>
+<%^function:oneway?%>
     return apache::thrift::detail::si::future(
       semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getThreadManager());
   });
 <%/function:oneway?%>
 <%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
-}
 <%/function:coroutine?%>
-<%/function:eb%><%#function:eb%><%! Event base codegen %>
+}
+<%/function:eb%>
+<%#function:eb%><%! Event base codegen %>
 <%#function:oneway?%>
 
 void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
   LOG(DFATAL) << "Function <%function:cpp_name%> is unimplemented";
 }
-<%/function:oneway?%><%^function:oneway?%>
+<%/function:oneway?%>
+<%^function:oneway?%>
 
 void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
   callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
 }
-<%/function:oneway?%><%/function:eb%>
+<%/function:oneway?%>
+<%/function:eb%>
 <%/function:starts_interaction?%>
 <%#function:starts_interaction?%><%! Starts interaction codegen %>
+
 std::unique_ptr<<%service:name%>SvIf::<%type:name%>If> <%service:name%>SvIf::<%function:cpp_name%>() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
