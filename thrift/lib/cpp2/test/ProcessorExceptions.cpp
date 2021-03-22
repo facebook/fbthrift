@@ -76,8 +76,9 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   args.li_ref() = {inner};
   args.mi_ref() = {{11, inner}};
   args.complex_key_ref() = {{inner, 11}};
-  args.i_ref()->__isset.i = (*args.li_ref())[0].__isset.i =
-      (*args.mi_ref())[11].__isset.i = true;
+  args.i_ref()->i_ref().ensure();
+  (*args.li_ref())[0].i_ref().ensure();
+  (*args.mi_ref())[11].i_ref().ensure();
   MyArgs2 all_is_set(args);
   isset_cb(args);
 
