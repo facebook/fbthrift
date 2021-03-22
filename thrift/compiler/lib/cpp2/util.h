@@ -88,10 +88,10 @@ class type_resolver {
   static reference_type find_ref_type(const t_field* node);
 
  private:
-  using TypeResolveFn =
+  using type_resolve_fn =
       const std::string& (type_resolver::*)(const t_type* node);
-  template <typename... Args>
-  using TypeGenFn = std::string (type_resolver::*)(Args...);
+  template <typename... A>
+  using type_gen_fn = std::string (type_resolver::*)(A...);
 
   bool enable_adapters_ = false;
   std::unordered_map<const t_program*, std::string> namespace_cache_;
@@ -116,14 +116,14 @@ class type_resolver {
   std::string gen_storage_type(
       const std::pair<const t_type*, reference_type>& ref_type);
 
-  std::string gen_type_impl(const t_type* node, TypeResolveFn resolve_fn);
+  std::string gen_type_impl(const t_type* node, type_resolve_fn resolve_fn);
   std::string gen_container_type(
       const t_container* node,
-      TypeResolveFn resolve_fn);
-  std::string gen_sink_type(const t_sink* node, TypeResolveFn resolve_fn);
+      type_resolve_fn resolve_fn);
+  std::string gen_sink_type(const t_sink* node, type_resolve_fn resolve_fn);
   std::string gen_stream_resp_type(
       const t_stream_response* node,
-      TypeResolveFn resolve_fn);
+      type_resolve_fn resolve_fn);
 
   static std::string gen_template_type(
       std::string template_name,
@@ -133,12 +133,12 @@ class type_resolver {
       const std::string& native_type);
   static std::string gen_namespaced_name(const t_type* node);
 
-  const std::string& resolve(TypeResolveFn resolve_fn, const t_type* node) {
+  const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {
     return (this->*resolve_fn)(node);
   }
 
   template <typename C, typename K, typename A>
-  const std::string& get_or_gen(C& cache, const K& key, TypeGenFn<A> gen) {
+  const std::string& get_or_gen(C& cache, const K& key, type_gen_fn<A> gen) {
     auto itr = cache.find(key);
     if (itr == cache.end()) {
       itr = cache.emplace(key, (this->*gen)(key)).first;

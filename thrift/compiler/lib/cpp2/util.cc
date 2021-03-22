@@ -207,7 +207,7 @@ std::string type_resolver::gen_storage_type(
 
 std::string type_resolver::gen_type_impl(
     const t_type* node,
-    TypeResolveFn resolve_fn) {
+    type_resolve_fn resolve_fn) {
   if (const auto* type = find_type(node)) {
     // Return the override.
     return *type;
@@ -237,7 +237,7 @@ std::string type_resolver::gen_type_impl(
 
 std::string type_resolver::gen_container_type(
     const t_container* node,
-    TypeResolveFn resolve_fn) {
+    type_resolve_fn resolve_fn) {
   const auto* val = find_template(node);
   const auto& template_name =
       val ? *val : default_template(node->container_type());
@@ -268,7 +268,7 @@ std::string type_resolver::gen_container_type(
 
 std::string type_resolver::gen_stream_resp_type(
     const t_stream_response* node,
-    TypeResolveFn resolve_fn) {
+    type_resolve_fn resolve_fn) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
@@ -282,7 +282,7 @@ std::string type_resolver::gen_stream_resp_type(
 
 std::string type_resolver::gen_sink_type(
     const t_sink* node,
-    TypeResolveFn resolve_fn) {
+    type_resolve_fn resolve_fn) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
