@@ -70,8 +70,7 @@ class t_erl_generator : public t_concat_generator {
   void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(
-      const t_type* type,
-      const t_const_value* value);
+      const t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
@@ -94,8 +93,7 @@ class t_erl_generator : public t_concat_generator {
   void generate_service_helpers(const t_service* tservice);
   void generate_service_interface(const t_service* tservice);
   void generate_function_info(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
 
   /**
    * Helper rendering functions
@@ -108,8 +106,7 @@ class t_erl_generator : public t_concat_generator {
   std::string type_name(const t_type* ttype);
 
   std::string function_signature(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
 
   std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
@@ -135,8 +132,7 @@ class t_erl_generator : public t_concat_generator {
   void export_string(std::string name, int num);
 
   void export_types_function(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
   void export_types_string(std::string name, int num);
 
   /**
@@ -325,8 +321,7 @@ void t_erl_generator::generate_const(const t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_erl_generator::render_const_value(
-    const t_type* type,
-    const t_const_value* value) {
+    const t_type* type, const t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
 
@@ -478,8 +473,7 @@ void t_erl_generator::generate_xception(const t_struct* txception) {
  * Generates a struct
  */
 void t_erl_generator::generate_erl_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   generate_erl_struct_definition(
       f_types_, f_types_hrl_file_, tstruct, is_exception);
 }
@@ -538,8 +532,7 @@ void t_erl_generator::generate_erl_struct_definition(
  * Generates the read method for a struct
  */
 void t_erl_generator::generate_erl_struct_info(
-    ostream& out,
-    const t_struct* tstruct) {
+    ostream& out, const t_struct* tstruct) {
   string name = type_name(tstruct);
 
   indent(out) << "struct_info('" << name << "') ->" << endl;
@@ -679,8 +672,7 @@ void t_erl_generator::generate_service_interface(const t_service* tservice) {
  * function_info(FunctionName, reply_type)
  */
 void t_erl_generator::generate_function_info(
-    const t_service* /*tservice*/,
-    const t_function* tfunction) {
+    const t_service* /*tservice*/, const t_function* tfunction) {
   string name_atom = "'" + tfunction->get_name() + "'";
 
   const t_struct* xs = tfunction->get_xceptions();
@@ -741,8 +733,7 @@ string t_erl_generator::declare_field(const t_field* tfield) { // TODO
  * @return String of rendered function definition
  */
 string t_erl_generator::function_signature(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   return prefix + tfunction->get_name() + "(This" +
       capitalize(argument_list(tfunction->get_paramlist())) + ")";
 }
@@ -760,8 +751,7 @@ void t_erl_generator::export_string(string name, int num) {
 }
 
 void t_erl_generator::export_types_function(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   export_types_string(
       prefix + tfunction->get_name(),
       1 // This
@@ -778,8 +768,7 @@ void t_erl_generator::export_types_string(string name, int num) {
 }
 
 void t_erl_generator::export_function(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   export_string(
       prefix + tfunction->get_name(),
       1 // This
@@ -866,8 +855,7 @@ string t_erl_generator::type_to_enum(const t_type* type) {
  * Generate an Erlang term which represents a thrift type
  */
 std::string t_erl_generator::generate_type_term(
-    const t_type* type,
-    bool expand_structs) {
+    const t_type* type, bool expand_structs) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

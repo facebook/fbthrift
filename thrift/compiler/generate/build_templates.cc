@@ -30,8 +30,7 @@ namespace {
 constexpr std::size_t string_literal_max_size = 16380; // MSVC C2026
 
 fs::path from_components(
-    fs::path::const_iterator begin,
-    fs::path::const_iterator end) {
+    fs::path::const_iterator begin, fs::path::const_iterator end) {
   fs::path tmp;
   while (begin != end) {
     tmp /= *begin++;

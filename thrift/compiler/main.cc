@@ -24,11 +24,11 @@
  *
  */
 
+#include <string>
+#include <vector>
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/compiler.h>
 #include <thrift/compiler/parse/parsing_driver.h>
-#include <string>
-#include <vector>
 
 using namespace apache::thrift::compiler;
 

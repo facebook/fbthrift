@@ -222,9 +222,7 @@ std::string parsing_driver::include_file(const std::string& filename) {
 }
 
 void parsing_driver::validate_const_rec(
-    std::string name,
-    const t_type* type,
-    t_const_value* value) {
+    std::string name, const t_type* type, t_const_value* value) {
   if (type->is_void()) {
     throw std::string("type error: cannot declare a void const: " + name);
   }
@@ -643,8 +641,7 @@ void parsing_driver::append_fields(t_struct& tstruct, t_field_list&& fields) {
 }
 
 std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
-    const t_type* type,
-    std::unique_ptr<t_annotations> annotations) {
+    const t_type* type, std::unique_ptr<t_annotations> annotations) {
   if (annotations != nullptr) {
     // Make a copy of the node to hold the annotations.
     // TODO(afuller): Remove the need for copying the underlying type by making
@@ -673,8 +670,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 }
 
 std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
-    std::unique_ptr<t_type> node,
-    std::unique_ptr<t_annotations> annotations) {
+    std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
   const t_type* type = node.get();
   set_annotations(node.get(), std::move(annotations), nullptr);
   if (mode == parsing_mode::INCLUDES) {
@@ -736,8 +732,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 }
 
 const t_type* parsing_driver::add_unnamed_type(
-    std::unique_ptr<t_type> node,
-    std::unique_ptr<t_annotations> annotations) {
+    std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
   set_annotations(node.get(), std::move(annotations), nullptr);
   if (mode == parsing_mode::INCLUDES) {
@@ -767,8 +762,7 @@ const t_type* parsing_driver::add_placeholder_typedef(
 }
 
 t_ref<t_const> parsing_driver::add_decl(
-    std::unique_ptr<t_const>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_const>&& node, boost::optional<std::string> doc) {
   t_ref<t_const> result(node.get());
   if (should_add_node(node, std::move(doc))) {
     validate_const_type(node.get());
@@ -779,8 +773,7 @@ t_ref<t_const> parsing_driver::add_decl(
 }
 
 t_ref<t_service> parsing_driver::add_decl(
-    std::unique_ptr<t_service>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_service>&& node, boost::optional<std::string> doc) {
   t_ref<t_service> result(node.get());
   if (should_add_node(node, std::move(doc))) {
     // TODO(afuller): Make interactions their own type.
@@ -796,8 +789,7 @@ t_ref<t_service> parsing_driver::add_decl(
 }
 
 t_ref<t_typedef> parsing_driver::add_decl(
-    std::unique_ptr<t_typedef>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_typedef>&& node, boost::optional<std::string> doc) {
   t_ref<t_typedef> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_typedef(std::move(node));
@@ -806,8 +798,7 @@ t_ref<t_typedef> parsing_driver::add_decl(
 }
 
 t_ref<t_struct> parsing_driver::add_decl(
-    std::unique_ptr<t_struct>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_struct>&& node, boost::optional<std::string> doc) {
   t_ref<t_struct> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_struct(std::move(node));
@@ -816,8 +807,7 @@ t_ref<t_struct> parsing_driver::add_decl(
 }
 
 t_ref<t_union> parsing_driver::add_decl(
-    std::unique_ptr<t_union>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_union>&& node, boost::optional<std::string> doc) {
   t_ref<t_union> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_struct(std::move(node));
@@ -826,8 +816,7 @@ t_ref<t_union> parsing_driver::add_decl(
 }
 
 t_ref<t_exception> parsing_driver::add_decl(
-    std::unique_ptr<t_exception>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_exception>&& node, boost::optional<std::string> doc) {
   t_ref<t_exception> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_xception(std::move(node));
@@ -836,8 +825,7 @@ t_ref<t_exception> parsing_driver::add_decl(
 }
 
 t_ref<t_enum> parsing_driver::add_decl(
-    std::unique_ptr<t_enum>&& node,
-    boost::optional<std::string> doc) {
+    std::unique_ptr<t_enum>&& node, boost::optional<std::string> doc) {
   t_ref<t_enum> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_enum(std::move(node));

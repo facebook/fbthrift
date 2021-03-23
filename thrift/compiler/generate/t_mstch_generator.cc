@@ -40,8 +40,7 @@ namespace compiler {
 namespace {
 
 fs::path from_components(
-    fs::path::const_iterator begin,
-    fs::path::const_iterator end) {
+    fs::path::const_iterator begin, fs::path::const_iterator end) {
   fs::path tmp;
   while (begin != end) {
     tmp /= *begin++;
@@ -464,8 +463,7 @@ const std::string& t_mstch_generator::get_template(
 }
 
 void t_mstch_generator::write_output(
-    const boost::filesystem::path& path,
-    const std::string& data) {
+    const boost::filesystem::path& path, const std::string& data) {
   auto abs_path = boost::filesystem::path{get_out_dir()} / path;
   boost::filesystem::create_directories(abs_path.parent_path());
   std::ofstream ofs{abs_path.string()};
@@ -490,8 +488,7 @@ std::string t_mstch_generator::get_option(const std::string& option) {
 }
 
 mstch::map t_mstch_generator::prepend_prefix(
-    const std::string& prefix,
-    mstch::map map) {
+    const std::string& prefix, mstch::map map) {
   mstch::map res;
   for (auto& pair : map) {
     res.emplace(prefix + ":" + pair.first, std::move(pair.second));
@@ -500,8 +497,7 @@ mstch::map t_mstch_generator::prepend_prefix(
 }
 
 std::string t_mstch_generator::render(
-    const std::string& template_name,
-    const mstch::node& context) {
+    const std::string& template_name, const mstch::node& context) {
   return mstch::render(
       get_template(template_name), context, get_template_map());
 }

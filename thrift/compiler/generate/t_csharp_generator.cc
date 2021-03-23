@@ -68,8 +68,7 @@ class t_csharp_generator : public t_oop_generator {
       const t_type* type,
       const t_const_value* value);
   void print_const_constructor(
-      std::ofstream& out,
-      std::vector<t_const*> consts);
+      std::ofstream& out, std::vector<t_const*> consts);
   void print_const_def_value(
       std::ofstream& out,
       std::string name,
@@ -84,17 +83,13 @@ class t_csharp_generator : public t_oop_generator {
       bool in_class = false,
       bool is_result = false);
   void generate_csharp_struct_reader(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_csharp_struct_result_writer(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_csharp_struct_writer(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_csharp_struct_tostring(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
 
   void generate_function_helpers(const t_function* tfunction);
   void generate_service_interface(const t_service* tservice);
@@ -102,58 +97,32 @@ class t_csharp_generator : public t_oop_generator {
   void generate_service_client(const t_service* tservice);
   void generate_service_server(const t_service* tservice);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* function);
+      const t_service* tservice, const t_function* function);
 
   void generate_deserialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix = "");
+      std::ofstream& out, const t_field* tfield, std::string prefix = "");
   void generate_deserialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
   void generate_deserialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
   void generate_deserialize_set_element(
-      std::ofstream& out,
-      const t_set* tset,
-      std::string prefix = "");
+      std::ofstream& out, const t_set* tset, std::string prefix = "");
   void generate_deserialize_map_element(
-      std::ofstream& out,
-      const t_map* tmap,
-      std::string prefix = "");
+      std::ofstream& out, const t_map* tmap, std::string prefix = "");
   void generate_deserialize_list_element(
-      std::ofstream& out,
-      const t_list* list,
-      std::string prefix = "");
+      std::ofstream& out, const t_list* list, std::string prefix = "");
   void generate_serialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix = "");
+      std::ofstream& out, const t_field* tfield, std::string prefix = "");
   void generate_serialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
   void generate_serialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
   void generate_serialize_map_element(
-      std::ofstream& out,
-      const t_map* tmap,
-      std::string iter,
-      std::string map);
+      std::ofstream& out, const t_map* tmap, std::string iter, std::string map);
   void generate_serialize_set_element(
-      std::ofstream& out,
-      const t_set* tmap,
-      std::string iter);
+      std::ofstream& out, const t_set* tmap, std::string iter);
   void generate_serialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string iter);
+      std::ofstream& out, const t_list* tlist, std::string iter);
 
   void start_csharp_namespace(std::ofstream& out);
   void end_csharp_namespace(std::ofstream& out);
@@ -162,14 +131,11 @@ class t_csharp_generator : public t_oop_generator {
   std::string csharp_thrift_usings();
 
   std::string type_name(
-      const t_type* ttype,
-      bool in_countainer = false,
-      bool in_init = false);
+      const t_type* ttype, bool in_countainer = false, bool in_init = false);
   std::string base_type_name(t_base_type* tbase, bool in_container = false);
   std::string declare_field(const t_field* tfield, bool init = false);
   std::string function_signature(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
   std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
   std::string prop_name(const t_field* tfield);
@@ -351,8 +317,7 @@ void t_csharp_generator::print_const_def_value(
 }
 
 void t_csharp_generator::print_const_constructor(
-    std::ofstream& out,
-    std::vector<t_const*> consts) {
+    std::ofstream& out, std::vector<t_const*> consts) {
   indent(out) << "static Constants()" << endl;
   scope_up(out);
   vector<t_const*>::iterator c_iter;
@@ -458,8 +423,7 @@ void t_csharp_generator::generate_xception(const t_struct* txception) {
 }
 
 void t_csharp_generator::generate_csharp_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   string f_struct_name = namespace_dir_ + "/" + (tstruct->get_name()) + ".cs";
   ofstream f_struct;
 
@@ -555,8 +519,7 @@ void t_csharp_generator::generate_csharp_struct_definition(
 }
 
 void t_csharp_generator::generate_csharp_struct_reader(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "public void Read (TProtocol iprot)" << endl;
   scope_up(out);
 
@@ -615,8 +578,7 @@ void t_csharp_generator::generate_csharp_struct_reader(
 }
 
 void t_csharp_generator::generate_csharp_struct_writer(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   out << indent() << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
@@ -662,8 +624,7 @@ void t_csharp_generator::generate_csharp_struct_writer(
 }
 
 void t_csharp_generator::generate_csharp_struct_result_writer(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
@@ -722,8 +683,7 @@ void t_csharp_generator::generate_csharp_struct_result_writer(
 }
 
 void t_csharp_generator::generate_csharp_struct_tostring(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "public override string ToString() {" << endl;
   indent_up();
 
@@ -1102,8 +1062,7 @@ void t_csharp_generator::generate_function_helpers(
 }
 
 void t_csharp_generator::generate_process_function(
-    const t_service* /* tservice */,
-    const t_function* tfunction) {
+    const t_service* /* tservice */, const t_function* tfunction) {
   indent(f_service_) << "public void " << tfunction->get_name()
                      << "_Process(int seqid, TProtocol iprot, TProtocol oprot)"
                      << endl;
@@ -1180,9 +1139,7 @@ void t_csharp_generator::generate_process_function(
 }
 
 void t_csharp_generator::generate_deserialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string prefix) {
+    ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type();
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
@@ -1257,17 +1214,13 @@ void t_csharp_generator::generate_deserialize_field(
 }
 
 void t_csharp_generator::generate_deserialize_struct(
-    ofstream& out,
-    const t_struct* tstruct,
-    string prefix) {
+    ofstream& out, const t_struct* tstruct, string prefix) {
   out << indent() << prefix << " = new " << type_name(tstruct) << "();" << endl
       << indent() << prefix << ".Read(iprot);" << endl;
 }
 
 void t_csharp_generator::generate_deserialize_container(
-    ofstream& out,
-    const t_type* ttype,
-    string prefix) {
+    ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
   string obj;
@@ -1318,9 +1271,7 @@ void t_csharp_generator::generate_deserialize_container(
 }
 
 void t_csharp_generator::generate_deserialize_map_element(
-    ofstream& out,
-    const t_map* tmap,
-    string prefix) {
+    ofstream& out, const t_map* tmap, string prefix) {
   string key = tmp("_key");
   string val = tmp("_val");
 
@@ -1337,9 +1288,7 @@ void t_csharp_generator::generate_deserialize_map_element(
 }
 
 void t_csharp_generator::generate_deserialize_set_element(
-    ofstream& out,
-    const t_set* tset,
-    string prefix) {
+    ofstream& out, const t_set* tset, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tset->get_elem_type(), elem);
 
@@ -1351,9 +1300,7 @@ void t_csharp_generator::generate_deserialize_set_element(
 }
 
 void t_csharp_generator::generate_deserialize_list_element(
-    ofstream& out,
-    const t_list* tlist,
-    string prefix) {
+    ofstream& out, const t_list* tlist, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tlist->get_elem_type(), elem);
 
@@ -1365,9 +1312,7 @@ void t_csharp_generator::generate_deserialize_list_element(
 }
 
 void t_csharp_generator::generate_serialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string prefix) {
+    ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type();
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
@@ -1440,16 +1385,12 @@ void t_csharp_generator::generate_serialize_field(
 }
 
 void t_csharp_generator::generate_serialize_struct(
-    ofstream& out,
-    const t_struct* /* tstruct */,
-    string prefix) {
+    ofstream& out, const t_struct* /* tstruct */, string prefix) {
   out << indent() << prefix << ".Write(oprot);" << endl;
 }
 
 void t_csharp_generator::generate_serialize_container(
-    ofstream& out,
-    const t_type* ttype,
-    string prefix) {
+    ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
   if (ttype->is_map()) {
@@ -1503,10 +1444,7 @@ void t_csharp_generator::generate_serialize_container(
 }
 
 void t_csharp_generator::generate_serialize_map_element(
-    ofstream& out,
-    const t_map* tmap,
-    string iter,
-    string map) {
+    ofstream& out, const t_map* tmap, string iter, string map) {
   t_field kfield(tmap->get_key_type(), iter);
   generate_serialize_field(out, &kfield, "");
   t_field vfield(tmap->get_val_type(), map + "[" + iter + "]");
@@ -1514,25 +1452,19 @@ void t_csharp_generator::generate_serialize_map_element(
 }
 
 void t_csharp_generator::generate_serialize_set_element(
-    ofstream& out,
-    const t_set* tset,
-    string iter) {
+    ofstream& out, const t_set* tset, string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
 
 void t_csharp_generator::generate_serialize_list_element(
-    ofstream& out,
-    const t_list* tlist,
-    string iter) {
+    ofstream& out, const t_list* tlist, string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
 
 void t_csharp_generator::generate_property(
-    ofstream& out,
-    const t_field* tfield,
-    bool isPublic) {
+    ofstream& out, const t_field* tfield, bool isPublic) {
   indent(out) << (isPublic ? "public " : "private ")
               << type_name(tfield->get_type()) << " " << prop_name(tfield)
               << endl;
@@ -1557,9 +1489,7 @@ std::string t_csharp_generator::prop_name(const t_field* tfield) {
 }
 
 string t_csharp_generator::type_name(
-    const t_type* ttype,
-    bool in_container,
-    bool /* in_init */) {
+    const t_type* ttype, bool in_container, bool /* in_init */) {
   while (ttype->is_typedef()) {
     ttype = ((t_typedef*)ttype)->get_type();
   }
@@ -1590,8 +1520,7 @@ string t_csharp_generator::type_name(
 }
 
 string t_csharp_generator::base_type_name(
-    t_base_type* tbase,
-    bool /* in_container */) {
+    t_base_type* tbase, bool /* in_container */) {
   switch (tbase->get_base()) {
     case t_base_type::TYPE_VOID:
       return "void";
@@ -1668,8 +1597,7 @@ string t_csharp_generator::declare_field(const t_field* tfield, bool init) {
 }
 
 string t_csharp_generator::function_signature(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   const t_type* ttype = tfunction->get_returntype();
   return type_name(ttype) + " " + prefix + tfunction->get_name() + "(" +
       argument_list(tfunction->get_paramlist()) + ")";

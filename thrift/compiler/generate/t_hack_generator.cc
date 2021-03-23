@@ -146,9 +146,7 @@ class t_hack_generator : public t_oop_generator {
   std::unique_ptr<t_const_value> service_to_tmeta(const t_service* service);
 
   void append_to_t_enum(
-      t_enum* tenum,
-      t_program* program,
-      ThriftPrimitiveType value);
+      t_enum* tenum, t_program* program, ThriftPrimitiveType value);
 
   const t_type* tmeta_ThriftType_type();
   const t_type* tmeta_ThriftField_type();
@@ -175,17 +173,14 @@ class t_hack_generator : public t_oop_generator {
       bool is_args,
       const std::string& name);
   void generate_php_function_helpers(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
   void generate_php_interaction_function_helpers(
       const t_service* tservice,
       const t_service* interaction,
       const t_function* tfunction);
 
   void generate_php_union_enum(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      const std::string& name);
+      std::ofstream& out, const t_struct* tstruct, const std::string& name);
   void generate_php_union_methods(std::ofstream& out, const t_struct* tstruct);
 
   void generate_php_struct_shape_spec(
@@ -193,46 +188,30 @@ class t_hack_generator : public t_oop_generator {
       const t_struct* tstruct,
       bool is_constructor_shape = false);
   void generate_php_struct_shape_collection_value_lambda(
-      std::ostream& out,
-      t_name_generator& namer,
-      const t_type* t);
+      std::ostream& out, t_name_generator& namer, const t_type* t);
   void generate_hack_array_from_shape_lambda(
-      std::ostream& out,
-      t_name_generator& namer,
-      const t_type* t);
+      std::ostream& out, t_name_generator& namer, const t_type* t);
   void generate_shape_from_hack_array_lambda(
-      std::ostream& out,
-      t_name_generator& namer,
-      const t_type* t);
+      std::ostream& out, t_name_generator& namer, const t_type* t);
   void generate_php_struct_from_shape(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_php_struct_from_map(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   bool type_has_nested_struct(const t_type* t);
   bool field_is_nullable(
-      const t_struct* tstruct,
-      const t_field* field,
-      std::string dval);
+      const t_struct* tstruct, const t_field* field, std::string dval);
   void generate_php_struct_shape_methods(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
 
   void generate_adapter_type_checks(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
 
   void generate_php_type_spec(std::ofstream& out, const t_type* t);
   void generate_php_struct_spec(std::ofstream& out, const t_struct* tstruct);
   void generate_php_struct_struct_trait(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      const std::string& name);
+      std::ofstream& out, const t_struct* tstruct, const std::string& name);
   void generate_php_structural_id(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool asFunction);
+      std::ofstream& out, const t_struct* tstruct, bool asFunction);
 
   /**
    * Service-level generation functions
@@ -249,9 +228,7 @@ class t_hack_generator : public t_oop_generator {
       bool client);
   void generate_service_client(const t_service* tservice, bool mangle);
   void _generate_service_client(
-      std::ofstream& out,
-      const t_service* tservice,
-      bool mangle);
+      std::ofstream& out, const t_service* tservice, bool mangle);
   void _generate_recvImpl(
       std::ofstream& out,
       const t_service* tservice,
@@ -278,13 +255,9 @@ class t_hack_generator : public t_oop_generator {
       bool rpc_options,
       bool legacy_arrays = false);
   void generate_service_processor(
-      const t_service* tservice,
-      bool mangle,
-      bool async);
+      const t_service* tservice, bool mangle, bool async);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* tfunction,
-      bool async);
+      const t_service* tservice, const t_function* tfunction, bool async);
   void generate_processor_event_handler_functions(std::ofstream& out);
   void generate_client_event_handler_functions(std::ofstream& out);
   void generate_event_handler_functions(std::ofstream& out, std::string cl);
@@ -368,12 +341,9 @@ class t_hack_generator : public t_oop_generator {
       bool typehints = true,
       bool force_nullable = false);
   std::string generate_rpc_function_name(
-      const t_service* tservice,
-      const t_function* tfunction) const;
+      const t_service* tservice, const t_function* tfunction) const;
   std::string generate_function_helper_name(
-      const t_service* tservice,
-      const t_function* tfunction,
-      bool is_args);
+      const t_service* tservice, const t_function* tfunction, bool is_args);
   std::string type_to_cast(const t_type* ttype);
   std::string type_to_enum(const t_type* ttype);
   void generate_php_docstring(std::ofstream& out, const t_node* tdoc);
@@ -383,13 +353,9 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_docstring(std::ofstream& out, const t_function* tfunction);
   void generate_php_docstring(std::ofstream& out, const t_field* tfield);
   void generate_php_docstring(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool is_exception = false);
+      std::ofstream& out, const t_struct* tstruct, bool is_exception = false);
   void generate_php_docstring_args(
-      std::ofstream& out,
-      int start_pos,
-      const t_struct* arg_list);
+      std::ofstream& out, int start_pos, const t_struct* arg_list);
   std::string render_string(std::string value);
 
   std::string type_to_typehint(
@@ -399,15 +365,12 @@ class t_hack_generator : public t_oop_generator {
       bool immutable_collections = false,
       bool ignore_adapter = false);
   std::string type_to_param_typehint(
-      const t_type* ttype,
-      bool nullable = false);
+      const t_type* ttype, bool nullable = false);
 
   bool is_type_arraykey(const t_type* type);
 
   std::string union_enum_name(
-      const std::string& name,
-      const t_program* program,
-      bool decl = false) {
+      const std::string& name, const t_program* program, bool decl = false) {
     // <StructName>Type
     return hack_name(name, program, decl) + "Enum";
   }
@@ -417,9 +380,7 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string union_field_to_enum(
-      const t_struct* tstruct,
-      const t_field* tfield,
-      const std::string& name) {
+      const t_struct* tstruct, const t_field* tfield, const std::string& name) {
     // If null is passed,  it refer to empty;
     if (tfield) {
       return union_enum_name(name, tstruct->get_program()) +
@@ -471,8 +432,8 @@ class t_hack_generator : public t_oop_generator {
     return php_namespace(s->get_program());
   }
 
-  std::string
-  hack_name(std::string name, const t_program* prog, bool decl = false) {
+  std::string hack_name(
+      std::string name, const t_program* prog, bool decl = false) {
     std::string ns;
     ns = hack_namespace(prog);
     if (!ns.empty()) {
@@ -517,8 +478,7 @@ class t_hack_generator : public t_oop_generator {
   const char* UNION_EMPTY = "_EMPTY_";
 
   std::string generate_array_typehint(
-      const std::string& key_type,
-      const std::string& value_type);
+      const std::string& key_type, const std::string& value_type);
 
   bool is_base_exception_property(const t_field*);
 
@@ -541,9 +501,7 @@ class t_hack_generator : public t_oop_generator {
         (mangle ? php_namespace(svc) : "") + name;
   }
   std::string php_servicename_mangle(
-      bool mangle,
-      const t_service* svc,
-      bool extends = false) {
+      bool mangle, const t_service* svc, bool extends = false) {
     return php_servicename_mangle(mangle, svc, svc->get_name(), extends);
   }
 
@@ -941,8 +899,7 @@ void t_hack_generator::generate_json_map_element(
 }
 
 void t_hack_generator::generate_json_reader(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   if (!json_) {
     return;
   }
@@ -1212,8 +1169,7 @@ bool t_hack_generator::is_hack_const_type(const t_type* type) {
 }
 
 std::string t_hack_generator::generate_array_typehint(
-    const std::string& key_type,
-    const std::string& value_type) {
+    const std::string& key_type, const std::string& value_type) {
   std::ostringstream stream;
   stream << array_keyword_ << "<" << key_type << ", " << value_type << ">";
   return stream.str();
@@ -1678,9 +1634,7 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
 }
 
 void t_hack_generator::append_to_t_enum(
-    t_enum* tenum,
-    t_program* program,
-    ThriftPrimitiveType value) {
+    t_enum* tenum, t_program* program, ThriftPrimitiveType value) {
   auto enum_value = std::make_unique<t_enum_value>();
   enum_value->set_value(value);
   switch (value) {
@@ -1856,14 +1810,12 @@ void t_hack_generator::generate_xception(const t_struct* txception) {
  * Structs can be normal or exceptions.
  */
 void t_hack_generator::generate_php_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   generate_php_struct_definition(f_types_, tstruct, is_exception, false);
 }
 
 void t_hack_generator::generate_php_type_spec(
-    std::ofstream& out,
-    const t_type* t) {
+    std::ofstream& out, const t_type* t) {
   // Check the adapter before resolving typedefs.
   if (const auto* adapter = get_hack_adapter(t)) {
     indent(out) << "'adapter' => " << *adapter << "::class,\n";
@@ -1948,8 +1900,7 @@ void t_hack_generator::generate_php_type_spec(
  * type information to generalize serialization routines.
  */
 void t_hack_generator::generate_php_struct_spec(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
   indent_up();
   for (const auto* field : tstruct->fields()) {
@@ -1983,9 +1934,7 @@ void t_hack_generator::generate_php_struct_spec(
 }
 
 void t_hack_generator::generate_php_struct_struct_trait(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    const std::string& name) {
+    std::ofstream& out, const t_struct* tstruct, const std::string& name) {
   std::string traitName;
   if (const auto* structtrait =
           tstruct->get_annotation_or_null("php.structtrait")) {
@@ -2004,9 +1953,7 @@ void t_hack_generator::generate_php_struct_struct_trait(
 }
 
 void t_hack_generator::generate_php_struct_shape_spec(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    bool is_constructor_shape) {
+    std::ofstream& out, const t_struct* tstruct, bool is_constructor_shape) {
   indent(out) << "const type "
               << (is_constructor_shape ? "TConstructorShape" : "TShape")
               << " = shape(\n";
@@ -2064,9 +2011,7 @@ void t_hack_generator::generate_php_struct_shape_spec(
  * This method operates via recursion on complex types.
  */
 void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
-    std::ostream& out,
-    t_name_generator& namer,
-    const t_type* t) {
+    std::ostream& out, t_name_generator& namer, const t_type* t) {
   std::string tmp = namer("_val");
   indent(out);
   if (arrprov_skip_frames_) {
@@ -2107,9 +2052,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
 }
 
 void t_hack_generator::generate_hack_array_from_shape_lambda(
-    std::ostream& out,
-    t_name_generator& namer,
-    const t_type* t) {
+    std::ostream& out, t_name_generator& namer, const t_type* t) {
   if (t->is_map()) {
     out << "Dict\\map(\n";
   } else {
@@ -2158,9 +2101,7 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
 }
 
 void t_hack_generator::generate_shape_from_hack_array_lambda(
-    std::ostream& out,
-    t_name_generator& namer,
-    const t_type* t) {
+    std::ostream& out, t_name_generator& namer, const t_type* t) {
   if (no_use_hack_collections_) {
     out << "(\n";
     indent_up();
@@ -2238,9 +2179,7 @@ bool t_hack_generator::type_has_nested_struct(const t_type* t) {
  * Determine whether a field should be marked nullable.
  */
 bool t_hack_generator::field_is_nullable(
-    const t_struct* tstruct,
-    const t_field* field,
-    std::string dval) {
+    const t_struct* tstruct, const t_field* field, std::string dval) {
   const t_type* t = field->get_type()->get_true_type();
   return (dval == "null") || tstruct->is_union() ||
       (field->get_req() == t_field::e_req::optional &&
@@ -2249,8 +2188,7 @@ bool t_hack_generator::field_is_nullable(
 }
 
 void t_hack_generator::generate_php_struct_shape_methods(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   if (shape_arraykeys_) {
     std::string arg_return_type;
     if (arrays_) {
@@ -2553,9 +2491,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
  * for information about the structural ID.
  */
 void t_hack_generator::generate_php_structural_id(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    bool asFunction) {
+    std::ofstream& out, const t_struct* tstruct, bool asFunction) {
   if (asFunction) {
     indent(out) << "static function getStructuralID(): int {\n";
     indent_up();
@@ -2585,8 +2521,7 @@ void t_hack_generator::generate_php_struct_definition(
 }
 
 void t_hack_generator::generate_php_union_methods(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   auto enumName = union_enum_name(tstruct);
 
   indent(out) << "public function getType(): " << enumName << " {\n";
@@ -2661,9 +2596,7 @@ void t_hack_generator::generate_php_union_methods(
 }
 
 void t_hack_generator::generate_php_union_enum(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    const std::string& name) {
+    std::ofstream& out, const t_struct* tstruct, const std::string& name) {
   // Generate enum class with this pattern
   // enum <UnionName>Enum: int {
   //   __EMPTY__ = 0;
@@ -2714,8 +2647,7 @@ std::string t_hack_generator::render_structured_annotations(
 }
 
 void t_hack_generator::generate_adapter_type_checks(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   // Adapter name -> original type of the field that the adapter is for.
   std::set<std::pair<std::string, std::string>> adapter_types_;
 
@@ -3086,8 +3018,7 @@ void t_hack_generator::_generate_php_struct_definition(
 }
 
 void t_hack_generator::generate_php_struct_from_shape(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   if (arrprov_skip_frames_)
     indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromShape"
@@ -3106,8 +3037,7 @@ void t_hack_generator::generate_php_struct_from_shape(
 }
 
 void t_hack_generator::generate_php_struct_from_map(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   if (arrprov_skip_frames_)
     indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromMap_DEPRECATED(";
@@ -3161,8 +3091,7 @@ void t_hack_generator::generate_service(const t_service* tservice) {
 }
 
 void t_hack_generator::generate_service(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   std::string f_base_name = php_servicename_mangle(mangle, tservice);
   std::string f_service_name = get_out_dir() + f_base_name + ".php";
   f_service_.open(f_service_name.c_str());
@@ -3220,8 +3149,7 @@ void t_hack_generator::generate_client_event_handler_functions(
   generate_event_handler_functions(out, "\\TClientEventHandler");
 }
 void t_hack_generator::generate_event_handler_functions(
-    std::ofstream& /*out*/,
-    std::string cl) {
+    std::ofstream& /*out*/, std::string cl) {
   f_service_ << indent() << "public function setEventHandler(" << cl
              << " $event_handler): this {\n"
              << indent() << "  $this->eventHandler_ = $event_handler;\n"
@@ -3239,9 +3167,7 @@ void t_hack_generator::generate_event_handler_functions(
  * @param tservice The service to generate a server for.
  */
 void t_hack_generator::generate_service_processor(
-    const t_service* tservice,
-    bool mangle,
-    bool async) {
+    const t_service* tservice, bool mangle, bool async) {
   // Generate the dispatch methods
   std::string suffix = async ? "Async" : "Sync";
   std::string extends = "";
@@ -3296,9 +3222,7 @@ void t_hack_generator::generate_service_processor(
  * @param tfunction The function to write a dispatcher for
  */
 void t_hack_generator::generate_process_function(
-    const t_service* tservice,
-    const t_function* tfunction,
-    bool async) {
+    const t_service* tservice, const t_function* tfunction, bool async) {
   // Open function
   indent(f_service_)
       << "protected" << (async ? " async" : "") << " function process_"
@@ -3450,8 +3374,7 @@ void t_hack_generator::generate_process_function(
  * @param tservice The service to generate a header definition for
  */
 void t_hack_generator::generate_service_helpers(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
 
   for (const auto* function : get_supported_functions(tservice)) {
@@ -3520,8 +3443,7 @@ void t_hack_generator::generate_service_helpers(
 }
 
 void t_hack_generator::generate_service_interactions(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   const std::vector<const t_service*>& interactions =
       get_interactions(tservice);
   if (interactions.empty()) {
@@ -3587,8 +3509,7 @@ void t_hack_generator::generate_service_interactions(
  * @param tfunction The function
  */
 void t_hack_generator::generate_php_function_helpers(
-    const t_service* tservice,
-    const t_function* tfunction) {
+    const t_service* tservice, const t_function* tfunction) {
   const std::string& service_name = tservice->get_name();
   const t_struct* params = tfunction->get_paramlist();
   std::string params_name = service_name + "_" + params->get_name();
@@ -3648,8 +3569,7 @@ void t_hack_generator::generate_php_interaction_function_helpers(
  * Generates the docstring for a generic object.
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_node* tdoc) {
+    std::ofstream& out, const t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(
         out, // out
@@ -3675,8 +3595,7 @@ void t_hack_generator::generate_php_docstring(
  *           2: exceptionType2 ex_name2);
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_function* tfunction) {
+    std::ofstream& out, const t_function* tfunction) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tfunction->has_doc()) {
@@ -3735,8 +3654,7 @@ void t_hack_generator::generate_php_docstring(
  * argNumber: argType argName
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_field* tfield) {
+    std::ofstream& out, const t_field* tfield) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tfield->has_doc()) {
@@ -3767,9 +3685,7 @@ void t_hack_generator::generate_php_docstring(
  * Name
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    bool is_exception) {
+    std::ofstream& out, const t_struct* tstruct, bool is_exception) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tstruct->has_doc()) {
@@ -3799,8 +3715,7 @@ void t_hack_generator::generate_php_docstring(
  * Name
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_enum* tenum) {
+    std::ofstream& out, const t_enum* tenum) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tenum->has_doc()) {
@@ -3829,8 +3744,7 @@ void t_hack_generator::generate_php_docstring(
  * Name
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_service* tservice) {
+    std::ofstream& out, const t_service* tservice) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tservice->has_doc()) {
@@ -3859,8 +3773,7 @@ void t_hack_generator::generate_php_docstring(
  * TYPE NAME
  */
 void t_hack_generator::generate_php_docstring(
-    std::ofstream& out,
-    const t_const* tconst) {
+    std::ofstream& out, const t_const* tconst) {
   indent(out) << "/**\n";
   // Copy the doc.
   if (tconst->has_doc()) {
@@ -3888,9 +3801,7 @@ void t_hack_generator::generate_php_docstring(
  * and then render the argument.
  */
 void t_hack_generator::generate_php_docstring_args(
-    std::ofstream& out,
-    int start_pos,
-    const t_struct* arg_list) {
+    std::ofstream& out, int start_pos, const t_struct* arg_list) {
   if (arg_list) {
     bool first = true;
     for (const auto* param : arg_list->fields()) {
@@ -4015,8 +3926,7 @@ std::string t_hack_generator::type_to_typehint(
  * array or a collection type, so we return KeyedContainer
  */
 std::string t_hack_generator::type_to_param_typehint(
-    const t_type* ttype,
-    bool nullable) {
+    const t_type* ttype, bool nullable) {
   if (const auto* tlist = dynamic_cast<const t_list*>(ttype)) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
@@ -4107,8 +4017,7 @@ void t_hack_generator::generate_service_interface(
 }
 
 void t_hack_generator::generate_service_client(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   _generate_service_client(f_service_, tservice, mangle);
 }
 
@@ -4118,9 +4027,7 @@ void t_hack_generator::generate_service_client(
  * @param tservice The service to generate a server for.
  */
 void t_hack_generator::_generate_service_client(
-    std::ofstream& out,
-    const t_service* tservice,
-    bool mangle) {
+    std::ofstream& out, const t_service* tservice, bool mangle) {
   generate_php_docstring(out, tservice);
 
   std::string long_name = php_servicename_mangle(mangle, tservice);
@@ -4744,10 +4651,7 @@ void t_hack_generator::_generate_service_client_child_fn(
  * @param thrift iff the object is a thrift object
  */
 std::string t_hack_generator::declare_field(
-    const t_field* tfield,
-    bool init,
-    bool obj,
-    bool /*thrift*/) {
+    const t_field* tfield, bool init, bool obj, bool /*thrift*/) {
   std::string result = "$" + tfield->get_name();
   if (init) {
     const t_type* type = tfield->get_type()->get_true_type();
@@ -4882,8 +4786,7 @@ std::string t_hack_generator::argument_list(
  * Renders the function name to be used in RPC
  */
 std::string t_hack_generator::generate_rpc_function_name(
-    const t_service* tservice,
-    const t_function* tfunction) const {
+    const t_service* tservice, const t_function* tfunction) const {
   const std::string& prefix =
       tservice->is_interaction() ? tservice->get_name() + "." : "";
   return prefix + tfunction->get_name();
@@ -4896,9 +4799,7 @@ std::string t_hack_generator::generate_rpc_function_name(
  *    false : _result
  */
 std::string t_hack_generator::generate_function_helper_name(
-    const t_service* tservice,
-    const t_function* tfunction,
-    bool is_args) {
+    const t_service* tservice, const t_function* tfunction, bool is_args) {
   std::string prefix = "";
   if (tservice->is_interaction()) {
     prefix = hack_name(service_name_, program_) + "_" + tservice->get_name();

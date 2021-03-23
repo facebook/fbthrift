@@ -30,8 +30,7 @@ bool t_typedef::resolve_placeholder() {
 }
 
 const std::string* t_typedef::get_first_annotation_or_null(
-    const t_type* type,
-    alias_span name) {
+    const t_type* type, alias_span name) {
   const std::string* result = nullptr;
   find_type_if(type, [&result, name](const t_type* type) {
     return (result = type->get_annotation_or_null(name)) != nullptr;

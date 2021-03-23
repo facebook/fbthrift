@@ -206,8 +206,7 @@ std::string type_resolver::gen_storage_type(
 }
 
 std::string type_resolver::gen_type_impl(
-    const t_type* node,
-    type_resolve_fn resolve_fn) {
+    const t_type* node, type_resolve_fn resolve_fn) {
   if (const auto* type = find_type(node)) {
     // Return the override.
     return *type;
@@ -236,8 +235,7 @@ std::string type_resolver::gen_type_impl(
 }
 
 std::string type_resolver::gen_container_type(
-    const t_container* node,
-    type_resolve_fn resolve_fn) {
+    const t_container* node, type_resolve_fn resolve_fn) {
   const auto* val = find_template(node);
   const auto& template_name =
       val ? *val : default_template(node->container_type());
@@ -267,8 +265,7 @@ std::string type_resolver::gen_container_type(
 }
 
 std::string type_resolver::gen_stream_resp_type(
-    const t_stream_response* node,
-    type_resolve_fn resolve_fn) {
+    const t_stream_response* node, type_resolve_fn resolve_fn) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
@@ -281,8 +278,7 @@ std::string type_resolver::gen_stream_resp_type(
 }
 
 std::string type_resolver::gen_sink_type(
-    const t_sink* node,
-    type_resolve_fn resolve_fn) {
+    const t_sink* node, type_resolve_fn resolve_fn) {
   if (node->has_first_response()) {
     return gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
@@ -297,15 +293,13 @@ std::string type_resolver::gen_sink_type(
 }
 
 std::string type_resolver::gen_adapted_type(
-    const std::string& adapter,
-    const std::string& native_type) {
+    const std::string& adapter, const std::string& native_type) {
   return gen_template_type(
       "::apache::thrift::adapt_detail::adapted_t", {adapter, native_type});
 }
 
 std::string type_resolver::gen_template_type(
-    std::string template_name,
-    std::initializer_list<std::string> args) {
+    std::string template_name, std::initializer_list<std::string> args) {
   template_name += "<";
   auto delim = "";
   for (const auto& arg : args) {
@@ -362,9 +356,7 @@ bool is_orderable(
   bool result = false;
   auto g2 = make_scope_guard([&] { memo[&type] = result; });
   if (type.is_typedef()) {
-    auto const& real = [&]() -> auto&& {
-      return *type.get_true_type();
-    };
+    auto const& real = [&]() -> auto&& { return *type.get_true_type(); };
     auto const& next = *(dynamic_cast<t_typedef const&>(type).get_type());
     return result = is_orderable(seen, memo, next) &&
         (!(real().is_set() || real().is_map()) ||
@@ -480,8 +472,7 @@ struct get_gen_type_class_options {
 };
 
 std::string get_gen_type_class_(
-    t_type const& type_,
-    get_gen_type_class_options opts) {
+    t_type const& type_, get_gen_type_class_options opts) {
   std::string const ns = "::apache::thrift::";
   std::string const tc = ns + "type_class::";
 

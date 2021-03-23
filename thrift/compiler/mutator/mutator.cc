@@ -75,9 +75,7 @@ static const t_type* resolve_type(const t_type* type) {
 }
 
 static void match_type_with_const_value(
-    t_program* program,
-    const t_type* long_type,
-    t_const_value* value) {
+    t_program* program, const t_type* long_type, t_const_value* value) {
   const t_type* type = resolve_type(long_type);
   value->set_ttype(type);
   if (type->is_list()) {

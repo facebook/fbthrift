@@ -73,8 +73,7 @@ class t_mstch_pyi_generator : public t_mstch_generator {
   mstch::array get_return_types(const t_program&);
   void add_container_types(const t_program&, mstch::map&);
   vector<std::string> get_py_namespace_raw(
-      const t_program&,
-      const string& tail = "");
+      const t_program&, const string& tail = "");
   mstch::array get_py_namespace(const t_program&, const string& tail = "");
   std::string flatten_type_name(const t_type&) const;
 
@@ -265,8 +264,7 @@ mstch::array t_mstch_pyi_generator::get_return_types(const t_program& program) {
  * as one type. Required because in pxd's we can't have duplicate move(string)
  * definitions */
 void t_mstch_pyi_generator::add_container_types(
-    const t_program& program,
-    mstch::map& results) {
+    const t_program& program, mstch::map& results) {
   vector<const t_type*> container_types;
   vector<const t_type*> move_container_types;
   std::set<string> visited_names;
@@ -361,8 +359,7 @@ std::string t_mstch_pyi_generator::flatten_type_name(const t_type& type) const {
 }
 
 vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
-    const t_program& program,
-    const string& tail) {
+    const t_program& program, const string& tail) {
   auto const asyncio = has_option("asyncio");
   auto& py_namespace = program.get_namespace("py");
   auto& py_asyncio_namespace = program.get_namespace("py.asyncio");
@@ -382,8 +379,7 @@ vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
 }
 
 mstch::array t_mstch_pyi_generator::get_py_namespace(
-    const t_program& program,
-    const string& tail) {
+    const t_program& program, const string& tail) {
   return dump_elems(get_py_namespace_raw(program, tail));
 }
 
@@ -395,9 +391,7 @@ void t_mstch_pyi_generator::generate_program() {
 }
 
 THRIFT_REGISTER_GENERATOR(
-    mstch_pyi,
-    "Legacy Python type information",
-    "    no arguments\n");
+    mstch_pyi, "Legacy Python type information", "    no arguments\n");
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

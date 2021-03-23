@@ -156,8 +156,7 @@ void dump_docstrings(t_program* program) {
 }
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
-    std::string path,
-    parsing_params params) {
+    std::string path, parsing_params params) {
   parsing_driver driver{path, std::move(params)};
 
   std::vector<diagnostic_message> diagnostic_messages;

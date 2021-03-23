@@ -79,8 +79,7 @@ string t_java_generator::java_package() {
  * @return String indicating the parent class for the generated struct
  */
 boost::optional<string> t_java_generator::java_struct_parent_class(
-    const t_struct* /* unused */,
-    StructGenParams params) {
+    const t_struct* /* unused */, StructGenParams params) {
   return boost::make_optional(params.is_exception, std::string("Exception"));
 }
 
@@ -557,8 +556,7 @@ void t_java_generator::generate_xception(const t_struct* txception) {
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   // Make output file
   string f_struct_name =
       get_package_dir() + "/" + (tstruct->get_name()) + ".java";
@@ -653,8 +651,7 @@ void t_java_generator::generate_java_union(const t_struct* tstruct) {
 }
 
 void t_java_generator::generate_union_constructor(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "public " << type_name(tstruct) << "() {" << endl;
   indent(out) << "  super();" << endl;
   indent(out) << "}" << endl << endl;
@@ -690,8 +687,7 @@ void t_java_generator::generate_union_constructor(
 }
 
 void t_java_generator::generate_union_getters_and_setters(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -752,8 +748,7 @@ void t_java_generator::generate_union_getters_and_setters(
 }
 
 void t_java_generator::generate_union_abstract_methods(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   if (!generate_immutable_structs_) {
     // immutable structs use generic `checkType` (defined in parent class
     // `TUnion`)
@@ -779,8 +774,7 @@ void t_java_generator::generate_union_abstract_methods(
 }
 
 void t_java_generator::generate_check_type(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
       << "protected void checkType(short setField, Object __value) throws ClassCastException {"
@@ -829,8 +823,7 @@ void t_java_generator::generate_check_type(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_union_reader(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "public void read(TProtocol iprot) throws TException {"
               << endl;
@@ -897,8 +890,7 @@ void t_java_generator::generate_union_reader(
 }
 
 void t_java_generator::generate_read_value(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
       << "protected Object readValue(TProtocol iprot, TField __field) throws TException {"
@@ -940,8 +932,7 @@ void t_java_generator::generate_read_value(
 }
 
 void t_java_generator::generate_write_value(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
       << "protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {"
@@ -983,8 +974,7 @@ void t_java_generator::generate_write_value(
 }
 
 void t_java_generator::generate_get_field_desc(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "protected TField getFieldDesc(int setField) {" << endl;
   indent_up();
@@ -1015,8 +1005,7 @@ void t_java_generator::generate_get_field_desc(
 }
 
 void t_java_generator::generate_get_struct_desc(
-    ofstream& out,
-    const t_struct* /*tstruct*/) {
+    ofstream& out, const t_struct* /*tstruct*/) {
   indent(out) << "@Override" << endl;
   indent(out) << "protected TStruct getStructDesc() {" << endl;
   indent(out) << "  return STRUCT_DESC;" << endl;
@@ -1024,8 +1013,7 @@ void t_java_generator::generate_get_struct_desc(
 }
 
 void t_java_generator::generate_union_comparisons(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   // equality
   indent(out) << "public boolean equals(Object other) {" << endl;
   indent(out) << "  if (other instanceof " << tstruct->get_name() << ") {"
@@ -1060,8 +1048,7 @@ void t_java_generator::generate_union_comparisons(
 }
 
 void t_java_generator::generate_union_hashcode(
-    ofstream& out,
-    const t_struct* /*tstruct*/) {
+    ofstream& out, const t_struct* /*tstruct*/) {
   indent(out) << "@Override" << endl;
   indent(out) << "public int hashCode() {" << endl;
   indent(out) << "  return Arrays.deepHashCode(new Object[] {"
@@ -1074,9 +1061,7 @@ void t_java_generator::generate_union_hashcode(
  * the constructor should take as parameters to initialize the struct.
  */
 void t_java_generator::generate_java_constructor(
-    ofstream& out,
-    const t_struct* tstruct,
-    const vector<t_field*>& fields) {
+    ofstream& out, const t_struct* tstruct, const vector<t_field*>& fields) {
   vector<t_field*>::const_iterator m_iter;
   indent(out) << "public " << tstruct->get_name() << "(";
   if (!fields.empty()) {
@@ -1240,9 +1225,7 @@ void t_java_generator::generate_java_constructor_using_builder(
  * @param is_result    If this is a result it needs a different writer
  */
 void t_java_generator::generate_java_struct_definition(
-    ofstream& out,
-    const t_struct* tstruct,
-    StructGenParams params) {
+    ofstream& out, const t_struct* tstruct, StructGenParams params) {
   generate_java_doc(out, tstruct);
 
   bool is_final = tstruct->has_annotation("final");
@@ -1457,8 +1440,7 @@ void t_java_generator::generate_java_struct_definition(
 }
 
 void t_java_generator::construct_constant_fields(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   auto& members = tstruct->get_members();
   for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     const t_type* t = (*m_iter)->get_type()->get_true_type();
@@ -1480,8 +1462,7 @@ void t_java_generator::construct_constant_fields(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct_equality(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   out << indent() << "@Override" << endl
       << indent() << "public boolean equals(Object _that) {" << endl;
   indent_up();
@@ -1547,8 +1528,7 @@ void t_java_generator::generate_java_struct_equality(
 }
 
 void t_java_generator::generate_java_struct_compare_to(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "public int compareTo(" << type_name(tstruct) << " other) {"
               << endl;
@@ -1598,8 +1578,7 @@ void t_java_generator::generate_java_struct_compare_to(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct_reader(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   if (generate_immutable_structs_) {
     out << indent()
         << "// This is required to satisfy the TBase interface, but can't be implemented on immutable struture."
@@ -1749,8 +1728,7 @@ void t_java_generator::generate_java_struct_reader(
 // generates java method to perform various checks
 // (e.g. check that all required fields are set)
 void t_java_generator::generate_java_validator(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "public void validate() throws TException {" << endl;
   indent_up();
 
@@ -1785,8 +1763,7 @@ void t_java_generator::generate_java_validator(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct_writer(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   out << indent() << "public void write(TProtocol oprot) throws TException {"
       << endl;
   indent_up();
@@ -1848,8 +1825,7 @@ void t_java_generator::generate_java_struct_writer(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct_result_writer(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   out << indent() << "public void write(TProtocol oprot) throws TException {"
       << endl;
   indent_up();
@@ -1934,8 +1910,7 @@ void t_java_generator::generate_reflection_setters(
 }
 
 void t_java_generator::generate_generic_field_getters_setters(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   std::ostringstream getter_stream;
   std::ostringstream setter_stream;
 
@@ -2022,9 +1997,7 @@ std::string t_java_generator::get_simple_getter_name(const t_field* field) {
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_bean_boilerplate(
-    ofstream& out,
-    const t_struct* tstruct,
-    bool gen_immutable) {
+    ofstream& out, const t_struct* tstruct, bool gen_immutable) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -2114,8 +2087,7 @@ void t_java_generator::generate_java_bean_boilerplate(
 }
 
 void t_java_generator::generate_default_toString(
-    ofstream& out,
-    const t_struct* /*tstruct*/) {
+    ofstream& out, const t_struct* /*tstruct*/) {
   out << indent() << "@Override" << endl
       << indent() << "public String toString() {" << endl;
   indent_up();
@@ -2130,8 +2102,7 @@ void t_java_generator::generate_default_toString(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_struct_tostring(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   generate_default_toString(out, tstruct);
   out << indent() << "@Override" << endl;
   out << indent() << "public String toString(int indent, boolean prettyPrint) {"
@@ -2261,8 +2232,7 @@ void t_java_generator::generate_java_struct_tostring(
  * @param tstruct The struct definition
  */
 void t_java_generator::generate_java_meta_data_map(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -2353,8 +2323,7 @@ std::string t_java_generator::get_java_type_string(const t_type* type) {
 }
 
 void t_java_generator::generate_field_value_meta_data(
-    std::ofstream& out,
-    const t_type* type) {
+    std::ofstream& out, const t_type* type) {
   type = type->get_true_type();
   out << endl;
   indent_up();
@@ -3089,8 +3058,7 @@ void t_java_generator::generate_function_helpers(const t_function* tfunction) {
  * @param tfunction The function to write a dispatcher for
  */
 void t_java_generator::generate_process_function(
-    const t_service* tservice,
-    const t_function* tfunction) {
+    const t_service* tservice, const t_function* tfunction) {
   // Open class
   indent(f_service_) << "private class " << tfunction->get_name()
                      << " implements ProcessFunction {" << endl;
@@ -3249,9 +3217,7 @@ void t_java_generator::generate_process_function(
  * @param prefix The variable name or container for this field
  */
 void t_java_generator::generate_deserialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string prefix) {
+    ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
@@ -3323,9 +3289,7 @@ void t_java_generator::generate_deserialize_field(
  * Generates an unserializer for a struct, invokes read()
  */
 void t_java_generator::generate_deserialize_struct(
-    ofstream& out,
-    const t_struct* tstruct,
-    string prefix) {
+    ofstream& out, const t_struct* tstruct, string prefix) {
   if (generate_immutable_structs_ && !tstruct->is_union()) {
     out << indent() << prefix << " = " << type_name(tstruct)
         << ".deserialize(iprot);" << endl;
@@ -3340,9 +3304,7 @@ void t_java_generator::generate_deserialize_struct(
  * Deserializes a container by reading its size and then iterating
  */
 void t_java_generator::generate_deserialize_container(
-    ofstream& out,
-    const t_type* ttype,
-    string prefix) {
+    ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
   string obj;
@@ -3423,9 +3385,7 @@ void t_java_generator::generate_deserialize_container(
  * Generates code to deserialize a map
  */
 void t_java_generator::generate_deserialize_map_element(
-    ofstream& out,
-    const t_map* tmap,
-    string prefix) {
+    ofstream& out, const t_map* tmap, string prefix) {
   string key = tmp("_key");
   string val = tmp("_val");
   t_field fkey(tmap->get_key_type(), key);
@@ -3444,9 +3404,7 @@ void t_java_generator::generate_deserialize_map_element(
  * Deserializes a set element
  */
 void t_java_generator::generate_deserialize_set_element(
-    ofstream& out,
-    const t_set* tset,
-    string prefix) {
+    ofstream& out, const t_set* tset, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tset->get_elem_type(), elem);
 
@@ -3461,9 +3419,7 @@ void t_java_generator::generate_deserialize_set_element(
  * Deserializes a list element
  */
 void t_java_generator::generate_deserialize_list_element(
-    ofstream& out,
-    const t_list* tlist,
-    string prefix) {
+    ofstream& out, const t_list* tlist, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tlist->get_elem_type(), elem);
 
@@ -3481,9 +3437,7 @@ void t_java_generator::generate_deserialize_list_element(
  * @param prefix Name to prepend to field name
  */
 void t_java_generator::generate_serialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string prefix) {
+    ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
@@ -3561,9 +3515,7 @@ void t_java_generator::generate_serialize_field(
  * @param prefix  String prefix to attach to all fields
  */
 void t_java_generator::generate_serialize_struct(
-    ofstream& out,
-    const t_struct* /*tstruct*/,
-    string prefix) {
+    ofstream& out, const t_struct* /*tstruct*/, string prefix) {
   out << indent() << prefix << ".write(oprot);" << endl;
 }
 
@@ -3574,9 +3526,7 @@ void t_java_generator::generate_serialize_struct(
  * @param prefix String prefix for fields
  */
 void t_java_generator::generate_serialize_container(
-    ofstream& out,
-    const t_type* ttype,
-    string prefix) {
+    ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
   if (ttype->is_map()) {
@@ -3636,10 +3586,7 @@ void t_java_generator::generate_serialize_container(
  * Serializes the members of a map.
  */
 void t_java_generator::generate_serialize_map_element(
-    ofstream& out,
-    const t_map* tmap,
-    string iter,
-    string /*map*/) {
+    ofstream& out, const t_map* tmap, string iter, string /*map*/) {
   t_field kfield(tmap->get_key_type(), iter + ".getKey()");
   generate_serialize_field(out, &kfield, "");
   t_field vfield(tmap->get_val_type(), iter + ".getValue()");
@@ -3650,9 +3597,7 @@ void t_java_generator::generate_serialize_map_element(
  * Serializes the members of a set.
  */
 void t_java_generator::generate_serialize_set_element(
-    ofstream& out,
-    const t_set* tset,
-    string iter) {
+    ofstream& out, const t_set* tset, string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
@@ -3661,9 +3606,7 @@ void t_java_generator::generate_serialize_set_element(
  * Serializes the members of a list.
  */
 void t_java_generator::generate_serialize_list_element(
-    ofstream& out,
-    const t_list* tlist,
-    string iter) {
+    ofstream& out, const t_list* tlist, string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
@@ -3676,10 +3619,7 @@ void t_java_generator::generate_serialize_list_element(
  * @return Java type name, i.e. HashMap<Key,Value>
  */
 string t_java_generator::type_name(
-    const t_type* ttype,
-    bool in_container,
-    bool in_init,
-    bool skip_generic) {
+    const t_type* ttype, bool in_container, bool in_init, bool skip_generic) {
   // In Java typedefs are just resolved to their real type
   ttype = ttype->get_true_type();
   string prefix;
@@ -3829,8 +3769,7 @@ string t_java_generator::declare_field(const t_field* tfield, bool init) {
  * @return String of rendered function definition
  */
 string t_java_generator::function_signature(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   const t_type* ttype = tfunction->get_returntype();
   std::string result = type_name(ttype) + " " + prefix + tfunction->get_name() +
       "(" + argument_list(tfunction->get_paramlist()) + ") throws ";
@@ -3884,8 +3823,7 @@ string t_java_generator::async_function_call_arglist(
  * Renders a comma separated field list, with type names
  */
 string t_java_generator::argument_list(
-    const t_struct* tstruct,
-    bool include_types) {
+    const t_struct* tstruct, bool include_types) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();
@@ -4010,8 +3948,7 @@ string t_java_generator::constant_name(string name) {
 }
 
 void t_java_generator::generate_java_docstring_comment(
-    ofstream& out,
-    string contents) {
+    ofstream& out, string contents) {
   generate_docstring_comment(out, "/**\n", " * ", contents, " */\n");
 }
 
@@ -4038,8 +3975,7 @@ void t_java_generator::generate_java_doc(ofstream& out, const t_node* tdoc) {
  * Emits a JavaDoc comment if the provided function object has a doc in Thrift
  */
 void t_java_generator::generate_java_doc(
-    ofstream& out,
-    const t_function* tfunction) {
+    ofstream& out, const t_function* tfunction) {
   if (tfunction->has_doc()) {
     stringstream ss;
     ss << tfunction->get_doc();
@@ -4096,15 +4032,13 @@ std::string t_java_generator::get_enum_class_name(const t_type* type) {
 }
 
 void t_java_generator::generate_struct_desc(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "private static final TStruct STRUCT_DESC = new TStruct(\""
               << tstruct->get_name() << "\");" << endl;
 }
 
 void t_java_generator::generate_field_descs(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -4122,8 +4056,7 @@ void t_java_generator::generate_field_descs(
 }
 
 void t_java_generator::generate_field_name_constants(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   // Members are public for -java, private for -javabean
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -4136,8 +4069,7 @@ void t_java_generator::generate_field_name_constants(
 }
 
 bool t_java_generator::is_comparable(
-    const t_type* type,
-    vector<const t_type*>* enclosing) {
+    const t_type* type, vector<const t_type*>* enclosing) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -4178,8 +4110,7 @@ bool t_java_generator::is_comparable(
 }
 
 bool t_java_generator::struct_has_all_comparable_fields(
-    const t_struct* tstruct,
-    vector<const t_type*>* enclosing) {
+    const t_struct* tstruct, vector<const t_type*>* enclosing) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 

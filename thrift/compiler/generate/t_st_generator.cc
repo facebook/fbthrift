@@ -76,9 +76,7 @@ class t_st_generator : public t_oop_generator {
    */
 
   void generate_st_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool is_exception);
+      std::ofstream& out, const t_struct* tstruct, bool is_exception);
   void generate_accessors(std::ofstream& out, const t_struct* tstruct);
 
   /**
@@ -124,16 +122,10 @@ class t_st_generator : public t_oop_generator {
       std::string name,
       std::string category);
   void st_setter(
-      std::ofstream& out,
-      std::string cls,
-      std::string name,
-      std::string type);
+      std::ofstream& out, std::string cls, std::string name, std::string type);
   void st_getter(std::ofstream& out, std::string cls, std::string name);
   void st_accessors(
-      std::ofstream& out,
-      std::string cls,
-      std::string name,
-      std::string type);
+      std::ofstream& out, std::string cls, std::string name, std::string type);
 
   std::string class_name();
   std::string client_class_name();
@@ -262,25 +254,17 @@ void t_st_generator::st_method(std::ofstream& out, string cls, string name) {
 }
 
 void t_st_generator::st_class_method(
-    std::ofstream& out,
-    string cls,
-    string name) {
+    std::ofstream& out, string cls, string name) {
   st_method(out, cls + " class", name);
 }
 
 void t_st_generator::st_class_method(
-    std::ofstream& out,
-    string cls,
-    string name,
-    string category) {
+    std::ofstream& out, string cls, string name, string category) {
   st_method(out, cls, name, category);
 }
 
 void t_st_generator::st_method(
-    std::ofstream& out,
-    string cls,
-    string name,
-    string category) {
+    std::ofstream& out, string cls, string name, string category) {
   char timestr[50];
   time_t rawtime;
   struct tm* tinfo;
@@ -303,10 +287,7 @@ void t_st_generator::st_close_method(std::ofstream& out) {
 }
 
 void t_st_generator::st_setter(
-    std::ofstream& out,
-    string cls,
-    string name,
-    string type = "anObject") {
+    std::ofstream& out, string cls, string name, string type = "anObject") {
   st_method(out, cls, name + ": " + type);
   out << name << " := " + type;
   st_close_method(out);
@@ -319,10 +300,7 @@ void t_st_generator::st_getter(std::ofstream& out, string cls, string name) {
 }
 
 void t_st_generator::st_accessors(
-    std::ofstream& out,
-    string cls,
-    string name,
-    string type = "anObject") {
+    std::ofstream& out, string cls, string name, string type = "anObject") {
   st_setter(out, cls, name, type);
   st_getter(out, cls, name);
 }
@@ -385,8 +363,7 @@ void t_st_generator::generate_const(const t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_st_generator::render_const_value(
-    const t_type* type,
-    t_const_value* value) {
+    const t_type* type, t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
@@ -517,9 +494,7 @@ void t_st_generator::generate_xception(const t_struct* txception) {
  * Generates a smalltalk class to represent a struct
  */
 void t_st_generator::generate_st_struct(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    bool is_exception = false) {
+    std::ofstream& out, const t_struct* tstruct, bool is_exception = false) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -571,8 +546,7 @@ string t_st_generator::a_type(const t_type* type) {
 }
 
 void t_st_generator::generate_accessors(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   string type;
@@ -788,8 +762,7 @@ string t_st_generator::struct_writer(const t_struct* tstruct, string sname) {
 }
 
 string t_st_generator::struct_reader(
-    const t_struct* tstruct,
-    string clsName = "") {
+    const t_struct* tstruct, string clsName = "") {
   std::ostringstream out;
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator fld_iter;

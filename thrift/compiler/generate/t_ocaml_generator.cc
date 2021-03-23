@@ -22,9 +22,9 @@
 #include <boost/filesystem.hpp>
 
 #include <sys/types.h>
+#include <sstream>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-#include <sstream>
 
 using namespace std;
 
@@ -73,19 +73,13 @@ class t_ocaml_generator : public t_oop_generator {
 
   void generate_ocaml_struct(const t_struct* tstruct, bool is_exception);
   void generate_ocaml_struct_definition(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool is_xception = false);
+      std::ofstream& out, const t_struct* tstruct, bool is_xception = false);
   void generate_ocaml_struct_sig(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool is_exception);
+      std::ofstream& out, const t_struct* tstruct, bool is_exception);
   void generate_ocaml_struct_reader(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_ocaml_struct_writer(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_ocaml_function_helpers(const t_function* tfunction);
 
   /**
@@ -97,17 +91,14 @@ class t_ocaml_generator : public t_oop_generator {
   void generate_service_client(const t_service* tservice);
   void generate_service_server(const t_service* tservice);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
 
   /**
    * Serialization constructs
    */
 
   void generate_deserialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix);
+      std::ofstream& out, const t_field* tfield, std::string prefix);
 
   void generate_deserialize_struct(std::ofstream& out, const t_struct* tstruct);
 
@@ -116,25 +107,17 @@ class t_ocaml_generator : public t_oop_generator {
   void generate_deserialize_set_element(std::ofstream& out, const t_set* tset);
 
   void generate_deserialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string prefix = "");
+      std::ofstream& out, const t_list* tlist, std::string prefix = "");
   void generate_deserialize_type(std::ofstream& out, const t_type* type);
 
   void generate_serialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string name = "");
+      std::ofstream& out, const t_field* tfield, std::string name = "");
 
   void generate_serialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_serialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
 
   void generate_serialize_map_element(
       std::ofstream& out,
@@ -143,14 +126,10 @@ class t_ocaml_generator : public t_oop_generator {
       std::string viter);
 
   void generate_serialize_set_element(
-      std::ofstream& out,
-      const t_set* tmap,
-      std::string iter);
+      std::ofstream& out, const t_set* tmap, std::string iter);
 
   void generate_serialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string iter);
+      std::ofstream& out, const t_list* tlist, std::string iter);
 
   /**
    * Helper rendering functions
@@ -160,12 +139,9 @@ class t_ocaml_generator : public t_oop_generator {
   std::string ocaml_imports();
   std::string type_name(const t_type* ttype);
   std::string function_signature(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
   std::string function_type(
-      const t_function* tfunc,
-      bool method = false,
-      bool options = false);
+      const t_function* tfunc, bool method = false, bool options = false);
   std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
   std::string render_ocaml_type(const t_type* type);
@@ -363,8 +339,7 @@ void t_ocaml_generator::generate_const(const t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_ocaml_generator::render_const_value(
-    const t_type* type,
-    t_const_value* value) {
+    const t_type* type, t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
@@ -517,8 +492,7 @@ void t_ocaml_generator::generate_xception(const t_struct* txception) {
  * Generates an OCaml struct
  */
 void t_ocaml_generator::generate_ocaml_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   generate_ocaml_struct_definition(f_types_, tstruct, is_exception);
   generate_ocaml_struct_sig(f_types_i_, tstruct, is_exception);
 }
@@ -529,9 +503,7 @@ void t_ocaml_generator::generate_ocaml_struct(
  * @param tstruct The struct definition
  */
 void t_ocaml_generator::generate_ocaml_struct_definition(
-    ofstream& out,
-    const t_struct* tstruct,
-    bool is_exception) {
+    ofstream& out, const t_struct* tstruct, bool is_exception) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   string tname = type_name(tstruct);
@@ -572,9 +544,7 @@ void t_ocaml_generator::generate_ocaml_struct_definition(
  * @param tstruct The struct definition
  */
 void t_ocaml_generator::generate_ocaml_struct_sig(
-    ofstream& out,
-    const t_struct* tstruct,
-    bool is_exception) {
+    ofstream& out, const t_struct* tstruct, bool is_exception) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   string tname = type_name(tstruct);
@@ -610,8 +580,7 @@ void t_ocaml_generator::generate_ocaml_struct_sig(
  * Generates the read method for a struct
  */
 void t_ocaml_generator::generate_ocaml_struct_reader(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   string sname = type_name(tstruct);
@@ -675,8 +644,7 @@ void t_ocaml_generator::generate_ocaml_struct_reader(
 }
 
 void t_ocaml_generator::generate_ocaml_struct_writer(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   const string& name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
@@ -1081,8 +1049,7 @@ void t_ocaml_generator::generate_service_server(const t_service* tservice) {
  * @param tfunction The function to write a dispatcher for
  */
 void t_ocaml_generator::generate_process_function(
-    const t_service* /* tservice */,
-    const t_function* tfunction) {
+    const t_service* /* tservice */, const t_function* tfunction) {
   // Open function
   indent(f_service_) << "method private process_" << tfunction->get_name()
                      << " (seqid, iprot, oprot) =" << endl;
@@ -1180,9 +1147,7 @@ void t_ocaml_generator::generate_process_function(
  * Deserializes a field of any type.
  */
 void t_ocaml_generator::generate_deserialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string prefix) {
+    ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type();
 
   string name = decapitalize(tfield->get_name());
@@ -1195,8 +1160,7 @@ void t_ocaml_generator::generate_deserialize_field(
  * Deserializes a field of any type.
  */
 void t_ocaml_generator::generate_deserialize_type(
-    ofstream& out,
-    const t_type* type) {
+    ofstream& out, const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_void()) {
@@ -1254,8 +1218,7 @@ void t_ocaml_generator::generate_deserialize_type(
  * Generates an unserializer for a struct, calling read()
  */
 void t_ocaml_generator::generate_deserialize_struct(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   string name = decapitalize(tstruct->get_name());
   out << "(read_" << name << " iprot)";
 }
@@ -1265,8 +1228,7 @@ void t_ocaml_generator::generate_deserialize_struct(
  * data and then a footer.
  */
 void t_ocaml_generator::generate_deserialize_container(
-    ofstream& out,
-    const t_type* ttype) {
+    ofstream& out, const t_type* ttype) {
   string size = tmp("_size");
   string ktype = tmp("_ktype");
   string vtype = tmp("_vtype");
@@ -1338,9 +1300,7 @@ void t_ocaml_generator::generate_deserialize_container(
  * @param prefix Name to prepend to field name
  */
 void t_ocaml_generator::generate_serialize_field(
-    ofstream& out,
-    const t_field* tfield,
-    string name) {
+    ofstream& out, const t_field* tfield, string name) {
   const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
@@ -1415,16 +1375,12 @@ void t_ocaml_generator::generate_serialize_field(
  * @param prefix  String prefix to attach to all fields
  */
 void t_ocaml_generator::generate_serialize_struct(
-    ofstream& out,
-    const t_struct* /* tstruct */,
-    string prefix) {
+    ofstream& out, const t_struct* /* tstruct */, string prefix) {
   indent(out) << prefix << "#write(oprot)";
 }
 
 void t_ocaml_generator::generate_serialize_container(
-    ofstream& out,
-    const t_type* ttype,
-    string prefix) {
+    ofstream& out, const t_type* ttype, string prefix) {
   if (ttype->is_map()) {
     indent(out) << "oprot#writeMapBegin("
                 << type_to_enum(((t_map*)ttype)->get_key_type()) << ",";
@@ -1479,10 +1435,7 @@ void t_ocaml_generator::generate_serialize_container(
  *
  */
 void t_ocaml_generator::generate_serialize_map_element(
-    ofstream& out,
-    const t_map* tmap,
-    string kiter,
-    string viter) {
+    ofstream& out, const t_map* tmap, string kiter, string viter) {
   t_field kfield(tmap->get_key_type(), kiter);
   generate_serialize_field(out, &kfield);
 
@@ -1494,9 +1447,7 @@ void t_ocaml_generator::generate_serialize_map_element(
  * Serializes the members of a set.
  */
 void t_ocaml_generator::generate_serialize_set_element(
-    ofstream& out,
-    const t_set* tset,
-    string iter) {
+    ofstream& out, const t_set* tset, string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
 }
@@ -1505,9 +1456,7 @@ void t_ocaml_generator::generate_serialize_set_element(
  * Serializes the members of a list.
  */
 void t_ocaml_generator::generate_serialize_list_element(
-    ofstream& out,
-    const t_list* tlist,
-    string iter) {
+    ofstream& out, const t_list* tlist, string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield);
 }
@@ -1519,16 +1468,13 @@ void t_ocaml_generator::generate_serialize_list_element(
  * @return String of rendered function definition
  */
 string t_ocaml_generator::function_signature(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   return prefix + decapitalize(tfunction->get_name()) + " " +
       argument_list(tfunction->get_paramlist());
 }
 
 string t_ocaml_generator::function_type(
-    const t_function* tfunc,
-    bool method,
-    bool options) {
+    const t_function* tfunc, bool method, bool options) {
   string result = "";
 
   const vector<t_field*>& fields = tfunc->get_paramlist()->get_members();

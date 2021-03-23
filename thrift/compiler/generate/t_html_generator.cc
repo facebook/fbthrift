@@ -53,8 +53,7 @@ class t_html_generator : public t_concat_generator {
   void generate_program_toc();
   void generate_program_toc_row(const t_program* tprog);
   void generate_program_toc_rows(
-      t_program* tprog,
-      std::vector<t_program*>& finished);
+      t_program* tprog, std::vector<t_program*>& finished);
   void generate_index();
   void generate_css();
 
@@ -92,8 +91,7 @@ void t_html_generator::generate_program_toc() {
  * completed rows in 'finished'
  */
 void t_html_generator::generate_program_toc_rows(
-    t_program* tprog,
-    std::vector<t_program*>& finished) {
+    t_program* tprog, std::vector<t_program*>& finished) {
   for (vector<t_program*>::iterator iter = finished.begin();
        iter != finished.end();
        iter++) {

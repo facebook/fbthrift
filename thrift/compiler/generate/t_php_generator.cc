@@ -23,9 +23,9 @@
 #include <boost/filesystem.hpp>
 
 #include <stdlib.h>
+#include <sstream>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-#include <sstream>
 
 using namespace std;
 
@@ -92,8 +92,7 @@ class t_php_generator : public t_oop_generator {
   void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(
-      const t_type* type,
-      const t_const_value* value);
+      const t_type* type, const t_const_value* value);
 
   /**
    * Structs!
@@ -111,13 +110,9 @@ class t_php_generator : public t_oop_generator {
       bool is_xception,
       const std::string& name);
   void generate_php_struct_reader(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      const std::string& name);
+      std::ofstream& out, const t_struct* tstruct, const std::string& name);
   void generate_php_struct_writer(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      const std::string& name);
+      std::ofstream& out, const t_struct* tstruct, const std::string& name);
   void generate_php_function_helpers(const t_function* tfunction);
 
   void generate_php_type_spec(std::ofstream& out, const t_type* t);
@@ -134,13 +129,10 @@ class t_php_generator : public t_oop_generator {
   void generate_service_rest(const t_service* tservice, bool mangle);
   void generate_service_client(const t_service* tservice, bool mangle);
   void _generate_service_client(
-      std::ofstream& out,
-      const t_service* tservice,
-      bool mangle);
+      std::ofstream& out, const t_service* tservice, bool mangle);
   void generate_service_processor(const t_service* tservice, bool mangle);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
   void generate_processor_event_handler_functions(std::ofstream& out);
   void generate_client_event_handler_functions(std::ofstream& out);
   void generate_event_handler_functions(std::ofstream& out, string cl);
@@ -157,9 +149,7 @@ class t_php_generator : public t_oop_generator {
       bool inclass = false);
 
   void generate_deserialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_deserialize_container(
       std::ofstream& out,
@@ -298,16 +288,13 @@ class t_php_generator : public t_oop_generator {
       std::string prefix = "",
       std::string moreparameters = "");
   std::string argument_list(
-      const t_struct* tstruct,
-      std::string moreparameters = "");
+      const t_struct* tstruct, std::string moreparameters = "");
   std::string type_to_cast(const t_type* ttype);
   std::string type_to_enum(const t_type* ttype);
   void generate_php_docstring(ofstream& out, const t_node* tdoc);
   void generate_php_docstring(ofstream& out, const t_function* tfunction);
   void generate_php_docstring_args(
-      ofstream& out,
-      int start_pos,
-      const t_struct* arg_list);
+      ofstream& out, int start_pos, const t_struct* arg_list);
   std::string render_string(std::string value);
 
   bool is_bitmask_enum(const t_enum* tenum) {
@@ -635,8 +622,7 @@ void t_php_generator::generate_json_map_element(
 }
 
 void t_php_generator::generate_json_reader(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   if (!json_) {
     return;
   }
@@ -955,9 +941,7 @@ void t_php_generator::generate_const(const t_const* tconst) {
 }
 
 void t_php_generator::generate_lazy_init_for_constant(
-    ofstream& out,
-    const std::string& name,
-    const std::string& rendered_value) {
+    ofstream& out, const std::string& name, const std::string& rendered_value) {
   string name_internal = "__" + name;
   indent(out) << "private static $" << name_internal << " = null;" << endl;
   indent(out) << "public static function " << name << "() {" << endl;
@@ -986,8 +970,7 @@ string t_php_generator::render_string(string value) {
  * validate_types method in main.cc
  */
 string t_php_generator::render_const_value(
-    const t_type* type,
-    const t_const_value* value) {
+    const t_type* type, const t_const_value* value) {
   std::ostringstream out;
   type = type->get_true_type();
   if (type->is_base_type()) {
@@ -1111,8 +1094,7 @@ void t_php_generator::generate_xception(const t_struct* txception) {
  * Structs can be normal or exceptions.
  */
 void t_php_generator::generate_php_struct(
-    const t_struct* tstruct,
-    bool is_exception) {
+    const t_struct* tstruct, bool is_exception) {
   generate_php_struct_definition(f_types_, tstruct, is_exception);
 }
 
@@ -1170,8 +1152,7 @@ void t_php_generator::generate_php_type_spec(ofstream& out, const t_type* t) {
  * type information to generalize serialization routines.
  */
 void t_php_generator::generate_php_struct_spec(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "static $_TSPEC = array(" << endl;
   indent_up();
 
@@ -1203,8 +1184,7 @@ void t_php_generator::generate_php_struct_spec(
  * for information about the structural ID.
  */
 void t_php_generator::generate_php_structural_id(
-    ofstream& out,
-    const t_struct* tstruct) {
+    ofstream& out, const t_struct* tstruct) {
   indent(out) << "const STRUCTURAL_ID = " << generate_structural_id(tstruct)
               << ";" << endl;
 }
@@ -1351,9 +1331,7 @@ void t_php_generator::_generate_php_struct_definition(
  * Generates the read() method for a struct
  */
 void t_php_generator::generate_php_struct_reader(
-    ofstream& out,
-    const t_struct* tstruct,
-    const std::string& name) {
+    ofstream& out, const t_struct* tstruct, const std::string& name) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1516,9 +1494,7 @@ void t_php_generator::generate_php_struct_reader(
  * Generates the write() method for a struct
  */
 void t_php_generator::generate_php_struct_writer(
-    ofstream& out,
-    const t_struct* tstruct,
-    const std::string& name) {
+    ofstream& out, const t_struct* tstruct, const std::string& name) {
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1691,8 +1667,7 @@ void t_php_generator::generate_client_event_handler_functions(ofstream& out) {
   generate_event_handler_functions(out, "TClientEventHandler");
 }
 void t_php_generator::generate_event_handler_functions(
-    ofstream& out,
-    string cl) {
+    ofstream& out, string cl) {
   indent(out) << "public function setEventHandler(" << cl
               << " $event_handler) {" << endl
               << indent() << "  $this->eventHandler_ = $event_handler;" << endl
@@ -1711,8 +1686,7 @@ void t_php_generator::generate_event_handler_functions(
  * @param tservice The service to generate a server for.
  */
 void t_php_generator::generate_service_processor(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   // Generate the dispatch methods
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
@@ -1837,8 +1811,7 @@ void t_php_generator::generate_service_processor(
  * @param tfunction The function to write a dispatcher for
  */
 void t_php_generator::generate_process_function(
-    const t_service* tservice,
-    const t_function* tfunction) {
+    const t_service* tservice, const t_function* tfunction) {
   // Open function
   indent(f_service_) << "protected function process_" << tfunction->get_name()
                      << "($seqid, TProtocol $input, TProtocol $output) {"
@@ -2073,8 +2046,7 @@ void t_php_generator::generate_php_function_helpers(
  * Generates the docstring for a generic object.
  */
 void t_php_generator::generate_php_docstring(
-    ofstream& out,
-    const t_node* tdoc) {
+    ofstream& out, const t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(
         out, // out
@@ -2100,8 +2072,7 @@ void t_php_generator::generate_php_docstring(
  *           2: exceptionType2 ex_name2);
  */
 void t_php_generator::generate_php_docstring(
-    ofstream& out,
-    const t_function* tfunction) {
+    ofstream& out, const t_function* tfunction) {
   indent(out) << "/**" << endl;
   // Copy the doc.
   if (tfunction->has_doc()) {
@@ -2158,9 +2129,7 @@ void t_php_generator::generate_php_docstring(
  * and then render the argument.
  */
 void t_php_generator::generate_php_docstring_args(
-    ofstream& out,
-    int start_pos,
-    const t_struct* arg_list) {
+    ofstream& out, int start_pos, const t_struct* arg_list) {
   if (arg_list) {
     vector<t_field*> params = arg_list->get_members();
     if (params.size()) {
@@ -2185,8 +2154,7 @@ void t_php_generator::generate_php_docstring_args(
  * @param mangle Generate mangled service classes
  */
 void t_php_generator::generate_service_interface(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   generate_php_docstring(f_service_, tservice);
   string extends = "";
   string extends_if = "";
@@ -2221,8 +2189,7 @@ void t_php_generator::generate_service_interface(
  * Generates a REST interface
  */
 void t_php_generator::generate_service_rest(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   string extends = "";
   string extends_if = "";
   if (tservice->get_extends() != nullptr) {
@@ -2297,8 +2264,7 @@ void t_php_generator::generate_service_rest(
 }
 
 void t_php_generator::generate_service_client(
-    const t_service* tservice,
-    bool mangle) {
+    const t_service* tservice, bool mangle) {
   if (autoload_) {
     // Make output file
     ofstream autoload_out;
@@ -2327,9 +2293,7 @@ void t_php_generator::generate_service_client(
  * @param tservice The service to generate a server for.
  */
 void t_php_generator::_generate_service_client(
-    ofstream& out,
-    const t_service* tservice,
-    bool mangle) {
+    ofstream& out, const t_service* tservice, bool mangle) {
   generate_php_docstring(out, tservice);
   string extends = "";
   string extends_client = "";
@@ -2900,9 +2864,7 @@ void t_php_generator::generate_deserialize_field(
  * is a reference to a TProtocol serialization object.
  */
 void t_php_generator::generate_deserialize_struct(
-    ofstream& out,
-    const t_struct* tstruct,
-    string prefix) {
+    ofstream& out, const t_struct* tstruct, string prefix) {
   out << indent() << "$" << prefix << " = new "
       << php_namespace(tstruct->get_program()) << tstruct->get_name() << "();"
       << endl
@@ -3312,10 +3274,7 @@ void t_php_generator::generate_serialize_map_element(
  * Serializes the members of a set.
  */
 void t_php_generator::generate_serialize_set_element(
-    ofstream& out,
-    t_name_generator& namer,
-    const t_set* tset,
-    string iter) {
+    ofstream& out, t_name_generator& namer, const t_set* tset, string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, namer, &efield, "");
 }
@@ -3324,10 +3283,7 @@ void t_php_generator::generate_serialize_set_element(
  * Serializes the members of a list.
  */
 void t_php_generator::generate_serialize_list_element(
-    ofstream& out,
-    t_name_generator& namer,
-    const t_list* tlist,
-    string iter) {
+    ofstream& out, t_name_generator& namer, const t_list* tlist, string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, namer, &efield, "");
 }
@@ -3341,10 +3297,7 @@ void t_php_generator::generate_serialize_list_element(
  * @param thrift iff the object is a thrift object
  */
 string t_php_generator::declare_field(
-    const t_field* tfield,
-    bool init,
-    bool obj,
-    bool thrift) {
+    const t_field* tfield, bool init, bool obj, bool thrift) {
   string result = "$" + tfield->get_name();
   if (init) {
     const t_type* type = tfield->get_type()->get_true_type();
@@ -3404,9 +3357,7 @@ string t_php_generator::declare_field(
  * @return String of rendered function definition
  */
 string t_php_generator::function_signature(
-    const t_function* tfunction,
-    string prefix,
-    string moreparameters) {
+    const t_function* tfunction, string prefix, string moreparameters) {
   return prefix + tfunction->get_name() + "(" +
       argument_list(tfunction->get_paramlist(), moreparameters) + ")";
 }
@@ -3415,8 +3366,7 @@ string t_php_generator::function_signature(
  * Renders a field list
  */
 string t_php_generator::argument_list(
-    const t_struct* tstruct,
-    string moreparameters) {
+    const t_struct* tstruct, string moreparameters) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();

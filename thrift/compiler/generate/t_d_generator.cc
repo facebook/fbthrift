@@ -429,9 +429,7 @@ class t_d_generator : public t_oop_generator {
    * Writes the definition of a struct or an exception type to out.
    */
   void print_struct_definition(
-      ostream& out,
-      const t_struct* tstruct,
-      bool is_exception) {
+      ostream& out, const t_struct* tstruct, bool is_exception) {
     if (is_exception) {
       indent(out) << "class " << tstruct->get_name() << " : TException {"
                   << endl;

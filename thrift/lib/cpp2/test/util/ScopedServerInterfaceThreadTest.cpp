@@ -313,9 +313,7 @@ struct ChannelAndService {
     return std::is_same_v<HeaderClientChannel, ChannelT>;
   }
 
-  static bool isH2Transport() {
-    return false;
-  }
+  static bool isH2Transport() { return false; }
 };
 
 template <typename ServiceT>
@@ -333,13 +331,9 @@ struct ChannelAndService<H2ClientConnection, ServiceT> {
     return channel;
   }
 
-  static bool isHeaderTransport() {
-    return false;
-  }
+  static bool isHeaderTransport() { return false; }
 
-  static bool isH2Transport() {
-    return true;
-  }
+  static bool isH2Transport() { return true; }
 };
 
 template <typename ChannelAndServiceT>
@@ -370,9 +364,7 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
     return ChannelAndServiceT::isHeaderTransport();
   }
 
-  static bool isH2Transport() {
-    return ChannelAndServiceT::isH2Transport();
-  }
+  static bool isH2Transport() { return ChannelAndServiceT::isH2Transport(); }
 
   void SetUp() {
     // By default, ThriftServer aborts the process if unable to shutdown

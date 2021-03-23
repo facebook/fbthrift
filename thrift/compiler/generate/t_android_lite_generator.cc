@@ -48,10 +48,7 @@ class t_android_lite_generator : public t_java_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
       : t_java_generator(
-            program,
-            std::move(context),
-            parsed_options,
-            option_string) {
+            program, std::move(context), parsed_options, option_string) {
     // parse arguments
     package_name_ = program_->get_namespace("android_lite");
     program_name_ = capitalize(get_program()->name());
@@ -170,8 +167,7 @@ const string& t_android_lite_generator::get_package_dir() {
 }
 
 string t_android_lite_generator::temp_variable(
-    const string& prefix,
-    int postfix) {
+    const string& prefix, int postfix) {
   ostringstream stream;
   stream << prefix << postfix;
   return stream.str();
@@ -409,10 +405,7 @@ string t_android_lite_generator::package_header() {
 }
 
 string t_android_lite_generator::type_name(
-    const t_type* ttype,
-    bool in_container,
-    bool in_init,
-    bool skip_generic) {
+    const t_type* ttype, bool in_container, bool in_init, bool skip_generic) {
   ttype = ttype->get_true_type();
   if (ttype->is_struct() || ttype->is_enum()) {
     string suffix = ttype->is_struct() ? "Logger" : "Enum";
@@ -427,15 +420,13 @@ string t_android_lite_generator::type_name(
 }
 
 string t_android_lite_generator::full_property_name(
-    const t_struct* tstruct,
-    const t_field* tfield) {
+    const t_struct* tstruct, const t_field* tfield) {
   return capitalize(tstruct->get_program()->name()) + "." +
       tstruct->get_name() + "_" + tfield->get_name();
 }
 
 string t_android_lite_generator::full_enum_name(
-    const t_enum* tenum,
-    int offset) {
+    const t_enum* tenum, int offset) {
   return capitalize(tenum->get_program()->name()) + "Enum." +
       tenum->get_name() + "_" + tenum->find_value(offset)->get_name();
 }
@@ -642,8 +633,7 @@ void t_android_lite_generator::output_write(
 // public static final ThriftProperty<TypeName> ParentName_MyName =
 //    new ThriftProperty<TypeName>("Name", (short) idx);
 void t_android_lite_generator::output_property(
-    const t_field* tfield,
-    const string parent_name) {
+    const t_field* tfield, const string parent_name) {
   if (annotate_) {
     indent(class_defns_) << ((tfield->get_req() == t_field::e_req::required)
                                  ? "@TRequired(\""
@@ -811,10 +801,7 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
 }
 
 string t_android_lite_generator::render_const_value(
-    ostream& out,
-    string name,
-    const t_type* type,
-    const t_const_value* value) {
+    ostream& out, string name, const t_type* type, const t_const_value* value) {
   // Everything can be handled by the call to super except enums
   if (!type->is_enum()) {
     return t_java_generator::render_const_value(out, name, type, value);

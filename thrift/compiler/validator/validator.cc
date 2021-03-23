@@ -45,8 +45,7 @@ validator::diagnostics_t validator::validate(t_program* const program) {
 }
 
 void validator::add_error(
-    boost::optional<int> const lineno,
-    std::string const& message) {
+    boost::optional<int> const lineno, std::string const& message) {
   diagnostics_->emplace_back(
       diagnostic::type::failure, program_->path(), lineno, message);
 }
@@ -430,8 +429,7 @@ bool base_annotation_validator::visit(t_field* tfield) {
 }
 
 void structured_annotations_uniqueness_validator::validate_annotations(
-    const t_annotated* tannotated,
-    const std::string& tannotated_name) {
+    const t_annotated* tannotated, const std::string& tannotated_name) {
   std::unordered_set<std::string> full_names;
   std::string name;
   for (const auto& it : tannotated->structured_annotations()) {

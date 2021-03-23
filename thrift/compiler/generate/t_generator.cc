@@ -33,9 +33,7 @@ void t_generator_registry::register_generator(t_generator_factory* factory) {
 }
 
 t_generator* t_generator_registry::get_generator(
-    t_program* program,
-    t_generation_context context,
-    const string& options) {
+    t_program* program, t_generation_context context, const string& options) {
   string::size_type colon = options.find(':');
   string language = options.substr(0, colon);
 

@@ -69,27 +69,21 @@ class t_rb_generator : public t_oop_generator {
   void generate_service(const t_service* tservice) override;
 
   std::string render_const_value(
-      const t_type* type,
-      const t_const_value* value);
+      const t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
    */
 
   void generate_rb_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool is_exception);
+      std::ofstream& out, const t_struct* tstruct, bool is_exception);
   void generate_rb_struct_required_validator(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_rb_function_helpers(const t_function* tfunction);
   void generate_rb_simple_constructor(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_rb_simple_exception_constructor(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_field_constants(std::ofstream& out, const t_struct* tstruct);
   void generate_accessors(std::ofstream& out, const t_struct* tstruct);
   void generate_field_defns(std::ofstream& out, const t_struct* tstruct);
@@ -109,8 +103,7 @@ class t_rb_generator : public t_oop_generator {
   void generate_service_client(const t_service* tservice);
   void generate_service_server(const t_service* tservice);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
 
   /**
    * Serialization constructs
@@ -123,44 +116,28 @@ class t_rb_generator : public t_oop_generator {
       bool inclass = false);
 
   void generate_deserialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_deserialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
 
   void generate_deserialize_set_element(
-      std::ofstream& out,
-      const t_set* tset,
-      std::string prefix = "");
+      std::ofstream& out, const t_set* tset, std::string prefix = "");
 
   void generate_deserialize_map_element(
-      std::ofstream& out,
-      const t_map* tmap,
-      std::string prefix = "");
+      std::ofstream& out, const t_map* tmap, std::string prefix = "");
 
   void generate_deserialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string prefix = "");
+      std::ofstream& out, const t_list* tlist, std::string prefix = "");
 
   void generate_serialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix = "");
+      std::ofstream& out, const t_field* tfield, std::string prefix = "");
 
   void generate_serialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_serialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
 
   void generate_serialize_map_element(
       std::ofstream& out,
@@ -169,14 +146,10 @@ class t_rb_generator : public t_oop_generator {
       std::string viter);
 
   void generate_serialize_set_element(
-      std::ofstream& out,
-      const t_set* tmap,
-      std::string iter);
+      std::ofstream& out, const t_set* tmap, std::string iter);
 
   void generate_serialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string iter);
+      std::ofstream& out, const t_list* tlist, std::string iter);
 
   void generate_rdoc(std::ofstream& out, const t_node* tdoc);
 
@@ -190,8 +163,7 @@ class t_rb_generator : public t_oop_generator {
   std::string type_name(const t_type* ttype);
   std::string full_type_name(const t_type* ttype);
   std::string function_signature(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
   std::string argument_list(const t_struct* tstruct);
   std::string type_to_enum(const t_type* ttype);
 
@@ -381,8 +353,7 @@ void t_rb_generator::generate_const(const t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_rb_generator::render_const_value(
-    const t_type* type,
-    const t_const_value* value) {
+    const t_type* type, const t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
@@ -512,9 +483,7 @@ void t_rb_generator::generate_xception(const t_struct* txception) {
  * Generates a ruby struct
  */
 void t_rb_generator::generate_rb_struct(
-    std::ofstream& out,
-    const t_struct* tstruct,
-    bool is_exception = false) {
+    std::ofstream& out, const t_struct* tstruct, bool is_exception = false) {
   generate_rdoc(out, tstruct);
   indent(out) << "class " << type_name(tstruct);
   if (is_exception) {
@@ -539,8 +508,7 @@ void t_rb_generator::generate_rb_struct(
 }
 
 void t_rb_generator::generate_rb_simple_exception_constructor(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
 
   if (members.size() == 1) {
@@ -564,8 +532,7 @@ void t_rb_generator::generate_rb_simple_exception_constructor(
 }
 
 void t_rb_generator::generate_field_constants(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -579,8 +546,7 @@ void t_rb_generator::generate_field_constants(
 }
 
 void t_rb_generator::generate_accessors(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -594,8 +560,7 @@ void t_rb_generator::generate_accessors(
 }
 
 void t_rb_generator::generate_field_defns(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -675,8 +640,7 @@ void t_rb_generator::generate_field_data(
 }
 
 void t_rb_generator::begin_namespace(
-    std::ofstream& out,
-    vector<std::string> modules) {
+    std::ofstream& out, vector<std::string> modules) {
   for (vector<std::string>::iterator m_iter = modules.begin();
        m_iter != modules.end();
        ++m_iter) {
@@ -686,8 +650,7 @@ void t_rb_generator::begin_namespace(
 }
 
 void t_rb_generator::end_namespace(
-    std::ofstream& out,
-    vector<std::string> modules) {
+    std::ofstream& out, vector<std::string> modules) {
   for (vector<std::string>::reverse_iterator m_iter = modules.rbegin();
        m_iter != modules.rend();
        ++m_iter) {
@@ -938,8 +901,7 @@ void t_rb_generator::generate_service_server(const t_service* tservice) {
  * @param tfunction The function to write a dispatcher for
  */
 void t_rb_generator::generate_process_function(
-    const t_service* /*tservice*/,
-    const t_function* tfunction) {
+    const t_service* /*tservice*/, const t_function* tfunction) {
   // Open function
   indent(f_service_) << "def process_" << tfunction->get_name()
                      << "(seqid, iprot, oprot)" << endl;
@@ -1026,8 +988,7 @@ void t_rb_generator::generate_process_function(
  * @return String of rendered function definition
  */
 string t_rb_generator::function_signature(
-    const t_function* tfunction,
-    string prefix) {
+    const t_function* tfunction, string prefix) {
   // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
   return prefix + tfunction->get_name() + "(" +
       argument_list(tfunction->get_paramlist()) + ")";
@@ -1126,8 +1087,7 @@ void t_rb_generator::generate_rdoc(std::ofstream& out, const t_node* tdoc) {
 }
 
 void t_rb_generator::generate_rb_struct_required_validator(
-    std::ofstream& out,
-    const t_struct* tstruct) {
+    std::ofstream& out, const t_struct* tstruct) {
   indent(out) << "def validate" << endl;
   indent_up();
 

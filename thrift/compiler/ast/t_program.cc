@@ -32,8 +32,8 @@ const std::string& t_program::get_namespace(const std::string& language) const {
   return (pos != namespaces_.end() ? pos->second : kEmpty);
 }
 
-std::unique_ptr<t_program>
-t_program::add_include(std::string path, std::string include_site, int lineno) {
+std::unique_ptr<t_program> t_program::add_include(
+    std::string path, std::string include_site, int lineno) {
   auto program = std::make_unique<t_program>(path);
 
   std::string include_prefix;

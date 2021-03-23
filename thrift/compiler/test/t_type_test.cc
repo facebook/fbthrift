@@ -36,13 +36,9 @@ class t_type_fake : public t_type {
   /**
    * Override abstract functions with fake implementations
    */
-  std::string get_full_name() const override {
-    return full_name_;
-  }
+  std::string get_full_name() const override { return full_name_; }
 
-  type get_type_value() const override {
-    return {};
-  }
+  type get_type_value() const override { return {}; }
 
   using t_type::make_full_name;
 

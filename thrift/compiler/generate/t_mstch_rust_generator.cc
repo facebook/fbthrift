@@ -194,8 +194,7 @@ struct rust_codegen_options {
 };
 
 std::string get_import_name(
-    const t_program* program,
-    const rust_codegen_options& options) {
+    const t_program* program, const rust_codegen_options& options) {
   if (program == options.current_program) {
     return options.current_crate;
   }
@@ -307,24 +306,16 @@ class mstch_rust_program : public mstch_program {
     return !program_->structs().empty() || !program_->enums().empty() ||
         !program_->xceptions().empty();
   }
-  mstch::node rust_serde() {
-    return options_.serde;
-  }
-  mstch::node rust_server() {
-    return !options_.noserver;
-  }
-  mstch::node rust_multifile() {
-    return options_.multifile_mode;
-  }
+  mstch::node rust_serde() { return options_.serde; }
+  mstch::node rust_server() { return !options_.noserver; }
+  mstch::node rust_multifile() { return options_.multifile_mode; }
   mstch::node rust_crate() {
     if (options_.multifile_mode) {
       return "crate::" + mangle(program_->name());
     }
     return std::string("crate");
   }
-  mstch::node rust_package() {
-    return get_import_name(program_, options_);
-  }
+  mstch::node rust_package() { return get_import_name(program_, options_); }
   mstch::node rust_includes() {
     mstch::array includes;
     for (auto* program : program_->get_included_programs()) {
@@ -415,9 +406,7 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
         });
   }
-  mstch::node rust_name() {
-    return mangle_type(strct_->get_name());
-  }
+  mstch::node rust_name() { return mangle_type(strct_->get_name()); }
   mstch::node rust_package() {
     return get_import_name(strct_->get_program(), options_);
   }
@@ -432,9 +421,7 @@ class mstch_rust_struct : public mstch_struct {
     }
     return true;
   }
-  mstch::node rust_is_copy() {
-    return strct_->has_annotation("rust.copy");
-  }
+  mstch::node rust_is_copy() { return strct_->has_annotation("rust.copy"); }
   mstch::node rust_fields_by_name() {
     auto fields = strct_->fields();
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
@@ -553,12 +540,8 @@ class mstch_rust_function : public mstch_function {
     }
     return upcamel_name;
   }
-  mstch::node rust_index() {
-    return index_;
-  }
-  mstch::node rust_void() {
-    return function_->get_returntype()->is_void();
-  }
+  mstch::node rust_index() { return index_; }
+  mstch::node rust_void() { return function_->get_returntype()->is_void(); }
   mstch::node rust_unique_exceptions() {
     return rust_make_unique_exceptions(function_->get_xceptions());
   }
@@ -623,9 +606,7 @@ class mstch_rust_enum_value : public mstch_enum_value {
             {"enumValue:rust_name", &mstch_rust_enum_value::rust_name},
         });
   }
-  mstch::node rust_name() {
-    return mangle(enm_value_->get_name());
-  }
+  mstch::node rust_name() { return mangle(enm_value_->get_name()); }
 };
 
 class mstch_rust_enum : public mstch_enum {
@@ -646,9 +627,7 @@ class mstch_rust_enum : public mstch_enum {
             {"enum:variants_by_number", &mstch_rust_enum::variants_by_number},
         });
   }
-  mstch::node rust_name() {
-    return mangle_type(enm_->get_name());
-  }
+  mstch::node rust_name() { return mangle_type(enm_->get_name()); }
   mstch::node rust_package() {
     return get_import_name(enm_->get_program(), options_);
   }
@@ -689,9 +668,7 @@ class mstch_rust_type : public mstch_type {
             {"type:nonstandard?", &mstch_rust_type::rust_nonstandard},
         });
   }
-  mstch::node rust_name() {
-    return mangle_type(type_->get_name());
-  }
+  mstch::node rust_name() { return mangle_type(type_->get_name()); }
   mstch::node rust_package() {
     return get_import_name(type_->get_program(), options_);
   }
@@ -793,9 +770,7 @@ class mstch_rust_value : public mstch_base {
     }
     return mstch::node();
   }
-  mstch::node is_bool() {
-    return type_->is_bool();
-  }
+  mstch::node is_bool() { return type_->is_bool(); }
   mstch::node bool_value() {
     if (const_value_->get_type() == value_type::CV_INTEGER) {
       return const_value_->get_integer() != 0;
@@ -824,15 +799,9 @@ class mstch_rust_value : public mstch_base {
     }
     return digits;
   }
-  mstch::node is_string() {
-    return type_->is_string();
-  }
-  mstch::node is_binary() {
-    return type_->is_binary();
-  }
-  mstch::node string_quoted() {
-    return quote(const_value_->get_string());
-  }
+  mstch::node is_string() { return type_->is_string(); }
+  mstch::node is_binary() { return type_->is_binary(); }
+  mstch::node string_quoted() { return quote(const_value_->get_string()); }
   mstch::node is_list() {
     return type_->is_list() &&
         (const_value_->get_type() == value_type::CV_LIST ||
@@ -868,9 +837,7 @@ class mstch_rust_value : public mstch_base {
          (const_value_->get_type() == value_type::CV_MAP &&
           const_value_->get_map().empty()));
   }
-  mstch::node set_members() {
-    return list_elements();
-  }
+  mstch::node set_members() { return list_elements(); }
   mstch::node is_map() {
     return type_->is_map() &&
         (const_value_->get_type() == value_type::CV_MAP ||
@@ -925,9 +892,7 @@ class mstch_rust_value : public mstch_base {
     }
     return mstch::node();
   }
-  mstch::node is_enum() {
-    return type_->is_enum();
-  }
+  mstch::node is_enum() { return type_->is_enum(); }
   mstch::node enum_package() {
     if (const_value_->is_enum()) {
       return get_import_name(const_value_->get_enum()->get_program(), options_);
@@ -962,9 +927,7 @@ class mstch_rust_value : public mstch_base {
     }
     return false;
   }
-  mstch::node indent() {
-    return std::string(4 * depth_, ' ');
-  }
+  mstch::node indent() { return std::string(4 * depth_, ' '); }
 
  private:
   const t_const_value* const_value_;
@@ -1043,9 +1006,7 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:arc?", &mstch_rust_struct_field::is_arc},
         });
   }
-  mstch::node rust_name() {
-    return mangle(field_->get_name());
-  }
+  mstch::node rust_name() { return mangle(field_->get_name()); }
   mstch::node is_optional() {
     return field_->get_req() == t_field::e_req::optional;
   }
@@ -1062,12 +1023,8 @@ class mstch_rust_struct_field : public mstch_base {
     return std::make_shared<mstch_rust_type>(
         type, generators_, cache_, pos_, options_);
   }
-  mstch::node is_boxed() {
-    return field_kind(*field_) == FieldKind::Box;
-  }
-  mstch::node is_arc() {
-    return field_kind(*field_) == FieldKind::Arc;
-  }
+  mstch::node is_boxed() { return field_kind(*field_) == FieldKind::Box; }
+  mstch::node is_arc() { return field_kind(*field_) == FieldKind::Arc; }
 
  private:
   const t_field* field_;
@@ -1201,9 +1158,7 @@ class mstch_rust_field : public mstch_field {
             {"field:arc?", &mstch_rust_field::rust_is_arc},
         });
   }
-  mstch::node rust_name() {
-    return mangle(field_->get_name());
-  }
+  mstch::node rust_name() { return mangle(field_->get_name()); }
   mstch::node rust_primitive() {
     auto type = field_->get_type();
     return type->is_bool() || type->is_any_int() || type->is_floating_point();
@@ -1221,12 +1176,8 @@ class mstch_rust_field : public mstch_field {
     }
     return mstch::node();
   }
-  mstch::node rust_is_boxed() {
-    return field_kind(*field_) == FieldKind::Box;
-  }
-  mstch::node rust_is_arc() {
-    return field_kind(*field_) == FieldKind::Arc;
-  }
+  mstch::node rust_is_boxed() { return field_kind(*field_) == FieldKind::Box; }
+  mstch::node rust_is_arc() { return field_kind(*field_) == FieldKind::Arc; }
 
  private:
   const rust_codegen_options& options_;
@@ -1251,12 +1202,8 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:nonstandard?", &mstch_rust_typedef::rust_nonstandard},
         });
   }
-  mstch::node rust_name() {
-    return mangle_type(typedf_->get_symbolic());
-  }
-  mstch::node rust_newtype() {
-    return typedf_->has_annotation("rust.newtype");
-  }
+  mstch::node rust_name() { return mangle_type(typedf_->get_symbolic()); }
+  mstch::node rust_newtype() { return typedf_->has_annotation("rust.newtype"); }
   mstch::node rust_type() {
     const std::string& rust_type = typedf_->get_annotation("rust.type");
     if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
@@ -1308,15 +1255,11 @@ class mstch_rust_annotation : public mstch_annotation {
             {"annotation:rust_value", &mstch_rust_annotation::rust_value},
         });
   }
-  mstch::node rust_has_value() {
-    return !val_.empty();
-  }
+  mstch::node rust_has_value() { return !val_.empty(); }
   mstch::node rust_name() {
     return boost::algorithm::replace_all_copy(key_, ".", "_");
   }
-  mstch::node rust_value() {
-    return quote(val_);
-  }
+  mstch::node rust_value() { return quote(val_); }
 };
 
 class program_rust_generator : public program_generator {
