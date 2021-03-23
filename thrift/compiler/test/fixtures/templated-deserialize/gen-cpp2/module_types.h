@@ -209,6 +209,13 @@ typedef Bar IndirectionB;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class SmallStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -254,23 +261,7 @@ class SmallStruct final  {
     bool small_B;
   } __isset = {};
   bool operator==(const SmallStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const SmallStruct& __x, const SmallStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const SmallStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const SmallStruct& __x, const SmallStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const SmallStruct& __x, const SmallStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const SmallStruct& __x, const SmallStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> small_A_ref() const& {
@@ -358,6 +349,13 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class containerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -458,23 +456,7 @@ class containerStruct final  {
     bool fieldQ;
   } __isset = {};
   bool operator==(const containerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const containerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const containerStruct& __x, const containerStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

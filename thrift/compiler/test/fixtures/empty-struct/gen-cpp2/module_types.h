@@ -35,6 +35,13 @@ class Nada;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -67,23 +74,7 @@ class Empty final  {
   Empty& operator=(const Empty&) = default;
   void __clear();
   bool operator==(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Empty& __x, const Empty& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Empty& __x, const Empty& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Empty& __x, const Empty& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Empty& __x, const Empty& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -111,6 +102,13 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Nada final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -200,23 +198,7 @@ class Nada final  {
     ~storage_type() {}
   } ;
   bool operator==(const Nada& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Nada& __x, const Nada& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Nada& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Nada& __x, const Nada& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Nada& __x, const Nada& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Nada& __x, const Nada& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   Type getType() const { return static_cast<Type>(type_); }
 

@@ -54,6 +54,13 @@ class Foo;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace test {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -100,23 +107,7 @@ class Foo final  {
     bool field4;
   } __isset = {};
   bool operator==(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Foo& __x, const Foo& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Foo& __x, const Foo& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Foo& __x, const Foo& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Foo& __x, const Foo& __y) {
-    return !(__x < __y);
-  }
-#endif
   template <typename ..., typename T = std::unique_ptr<::std::string>>
   FOLLY_ERASE T& field1_ref() & { return __fbthrift_read_field_field1(); }
 

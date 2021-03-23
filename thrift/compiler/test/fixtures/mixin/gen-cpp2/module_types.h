@@ -75,6 +75,13 @@ typedef ::cpp2::Mixin3Base Mixin3;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Mixin1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -115,23 +122,7 @@ class Mixin1 final  {
     bool field1;
   } __isset = {};
   bool operator==(const Mixin1& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Mixin1& __x, const Mixin1& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Mixin1& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Mixin1& __x, const Mixin1& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Mixin1& __x, const Mixin1& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Mixin1& __x, const Mixin1& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1_ref() const& {
@@ -194,6 +185,13 @@ uint32_t Mixin1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Mixin2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -237,23 +235,7 @@ class Mixin2 final  {
     bool field2;
   } __isset = {};
   bool operator==(const Mixin2& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Mixin2& __x, const Mixin2& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Mixin2& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Mixin2& __x, const Mixin2& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Mixin2& __x, const Mixin2& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Mixin2& __x, const Mixin2& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m1_ref() const& {
@@ -350,6 +332,13 @@ uint32_t Mixin2::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Mixin3Base final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -390,23 +379,7 @@ class Mixin3Base final  {
     bool field3;
   } __isset = {};
   bool operator==(const Mixin3Base& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Mixin3Base& __x, const Mixin3Base& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Mixin3Base& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Mixin3Base& __x, const Mixin3Base& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Mixin3Base& __x, const Mixin3Base& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Mixin3Base& __x, const Mixin3Base& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
@@ -469,6 +442,13 @@ uint32_t Mixin3Base::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -515,23 +495,7 @@ class Foo final  {
     bool m3;
   } __isset = {};
   bool operator==(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Foo& __x, const Foo& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Foo& __x, const Foo& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Foo& __x, const Foo& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Foo& __x, const Foo& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4_ref() const& {

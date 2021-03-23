@@ -97,6 +97,13 @@ typedef ::std::int64_t IncludedInt64;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace a { namespace different { namespace ns {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class AStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -138,23 +145,7 @@ class AStruct final  {
     bool FieldA;
   } __isset = {};
   bool operator==(const AStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AStruct& __x, const AStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const AStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AStruct& __x, const AStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AStruct& __x, const AStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AStruct& __x, const AStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
@@ -212,6 +203,13 @@ uint32_t AStruct::read(Protocol_* iprot) {
 
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class AStructB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -249,23 +247,7 @@ class AStructB final  {
 
  public:
   bool operator==(const AStructB& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AStructB& __x, const AStructB& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const AStructB& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AStructB& __x, const AStructB& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AStructB& __x, const AStructB& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AStructB& __x, const AStructB& __y) {
-    return !(__x < __y);
-  }
-#endif
   template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 

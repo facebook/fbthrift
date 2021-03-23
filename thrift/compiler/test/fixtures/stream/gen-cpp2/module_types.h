@@ -34,6 +34,13 @@ class FooEx;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class FooEx final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -66,23 +73,7 @@ class FooEx final : public apache::thrift::TException {
   FooEx& operator=(const FooEx&) = default;
   void __clear();
   bool operator==(const FooEx& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const FooEx& __x, const FooEx& __y) {
-    return !(__x == __y);
-  }
-#endif
   bool operator<(const FooEx& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const FooEx& __x, const FooEx& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const FooEx& __x, const FooEx& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const FooEx& __x, const FooEx& __y) {
-    return !(__x < __y);
-  }
-#endif
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
