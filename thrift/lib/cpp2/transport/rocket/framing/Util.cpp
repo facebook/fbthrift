@@ -124,6 +124,10 @@ bool isMaybeRocketFrame(const folly::IOBuf& data) {
   if (size + Serializer::kBytesForFrameOrMetadataLength != data.length()) {
     return false;
   }
+  const size_t kMinFrameSize = 6;
+  if (size < kMinFrameSize) {
+    return false;
+  }
 
   auto streamId = static_cast<uint32_t>(readStreamId(cursor));
   if (streamId != 0 && streamId % 2 == 0) {
