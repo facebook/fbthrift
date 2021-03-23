@@ -230,9 +230,9 @@ struct ArrayLayout : public LayoutBase {
     class Iterator {
      public:
       using difference_type = ptrdiff_t;
-      using value_type = const ItemView;
-      using pointer = value_type*;
-      using reference = value_type&;
+      using value_type = ItemView;
+      using pointer = const value_type*;
+      using reference = const value_type&;
       using iterator_category = std::random_access_iterator_tag;
 
       Iterator() {}
