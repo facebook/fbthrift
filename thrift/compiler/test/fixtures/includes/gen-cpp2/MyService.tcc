@@ -40,8 +40,9 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "query");
+        ew, std::move(req), ctx, eb, "query");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -97,8 +98,9 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "has_arg_docs");
+        ew, std::move(req), ctx, eb, "has_arg_docs");
     return;
   }
   if (!req->getShouldStartProcessing()) {

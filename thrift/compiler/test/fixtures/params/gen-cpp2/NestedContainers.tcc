@@ -44,8 +44,9 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "mapList");
+        ew, std::move(req), ctx, eb, "mapList");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -99,8 +100,9 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "mapSet");
+        ew, std::move(req), ctx, eb, "mapSet");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -154,8 +156,9 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "listMap");
+        ew, std::move(req), ctx, eb, "listMap");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -209,8 +212,9 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "listSet");
+        ew, std::move(req), ctx, eb, "listSet");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -264,8 +268,9 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "turtles");
+        ew, std::move(req), ctx, eb, "turtles");
     return;
   }
   if (!req->getShouldStartProcessing()) {

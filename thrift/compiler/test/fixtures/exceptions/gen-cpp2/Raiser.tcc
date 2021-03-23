@@ -40,8 +40,9 @@ void RaiserAsyncProcessor::process_doBland(apache::thrift::ResponseChannelReques
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "doBland");
+        ew, std::move(req), ctx, eb, "doBland");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -93,8 +94,9 @@ void RaiserAsyncProcessor::process_doRaise(apache::thrift::ResponseChannelReques
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "doRaise");
+        ew, std::move(req), ctx, eb, "doRaise");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -169,8 +171,9 @@ void RaiserAsyncProcessor::process_get200(apache::thrift::ResponseChannelRequest
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "get200");
+        ew, std::move(req), ctx, eb, "get200");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -224,8 +227,9 @@ void RaiserAsyncProcessor::process_get500(apache::thrift::ResponseChannelRequest
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "get500");
+        ew, std::move(req), ctx, eb, "get500");
     return;
   }
   if (!req->getShouldStartProcessing()) {

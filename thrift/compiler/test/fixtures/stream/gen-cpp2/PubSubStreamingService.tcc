@@ -61,8 +61,9 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "returnstream");
+        ew, std::move(req), ctx, eb, "returnstream");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -121,8 +122,9 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "streamthrows");
+        ew, std::move(req), ctx, eb, "streamthrows");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -191,8 +193,9 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "boththrows");
+        ew, std::move(req), ctx, eb, "boththrows");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -272,8 +275,9 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "responseandstreamthrows");
+        ew, std::move(req), ctx, eb, "responseandstreamthrows");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -355,8 +359,9 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "returnstreamFast");
+        ew, std::move(req), ctx, eb, "returnstreamFast");
     return;
   }
   if (!req->getShouldStartProcessing()) {

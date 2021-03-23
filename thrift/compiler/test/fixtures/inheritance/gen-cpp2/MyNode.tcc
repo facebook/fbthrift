@@ -34,8 +34,9 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "do_mid");
+        ew, std::move(req), ctx, eb, "do_mid");
     return;
   }
   if (!req->getShouldStartProcessing()) {

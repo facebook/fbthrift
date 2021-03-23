@@ -74,8 +74,9 @@ void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRe
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "method");
+        ew, std::move(req), ctx, eb, "method");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -141,8 +142,9 @@ void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::Respons
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodAndReponse");
+        ew, std::move(req), ctx, eb, "methodAndReponse");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -210,8 +212,9 @@ void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChan
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodThrow");
+        ew, std::move(req), ctx, eb, "methodThrow");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -288,8 +291,9 @@ void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::Response
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodSinkThrow");
+        ew, std::move(req), ctx, eb, "methodSinkThrow");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -355,8 +359,9 @@ void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::Respons
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodFinalThrow");
+        ew, std::move(req), ctx, eb, "methodFinalThrow");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -432,8 +437,9 @@ void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::Response
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodBothThrow");
+        ew, std::move(req), ctx, eb, "methodBothThrow");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -507,8 +513,9 @@ void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChann
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodFast");
+        ew, std::move(req), ctx, eb, "methodFast");
     return;
   }
   if (!req->getShouldStartProcessing()) {

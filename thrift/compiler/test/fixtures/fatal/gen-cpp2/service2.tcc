@@ -44,8 +44,9 @@ void service2AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodA");
+        ew, std::move(req), ctx, eb, "methodA");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -103,8 +104,9 @@ void service2AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodB");
+        ew, std::move(req), ctx, eb, "methodB");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -156,8 +158,9 @@ void service2AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodC");
+        ew, std::move(req), ctx, eb, "methodC");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -217,8 +220,9 @@ void service2AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodD");
+        ew, std::move(req), ctx, eb, "methodD");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -272,8 +276,9 @@ void service2AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodE");
+        ew, std::move(req), ctx, eb, "methodE");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -333,8 +338,9 @@ void service2AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequ
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "methodF");
+        ew, std::move(req), ctx, eb, "methodF");
     return;
   }
   if (!req->getShouldStartProcessing()) {

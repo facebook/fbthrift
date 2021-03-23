@@ -38,8 +38,9 @@ void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChann
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "bounce_map");
+        ew, std::move(req), ctx, eb, "bounce_map");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -95,8 +96,9 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::Respons
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "binary_keyed_map");
+        ew, std::move(req), ctx, eb, "binary_keyed_map");
     return;
   }
   if (!req->getShouldStartProcessing()) {

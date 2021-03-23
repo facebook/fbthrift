@@ -45,8 +45,9 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "simple_function");
+        ew, std::move(req), ctx, eb, "simple_function");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -98,8 +99,9 @@ void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::Respons
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "throws_function");
+        ew, std::move(req), ctx, eb, "throws_function");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -170,8 +172,9 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "throws_function2");
+        ew, std::move(req), ctx, eb, "throws_function2");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -246,8 +249,9 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "throws_function3");
+        ew, std::move(req), ctx, eb, "throws_function3");
     return;
   }
   if (!req->getShouldStartProcessing()) {

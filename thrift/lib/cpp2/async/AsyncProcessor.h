@@ -644,9 +644,19 @@ void GeneratedAsyncProcessor::deserializeRequest(
   smsg.buffer = serializedRequest.buffer.get();
   smsg.methodName = methodName;
   c->onReadData(smsg);
-  uint32_t bytes =
-      apache::thrift::detail::deserializeRequestBody(&iprot, &args);
-  iprot.readMessageEnd();
+  uint32_t bytes = 0;
+  try {
+    bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
+    iprot.readMessageEnd();
+  } catch (const std::exception& ex) {
+    throw TApplicationException(
+        TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
+        ex.what());
+  } catch (...) {
+    throw TApplicationException(
+        TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
+        folly::exceptionStr(std::current_exception()).toStdString());
+  }
   c->postRead(nullptr, bytes);
 }
 

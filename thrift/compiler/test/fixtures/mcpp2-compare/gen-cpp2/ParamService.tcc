@@ -90,8 +90,9 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_i16_param");
+        ew, std::move(req), ctx, eb, "void_ret_i16_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -147,8 +148,9 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_byte_i16_param");
+        ew, std::move(req), ctx, eb, "void_ret_byte_i16_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -202,8 +204,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_map_param");
+        ew, std::move(req), ctx, eb, "void_ret_map_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -259,8 +262,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_map_setlist_param");
+        ew, std::move(req), ctx, eb, "void_ret_map_setlist_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -314,8 +318,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_map_typedef_param");
+        ew, std::move(req), ctx, eb, "void_ret_map_typedef_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -369,8 +374,9 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_enum_param");
+        ew, std::move(req), ctx, eb, "void_ret_enum_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -424,8 +430,9 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_struct_param");
+        ew, std::move(req), ctx, eb, "void_ret_struct_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -479,8 +486,9 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "void_ret_listunion_param");
+        ew, std::move(req), ctx, eb, "void_ret_listunion_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -536,8 +544,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "bool_ret_i32_i64_param");
+        ew, std::move(req), ctx, eb, "bool_ret_i32_i64_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -593,8 +602,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "bool_ret_map_param");
+        ew, std::move(req), ctx, eb, "bool_ret_map_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -650,8 +660,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "bool_ret_union_param");
+        ew, std::move(req), ctx, eb, "bool_ret_union_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -709,8 +720,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "i64_ret_float_double_param");
+        ew, std::move(req), ctx, eb, "i64_ret_float_double_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -768,8 +780,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "i64_ret_string_typedef_param");
+        ew, std::move(req), ctx, eb, "i64_ret_string_typedef_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -831,8 +844,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "i64_ret_i32_i32_i32_i32_i32_param");
+        ew, std::move(req), ctx, eb, "i64_ret_i32_i32_i32_i32_i32_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -888,8 +902,9 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "double_ret_setstruct_param");
+        ew, std::move(req), ctx, eb, "double_ret_setstruct_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -945,8 +960,9 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "string_ret_string_param");
+        ew, std::move(req), ctx, eb, "string_ret_string_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1002,8 +1018,9 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "binary_ret_binary_param");
+        ew, std::move(req), ctx, eb, "binary_ret_binary_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1059,8 +1076,9 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "map_ret_bool_param");
+        ew, std::move(req), ctx, eb, "map_ret_bool_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1118,8 +1136,9 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "list_ret_map_setlist_param");
+        ew, std::move(req), ctx, eb, "list_ret_map_setlist_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1175,8 +1194,9 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "mapsetlistmapliststring_ret_listlistlist_param");
+        ew, std::move(req), ctx, eb, "mapsetlistmapliststring_ret_listlistlist_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1232,8 +1252,9 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "typedef_ret_i32_param");
+        ew, std::move(req), ctx, eb, "typedef_ret_i32_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1287,8 +1308,9 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "listtypedef_ret_typedef_param");
+        ew, std::move(req), ctx, eb, "listtypedef_ret_typedef_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1344,8 +1366,9 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "enum_ret_double_param");
+        ew, std::move(req), ctx, eb, "enum_ret_double_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1403,8 +1426,9 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "enum_ret_double_enum_param");
+        ew, std::move(req), ctx, eb, "enum_ret_double_enum_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1460,8 +1484,9 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "listenum_ret_map_param");
+        ew, std::move(req), ctx, eb, "listenum_ret_map_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1515,8 +1540,9 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "struct_ret_i16_param");
+        ew, std::move(req), ctx, eb, "struct_ret_i16_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1572,8 +1598,9 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "setstruct_ret_set_param");
+        ew, std::move(req), ctx, eb, "setstruct_ret_set_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1631,8 +1658,9 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "union_ret_i32_i32_param");
+        ew, std::move(req), ctx, eb, "union_ret_i32_i32_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -1688,8 +1716,9 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "listunion_string_param");
+        ew, std::move(req), ctx, eb, "listunion_string_param");
     return;
   }
   if (!req->getShouldStartProcessing()) {

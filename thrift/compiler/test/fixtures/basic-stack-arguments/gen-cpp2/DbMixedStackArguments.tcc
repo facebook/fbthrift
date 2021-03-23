@@ -38,8 +38,9 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "getDataByKey0");
+        ew, std::move(req), ctx, eb, "getDataByKey0");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -95,8 +96,9 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "getDataByKey1");
+        ew, std::move(req), ctx, eb, "getDataByKey1");
     return;
   }
   if (!req->getShouldStartProcessing()) {

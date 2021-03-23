@@ -72,8 +72,9 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx<%#service:interaction?%>, tile<%/service:interaction?%>);
 <%/function:oneway?%>
 <%^function:oneway?%>
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
+        ew, std::move(req), ctx, eb, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
     return;
   }
   if (!req->getShouldStartProcessing()) {

@@ -34,8 +34,9 @@ void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChan
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "pang");
+        ew, std::move(req), ctx, eb, "pang");
     return;
   }
   if (!req->getShouldStartProcessing()) {

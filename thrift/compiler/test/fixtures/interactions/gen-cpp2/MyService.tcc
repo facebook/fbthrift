@@ -34,8 +34,9 @@ void MyServiceAsyncProcessor::process_foo(apache::thrift::ResponseChannelRequest
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "foo");
+        ew, std::move(req), ctx, eb, "foo");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -103,8 +104,9 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteraction.frobnicate");
+        ew, std::move(req), ctx, eb, "MyInteraction.frobnicate");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -189,8 +191,9 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteraction.truthify");
+        ew, std::move(req), ctx, eb, "MyInteraction.truthify");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -248,8 +251,9 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteraction.encode");
+        ew, std::move(req), ctx, eb, "MyInteraction.encode");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -330,8 +334,9 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate(apache::thrif
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteractionFast.frobnicate");
+        ew, std::move(req), ctx, eb, "MyInteractionFast.frobnicate");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -412,8 +417,9 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift:
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteractionFast.truthify");
+        ew, std::move(req), ctx, eb, "MyInteractionFast.truthify");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -469,8 +475,9 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::R
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "MyInteractionFast.encode");
+        ew, std::move(req), ctx, eb, "MyInteractionFast.encode");
     return;
   }
   if (!req->getShouldStartProcessing()) {
@@ -541,8 +548,9 @@ void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrif
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ex, std::move(req), ctx, eb, "SerialInteraction.frobnicate");
+        ew, std::move(req), ctx, eb, "SerialInteraction.frobnicate");
     return;
   }
   if (!req->getShouldStartProcessing()) {

@@ -65,16 +65,16 @@ std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
 
 template <typename Prot>
 void process_handle_exn_deserialization(
-    std::exception const& ex,
+    const folly::exception_wrapper& ew,
     ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
-  LOG(ERROR) << folly::exceptionStr(ex) << " in function " << method;
-  TApplicationException x(
-      TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
-      ex.what());
-  auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
+  if (::apache::thrift::util::toAppError(ew.get_exception())) {
+    ::apache::thrift::util::appendExceptionToHeader(false, ew, *ctx);
+  }
+  auto buf = process_serialize_xform_app_exn<Prot>(
+      ::apache::thrift::util::toTApplicationException(ew), ctx, method);
   eb->runInEventBaseThread(
       [buf = std::move(buf), req = std::move(req)]() mutable {
         if (req->isStream()) {

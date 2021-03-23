@@ -195,5 +195,88 @@ namespace si {
 } // namespace si
 } // namespace detail
 
+namespace {
+
+void setUserExceptionHeader(
+    Cpp2RequestContext& ctx,
+    std::string exType,
+    std::string exReason,
+    bool setClientCode) {
+  auto header = ctx.getHeader();
+  if (!header) {
+    return;
+  }
+
+  if (setClientCode) {
+    header->setHeader(std::string(util::kHeaderEx), kAppClientErrorCode);
+  }
+
+  header->setHeader(std::string(util::kHeaderUex), std::move(exType));
+  header->setHeader(
+      std::string(util::kHeaderUexw),
+      exReason.size() > util::kMaxUexwSize
+          ? exReason.substr(0, util::kMaxUexwSize)
+          : std::move(exReason));
+}
+
+} // namespace
+
+namespace util {
+
+void appendExceptionToHeader(
+    bool declared,
+    const folly::exception_wrapper& ew,
+    Cpp2RequestContext& ctx) {
+  auto* ex = ew.get_exception();
+  if (const auto* aex = toAppError(ex)) {
+    setUserExceptionHeader(
+        ctx,
+        std::string(aex->name()),
+        std::string(aex->what()),
+        aex->isClientError());
+    return;
+  }
+
+  const auto what = ew.what();
+  folly::StringPiece whatsp(what);
+  const auto type = ew.class_name();
+
+  if (declared) {
+    whatsp.removePrefix(type);
+    whatsp.removePrefix(": ");
+  }
+
+  auto exName = type.toStdString();
+  auto exWhat = whatsp.str();
+
+  setUserExceptionHeader(ctx, std::move(exName), std::move(exWhat), false);
+}
+
+const AppBaseError* toAppError(
+    const std::exception* ex) { // is derived from AppBaseError
+  return dynamic_cast<const AppBaseError*>(ex);
+}
+
+TApplicationException toTApplicationException(
+    const folly::exception_wrapper& ew) {
+  auto& ex = *ew.get_exception();
+  auto msg = folly::exceptionStr(ex).toStdString();
+
+  if (auto* ae = toAppError(&ex)) { // customized app errors
+    return TApplicationException(
+        TApplicationException::TApplicationExceptionType::UNKNOWN, ex.what());
+  } else {
+    if (auto* te = dynamic_cast<const TApplicationException*>(&ex)) {
+      return *te;
+    } else {
+      return TApplicationException(
+          TApplicationException::TApplicationExceptionType::UNKNOWN,
+          std::move(msg));
+    }
+  }
+}
+
+} // namespace util
+
 } // namespace thrift
 } // namespace apache

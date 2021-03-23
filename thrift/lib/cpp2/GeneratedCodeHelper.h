@@ -1274,5 +1274,23 @@ void async_tm_coro_start(
 } // namespace si
 } // namespace detail
 
+namespace util {
+inline constexpr size_t kMaxUexwSize = 1024;
+inline constexpr std::string_view kHeaderUex = "uex";
+inline constexpr std::string_view kHeaderUexw = "uexw";
+inline constexpr std::string_view kHeaderEx = "ex";
+
+void appendExceptionToHeader(
+    bool declared,
+    const folly::exception_wrapper& ew,
+    Cpp2RequestContext& ctx);
+
+const AppBaseError* toAppError(const std::exception* ex);
+
+TApplicationException toTApplicationException(
+    const folly::exception_wrapper& ew);
+
+} // namespace util
+
 } // namespace thrift
 } // namespace apache
