@@ -148,7 +148,7 @@ const <% > types/ref_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.<%field:cpp_name%>);
   if (!__fbthrift_isDeserialized_.<%field:cpp_name%>) {
 <%#field:cpp_ref?%>
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<<% > types/ref_type%>>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > types/ref_type%>>{});
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     auto* ptr = &this-><%field:cpp_name%>;

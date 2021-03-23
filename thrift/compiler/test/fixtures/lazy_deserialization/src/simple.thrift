@@ -18,7 +18,7 @@ namespace cpp2 apache.thrift.test
 namespace py3 apache.thrift.test
 
 struct Foo {
-  1: string field1 (cpp.experimental.lazy);
+  1: string field1 (cpp.ref, cpp.experimental.lazy);
   2: string field2;
   3: list<i32> field3 (cpp.experimental.lazy);
   4: list<i32> field4;

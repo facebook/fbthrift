@@ -74,7 +74,7 @@ class Foo final  {
   Foo() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
+  Foo(apache::thrift::FragileConstructor, std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   Foo(Foo&&) = default;
   Foo(const Foo& src);
@@ -84,7 +84,7 @@ class Foo final  {
   Foo& operator=(const Foo& src);
   void __clear();
  private:
-  mutable ::std::string field1;
+  mutable std::unique_ptr<::std::string> field1;
  private:
   ::std::string field2;
  private:
@@ -95,7 +95,6 @@ class Foo final  {
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
     bool field2;
     bool field3;
     bool field4;
@@ -118,26 +117,17 @@ class Foo final  {
     return !(__x < __y);
   }
 #endif
+  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& field1_ref() & { return __fbthrift_read_field_field1(); }
 
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1_ref() const& {
-    return {this->__fbthrift_read_field_field1(), __isset.field1};
-  }
+  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& field1_ref() const& { return __fbthrift_read_field_field1(); }
 
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->__fbthrift_read_field_field1()), __isset.field1};
-  }
+  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& field1_ref() && { return std::move(__fbthrift_read_field_field1()); }
 
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1_ref() & {
-    return {this->__fbthrift_read_field_field1(), __isset.field1};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1_ref() && {
-    return {std::move(this->__fbthrift_read_field_field1()), __isset.field1};
-  }
+  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& field1_ref() const&& { return std::move(__fbthrift_read_field_field1()); }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field2_ref() const& {
@@ -249,8 +239,8 @@ class Foo final  {
     std::mutex field3;
   } __fbthrift_deserializationMutex_;
 
-  const ::std::string& __fbthrift_read_field_field1() const;
-  ::std::string& __fbthrift_read_field_field1();
+  const std::unique_ptr<::std::string>& __fbthrift_read_field_field1() const;
+  std::unique_ptr<::std::string>& __fbthrift_read_field_field1();
   const ::std::vector<::std::int32_t>& __fbthrift_read_field_field3() const;
   ::std::vector<::std::int32_t>& __fbthrift_read_field_field3();
 

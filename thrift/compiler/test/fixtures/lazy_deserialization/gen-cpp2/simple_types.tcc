@@ -55,10 +55,9 @@ _readField_field1:
     __fbthrift_serializedData_.field1.makeManaged();
     __fbthrift_isDeserialized_.field1 = false;
   } else {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field1, _readState);
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.field1 = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::string>>());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+    this->field1 = std::move(ptr);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -183,7 +182,7 @@ _skip:
     }
   }
 }
-const ::std::string& Foo::__fbthrift_read_field_field1() const {
+const std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const {
 
   if (__fbthrift_isDeserialized_.field1) {
     return field1;
@@ -191,19 +190,20 @@ const ::std::string& Foo::__fbthrift_read_field_field1() const {
 
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field1);
   if (!__fbthrift_isDeserialized_.field1) {
-    auto* ptr = &this->field1;
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::string>>{});
 
     ::apache::thrift::CompactProtocolReader reader;
     reader.setInput(&__fbthrift_serializedData_.field1);
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::read(reader, *ptr);
 
+    this->field1 = std::move(ptr);
 
     __fbthrift_isDeserialized_.field1 = true;
   }
   return field1;
 }
 
-::std::string& Foo::__fbthrift_read_field_field1() {
+std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() {
   std::as_const(*this).__fbthrift_read_field_field1();
   return field1;
 }
@@ -238,7 +238,11 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
   xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  if (this->field1) {
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->field1);
+  }
+  else {
+  }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
@@ -254,7 +258,11 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
   xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  if (this->field1) {
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->field1);
+  }
+  else {
+  }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
@@ -270,7 +278,11 @@ uint32_t Foo::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Foo");
   xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field1);
+  if (this->field1) {
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->field1);
+  }
+  else {
+  }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_STRING, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field2);

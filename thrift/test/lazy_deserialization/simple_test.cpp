@@ -98,4 +98,27 @@ TEST(Serialization, CheckDataMember) {
   EXPECT_EQ(get_field3(lazyFoo), foo->field3_ref());
   EXPECT_EQ(get_field4(lazyFoo), foo->field4_ref());
 }
+
+TEST(Serialization, CppRef) {
+  {
+    LazyCppRef foo;
+    foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
+    foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
+    foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
+    auto s = apache::thrift::CompactSerializer::serialize<std::string>(foo);
+    auto bar = apache::thrift::CompactSerializer::deserialize<LazyCppRef>(s);
+    EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
+    EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
+    EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
+  }
+  {
+    LazyCppRef foo;
+    auto s = apache::thrift::CompactSerializer::serialize<std::string>(foo);
+    auto bar = apache::thrift::CompactSerializer::deserialize<LazyCppRef>(s);
+    EXPECT_FALSE(bar.field1_ref());
+    EXPECT_FALSE(bar.field2_ref());
+    EXPECT_FALSE(bar.field3_ref());
+  }
+}
+
 } // namespace apache::thrift::test

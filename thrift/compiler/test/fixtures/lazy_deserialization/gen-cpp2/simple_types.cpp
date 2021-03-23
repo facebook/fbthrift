@@ -39,10 +39,7 @@ Foo::Foo(const Foo& srcObj) {
   srcObj.field1_ref();
   __fbthrift_isDeserialized_.field1 = true;
   __fbthrift_serializedData_.field1.clear();
-  field1 = srcObj.field1;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field1 = srcObj.__isset.field1;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  if (srcObj.field1) field1.reset(new ::std::string(*srcObj.field1));
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
@@ -67,12 +64,11 @@ Foo& Foo::operator=(const Foo& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::string field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
   __isset.field2 = true;
   __isset.field3 = true;
   __isset.field4 = true;
@@ -93,8 +89,13 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!!lhs.field1 != !!rhs.field1) {
     return false;
+  }
+  if (!!lhs.field1) {
+    if (lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1)) {
+      return false;
+    }
   }
   if (!(lhs.field2 == rhs.field2)) {
     return false;
@@ -112,8 +113,13 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!!lhs.field1 != !!rhs.field1) {
+    return !!lhs.field1 < !!rhs.field1;
+  }
+  if (!!lhs.field1) {
+    if (lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1)) {
+      return *lhs.field1 < *rhs.field1;
+    }
   }
   if (!(lhs.field2 == rhs.field2)) {
     return lhs.field2 < rhs.field2;
@@ -138,7 +144,7 @@ const ::std::vector<::std::int32_t>& Foo::get_field4() const& {
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
-  swap(a.field1_ref().value(), b.field1_ref().value());
+  swap(a.field1, b.field1);
   swap(a.field2_ref().value(), b.field2_ref().value());
   swap(a.field3_ref().value(), b.field3_ref().value());
   swap(a.field4_ref().value(), b.field4_ref().value());

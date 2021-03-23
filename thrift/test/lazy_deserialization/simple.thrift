@@ -31,3 +31,12 @@ struct LazyFoo {
   3: list<double> field3 (cpp.experimental.lazy);
   4: map<i32, double> field4 (cpp.experimental.lazy);
 }
+
+struct LazyCppRef {
+  1: optional list<i32> field1 (cpp.ref_type = "unique", cpp.experimental.lazy);
+  2: optional list<i32> field2 (cpp.ref_type = "shared", cpp.experimental.lazy);
+  3: optional list<i32> field3 (
+    cpp.ref_type = "shared_const",
+    cpp.experimental.lazy,
+  );
+}
