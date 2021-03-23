@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <atomic>
 #include <memory>
+#include <vector>
 
 #include <boost/lexical_cast.hpp>
 
@@ -46,24 +48,27 @@ using std::unique_ptr;
 class DuplexClientInterface : public DuplexClientSvIf {
  public:
   DuplexClientInterface(int32_t first, int32_t count, bool& success)
-      : expectIndex_(first), lastIndex_(first + count), success_(success) {}
+      : firstIndex_(first), indexesSeen_(count, false), success_(success) {}
 
   void async_tm_update(
       unique_ptr<HandlerCallback<int32_t>> callback,
       int32_t currentIndex) override {
-    EXPECT_EQ(currentIndex, expectIndex_);
-    expectIndex_++;
+    // The order we see the values for currentIndex is not defined, but we do
+    // expect to see each possible value once.
+    EXPECT_FALSE(indexesSeen_[currentIndex - firstIndex_]);
+    indexesSeen_[currentIndex - firstIndex_] = true;
     EventBase* eb = callback->getEventBase();
     callback->result(currentIndex);
-    if (expectIndex_ == lastIndex_) {
+    if (std::find(indexesSeen_.begin(), indexesSeen_.end(), false) ==
+        indexesSeen_.end()) {
       success_ = true;
       eb->runInEventBaseThread([eb] { eb->terminateLoopSoon(); });
     }
   }
 
  private:
-  int32_t expectIndex_;
-  int32_t lastIndex_;
+  int32_t firstIndex_;
+  std::vector<bool> indexesSeen_;
   bool& success_;
 };
 
