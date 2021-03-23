@@ -109,6 +109,8 @@ class SingleRpcChannel : public H2Channel {
 
   bool receivedThriftRPC_{false};
   bool receivedH2Stream_{false};
+
+  std::shared_ptr<void> activeRequestsGuard_;
 };
 
 } // namespace thrift

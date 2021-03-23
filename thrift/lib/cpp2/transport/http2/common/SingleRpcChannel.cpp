@@ -60,7 +60,10 @@ SingleRpcChannel::SingleRpcChannel(
     HTTPTransaction* txn,
     ThriftProcessor* processor,
     std::shared_ptr<Cpp2Worker> worker)
-    : processor_(processor), worker_(std::move(worker)), httpTransaction_(txn) {
+    : processor_(processor),
+      worker_(std::move(worker)),
+      httpTransaction_(txn),
+      activeRequestsGuard_{worker_->getActiveRequestsGuard()} {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -258,6 +261,10 @@ void SingleRpcChannel::onMessageFlushed() noexcept {
 }
 
 void SingleRpcChannel::onThriftRequest() noexcept {
+  if (worker_->isStopping()) {
+    sendThriftErrorResponse("Server shutting down");
+    return;
+  }
   if (!contents_) {
     sendThriftErrorResponse("Proxygen stream has no body");
     return;

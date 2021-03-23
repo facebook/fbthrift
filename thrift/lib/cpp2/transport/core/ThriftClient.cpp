@@ -123,7 +123,7 @@ ThriftClient::createRequestMetadata(
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else {
-    metadata.clientTimeoutMs_ref() = kDefaultRpcTimeout.count();
+    metadata.clientTimeoutMs_ref() = connection_->getTimeout();
   }
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
     metadata.queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
