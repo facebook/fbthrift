@@ -36,9 +36,7 @@ class indenter {
   struct scope {
     explicit scope(indenter* out) : out_(out) {}
     scope(scope const&) = delete;
-    scope(scope&& rhs) noexcept : out_(rhs.out_) {
-      rhs.out_ = nullptr;
-    }
+    scope(scope&& rhs) noexcept : out_(rhs.out_) { rhs.out_ = nullptr; }
 
     ~scope() {
       if (out_) {
@@ -46,9 +44,7 @@ class indenter {
       }
     }
 
-    scope start_scope() {
-      return out_->start_scope();
-    }
+    scope start_scope() { return out_->start_scope(); }
 
     scope& skip() {
       out_->skip();

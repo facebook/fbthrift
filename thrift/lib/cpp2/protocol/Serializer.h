@@ -218,8 +218,7 @@ typedef Serializer<NimbleProtocolReader, NimbleProtocolWriter> NimbleSerializer;
 // Serialization code specific to handling errors
 template <typename ProtIn, typename ProtOut>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
-    const TApplicationException& obj,
-    folly::IOBuf* req) {
+    const TApplicationException& obj, folly::IOBuf* req) {
   ProtIn iprot;
   std::string fname;
   apache::thrift::MessageType mtype;
@@ -254,8 +253,8 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
   return queue.move();
 }
 
-std::unique_ptr<folly::IOBuf>
-serializeError(int protId, const TApplicationException& obj, folly::IOBuf* buf);
+std::unique_ptr<folly::IOBuf> serializeError(
+    int protId, const TApplicationException& obj, folly::IOBuf* buf);
 
 std::unique_ptr<folly::IOBuf> serializeError(
     int protId,
@@ -265,8 +264,7 @@ std::unique_ptr<folly::IOBuf> serializeError(
 
 // serialize TApplicationException without a protocol message envelop
 std::unique_ptr<folly::IOBuf> serializeErrorStruct(
-    protocol::PROTOCOL_TYPES protId,
-    const TApplicationException& obj);
+    protocol::PROTOCOL_TYPES protId, const TApplicationException& obj);
 
 } // namespace thrift
 } // namespace apache

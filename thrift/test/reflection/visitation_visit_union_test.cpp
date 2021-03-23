@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <any>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_for_each_field.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h> // @manual
@@ -21,7 +22,6 @@
 #include <thrift/test/gen-cpp2/UnionFieldRef_for_each_field.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_by_thrift_field_metadata.h> // @manual
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
-#include <any>
 
 namespace apache {
 namespace thrift {

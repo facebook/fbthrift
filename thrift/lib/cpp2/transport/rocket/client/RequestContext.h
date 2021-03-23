@@ -110,13 +110,9 @@ class RequestContext {
     return std::move(serializedFrame_);
   }
 
-  State state() const {
-    return state_;
-  }
+  State state() const { return state_; }
 
-  StreamId streamId() const {
-    return streamId_;
-  }
+  StreamId streamId() const { return streamId_; }
 
   bool isRequestResponse() const {
     return frameType_ == FrameType::REQUEST_RESPONSE;
@@ -127,9 +123,7 @@ class RequestContext {
 
   void onWriteSuccess() noexcept;
 
-  bool hasPartialPayload() const {
-    return responsePayload_.hasValue();
-  }
+  bool hasPartialPayload() const { return responsePayload_.hasValue(); }
 
  private:
   RequestContextQueue& queue_;
@@ -177,8 +171,8 @@ class RequestContext {
   }
 
   struct Equal {
-    bool operator()(const RequestContext& ctxa, const RequestContext& ctxb)
-        const noexcept {
+    bool operator()(
+        const RequestContext& ctxa, const RequestContext& ctxb) const noexcept {
       return ctxa.streamId_ == ctxb.streamId_;
     }
   };

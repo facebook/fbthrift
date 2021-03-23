@@ -48,13 +48,9 @@ class t_generation_context {
     }
   }
 
-  const std::string& get_out_path() const {
-    return out_path_;
-  }
+  const std::string& get_out_path() const { return out_path_; }
 
-  bool is_out_path_absolute() const {
-    return is_out_path_absolute_;
-  }
+  bool is_out_path_absolute() const { return is_out_path_absolute_; }
 
  private:
   std::string out_path_;
@@ -83,13 +79,9 @@ class t_generator {
     return program->name();
   }
 
-  const t_program* get_program(void) const {
-    return this->program_;
-  }
+  const t_program* get_program(void) const { return this->program_; }
 
-  std::unordered_set<std::string> get_genfiles() {
-    return generated_files;
-  }
+  std::unordered_set<std::string> get_genfiles() { return generated_files; }
 
   void record_genfile(const std::string& filename) {
     generated_files.insert(filename);
@@ -153,15 +145,9 @@ class t_generator_factory {
       // Note: option_string might not exist beyond the call to get_generator.
       const std::string& option_string) = 0;
 
-  std::string get_short_name() {
-    return short_name_;
-  }
-  std::string get_long_name() {
-    return long_name_;
-  }
-  std::string get_documentation() {
-    return documentation_;
-  }
+  std::string get_short_name() { return short_name_; }
+  std::string get_long_name() { return long_name_; }
+  std::string get_documentation() { return documentation_; }
 
  private:
   std::string short_name_;
@@ -173,9 +159,7 @@ class t_name_generator {
  public:
   t_name_generator() {}
 
-  std::string operator()() {
-    return operator()("tmp_");
-  }
+  std::string operator()() { return operator()("tmp_"); }
 
   std::string operator()(const char* prefix) {
     std::ostringstream out;
@@ -228,9 +212,7 @@ class t_generator_registry {
    public:                                                          \
     t_##language##_generator_factory_impl()                         \
         : t_generator_factory_impl<t_##language##_generator>(       \
-              #language,                                            \
-              long_name,                                            \
-              doc) {}                                               \
+              #language, long_name, doc) {}                         \
   };                                                                \
   static t_##language##_generator_factory_impl _registerer
 

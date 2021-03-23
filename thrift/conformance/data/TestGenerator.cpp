@@ -27,8 +27,7 @@ namespace {
 
 template <typename TT>
 Test createRoundTripTest(
-    const AnyRegistry& registry,
-    const Protocol& protocol) {
+    const AnyRegistry& registry, const Protocol& protocol) {
   Test test;
   test.name_ref() = protocol.name();
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
@@ -47,9 +46,7 @@ Test createRoundTripTest(
 } // namespace
 
 void addRoundTripToSuite(
-    const AnyRegistry& registry,
-    const Protocol& protocol,
-    TestSuite& suite) {
+    const AnyRegistry& registry, const Protocol& protocol, TestSuite& suite) {
   suite.tests_ref()->emplace_back(
       createRoundTripTest<type::bool_t>(registry, protocol));
   suite.tests_ref()->emplace_back(
@@ -69,8 +66,7 @@ void addRoundTripToSuite(
 }
 
 TestSuite createRoundTripSuite(
-    const std::set<Protocol>& protocols,
-    const AnyRegistry& registry) {
+    const std::set<Protocol>& protocols, const AnyRegistry& registry) {
   TestSuite suite;
   suite.name_ref() = "RoundTripTest";
   for (const auto& protocol : protocols) {

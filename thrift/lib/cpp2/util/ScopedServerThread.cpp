@@ -67,9 +67,7 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
    *
    * This may be called from the main thread.
    */
-  const folly::SocketAddress* getAddress() const {
-    return &address_;
-  }
+  const folly::SocketAddress* getAddress() const { return &address_; }
 
   /**
    * Wait until the server has started.
@@ -80,13 +78,9 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
 
   void preServe(const folly::SocketAddress* address) override;
 
-  const shared_ptr<BaseThriftServer>& getServer() const {
-    return server_;
-  }
+  const shared_ptr<BaseThriftServer>& getServer() const { return server_; }
 
-  void releaseServer() {
-    server_.reset();
-  }
+  void releaseServer() { server_.reset(); }
 
  private:
   enum StateEnum {
@@ -116,9 +110,7 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
    public:
     explicit SavedExceptionImpl(const ExceptionT& x) : exception_(x) {}
 
-    void rethrow() override {
-      throw exception_;
-    }
+    void rethrow() override { throw exception_; }
 
    private:
     ExceptionT exception_;
@@ -188,9 +180,7 @@ ScopedServerThread::Helper::~Helper() {
 }
 
 void ScopedServerThread::Helper::init(
-    shared_ptr<BaseThriftServer> server,
-    shared_ptr<Helper> self,
-    Func onExit) {
+    shared_ptr<BaseThriftServer> server, shared_ptr<Helper> self, Func onExit) {
   server_ = std::move(server);
   onExit_ = std::move(onExit);
 
@@ -287,8 +277,7 @@ ScopedServerThread::~ScopedServerThread() {
 }
 
 void ScopedServerThread::start(
-    shared_ptr<BaseThriftServer> server,
-    Func onExit) {
+    shared_ptr<BaseThriftServer> server, Func onExit) {
   if (helper_) {
     throw TLibraryException("ScopedServerThread is already running");
   }

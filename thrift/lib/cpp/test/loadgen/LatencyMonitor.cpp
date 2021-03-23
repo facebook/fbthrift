@@ -363,10 +363,7 @@ void LatencyMonitor::formatLatency(char* buf, size_t buflen, double pct) {
 }
 
 void LatencyMonitor::formatLatency(
-    char* buf,
-    size_t buflen,
-    double avg,
-    double stddev) {
+    char* buf, size_t buflen, double avg, double stddev) {
   int avgPrecision = 0;
   if (avg < 1) {
     avgPrecision = 2;

@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <glog/logging.h>
 #include <atomic>
 #include <cassert>
 #include <memory>
 #include <utility>
+#include <glog/logging.h>
 
 #include <folly/lang/Assume.h>
 
@@ -39,21 +39,13 @@ class Queue {
     std::swap(head_, other.head_);
     return *this;
   }
-  ~Queue() {
-    clear();
-  }
+  ~Queue() { clear(); }
 
-  bool empty() const {
-    return !head_;
-  }
+  bool empty() const { return !head_; }
 
-  T& front() {
-    return head_->value;
-  }
+  T& front() { return head_->value; }
 
-  void pop() {
-    std::unique_ptr<Node>(std::exchange(head_, head_->next));
-  }
+  void pop() { std::unique_ptr<Node>(std::exchange(head_, head_->next)); }
 
   void clear() {
     while (!empty()) {
@@ -61,9 +53,7 @@ class Queue {
     }
   }
 
-  explicit operator bool() const {
-    return !empty();
-  }
+  explicit operator bool() const { return !empty(); }
 
   struct Node {
    private:
@@ -413,9 +403,7 @@ class TwoWayBridge {
       twowaybridge_detail::QueueWithTailPtr<ClientMessage>;
 
   struct Deleter {
-    void operator()(Derived* ptr) {
-      ptr->decref();
-    }
+    void operator()(Derived* ptr) { ptr->decref(); }
   };
   using Ptr = std::unique_ptr<Derived, Deleter>;
 
@@ -438,17 +426,11 @@ class TwoWayBridge {
     return clientQueue_.wait(consumer);
   }
 
-  ClientQueue clientGetMessages() {
-    return clientQueue_.getMessages();
-  }
+  ClientQueue clientGetMessages() { return clientQueue_.getMessages(); }
 
-  void clientClose() {
-    clientQueue_.close();
-  }
+  void clientClose() { clientQueue_.close(); }
 
-  bool isClientClosed() {
-    return clientQueue_.isClosed();
-  }
+  bool isClientClosed() { return clientQueue_.isClosed(); }
 
   // These should only be called from the server thread
 
@@ -460,17 +442,11 @@ class TwoWayBridge {
     return serverQueue_.wait(consumer);
   }
 
-  ServerQueue serverGetMessages() {
-    return serverQueue_.getMessages();
-  }
+  ServerQueue serverGetMessages() { return serverQueue_.getMessages(); }
 
-  void serverClose() {
-    serverQueue_.close();
-  }
+  void serverClose() { serverQueue_.close(); }
 
-  bool isServerClosed() {
-    return serverQueue_.isClosed();
-  }
+  bool isServerClosed() { return serverQueue_.isClosed(); }
 
  private:
   void decref() {
@@ -479,9 +455,7 @@ class TwoWayBridge {
     }
   }
 
-  Derived* derived() {
-    return static_cast<Derived*>(this);
-  }
+  Derived* derived() { return static_cast<Derived*>(this); }
 
   ClientAtomicQueue clientQueue_;
   ServerAtomicQueue serverQueue_;

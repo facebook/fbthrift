@@ -61,22 +61,18 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
 }
 
 void InteractionEventTask::failWith(
-    folly::exception_wrapper ex,
-    std::string exCode) {
+    folly::exception_wrapper ex, std::string exCode) {
   tile_ = nullptr;
   EventTask::failWith(std::move(ex), std::move(exCode));
 }
 
 void AsyncProcessor::terminateInteraction(
-    int64_t,
-    Cpp2ConnContext&,
-    folly::EventBase&) noexcept {
+    int64_t, Cpp2ConnContext&, folly::EventBase&) noexcept {
   LOG(DFATAL) << "This processor doesn't support interactions";
 }
 
 void AsyncProcessor::destroyAllInteractions(
-    Cpp2ConnContext&,
-    folly::EventBase&) noexcept {}
+    Cpp2ConnContext&, folly::EventBase&) noexcept {}
 
 void AsyncProcessor::processSerializedCompressedRequest(
     ResponseChannelRequest::UniquePtr req,
@@ -181,9 +177,7 @@ std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
 }
 
 void GeneratedAsyncProcessor::terminateInteraction(
-    int64_t id,
-    Cpp2ConnContext& conn,
-    folly::EventBase& eb) noexcept {
+    int64_t id, Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
   auto tile = conn.removeTile(id);
@@ -199,8 +193,7 @@ void GeneratedAsyncProcessor::terminateInteraction(
 }
 
 void GeneratedAsyncProcessor::destroyAllInteractions(
-    Cpp2ConnContext& conn,
-    folly::EventBase& eb) noexcept {
+    Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
   if (conn.tiles_.empty()) {
@@ -218,8 +211,7 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
-    ResponseChannelRequest::UniquePtr& req,
-    RpcKind kind) {
+    ResponseChannelRequest::UniquePtr& req, RpcKind kind) {
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       switch (req->rpcKind()) {
@@ -327,8 +319,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
 }
 
 concurrency::PRIORITY ServerInterface::getRequestPriority(
-    Cpp2RequestContext* ctx,
-    concurrency::PRIORITY prio) {
+    Cpp2RequestContext* ctx, concurrency::PRIORITY prio) {
   concurrency::PRIORITY callPriority = ctx->getCallPriority();
   return callPriority == concurrency::N_PRIORITIES ? prio : callPriority;
 }
@@ -538,8 +529,7 @@ void HandlerCallbackBase::sendReply(
 }
 
 void HandlerCallbackBase::releaseInteraction(
-    Tile* interaction,
-    folly::EventBase* eb) {
+    Tile* interaction, folly::EventBase* eb) {
   releaseInteractionInternal(interaction, eb);
 }
 void HandlerCallbackBase::releaseInteractionInstance() {
@@ -557,13 +547,7 @@ HandlerCallback<void>::HandlerCallback(
     Cpp2RequestContext* reqCtx,
     Tile* interaction)
     : HandlerCallbackBase(
-          std::move(req),
-          std::move(ctx),
-          ewp,
-          eb,
-          tm,
-          reqCtx,
-          interaction),
+          std::move(req), std::move(ctx), ewp, eb, tm, reqCtx, interaction),
       cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }

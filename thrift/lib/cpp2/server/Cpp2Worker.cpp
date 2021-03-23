@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <vector>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 #include <glog/logging.h>
 
@@ -132,8 +132,7 @@ void Cpp2Worker::onNewConnection(
 }
 
 void Cpp2Worker::handleHeader(
-    folly::AsyncTransport::UniquePtr sock,
-    const folly::SocketAddress* addr) {
+    folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr) {
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()
                 ->getNetworkSocket()
                 .toFd();
@@ -293,8 +292,7 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
 }
 
 bool Cpp2Worker::shouldPerformSSL(
-    const std::vector<uint8_t>& bytes,
-    const folly::SocketAddress& clientAddr) {
+    const std::vector<uint8_t>& bytes, const folly::SocketAddress& clientAddr) {
   auto sslPolicy = getSSLPolicy();
   if (sslPolicy == SSLPolicy::REQUIRED) {
     if (isPlaintextAllowedOnLoopback()) {

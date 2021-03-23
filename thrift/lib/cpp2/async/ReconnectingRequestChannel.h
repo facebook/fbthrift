@@ -82,9 +82,7 @@ class ReconnectingRequestChannel : public RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() const override { return &evb_; }
 
   uint16_t getProtocolId() override {
     reconnectIfNeeded();

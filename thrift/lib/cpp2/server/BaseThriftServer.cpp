@@ -126,8 +126,8 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
   return queueTimeout != taskTimeout;
 }
 
-int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom)
-    const {
+int64_t BaseThriftServer::getLoad(
+    const std::string& counter, bool check_custom) const {
   if (check_custom && getLoad_) {
     return getLoad_(counter);
   }

@@ -44,8 +44,7 @@ namespace rocket {
 
 // RocketSinkClientCallback methods
 RocketSinkClientCallback::RocketSinkClientCallback(
-    StreamId streamId,
-    RocketServerConnection& connection)
+    StreamId streamId, RocketServerConnection& connection)
     : streamId_(streamId), connection_(connection) {}
 
 bool RocketSinkClientCallback::onFirstResponse(

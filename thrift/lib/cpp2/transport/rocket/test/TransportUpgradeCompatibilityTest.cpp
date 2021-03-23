@@ -45,13 +45,9 @@ class TransportUpgradeCompatibilityTest : public testing::TestWithParam<bool> {
 };
 
 INSTANTIATE_TEST_CASE_P(
-    NoUpgrade,
-    TransportUpgradeCompatibilityTest,
-    testing::Values(false));
+    NoUpgrade, TransportUpgradeCompatibilityTest, testing::Values(false));
 INSTANTIATE_TEST_CASE_P(
-    Upgrade,
-    TransportUpgradeCompatibilityTest,
-    testing::Values(true));
+    Upgrade, TransportUpgradeCompatibilityTest, testing::Values(true));
 
 TEST_P(TransportUpgradeCompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
@@ -216,9 +212,7 @@ class CloseCallbackTest : public CloseCallback {
     EXPECT_FALSE(closed_);
     closed_ = true;
   }
-  bool isClosed() {
-    return closed_;
-  }
+  bool isClosed() { return closed_; }
 
  private:
   bool closed_{false};

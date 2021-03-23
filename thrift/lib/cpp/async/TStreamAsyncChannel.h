@@ -57,9 +57,7 @@ class TAsyncChannelWriteRequestBase {
     next_ = next;
   }
 
-  Subclass_* getNext() const {
-    return next_;
-  }
+  Subclass_* getNext() const { return next_; }
 
   void cancelCallbacks() {
     callback_ = VoidCallback();
@@ -347,9 +345,7 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    * @return Returns the current receive timeout, in milliseconds.  A return
    *         value of 0 indicates that no timeout is set.
    */
-  uint32_t getRecvTimeout() const override {
-    return recvTimeout_;
-  }
+  uint32_t getRecvTimeout() const override { return recvTimeout_; }
 
   /**
    * Cancel pending callbacks. Use this when the channel is closing because the

@@ -90,9 +90,7 @@ const TType CTypeToTType[14] = {
 } // namespace detail
 
 uint32_t CompactProtocolWriter::writeMessageBegin(
-    folly::StringPiece name,
-    MessageType messageType,
-    int32_t seqid) {
+    folly::StringPiece name, MessageType messageType, int32_t seqid) {
   uint32_t wsize = 0;
   wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
@@ -153,9 +151,7 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
 }
 
 uint32_t CompactProtocolWriter::writeFieldBegin(
-    const char* name,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* name, TType fieldType, int16_t fieldId) {
   if (fieldType == TType::T_BOOL) {
     booleanField_.name = name;
     booleanField_.fieldType = fieldType;
@@ -175,9 +171,7 @@ uint32_t CompactProtocolWriter::writeFieldStop() {
 }
 
 uint32_t CompactProtocolWriter::writeMapBegin(
-    const TType keyType,
-    TType valType,
-    uint32_t size) {
+    const TType keyType, TType valType, uint32_t size) {
   uint32_t wsize = 0;
 
   if (size == 0) {
@@ -196,8 +190,7 @@ uint32_t CompactProtocolWriter::writeMapEnd() {
 }
 
 uint32_t CompactProtocolWriter::writeCollectionBegin(
-    int8_t elemType,
-    int32_t size) {
+    int8_t elemType, int32_t size) {
   uint32_t wsize = 0;
   if (size <= 14) {
     wsize += writeByte(
@@ -338,9 +331,7 @@ uint32_t CompactProtocolWriter::serializedMessageSize(
 }
 
 uint32_t CompactProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldType*/,
-    int16_t /*fieldId*/) const {
+    const char* /*name*/, TType /*fieldType*/, int16_t /*fieldId*/) const {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
@@ -351,9 +342,7 @@ uint32_t CompactProtocolWriter::serializedStructSize(
 }
 
 uint32_t CompactProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) const {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeByte() + serializedSizeI32();
 }
 
@@ -362,8 +351,7 @@ uint32_t CompactProtocolWriter::serializedSizeMapEnd() const {
 }
 
 uint32_t CompactProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -372,8 +360,7 @@ uint32_t CompactProtocolWriter::serializedSizeListEnd() const {
 }
 
 uint32_t CompactProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -470,9 +457,7 @@ uint32_t CompactProtocolWriter::serializedSizeZCBinary(IOBuf const& v) const {
  */
 
 void CompactProtocolReader::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   int8_t protocolId;
   int8_t versionAndType;
 
@@ -510,9 +495,7 @@ void CompactProtocolReader::readStructEnd() {
 }
 
 void CompactProtocolReader::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   int8_t byte;
   int8_t type;
 
@@ -553,9 +536,7 @@ void CompactProtocolReader::readFieldBegin(
 void CompactProtocolReader::readFieldEnd() {}
 
 void CompactProtocolReader::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size) {
+    TType& keyType, TType& valType, uint32_t& size) {
   int8_t kvType = 0;
   int32_t msize = 0;
 
@@ -735,8 +716,8 @@ TType CompactProtocolReader::getType(int8_t type) {
   throwBadType(type);
 }
 
-FOLLY_ALWAYS_INLINE bool
-CompactProtocolReader::matchTypeHeader(uint8_t byte, TType type, uint8_t diff) {
+FOLLY_ALWAYS_INLINE bool CompactProtocolReader::matchTypeHeader(
+    uint8_t byte, TType type, uint8_t diff) {
   if (type == TType::T_BOOL) {
     if ((byte ==
          (apache::thrift::detail::compact::CT_BOOLEAN_TRUE | (diff << 4))) ||
@@ -824,9 +805,7 @@ void CompactProtocolReader::readFieldBeginWithState(StructReadState& state) {
 }
 
 FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
-    StructReadState& state,
-    int16_t prevFieldId,
-    uint8_t firstByte) {
+    StructReadState& state, int16_t prevFieldId, uint8_t firstByte) {
   if (firstByte == apache::thrift::detail::compact::CT_STOP) {
     state.fieldType = TType::T_STOP;
     return;

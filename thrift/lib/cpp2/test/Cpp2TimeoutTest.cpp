@@ -36,12 +36,8 @@ using namespace apache::thrift::util;
 class CloseChecker : public CloseCallback {
  public:
   CloseChecker() : closed_(false) {}
-  void channelClosed() override {
-    closed_ = true;
-  }
-  bool getClosed() {
-    return closed_;
-  }
+  void channelClosed() override { closed_ = true; }
+  bool getClosed() { return closed_; }
 
  private:
   bool closed_;

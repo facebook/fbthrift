@@ -106,9 +106,7 @@ class field_ref {
   // Returns true iff the field is set. field_ref doesn't provide conversion to
   // bool to avoid confusion between checking if the field is set and getting
   // the field's value, particularly for bool fields.
-  FOLLY_ERASE bool is_set() const noexcept {
-    return is_set_;
-  }
+  FOLLY_ERASE bool is_set() const noexcept { return is_set_; }
 
   // Returns a reference to the value.
   FOLLY_ERASE reference_type value() const noexcept {
@@ -119,9 +117,7 @@ class field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE value_type* operator->() const noexcept {
-    return &value_;
-  }
+  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
 
   FOLLY_ERASE reference_type ensure() noexcept {
     is_set_ = true;
@@ -359,13 +355,9 @@ class optional_field_ref {
   }
 #endif
 
-  FOLLY_ERASE bool has_value() const noexcept {
-    return is_set_;
-  }
+  FOLLY_ERASE bool has_value() const noexcept { return is_set_; }
 
-  FOLLY_ERASE explicit operator bool() const noexcept {
-    return is_set_;
-  }
+  FOLLY_ERASE explicit operator bool() const noexcept { return is_set_; }
 
   FOLLY_ERASE void reset() noexcept {
     value_ = value_type();
@@ -392,9 +384,7 @@ class optional_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE reference_type operator*() const {
-    return value();
-  }
+  FOLLY_ERASE reference_type operator*() const { return value(); }
 
   FOLLY_ERASE value_type* operator->() const {
     throw_if_unset();
@@ -675,9 +665,7 @@ class required_field_ref {
   // Returns true iff the field is set. required_field_ref doesn't provide
   // conversion to bool to avoid confusion between checking if the field is set
   // and getting the field's value, particularly for bool fields.
-  FOLLY_ERASE bool has_value() const noexcept {
-    return true;
-  }
+  FOLLY_ERASE bool has_value() const noexcept { return true; }
 
   // Returns a reference to the value.
   FOLLY_ERASE reference_type value() const noexcept {
@@ -688,9 +676,7 @@ class required_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE value_type* operator->() const noexcept {
-    return &value_;
-  }
+  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
 
   FOLLY_ERASE reference_type ensure() noexcept {
     return static_cast<reference_type>(value_);
@@ -886,13 +872,9 @@ class union_field_ref {
     return *this;
   }
 
-  FOLLY_ERASE bool has_value() const {
-    return type_ == field_type_;
-  }
+  FOLLY_ERASE bool has_value() const { return type_ == field_type_; }
 
-  FOLLY_ERASE explicit operator bool() const {
-    return has_value();
-  }
+  FOLLY_ERASE explicit operator bool() const { return has_value(); }
 
   // Returns a reference to the value if this is union's active field,
   // bad_field_access otherwise.
@@ -901,9 +883,7 @@ class union_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE reference_type operator*() const {
-    return value();
-  }
+  FOLLY_ERASE reference_type operator*() const { return value(); }
 
   FOLLY_ERASE value_type* operator->() const {
     throw_if_unset();

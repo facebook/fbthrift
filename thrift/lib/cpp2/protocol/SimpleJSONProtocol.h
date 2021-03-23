@@ -50,14 +50,12 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
-  static constexpr bool kSortKeys() {
-    return false;
-  }
+  static constexpr bool kSortKeys() { return false; }
 
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
-  inline uint32_t
-  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
+  inline uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
   inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
@@ -73,11 +71,11 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
    */
 
   inline uint32_t serializedMessageSize(const std::string& name) const;
-  inline uint32_t
-  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
+  inline uint32_t serializedFieldSize(
+      const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t
-  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) const;
+  inline uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) const;
   inline uint32_t serializedSizeMapEnd() const;
   inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeListEnd() const;
@@ -100,25 +98,19 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
-  static constexpr bool kUsesFieldNames() {
-    return true;
-  }
+  static constexpr bool kUsesFieldNames() { return true; }
 
-  static constexpr bool kOmitsContainerSizes() {
-    return true;
-  }
+  static constexpr bool kOmitsContainerSizes() { return true; }
 
-  static constexpr bool kOmitsContainerElemTypes() {
-    return true;
-  }
+  static constexpr bool kOmitsContainerElemTypes() { return true; }
 
   /**
    * Reading functions
    */
   inline void readStructBegin(std::string& name);
   inline void readStructEnd();
-  inline void
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  inline void readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
   inline void readFieldEnd();
   inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
   inline void readMapEnd();

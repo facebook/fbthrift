@@ -42,13 +42,9 @@ class VisitorHelper : public boost::static_visitor<> {
     return *this;
   }
 
-  void operator()(AppServerException& value) const {
-    aseFunc_(value);
-  }
+  void operator()(AppServerException& value) const { aseFunc_(value); }
 
-  void operator()(AppClientException& value) const {
-    aceFunc_(value);
-  }
+  void operator()(AppClientException& value) const { aceFunc_(value); }
 
  private:
   folly::Function<void(AppClientException&) const> aceFunc_;

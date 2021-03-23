@@ -41,13 +41,9 @@ class ManagedStringView {
     return ManagedStringView{view, FromStaticTag{}};
   }
 
-  /* implicit */ operator std::string_view() const {
-    return view();
-  }
+  /* implicit */ operator std::string_view() const { return view(); }
 
-  std::string str() const& {
-    return is_owned() ? string_ : std::string{view_};
-  }
+  std::string str() const& { return is_owned() ? string_ : std::string{view_}; }
   std::string str() && {
     return is_owned() ? std::move(string_) : std::string{view_};
   }
@@ -63,8 +59,7 @@ class ManagedStringView {
     return a.view() == b;
   }
   friend bool operator==(
-      const ManagedStringView& a,
-      const ManagedStringView& b) {
+      const ManagedStringView& a, const ManagedStringView& b) {
     return a.view() == b.view();
   }
   friend bool operator!=(const ManagedStringView& a, std::string_view b) {
@@ -74,8 +69,7 @@ class ManagedStringView {
     return a.view() != b;
   }
   friend bool operator!=(
-      const ManagedStringView& a,
-      const ManagedStringView& b) {
+      const ManagedStringView& a, const ManagedStringView& b) {
     return a.view() != b.view();
   }
   friend bool operator<(const ManagedStringView& a, std::string_view b) {
@@ -85,8 +79,7 @@ class ManagedStringView {
     return a.view() > b;
   }
   friend bool operator<(
-      const ManagedStringView& a,
-      const ManagedStringView& b) {
+      const ManagedStringView& a, const ManagedStringView& b) {
     return a.view() < b.view();
   }
 
@@ -96,9 +89,7 @@ class ManagedStringView {
   explicit ManagedStringView(std::string_view view, FromStaticTag) noexcept
       : view_{view} {}
 
-  bool is_owned() const noexcept {
-    return !view_.data();
-  }
+  bool is_owned() const noexcept { return !view_.data(); }
 
   std::string_view view_;
   std::string string_;
@@ -112,12 +103,8 @@ class ManagedStringViewWithConversions : public ManagedStringView {
 
   using ManagedStringView::ManagedStringView;
 
-  /* implicit */ operator folly::StringPiece() const {
-    return view();
-  }
-  void clear() {
-    *this = ManagedStringViewWithConversions();
-  }
+  /* implicit */ operator folly::StringPiece() const { return view(); }
+  void clear() { *this = ManagedStringViewWithConversions(); }
   void reserve(size_t n) {
     check_owned("view: cannot reserve");
     string_.reserve(n);
@@ -146,8 +133,7 @@ class ManagedStringViewWithConversions : public ManagedStringView {
 };
 
 inline folly::Expected<folly::StringPiece, folly::ConversionCode> parseTo(
-    folly::StringPiece in,
-    ManagedStringViewWithConversions& out) noexcept {
+    folly::StringPiece in, ManagedStringViewWithConversions& out) noexcept {
   out = ManagedStringViewWithConversions(in);
   return folly::StringPiece{in.end(), in.end()};
 }

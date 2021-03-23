@@ -256,10 +256,7 @@ bool THeader::isFramed(CLIENT_TYPE type) {
 }
 
 unique_ptr<IOBuf> THeader::removeNonHeader(
-    IOBufQueue* queue,
-    size_t& needed,
-    CLIENT_TYPE type,
-    uint32_t sz) {
+    IOBufQueue* queue, size_t& needed, CLIENT_TYPE type, uint32_t sz) {
   switch (type) {
     case THRIFT_FRAMED_DEPRECATED:
       protoId_ = T_BINARY_PROTOCOL;
@@ -437,8 +434,7 @@ static string readString(RWPrivateCursor& c) {
 }
 
 static void readInfoHeaders(
-    RWPrivateCursor& c,
-    THeader::StringToStringMap& headers_) {
+    RWPrivateCursor& c, THeader::StringToStringMap& headers_) {
   // Process key-value headers
   uint32_t numKVHeaders = readVarint<int32_t>(c);
   // continue until we reach (paded) end of packet
@@ -453,8 +449,7 @@ static void readInfoHeaders(
 }
 
 unique_ptr<IOBuf> THeader::readHeaderFormat(
-    unique_ptr<IOBuf> buf,
-    StringToStringMap& persistentReadHeaders) {
+    unique_ptr<IOBuf> buf, StringToStringMap& persistentReadHeaders) {
   readTrans_.clear(); // Clear out any previous transforms.
   readHeaders_.clear(); // Clear out any previous headers.
 
@@ -540,8 +535,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
 }
 
 static unique_ptr<IOBuf> decompressCodec(
-    IOBuf const& buf,
-    folly::io::CodecType codec) {
+    IOBuf const& buf, folly::io::CodecType codec) {
   try {
     return folly::io::getCodec(codec)->uncompress(&buf);
   } catch (std::exception const& e) {
@@ -552,8 +546,7 @@ static unique_ptr<IOBuf> decompressCodec(
 }
 
 unique_ptr<IOBuf> THeader::untransform(
-    unique_ptr<IOBuf> buf,
-    std::vector<uint16_t>& readTrans) {
+    unique_ptr<IOBuf> buf, std::vector<uint16_t>& readTrans) {
   for (vector<uint16_t>::const_reverse_iterator it = readTrans.rbegin();
        it != readTrans.rend();
        ++it) {
@@ -712,10 +705,7 @@ void THeader::setHeader(const std::string& key, std::string&& value) {
 }
 
 void THeader::setHeader(
-    const char* key,
-    size_t keyLength,
-    const char* value,
-    size_t valueLength) {
+    const char* key, size_t keyLength, const char* value, size_t valueLength) {
   writeHeaders_.emplace(std::make_pair(
       std::string(key, keyLength), std::string(value, valueLength)));
 }

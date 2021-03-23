@@ -49,36 +49,18 @@ class token {
     delimiter_change
   };
   /* implicit */ token(
-      const std::string& str,
-      std::size_t left = 0,
-      std::size_t right = 0);
-  type token_type() const {
-    return m_type;
-  }
-  const std::string& raw() const {
-    return m_raw;
-  }
-  const std::string& name() const {
-    return m_name;
-  }
-  const std::string& partial_prefix() const {
-    return m_partial_prefix;
-  }
-  const delim_type& delims() const {
-    return m_delims;
-  }
+      const std::string& str, std::size_t left = 0, std::size_t right = 0);
+  type token_type() const { return m_type; }
+  const std::string& raw() const { return m_raw; }
+  const std::string& name() const { return m_name; }
+  const std::string& partial_prefix() const { return m_partial_prefix; }
+  const delim_type& delims() const { return m_delims; }
   void partial_prefix(const std::string& p_partial_prefix) {
     m_partial_prefix = p_partial_prefix;
   }
-  bool eol() const {
-    return m_eol;
-  }
-  void eol(bool eol) {
-    m_eol = eol;
-  }
-  bool ws_only() const {
-    return m_ws_only;
-  }
+  bool eol() const { return m_eol; }
+  void eol(bool eol) { m_eol = eol; }
+  bool ws_only() const { return m_ws_only; }
 
  private:
   type m_type;

@@ -20,14 +20,14 @@
 #include <thrift/lib/cpp2/test/ProtoBufBenchData.pb.h>
 
 #include <fmt/format.h>
+#include <gflags/gflags.h>
+#include <glog/logging.h>
+#include <google/protobuf/arena.h> // @manual
 #include <folly/Benchmark.h>
 #include <folly/Optional.h>
 #include <folly/init/Init.h>
 #include <folly/memory/MallctlHelper.h>
 #include <folly/portability/GFlags.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
-#include <google/protobuf/arena.h> // @manual
 
 #include <thrift/lib/cpp2/test/Structs.h>
 
@@ -261,9 +261,7 @@ int readBenchArenaMemory(size_t iters) {
   }
 
 #define BENCHMARK_MACRO_NORM(proto, rdwr, bench) \
-  BENCHMARK(proto##_##rdwr##_##bench, iter) {    \
-    rdwr##Bench<p##bench>(iter);                 \
-  }
+  BENCHMARK(proto##_##rdwr##_##bench, iter) { rdwr##Bench<p##bench>(iter); }
 
 #define BENCHMARK_MACRO(bench)                    \
   BENCHMARK_MACRO_NORM(ProtoBuf, read, bench)     \

@@ -55,15 +55,12 @@ class render_context {
   };
 
   render_context(
-      const node& node,
-      const std::map<std::string, template_type>& partials);
+      const node& node, const std::map<std::string, template_type>& partials);
   const node& get_node(const std::string& token);
   std::string render(
-      const template_type& templt,
-      const std::string& prefix = "");
+      const template_type& templt, const std::string& prefix = "");
   std::string render_partial(
-      const std::string& partial_name,
-      const std::string& prefix);
+      const std::string& partial_name, const std::string& prefix);
   template <class T, class... Args>
   void set_state(Args&&... args) {
     m_state.top() =
@@ -73,8 +70,7 @@ class render_context {
  private:
   static const node null_node;
   const node& find_node(
-      const std::string& token,
-      std::list<node const*> current_nodes);
+      const std::string& token, std::list<node const*> current_nodes);
   std::map<std::string, template_type> m_partials;
   std::deque<node> m_nodes;
   std::list<const node*> m_node_ptrs;

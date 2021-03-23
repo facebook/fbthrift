@@ -18,6 +18,7 @@
 
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 
+#include <queue>
 #include <folly/io/async/AsyncSocket.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
@@ -27,7 +28,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
-#include <queue>
 
 using namespace apache::thrift::test;
 using namespace apache::thrift::async;
@@ -57,9 +57,7 @@ class LoopTerminator {
  public:
   explicit LoopTerminator(folly::EventBase* base) : ops_(0), base_(base) {}
 
-  void incr() {
-    ops_++;
-  }
+  void incr() { ops_++; }
   void decr() {
     ops_--;
     if (ops_ == 0) {
@@ -107,9 +105,7 @@ class AsyncRunner2 {
 
  private:
   void genericCob(
-      LoadTestAsyncClient* client,
-      ClientReceiveState&& rstate,
-      OpData* opData);
+      LoadTestAsyncClient* client, ClientReceiveState&& rstate, OpData* opData);
 
   void performAsyncOperation();
 
@@ -128,9 +124,7 @@ class LoadCallback : public RequestCallback {
   LoadCallback(AsyncRunner2* r, LoadTestAsyncClient* client)
       : r_(r), client_(client), oneway_(false) {}
 
-  void setOneway() {
-    oneway_ = true;
-  }
+  void setOneway() { oneway_ = true; }
 
   void requestSent() override {
     if (oneway_) {
@@ -377,9 +371,7 @@ void AsyncRunner2::performAsyncOperation() {
 }
 
 void AsyncRunner2::genericCob(
-    LoadTestAsyncClient* client,
-    ClientReceiveState&& rstate,
-    OpData* opData) {
+    LoadTestAsyncClient* client, ClientReceiveState&& rstate, OpData* opData) {
   int64_t int64_result;
   std::string string_result;
   std::vector<BigStruct> container_result;

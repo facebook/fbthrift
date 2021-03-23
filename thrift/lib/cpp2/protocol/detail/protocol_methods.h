@@ -244,9 +244,7 @@ deserialize_known_length_map(
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<sorted_unique_constructible_v<Set>>::type
 deserialize_known_length_set(
-    Set& set,
-    std::uint32_t set_size,
-    ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
   if (set_size == 0) {
     return;
   }
@@ -273,9 +271,7 @@ typename std::enable_if<
     !sorted_unique_constructible_v<Set> &&
     set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
-    Set& set,
-    std::uint32_t set_size,
-    ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
   reserve_if_possible(&set, set_size);
 
   for (auto i = set_size; i--;) {
@@ -290,9 +286,7 @@ typename std::enable_if<
     !sorted_unique_constructible_v<Set> &&
     !set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
-    Set& set,
-    std::uint32_t set_size,
-    ValDeserializer const& vr) {
+    Set& set, std::uint32_t set_size, ValDeserializer const& vr) {
   reserve_if_possible(&set, set_size);
 
   for (auto i = set_size; i--;) {
@@ -424,14 +418,12 @@ struct protocol_methods<type_class::binary, Type> {
 
   template <bool ZeroCopy, typename Protocol>
   static typename std::enable_if<ZeroCopy, std::size_t>::type serializedSize(
-      Protocol& protocol,
-      Type const& in) {
+      Protocol& protocol, Type const& in) {
     return protocol.serializedSizeZCBinary(in);
   }
   template <bool ZeroCopy, typename Protocol>
   static typename std::enable_if<!ZeroCopy, std::size_t>::type serializedSize(
-      Protocol& protocol,
-      Type const& in) {
+      Protocol& protocol, Type const& in) {
     return protocol.serializedSizeBinary(in);
   }
 };

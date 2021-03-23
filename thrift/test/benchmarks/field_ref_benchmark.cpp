@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+#include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Demangle.h>
 #include <folly/Traits.h>
 #include <folly/init/Init.h>
-#include <glog/logging.h>
 #include <thrift/test/testset/gen-cpp2/testset_for_each_field.h>
 
 namespace apache::thrift::test {

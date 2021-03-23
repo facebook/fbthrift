@@ -146,23 +146,17 @@ class any_ref final {
   const std::type_info& type() const noexcept;
 
   // If a reference is being stored.
-  bool has_reference() const noexcept {
-    return value_ != nullptr;
-  }
+  bool has_reference() const noexcept { return value_ != nullptr; }
 
   // If a value is being referenced.
   //
   // Returns false if not referencing a value or referencing an std::any without
   // a value.
   bool has_value() const noexcept;
-  operator bool() const noexcept {
-    return has_value();
-  }
+  operator bool() const noexcept { return has_value(); }
 
   // Runtime equivalent of std::is_const_v;
-  bool is_const() const noexcept {
-    return details_->is_const;
-  }
+  bool is_const() const noexcept { return details_->is_const; }
 
   // Runtime equivalent of sd::is_rvalue_reference_v.
   bool is_rvalue_reference() const noexcept {

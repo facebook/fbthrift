@@ -55,9 +55,7 @@ void testSerializeDeserialize(const UnionType& val) {
 
 class UnionTestFixture : public Test {
  public:
-  void serializeDeserialize(TestUnion& val) {
-    testSerializeDeserialize(val);
-  }
+  void serializeDeserialize(TestUnion& val) { testSerializeDeserialize(val); }
 };
 
 class TerseUnionTestFixture : public Test {

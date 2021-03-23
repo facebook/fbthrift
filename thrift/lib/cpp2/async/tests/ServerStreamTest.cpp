@@ -77,16 +77,10 @@ class ClientCallback : public StreamClientCallback {
     }
     return true;
   }
-  void onStreamError(folly::exception_wrapper) override {
-    std::terminate();
-  }
-  void onStreamComplete() override {
-    completed.post();
-  }
+  void onStreamError(folly::exception_wrapper) override { std::terminate(); }
+  void onStreamComplete() override { completed.post(); }
 
-  void resetServerCallback(StreamServerCallback&) override {
-    std::terminate();
-  }
+  void resetServerCallback(StreamServerCallback&) override { std::terminate(); }
 
   int i = 0;
   folly::fibers::Baton started, completed;
@@ -372,15 +366,9 @@ TEST(ServerStreamTest, CancelDestroyPublisherRace) {
     folly::ScopedEventBaseThread clientEb, serverEb;
     folly::Baton<> baton;
     struct Destructible {
-      Destructible() {
-        x = 1;
-      }
-      ~Destructible() {
-        x = 0;
-      }
-      void operator()() {
-        EXPECT_EQ(x, 1);
-      }
+      Destructible() { x = 1; }
+      ~Destructible() { x = 0; }
+      void operator()() { EXPECT_EQ(x, 1); }
       int x;
     };
     auto [factory, publisher] = ServerStream<int>::createPublisher(

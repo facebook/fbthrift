@@ -105,16 +105,16 @@ FieldPosition BlockLayout::maximize() {
   return pos;
 }
 
-FieldPosition
-BlockLayout::layout(LayoutRoot& root, const T& x, LayoutPosition self) {
+FieldPosition BlockLayout::layout(
+    LayoutRoot& root, const T& x, LayoutPosition self) {
   FieldPosition pos = startFieldPosition();
   FROZEN_LAYOUT_FIELD_REQ(mask);
   FROZEN_LAYOUT_FIELD_REQ(offset);
   return pos;
 }
 
-void BlockLayout::freeze(FreezeRoot& root, const T& x, FreezePosition self)
-    const {
+void BlockLayout::freeze(
+    FreezeRoot& root, const T& x, FreezePosition self) const {
   FROZEN_FREEZE_FIELD_REQ(mask);
   FROZEN_FREEZE_FIELD_REQ(offset);
 }
@@ -137,16 +137,14 @@ size_t BufferHelpers<std::unique_ptr<folly::IOBuf>>::size(
 }
 
 void BufferHelpers<std::unique_ptr<folly::IOBuf>>::copyTo(
-    const std::unique_ptr<folly::IOBuf>& src,
-    folly::MutableByteRange dst) {
+    const std::unique_ptr<folly::IOBuf>& src, folly::MutableByteRange dst) {
   if (src != nullptr) {
     folly::io::Cursor(src.get()).pull(dst.begin(), dst.size());
   }
 }
 
 void BufferHelpers<std::unique_ptr<folly::IOBuf>>::thawTo(
-    folly::ByteRange src,
-    std::unique_ptr<folly::IOBuf>& dst) {
+    folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst) {
   dst = folly::IOBuf::copyBuffer(src.begin(), src.size());
 }
 
@@ -155,14 +153,12 @@ size_t BufferHelpers<folly::IOBuf>::size(const folly::IOBuf& src) {
 }
 
 void BufferHelpers<folly::IOBuf>::copyTo(
-    const folly::IOBuf& src,
-    folly::MutableByteRange dst) {
+    const folly::IOBuf& src, folly::MutableByteRange dst) {
   folly::io::Cursor(&src).pull(dst.begin(), dst.size());
 }
 
 void BufferHelpers<folly::IOBuf>::thawTo(
-    folly::ByteRange src,
-    folly::IOBuf& dst) {
+    folly::ByteRange src, folly::IOBuf& dst) {
   dst = folly::IOBuf(folly::IOBuf::COPY_BUFFER, src);
 }
 

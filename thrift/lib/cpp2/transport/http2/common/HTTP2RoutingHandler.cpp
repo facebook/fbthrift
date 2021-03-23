@@ -94,8 +94,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
 
   // begin SimpleController methods
   proxygen::HTTPTransactionHandler* getRequestHandler(
-      proxygen::HTTPTransaction& txn,
-      proxygen::HTTPMessage* msg) override {
+      proxygen::HTTPTransaction& txn, proxygen::HTTPMessage* msg) override {
     folly::SocketAddress clientAddr, vipAddr;
     txn.getPeerAddress(clientAddr);
     txn.getLocalAddress(vipAddr);

@@ -16,12 +16,12 @@
 
 #pragma once
 
+#include <random>
 #include <folly/Function.h>
 #include <folly/GLog.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
-#include <random>
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
@@ -80,9 +80,7 @@ class Noop {
     stats_->add(error_);
   }
 
-  void onewaySent() {
-    stats_->add(op_name_);
-  }
+  void onewaySent() { stats_->add(op_name_); }
 
  private:
   QPSStats* stats_;
@@ -104,8 +102,7 @@ class Sum {
   ~Sum() = default;
 
   void async(
-      AsyncClient* client,
-      std::unique_ptr<RequestCallbackWithValidator> cb) {
+      AsyncClient* client, std::unique_ptr<RequestCallbackWithValidator> cb) {
     request_.x_ref() = gen_();
     request_.y_ref() = gen_();
 

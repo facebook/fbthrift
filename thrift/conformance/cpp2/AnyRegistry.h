@@ -83,8 +83,7 @@ class AnyRegistry {
   // Throws std::invalid_argument if serializer contains an invalid protocol.
   // Returns false iff the serializer conflicts with an existing registration.
   bool registerSerializer(
-      const std::type_info& typeInfo,
-      const AnySerializer* serializer);
+      const std::type_info& typeInfo, const AnySerializer* serializer);
   bool registerSerializer(
       const std::type_info& typeInfo,
       std::unique_ptr<AnySerializer> serializer);
@@ -104,11 +103,9 @@ class AnyRegistry {
   // Returns the serializer for the given type and protocol, or nullptr if
   // no matching serializer is found.
   const AnySerializer* getSerializer(
-      const std::type_info& typeInfo,
-      const Protocol& protocol) const noexcept;
+      const std::type_info& typeInfo, const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByUri(
-      const std::string_view uri,
-      const Protocol& protocol) const noexcept;
+      const std::string_view uri, const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByHash(
       TypeHashAlgorithm alg,
       const folly::fbstring& typeHash,
@@ -117,9 +114,7 @@ class AnyRegistry {
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>
   bool registerType(
-      const std::type_info& typeInfo,
-      ThriftTypeInfo type,
-      C&& serializers);
+      const std::type_info& typeInfo, ThriftTypeInfo type, C&& serializers);
 
   template <
       typename T,
@@ -163,8 +158,7 @@ class AnyRegistry {
 
   // Allows an invalid type name to be registered.
   [[deprecated("Do not use. Will be removed.")]] bool forceRegisterType(
-      const std::type_info& typeInfo,
-      std::string type);
+      const std::type_info& typeInfo, std::string type);
 
  private:
   struct TypeEntry {
@@ -184,14 +178,11 @@ class AnyRegistry {
   std::map<folly::fbstring, TypeEntry*> hashIndex_; // Must be sorted.
 
   TypeEntry* registerTypeImpl(
-      const std::type_info& typeInfo,
-      ThriftTypeInfo type);
+      const std::type_info& typeInfo, ThriftTypeInfo type);
   static bool registerSerializerImpl(
-      const AnySerializer* serializer,
-      TypeEntry* entry);
+      const AnySerializer* serializer, TypeEntry* entry);
   bool registerSerializerImpl(
-      std::unique_ptr<AnySerializer> serializer,
-      TypeEntry* entry);
+      std::unique_ptr<AnySerializer> serializer, TypeEntry* entry);
 
   bool genTypeHashsAndCheckForConflicts(
       std::string_view uri,
@@ -223,12 +214,10 @@ class AnyRegistry {
       const folly::fbstring& typeHash) const;
   const TypeEntry& getAndCheckTypeEntryFor(const Any& value) const;
   const AnySerializer& getAndCheckSerializer(
-      const TypeEntry& entry,
-      const Protocol& protocol) const;
+      const TypeEntry& entry, const Protocol& protocol) const;
 
   const AnySerializer* getSerializer(
-      const TypeEntry* entry,
-      const Protocol& protocol) const noexcept;
+      const TypeEntry* entry, const Protocol& protocol) const noexcept;
 };
 
 // Implementation details.
@@ -242,9 +231,7 @@ T AnyRegistry::load(const Any& value) const {
 
 template <typename C>
 bool AnyRegistry::registerType(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type,
-    C&& serializers) {
+    const std::type_info& typeInfo, ThriftTypeInfo type, C&& serializers) {
   TypeEntry* entry = registerTypeImpl(typeInfo, std::move(type));
   if (entry == nullptr) {
     return false;

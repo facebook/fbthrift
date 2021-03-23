@@ -48,9 +48,7 @@ struct SinkConsumerImpl {
   folly::Executor::KeepAlive<> executor;
   Tile* interaction{nullptr};
 
-  explicit operator bool() const {
-    return (bool)consumer;
-  }
+  explicit operator bool() const { return (bool)consumer; }
 #endif
 };
 

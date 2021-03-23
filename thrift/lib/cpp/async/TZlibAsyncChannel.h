@@ -41,21 +41,11 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
     return std::shared_ptr<TZlibAsyncChannel>(
         new TZlibAsyncChannel(channel), Destructor());
   }
-  bool readable() const override {
-    return channel_->readable();
-  }
-  bool good() const override {
-    return channel_->good();
-  }
-  bool error() const override {
-    return channel_->error();
-  }
-  bool timedOut() const override {
-    return channel_->timedOut();
-  }
-  bool isIdle() const override {
-    return channel_->isIdle();
-  }
+  bool readable() const override { return channel_->readable(); }
+  bool good() const override { return channel_->good(); }
+  bool error() const override { return channel_->error(); }
+  bool timedOut() const override { return channel_->timedOut(); }
+  bool isIdle() const override { return channel_->isIdle(); }
 
   void sendMessage(
       const VoidCallback& cob,
@@ -78,9 +68,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
   void attachEventBase(folly::EventBase* eventBase) override {
     channel_->attachEventBase(eventBase);
   }
-  void detachEventBase() override {
-    channel_->detachEventBase();
-  }
+  void detachEventBase() override { channel_->detachEventBase(); }
 
   uint32_t getRecvTimeout() const override {
     return channel_->getRecvTimeout();
@@ -109,9 +97,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
    public:
     SendRequest();
 
-    bool isSet() const {
-      return static_cast<bool>(callback_);
-    }
+    bool isSet() const { return static_cast<bool>(callback_); }
 
     void set(
         const VoidCallback& callback,
@@ -143,9 +129,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
    public:
     RecvRequest();
 
-    bool isSet() const {
-      return static_cast<bool>(callback_);
-    }
+    bool isSet() const { return static_cast<bool>(callback_); }
 
     void set(
         const VoidCallback& callback,

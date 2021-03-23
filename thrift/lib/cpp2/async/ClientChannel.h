@@ -76,9 +76,7 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
     onDetachable_ = std::move(onDetachable);
   }
 
-  virtual void unsetOnDetachable() {
-    onDetachable_ = nullptr;
-  }
+  virtual void unsetOnDetachable() { onDetachable_ = nullptr; }
 
  protected:
   // This should be called by the implementation to notify observer (if any)

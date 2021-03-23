@@ -89,10 +89,8 @@ void writerBenchmark(const BenchmarkObject& obj, int iters) {
   }
 }
 
-#define X1(proto, kind)                      \
-  BENCHMARK(proto##_##kind, n) {             \
-    writerBenchmark<proto##Writer>(kind, n); \
-  }
+#define X1(proto, kind) \
+  BENCHMARK(proto##_##kind, n) { writerBenchmark<proto##Writer>(kind, n); }
 
 #define X(proto)                \
   X1(proto, ints)               \

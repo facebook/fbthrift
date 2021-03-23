@@ -74,8 +74,7 @@ class Handler : public test::TestServiceSvIf {
   }
 
   ServerStream<int8_t> echoIOBufAsByteStream(
-      std::unique_ptr<folly::IOBuf> iobuf,
-      int32_t delayMs) final {
+      std::unique_ptr<folly::IOBuf> iobuf, int32_t delayMs) final {
     auto [stream, publisher] = ServerStream<int8_t>::createPublisher();
     std::ignore = folly::makeSemiFuture()
                       .delayed(std::chrono::milliseconds(delayMs))
@@ -92,12 +91,8 @@ class Handler : public test::TestServiceSvIf {
     return std::move(stream);
   }
 
-  int32_t getLastTimeoutMsec() const {
-    return lastTimeoutMsec_;
-  }
-  void setSleepDelayMs(int32_t delay) {
-    sleepDelayMsec_ = delay;
-  }
+  int32_t getLastTimeoutMsec() const { return lastTimeoutMsec_; }
+  void setSleepDelayMs(int32_t delay) { sleepDelayMsec_ = delay; }
 
  private:
   int32_t lastTimeoutMsec_{-1};
@@ -108,8 +103,7 @@ class RocketClientChannelTest : public testing::Test {
  public:
   template <typename F>
   test::TestServiceAsyncClient makeClient(
-      folly::EventBase& evb,
-      F&& configureChannel) {
+      folly::EventBase& evb, F&& configureChannel) {
     auto channel =
         RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
             new folly::AsyncSocket(&evb, runner_.getAddress())));
@@ -268,8 +262,7 @@ folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSemiFuture(
 }
 
 folly::SemiFuture<folly::Unit> noResponseIOBufSync(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   auto& fm =
       folly::fibers::getFiberManager(*client.getChannel()->getEventBase());
   return fm.addTaskFuture([&, nbytes] {
@@ -280,8 +273,7 @@ folly::SemiFuture<folly::Unit> noResponseIOBufSync(
 }
 
 folly::SemiFuture<folly::Unit> noResponseIOBufSemiFuture(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
@@ -290,8 +282,7 @@ folly::SemiFuture<folly::Unit> noResponseIOBufSemiFuture(
 }
 
 folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSync(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   auto& fm =
       folly::fibers::getFiberManager(*client.getChannel()->getEventBase());
   return fm.addTaskFuture([&, nbytes] {
@@ -304,8 +295,7 @@ folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSync(
 }
 
 folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSemiFuture(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
@@ -586,8 +576,7 @@ TEST_F(RocketClientChannelTest, FailLastRequestWithZeroBytesWrittenSemiFuture) {
 }
 
 TEST_F(
-    RocketClientChannelTest,
-    BatchedWriteRequestResponseWithFastClientTimeout) {
+    RocketClientChannelTest, BatchedWriteRequestResponseWithFastClientTimeout) {
   folly::EventBase evb;
   auto* slowWritingSocket = new SlowWritingSocket(&evb, runner_.getAddress());
   test::TestServiceAsyncClient client(RocketClientChannel::newChannel(

@@ -64,17 +64,11 @@ class ClientBufferedStream {
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
-      void consume() override {
-        baton.post();
-      }
+      void consume() override { baton.post(); }
 
-      void canceled() override {
-        std::terminate();
-      }
+      void canceled() override { std::terminate(); }
 
-      void wait() {
-        baton.wait();
-      }
+      void wait() { baton.wait(); }
 
      private:
       folly::Baton<> baton;
@@ -194,13 +188,9 @@ class ClientBufferedStream {
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
-      void consume() override {
-        baton.post();
-      }
+      void consume() override { baton.post(); }
 
-      void canceled() override {
-        baton.post();
-      }
+      void canceled() override { baton.post(); }
 
       folly::coro::Baton baton;
     };
@@ -294,13 +284,9 @@ class ClientBufferedStream {
     apache::thrift::detail::ClientStreamBridge::ClientQueueWithTailPtr queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
-      void consume() override {
-        baton.post();
-      }
+      void consume() override { baton.post(); }
 
-      void canceled() override {
-        baton.post();
-      }
+      void canceled() override { baton.post(); }
 
       folly::coro::Baton baton;
     };
@@ -436,17 +422,11 @@ class ClientBufferedStream {
       }
     }
 
-    void cancel() {
-      state_->streamBridge->cancel();
-    }
+    void cancel() { state_->streamBridge->cancel(); }
 
-    void detach() && {
-      state_.reset();
-    }
+    void detach() && { state_.reset(); }
 
-    void join() && {
-      std::move(*this).futureJoin().wait();
-    }
+    void join() && { std::move(*this).futureJoin().wait(); }
 
     folly::SemiFuture<folly::Unit> futureJoin() && {
       return std::exchange(state_, nullptr)->promise.getSemiFuture();
@@ -480,9 +460,7 @@ class ClientBufferedStream {
       outstanding_ = chunkBufferSize_;
     }
 
-    ~Continuation() {
-      state_->promise.setValue();
-    }
+    ~Continuation() { state_->promise.setValue(); }
 
     // takes ownerhsip of pointer on success
     static bool wait(std::unique_ptr<Continuation>& cb) {
@@ -497,9 +475,7 @@ class ClientBufferedStream {
       e_->add([this]() { (*this)(); });
     }
 
-    void canceled() override {
-      delete this;
-    }
+    void canceled() override { delete this; }
 
     void operator()() noexcept {
       std::unique_ptr<Continuation> cb(this);

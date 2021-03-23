@@ -152,9 +152,7 @@ namespace std {
 template <>
 struct hash<Tag> {
   explicit hash(size_t i) : i(i) {}
-  size_t operator()(Tag) const {
-    return i;
-  }
+  size_t operator()(Tag) const { return i; }
   size_t i;
 };
 } // namespace std
@@ -164,9 +162,7 @@ namespace folly {
 template <>
 struct hasher<Tag> {
   explicit hasher(size_t i) : i(i) {}
-  size_t operator()(Tag) const {
-    return i;
-  }
+  size_t operator()(Tag) const { return i; }
   size_t i;
 };
 } // namespace folly

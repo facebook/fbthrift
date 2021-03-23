@@ -102,10 +102,7 @@ struct RefLayout : public LayoutBase {
   }
 
   FieldPosition layoutValueField(
-      LayoutRoot& root,
-      LayoutPosition self,
-      FieldPosition pos,
-      const T* ptr) {
+      LayoutRoot& root, LayoutPosition self, FieldPosition pos, const T* ptr) {
     assert(ptr);
     assert(valueField_);
     size_t valueBytes = valueField_->layout.size;
@@ -122,8 +119,8 @@ struct RefLayout : public LayoutBase {
     return pos;
   }
 
-  void freezeValueField(FreezeRoot& root, FreezePosition self, const T* ptr)
-      const {
+  void freezeValueField(
+      FreezeRoot& root, FreezePosition self, const T* ptr) const {
     assert(ptr);
     assert(valueField_);
     size_t valueBytes = valueField_->layout.size;
@@ -201,9 +198,7 @@ struct RefLayout : public LayoutBase {
       return valueView_.get();
     }
 
-    inline explicit operator bool() const noexcept {
-      return bool(valueView_);
-    }
+    inline explicit operator bool() const noexcept { return bool(valueView_); }
 
     inline bool operator==(const View& that) const noexcept {
       if (valueView_) {
@@ -232,14 +227,12 @@ struct RefLayout : public LayoutBase {
     }
 
     friend inline bool operator==(
-        const std::nullptr_t,
-        const View& x) noexcept {
+        const std::nullptr_t, const View& x) noexcept {
       return !x.valueView_;
     }
 
     friend inline bool operator!=(
-        const std::nullptr_t,
-        const View& x) noexcept {
+        const std::nullptr_t, const View& x) noexcept {
       return bool(x.valueView_);
     }
 
@@ -247,9 +240,7 @@ struct RefLayout : public LayoutBase {
     std::unique_ptr<ValueView> valueView_;
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 /**
@@ -360,9 +351,7 @@ struct SharedRefLayout : public RefLayout<T> {
 
   using View = typename RefLayout<T>::View;
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 /**
@@ -465,9 +454,7 @@ struct UniqueRefLayout : public RefLayout<T> {
 
   using View = typename RefLayout<T>::View;
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 } // namespace detail

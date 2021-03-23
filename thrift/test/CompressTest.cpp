@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+#include <cstdlib>
+#include <ctime>
 #include <folly/Benchmark.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <cstdlib>
-#include <ctime>
 
 #include <thrift/test/gen-cpp2/ThriftTest.h>
 
@@ -29,10 +29,7 @@ using namespace apache::thrift::transport;
 using namespace thrift::test;
 
 void testMessage(
-    uint8_t flag,
-    int iters,
-    bool easyMessage,
-    bool binary = false) {
+    uint8_t flag, int iters, bool easyMessage, bool binary = false) {
   Bonk b;
   Bonk bin;
   *b.message_ref() = "";

@@ -27,8 +27,8 @@
 #include <thrift/lib/cpp2/transport/core/testutil/FakeThreadManager.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -67,8 +67,7 @@ class CoreTestFixture : public testing::Test {
 
   // Deserialize the exception if possible, return false otherwise.
   static bool deserializeException(
-      folly::IOBuf* buf,
-      TApplicationException* tae);
+      folly::IOBuf* buf, TApplicationException* tae);
 
   std::unique_ptr<Cpp2ConnContext> newCpp2ConnContext();
 

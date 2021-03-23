@@ -45,9 +45,7 @@ testing::TestInfo* RegisterTest(
   class FactoryImpl : public testing::internal::TestFactoryBase {
    public:
     explicit FactoryImpl(Factory f) : factory_(std::move(f)) {}
-    testing::Test* CreateTest() override {
-      return factory_();
-    }
+    testing::Test* CreateTest() override { return factory_(); }
 
    private:
     Factory factory_;
@@ -66,8 +64,7 @@ testing::TestInfo* RegisterTest(
 }
 
 testing::AssertionResult RunRoundTripTest(
-    ConformanceServiceAsyncClient& client,
-    RoundTripTestCase roundTrip) {
+    ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip) {
   RoundTripResponse res;
   client.sync_roundTrip(res, *roundTrip.request_ref());
 
@@ -147,8 +144,7 @@ std::set<std::string> parseNonconforming(std::string_view data) {
 }
 
 testing::AssertionResult RunTestCase(
-    ConformanceServiceAsyncClient& client,
-    const TestCase& testCase) {
+    ConformanceServiceAsyncClient& client, const TestCase& testCase) {
   switch (testCase.test_ref()->getType()) {
     case TestCaseUnion::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());

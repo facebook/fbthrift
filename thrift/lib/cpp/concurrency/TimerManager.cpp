@@ -248,8 +248,7 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
 }
 
 void TimerManager::add(
-    shared_ptr<Runnable> task,
-    const struct timespec& value) {
+    shared_ptr<Runnable> task, const struct timespec& value) {
   int64_t expiration;
   Util::toMilliseconds(expiration, value);
 

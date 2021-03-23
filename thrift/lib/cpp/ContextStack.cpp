@@ -84,8 +84,7 @@ void ContextStack::onReadData(const SerializedMessage& msg) {
 }
 
 void ContextStack::postRead(
-    apache::thrift::transport::THeader* header,
-    uint32_t bytes) {
+    apache::thrift::transport::THeader* header, uint32_t bytes) {
   FOLLY_SDT(
       thrift,
       thrift_context_stack_post_read,
@@ -115,8 +114,7 @@ void ContextStack::handlerErrorWrapped(const folly::exception_wrapper& ew) {
 }
 
 void ContextStack::userExceptionWrapped(
-    bool declared,
-    const folly::exception_wrapper& ew) {
+    bool declared, const folly::exception_wrapper& ew) {
   FOLLY_SDT(
       thrift,
       thrift_context_stack_user_exception_wrapped,

@@ -61,27 +61,17 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   FOLLY_NOINLINE void readBufferAvailable(
       std::unique_ptr<folly::IOBuf> /*readBuf*/) noexcept override;
 
-  bool isBufferMovable() noexcept override {
-    return true;
-  }
+  bool isBufferMovable() noexcept override { return true; }
 
   void timeoutExpired() noexcept override;
 
-  const folly::IOBuf& getReadBuffer() const {
-    return readBuffer_;
-  }
+  const folly::IOBuf& getReadBuffer() const { return readBuffer_; }
 
-  void setReadBuffer(folly::IOBuf&& buffer) {
-    readBuffer_ = std::move(buffer);
-  }
+  void setReadBuffer(folly::IOBuf&& buffer) { readBuffer_ = std::move(buffer); }
 
-  size_t getReadBufferSize() const {
-    return bufferSize_;
-  }
+  size_t getReadBufferSize() const { return bufferSize_; }
 
-  void setReadBufferSize(size_t size) {
-    bufferSize_ = size;
-  }
+  void setReadBufferSize(size_t size) { bufferSize_ = size; }
 
   void resizeBuffer();
 

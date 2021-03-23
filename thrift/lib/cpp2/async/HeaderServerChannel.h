@@ -66,9 +66,7 @@ class HeaderServerChannel : public ServerChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  folly::AsyncTransport* getTransport() {
-    return cpp2Channel_->getTransport();
-  }
+  folly::AsyncTransport* getTransport() { return cpp2Channel_->getTransport(); }
 
   void setTransport(std::shared_ptr<folly::AsyncTransport> transport) {
     cpp2Channel_->setTransport(transport);
@@ -91,9 +89,7 @@ class HeaderServerChannel : public ServerChannel,
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
-  folly::EventBase* getEventBase() {
-    return cpp2Channel_->getEventBase();
-  }
+  folly::EventBase* getEventBase() { return cpp2Channel_->getEventBase(); }
 
   void sendCatchupRequests(
       std::unique_ptr<folly::IOBuf> next_req,
@@ -117,13 +113,9 @@ class HeaderServerChannel : public ServerChannel,
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
 
-    void setInOrderRecvSequenceId(uint32_t seqId) {
-      InOrderRecvSeqId_ = seqId;
-    }
+    void setInOrderRecvSequenceId(uint32_t seqId) { InOrderRecvSeqId_ = seqId; }
 
-    apache::thrift::transport::THeader* getHeader() {
-      return header_.get();
-    }
+    apache::thrift::transport::THeader* getHeader() { return header_.get(); }
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&&,
@@ -137,8 +129,8 @@ class HeaderServerChannel : public ServerChannel,
         int32_t protoSeqId,
         MessageChannel::SendCallback* cb);
 
-    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
-        override;
+    void sendErrorWrapped(
+        folly::exception_wrapper ex, std::string exCode) override;
 
     void sendErrorWrapped(
         folly::exception_wrapper ex,
@@ -162,16 +154,10 @@ class HeaderServerChannel : public ServerChannel,
         const std::map<std::string, std::string>& headers,
         TimeoutResponseType responseType);
 
-    const SamplingStatus& getSamplingStatus() const {
-      return samplingStatus_;
-    }
+    const SamplingStatus& getSamplingStatus() const { return samplingStatus_; }
 
-    folly::IOBuf* getBuf() {
-      return buf_.get();
-    }
-    std::unique_ptr<folly::IOBuf> extractBuf() {
-      return std::move(buf_);
-    }
+    folly::IOBuf* getBuf() { return buf_.get(); }
+    std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
 
    protected:
     bool tryStartProcessing() override {
@@ -193,17 +179,13 @@ class HeaderServerChannel : public ServerChannel,
     virtual void requestReceived(std::unique_ptr<HeaderRequest>&&) = 0;
   };
 
-  void setSampleRate(uint32_t sampleRate) {
-    sampleRate_ = sampleRate;
-  }
+  void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
 
   void setQueueSends(bool queueSends) {
     cpp2Channel_->setQueueSends(queueSends);
   }
 
-  void closeNow() {
-    cpp2Channel_->closeNow();
-  }
+  void closeNow() { cpp2Channel_->closeNow(); }
 
   class ServerFramingHandler : public FramingHandler {
    public:

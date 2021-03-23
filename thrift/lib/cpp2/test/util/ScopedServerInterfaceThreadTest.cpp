@@ -43,9 +43,7 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
  public:
   ~SimpleServiceImpl() override {}
   void async_tm_add(
-      unique_ptr<HandlerCallback<int64_t>> cb,
-      int64_t a,
-      int64_t b) override {
+      unique_ptr<HandlerCallback<int64_t>> cb, int64_t a, int64_t b) override {
     cb->result(a + b);
   }
 
@@ -73,9 +71,7 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
         });
   }
 
-  void waitForSinkComplete() {
-    requestSem_.wait();
-  }
+  void waitForSinkComplete() { requestSem_.wait(); }
 
   void largeRequest(std::unique_ptr<std::unique_ptr<folly::IOBuf>>) override {}
 
@@ -310,9 +306,7 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
   using Channel = typename ChannelAndServiceT::Channel;
   using Service = typename ChannelAndServiceT::Service;
 
-  std::shared_ptr<Service> newService() {
-    return std::make_shared<Service>();
-  }
+  std::shared_ptr<Service> newService() { return std::make_shared<Service>(); }
 
   template <typename AsyncClientT>
   static std::unique_ptr<AsyncClientT> newClient(
@@ -326,8 +320,7 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
 
   template <typename AsyncClientT>
   static std::unique_ptr<AsyncClientT> newRawClient(
-      folly::EventBase* evb,
-      ScopedServerInterfaceThread& ssit) {
+      folly::EventBase* evb, ScopedServerInterfaceThread& ssit) {
     return std::make_unique<AsyncClientT>(
         folly::via(evb, [&] {
           auto channel = Channel::newChannel(folly::AsyncSocket::UniquePtr(
@@ -364,8 +357,7 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   }
 
   folly::Future<std::unique_ptr<std::string>> future_echoSlow(
-      std::unique_ptr<std::string> message,
-      int64_t sleepMs) override {
+      std::unique_ptr<std::string> message, int64_t sleepMs) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
         .via(folly::getGlobalCPUExecutor())
@@ -402,8 +394,7 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
   }
 
   folly::SemiFuture<std::unique_ptr<std::string>> semifuture_echoSlow(
-      std::unique_ptr<std::string> message,
-      int64_t sleepMs) override {
+      std::unique_ptr<std::string> message, int64_t sleepMs) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
         .deferValue([message = std::move(message)](auto&&) mutable {

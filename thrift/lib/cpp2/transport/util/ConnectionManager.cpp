@@ -52,8 +52,7 @@ ConnectionManager::ConnectionManager() {
 }
 
 std::shared_ptr<ClientConnectionIf> ConnectionManager::getConnection(
-    const string& addr,
-    uint16_t port) {
+    const string& addr, uint16_t port) {
   ConnectionThread* thread = threads_[nextThreadToUse_].get();
   // The update of nextThreadToUse_ has race conditions, but regardless
   // its value will always be in the correct range.  The race condition

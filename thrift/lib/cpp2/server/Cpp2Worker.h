@@ -110,16 +110,12 @@ class Cpp2Worker : public IOWorkerContext,
    *
    * @returns pointer to ThriftServer
    */
-  ThriftServer* getServer() const {
-    return server_;
-  }
+  ThriftServer* getServer() const { return server_; }
 
   /**
    * Get a shared_ptr of this Cpp2Worker.
    */
-  std::shared_ptr<Cpp2Worker> getWorkerShared() {
-    return shared_from_this();
-  }
+  std::shared_ptr<Cpp2Worker> getWorkerShared() { return shared_from_this(); }
 
   /**
    * SSL stats hook
@@ -131,16 +127,11 @@ class Cpp2Worker : public IOWorkerContext,
       const folly::exception_wrapper& ex) noexcept override;
 
   void handleHeader(
-      folly::AsyncTransport::UniquePtr sock,
-      const folly::SocketAddress* addr);
+      folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr);
 
-  RequestsRegistry* getRequestsRegistry() const {
-    return requestsRegistry_;
-  }
+  RequestsRegistry* getRequestsRegistry() const { return requestsRegistry_; }
 
-  bool isStopping() const {
-    return stopping_.load(std::memory_order_relaxed);
-  }
+  bool isStopping() const { return stopping_.load(std::memory_order_relaxed); }
 
   struct ActiveRequestsDecrement {
     void operator()(Cpp2Worker* worker) {
@@ -227,9 +218,7 @@ class Cpp2Worker : public IOWorkerContext,
     return &fizzPeeker_;
   }
 
-  int64_t& getIngressMemoryUsageRef() {
-    return ingressMemoryUsage_;
-  }
+  int64_t& getIngressMemoryUsageRef() { return ingressMemoryUsage_; }
 
  private:
   /// The mother ship.
@@ -243,8 +232,7 @@ class Cpp2Worker : public IOWorkerContext,
   std::shared_ptr<ThriftServer> duplexServer_;
 
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(
-      folly::EventBase* base,
-      int fd) override {
+      folly::EventBase* base, int fd) override {
     return folly::AsyncSocket::UniquePtr(
         new folly::AsyncSocket(base, folly::NetworkSocket::fromFd(fd)));
   }
@@ -288,9 +276,7 @@ class Cpp2Worker : public IOWorkerContext,
     return server_->isPlaintextAllowedOnLoopback();
   }
 
-  SSLPolicy getSSLPolicy() {
-    return server_->getSSLPolicy();
-  }
+  SSLPolicy getSSLPolicy() { return server_->getSSLPolicy(); }
 
   bool shouldPerformSSL(
       const std::vector<uint8_t>& bytes,

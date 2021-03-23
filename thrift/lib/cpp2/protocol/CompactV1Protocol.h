@@ -42,9 +42,7 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::setOutput;
 
   inline uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   using CompactProtocolWriter::writeBool;
   using CompactProtocolWriter::writeByte;
   using CompactProtocolWriter::writeCollectionBegin;
@@ -105,8 +103,8 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::setInput;
   using CompactProtocolReader::setStringSizeLimit;
 
-  inline void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   using CompactProtocolReader::readBool;
   using CompactProtocolReader::readByte;
   using CompactProtocolReader::readFieldBegin;

@@ -44,15 +44,12 @@ class ConnectionThread : public folly::ScopedEventBaseThread {
   // Returns a connection that may be used to talk to a server at
   // "addr:port".
   std::shared_ptr<ClientConnectionIf> getConnection(
-      const std::string& addr,
-      uint16_t port);
+      const std::string& addr, uint16_t port);
 
  private:
   // Creates a new connection on the provided event base if necessary.
   void maybeCreateConnection(
-      const std::string& serverKey,
-      const std::string& addr,
-      uint16_t port);
+      const std::string& serverKey, const std::string& addr, uint16_t port);
 
   folly::Synchronized<
       std::unordered_map<std::string, std::shared_ptr<ClientConnectionIf>>>

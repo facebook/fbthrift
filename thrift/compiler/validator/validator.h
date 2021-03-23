@@ -56,8 +56,7 @@ class validator : virtual public visitor {
 
 template <typename T, typename... Args>
 std::unique_ptr<T> make_validator(
-    validator::diagnostics_t& diagnostics,
-    Args&&... args) {
+    validator::diagnostics_t& diagnostics, Args&&... args) {
   auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
   ptr->set_ref_diagnostics(diagnostics);
   return ptr;
@@ -65,8 +64,7 @@ std::unique_ptr<T> make_validator(
 
 template <typename T, typename... Args>
 validator::diagnostics_t run_validator(
-    t_program* const program,
-    Args&&... args) {
+    t_program* const program, Args&&... args) {
   validator::diagnostics_t diagnostics;
   make_validator<T>(diagnostics, std::forward<Args>(args)...)
       ->traverse(program);
@@ -229,8 +227,7 @@ class base_annotation_validator : virtual public validator {
 
  protected:
   virtual void validate_annotations(
-      const t_annotated* tannotated,
-      const std::string& tannotated_name) = 0;
+      const t_annotated* tannotated, const std::string& tannotated_name) = 0;
 };
 
 class structured_annotations_uniqueness_validator

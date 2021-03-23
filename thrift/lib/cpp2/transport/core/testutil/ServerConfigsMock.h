@@ -31,9 +31,7 @@ namespace server {
 // ThriftProcessor.
 class ServerConfigsMock : public ServerConfigs {
  public:
-  uint64_t getMaxResponseSize() const override {
-    return maxResponseSize_;
-  }
+  uint64_t getMaxResponseSize() const override { return maxResponseSize_; }
 
   /**
    * @see BaseThriftServer::getTaskExpireTimeForRequest function.
@@ -52,9 +50,7 @@ class ServerConfigsMock : public ServerConfigs {
     return observer_.get();
   }
 
-  size_t getNumIOWorkerThreads() const override {
-    return numIOWorkerThreads_;
-  }
+  size_t getNumIOWorkerThreads() const override { return numIOWorkerThreads_; }
 
   std::chrono::milliseconds getStreamExpireTime() const override {
     return streamExpireTime_;
@@ -75,9 +71,7 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
-  bool getTosReflect() const override {
-    return false;
-  }
+  bool getTosReflect() const override { return false; }
 
  public:
   uint64_t maxResponseSize_{0};

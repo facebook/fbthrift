@@ -24,8 +24,7 @@ namespace util {
 
 template <class T, class Frozen>
 const Frozen* freezeToFile(
-    const T& value,
-    const folly::MemoryMapping& mapping) {
+    const T& value, const folly::MemoryMapping& mapping) {
   DCHECK_GE(mapping.range().size(), frozenSize(value));
   auto writableBytes = mapping.writableRange();
   byte* buffer = writableBytes.begin();

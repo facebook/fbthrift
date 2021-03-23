@@ -16,8 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
-#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
+#include <folly/portability/GFlags.h>
 
 #include <folly/Likely.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
@@ -99,8 +99,7 @@ void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
 }
 
 void H2ClientConnection::setCloseCallback(
-    ThriftClient* client,
-    CloseCallback* cb) {
+    ThriftClient* client, CloseCallback* cb) {
   if (cb == nullptr) {
     closeCallbacks_.erase(client);
   } else {

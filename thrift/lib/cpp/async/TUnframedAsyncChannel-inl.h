@@ -42,8 +42,7 @@ TUnframedACReadState<ProtocolTraits_>::~TUnframedACReadState() {}
 
 template <typename ProtocolTraits_>
 void TUnframedACReadState<ProtocolTraits_>::getReadBuffer(
-    void** bufReturn,
-    size_t* lenReturn) {
+    void** bufReturn, size_t* lenReturn) {
   uint32_t bytesAvailable = memBuffer_.available_write();
   if (bytesAvailable > 0) {
     // If there is room available in the buffer, just return it.

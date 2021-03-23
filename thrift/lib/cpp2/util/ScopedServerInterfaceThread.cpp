@@ -64,9 +64,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     uint16_t port,
     ServerConfigCb configCb)
     : ScopedServerInterfaceThread(
-          move(apf),
-          SocketAddress(host, port),
-          move(configCb)) {}
+          move(apf), SocketAddress(host, port), move(configCb)) {}
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<BaseThriftServer> bts) {

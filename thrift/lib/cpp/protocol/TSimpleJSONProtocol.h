@@ -51,14 +51,12 @@ class TSimpleJSONProtocol
    */
 
   uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId);
+      const char* name, const TType fieldType, const int16_t fieldId);
 
   uint32_t writeFieldEnd();
 
-  uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
+  uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeMapEnd();
 
@@ -78,16 +76,13 @@ class TSimpleJSONProtocol
 
   uint32_t readStructEnd();
 
-  uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readFieldEnd();
 
   uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown);
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown);
 
   bool peekMap();
 

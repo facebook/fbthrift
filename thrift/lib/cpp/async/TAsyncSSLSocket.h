@@ -32,8 +32,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
   typedef std::unique_ptr<TAsyncSSLSocket, ReleasableDestructor> UniquePtr;
 
   explicit TAsyncSSLSocket(
-      const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* evb)
+      const std::shared_ptr<folly::SSLContext>& ctx, folly::EventBase* evb)
       : folly::AsyncSSLSocket(ctx, evb) {}
 
   TAsyncSSLSocket(
@@ -56,8 +55,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       : folly::AsyncSSLSocket(ctx, evb, std::move(options)) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
-      const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* evb) {
+      const std::shared_ptr<folly::SSLContext>& ctx, folly::EventBase* evb) {
     return std::shared_ptr<TAsyncSSLSocket>(
         TAsyncSSLSocket::UniquePtr(new TAsyncSSLSocket(ctx, evb)));
   }

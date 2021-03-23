@@ -40,12 +40,10 @@ RequestRpcMetadata makeRequestRpcMetadata(
     const folly::Optional<int32_t>& version);
 
 void fillTHeaderFromResponseRpcMetadata(
-    ResponseRpcMetadata& responseMetadata,
-    transport::THeader& header);
+    ResponseRpcMetadata& responseMetadata, transport::THeader& header);
 
 void fillResponseRpcMetadataFromTHeader(
-    transport::THeader& header,
-    ResponseRpcMetadata& responseMetadata);
+    transport::THeader& header, ResponseRpcMetadata& responseMetadata);
 
 } // namespace detail
 } // namespace thrift

@@ -56,8 +56,7 @@ void expectTransportExceptionType(
 }
 
 void expectRocketExceptionType(
-    ErrorCode expectedCode,
-    folly::exception_wrapper ew) {
+    ErrorCode expectedCode, folly::exception_wrapper ew) {
   const auto* const rex = dynamic_cast<RocketException*>(ew.get_exception());
   ASSERT_NE(nullptr, rex);
   EXPECT_EQ(expectedCode, rex->getErrorCode());

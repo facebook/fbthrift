@@ -120,9 +120,7 @@ TYPED_TEST(NimbleBlockEncodeDataControlByteTest, ControlByteComputation) {
 
 template <typename T, std::size_t m, std::size_t n>
 void expectArrayPrefix(
-    const std::array<T, m>& data,
-    const std::array<T, n>& prefix,
-    int line) {
+    const std::array<T, m>& data, const std::array<T, n>& prefix, int line) {
   // This of course could be a static assert; but making it dynamic makes the
   // test infrastructure work easier (e.g. if you have several buggy tests but
   // only want to debug one at a time, starting with some other one).

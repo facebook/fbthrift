@@ -27,13 +27,9 @@ template <class T>
 struct WrappedType {
   T raw;
 
-  T& rawAccessor() {
-    return raw;
-  }
+  T& rawAccessor() { return raw; }
 
-  const T& rawAccessor() const {
-    return raw;
-  }
+  const T& rawAccessor() const { return raw; }
 };
 
 template <class T>

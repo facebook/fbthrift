@@ -209,8 +209,7 @@ auto ValueGenerator<type::set<VT>>::getValues(
 
 template <typename KT, typename VT>
 auto ValueGenerator<type::map<KT, VT>>::getValues(
-    const KeyValues& keys,
-    const MappedValues& values) -> Values {
+    const KeyValues& keys, const MappedValues& values) -> Values {
   Values result;
   result.emplace_back(native_type(), "empty");
   for (const auto& value : values) {

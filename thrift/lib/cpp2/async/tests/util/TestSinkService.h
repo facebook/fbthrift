@@ -24,19 +24,17 @@ namespace testservice {
 
 class TestSinkService : public TestSinkServiceSvIf {
  public:
-  apache::thrift::SinkConsumer<int32_t, bool> range(int32_t from, int32_t to)
-      override;
+  apache::thrift::SinkConsumer<int32_t, bool> range(
+      int32_t from, int32_t to) override;
 
   apache::thrift::SinkConsumer<int32_t, bool> rangeThrow(
-      int32_t from,
-      int32_t to) override;
+      int32_t from, int32_t to) override;
 
   apache::thrift::SinkConsumer<int32_t, bool> rangeFinalResponseThrow(
-      int32_t from,
-      int32_t to) override;
+      int32_t from, int32_t to) override;
 
-  apache::thrift::SinkConsumer<int32_t, int32_t>
-  rangeEarlyResponse(int32_t from, int32_t to, int32_t early) override;
+  apache::thrift::SinkConsumer<int32_t, int32_t> rangeEarlyResponse(
+      int32_t from, int32_t to, int32_t early) override;
 
   apache::thrift::SinkConsumer<int32_t, bool> unSubscribedSink() override;
 
@@ -57,8 +55,8 @@ class TestSinkService : public TestSinkServiceSvIf {
   apache::thrift::SinkConsumer<folly::IOBuf, int32_t> alignment(
       std::unique_ptr<std::string> expected) override;
 
-  apache::thrift::SinkConsumer<int32_t, bool>
-  rangeCancelAt(int32_t from, int32_t to, int32_t cancelAt) override;
+  apache::thrift::SinkConsumer<int32_t, bool> rangeCancelAt(
+      int32_t from, int32_t to, int32_t cancelAt) override;
 
   void purge() override;
 

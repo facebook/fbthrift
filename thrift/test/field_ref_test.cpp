@@ -55,13 +55,9 @@ struct Nested {
 
 class TestStruct {
  public:
-  field_ref<std::string&> name() {
-    return {name_, __isset.name};
-  }
+  field_ref<std::string&> name() { return {name_, __isset.name}; }
 
-  field_ref<const std::string&> name() const {
-    return {name_, __isset.name};
-  }
+  field_ref<const std::string&> name() const { return {name_, __isset.name}; }
 
   optional_field_ref<std::string&> opt_name() & {
     return {name_, __isset.name};
@@ -91,17 +87,11 @@ class TestStruct {
     return {ptr_, __isset.ptr};
   }
 
-  field_ref<int&> int_val() {
-    return {int_val_, __isset.int_val};
-  }
+  field_ref<int&> int_val() { return {int_val_, __isset.int_val}; }
 
-  optional_field_ref<int&> opt_int_val() {
-    return {int_val_, __isset.int_val};
-  }
+  optional_field_ref<int&> opt_int_val() { return {int_val_, __isset.int_val}; }
 
-  field_ref<std::unique_ptr<int>&> uptr() & {
-    return {uptr_, __isset.uptr};
-  }
+  field_ref<std::unique_ptr<int>&> uptr() & { return {uptr_, __isset.uptr}; }
 
   field_ref<std::unique_ptr<int>&&> uptr() && {
     return {std::move(uptr_), __isset.uptr};
@@ -115,9 +105,7 @@ class TestStruct {
     return {std::move(uptr_), __isset.uptr};
   }
 
-  field_ref<std::vector<bool>&> vec() & {
-    return {vec_, __isset.vec};
-  }
+  field_ref<std::vector<bool>&> vec() & { return {vec_, __isset.vec}; }
 
   optional_field_ref<Nested&> opt_nested() & {
     return {nested_, __isset.nested};

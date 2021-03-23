@@ -39,9 +39,7 @@ class RecentRequestCounterTest : public testing::Test {
     currentTick = 0;
   }
 
-  RecentRequestCounter create() {
-    return {};
-  }
+  RecentRequestCounter create() { return {}; }
 };
 
 TEST_F(RecentRequestCounterTest, testGetCurrentBucket) {

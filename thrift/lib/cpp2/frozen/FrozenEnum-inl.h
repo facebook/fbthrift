@@ -31,9 +31,7 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
   typedef PackedIntegerLayout<Underlying> Base;
   EnumLayout() : Base(typeid(T)) {}
 
-  FieldPosition maximize() {
-    return Base::maximize();
-  }
+  FieldPosition maximize() { return Base::maximize(); }
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     return Base::layout(root, static_cast<Underlying>(o), self);
@@ -62,9 +60,7 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
     return v;
   }
 
-  static size_t hash(const T& v) {
-    return std::hash<T>()(v);
-  }
+  static size_t hash(const T& v) { return std::hash<T>()(v); }
 };
 } // namespace detail
 

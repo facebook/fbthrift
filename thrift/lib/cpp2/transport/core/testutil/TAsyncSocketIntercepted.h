@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/async/AsyncSocket.h>
 #include <sys/types.h>
 #include <memory>
+#include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncSocket.h>
 
 namespace apache {
 namespace thrift {
@@ -47,17 +47,11 @@ class TAsyncSocketIntercepted : public folly::AsyncSocket {
     std::atomic<int32_t> corruptLastReadByteMinSize_{0};
   };
 
-  void setParams(std::shared_ptr<Params> params) {
-    params_ = params;
-  }
+  void setParams(std::shared_ptr<Params> params) { params_ = params; }
 
-  int32_t getTotalBytesRead() {
-    return totalBytesRead_;
-  }
+  int32_t getTotalBytesRead() { return totalBytesRead_; }
 
-  int32_t getTotalBytesWritten() {
-    return totalBytesWritten_;
-  }
+  int32_t getTotalBytesWritten() { return totalBytesWritten_; }
 
   WriteResult performWrite(
       const iovec* vec,

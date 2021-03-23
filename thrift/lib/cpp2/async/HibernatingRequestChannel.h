@@ -64,18 +64,12 @@ class HibernatingRequestChannel : public RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() const override { return &evb_; }
 
-  uint16_t getProtocolId() override {
-    return impl()->getProtocolId();
-  }
+  uint16_t getProtocolId() override { return impl()->getProtocolId(); }
 
  protected:
-  ~HibernatingRequestChannel() override {
-    timeout_->cancelTimeout();
-  }
+  ~HibernatingRequestChannel() override { timeout_->cancelTimeout(); }
 
  private:
   HibernatingRequestChannel(
@@ -86,8 +80,7 @@ class HibernatingRequestChannel : public RequestChannel {
         evb_(evb),
         waitTime_(waitTime),
         timeout_(folly::AsyncTimeout::make(
-            evb_,
-            [&impl = impl_]() mutable noexcept { impl.reset(); })) {}
+            evb_, [&impl = impl_]() mutable noexcept { impl.reset(); })) {}
 
   ImplPtr& impl();
 

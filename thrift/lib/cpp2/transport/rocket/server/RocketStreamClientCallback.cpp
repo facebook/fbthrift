@@ -48,9 +48,7 @@ class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
   explicit TimeoutCallback(RocketStreamClientCallback& parent)
       : parent_(parent) {}
-  void timeoutExpired() noexcept override {
-    parent_.timeoutExpired();
-  }
+  void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
 
  private:
   RocketStreamClientCallback& parent_;

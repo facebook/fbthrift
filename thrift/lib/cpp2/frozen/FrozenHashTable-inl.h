@@ -63,9 +63,7 @@ struct BlockLayout : public LayoutBase {
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 } // namespace detail
 
@@ -310,9 +308,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 } // namespace detail
 } // namespace frozen

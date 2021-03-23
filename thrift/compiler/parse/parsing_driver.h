@@ -104,9 +104,7 @@ class t_ref {
   template <typename U, std::enable_if_t<!std::is_const<U>::value, int> = 0>
   constexpr explicit t_ref(U* ptr) : ptr_(ptr) {}
 
-  constexpr const T* get() const {
-    return ptr_;
-  }
+  constexpr const T* get() const { return ptr_; }
 
   constexpr const T* operator->() const {
     assert(ptr_ != nullptr);
@@ -117,12 +115,8 @@ class t_ref {
     return *ptr_;
   }
 
-  constexpr explicit operator bool() const {
-    return bool(ptr_);
-  }
-  constexpr /* implicit */ operator const T*() const {
-    return ptr_;
-  }
+  constexpr explicit operator bool() const { return bool(ptr_); }
+  constexpr /* implicit */ operator const T*() const { return ptr_; }
 
  private:
   const T* ptr_ = nullptr;
@@ -214,10 +208,7 @@ struct parsing_params {
 
 template <typename... Arg>
 int snprintf_with_param_pack(
-    char* str,
-    size_t size,
-    const char* fmt,
-    Arg&&... arg) {
+    char* str, size_t size, const char* fmt, Arg&&... arg) {
   return snprintf(str, size, fmt, std::forward<Arg>(arg)...);
 }
 
@@ -348,9 +339,7 @@ class parsing_driver {
    * runtime. Shit. I've been had.
    */
   void validate_const_rec(
-      std::string name,
-      const t_type* type,
-      t_const_value* value);
+      std::string name, const t_type* type, t_const_value* value);
 
   /**
    * Check the type of the parsed const information against its declared type
@@ -432,12 +421,10 @@ class parsing_driver {
 
   // Creates a reference to a known type.
   std::unique_ptr<t_type_ref> new_type_ref(
-      const t_type* type,
-      std::unique_ptr<t_annotations> annotations);
+      const t_type* type, std::unique_ptr<t_annotations> annotations);
   // Creates a reference to a newly created type.
   std::unique_ptr<t_type_ref> new_type_ref(
-      std::unique_ptr<t_type> type,
-      std::unique_ptr<t_annotations> annotations);
+      std::unique_ptr<t_type> type, std::unique_ptr<t_annotations> annotations);
   // Creates a reference to a named type.
   std::unique_ptr<t_type_ref> new_type_ref(
       std::string name,
@@ -537,8 +524,7 @@ class parsing_driver {
   // For example `map<int, int>` or `int (annotation="value")`
   // TODO(afuller): Cache specializations.
   const t_type* add_unnamed_type(
-      std::unique_ptr<t_type> node,
-      std::unique_ptr<t_annotations> annotations);
+      std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations);
 
   // Adds an unnamed typedef to the program
   // TODO(afuller): Remove the need for these by an explicit t_type_ref node
@@ -560,9 +546,7 @@ class parsing_driver {
 
   template <typename... Arg>
   diagnostic_message construct_diagnostic_message(
-      diagnostic_level level,
-      const char* fmt,
-      Arg&&... arg) {
+      diagnostic_level level, const char* fmt, Arg&&... arg) {
     const size_t buffer_size = 1024;
     std::array<char, buffer_size> buffer;
     std::string message;

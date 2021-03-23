@@ -33,13 +33,10 @@ namespace rocket {
 class RocketSinkClientCallback final : public SinkClientCallback {
  public:
   explicit RocketSinkClientCallback(
-      StreamId streamId,
-      RocketServerConnection& connection);
+      StreamId streamId, RocketServerConnection& connection);
   ~RocketSinkClientCallback() override = default;
   bool onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      SinkServerCallback*) override;
+      FirstResponsePayload&&, folly::EventBase*, SinkServerCallback*) override;
   void onFirstResponseError(folly::exception_wrapper) override;
 
   void onFinalResponse(StreamPayload&&) override;
@@ -81,9 +78,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
         : parent_(parent), chunkTimeout_(chunkTimeout) {
       DCHECK(chunkTimeout != std::chrono::milliseconds::zero());
     }
-    void timeoutExpired() noexcept override {
-      parent_.timeoutExpired();
-    }
+    void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
     void incCredits(uint64_t n);
     void decCredits();
 

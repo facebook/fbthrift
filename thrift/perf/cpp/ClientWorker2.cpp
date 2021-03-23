@@ -81,8 +81,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
 }
 
 void ClientWorker2::performOperation(
-    const std::shared_ptr<Client>& client,
-    uint32_t opType) {
+    const std::shared_ptr<Client>& client, uint32_t opType) {
   switch (static_cast<ClientLoadConfig::OperationEnum>(opType)) {
     case ClientLoadConfig::OP_NOOP:
       return performNoop(client);

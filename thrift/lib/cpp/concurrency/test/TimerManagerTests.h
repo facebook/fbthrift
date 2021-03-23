@@ -47,9 +47,7 @@ class TimerManagerTests {
           _success(false),
           _done(false) {}
 
-    ~Task() override {
-      std::cerr << this << std::endl;
-    }
+    ~Task() override { std::cerr << this << std::endl; }
 
     void run() override {
       _endTime = Util::currentTime();

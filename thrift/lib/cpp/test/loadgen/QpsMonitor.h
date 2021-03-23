@@ -43,17 +43,11 @@ class QpsMonitor : public TerminalMonitor {
   uint32_t printInfo(uint64_t intervalUsec) override;
   uint64_t getCurrentQps() override;
 
-  OpEnabledState* getEnabledState() {
-    return &enabledState_;
-  }
+  OpEnabledState* getEnabledState() { return &enabledState_; }
 
-  const OpEnabledState* getEnabledState() const {
-    return &enabledState_;
-  }
+  const OpEnabledState* getEnabledState() const { return &enabledState_; }
 
-  void printAllTimeQps(bool enabled) {
-    printAllTime_ = enabled;
-  }
+  void printAllTimeQps(bool enabled) { printAllTime_ = enabled; }
 
  private:
   typedef std::vector<std::shared_ptr<QpsScoreBoard>> ScoreBoardVector;

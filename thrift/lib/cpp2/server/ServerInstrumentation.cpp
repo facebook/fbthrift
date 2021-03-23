@@ -101,8 +101,7 @@ void forAllTrackers(
 }
 
 void forEachServer(
-    std::string_view key,
-    folly::FunctionRef<void(ThriftServer&)> f) {
+    std::string_view key, folly::FunctionRef<void(ThriftServer&)> f) {
   getTrackerCollection().forTrackersWithKey(
       key, [&](const std::set<ServerTracker*>& trackers) {
         for (auto* tracker : trackers) {

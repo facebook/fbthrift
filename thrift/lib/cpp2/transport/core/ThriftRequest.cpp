@@ -37,9 +37,7 @@ void ThriftRequestCore::RequestTimestampSample::sendQueued() {
 }
 
 void ThriftRequestCore::RequestTimestampSample::messageSent() {
-  SCOPE_EXIT {
-    delete this;
-  };
+  SCOPE_EXIT { delete this; };
   timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSent();
@@ -48,9 +46,7 @@ void ThriftRequestCore::RequestTimestampSample::messageSent() {
 
 void ThriftRequestCore::RequestTimestampSample::messageSendError(
     folly::exception_wrapper&& e) {
-  SCOPE_EXIT {
-    delete this;
-  };
+  SCOPE_EXIT { delete this; };
   timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSendError(std::move(e));
@@ -64,8 +60,7 @@ ThriftRequestCore::RequestTimestampSample::~RequestTimestampSample() {
 }
 
 MessageChannel::SendCallbackPtr ThriftRequestCore::prepareSendCallback(
-    MessageChannel::SendCallbackPtr&& cb,
-    server::TServerObserver* observer) {
+    MessageChannel::SendCallbackPtr&& cb, server::TServerObserver* observer) {
   auto cbPtr = std::move(cb);
   // If we are sampling this call, wrap it with a RequestTimestampSample,
   // which also implements MessageChannel::SendCallback. Callers of

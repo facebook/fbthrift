@@ -103,9 +103,7 @@ class SharedServerTests
     }
   }
 
-  void createServer() {
-    server = serverFactory->create();
-  }
+  void createServer() { server = serverFactory->create(); }
 
   void startServer() {
     if (!server) {
@@ -380,15 +378,9 @@ class TestServerEventHandler
     return shared_from_this();
   }
 
-  void check() {
-    EXPECT_EQ(8, count);
-  }
-  void preServe(const folly::SocketAddress*) override {
-    EXPECT_EQ(0, count++);
-  }
-  void newConnection(TConnectionContext*) override {
-    EXPECT_EQ(1, count++);
-  }
+  void check() { EXPECT_EQ(8, count); }
+  void preServe(const folly::SocketAddress*) override { EXPECT_EQ(0, count++); }
+  void newConnection(TConnectionContext*) override { EXPECT_EQ(1, count++); }
   void connectionDestroyed(TConnectionContext*) override {
     EXPECT_EQ(7, count++);
   }
@@ -397,12 +389,8 @@ class TestServerEventHandler
     EXPECT_EQ(2, count++);
     return nullptr;
   }
-  void freeContext(void*, const char*) override {
-    EXPECT_EQ(6, count++);
-  }
-  void preRead(void*, const char*) override {
-    EXPECT_EQ(3, count++);
-  }
+  void freeContext(void*, const char*) override { EXPECT_EQ(6, count++); }
+  void preRead(void*, const char*) override { EXPECT_EQ(3, count++); }
   void onReadData(void*, const char*, const SerializedMessage&) override {
     EXPECT_EQ(4, count++);
   }

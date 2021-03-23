@@ -54,8 +54,7 @@ class PluggableFunctionMetadata {
 
 namespace {
 PluggableFunctionMetadata& getPluggableFunctionMetadata(
-    folly::StringPiece name,
-    std::type_index functionTag) {
+    folly::StringPiece name, std::type_index functionTag) {
   using Map = std::unordered_map<
       std::string,
       std::pair<std::type_index, std::unique_ptr<PluggableFunctionMetadata>>>;
@@ -84,9 +83,7 @@ PluggableFunctionMetadata* registerPluggableFunction(
 }
 
 void setPluggableFunction(
-    folly::StringPiece name,
-    std::type_index functionTag,
-    intptr_t impl) {
+    folly::StringPiece name, std::type_index functionTag, intptr_t impl) {
   auto& metadata = getPluggableFunctionMetadata(name, functionTag);
   metadata.set(impl);
 }

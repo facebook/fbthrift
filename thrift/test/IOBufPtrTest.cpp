@@ -69,9 +69,7 @@ class IOBufPtrTest : public ::testing::Test {
     return server_.getEventBaseManager()->getEventBase();
   }
 
-  IOBufPtrTestServiceAsyncClient* client() const {
-    return client_.get();
-  }
+  IOBufPtrTestServiceAsyncClient* client() const { return client_.get(); }
 
  private:
   void serverThreadLoop();
@@ -109,9 +107,7 @@ void IOBufPtrTest::serverThreadLoop() {
   server_.setPort(0); // pick one
   server_.setInterface(std::make_unique<IOBufPtrTestService>());
   server_.setup();
-  SCOPE_EXIT {
-    server_.cleanUp();
-  };
+  SCOPE_EXIT { server_.cleanUp(); };
   {
     std::unique_lock<std::mutex> lock(mutex_);
     serverEventBase_ = server_.getEventBaseManager()->getEventBase();

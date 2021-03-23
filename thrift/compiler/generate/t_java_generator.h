@@ -107,25 +107,19 @@ class t_java_generator : public t_oop_generator {
       uint32_t bitset_size,
       bool useDefaultConstructor);
   void generate_java_struct_definition(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      StructGenParams params);
+      std::ofstream& out, const t_struct* tstruct, StructGenParams params);
   void construct_constant_fields(std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_equality(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_compare_to(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_reader(std::ofstream& out, const t_struct* tstruct);
   void generate_java_validator(std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_result_writer(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_writer(std::ofstream& out, const t_struct* tstruct);
   void generate_java_struct_tostring(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_java_meta_data_map(std::ofstream& out, const t_struct* tstruct);
   void generate_field_value_meta_data(std::ofstream& out, const t_type* type);
   std::string get_java_type_string(const t_type* type);
@@ -140,12 +134,9 @@ class t_java_generator : public t_oop_generator {
       std::string field_name,
       std::string cap_name);
   void generate_generic_field_getters_setters(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_java_bean_boilerplate(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      bool gen_immutable);
+      std::ofstream& out, const t_struct* tstruct, bool gen_immutable);
   std::string get_simple_getter_name(const t_field* field);
 
   void generate_function_helpers(const t_function* tfunction);
@@ -164,17 +155,14 @@ class t_java_generator : public t_oop_generator {
   void generate_service_async_client(const t_service* tservice);
   void generate_service_server(const t_service* tservice);
   void generate_process_function(
-      const t_service* tservice,
-      const t_function* tfunction);
+      const t_service* tservice, const t_function* tfunction);
 
   void generate_java_union(const t_struct* tstruct);
   void generate_union_constructor(std::ofstream& out, const t_struct* tstruct);
   void generate_union_getters_and_setters(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_union_abstract_methods(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
   void generate_check_type(std::ofstream& out, const t_struct* tstruct);
   void generate_union_reader(std::ofstream& out, const t_struct* tstruct);
   void generate_read_value(std::ofstream& out, const t_struct* tstruct);
@@ -191,65 +179,40 @@ class t_java_generator : public t_oop_generator {
    */
 
   void generate_deserialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix = "");
+      std::ofstream& out, const t_field* tfield, std::string prefix = "");
 
   void generate_deserialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_deserialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
 
   void generate_deserialize_set_element(
-      std::ofstream& out,
-      const t_set* tset,
-      std::string prefix = "");
+      std::ofstream& out, const t_set* tset, std::string prefix = "");
 
   void generate_deserialize_map_element(
-      std::ofstream& out,
-      const t_map* tmap,
-      std::string prefix = "");
+      std::ofstream& out, const t_map* tmap, std::string prefix = "");
 
   void generate_deserialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string prefix = "");
+      std::ofstream& out, const t_list* tlist, std::string prefix = "");
 
   void generate_serialize_field(
-      std::ofstream& out,
-      const t_field* tfield,
-      std::string prefix = "");
+      std::ofstream& out, const t_field* tfield, std::string prefix = "");
 
   void generate_serialize_struct(
-      std::ofstream& out,
-      const t_struct* tstruct,
-      std::string prefix = "");
+      std::ofstream& out, const t_struct* tstruct, std::string prefix = "");
 
   void generate_serialize_container(
-      std::ofstream& out,
-      const t_type* ttype,
-      std::string prefix = "");
+      std::ofstream& out, const t_type* ttype, std::string prefix = "");
 
   void generate_serialize_map_element(
-      std::ofstream& out,
-      const t_map* tmap,
-      std::string iter,
-      std::string map);
+      std::ofstream& out, const t_map* tmap, std::string iter, std::string map);
 
   void generate_serialize_set_element(
-      std::ofstream& out,
-      const t_set* tmap,
-      std::string iter);
+      std::ofstream& out, const t_set* tmap, std::string iter);
 
   void generate_serialize_list_element(
-      std::ofstream& out,
-      const t_list* tlist,
-      std::string iter);
+      std::ofstream& out, const t_list* tlist, std::string iter);
 
   void generate_java_doc(std::ofstream& out, const t_field* field);
 
@@ -258,15 +221,12 @@ class t_java_generator : public t_oop_generator {
   void generate_java_doc(std::ofstream& out, const t_function* tdoc);
 
   void generate_java_docstring_comment(
-      std::ofstream& out,
-      std::string contents);
+      std::ofstream& out, std::string contents);
 
   virtual bool is_comparable(
-      const t_type* type,
-      std::vector<const t_type*>* enclosing = nullptr);
+      const t_type* type, std::vector<const t_type*>* enclosing = nullptr);
   bool struct_has_all_comparable_fields(
-      const t_struct* tstruct,
-      std::vector<const t_type*>* enclosing);
+      const t_struct* tstruct, std::vector<const t_type*>* enclosing);
 
   bool type_has_naked_binary(const t_type* type);
   bool struct_has_naked_binary_fields(const t_struct* tstruct);
@@ -287,8 +247,7 @@ class t_java_generator : public t_oop_generator {
   std::string java_suppress_warnings_struct();
   std::string java_suppress_warnings_service();
   virtual boost::optional<std::string> java_struct_parent_class(
-      const t_struct* tstruct,
-      StructGenParams params);
+      const t_struct* tstruct, StructGenParams params);
 
   virtual std::string type_name(
       const t_type* ttype,
@@ -298,8 +257,7 @@ class t_java_generator : public t_oop_generator {
   std::string base_type_name(t_base_type* tbase, bool in_container = false);
   std::string declare_field(const t_field* tfield, bool init = false);
   std::string function_signature(
-      const t_function* tfunction,
-      std::string prefix = "");
+      const t_function* tfunction, std::string prefix = "");
   std::string function_signature_async(
       const t_function* tfunction,
       std::string result_handler_symbol,
@@ -321,12 +279,9 @@ class t_java_generator : public t_oop_generator {
   void generate_struct_desc(std::ofstream& out, const t_struct* tstruct);
   void generate_field_descs(std::ofstream& out, const t_struct* tstruct);
   void generate_field_name_constants(
-      std::ofstream& out,
-      const t_struct* tstruct);
+      std::ofstream& out, const t_struct* tstruct);
 
-  virtual const std::string& get_package_dir() {
-    return package_dir_;
-  }
+  virtual const std::string& get_package_dir() { return package_dir_; }
 
   bool type_can_be_null(const t_type* ttype) {
     ttype = ttype->get_true_type();

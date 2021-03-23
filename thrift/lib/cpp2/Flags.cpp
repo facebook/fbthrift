@@ -38,8 +38,7 @@ class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
 };
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
-    std::unique_ptr<FlagsBackend>,
-    createFlagsBackend) {
+    std::unique_ptr<FlagsBackend>, createFlagsBackend) {
   return {};
 }
 } // namespace

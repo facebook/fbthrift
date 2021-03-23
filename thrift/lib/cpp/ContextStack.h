@@ -94,13 +94,9 @@ class ContextStack {
 
   void asyncComplete();
 
-  const char* getServiceName() const {
-    return serviceName_;
-  }
+  const char* getServiceName() const { return serviceName_; }
 
-  const char* getMethod() const {
-    return method_;
-  }
+  const char* getMethod() const { return method_; }
 
  private:
   std::vector<void*> ctxs_;

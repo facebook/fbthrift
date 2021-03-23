@@ -36,9 +36,7 @@ namespace thrift {
 template <typename Output>
 struct diff_output_callback {
   diff_output_callback(
-      Output& out,
-      folly::StringPiece lhs,
-      folly::StringPiece rhs)
+      Output& out, folly::StringPiece lhs, folly::StringPiece rhs)
       : out_(out), lhs_(lhs), rhs_(rhs) {}
 
   template <typename TC, typename T>

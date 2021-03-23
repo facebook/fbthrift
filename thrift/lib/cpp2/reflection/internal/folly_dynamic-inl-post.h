@@ -331,8 +331,8 @@ struct dynamic_converter_impl<type_class::string> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = input.asString();
   }
 };
@@ -361,8 +361,8 @@ struct dynamic_converter_impl<type_class::binary> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = input.asString();
   }
 };
@@ -375,8 +375,8 @@ struct dynamic_converter_impl<type_class::floating_point> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = static_cast<T>(input.asDouble());
   }
 };
@@ -397,8 +397,8 @@ struct dynamic_converter_impl<type_class::integral> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = static_cast<T>(input.asInt());
   }
 };

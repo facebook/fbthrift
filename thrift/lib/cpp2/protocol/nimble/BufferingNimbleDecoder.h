@@ -75,9 +75,7 @@ class BufferingNimbleDecoder {
     controlCursor_ = cursor;
   }
 
-  void setDataInput(const folly::io::Cursor& cursor) {
-    dataCursor_ = cursor;
-  }
+  void setDataInput(const folly::io::Cursor& cursor) { dataCursor_ = cursor; }
 
   BufferingNimbleDecoderState borrowState() {
     if (folly::kIsDebug) {

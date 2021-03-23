@@ -40,29 +40,21 @@ class t_scope {
  public:
   t_scope() {}
 
-  void add_type(std::string name, t_type* type) {
-    types_[name] = type;
-  }
+  void add_type(std::string name, t_type* type) { types_[name] = type; }
 
-  t_type* get_type(std::string name) {
-    return types_[name];
-  }
+  t_type* get_type(std::string name) { return types_[name]; }
 
   void add_service(std::string name, t_service* service) {
     services_[name] = service;
   }
 
-  t_service* get_service(std::string name) {
-    return services_[name];
-  }
+  t_service* get_service(std::string name) { return services_[name]; }
 
   void add_interaction(std::string name, t_service* interaction) {
     interactions_[name] = interaction;
   }
 
-  t_service* get_interaction(std::string name) {
-    return interactions_[name];
-  }
+  t_service* get_interaction(std::string name) { return interactions_[name]; }
 
   void add_constant(std::string name, t_const* constant);
 
@@ -70,9 +62,7 @@ class t_scope {
 
   std::string join_strings_by_commas(std::set<std::string> strs);
 
-  t_const* get_constant(std::string name) {
-    return constants_[name];
-  }
+  t_const* get_constant(std::string name) { return constants_[name]; }
 
   bool is_ambiguous_enum_value(std::string enum_value_name) {
     return redefined_enum_values_.find(enum_value_name) !=

@@ -45,13 +45,9 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
             class ReadyCallback
                 : public apache::thrift::detail::ServerStreamConsumer {
              public:
-              void consume() override {
-                baton.post();
-              }
+              void consume() override { baton.post(); }
 
-              void canceled() override {
-                std::terminate();
-              }
+              void canceled() override { std::terminate(); }
 
               folly::coro::Baton baton;
             };

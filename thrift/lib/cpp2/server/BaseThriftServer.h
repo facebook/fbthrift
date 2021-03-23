@@ -62,13 +62,11 @@ typedef std::function<void(
     getHandlerFunc;
 
 typedef std::function<void(
-    const apache::thrift::transport::THeader*,
-    const folly::SocketAddress*)>
+    const apache::thrift::transport::THeader*, const folly::SocketAddress*)>
     GetHeaderHandlerFunc;
 
 using IsOverloadedFunc = folly::Function<bool(
-    const transport::THeader::StringToStringMap*,
-    const std::string*) const>;
+    const transport::THeader::StringToStringMap*, const std::string*) const>;
 
 using PreprocessFunc =
     folly::Function<PreprocessResult(const server::PreprocessParams&) const>;
@@ -415,9 +413,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return true if the configuration can be modified, false otherwise
    */
-  bool configMutable() {
-    return configMutable_;
-  }
+  bool configMutable() { return configMutable_; }
 
   /**
    * Set the ThreadFactory that will be used to create worker threads for the
@@ -436,9 +432,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  std::string getCPUWorkerThreadName() const {
-    return poolThreadName_.get();
-  }
+  std::string getCPUWorkerThreadName() const { return poolThreadName_.get(); }
 
   /**
    * Set the prefix for naming the CPU (pool) threads. Not set by default.
@@ -498,9 +492,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  uint32_t getMaxConnections() const {
-    return maxConnections_.get();
-  }
+  uint32_t getMaxConnections() const { return maxConnections_.get(); }
 
   /**
    * Set the maximum # of connections allowed before overload.
@@ -519,9 +511,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  uint32_t getMaxRequests() const {
-    return maxRequests_.get();
-  }
+  uint32_t getMaxRequests() const { return maxRequests_.get(); }
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
@@ -535,9 +525,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     maxRequests_.set(maxRequests, source);
   }
 
-  uint64_t getMaxResponseSize() const final {
-    return maxResponseSize_.get();
-  }
+  uint64_t getMaxResponseSize() const final { return maxResponseSize_.get(); }
 
   void setMaxResponseSize(
       uint64_t size,
@@ -546,9 +534,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     maxResponseSize_.set(size, source);
   }
 
-  bool getUseClientTimeout() const {
-    return useClientTimeout_.get();
-  }
+  bool getUseClientTimeout() const { return useClientTimeout_.get(); }
 
   void setUseClientTimeout(
       bool useClientTimeout,
@@ -558,8 +544,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   // Get load of the server.
-  int64_t getLoad(const std::string& counter = "", bool check_custom = true)
-      const final;
+  int64_t getLoad(
+      const std::string& counter = "", bool check_custom = true) const final;
   virtual std::string getLoadInfo(int64_t load) const;
 
   void setObserver(const std::shared_ptr<server::TServerObserver>& observer) {
@@ -619,9 +605,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * for providing their own synchronization to ensure that setup() is not
    * modifying the address while they are using it.)
    */
-  const folly::SocketAddress& getAddress() const {
-    return addresses_.at(0);
-  }
+  const folly::SocketAddress& getAddress() const { return addresses_.at(0); }
 
   const std::vector<folly::SocketAddress>& getAddresses() const {
     return addresses_;
@@ -665,9 +649,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    *  @return number of milliseconds, or 0 if no timeout set.
    */
-  std::chrono::milliseconds getIdleTimeout() const {
-    return timeout_.get();
-  }
+  std::chrono::milliseconds getIdleTimeout() const { return timeout_.get(); }
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
@@ -698,9 +680,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return number of IO worker threads
    */
-  size_t getNumIOWorkerThreads() const final {
-    return nWorkers_.get();
-  }
+  size_t getNumIOWorkerThreads() const final { return nWorkers_.get(); }
 
   /**
    * Set the number of CPU (pool) threads.
@@ -759,9 +739,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     enableCodel_.set(enableCodel, source);
   }
 
-  bool getEnableCodel() {
-    return enableCodel_.get();
-  }
+  bool getEnableCodel() { return enableCodel_.get(); }
 
   /**
    * Set the processor factory as the one built into the
@@ -952,9 +930,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return listen backlog.
    */
-  int getListenBacklog() const {
-    return listenBacklog_.get();
-  }
+  int getListenBacklog() const { return listenBacklog_.get(); }
 
   void setIsOverloaded(IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
@@ -983,9 +959,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     getLoad_ = getLoad;
   }
 
-  std::function<int64_t(const std::string&)> getGetLoad() {
-    return getLoad_;
-  }
+  std::function<int64_t(const std::string&)> getGetLoad() { return getLoad_; }
 
   /**
    * Set failure injection parameters.
@@ -994,21 +968,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     failureInjection_.set(fi);
   }
 
-  void setGetHandler(getHandlerFunc func) {
-    getHandler_ = func;
-  }
+  void setGetHandler(getHandlerFunc func) { getHandler_ = func; }
 
-  getHandlerFunc getGetHandler() {
-    return getHandler_;
-  }
+  getHandlerFunc getGetHandler() { return getHandler_; }
 
   void setGetHeaderHandler(GetHeaderHandlerFunc func) {
     getHeaderHandler_ = func;
   }
 
-  GetHeaderHandlerFunc getGetHeaderHandler() {
-    return getHeaderHandler_;
-  }
+  GetHeaderHandlerFunc getGetHeaderHandler() { return getHeaderHandler_; }
 
   /**
    * Set the client identity hook for the server, which will be called in
@@ -1019,9 +987,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     clientIdentityHook_ = func;
   }
 
-  ClientIdentityHook getClientIdentityHook() {
-    return clientIdentityHook_;
-  }
+  ClientIdentityHook getClientIdentityHook() { return clientIdentityHook_; }
 
   virtual void serve() = 0;
 
@@ -1034,9 +1000,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   virtual void stopListening() = 0;
 
   // Allows running the server as a Runnable thread
-  void run() override {
-    serve();
-  }
+  void run() override { serve(); }
 
   /**
    * Set the admission strategy used by the Thrift Server
@@ -1133,25 +1097,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Set write batching size. Ignored if write batching interval is not set.
    */
   void setWriteBatchingSize(
-      size_t batchingSize,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      size_t batchingSize, AttributeSource source = AttributeSource::OVERRIDE) {
     writeBatchingSize_.set(batchingSize, source);
   }
 
   /**
    * Get write batching size
    */
-  size_t getWriteBatchingSize() const {
-    return writeBatchingSize_.get();
-  }
+  size_t getWriteBatchingSize() const { return writeBatchingSize_.get(); }
 
-  const Metadata& metadata() const {
-    return metadata_;
-  }
+  const Metadata& metadata() const { return metadata_; }
 
-  Metadata& metadata() {
-    return metadata_;
-  }
+  Metadata& metadata() { return metadata_; }
 
   /**
    * Ingress memory is the total memory used for receiving inflight requests.
@@ -1165,9 +1122,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     ingressMemoryLimit_.set(ingressMemoryLimit, source);
   }
 
-  int64_t getIngressMemoryLimit() const {
-    return ingressMemoryLimit_.get();
-  }
+  int64_t getIngressMemoryLimit() const { return ingressMemoryLimit_.get(); }
 
   folly::observer::Observer<int64_t> getIngressMemoryLimitObserver() {
     return ingressMemoryLimit_.getObserver();

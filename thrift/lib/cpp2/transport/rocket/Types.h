@@ -35,22 +35,16 @@ class StreamId {
   constexpr StreamId() = default;
   constexpr explicit StreamId(uint32_t streamId) : streamId_(streamId) {}
 
-  bool operator==(StreamId other) const {
-    return streamId_ == other.streamId_;
-  }
+  bool operator==(StreamId other) const { return streamId_ == other.streamId_; }
 
-  bool operator!=(StreamId other) const {
-    return streamId_ != other.streamId_;
-  }
+  bool operator!=(StreamId other) const { return streamId_ != other.streamId_; }
 
   StreamId& operator+=(uint32_t delta) {
     streamId_ += delta;
     return *this;
   }
 
-  explicit operator uint32_t() const {
-    return streamId_;
-  }
+  explicit operator uint32_t() const { return streamId_; }
 
   static constexpr StreamId maxClientStreamId() {
     return StreamId{(1ul << 31) - 1};
@@ -79,22 +73,18 @@ class Payload {
   static Payload makeFromData(std::unique_ptr<folly::IOBuf> data) {
     return Payload(std::move(data));
   }
-  static Payload makeFromData(folly::ByteRange data) {
-    return Payload(data);
-  }
+  static Payload makeFromData(folly::ByteRange data) { return Payload(data); }
   static Payload makeFromMetadataAndData(
       std::unique_ptr<folly::IOBuf> metadata,
       std::unique_ptr<folly::IOBuf> data) {
     return Payload(std::move(metadata), std::move(data));
   }
   static Payload makeFromMetadataAndData(
-      folly::ByteRange metadata,
-      folly::ByteRange data) {
+      folly::ByteRange metadata, folly::ByteRange data) {
     return Payload(metadata, data);
   }
   static Payload makeCombined(
-      std::unique_ptr<folly::IOBuf> buffer,
-      size_t metadataSize) {
+      std::unique_ptr<folly::IOBuf> buffer, size_t metadataSize) {
     return Payload(std::move(buffer), metadataSize);
   }
 
@@ -126,30 +116,20 @@ class Payload {
     return data;
   }
 
-  bool hasNonemptyMetadata() const noexcept {
-    return metadataSize_;
-  }
+  bool hasNonemptyMetadata() const noexcept { return metadataSize_; }
 
-  size_t metadataSize() const noexcept {
-    return metadataSize_;
-  }
+  size_t metadataSize() const noexcept { return metadataSize_; }
 
   size_t dataSize() const noexcept {
     DCHECK(metadataAndDataSize_ >= metadataSize_);
     return metadataAndDataSize_ - metadataSize_;
   }
 
-  const folly::IOBuf* buffer() const& {
-    return buffer_.get();
-  }
+  const folly::IOBuf* buffer() const& { return buffer_.get(); }
 
-  std::unique_ptr<folly::IOBuf> buffer() && {
-    return std::move(buffer_);
-  }
+  std::unique_ptr<folly::IOBuf> buffer() && { return std::move(buffer_); }
 
-  size_t metadataAndDataSize() const {
-    return metadataAndDataSize_;
-  }
+  size_t metadataAndDataSize() const { return metadataAndDataSize_; }
 
   size_t serializedSize() const {
     constexpr size_t kBytesForMetadataSize = 3;
@@ -159,9 +139,7 @@ class Payload {
 
   void append(Payload&& other);
 
-  bool hasData() const {
-    return buffer_ != nullptr;
-  }
+  bool hasData() const { return buffer_ != nullptr; }
 
  private:
   std::unique_ptr<folly::IOBuf> buffer_;

@@ -64,9 +64,7 @@ DEFINE_int32(weight_bad_sleep, 0, "frequency weight for badSleep()");
 DEFINE_int32(weight_bad_burn, 0, "frequency weight for badBurn()");
 DEFINE_int32(weight_throw_error, 0, "frequency weight for throwError()");
 DEFINE_int32(
-    weight_throw_unexpected,
-    0,
-    "frequency weight for throwUnexpected()");
+    weight_throw_unexpected, 0, "frequency weight for throwUnexpected()");
 DEFINE_int32(weight_oneway_throw, 0, "frequency weight for onewayThrow()");
 DEFINE_int32(weight_send, 0, "frequency weight for send()");
 DEFINE_int32(weight_oneway_send, 0, "frequency weight for onewaySend()");
@@ -75,56 +73,34 @@ DEFINE_int32(weight_sendrecv, 0, "frequency weight for sendrecv()");
 DEFINE_int32(weight_echo, 0, "frequency weight for echo()");
 DEFINE_int32(weight_add, 0, "frequency weight for add()");
 DEFINE_int32(
-    weight_large_container,
-    0,
-    "frequency weight for large_container()");
+    weight_large_container, 0, "frequency weight for large_container()");
 DEFINE_int32(
-    weight_iter_all_fields,
-    0,
-    "frequency weight for iter_all_fields()");
+    weight_iter_all_fields, 0, "frequency weight for iter_all_fields()");
 
 // Controls for how long sleep and burn operations should take
 DEFINE_double(
-    sleep_avg,
-    5000.0,
-    "average # of microseconds for sleep operations");
+    sleep_avg, 5000.0, "average # of microseconds for sleep operations");
 DEFINE_double(
-    sleep_sigma,
-    -1.0,
-    "log-normal sigma parameter for sleep duration");
+    sleep_sigma, -1.0, "log-normal sigma parameter for sleep duration");
 DEFINE_double(
-    burn_avg,
-    5000.0,
-    "average # of microseconds for sleep operations");
+    burn_avg, 5000.0, "average # of microseconds for sleep operations");
 DEFINE_double(
-    burn_sigma,
-    -1.0,
-    "log-normal sigma parameter for sleep duration");
+    burn_sigma, -1.0, "log-normal sigma parameter for sleep duration");
 DEFINE_double(send_size_avg, 16384.0, "average # of bytes for send operations");
 DEFINE_double(
-    send_size_sigma,
-    -1.0,
-    "log-normal sigma parameter for send size");
+    send_size_sigma, -1.0, "log-normal sigma parameter for send size");
 DEFINE_double(
-    recv_size_avg,
-    16384.0,
-    "average # of bytes for receive operations");
+    recv_size_avg, 16384.0, "average # of bytes for receive operations");
 DEFINE_double(
-    recv_size_sigma,
-    -1.0,
-    "log-normal sigma parameter for receive size");
+    recv_size_sigma, -1.0, "log-normal sigma parameter for receive size");
 DEFINE_double(
-    container_size_avg,
-    100.0,
-    "average # of structs to put in a container");
+    container_size_avg, 100.0, "average # of structs to put in a container");
 DEFINE_double(
     container_size_sigma,
     -1.0,
     "log-normal sigma parameter for container size");
 DEFINE_double(
-    struct_field_size_avg,
-    64.0,
-    "average length of field in BigStructs");
+    struct_field_size_avg, 64.0, "average length of field in BigStructs");
 DEFINE_double(
     struct_field_size_sigma,
     -1.0,

@@ -41,8 +41,7 @@ void expectTransportExceptionType(
     folly::exception_wrapper ew);
 
 void expectRocketExceptionType(
-    ErrorCode expectedCode,
-    folly::exception_wrapper ew);
+    ErrorCode expectedCode, folly::exception_wrapper ew);
 
 void expectEncodedError(folly::exception_wrapper ew);
 

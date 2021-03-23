@@ -46,8 +46,7 @@ class TUnframedACWriteRequest
 
   void writeSuccess() noexcept;
   void writeError(
-      size_t bytesWritten,
-      const transport::TTransportException& ex) noexcept;
+      size_t bytesWritten, const transport::TTransportException& ex) noexcept;
 };
 
 /**
@@ -67,42 +66,26 @@ class TUnframedACReadState {
   void setCallbackBuffer(transport::TMemoryBuffer* buffer) {
     callbackBuffer_ = buffer;
   }
-  void unsetCallbackBuffer() {
-    callbackBuffer_ = nullptr;
-  }
+  void unsetCallbackBuffer() { callbackBuffer_ = nullptr; }
 
-  bool hasReadAheadData() {
-    return (memBuffer_.available_read() > 0);
-  }
-  bool hasPartialMessage() {
-    return (memBuffer_.available_read() > 0);
-  }
+  bool hasReadAheadData() { return (memBuffer_.available_read() > 0); }
+  bool hasPartialMessage() { return (memBuffer_.available_read() > 0); }
 
   void getReadBuffer(void** bufReturn, size_t* lenReturn);
   bool readDataAvailable(size_t len);
 
   // Methods specific to TUnframedACReadState
 
-  void setMaxMessageSize(uint32_t size) {
-    maxMessageSize_ = size;
-  }
+  void setMaxMessageSize(uint32_t size) { maxMessageSize_ = size; }
 
-  uint32_t getMaxMessageSize() const {
-    return maxMessageSize_;
-  }
+  uint32_t getMaxMessageSize() const { return maxMessageSize_; }
 
-  ProtocolTraits_* getProtocolTraits() {
-    return &protocolTraits_;
-  }
-  const ProtocolTraits_* getProtocolTraits() const {
-    return &protocolTraits_;
-  }
+  ProtocolTraits_* getProtocolTraits() { return &protocolTraits_; }
+  const ProtocolTraits_* getProtocolTraits() const { return &protocolTraits_; }
 
  private:
   bool getMessageLength(
-      uint8_t* buffer,
-      uint32_t bufferLength,
-      uint32_t* messageLength);
+      uint8_t* buffer, uint32_t bufferLength, uint32_t* messageLength);
 
   /// maximum frame size accepted
   uint32_t maxMessageSize_;

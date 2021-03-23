@@ -20,16 +20,14 @@ namespace testutil {
 namespace testservice {
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::range(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     co_yield std::move(i);
   }
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrow(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     co_yield std::move(i);
   }
@@ -37,8 +35,7 @@ apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrow(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrowUDE(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     co_yield std::move(i);
   }
@@ -46,8 +43,7 @@ apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrowUDE(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 
@@ -60,8 +56,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrow(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 
@@ -74,8 +69,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrow(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 

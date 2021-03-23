@@ -35,8 +35,8 @@ struct get_property {
 
 struct legacy_to_flat_translator {
   template <typename Member>
-  void operator()(fatal::tag<Member>, std::string const& from, flat_config& to)
-      const {
+  void operator()(
+      fatal::tag<Member>, std::string const& from, flat_config& to) const {
     auto& value = typename Member::getter{}(to);
     value = folly::to<typename Member::type>(from);
   }

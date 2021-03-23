@@ -22,9 +22,9 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 
-#include <folly/portability/Unistd.h>
 #include <chrono>
 #include <thread>
+#include <folly/portability/Unistd.h>
 
 namespace apache {
 namespace thrift {

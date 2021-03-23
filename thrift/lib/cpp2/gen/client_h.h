@@ -54,8 +54,7 @@ struct ClientRequestContext {
 
   struct THeaderWrapper : public transport::THeader {
     THeaderWrapper(
-        uint16_t protocolId,
-        std::map<std::string, std::string> headers)
+        uint16_t protocolId, std::map<std::string, std::string> headers)
         : transport::THeader(transport::THeader::ALLOW_BIG_FRAMES) {
       this->setProtocolId(protocolId);
       this->setHeaders(std::move(headers));

@@ -26,9 +26,7 @@ class t_union : public t_struct {
  public:
   using t_struct::t_struct;
 
-  bool is_union() const override {
-    return true;
-  }
+  bool is_union() const override { return true; }
 
  private:
   friend class t_struct;

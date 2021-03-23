@@ -39,8 +39,7 @@ namespace thrift {
 class ThriftRequestHandler : public proxygen::HTTPTransactionHandler {
  public:
   ThriftRequestHandler(
-      ThriftProcessor* processor,
-      std::shared_ptr<Cpp2Worker> worker);
+      ThriftProcessor* processor, std::shared_ptr<Cpp2Worker> worker);
 
   ~ThriftRequestHandler() override;
 

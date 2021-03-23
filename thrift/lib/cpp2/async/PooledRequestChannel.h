@@ -38,8 +38,7 @@ class PooledRequestChannel : public RequestChannel {
   static std::
       unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
       newSyncChannel(
-          std::weak_ptr<folly::IOExecutor> executor,
-          ImplCreator implCreator) {
+          std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
     return {
         new PooledRequestChannel(
             nullptr, std::move(executor), std::move(implCreator)),
@@ -95,9 +94,7 @@ class PooledRequestChannel : public RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return nullptr;
-  }
+  folly::EventBase* getEventBase() const override { return nullptr; }
 
   uint16_t getProtocolId() override;
 

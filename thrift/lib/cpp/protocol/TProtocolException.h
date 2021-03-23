@@ -68,9 +68,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
    *
    * @return Error code
    */
-  TProtocolExceptionType getType() const {
-    return type_;
-  }
+  TProtocolExceptionType getType() const { return type_; }
 
   const char* what() const throw() override {
     if (message_.empty()) {
@@ -102,8 +100,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
   [[noreturn]] static void throwNegativeSize();
   [[noreturn]] static void throwExceededSizeLimit();
   [[noreturn]] static void throwMissingRequiredField(
-      folly::StringPiece field,
-      folly::StringPiece type);
+      folly::StringPiece field, folly::StringPiece type);
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
   [[noreturn]] static void throwInvalidSkipType(TType type);
   [[noreturn]] static void throwInvalidFieldData();

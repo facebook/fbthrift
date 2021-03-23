@@ -33,8 +33,7 @@ inline constexpr type_hash_size_t kTypeHashBytesNotSpecified = -1;
 // as aliases.
 template <typename C = std::initializer_list<const char*>>
 ThriftTypeInfo createThriftTypeInfo(
-    C&& names,
-    type_hash_size_t typeHashBytes = kTypeHashBytesNotSpecified);
+    C&& names, type_hash_size_t typeHashBytes = kTypeHashBytesNotSpecified);
 
 // Raises std::invalid_argument if invalid.
 void validateThriftTypeInfo(const ThriftTypeInfo& type);

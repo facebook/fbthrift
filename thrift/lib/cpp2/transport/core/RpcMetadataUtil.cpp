@@ -109,8 +109,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
 }
 
 void fillTHeaderFromResponseRpcMetadata(
-    ResponseRpcMetadata& responseMetadata,
-    transport::THeader& header) {
+    ResponseRpcMetadata& responseMetadata, transport::THeader& header) {
   if (responseMetadata.otherMetadata_ref()) {
     header.setReadHeaders(std::move(*responseMetadata.otherMetadata_ref()));
   }
@@ -142,8 +141,7 @@ void fillTHeaderFromResponseRpcMetadata(
 }
 
 void fillResponseRpcMetadataFromTHeader(
-    transport::THeader& header,
-    ResponseRpcMetadata& responseMetadata) {
+    transport::THeader& header, ResponseRpcMetadata& responseMetadata) {
   std::map<std::string, std::string> otherMetadata = header.releaseHeaders();
   {
     auto loadIt = otherMetadata.find(transport::THeader::QUERY_LOAD_HEADER);

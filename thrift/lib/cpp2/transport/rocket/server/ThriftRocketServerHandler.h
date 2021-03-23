@@ -72,14 +72,12 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   ~ThriftRocketServerHandler() override;
 
-  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& context)
-      final;
+  void handleSetupFrame(
+      SetupFrame&& frame, RocketServerConnection& context) final;
   void handleRequestResponseFrame(
-      RequestResponseFrame&& frame,
-      RocketServerFrameContext&& context) final;
+      RequestResponseFrame&& frame, RocketServerFrameContext&& context) final;
   void handleRequestFnfFrame(
-      RequestFnfFrame&& frame,
-      RocketServerFrameContext&& context) final;
+      RequestFnfFrame&& frame, RocketServerFrameContext&& context) final;
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
       RocketServerFrameContext&& context,
@@ -96,9 +94,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   void terminateInteraction(int64_t id) final;
 
-  Cpp2ConnContext* getCpp2ConnContext() final {
-    return &connContext_;
-  }
+  Cpp2ConnContext* getCpp2ConnContext() final { return &connContext_; }
 
   void onBeforeHandleFrame() override;
 
@@ -130,16 +126,14 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   FOLLY_NOINLINE void handleRequestWithBadChecksum(
       ThriftRequestCoreUniquePtr request);
   FOLLY_NOINLINE void handleRequestOverloadedServer(
-      ThriftRequestCoreUniquePtr request,
-      const std::string& errorCode);
+      ThriftRequestCoreUniquePtr request, const std::string& errorCode);
   FOLLY_NOINLINE void handleAppError(
       ThriftRequestCoreUniquePtr request,
       const std::string& name,
       const std::string& message,
       bool isClientError);
   FOLLY_NOINLINE void handleDecompressionFailure(
-      ThriftRequestCoreUniquePtr request,
-      std::string&& reason);
+      ThriftRequestCoreUniquePtr request, std::string&& reason);
   FOLLY_NOINLINE void handleServerShutdown(ThriftRequestCoreUniquePtr request);
 };
 

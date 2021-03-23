@@ -30,30 +30,14 @@ using apache::thrift::transport::TTransportException;
 class PresultServiceInterface : public PresultServiceSvIf {
  public:
   void methodVoid() override {}
-  bool methodBool(bool x) override {
-    return x;
-  }
-  int8_t methodByte(int8_t x) override {
-    return x;
-  }
-  int16_t methodI16(int16_t x) override {
-    return x;
-  }
-  int32_t methodI32(int32_t x) override {
-    return x;
-  }
-  int64_t methodI64(int64_t x) override {
-    return x;
-  }
-  float methodFloat(float x) override {
-    return x;
-  }
-  double methodDouble(double x) override {
-    return x;
-  }
-  Enum methodEnum(Enum x) override {
-    return x;
-  }
+  bool methodBool(bool x) override { return x; }
+  int8_t methodByte(int8_t x) override { return x; }
+  int16_t methodI16(int16_t x) override { return x; }
+  int32_t methodI32(int32_t x) override { return x; }
+  int64_t methodI64(int64_t x) override { return x; }
+  float methodFloat(float x) override { return x; }
+  double methodDouble(double x) override { return x; }
+  Enum methodEnum(Enum x) override { return x; }
   void methodString(std::string& ret, std::unique_ptr<std::string> x) override {
     ret = *x;
   }
@@ -62,8 +46,8 @@ class PresultServiceInterface : public PresultServiceSvIf {
     ret = *x;
   }
 
-  void methodIOBuf(folly::IOBuf& ret, std::unique_ptr<folly::IOBuf> x)
-      override {
+  void methodIOBuf(
+      folly::IOBuf& ret, std::unique_ptr<folly::IOBuf> x) override {
     ret = std::move(*x);
   }
 
@@ -80,8 +64,7 @@ class PresultServiceInterface : public PresultServiceSvIf {
   }
 
   void methodListBool(
-      std::vector<bool>& ret,
-      std::unique_ptr<std::vector<bool>> x) override {
+      std::vector<bool>& ret, std::unique_ptr<std::vector<bool>> x) override {
     ret = *x;
   }
 
@@ -103,8 +86,8 @@ class PresultServiceInterface : public PresultServiceSvIf {
     ret = *x;
   }
 
-  void methodSet(std::set<int32_t>& ret, std::unique_ptr<std::set<int32_t>> x)
-      override {
+  void methodSet(
+      std::set<int32_t>& ret, std::unique_ptr<std::set<int32_t>> x) override {
     ret = *x;
   }
 
@@ -128,8 +111,7 @@ class PresultServiceInterface : public PresultServiceSvIf {
 };
 
 std::shared_ptr<PresultServiceAsyncClient> getClient(
-    const ScopedServerThread& sst,
-    folly::EventBase& eb) {
+    const ScopedServerThread& sst, folly::EventBase& eb) {
   auto socket = folly::AsyncSocket::newSocket(&eb, *sst.getAddress());
   auto channel = HeaderClientChannel::newChannel(std::move(socket));
   auto client = std::make_shared<PresultServiceAsyncClient>(std::move(channel));

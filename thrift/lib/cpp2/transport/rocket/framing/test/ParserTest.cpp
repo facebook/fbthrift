@@ -29,11 +29,8 @@ class FakeOwner : public folly::DelayedDestruction {
   void handleFrame(std::unique_ptr<folly::IOBuf>) {}
   void close(folly::exception_wrapper) noexcept {}
   void scheduleTimeout(
-      folly::HHWheelTimer::Callback*,
-      const std::chrono::milliseconds&) {}
-  bool incMemoryUsage(uint32_t) {
-    return true;
-  }
+      folly::HHWheelTimer::Callback*, const std::chrono::milliseconds&) {}
+  bool incMemoryUsage(uint32_t) { return true; }
   void decMemoryUsage(uint32_t) {}
 };
 

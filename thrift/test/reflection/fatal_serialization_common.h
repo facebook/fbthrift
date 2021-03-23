@@ -66,18 +66,14 @@ struct TypedTestCommon : public ::testing::Test {
   folly::IOBufQueue buffer;
   std::unique_ptr<folly::IOBuf> underlying;
 
-  TypedTestCommon() {
-    this->writer.setOutput(&this->buffer, 4096);
-  }
+  TypedTestCommon() { this->writer.setOutput(&this->buffer, 4096); }
 
   void prep_read() {
     this->underlying = this->buffer.move();
     this->reader.setInput(this->underlying.get());
   }
 
-  void debug_buffer() {
-    print_underlying<Pair::printable::value>(*underlying);
-  }
+  void debug_buffer() { print_underlying<Pair::printable::value>(*underlying); }
 };
 
 template <typename Pair>
@@ -85,9 +81,7 @@ struct MultiProtocolTest : public TypedTestCommon<Pair> {};
 
 template <typename Pair>
 struct MultiProtocolTestConcrete : public TypedTestCommon<Pair> {
-  void TestBody() override {
-    return;
-  }
+  void TestBody() override { return; }
 };
 
 template <typename Pair>

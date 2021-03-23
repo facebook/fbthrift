@@ -110,9 +110,7 @@ class CompactProtocolWriter {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
-  static constexpr bool kSortKeys() {
-    return false;
-  }
+  static constexpr bool kSortKeys() { return false; }
 
   /**
    * The IOBufQueue itself is managed by the caller.
@@ -128,19 +126,15 @@ class CompactProtocolWriter {
     out_.reset(storage, std::min(kDesiredGrowth, maxGrowth));
   }
 
-  inline void setOutput(QueueAppender&& output) {
-    out_ = std::move(output);
-  }
+  inline void setOutput(QueueAppender&& output) { out_ = std::move(output); }
 
   inline uint32_t writeMessageBegin(
-      folly::StringPiece name,
-      MessageType messageType,
-      int32_t seqid);
+      folly::StringPiece name, MessageType messageType, int32_t seqid);
   inline uint32_t writeMessageEnd();
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
-  inline uint32_t
-  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
+  inline uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldBeginInternal(
       const char* name,
       const TType fieldType,
@@ -189,11 +183,11 @@ class CompactProtocolWriter {
    *    since the IOBuf might be in the middle of the serialized stream.
    */
   inline uint32_t serializedMessageSize(folly::StringPiece name) const;
-  inline uint32_t
-  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
+  inline uint32_t serializedFieldSize(
+      const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t
-  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) const;
+  inline uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) const;
   inline uint32_t serializedSizeMapEnd() const;
   inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeListEnd() const;
@@ -270,13 +264,9 @@ class CompactProtocolReader {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
-  static constexpr bool kUsesFieldNames() {
-    return false;
-  }
+  static constexpr bool kUsesFieldNames() { return false; }
 
-  static constexpr bool kOmitsContainerSizes() {
-    return false;
-  }
+  static constexpr bool kOmitsContainerSizes() { return false; }
 
   void setStringSizeLimit(int32_t string_limit) {
     string_limit_ = string_limit;
@@ -292,23 +282,19 @@ class CompactProtocolReader {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  void setInput(const Cursor& cursor) {
-    in_ = cursor;
-  }
-  void setInput(const IOBuf* buf) {
-    in_.reset(buf);
-  }
+  void setInput(const Cursor& cursor) { in_ = cursor; }
+  void setInput(const IOBuf* buf) { in_.reset(buf); }
 
   /**
    * Reading functions
    */
-  inline void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   inline void readMessageEnd();
   inline void readStructBegin(std::string& name);
   inline void readStructEnd();
-  inline void
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  inline void readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
   inline void readFieldEnd();
   inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
   inline void readMapEnd();
@@ -332,33 +318,18 @@ class CompactProtocolReader {
   inline void readBinary(IOBuf& str);
 
   static constexpr std::size_t fixedSizeInContainer(TType type);
-  void skipBytes(size_t bytes) {
-    in_.skip(bytes);
-  }
-  void skip(TType type) {
-    apache::thrift::skip(*this, type);
-  }
-  bool peekMap() {
-    return false;
-  }
-  bool peekSet() {
-    return false;
-  }
-  bool peekList() {
-    return false;
-  }
+  void skipBytes(size_t bytes) { in_.skip(bytes); }
+  void skip(TType type) { apache::thrift::skip(*this, type); }
+  bool peekMap() { return false; }
+  bool peekSet() { return false; }
+  bool peekList() { return false; }
 
-  const Cursor& getCursor() const {
-    return in_;
-  }
+  const Cursor& getCursor() const { return in_; }
 
-  size_t getCursorPosition() const {
-    return in_.getCurrentPosition();
-  }
+  size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
   inline uint32_t readFromPositionAndAppend(
-      Cursor& /*cursor*/,
-      std::unique_ptr<folly::IOBuf>& /*ser*/) {
+      Cursor& /*cursor*/, std::unique_ptr<folly::IOBuf>& /*ser*/) {
     // TODO
     return 0;
   }
@@ -400,9 +371,7 @@ class CompactProtocolReader {
     void beforeSubobject(CompactProtocolReader* /* iprot */) {}
     void afterSubobject(CompactProtocolReader* /* iprot */) {}
 
-    bool atStop() {
-      return fieldType == apache::thrift::protocol::T_STOP;
-    }
+    bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
 
     /*
      * This is used in generated deserialization code only. When deserializing
@@ -411,14 +380,11 @@ class CompactProtocolReader {
      * type information.
      */
     FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-        CompactProtocolReader* /*iprot*/,
-        TType expectedFieldType) {
+        CompactProtocolReader* /*iprot*/, TType expectedFieldType) {
       return fieldType == expectedFieldType;
     }
 
-    inline void skip(CompactProtocolReader* iprot) {
-      iprot->skip(fieldType);
-    }
+    inline void skip(CompactProtocolReader* iprot) { iprot->skip(fieldType); }
 
     std::string& fieldName() {
       throw std::logic_error("CompactProtocol doesn't support field names");
@@ -441,15 +407,12 @@ class CompactProtocolReader {
   inline void readStructBeginWithState(StructReadState& state);
   inline void readFieldBeginWithState(StructReadState& state);
   FOLLY_NOINLINE void readFieldBeginWithStateMediumSlow(
-      StructReadState& state,
-      int16_t prevFieldId);
+      StructReadState& state, int16_t prevFieldId);
   FOLLY_ALWAYS_INLINE void readFieldBeginWithStateImpl(
-      StructReadState& state,
-      int16_t prevFieldId,
-      uint8_t firstByte);
+      StructReadState& state, int16_t prevFieldId, uint8_t firstByte);
 
-  FOLLY_ALWAYS_INLINE bool
-  matchTypeHeader(uint8_t byte, TType type, uint8_t diff);
+  FOLLY_ALWAYS_INLINE bool matchTypeHeader(
+      uint8_t byte, TType type, uint8_t diff);
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
       int32_t currFieldId,

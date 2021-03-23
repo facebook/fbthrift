@@ -34,9 +34,7 @@ namespace {
 const std::string_view kThriftScheme = "fbthrift://";
 
 struct MdCtxDeleter {
-  void operator()(EVP_MD_CTX* ctx) const {
-    EVP_MD_CTX_free(ctx);
-  }
+  void operator()(EVP_MD_CTX* ctx) const { EVP_MD_CTX_free(ctx); }
 };
 using ctx_ptr = std::unique_ptr<EVP_MD_CTX, MdCtxDeleter>;
 
@@ -207,8 +205,7 @@ bool matchesTypeHash(folly::StringPiece typeHash, folly::StringPiece prefix) {
 }
 
 folly::StringPiece getTypeHashPrefix(
-    folly::StringPiece typeHash,
-    type_hash_size_t typeHashBytes) {
+    folly::StringPiece typeHash, type_hash_size_t typeHashBytes) {
   return typeHash.subpiece(0, typeHashBytes);
 }
 

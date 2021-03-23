@@ -32,18 +32,14 @@ class t_stream_response : public t_type {
   explicit t_stream_response(t_type_ref elem_type, t_struct* throws = nullptr)
       : elem_type_(std::move(elem_type)), throws_(throws) {}
 
-  const t_type* get_elem_type() const {
-    return elem_type_.get_type();
-  }
+  const t_type* get_elem_type() const { return elem_type_.get_type(); }
 
   void set_first_response_type(
       std::unique_ptr<t_type_ref> first_response_type) {
     first_response_type_ = std::move(first_response_type);
   }
 
-  bool has_first_response() const {
-    return first_response_type_ != nullptr;
-  }
+  bool has_first_response() const { return first_response_type_ != nullptr; }
 
   const t_type* get_first_response_type() const {
     // TODO(afuller): Fix call sites that don't check has_first_response().
@@ -51,9 +47,7 @@ class t_stream_response : public t_type {
     return has_first_response() ? first_response_type_->get_type() : nullptr;
   }
 
-  bool is_streamresponse() const override {
-    return true;
-  }
+  bool is_streamresponse() const override { return true; }
 
   std::string get_full_name() const override {
     if (has_first_response()) {
@@ -63,16 +57,10 @@ class t_stream_response : public t_type {
     return "stream<" + elem_type_.get_type()->get_full_name() + ">";
   }
 
-  type get_type_value() const override {
-    return type::t_stream;
-  }
+  type get_type_value() const override { return type::t_stream; }
 
-  t_struct* get_throws_struct() const {
-    return throws_;
-  }
-  bool has_throws_struct() const {
-    return (bool)throws_;
-  }
+  t_struct* get_throws_struct() const { return throws_; }
+  bool has_throws_struct() const { return (bool)throws_; }
 
  private:
   t_type_ref elem_type_;
@@ -84,8 +72,7 @@ class t_stream_response : public t_type {
   // backwards compatibility.
 
   explicit t_stream_response(
-      const t_type* elem_type,
-      t_struct* throws = nullptr)
+      const t_type* elem_type, t_struct* throws = nullptr)
       : t_stream_response(t_type_ref(elem_type), throws) {}
 
   void set_first_response_type(const t_type* first_response_type) {

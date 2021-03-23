@@ -29,9 +29,7 @@ namespace test {
 
 class Buffer : boost::totally_ordered<Buffer> {
  public:
-  Buffer() {
-    buf_.unshare();
-  }
+  Buffer() { buf_.unshare(); }
   explicit Buffer(std::string&& str) : Buffer() {
     clear();
     append(str.data(), str.size());
@@ -42,21 +40,11 @@ class Buffer : boost::totally_ordered<Buffer> {
   Buffer(Buffer&& that) noexcept = default;
   Buffer& operator=(const Buffer& that) = default;
   Buffer& operator=(Buffer&& that) noexcept = default;
-  size_t size() const {
-    return buf_.length();
-  }
-  size_t length() const {
-    return buf_.length();
-  }
-  const uint8_t* data() const {
-    return buf_.data();
-  }
-  void clear() {
-    buf_.trimEnd(buf_.length());
-  }
-  void reserve(size_t desiredCapacity) {
-    buf_.reserve(0, desiredCapacity);
-  }
+  size_t size() const { return buf_.length(); }
+  size_t length() const { return buf_.length(); }
+  const uint8_t* data() const { return buf_.data(); }
+  void clear() { buf_.trimEnd(buf_.length()); }
+  void reserve(size_t desiredCapacity) { buf_.reserve(0, desiredCapacity); }
   Buffer& append(const void* data, size_t len) {
     if (len > 0) {
       reserve(buf_.length() + len); // make sure there's enough capacity
@@ -88,9 +76,7 @@ template <>
 class Cpp2Ops<test::Buffer> {
  public:
   typedef test::Buffer Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRING;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeBinary(*value);

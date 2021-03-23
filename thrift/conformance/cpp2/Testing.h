@@ -94,9 +94,7 @@ class Number1Serializer
  public:
   static const Protocol kProtocol;
 
-  const Protocol& getProtocol() const override {
-    return kProtocol;
-  }
+  const Protocol& getProtocol() const override { return kProtocol; }
 
   using Base::encode;
   void encode(const int&, folly::io::QueueAppender&& appender) const {
@@ -151,8 +149,8 @@ class MultiSerializer : public AnySerializer {
   const Protocol& getProtocol() const override {
     return kFollyToStringProtocol;
   }
-  void encode(any_ref value, folly::io::QueueAppender&& appender)
-      const override;
+  void encode(
+      any_ref value, folly::io::QueueAppender&& appender) const override;
   void decode(
       const std::type_info& typeInfo,
       folly::io::Cursor& cursor,
@@ -398,13 +396,9 @@ namespace test {
 #define _THRIFT_ASSIGN_Delete _THRIFT_CON_Delete
 #define _THRIFT_ASSIGN_Trivial _THRIFT_CON_Trivial
 #define _THRIFT_ASSIGN_NoThrow \
-  noexcept(true) {             \
-    return *this;              \
-  }
+  noexcept(true) { return *this; }
 #define _THRIFT_ASSIGN_Throw \
-  noexcept(false) {          \
-    return *this;            \
-  }
+  noexcept(false) { return *this; }
 
 #define _THRIFT_CON(type) _THRIFT_CON_##type
 #define _THRIFT_ASSIGN(type) _THRIFT_ASSIGN_##type

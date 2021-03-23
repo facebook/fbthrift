@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Portability.h>
 #include <folly/init/Init.h>
-#include <glog/logging.h>
 #include <thrift/test/gen-cpp2/optionals_types.h>
 
 using namespace std;

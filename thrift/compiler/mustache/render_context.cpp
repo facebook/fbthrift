@@ -54,15 +54,13 @@ std::string render_context::push::render(const template_type& templt) {
 }
 
 render_context::render_context(
-    const node& node,
-    const std::map<std::string, template_type>& partials)
+    const node& node, const std::map<std::string, template_type>& partials)
     : m_partials(partials), m_nodes(1, node), m_node_ptrs(1, &node) {
   m_state.push(std::unique_ptr<render_state>(new outside_section));
 }
 
 const node& render_context::find_node(
-    const std::string& token,
-    std::list<node const*> current_nodes) {
+    const std::string& token, std::list<node const*> current_nodes) {
   if (token != "." && token.find('.') != std::string::npos) {
     return find_node(
         token.substr(token.rfind('.') + 1),
@@ -82,8 +80,7 @@ const node& render_context::get_node(const std::string& token) {
 }
 
 std::string render_context::render(
-    const template_type& templt,
-    const std::string& prefix) {
+    const template_type& templt, const std::string& prefix) {
   std::string output;
   bool prev_eol = true;
   for (auto& token : templt) {
@@ -97,8 +94,7 @@ std::string render_context::render(
 }
 
 std::string render_context::render_partial(
-    const std::string& partial_name,
-    const std::string& prefix) {
+    const std::string& partial_name, const std::string& prefix) {
   return m_partials.count(partial_name)
       ? render(m_partials.at(partial_name), prefix)
       : "";

@@ -43,15 +43,9 @@ class template_type {
   template_type() = default;
   /* implicit */ template_type(const std::string& str);
   template_type(const std::string& str, const delim_type& delims);
-  std::vector<token>::const_iterator begin() const {
-    return m_tokens.begin();
-  }
-  std::vector<token>::const_iterator end() const {
-    return m_tokens.end();
-  }
-  void operator<<(const token& token) {
-    m_tokens.push_back(token);
-  }
+  std::vector<token>::const_iterator begin() const { return m_tokens.begin(); }
+  std::vector<token>::const_iterator end() const { return m_tokens.end(); }
+  void operator<<(const token& token) { m_tokens.push_back(token); }
 
  private:
   std::vector<token> m_tokens;

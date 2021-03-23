@@ -247,8 +247,8 @@ static inline bool check_ssize_t_32(Py_ssize_t len) {
   return true;
 }
 
-static inline bool
-parse_pyint(PyObject* o, int32_t* ret, int32_t min, int32_t max) {
+static inline bool parse_pyint(
+    PyObject* o, int32_t* ret, int32_t min, int32_t max) {
   long val = AS_LONG(o);
   if (INT_CONV_ERROR_OCCURRED(val)) {
     return false;
@@ -609,10 +609,7 @@ static PyObject* decode_val(
 
 template <typename Reader>
 static bool decode_struct(
-    Reader* reader,
-    PyObject* value,
-    StructTypeArgs* args,
-    int utf8strings) {
+    Reader* reader, PyObject* value, StructTypeArgs* args, int utf8strings) {
   int speclen = PyTuple_Size(args->spec);
   if (speclen == -1) {
     return false;
@@ -1119,9 +1116,7 @@ static PyObject* decode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
     return nullptr;
   }
 
-  SCOPE_EXIT {
-    free_decodebuf(&input);
-  };
+  SCOPE_EXIT { free_decodebuf(&input); };
 
   if (protoid == 0) {
     if (!decodeT<BinaryProtocolReaderWithRefill>(

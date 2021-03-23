@@ -31,9 +31,7 @@ class RequestStateMachine {
   //       presents a data race condition. As such, the isActive() API returning
   //       true should be considered a weak promise that a request is active
   //       and should not be relied upon for the purposes of synchronization.
-  bool isActive() const {
-    return !cancelled_.load(std::memory_order_relaxed);
-  }
+  bool isActive() const { return !cancelled_.load(std::memory_order_relaxed); }
 
   // Instruct whether request no longer requires processing.
   // This API may only be called from IO worker thread of the request.

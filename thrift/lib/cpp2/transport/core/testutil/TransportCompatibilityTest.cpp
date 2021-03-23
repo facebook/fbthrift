@@ -203,8 +203,8 @@ template <typename Service>
 void SampleServer<Service>::connectToServer(
     std::string transport,
     folly::Function<void(
-        std::shared_ptr<RequestChannel>,
-        std::shared_ptr<ClientConnectionIf>)> callMe) {
+        std::shared_ptr<RequestChannel>, std::shared_ptr<ClientConnectionIf>)>
+        callMe) {
   ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
     std::shared_ptr<HeaderClientChannel> channel;
@@ -269,9 +269,7 @@ void SampleServer<Service>::connectToServer(
 }
 
 void TransportCompatibilityTest::callSleep(
-    TestServiceAsyncClient* client,
-    int32_t timeoutMs,
-    int32_t sleepMs) {
+    TestServiceAsyncClient* client, int32_t timeoutMs, int32_t sleepMs) {
   auto cb = std::make_unique<MockCallback>(false, timeoutMs < sleepMs);
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));
@@ -1029,9 +1027,7 @@ void TransportCompatibilityTest::TestBadPayload() {
           return apache::thrift::RequestClientCallback::Ptr(instance.get());
         }
 
-        void onRequestSent() noexcept override {
-          ADD_FAILURE();
-        }
+        void onRequestSent() noexcept override { ADD_FAILURE(); }
         void onResponse(
             apache::thrift::ClientReceiveState&&) noexcept override {
           ADD_FAILURE();
@@ -1147,9 +1143,7 @@ class CloseCallbackTest : public CloseCallback {
     EXPECT_FALSE(closed_);
     closed_ = true;
   }
-  bool isClosed() {
-    return closed_;
-  }
+  bool isClosed() { return closed_; }
 
  private:
   bool closed_{false};
@@ -1203,13 +1197,9 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
         apache::thrift::ResponseChannelRequest::UniquePtr req)
         : req_(std::move(req)) {}
 
-    bool isActive() const override {
-      return req_->isActive();
-    }
+    bool isActive() const override { return req_->isActive(); }
 
-    bool isOneway() const override {
-      return req_->isOneway();
-    }
+    bool isOneway() const override { return req_->isOneway(); }
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&& buf,
@@ -1218,8 +1208,8 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       req_->sendReply(std::move(buf), new TestSendCallback(cb), crc32);
     }
 
-    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
-        override {
+    void sendErrorWrapped(
+        folly::exception_wrapper ex, std::string exCode) override {
       req_->sendErrorWrapped(std::move(ex), std::move(exCode));
     }
 

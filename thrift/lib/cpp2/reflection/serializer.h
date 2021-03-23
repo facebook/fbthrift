@@ -460,8 +460,7 @@ template <
     typename isset_array,
     typename Struct>
 typename std::enable_if<Optional != optionality::required>::type mark_isset(
-    isset_array& /*isset*/,
-    Struct& obj) {
+    isset_array& /*isset*/, Struct& obj) {
   MemberInfo::mark_set(obj, true);
 }
 
@@ -493,12 +492,8 @@ struct deref;
 // General case: methods on deref are no-op, returning their input
 template <typename T>
 struct deref<T, disable_if_smart_pointer<T>> {
-  static T& clear_and_get(T& in) {
-    return in;
-  }
-  static T const& get_const(T const& in) {
-    return in;
-  }
+  static T& clear_and_get(T& in) { return in; }
+  static T const& get_const(T const& in) { return in; }
 };
 
 // Special case: We specifically *do not* dereference a unique pointer to
@@ -507,12 +502,8 @@ struct deref<T, disable_if_smart_pointer<T>> {
 template <>
 struct deref<std::unique_ptr<folly::IOBuf>> {
   using T = std::unique_ptr<folly::IOBuf>;
-  static T& clear_and_get(T& in) {
-    return in;
-  }
-  static T const& get_const(T const& in) {
-    return in;
-  }
+  static T& clear_and_get(T& in) { return in; }
+  static T const& get_const(T const& in) { return in; }
 };
 
 // General case: deref returns a reference to what the
@@ -534,9 +525,7 @@ struct deref<PtrType, enable_if_smart_pointer<PtrType>> {
     in = std::make_unique<T>();
     return *in;
   }
-  static T const& get_const(PtrType const& in) {
-    return *in;
-  }
+  static T const& get_const(PtrType const& in) { return *in; }
 };
 
 } // namespace detail
@@ -561,8 +550,8 @@ struct protocol_methods<type_class::variant, Union> {
   // for mapping member field `fname` to  field `fid` and `ftype`
   struct member_fname_to_fid {
     template <typename Field>
-    void
-    operator()(fatal::tag<Field>, field_id_t& fid, protocol::TType& ftype) {
+    void operator()(
+        fatal::tag<Field>, field_id_t& fid, protocol::TType& ftype) {
       using descriptor = fatal::get<
           typename traits::descriptors,
           typename Field::value,
@@ -781,8 +770,8 @@ struct protocol_methods<type_class::structure, Struct> {
   // mapping member fname -> fid
   struct member_fname_to_fid {
     template <typename Member>
-    void
-    operator()(fatal::tag<Member>, field_id_t& fid, protocol::TType& ftype) {
+    void operator()(
+        fatal::tag<Member>, field_id_t& fid, protocol::TType& ftype) {
       fid = Member::id::value;
       ftype = protocol_type_of_v<Member>;
 

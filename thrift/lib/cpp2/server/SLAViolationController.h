@@ -18,8 +18,8 @@
 
 #include <chrono>
 
-#include <folly/Random.h>
 #include <glog/logging.h>
+#include <folly/Random.h>
 
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 #include <thrift/lib/cpp2/util/Ewma.h>
@@ -87,13 +87,9 @@ class SLAViolationController : public AdmissionController {
     return accept && innerController_.admit();
   }
 
-  void dequeue() override {
-    innerController_.dequeue();
-  }
+  void dequeue() override { innerController_.dequeue(); }
 
-  double ewma() {
-    return slaRatio_.estimate();
-  }
+  double ewma() { return slaRatio_.estimate(); }
 
   void returnedResponse(std::chrono::nanoseconds latency) override {
     if (ratioThreshold_ != 0.0) {

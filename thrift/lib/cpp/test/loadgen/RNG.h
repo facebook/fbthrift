@@ -73,36 +73,28 @@ class RNG {
   /**
    * Re-seed this RNG
    */
-  void seed(result_type s) {
-    rng_->seed(s);
-  }
+  void seed(result_type s) { rng_->seed(s); }
 
   /**
    * Get a random number.
    *
    * Part of the boost random generator interface.
    */
-  result_type operator()() {
-    return (*rng_)();
-  }
+  result_type operator()() { return (*rng_)(); }
 
   /**
    * Get the minimum value that can be returned.
    *
    * Part of the boost random generator interface.
    */
-  result_type min() const {
-    return rng_->min();
-  }
+  result_type min() const { return rng_->min(); }
 
   /**
    * Get the maximum value that can be returned.
    *
    * Part of the boost random generator interface.
    */
-  result_type max() const {
-    return rng_->max();
-  }
+  result_type max() const { return rng_->max(); }
 
   /*
    * Helper functions to pick random uint32_t values

@@ -49,8 +49,7 @@ class BucketedRate {
    * e.g. window=8s, bucketCount=8 means that we'll have 8 buckets of 1s each.
    */
   explicit BucketedRate(
-      std::chrono::duration<double> window,
-      uint32_t bucketCount = 8)
+      std::chrono::duration<double> window, uint32_t bucketCount = 8)
       : buckets_(bucketCount, 0),
         bucketWidth_(window / bucketCount),
         lastIndex_(divide_chrono(Clock::now(), window)) {
@@ -111,8 +110,7 @@ class BucketedRate {
 
   // Helper for dividing a time_point by a duration
   static uint32_t divide_chrono(
-      std::chrono::time_point<Clock> t,
-      std::chrono::duration<double> w) {
+      std::chrono::time_point<Clock> t, std::chrono::duration<double> w) {
     auto t_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(t)
                     .time_since_epoch()
                     .count();

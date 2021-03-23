@@ -24,8 +24,7 @@ namespace testutil {
 namespace testservice {
 
 apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::range(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   return apache::thrift::SinkConsumer<int32_t, bool>{
       [from, to](folly::coro::AsyncGenerator<int32_t&&> gen)
           -> folly::coro::Task<bool> {
@@ -41,8 +40,7 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::range(
 }
 
 apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::rangeThrow(
-    int32_t from,
-    int32_t) {
+    int32_t from, int32_t) {
   return apache::thrift::SinkConsumer<int32_t, bool>{
       [from](folly::coro::AsyncGenerator<int32_t&&> gen)
           -> folly::coro::Task<bool> {
@@ -213,8 +211,8 @@ apache::thrift::SinkConsumer<IOBuf, int32_t> TestSinkService::alignment(
   };
 }
 
-apache::thrift::SinkConsumer<int32_t, bool>
-TestSinkService::rangeCancelAt(int32_t from, int32_t to, int32_t cancelAt) {
+apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::rangeCancelAt(
+    int32_t from, int32_t to, int32_t cancelAt) {
   return apache::thrift::SinkConsumer<int32_t, bool>{
       [from, to, cancelAt](folly::coro::AsyncGenerator<int32_t&&> gen)
           -> folly::coro::Task<bool> {

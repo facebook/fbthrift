@@ -61,8 +61,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
    * It returns one shared AdmissionController per clientId.
    */
   std::shared_ptr<AdmissionController> select(
-      const std::string&,
-      const transport::THeader* theader) override {
+      const std::string&, const transport::THeader* theader) override {
     if (theader == nullptr) {
       return wildcardController_;
     }
@@ -108,9 +107,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
     }
   }
 
-  Type getType() override {
-    return AdmissionStrategy::PER_CLIENT_ID;
-  }
+  Type getType() override { return AdmissionStrategy::PER_CLIENT_ID; }
 
  private:
   using ControllerMap =

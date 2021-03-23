@@ -28,23 +28,23 @@ namespace util {
  * Read an i16 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 3 bytes.
  */
-uint32_t
-readVarint16(uint8_t const* ptr, int16_t* i16, uint8_t const* boundary);
+uint32_t readVarint16(
+    uint8_t const* ptr, int16_t* i16, uint8_t const* boundary);
 
 /**
  * Read an i32 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 5 bytes.
  */
-uint32_t
-readVarint32(uint8_t const* ptr, int32_t* i32, uint8_t const* boundary);
+uint32_t readVarint32(
+    uint8_t const* ptr, int32_t* i32, uint8_t const* boundary);
 
 /**
  * Read an i64 from the wire as a proper varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 10 bytes.
  * Caller is responsible for advancing ptr after call.
  */
-uint32_t
-readVarint64(uint8_t const* ptr, int64_t* i64, uint8_t const* boundary);
+uint32_t readVarint64(
+    uint8_t const* ptr, int64_t* i64, uint8_t const* boundary);
 
 /**
  * Write an i32 as a varint. Results in 1-5 bytes on the wire.

@@ -144,9 +144,7 @@ class RetryingRequestChannel::StreamCallback
       FirstResponsePayload&& pload,
       folly::EventBase* evb,
       StreamServerCallback* serverCallback_) noexcept override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     serverCallback_->resetClientCallback(clientCallback_);
     return clientCallback_.onFirstResponse(
         std::move(pload), evb, serverCallback_);
@@ -161,25 +159,15 @@ class RetryingRequestChannel::StreamCallback
     }
   }
 
-  bool onStreamNext(StreamPayload&&) override {
-    std::terminate();
-  }
+  bool onStreamNext(StreamPayload&&) override { std::terminate(); }
 
-  void onStreamError(folly::exception_wrapper) override {
-    std::terminate();
-  }
+  void onStreamError(folly::exception_wrapper) override { std::terminate(); }
 
-  void onStreamComplete() override {
-    std::terminate();
-  }
+  void onStreamComplete() override { std::terminate(); }
 
-  bool onStreamHeaders(HeadersPayload&&) override {
-    std::terminate();
-  }
+  bool onStreamHeaders(HeadersPayload&&) override { std::terminate(); }
 
-  void resetServerCallback(StreamServerCallback&) override {
-    std::terminate();
-  }
+  void resetServerCallback(StreamServerCallback&) override { std::terminate(); }
 
  private:
   void retry() {

@@ -44,44 +44,32 @@ struct maker {
 
 template <>
 struct maker<StringPiece> {
-  static StringPiece make() {
-    return strvalue;
-  }
+  static StringPiece make() { return strvalue; }
 };
 
 template <>
 struct maker<ByteRange> {
-  static ByteRange make() {
-    return ByteRange(strvalue);
-  }
+  static ByteRange make() { return ByteRange(strvalue); }
 };
 
 template <>
 struct maker<IOBuf> {
-  static IOBuf make() {
-    return IOBuf(IOBuf::COPY_BUFFER, strvalue);
-  }
+  static IOBuf make() { return IOBuf(IOBuf::COPY_BUFFER, strvalue); }
 };
 
 template <>
 struct maker<UniquePtrIOBuf> {
-  static UniquePtrIOBuf make() {
-    return IOBuf::copyBuffer(strvalue);
-  }
+  static UniquePtrIOBuf make() { return IOBuf::copyBuffer(strvalue); }
 };
 
 template <>
 struct maker<ConstIOBufPtr> {
-  static ConstIOBufPtr make() {
-    return &iobuf;
-  }
+  static ConstIOBufPtr make() { return &iobuf; }
 };
 
 template <>
 struct maker<Cursor> {
-  static Cursor make() {
-    return Cursor(&iobuf);
-  }
+  static Cursor make() { return Cursor(&iobuf); }
 };
 
 using Writers = testing::Types<
@@ -113,9 +101,7 @@ class WriterInterfaceTest : public testing::Test {
  protected:
   IOBufQueue queue;
   Writer writer;
-  void SetUp() override {
-    writer.setOutput(&queue);
-  }
+  void SetUp() override { writer.setOutput(&queue); }
 };
 
 template <typename Reader>
@@ -123,9 +109,7 @@ class ReaderInterfaceTest : public testing::Test {
  protected:
   IOBufQueue queue;
   typename Reader::ProtocolWriter writer;
-  void SetUp() override {
-    writer.setOutput(&queue);
-  }
+  void SetUp() override { writer.setOutput(&queue); }
 
   Reader reader() {
     Reader reader;

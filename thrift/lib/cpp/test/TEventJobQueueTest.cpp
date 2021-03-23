@@ -53,8 +53,7 @@ class EventBaseAborter : public folly::AsyncTimeout {
  public:
   EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
       : folly::AsyncTimeout(
-            eventBase,
-            folly::AsyncTimeout::InternalEnum::INTERNAL),
+            eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL),
         eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }

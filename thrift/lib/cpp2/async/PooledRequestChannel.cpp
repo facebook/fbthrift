@@ -30,8 +30,7 @@ struct InteractionState {
 };
 
 static void maybeCreateInteraction(
-    const RpcOptions& options,
-    PooledRequestChannel::Impl& channel) {
+    const RpcOptions& options, PooledRequestChannel::Impl& channel) {
   if (auto id = options.getInteractionId()) {
     auto* state = reinterpret_cast<InteractionState*>(id);
     if (!state->id) {
@@ -66,8 +65,7 @@ uint16_t PooledRequestChannel::getProtocolId() {
 
 template <typename SendFunc>
 void PooledRequestChannel::sendRequestImpl(
-    SendFunc&& sendFunc,
-    folly::EventBase& evb) {
+    SendFunc&& sendFunc, folly::EventBase& evb) {
   evb.runInEventBaseThread(
       [this,
        keepAlive = getKeepAliveToken(evb),

@@ -17,10 +17,10 @@
 #include <memory>
 #include <vector>
 
+#include <glog/logging.h>
 #include <folly/executors/MeteredExecutor.h>
 #include <folly/experimental/FunctionScheduler.h>
 #include <folly/hash/Hash.h>
-#include <glog/logging.h>
 
 #include <thrift/lib/cpp/concurrency/SFQThreadManager.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -57,8 +57,7 @@ void SFQThreadManager::initQueues() {
 }
 
 [[nodiscard]] ThreadManager::KeepAlive<> SFQThreadManager::getKeepAlive(
-    ExecutionScope es,
-    Source source) const {
+    ExecutionScope es, Source source) const {
   // We only use the metered executor fair queuing for upstream sources. Bypass
   // the FQs if it's any other source.
   if (source != Source::UPSTREAM) {

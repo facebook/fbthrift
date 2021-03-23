@@ -37,18 +37,14 @@ class AcceptAllAdmissionStrategy : public AdmissionStrategy {
   }
 
   std::shared_ptr<AdmissionController> select(
-      const std::string&,
-      const transport::THeader*) override {
+      const std::string&, const transport::THeader*) override {
     return admissionController_;
   }
 
   void reportMetrics(
-      const AdmissionStrategy::MetricReportFn&,
-      const std::string&) override {}
+      const AdmissionStrategy::MetricReportFn&, const std::string&) override {}
 
-  Type getType() override {
-    return AdmissionStrategy::ACCEPT_ALL;
-  }
+  Type getType() override { return AdmissionStrategy::ACCEPT_ALL; }
 
  private:
   std::shared_ptr<AdmissionController> admissionController_;

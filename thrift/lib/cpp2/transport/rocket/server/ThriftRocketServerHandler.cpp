@@ -102,8 +102,7 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           worker_.get()),
       setupFrameHandlers_(handlers),
       version_(static_cast<int32_t>(std::min(
-          kRocketServerMaxVersion,
-          THRIFT_FLAG(rocket_server_max_version)))) {
+          kRocketServerMaxVersion, THRIFT_FLAG(rocket_server_max_version)))) {
   connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
   if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
     handler->newConnection(&connContext_);
@@ -131,8 +130,7 @@ ThriftRocketServerHandler::shouldSample() {
 }
 
 void ThriftRocketServerHandler::handleSetupFrame(
-    SetupFrame&& frame,
-    RocketServerConnection& connection) {
+    SetupFrame&& frame, RocketServerConnection& connection) {
   if (!frame.payload().hasNonemptyMetadata()) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP, "Missing required metadata in SETUP frame"));
@@ -233,8 +231,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
 }
 
 void ThriftRocketServerHandler::handleRequestResponseFrame(
-    RequestResponseFrame&& frame,
-    RocketServerFrameContext&& context) {
+    RequestResponseFrame&& frame, RocketServerFrameContext&& context) {
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
                                  rocket::Payload&& debugPayload,
                                  std::shared_ptr<folly::RequestContext> ctx) {
@@ -260,8 +257,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
 }
 
 void ThriftRocketServerHandler::handleRequestFnfFrame(
-    RequestFnfFrame&& frame,
-    RocketServerFrameContext&& context) {
+    RequestFnfFrame&& frame, RocketServerFrameContext&& context) {
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
                             rocket::Payload&& debugPayload,
                             std::shared_ptr<folly::RequestContext> ctx) {
@@ -340,8 +336,7 @@ void ThriftRocketServerHandler::connectionClosing() {
 
 template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
-    Payload&& payload,
-    F&& makeRequest) {
+    Payload&& payload, F&& makeRequest) {
   // setup request sampling for counters and stats
   auto samplingStatus = shouldSample();
   std::chrono::steady_clock::time_point readEnd;
@@ -511,8 +506,7 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
 }
 
 void ThriftRocketServerHandler::handleDecompressionFailure(
-    ThriftRequestCoreUniquePtr request,
-    std::string&& reason) {
+    ThriftRequestCoreUniquePtr request, std::string&& reason) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }
@@ -524,8 +518,7 @@ void ThriftRocketServerHandler::handleDecompressionFailure(
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
-    ThriftRequestCoreUniquePtr request,
-    const std::string& errorCode) {
+    ThriftRequestCoreUniquePtr request, const std::string& errorCode) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
   }

@@ -38,31 +38,23 @@ class Flags {
 
   // Flags and frame type are packed into 2 bytes on the wire. Flags occupy the
   // lower 10 bits, frame type occupies the upper 6 bits.
-  static constexpr uint8_t frameTypeOffset() {
-    return 10;
-  }
+  static constexpr uint8_t frameTypeOffset() { return 10; }
 
   static constexpr uint16_t mask() {
     return (static_cast<uint16_t>(1) << frameTypeOffset()) - 1;
   }
 
-  static constexpr Flags none() {
-    return Flags{};
-  }
+  static constexpr Flags none() { return Flags{}; }
 
   constexpr explicit operator uint16_t() const {
     return static_cast<uint16_t>(flags_);
   }
 
-#define THRIFT_ROCKET_CREATE_GETTER_SETTER( \
-    member_function_name, bits_enum_value)  \
-  bool member_function_name() const {       \
-    return flags_ & bits_enum_value;        \
-  }                                         \
-                                            \
-  Flags& member_function_name(bool on) {    \
-    return set(bits_enum_value, on);        \
-  }
+#define THRIFT_ROCKET_CREATE_GETTER_SETTER(                              \
+    member_function_name, bits_enum_value)                               \
+  bool member_function_name() const { return flags_ & bits_enum_value; } \
+                                                                         \
+  Flags& member_function_name(bool on) { return set(bits_enum_value, on); }
 
   THRIFT_ROCKET_CREATE_GETTER_SETTER(next, Bits::NEXT)
   THRIFT_ROCKET_CREATE_GETTER_SETTER(complete, Bits::COMPLETE)
@@ -75,9 +67,7 @@ class Flags {
 
 #undef THRIFT_ROCKET_CREATE_GETTER_SETTER
 
-  bool operator==(Flags other) const {
-    return flags_ == other.flags_;
-  }
+  bool operator==(Flags other) const { return flags_ == other.flags_; }
 
  private:
   enum Bits : uint16_t {

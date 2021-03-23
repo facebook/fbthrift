@@ -159,8 +159,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   // registers an interaction with a nested channel
   // only some channels can be nested; the rest call terminate here
   virtual InteractionId registerInteraction(
-      apache::thrift::ManagedStringView&& name,
-      int64_t id);
+      apache::thrift::ManagedStringView&& name, int64_t id);
 
   using Ptr =
       std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>;
@@ -217,9 +216,7 @@ class ClientSyncCallback : public RequestClientCallback {
   }
 
   // This approach avoids an inner coroutine frame
-  folly::fibers::Baton& co_waitUntilDone() {
-    return doneBaton_;
-  }
+  folly::fibers::Baton& co_waitUntilDone() { return doneBaton_; }
 
   void onRequestSent() noexcept override {
     if (oneWay) {
@@ -237,13 +234,9 @@ class ClientSyncCallback : public RequestClientCallback {
     doneBaton_.post();
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
-  bool isSync() const override {
-    return true;
-  }
+  bool isSync() const override { return true; }
 
  private:
   ClientReceiveState* rs_;

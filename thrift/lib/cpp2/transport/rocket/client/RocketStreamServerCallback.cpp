@@ -30,9 +30,7 @@ template <typename ServerCallback>
 class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
   explicit TimeoutCallback(ServerCallback& parent) : parent_(parent) {}
-  void timeoutExpired() noexcept override {
-    parent_.timeoutExpired();
-  }
+  void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
 
  private:
   ServerCallback& parent_;
@@ -51,8 +49,7 @@ bool RocketStreamServerCallback::onSinkHeaders(HeadersPayload&& payload) {
 }
 
 void RocketStreamServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
   std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
 }
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
@@ -128,8 +125,7 @@ bool RocketStreamServerCallbackWithChunkTimeout::onStreamRequestN(
 }
 
 void RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
   if (credits_ > 0) {
     scheduleTimeout();
   }
@@ -205,8 +201,7 @@ void RocketChannelServerCallback::onSinkComplete() {
 }
 
 void RocketChannelServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
   clientCallback_.onFirstResponse(std::move(payload), evb, this);
 }
 void RocketChannelServerCallback::onInitialError(folly::exception_wrapper ew) {
@@ -350,8 +345,7 @@ bool RocketSinkServerCallback::onSinkComplete() {
 }
 
 void RocketSinkServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
   std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
 }
 void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {

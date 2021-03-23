@@ -39,9 +39,7 @@ struct FixedSizeStringLayout : public LayoutBase {
   using Base = LayoutBase;
   FixedSizeStringLayout() : LayoutBase(typeid(T)) {}
 
-  FieldPosition maximize() {
-    return FieldPosition(T::kFixedSize, 0);
-  }
+  FieldPosition maximize() { return FieldPosition(T::kFixedSize, 0); }
 
   FieldPosition layout(LayoutRoot&, const T&, LayoutPosition /* start */) {
     return maximize();

@@ -207,9 +207,7 @@ struct MapFieldExt {
       const void* object,
       bool protocolSortKeys,
       size_t (*writer)(
-          const void* context,
-          const void* keyElem,
-          const void* valueElem));
+          const void* context, const void* keyElem, const void* valueElem));
 };
 
 template <typename ThriftUnion>
@@ -301,8 +299,7 @@ enable_if_not_smart_ptr_t<ObjectType> set(void* object, PrimitiveType val) {
 
 template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_unique_ptr<PtrType>::value> set(
-    void* object,
-    PrimitiveType val) {
+    void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_unique<Element>(static_cast<Element>(val));
@@ -310,8 +307,7 @@ std::enable_if_t<is_unique_ptr<PtrType>::value> set(
 
 template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_shared_ptr<PtrType>::value> set(
-    void* object,
-    PrimitiveType val) {
+    void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_shared<Element>(static_cast<Element>(val));
@@ -511,45 +507,21 @@ void readList(
 
 // Specializations for numbers.
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int8_t,
-    std::int8_t,
-    T_BYTE);
+    integral, std::int8_t, std::int8_t, T_BYTE);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int16_t,
-    std::int16_t,
-    T_I16);
+    integral, std::int16_t, std::int16_t, T_I16);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int32_t,
-    std::int32_t,
-    T_I32);
+    integral, std::int32_t, std::int32_t, T_I32);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int64_t,
-    std::int64_t,
-    T_I64);
+    integral, std::int64_t, std::int64_t, T_I64);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint8_t,
-    std::int8_t,
-    T_BYTE);
+    integral, std::uint8_t, std::int8_t, T_BYTE);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint16_t,
-    std::int16_t,
-    T_I16);
+    integral, std::uint16_t, std::int16_t, T_I16);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint32_t,
-    std::int32_t,
-    T_I32);
+    integral, std::uint32_t, std::int32_t, T_I32);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint64_t,
-    std::int64_t,
-    T_I64);
+    integral, std::uint64_t, std::int64_t, T_I64);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(integral, bool, bool, T_BOOL);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, float, float, T_FLOAT);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
@@ -566,19 +538,13 @@ THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
 
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(string, std::string, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    string,
-    folly::fbstring,
-    StringFieldType::String);
+    string, folly::fbstring, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, std::string, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    binary,
-    folly::fbstring,
-    StringFieldType::String);
+    binary, folly::fbstring, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, folly::IOBuf, StringFieldType::IOBuf);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    binary,
-    std::unique_ptr<folly::IOBuf>,
-    StringFieldType::IOBufPtr);
+    binary, std::unique_ptr<folly::IOBuf>, StringFieldType::IOBufPtr);
 
 #undef THRIFT_DEFINE_STRING_TYPE_TO_INFO
 
@@ -722,8 +688,8 @@ template <class Protocol_>
 void read(Protocol_* iprot, const StructInfo& structInfo, void* object);
 
 template <class Protocol_>
-size_t
-write(Protocol_* iprot, const StructInfo& structInfo, const void* object);
+size_t write(
+    Protocol_* iprot, const StructInfo& structInfo, const void* object);
 
 } // namespace detail
 } // namespace thrift

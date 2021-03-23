@@ -159,8 +159,7 @@ class Union : public MetadataTypeInterface {
 class Typedef : public MetadataTypeInterface {
  public:
   Typedef(
-      const char* name,
-      ::std::unique_ptr<MetadataTypeInterface> underlyingType)
+      const char* name, ::std::unique_ptr<MetadataTypeInterface> underlyingType)
       : name_(name), underlyingType_(::std::move(underlyingType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftTypedefType tyTypedef;
@@ -235,8 +234,7 @@ ThriftConstValue cvString(std::string&& value);
 ThriftConstValue cvMap(std::vector<ThriftConstValuePair>&& value);
 ThriftConstValue cvList(std::vector<ThriftConstValue>&& value);
 ThriftConstValue cvStruct(
-    std::string&& name,
-    std::map<std::string, ThriftConstValue>&& fields);
+    std::string&& name, std::map<std::string, ThriftConstValue>&& fields);
 ThriftConstValuePair cvPair(ThriftConstValue&& key, ThriftConstValue&& value);
 
 } // namespace md

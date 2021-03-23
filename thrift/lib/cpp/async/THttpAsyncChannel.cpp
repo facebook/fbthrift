@@ -54,8 +54,7 @@ void THttpACWriteRequest::writeSuccess() noexcept {
 }
 
 void THttpACWriteRequest::writeError(
-    size_t bytesWritten,
-    const TTransportException& ex) noexcept {
+    size_t bytesWritten, const TTransportException& ex) noexcept {
   T_ERROR(
       "THttpAC: write failed after writing %zu bytes: %s",
       bytesWritten,

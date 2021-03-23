@@ -38,21 +38,13 @@ class TShortReadTransport : public TVirtualTransport<TShortReadTransport> {
   TShortReadTransport(std::shared_ptr<TTransport> transport, double full_prob)
       : transport_(transport), fullProb_(full_prob) {}
 
-  bool isOpen() override {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() override {
-    return transport_->peek();
-  }
+  bool peek() override { return transport_->peek(); }
 
-  void open() override {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  void close() override {
-    transport_->close();
-  }
+  void close() override { transport_->close(); }
 
   uint32_t read(uint8_t* buf, uint32_t len) {
     if (len == 0) {
@@ -65,25 +57,17 @@ class TShortReadTransport : public TVirtualTransport<TShortReadTransport> {
     return transport_->read(buf, len);
   }
 
-  void write(const uint8_t* buf, uint32_t len) {
-    transport_->write(buf, len);
-  }
+  void write(const uint8_t* buf, uint32_t len) { transport_->write(buf, len); }
 
-  void flush() override {
-    transport_->flush();
-  }
+  void flush() override { transport_->flush(); }
 
   const uint8_t* borrow(uint8_t* buf, uint32_t* len) {
     return transport_->borrow(buf, len);
   }
 
-  void consume(uint32_t len) {
-    return transport_->consume(len);
-  }
+  void consume(uint32_t len) { return transport_->consume(len); }
 
-  std::shared_ptr<TTransport> getUnderlyingTransport() {
-    return transport_;
-  }
+  std::shared_ptr<TTransport> getUnderlyingTransport() { return transport_; }
 
  protected:
   std::shared_ptr<TTransport> transport_;

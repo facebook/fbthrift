@@ -161,8 +161,7 @@ FATAL_S(field_annotation, "field_annotation");
 FATAL_S(field_annotated, "field annotated");
 FATAL_S(field_structured_annotation, "field_structured_annotation");
 FATAL_S(
-    field_structured_annotation_text,
-    R"({"a": "foo", "b": 567, "c": true})");
+    field_structured_annotation_text, R"({"a": "foo", "b": 567, "c": true})");
 FATAL_S(some_other_text, "some other text");
 FATAL_S(a, "a");
 FATAL_S(b, "b");

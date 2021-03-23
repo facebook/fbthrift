@@ -157,8 +157,7 @@ InteractionId RequestChannel::createInteraction(ManagedStringView&& name) {
   return registerInteraction(std::move(name), id);
 }
 InteractionId RequestChannel::registerInteraction(
-    ManagedStringView&&,
-    int64_t) {
+    ManagedStringView&&, int64_t) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }

@@ -45,8 +45,7 @@ namespace {
 constexpr size_t kMaxFragmentedPayloadSize = 0xffffff - 512;
 
 std::unique_ptr<folly::IOBuf> trimBuffer(
-    std::unique_ptr<folly::IOBuf> buffer,
-    size_t toTrim) {
+    std::unique_ptr<folly::IOBuf> buffer, size_t toTrim) {
   folly::IOBufQueue bufQueue;
   bufQueue.append(std::move(buffer));
   bufQueue.trimStart(toTrim);
@@ -67,9 +66,7 @@ Payload readPayload(
 
 template <class Frame>
 void serializeInFragmentsSlowCommon(
-    Frame&& frame,
-    Flags flags,
-    Serializer& writer) {
+    Frame&& frame, Flags flags, Serializer& writer) {
   auto metadataSize = frame.payload().metadataSize();
   folly::IOBufQueue bufferQueue(folly::IOBufQueue::cacheChainLength());
   bufferQueue.append(std::move(frame.payload()).buffer());
@@ -824,9 +821,7 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
 }
 
 RequestNFrame::RequestNFrame(
-    StreamId streamId,
-    Flags flags,
-    folly::io::Cursor& cursor)
+    StreamId streamId, Flags flags, folly::io::Cursor& cursor)
     : streamId_(streamId) {
   DCHECK(Flags::none() == flags);
   requestN_ = cursor.readBE<int32_t>();
@@ -864,9 +859,8 @@ PayloadFrame::PayloadFrame(
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
     : streamId_(streamId),
       flags_(flags),
-      payload_(
-          readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer))) {
-}
+      payload_(readPayload(
+          flags_.metadata(), cursor, std::move(underlyingBuffer))) {}
 
 ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());

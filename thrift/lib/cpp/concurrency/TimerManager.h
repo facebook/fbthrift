@@ -77,8 +77,7 @@ class TimerManager {
    * @param timeout Absolute time in the future to execute task.
    */
   virtual void add(
-      std::shared_ptr<Runnable> task,
-      const struct timespec& timeout);
+      std::shared_ptr<Runnable> task, const struct timespec& timeout);
 
   /**
    * Removes a pending task

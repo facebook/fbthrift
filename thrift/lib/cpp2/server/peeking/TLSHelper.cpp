@@ -67,8 +67,8 @@ bool TLSHelper::looksLikeTLS(const std::vector<uint8_t>& bytes) {
   return true;
 }
 
-std::unique_ptr<folly::IOBuf>
-TLSHelper::getPlaintextAlert(uint8_t major, uint8_t minor, Alert alert) {
+std::unique_ptr<folly::IOBuf> TLSHelper::getPlaintextAlert(
+    uint8_t major, uint8_t minor, Alert alert) {
   auto alertBuf = folly::IOBuf::create(kAlertRecordLength);
   folly::io::Appender appender(alertBuf.get(), 0);
   appender.write<uint8_t>(kAlertRecordType);

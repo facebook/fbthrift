@@ -62,9 +62,7 @@ bool tryReadUnframed(
 namespace detail {
 
 bool TBinaryACProtocolTraits::getMessageLength(
-    uint8_t* buffer,
-    uint32_t bufferLength,
-    uint32_t* messageLength) {
+    uint8_t* buffer, uint32_t bufferLength, uint32_t* messageLength) {
   return tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
 }
 

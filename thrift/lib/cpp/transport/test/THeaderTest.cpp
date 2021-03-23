@@ -17,10 +17,10 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
+#include <memory>
 #include <folly/Random.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <memory>
 
 #include <folly/portability/GTest.h>
 

@@ -27,9 +27,7 @@ struct ServerStreamFactory {
   template <typename F>
   explicit ServerStreamFactory(F&& fn) : fn_(std::forward<F>(fn)) {}
 
-  void setInteraction(Tile* interaction) {
-    interaction_ = interaction;
-  }
+  void setInteraction(Tile* interaction) { interaction_ = interaction; }
 
   void operator()(
       FirstResponsePayload&& payload,
@@ -40,10 +38,7 @@ struct ServerStreamFactory {
 
  private:
   folly::Function<void(
-      FirstResponsePayload&&,
-      StreamClientCallback*,
-      folly::EventBase*,
-      Tile*)>
+      FirstResponsePayload&&, StreamClientCallback*, folly::EventBase*, Tile*)>
       fn_;
   Tile* interaction_{nullptr};
 };

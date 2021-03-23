@@ -45,8 +45,7 @@ static int voidReturnValue;
 class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
  public:
   void computeSumNoCoro(
-      SumResponse& response,
-      std::unique_ptr<SumRequest> request) override {
+      SumResponse& response, std::unique_ptr<SumRequest> request) override {
     *response.sum_ref() = *request->x_ref() + *request->y_ref();
   }
 
@@ -57,8 +56,8 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     co_return response;
   }
 
-  folly::coro::Task<int32_t> co_computeSumPrimitive(int32_t x, int32_t y)
-      override {
+  folly::coro::Task<int32_t> co_computeSumPrimitive(
+      int32_t x, int32_t y) override {
     co_return x + y;
   }
 
@@ -73,8 +72,8 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     throw std::runtime_error("Not implemented");
   }
 
-  folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
-      override {
+  folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(
+      int32_t, int32_t) override {
     co_await folly::coro::suspend_never{};
     throw std::runtime_error("Not implemented");
   }
@@ -118,8 +117,7 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
   }
 
   folly::coro::Task<int32_t> co_computeSumThrowsUserExPrimitive(
-      int32_t,
-      int32_t) override {
+      int32_t, int32_t) override {
     throw Ex();
   }
 
@@ -131,8 +129,7 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
 class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
  public:
   void computeSumNoCoro(
-      SumResponse& response,
-      std::unique_ptr<SumRequest> request) override {
+      SumResponse& response, std::unique_ptr<SumRequest> request) override {
     *response.sum_ref() = *request->x_ref() + *request->y_ref();
   }
 
@@ -143,13 +140,13 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
     return folly::makeFuture(std::move(response));
   }
 
-  folly::Future<int32_t> future_computeSumPrimitive(int32_t x, int32_t y)
-      override {
+  folly::Future<int32_t> future_computeSumPrimitive(
+      int32_t x, int32_t y) override {
     return folly::makeFuture(x + y);
   }
 
-  folly::Future<folly::Unit> future_computeSumVoid(int32_t x, int32_t y)
-      override {
+  folly::Future<folly::Unit> future_computeSumVoid(
+      int32_t x, int32_t y) override {
     voidReturnValue = x + y;
     return folly::makeFuture(folly::Unit{});
   }
@@ -161,8 +158,8 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
             folly::in_place, std::runtime_error("Not implemented")));
   }
 
-  folly::Future<int32_t> future_computeSumThrowsPrimitive(int32_t, int32_t)
-      override {
+  folly::Future<int32_t> future_computeSumThrowsPrimitive(
+      int32_t, int32_t) override {
     return folly::makeFuture<int32_t>(folly::exception_wrapper(
         folly::in_place, std::runtime_error("Not implemented")));
   }
@@ -200,8 +197,7 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
   }
 
   folly::Future<int32_t> future_computeSumThrowsUserExPrimitive(
-      int32_t,
-      int32_t) override {
+      int32_t, int32_t) override {
     return folly::makeFuture<int32_t>(
         folly::exception_wrapper(folly::in_place, Ex()));
   }
@@ -644,8 +640,8 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       throw std::runtime_error("Not implemented");
     }
 
-    folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
-        override {
+    folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(
+        int32_t, int32_t) override {
       throw std::runtime_error("Not implemented");
     }
 

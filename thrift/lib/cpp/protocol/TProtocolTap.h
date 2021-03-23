@@ -34,16 +34,13 @@ using apache::thrift::transport::TTransport;
 class TProtocolTap : public TVirtualProtocol<TProtocolTap> {
  public:
   TProtocolTap(
-      std::shared_ptr<TProtocol> source,
-      std::shared_ptr<TProtocol> sink)
+      std::shared_ptr<TProtocol> source, std::shared_ptr<TProtocol> sink)
       : TVirtualProtocol<TProtocolTap>(source->getTransport()),
         source_(source),
         sink_(sink) {}
 
   uint32_t readMessageBegin(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid) {
+      std::string& name, TMessageType& messageType, int32_t& seqid) {
     uint32_t rv = source_->readMessageBegin(name, messageType, seqid);
     sink_->writeMessageBegin(name, messageType, seqid);
     return rv;
@@ -67,8 +64,8 @@ class TProtocolTap : public TVirtualProtocol<TProtocolTap> {
     return rv;
   }
 
-  uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) {
+  uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId) {
     uint32_t rv = source_->readFieldBegin(name, fieldType, fieldId);
     if (fieldType == T_STOP) {
       sink_->writeFieldStop();
@@ -85,10 +82,7 @@ class TProtocolTap : public TVirtualProtocol<TProtocolTap> {
   }
 
   uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown) {
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) {
     uint32_t rv = source_->readMapBegin(keyType, valType, size, sizeUnknown);
     sink_->writeMapBegin(keyType, valType, size);
     return rv;

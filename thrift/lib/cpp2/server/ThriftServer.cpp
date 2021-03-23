@@ -22,12 +22,12 @@
 #include <iostream>
 #include <random>
 
+#include <glog/logging.h>
 #include <folly/Conv.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
-#include <glog/logging.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -47,9 +47,7 @@ DEFINE_bool(
     "Abort the server if failed to drain active requests within deadline");
 
 DEFINE_string(
-    thrift_ssl_policy,
-    "disabled",
-    "SSL required / permitted / disabled");
+    thrift_ssl_policy, "disabled", "SSL required / permitted / disabled");
 
 DEFINE_string(
     service_identity,
@@ -450,9 +448,7 @@ void ThriftServer::serve() {
     // since it reuses the client's EB
     return;
   }
-  SCOPE_EXIT {
-    this->cleanUp();
-  };
+  SCOPE_EXIT { this->cleanUp(); };
 
   auto sslContextConfigCallbackHandle = sslContextObserver_
       ? getSSLCallbackHandle()
@@ -512,9 +508,7 @@ void ThriftServer::stopListening() {
   {
     auto sockets = getSockets();
     folly::Baton<> done;
-    SCOPE_EXIT {
-      done.wait();
-    };
+    SCOPE_EXIT { done.wait(); };
     std::shared_ptr<folly::Baton<>> doneGuard(
         &done, [](folly::Baton<>* done) { done->post(); });
 
@@ -558,9 +552,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
   {
     auto sockets = getSockets();
     folly::Baton<> done;
-    SCOPE_EXIT {
-      done.wait();
-    };
+    SCOPE_EXIT { done.wait(); };
     std::shared_ptr<folly::Baton<>> doneGuard(
         &done, [](folly::Baton<>* done) { done->post(); });
 
@@ -664,8 +656,7 @@ void ThriftServer::updateCertsToWatch() {
 }
 
 void ThriftServer::watchTicketPathForChanges(
-    const std::string& ticketPath,
-    bool initializeTickets) {
+    const std::string& ticketPath, bool initializeTickets) {
   if (initializeTickets) {
     auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
     if (seeds) {

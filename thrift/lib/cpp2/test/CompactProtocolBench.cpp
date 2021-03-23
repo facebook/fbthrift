@@ -22,10 +22,10 @@
 #include <vector>
 
 #include <fmt/core.h>
+#include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Optional.h>
 #include <folly/portability/GFlags.h>
-#include <glog/logging.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace std;

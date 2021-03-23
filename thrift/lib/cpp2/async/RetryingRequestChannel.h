@@ -32,8 +32,8 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
   using UniquePtr = std::
       unique_ptr<RetryingRequestChannel, folly::DelayedDestruction::Destructor>;
 
-  static UniquePtr
-  newChannel(folly::EventBase& evb, int numRetries, ImplPtr impl) {
+  static UniquePtr newChannel(
+      folly::EventBase& evb, int numRetries, ImplPtr impl) {
     return {new RetryingRequestChannel(evb, numRetries, std::move(impl)), {}};
   }
 
@@ -64,13 +64,9 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() const override { return &evb_; }
 
-  uint16_t getProtocolId() override {
-    return impl_->getProtocolId();
-  }
+  uint16_t getProtocolId() override { return impl_->getProtocolId(); }
 
  protected:
   ~RetryingRequestChannel() override = default;

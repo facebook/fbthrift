@@ -43,9 +43,7 @@ FakeClock::time_point FakeClock::now_us_;
 
 class DummyController : public AdmissionController {
  public:
-  bool admit() override {
-    return true;
-  }
+  bool admit() override { return true; }
   void dequeue() override {}
   void returnedResponse(std::chrono::nanoseconds) override {}
 };

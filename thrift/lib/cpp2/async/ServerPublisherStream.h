@@ -31,9 +31,7 @@ namespace detail {
 template <typename T>
 class ServerPublisherStream : private StreamServerCallback {
   struct Deleter {
-    void operator()(ServerPublisherStream<T>* ptr) {
-      ptr->decref();
-    }
+    void operator()(ServerPublisherStream<T>* ptr) { ptr->decref(); }
   };
 
   struct CancelDeleter {
@@ -52,9 +50,7 @@ class ServerPublisherStream : private StreamServerCallback {
     template <typename Func>
     struct FunctionHolder : public Function {
       explicit FunctionHolder(Func&& f) : f_(std::forward<Func>(f)) {}
-      void operator()() override {
-        f_();
-      }
+      void operator()() override { f_(); }
 
      private:
       Func f_;
@@ -174,9 +170,7 @@ class ServerPublisherStream : private StreamServerCallback {
       DCHECK(credits.isSet);
       credits.val = std::min(maxCreditVal, credits.val + delta);
     }
-    bool hasCredit() {
-      return credits.isSet && credits.val;
-    }
+    bool hasCredit() { return credits.isSet && credits.val; }
     void storeBuffer(Queue&& buf) {
       if (credits.isSet) {
         new (this) Queue(std::move(buf));
@@ -191,12 +185,8 @@ class ServerPublisherStream : private StreamServerCallback {
       }
       credits.val = std::min(maxCreditVal, val);
     }
-    Queue getBuffer() {
-      return credits.isSet ? Queue() : std::move(buffer);
-    }
-    uint64_t getCredits() {
-      return credits.isSet ? credits.val : 0;
-    }
+    Queue getBuffer() { return credits.isSet ? Queue() : std::move(buffer); }
+    uint64_t getCredits() { return credits.isSet ? credits.val : 0; }
   };
 
  public:
@@ -261,9 +251,7 @@ class ServerPublisherStream : private StreamServerCallback {
     }
   }
 
-  bool wasCancelled() {
-    return !onStreamCompleteOrCancel_;
-  }
+  bool wasCancelled() { return !onStreamCompleteOrCancel_; }
 
   void consume() {
     clientEventBase_->add([self = copy()]() {

@@ -47,9 +47,7 @@ class get_token : public boost::static_visitor<const node&> {
     return m_node;
   }
 
-  const node& operator()(const map& map) const {
-    return map.at(m_token);
-  }
+  const node& operator()(const map& map) const { return map.at(m_token); }
 
   const node& operator()(const std::shared_ptr<object>& object) const {
     return object->at(m_token);

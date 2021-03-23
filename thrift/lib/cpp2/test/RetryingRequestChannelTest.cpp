@@ -47,8 +47,7 @@ class TestServiceServerMock : public TestServiceSvIf {
   MOCK_METHOD2(
       semifuture_echoIOBufAsByteStream,
       folly::SemiFuture<ServerStream<int8_t>>(
-          std::unique_ptr<folly::IOBuf>,
-          int32_t));
+          std::unique_ptr<folly::IOBuf>, int32_t));
 };
 
 class RetryingRequestChannelTest : public Test {

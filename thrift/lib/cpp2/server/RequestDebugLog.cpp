@@ -32,9 +32,7 @@ const folly::RequestToken& getToken() {
 
 class RequestDebugLog : public folly::RequestData {
  public:
-  bool hasCallback() override {
-    return false;
-  }
+  bool hasCallback() override { return false; }
 
   template <typename T>
   void appendEntry(T&& msg) {

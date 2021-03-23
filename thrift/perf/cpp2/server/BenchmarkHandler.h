@@ -85,9 +85,7 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     result = chunk_;
   }
 
-  void upload(std::unique_ptr<Chunk2>) override {
-    stats_->add(kDownload_);
-  }
+  void upload(std::unique_ptr<Chunk2>) override { stats_->add(kDownload_); }
 
   ServerStream<Chunk2> streamDownload() override {
     return folly::coro::co_invoke(

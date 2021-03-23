@@ -31,19 +31,14 @@ class TZlibTransportException : public TTransportException {
  public:
   TZlibTransportException(int status, const char* msg)
       : TTransportException(
-            TTransportException::INTERNAL_ERROR,
-            errorMessage(status, msg)),
+            TTransportException::INTERNAL_ERROR, errorMessage(status, msg)),
         zlib_status_(status),
         zlib_msg_(msg == nullptr ? "(null)" : msg) {}
 
   ~TZlibTransportException() throw() override {}
 
-  int getZlibStatus() {
-    return zlib_status_;
-  }
-  std::string getZlibMessage() {
-    return zlib_msg_;
-  }
+  int getZlibStatus() { return zlib_status_; }
+  std::string getZlibMessage() { return zlib_msg_; }
 
   static std::string errorMessage(int status, const char* msg) {
     std::string rv = "zlib error: ";
@@ -149,13 +144,9 @@ class TZlibTransport : public TVirtualTransport<TZlibTransport> {
   bool isOpen() override;
   bool peek() override;
 
-  void open() override {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  void close() override {
-    transport_->close();
-  }
+  void close() override { transport_->close(); }
 
   uint32_t read(uint8_t* buf, uint32_t len);
 

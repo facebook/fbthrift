@@ -27,8 +27,7 @@ using proxygen::ProxygenError;
 using proxygen::UpgradeProtocol;
 
 ThriftRequestHandler::ThriftRequestHandler(
-    ThriftProcessor* processor,
-    std::shared_ptr<Cpp2Worker> worker)
+    ThriftProcessor* processor, std::shared_ptr<Cpp2Worker> worker)
     : processor_(processor), worker_(std::move(worker)) {}
 
 ThriftRequestHandler::~ThriftRequestHandler() {}

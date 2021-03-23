@@ -52,9 +52,7 @@ struct InvalidThriftId : std::out_of_range {
  */
 template <typename T, typename F>
 void visit_by_thrift_field_metadata(
-    T&& t,
-    const apache::thrift::metadata::ThriftField& meta,
-    F f) {
+    T&& t, const apache::thrift::metadata::ThriftField& meta, F f) {
   auto adapter = [&f](auto&&, auto&& ref) {
     f(std::forward<decltype(ref)>(ref));
   };

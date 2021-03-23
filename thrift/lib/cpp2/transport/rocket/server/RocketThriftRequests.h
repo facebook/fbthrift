@@ -69,13 +69,9 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
 
-  folly::EventBase* getEventBase() noexcept override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
-  bool isStream() const override {
-    return false;
-  }
+  bool isStream() const override { return false; }
 
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 
@@ -112,9 +108,7 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
 
-  folly::EventBase* getEventBase() noexcept override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 
@@ -163,13 +157,9 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf>,
       ::apache::thrift::detail::ServerStreamFactory&&) noexcept override;
 
-  folly::EventBase* getEventBase() noexcept override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
-  bool isStream() const override {
-    return true;
-  }
+  bool isStream() const override { return true; }
 
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 
@@ -216,17 +206,11 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       apache::thrift::detail::SinkConsumerImpl&&) noexcept override;
 #endif
 
-  folly::EventBase* getEventBase() noexcept override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
-  bool isSink() const override {
-    return true;
-  }
+  bool isSink() const override { return true; }
 
-  bool isReplyChecksumNeeded() const override {
-    return true;
-  }
+  bool isReplyChecksumNeeded() const override { return true; }
 
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 

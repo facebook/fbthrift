@@ -38,19 +38,14 @@ class TServerObserver {
    public:
     SamplingStatus() noexcept : SamplingStatus(false, false) {}
     SamplingStatus(
-        bool isServerSamplingEnabled,
-        bool isClientSamplingEnabled) noexcept
+        bool isServerSamplingEnabled, bool isClientSamplingEnabled) noexcept
         : isServerSamplingEnabled_(isServerSamplingEnabled),
           isClientSamplingEnabled_(isClientSamplingEnabled) {}
     bool isEnabled() const {
       return isServerSamplingEnabled_ || isClientSamplingEnabled_;
     }
-    bool isEnabledByServer() const {
-      return isServerSamplingEnabled_;
-    }
-    bool isEnabledByClient() const {
-      return isClientSamplingEnabled_;
-    }
+    bool isEnabledByServer() const { return isServerSamplingEnabled_; }
+    bool isEnabledByClient() const { return isClientSamplingEnabled_; }
 
    private:
     bool isServerSamplingEnabled_;
@@ -80,13 +75,9 @@ class TServerObserver {
       return {};
     }
 
-    void setStatus(const SamplingStatus& status) {
-      status_ = status;
-    }
+    void setStatus(const SamplingStatus& status) { status_ = status; }
 
-    const SamplingStatus getSamplingStatus() const {
-      return status_;
-    }
+    const SamplingStatus getSamplingStatus() const { return status_; }
 
    private:
     SamplingStatus status_;
@@ -164,9 +155,7 @@ class TServerObserver {
   virtual void tlsWithClientCert() {}
 
   // The observer has to specify a sample rate for callCompleted notifications
-  inline uint32_t getSampleRate() const {
-    return sampleRate_;
-  }
+  inline uint32_t getSampleRate() const { return sampleRate_; }
 
  protected:
   uint32_t sampleRate_;

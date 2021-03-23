@@ -30,8 +30,7 @@ using std::map;
 using std::string;
 
 void H2Channel::encodeHeaders(
-    const map<string, string>& source,
-    HTTPMessage& dest) noexcept {
+    const map<string, string>& source, HTTPMessage& dest) noexcept {
   auto& msgHeaders = dest.getHeaders();
   for (auto it = source.begin(); it != source.end(); ++it) {
     // Keys in Thrift may not comply with HTTP key format requirements.

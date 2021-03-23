@@ -24,8 +24,7 @@
 namespace apache::thrift::conformance {
 
 void ConformanceHandler::roundTrip(
-    RoundTripResponse& res,
-    std::unique_ptr<RoundTripRequest> req) {
+    RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) {
   // Load the value.
   std::any val = AnyRegistry::generated().load(*req->value_ref());
   // Figure out what protocol we are supposed to use.

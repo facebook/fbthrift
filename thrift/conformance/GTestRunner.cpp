@@ -62,9 +62,7 @@ const char* getEnvOrThrow(const char* name) {
 
 // Creates a client for the localhost.
 std::unique_ptr<ConformanceServiceAsyncClient> createClient(
-    folly::EventBase* eb,
-    int port,
-    ChannelType type = ChannelType::Header) {
+    folly::EventBase* eb, int port, ChannelType type = ChannelType::Header) {
   folly::AsyncTransport::UniquePtr socket(
       new folly::AsyncSocket(eb, folly::SocketAddress("::1", port)));
   switch (type) {
@@ -106,9 +104,7 @@ class ClientAndServer {
         std::chrono::seconds(1), std::chrono::seconds(1));
   }
 
-  ConformanceServiceAsyncClient& getClient() {
-    return *client_;
-  }
+  ConformanceServiceAsyncClient& getClient() { return *client_; }
 
  private:
   folly::EventBase eb_;

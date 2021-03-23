@@ -128,9 +128,7 @@ class StreamServerCallback {
   FOLLY_NODISCARD virtual bool onStreamRequestN(uint64_t) = 0;
   virtual void onStreamCancel() = 0;
 
-  FOLLY_NODISCARD virtual bool onSinkHeaders(HeadersPayload&&) {
-    return true;
-  }
+  FOLLY_NODISCARD virtual bool onSinkHeaders(HeadersPayload&&) { return true; }
 
   // not terminating
   virtual void resetClientCallback(StreamClientCallback&) = 0;
@@ -143,9 +141,7 @@ class StreamClientCallback {
   // StreamClientCallback must remain alive until onFirstResponse or
   // onFirstResponseError callback runs.
   FOLLY_NODISCARD virtual bool onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      StreamServerCallback*) = 0;
+      FirstResponsePayload&&, folly::EventBase*, StreamServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 
   FOLLY_NODISCARD virtual bool onStreamNext(StreamPayload&&) = 0;
@@ -205,9 +201,7 @@ class SinkClientCallback {
  public:
   virtual ~SinkClientCallback() = default;
   FOLLY_NODISCARD virtual bool onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      SinkServerCallback*) = 0;
+      FirstResponsePayload&&, folly::EventBase*, SinkServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 
   virtual void onFinalResponse(StreamPayload&&) = 0;
@@ -244,9 +238,7 @@ class ChannelClientCallback {
   // ChannelClientCallback must remain alive until onFirstResponse or
   // onFirstResponseError callback runs.
   virtual void onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      ChannelServerCallback*) = 0;
+      FirstResponsePayload&&, folly::EventBase*, ChannelServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 
   virtual void onStreamNext(StreamPayload&&) = 0;

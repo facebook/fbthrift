@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+#include <atomic>
+#include <thread>
 #include <folly/ThreadLocal.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -37,9 +40,6 @@
 #include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-#include <algorithm>
-#include <atomic>
-#include <thread>
 
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
@@ -56,12 +56,8 @@ class InstrumentationRequestPayload : public folly::RequestData {
   }
   explicit InstrumentationRequestPayload(std::unique_ptr<folly::IOBuf> buf)
       : buf_(std::move(buf)) {}
-  bool hasCallback() override {
-    return false;
-  }
-  const folly::IOBuf* getPayload() {
-    return buf_.get();
-  }
+  bool hasCallback() override { return false; }
+  const folly::IOBuf* getPayload() { return buf_.get(); }
 
  private:
   std::unique_ptr<folly::IOBuf> buf_;
@@ -165,8 +161,8 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     }
   }
 
-  folly::coro::Task<void> co_wait(int value, bool busyWait, bool shallowRC)
-      override {
+  folly::coro::Task<void> co_wait(
+      int value, bool busyWait, bool shallowRC) override {
     std::unique_ptr<folly::ShallowCopyRequestContextScopeGuard> g;
     if (shallowRC) {
       g = std::make_unique<folly::ShallowCopyRequestContextScopeGuard>();
@@ -250,19 +246,13 @@ class RequestInstrumentationTest : public testing::Test {
  protected:
   RequestInstrumentationTest() {}
 
-  void SetUp() override {
-    impl_ = std::make_unique<Impl>();
-  }
+  void SetUp() override { impl_ = std::make_unique<Impl>(); }
 
-  std::shared_ptr<TestInterface> handler() {
-    return impl_->handler_;
-  }
+  std::shared_ptr<TestInterface> handler() { return impl_->handler_; }
   apache::thrift::ScopedServerInterfaceThread& server() {
     return impl_->server_;
   }
-  ThriftServer* thriftServer() {
-    return impl_->thriftServer_;
-  }
+  ThriftServer* thriftServer() { return impl_->thriftServer_; }
 
   ThriftServer::ServerSnapshot getServerSnapshot() {
     return thriftServer()->getServerSnapshot().get();
@@ -270,9 +260,7 @@ class RequestInstrumentationTest : public testing::Test {
 
   std::vector<ThriftServer::RequestSnapshot> getRequestSnapshots(
       size_t reqNum) {
-    SCOPE_EXIT {
-      handler()->stopRequests();
-    };
+    SCOPE_EXIT { handler()->stopRequests(); };
     handler()->waitForRequests(reqNum);
 
     auto serverReqSnapshots = std::move(getServerSnapshot().second);
@@ -752,9 +740,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
           stateMachine_);
     }
 
-    auto registry() {
-      return registry_;
-    }
+    auto registry() { return registry_; }
 
     MOCK_CONST_METHOD0(isActive, bool());
     MOCK_METHOD0(cancel, void());
@@ -802,8 +788,7 @@ INSTANTIATE_TEST_CASE_P(
     RegistryTestsSequence,
     RegistryTests,
     testing::Combine(
-        testing::Values(0, 1, 2, 10),
-        testing::Values(true, false)));
+        testing::Values(0, 1, 2, 10), testing::Values(true, false)));
 
 TEST(RegistryTests, RootId) {
   RequestsRegistry registry(0, 0, 0);
@@ -870,9 +855,7 @@ TEST_P(MaxRequestsTest, Bypass) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    MaxRequestsTestsSequence,
-    MaxRequestsTest,
-    testing::Values(true, false));
+    MaxRequestsTestsSequence, MaxRequestsTest, testing::Values(true, false));
 
 class TimestampsTest
     : public RequestInstrumentationTest,
@@ -945,5 +928,4 @@ INSTANTIATE_TEST_CASE_P(
     TimestampsTestSequence,
     TimestampsTest,
     testing::Combine(
-        testing::Values(true, false),
-        testing::Values(true, false)));
+        testing::Values(true, false), testing::Values(true, false)));

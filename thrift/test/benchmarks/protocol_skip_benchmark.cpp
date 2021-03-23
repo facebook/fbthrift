@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <string_view>
 #include <folly/Benchmark.h>
 #include <folly/Memory.h>
 #include <folly/Random.h>
@@ -23,7 +24,6 @@
 #include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/testset/gen-cpp2/testset_types.h>
-#include <string_view>
 
 namespace apache::thrift::test {
 namespace {
@@ -96,9 +96,7 @@ void add_benchmarks(folly::tag_t<Reader>, folly::tag_t<Struct>) {
     }
   };
   struct SlowReader : Reader {
-    static size_t fixedSizeInContainer(TType) {
-      return 0;
-    }
+    static size_t fixedSizeInContainer(TType) { return 0; }
   };
 
   add_benchmark<FastReader, Struct>("", "skip", bufs);

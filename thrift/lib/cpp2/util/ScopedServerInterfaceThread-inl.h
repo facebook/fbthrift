@@ -108,9 +108,7 @@ class FaultInjectionChannel : public RequestChannel {
     return client_->getEventBase();
   }
 
-  uint16_t getProtocolId() override {
-    return client_->getProtocolId();
-  }
+  uint16_t getProtocolId() override { return client_->getProtocolId(); }
 
  private:
   RequestChannel::Ptr client_;

@@ -94,8 +94,8 @@ int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   return result;
 }
 
-RequestRpcMetadata
-CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
+RequestRpcMetadata CoreTestFixture::makeMetadata(
+    std::string name, int32_t seqId, RpcKind kind) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = ProtocolId::COMPACT;
   metadata.name_ref() = std::move(name);
@@ -105,8 +105,7 @@ CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
 }
 
 bool CoreTestFixture::deserializeException(
-    folly::IOBuf* buf,
-    TApplicationException* tae) {
+    folly::IOBuf* buf, TApplicationException* tae) {
   try {
     auto reader = std::make_unique<apache::thrift::CompactProtocolReader>();
     std::string fname;

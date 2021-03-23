@@ -47,13 +47,11 @@ class WhitelistAdmissionStrategy : public AdmissionStrategy {
       const std::unordered_set<std::string>& whitelist,
       InnerStrategyArgs&&... args)
       : WhitelistAdmissionStrategy(
-            StringSet(whitelist.begin(), whitelist.end()),
-            args...) {}
+            StringSet(whitelist.begin(), whitelist.end()), args...) {}
 
   template <typename... InnerStrategyArgs>
   WhitelistAdmissionStrategy(
-      const StringSet& whitelist,
-      InnerStrategyArgs&&... args)
+      const StringSet& whitelist, InnerStrategyArgs&&... args)
       : innerStrategy_(std::forward<InnerStrategyArgs>(args)...),
         whitelist_(whitelist),
         acceptAllAdmissionController_(
@@ -75,9 +73,7 @@ class WhitelistAdmissionStrategy : public AdmissionStrategy {
     log(123);
   }
 
-  Type getType() override {
-    return innerStrategy_.getType();
-  }
+  Type getType() override { return innerStrategy_.getType(); }
 
  private:
   InnerAdmissionStrategy innerStrategy_;

@@ -239,9 +239,7 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
     thriftParametersContext_ = std::move(context);
   }
 
-  NegotiatedParams& getNegotiatedParameters() {
-    return negotiatedParams_;
-  }
+  NegotiatedParams& getNegotiatedParameters() { return negotiatedParams_; }
 
   std::shared_ptr<apache::thrift::ThriftParametersContext>
       thriftParametersContext_;

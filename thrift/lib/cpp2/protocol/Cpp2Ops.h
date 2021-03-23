@@ -41,8 +41,7 @@ namespace thrift {
 template <class T, class = void>
 class Cpp2Ops {
   static_assert(
-      sizeof(T) == ~0ull,
-      "(only Thrift-generated classes are serializable)");
+      sizeof(T) == ~0ull, "(only Thrift-generated classes are serializable)");
   //  When instantiated with a type T, includes:
   //
   //      template <class P>

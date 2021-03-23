@@ -118,19 +118,15 @@ class type_resolver {
 
   std::string gen_type_impl(const t_type* node, type_resolve_fn resolve_fn);
   std::string gen_container_type(
-      const t_container* node,
-      type_resolve_fn resolve_fn);
+      const t_container* node, type_resolve_fn resolve_fn);
   std::string gen_sink_type(const t_sink* node, type_resolve_fn resolve_fn);
   std::string gen_stream_resp_type(
-      const t_stream_response* node,
-      type_resolve_fn resolve_fn);
+      const t_stream_response* node, type_resolve_fn resolve_fn);
 
   static std::string gen_template_type(
-      std::string template_name,
-      std::initializer_list<std::string> args);
+      std::string template_name, std::initializer_list<std::string> args);
   static std::string gen_adapted_type(
-      const std::string& adapter,
-      const std::string& native_type);
+      const std::string& adapter, const std::string& native_type);
   static std::string gen_namespaced_name(const t_type* node);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {

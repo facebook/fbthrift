@@ -59,14 +59,10 @@ class t_struct : public t_type {
   }
 
   // If this struct has any fields.
-  bool has_fields() const {
-    return !fields_.empty();
-  }
+  bool has_fields() const { return !fields_.empty(); }
 
   // Access the field by index, id, or name.
-  t_field* get_field(size_t index) {
-    return fields_.at(index).get();
-  }
+  t_field* get_field(size_t index) { return fields_.at(index).get(); }
   const t_field* get_field(size_t index) const {
     return fields_.at(index).get();
   }
@@ -76,17 +72,13 @@ class t_struct : public t_type {
     return itr == fields_by_name_.end() ? nullptr : itr->second;
   }
 
-  bool is_struct() const override {
-    return !is_exception();
-  }
+  bool is_struct() const override { return !is_exception(); }
 
   std::string get_full_name() const override {
     return make_full_name("struct");
   }
 
-  type get_type_value() const override {
-    return type::t_struct;
-  }
+  type get_type_value() const override { return type::t_struct; }
 
  protected:
   std::vector<std::unique_ptr<t_field>> fields_;
@@ -117,9 +109,7 @@ class t_struct : public t_type {
     return result;
   }
 
-  const std::vector<t_field*>& get_members() const {
-    return fields_raw_;
-  }
+  const std::vector<t_field*>& get_members() const { return fields_raw_; }
 
   const std::vector<t_field*>& get_sorted_members() const {
     return fields_raw_id_order_;

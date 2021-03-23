@@ -42,9 +42,7 @@ struct populator_opts {
   struct range {
     Int min;
     Int max;
-    range(Int min, Int max) : min(min), max(max) {
-      assert(min <= max);
-    }
+    range(Int min, Int max) : min(min), max(max) { assert(min <= max); }
   };
 
   range<> list_len = range<>(0, 0xFF);
@@ -108,8 +106,8 @@ struct populator_methods<type_class::integral, Int> {
 
   // Special overload to work with lists of booleans.
   template <typename Rng>
-  static void
-  populate(Rng& rng, populator_opts const&, std::vector<bool>::reference out) {
+  static void populate(
+      Rng& rng, populator_opts const&, std::vector<bool>::reference out) {
     out = next_value(rng);
   }
 
@@ -152,10 +150,7 @@ struct populator_methods<type_class::string, std::string> {
 
 template <typename Rng, typename Binary, typename WriteFunc>
 void generate_bytes(
-    Rng& rng,
-    Binary&,
-    const std::size_t length,
-    WriteFunc const& write_func) {
+    Rng& rng, Binary&, const std::size_t length, WriteFunc const& write_func) {
   std::uniform_int_distribution<unsigned> byte_gen(0, 0xFF);
   for (std::size_t i = 0; i < length; i++) {
     write_func(static_cast<uint8_t>(byte_gen(rng)));
@@ -177,8 +172,8 @@ struct populator_methods<type_class::binary, std::string> {
 template <>
 struct populator_methods<type_class::binary, folly::IOBuf> {
   template <typename Rng>
-  static void
-  populate(Rng& rng, populator_opts const& opts, folly::IOBuf& bin) {
+  static void populate(
+      Rng& rng, populator_opts const& opts, folly::IOBuf& bin) {
     auto const length = detail::rand_in_range(rng, opts.bin_len);
     bin = folly::IOBuf(folly::IOBuf::CREATE, length);
     bin.append(length);
@@ -409,8 +404,8 @@ struct populator_methods<type_class::structure, Struct> {
       Methods,
       detail::disable_if_smart_pointer<MemberType>> {
     template <typename Rng>
-    static void
-    populate(Rng& rng, populator_opts const& opts, MemberType& out) {
+    static void populate(
+        Rng& rng, populator_opts const& opts, MemberType& out) {
       Methods::populate(rng, opts, out);
     }
   };

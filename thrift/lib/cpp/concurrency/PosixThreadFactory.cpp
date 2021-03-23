@@ -215,8 +215,7 @@ int PosixThreadFactory::Impl::toPthreadPolicy(POLICY policy) {
 
 /* static */
 int PosixThreadFactory::Impl::toPthreadPriority(
-    POLICY policy,
-    THREAD_PRIORITY priority) {
+    POLICY policy, THREAD_PRIORITY priority) {
   int pthread_policy = toPthreadPolicy(policy);
   int min_priority = 0;
   int max_priority = 0;
@@ -319,22 +318,13 @@ Thread::id_t PosixThreadFactory::Impl::getCurrentThreadId() const {
 }
 
 PosixThreadFactory::PosixThreadFactory(
-    POLICY policy,
-    THREAD_PRIORITY priority,
-    int stackSize,
-    bool detached)
+    POLICY policy, THREAD_PRIORITY priority, int stackSize, bool detached)
     : impl_(new PosixThreadFactory::Impl(
-          policy,
-          priority,
-          stackSize,
-          detached ? DETACHED : ATTACHED)) {}
+          policy, priority, stackSize, detached ? DETACHED : ATTACHED)) {}
 
 PosixThreadFactory::PosixThreadFactory(DetachState detached)
     : impl_(new PosixThreadFactory::Impl(
-          kDefaultPolicy,
-          kDefaultPriority,
-          kDefaultStackSizeMB,
-          detached)) {}
+          kDefaultPolicy, kDefaultPriority, kDefaultStackSizeMB, detached)) {}
 
 shared_ptr<Thread> PosixThreadFactory::newThread(
     const shared_ptr<Runnable>& runnable) const {
@@ -342,8 +332,7 @@ shared_ptr<Thread> PosixThreadFactory::newThread(
 }
 
 shared_ptr<Thread> PosixThreadFactory::newThread(
-    const shared_ptr<Runnable>& runnable,
-    DetachState detachState) const {
+    const shared_ptr<Runnable>& runnable, DetachState detachState) const {
   return impl_->newThread(runnable, detachState);
 }
 

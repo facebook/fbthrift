@@ -41,8 +41,7 @@ class RocketStreamClientCallback;
 class RocketServerFrameContext {
  public:
   RocketServerFrameContext(
-      RocketServerConnection& connection,
-      StreamId streamId);
+      RocketServerConnection& connection, StreamId streamId);
   RocketServerFrameContext(RocketServerFrameContext&& other) noexcept;
   RocketServerFrameContext& operator=(RocketServerFrameContext&&) = delete;
   ~RocketServerFrameContext();
@@ -57,9 +56,7 @@ class RocketServerFrameContext {
 
   folly::EventBase& getEventBase() const;
 
-  StreamId streamId() const {
-    return streamId_;
-  }
+  StreamId streamId() const { return streamId_; }
 
   RocketServerConnection& connection() {
     DCHECK(connection_);

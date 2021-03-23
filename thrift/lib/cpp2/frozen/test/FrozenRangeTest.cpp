@@ -147,11 +147,7 @@ TYPED_TEST_P(FrozenRange, Zeros) {
 }
 
 REGISTER_TYPED_TEST_CASE_P(
-    FrozenRange,
-    ArrayLike,
-    Iterators,
-    IteratorComparisons,
-    Zeros);
+    FrozenRange, ArrayLike, Iterators, IteratorComparisons, Zeros);
 typedef ::testing::Types<std::vector<int>, folly::fbvector<int>> MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(Ranges, FrozenRange, MyTypes);
 

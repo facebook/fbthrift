@@ -64,8 +64,7 @@ getAnyStandardSerializer() {
 
 template <typename T, typename Reader, typename Writer>
 void BaseAnyStructSerializer<T, Reader, Writer>::encode(
-    const T& value,
-    folly::io::QueueAppender&& appender) const {
+    const T& value, folly::io::QueueAppender&& appender) const {
   Writer writer;
   writer.setOutput(std::move(appender));
   value.write(&writer);

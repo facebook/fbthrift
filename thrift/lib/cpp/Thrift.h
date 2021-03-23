@@ -142,9 +142,7 @@ class TOutput {
     f_ = function;
   }
 
-  inline void operator()(const char* message) {
-    f_(message);
-  }
+  inline void operator()(const char* message) { f_(message); }
 
   // It is important to have a const char* overload here instead of
   // just the string version, otherwise errno could be corrupted
@@ -184,12 +182,8 @@ class TException : public std::exception {
   TException() {}
   TException(TException&&) noexcept {}
   TException(const TException&) {}
-  TException& operator=(const TException&) {
-    return *this;
-  }
-  TException& operator=(TException&&) {
-    return *this;
-  }
+  TException& operator=(const TException&) { return *this; }
+  TException& operator=(TException&&) { return *this; }
 };
 
 /**
@@ -227,9 +221,7 @@ class FOLLY_EXPORT AppBaseError : public std::runtime_error {
   AppBaseError(std::string&& name, std::string&& what)
       : std::runtime_error(what), name_(std::move(name)) {}
 
-  virtual const char* name() const noexcept {
-    return name_.c_str();
-  }
+  virtual const char* name() const noexcept { return name_.c_str(); }
 
   virtual bool isClientError() const noexcept = 0;
 
@@ -241,18 +233,14 @@ class FOLLY_EXPORT AppServerError : public AppBaseError {
  public:
   using AppBaseError::AppBaseError;
 
-  bool isClientError() const noexcept override {
-    return false;
-  }
+  bool isClientError() const noexcept override { return false; }
 };
 
 class FOLLY_EXPORT AppClientError : public AppBaseError {
  public:
   using AppBaseError::AppBaseError;
 
-  bool isClientError() const noexcept override {
-    return true;
-  }
+  bool isClientError() const noexcept override { return true; }
 };
 
 } // namespace thrift

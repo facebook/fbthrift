@@ -50,8 +50,7 @@ std::string serializeThenToDebugString(Struct& ms, DebugStringParams p = {}) {
 
 template <class Struct>
 std::string serializeThenToDebugStringBinaryAndCompact(
-    Struct& ms,
-    DebugStringParams p = {}) {
+    Struct& ms, DebugStringParams p = {}) {
   auto res1 =
       serializeThenToDebugString<CompactProtocolWriter, CompactProtocolReader>(
           ms, p);

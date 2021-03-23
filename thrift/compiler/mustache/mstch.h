@@ -66,8 +66,7 @@ class object_t {
 
   template <class S>
   void register_methods(
-      S* s,
-      const std::map<std::string, N (S::*)()>& methods_) {
+      S* s, const std::map<std::string, N (S::*)()>& methods_) {
     for (const auto& item : methods_) {
       register_method(item.first, [s, m = item.second]() { return (s->*m)(); });
     }
@@ -107,23 +106,20 @@ class lambda_t {
  public:
   template <class F>
   /* implicit */ lambda_t(
-      F f,
-      typename std::enable_if<is_fun<F, N>::no_args>::type* = 0)
+      F f, typename std::enable_if<is_fun<F, N>::no_args>::type* = 0)
       : fun([f](node_renderer<N> renderer, const std::string&) {
           return renderer(f());
         }) {}
 
   template <class F>
   /* implicit */ lambda_t(
-      F f,
-      typename std::enable_if<is_fun<F, N>::has_args>::type* = 0)
+      F f, typename std::enable_if<is_fun<F, N>::has_args>::type* = 0)
       : fun([f](node_renderer<N> renderer, const std::string& text) {
           return renderer(f(text));
         }) {}
 
   std::string operator()(
-      node_renderer<N> renderer,
-      const std::string& text = "") const {
+      node_renderer<N> renderer, const std::string& text = "") const {
     return fun(renderer, text);
   }
 

@@ -72,8 +72,7 @@ class FunctionRunner : public virtual Runnable {
   }
 
   static std::shared_ptr<FunctionRunner> create(
-      const PthreadFuncPtr& func,
-      void* arg) {
+      const PthreadFuncPtr& func, void* arg) {
     return std::shared_ptr<FunctionRunner>(new FunctionRunner(func, arg));
   }
 
@@ -117,9 +116,7 @@ class FunctionRunner : public virtual Runnable {
   /**
    * Set a callback to be called when the thread is started.
    */
-  void setInitFunc(VoidFunc&& initFunc) {
-    initFunc_ = std::move(initFunc);
-  }
+  void setInitFunc(VoidFunc&& initFunc) { initFunc_ = std::move(initFunc); }
 
   void run() override {
     if (initFunc_) {
@@ -148,9 +145,7 @@ class FunctionRunner : public virtual Runnable {
     }
   }
 
-  ~FunctionRunner() override {
-    stop();
-  }
+  ~FunctionRunner() override { stop(); }
 
  private:
   VoidFunc func_;

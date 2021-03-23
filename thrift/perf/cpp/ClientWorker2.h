@@ -39,8 +39,8 @@ class ClientWorker2
   typedef loadgen::Worker<Client, ClientLoadConfig> Parent;
 
   std::shared_ptr<Client> createConnection() override;
-  void performOperation(const std::shared_ptr<Client>& client, uint32_t opType)
-      override;
+  void performOperation(
+      const std::shared_ptr<Client>& client, uint32_t opType) override;
 
  private:
   void performNoop(const std::shared_ptr<Client>& client);

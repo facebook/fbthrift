@@ -299,9 +299,7 @@ class FirstRequestProcessorStream : public StreamClientCallback,
       FirstResponsePayload&& firstResponse,
       folly::EventBase* evb,
       StreamServerCallback* serverCallback) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     DCHECK_EQ(evb, evb_);
     if (auto error = processFirstResponse(
             firstResponse.metadata,
@@ -317,9 +315,7 @@ class FirstRequestProcessorStream : public StreamClientCallback,
         std::move(firstResponse), evb, serverCallback);
   }
   void onFirstResponseError(folly::exception_wrapper ew) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     ew.handle(
         [&](rocket::RocketException& ex) {
           auto response = decodeResponseError(
@@ -339,25 +335,13 @@ class FirstRequestProcessorStream : public StreamClientCallback,
         [&](...) { clientCallback_->onFirstResponseError(std::move(ew)); });
   }
 
-  bool onStreamNext(StreamPayload&&) override {
-    std::terminate();
-  }
-  void onStreamError(folly::exception_wrapper) override {
-    std::terminate();
-  }
-  void onStreamComplete() override {
-    std::terminate();
-  }
-  void resetServerCallback(StreamServerCallback&) override {
-    std::terminate();
-  }
+  bool onStreamNext(StreamPayload&&) override { std::terminate(); }
+  void onStreamError(folly::exception_wrapper) override { std::terminate(); }
+  void onStreamComplete() override { std::terminate(); }
+  void resetServerCallback(StreamServerCallback&) override { std::terminate(); }
 
-  void onStreamCancel() override {
-    clientCallback_ = nullptr;
-  }
-  bool onStreamRequestN(uint64_t) override {
-    return true;
-  }
+  void onStreamCancel() override { clientCallback_ = nullptr; }
+  bool onStreamRequestN(uint64_t) override { return true; }
   void resetClientCallback(StreamClientCallback& clientCallback) override {
     clientCallback_ = &clientCallback;
   }
@@ -386,9 +370,7 @@ class FirstRequestProcessorSink : public SinkClientCallback,
       FirstResponsePayload&& firstResponse,
       folly::EventBase* evb,
       SinkServerCallback* serverCallback) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     if (auto error = processFirstResponse(
             firstResponse.metadata,
             firstResponse.payload,
@@ -406,9 +388,7 @@ class FirstRequestProcessorSink : public SinkClientCallback,
         std::move(firstResponse), evb, serverCallback);
   }
   void onFirstResponseError(folly::exception_wrapper ew) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     ew.handle(
         [&](rocket::RocketException& ex) {
           auto response = decodeResponseError(
@@ -436,28 +416,18 @@ class FirstRequestProcessorSink : public SinkClientCallback,
         });
   }
 
-  void onFinalResponse(StreamPayload&&) override {
-    std::terminate();
-  }
+  void onFinalResponse(StreamPayload&&) override { std::terminate(); }
   void onFinalResponseError(folly::exception_wrapper) override {
     std::terminate();
   }
-  FOLLY_NODISCARD bool onSinkRequestN(uint64_t) override {
-    std::terminate();
-  }
-  void resetServerCallback(SinkServerCallback&) override {
-    std::terminate();
-  }
+  FOLLY_NODISCARD bool onSinkRequestN(uint64_t) override { std::terminate(); }
+  void resetServerCallback(SinkServerCallback&) override { std::terminate(); }
 
-  bool onSinkNext(StreamPayload&&) override {
-    return true;
-  }
+  bool onSinkNext(StreamPayload&&) override { return true; }
   void onSinkError(folly::exception_wrapper) override {
     clientCallback_ = nullptr;
   }
-  bool onSinkComplete() override {
-    return true;
-  }
+  bool onSinkComplete() override { return true; }
   void resetClientCallback(SinkClientCallback& clientCallback) override {
     clientCallback_ = &clientCallback;
   }
@@ -510,9 +480,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
         requestSerializedSize_(requestSerializedSize),
         requestWireSize_(requestWireSize) {}
 
-  void onWriteSuccess() noexcept override {
-    cb_->onRequestSent();
-  }
+  void onWriteSuccess() noexcept override { cb_->onRequestSent(); }
 
   void onResponsePayload(
       folly::Try<rocket::Payload>&& payload) noexcept override {
@@ -584,8 +552,7 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 
  public:
   SingleRequestNoResponseCallback(
-      RequestClientCallback::Ptr cb,
-      InflightGuardT g)
+      RequestClientCallback::Ptr cb, InflightGuardT g)
       : cb_(std::move(cb)), g_(std::move(g)) {}
 
   void onWrite(folly::Try<void> writeResult) noexcept override {
@@ -664,8 +631,7 @@ void RocketClientChannel::handleMetadataPush(
 }
 
 RocketClientChannel::RocketClientChannel(
-    folly::AsyncTransport::UniquePtr socket,
-    RequestSetupMetadata meta)
+    folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta)
     : evb_(socket->getEventBase()),
       rclient_(rocket::RocketClient::create(
           *evb_,
@@ -708,8 +674,7 @@ RocketClientChannel::Ptr RocketClientChannel::newChannel(
       new RocketClientChannel(std::move(socket), RequestSetupMetadata()));
 }
 RocketClientChannel::Ptr RocketClientChannel::newChannelWithMetadata(
-    folly::AsyncTransport::UniquePtr socket,
-    RequestSetupMetadata meta) {
+    folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta) {
   return RocketClientChannel::Ptr(
       new RocketClientChannel(std::move(socket), std::move(meta)));
 }
@@ -909,8 +874,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
 }
 
 void onResponseError(
-    RequestClientCallback::Ptr& cb,
-    folly::exception_wrapper ew) {
+    RequestClientCallback::Ptr& cb, folly::exception_wrapper ew) {
   cb.release()->onResponseError(std::move(ew));
 }
 
@@ -1094,8 +1058,7 @@ void RocketClientChannel::terminateInteraction(InteractionId id) {
 }
 
 InteractionId RocketClientChannel::registerInteraction(
-    ManagedStringView&& name,
-    int64_t id) {
+    ManagedStringView&& name, int64_t id) {
   CHECK(!name.view().empty());
   CHECK_GT(id, 0);
   evb_->dcheckIsInEventBaseThread();

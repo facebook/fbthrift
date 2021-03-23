@@ -20,12 +20,12 @@
 #include <set>
 #include <vector>
 
+#include <fmt/core.h>
 #include <fatal/type/array.h>
 #include <fatal/type/find.h>
 #include <fatal/type/sequence.h>
 #include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
-#include <fmt/core.h>
 #include <folly/CPortability.h>
 #include <folly/String.h>
 #include <folly/Traits.h>

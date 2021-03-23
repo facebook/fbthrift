@@ -36,9 +36,7 @@ class DummyCallback : public RequestCallback {
     baton_.post();
   }
   void requestError(ClientReceiveState&&) override {}
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
   ClientReceiveState& state_;
 
  private:
@@ -75,13 +73,9 @@ class DummyChannel : public apache::thrift::RequestChannel {
     cb.release()->onRequestSent();
   }
 
-  void setCloseCallback(CloseCallback*) override {
-    std::terminate();
-  }
+  void setCloseCallback(CloseCallback*) override { std::terminate(); }
 
-  folly::EventBase* getEventBase() const override {
-    return nullptr;
-  }
+  folly::EventBase* getEventBase() const override { return nullptr; }
 
   uint16_t getProtocolId() override {
     return 2; // COMPACT

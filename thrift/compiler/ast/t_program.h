@@ -123,37 +123,19 @@ class t_program : public t_node {
   /**
    * Get program elements
    */
-  const std::vector<t_typedef*>& typedefs() const {
-    return typedefs_;
-  }
-  const std::vector<t_enum*>& enums() const {
-    return enums_;
-  }
-  const std::vector<t_const*>& consts() const {
-    return consts_;
-  }
-  const std::vector<t_struct*>& structs() const {
-    return structs_;
-  }
+  const std::vector<t_typedef*>& typedefs() const { return typedefs_; }
+  const std::vector<t_enum*>& enums() const { return enums_; }
+  const std::vector<t_const*>& consts() const { return consts_; }
+  const std::vector<t_struct*>& structs() const { return structs_; }
   // TODO: remove "xception" function once everything changed to "exception"
-  const std::vector<t_exception*>& xceptions() const {
-    return exceptions_;
-  }
-  const std::vector<t_exception*>& exceptions() const {
-    return exceptions_;
-  }
-  const std::vector<t_struct*>& objects() const {
-    return objects_;
-  }
-  const std::vector<t_service*>& services() const {
-    return services_;
-  }
+  const std::vector<t_exception*>& xceptions() const { return exceptions_; }
+  const std::vector<t_exception*>& exceptions() const { return exceptions_; }
+  const std::vector<t_struct*>& objects() const { return objects_; }
+  const std::vector<t_service*>& services() const { return services_; }
   const std::vector<t_typedef*>& placeholder_typedefs() const {
     return placeholder_typedefs_;
   }
-  const std::vector<t_service*>& interactions() const {
-    return interactions_;
-  }
+  const std::vector<t_service*>& interactions() const { return interactions_; }
 
   /**
    * t_program setters
@@ -175,26 +157,18 @@ class t_program : public t_node {
   /**
    * t_program getters
    */
-  const std::string& path() const {
-    return path_;
-  }
+  const std::string& path() const { return path_; }
 
-  const std::string& name() const {
-    return name_;
-  }
+  const std::string& name() const { return name_; }
 
-  const std::string& include_prefix() const {
-    return include_prefix_;
-  }
+  const std::string& include_prefix() const { return include_prefix_; }
 
   /**
    * Returns a list of includes that the program contains. Each include is of
    * type t_include*, and contains information about the program included, as
    * well as the location of the include statement.
    */
-  const std::vector<t_include*>& includes() const {
-    return includes_;
-  }
+  const std::vector<t_include*>& includes() const { return includes_; }
 
   /**
    * Returns a list of programs that are included by this program.
@@ -207,9 +181,7 @@ class t_program : public t_node {
     return included_programs;
   }
 
-  t_scope* scope() const {
-    return scope_.get();
-  }
+  t_scope* scope() const { return scope_.get(); }
 
   // Only used in py_frontend.tcc
   const std::map<std::string, std::string>& namespaces() const {
@@ -217,9 +189,7 @@ class t_program : public t_node {
   }
 
   // Only used in t_cpp_generator
-  const std::vector<std::string>& cpp_includes() const {
-    return cpp_includes_;
-  }
+  const std::vector<std::string>& cpp_includes() const { return cpp_includes_; }
 
   /**
    * Outputs a reference to the namespace corresponding to the
@@ -238,8 +208,8 @@ class t_program : public t_node {
    * @param include_site - A full or relative thrift file path
    * @param lineno       - The line number of the include statement
    */
-  std::unique_ptr<t_program>
-  add_include(std::string path, std::string include_site, int lineno);
+  std::unique_ptr<t_program> add_include(
+      std::string path, std::string include_site, int lineno);
 
   void add_include(std::unique_ptr<t_include> include) {
     includes_.push_back(include.get());

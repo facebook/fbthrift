@@ -45,18 +45,14 @@ class PthreadMutex {
     CHECK(0 == pthread_mutex_init(&pthread_mutex_, &mutexattr));
     CHECK(0 == pthread_mutexattr_destroy(&mutexattr));
   }
-  ~PthreadMutex() {
-    CHECK(0 == pthread_mutex_destroy(&pthread_mutex_));
-  }
+  ~PthreadMutex() { CHECK(0 == pthread_mutex_destroy(&pthread_mutex_)); }
 
   void lock() {
     int ret = pthread_mutex_lock(&pthread_mutex_);
     CHECK(ret != EDEADLK);
   }
 
-  bool try_lock() {
-    return (0 == pthread_mutex_trylock(&pthread_mutex_));
-  }
+  bool try_lock() { return (0 == pthread_mutex_trylock(&pthread_mutex_)); }
 
   template <class Rep, class Period>
   bool try_lock_for(
@@ -91,9 +87,7 @@ class PthreadMutex {
     return true;
   }
 
-  void* getUnderlyingImpl() const {
-    return (void*)&pthread_mutex_;
-  }
+  void* getUnderlyingImpl() const { return (void*)&pthread_mutex_; }
 
  private:
   mutable pthread_mutex_t pthread_mutex_;

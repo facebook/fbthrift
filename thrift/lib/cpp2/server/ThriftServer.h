@@ -144,14 +144,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool_ =
       std::make_shared<folly::IOThreadPoolExecutor>(
-          0,
-          std::make_shared<folly::NamedThreadFactory>("ThriftIO"));
+          0, std::make_shared<folly::NamedThreadFactory>("ThriftIO"));
 
   //! Separate thread pool for handling SSL handshakes.
   std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool_ =
       std::make_shared<folly::IOThreadPoolExecutor>(
-          0,
-          std::make_shared<folly::NamedThreadFactory>("ThriftTLS"));
+          0, std::make_shared<folly::NamedThreadFactory>("ThriftTLS"));
 
   /**
    * The speed for adjusting connection accept rate.
@@ -389,9 +387,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
         });
   }
 
-  void setFizzConfig(wangle::FizzConfig config) {
-    fizzConfig_ = config;
-  }
+  void setFizzConfig(wangle::FizzConfig config) { fizzConfig_ = config; }
 
   void setThriftConfig(ThriftTlsConfig thriftConfig) {
     thriftConfig_ = thriftConfig;
@@ -401,9 +397,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     sslCacheOptions_ = std::move(options);
   }
 
-  void setTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
-    ticketSeeds_ = seeds;
-  }
+  void setTicketSeeds(wangle::TLSTicketKeySeeds seeds) { ticketSeeds_ = seeds; }
 
   /**
    * Set the ssl handshake timeout.
@@ -444,25 +438,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * If initializeTickets is true, seeds are set on the thrift server.
    */
   void watchTicketPathForChanges(
-      const std::string& ticketPath,
-      bool initializeTickets);
+      const std::string& ticketPath, bool initializeTickets);
 
   void setFastOpenOptions(bool enableTFO, uint32_t fastOpenQueueSize) {
     enableTFO_ = enableTFO;
     fastOpenQueueSize_ = fastOpenQueueSize;
   }
 
-  std::optional<bool> getTFOEnabled() {
-    return enableTFO_;
-  }
+  std::optional<bool> getTFOEnabled() { return enableTFO_; }
 
-  void setReusePort(bool reusePort) {
-    reusePort_ = reusePort;
-  }
+  void setReusePort(bool reusePort) { reusePort_ = reusePort; }
 
-  std::optional<bool> getReusePort() {
-    return reusePort_;
-  }
+  std::optional<bool> getReusePort() { return reusePort_; }
 
   const std::optional<folly::observer::Observer<wangle::SSLContextConfig>>&
   getSSLConfig() const {
@@ -535,9 +522,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    *
    * @return a pointer to the EventBase.
    */
-  folly::EventBase* getServeEventBase() const {
-    return serveEventBase_;
-  }
+  folly::EventBase* getServeEventBase() const { return serveEventBase_; }
 
   /**
    * Get the EventBaseManager used by this server.  This can be used to find
@@ -554,21 +539,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   SSLPolicy getSSLPolicy() const;
 
   // Convenience method to check if SSLPolicy is explicitly set
-  bool isSSLPolicySet() const {
-    return sslPolicy_.has_value();
-  }
+  bool isSSLPolicySet() const { return sslPolicy_.has_value(); }
 
-  void setSSLPolicy(SSLPolicy policy) {
-    sslPolicy_ = policy;
-  }
+  void setSSLPolicy(SSLPolicy policy) { sslPolicy_ = policy; }
 
-  void setStrictSSL(bool strictSSL) {
-    strictSSL_ = strictSSL;
-  }
+  void setStrictSSL(bool strictSSL) { strictSSL_ = strictSSL; }
 
-  bool getStrictSSL() {
-    return strictSSL_;
-  }
+  bool getStrictSSL() { return strictSSL_; }
 
   void setAllowPlaintextOnLoopback(bool allow) {
     allowPlaintextOnLoopback_ = allow;
@@ -588,9 +565,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Get the speed of adjusting connection accept rate.
    */
-  double getAcceptRateAdjustSpeed() const {
-    return acceptRateAdjustSpeed_;
-  }
+  double getAcceptRateAdjustSpeed() const { return acceptRateAdjustSpeed_; }
 
   /**
    * Set the speed of adjusting connection accept rate.
@@ -603,16 +578,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Enable/Disable TOS reflection on the server socket
    */
-  void setTosReflect(bool enable) {
-    tosReflect_ = enable;
-  }
+  void setTosReflect(bool enable) { tosReflect_ = enable; }
 
   /**
    * Get TOS reflection setting for the server socket
    */
-  bool getTosReflect() const override {
-    return tosReflect_;
-  }
+  bool getTosReflect() const override { return tosReflect_; }
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket
@@ -622,9 +593,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Clear all the workers.
    */
-  void clearWorkers() {
-    ioThreadPool_->join();
-  }
+  void clearWorkers() { ioThreadPool_->join(); }
 
   /**
    * Set whether to stop io workers when stopListening() is called (we do stop
@@ -719,13 +688,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * Queue sends - better throughput by avoiding syscalls, but can increase
    * latency for low-QPS servers.  Defaults to true
    */
-  void setQueueSends(bool queueSends) {
-    queueSends_ = queueSends;
-  }
+  void setQueueSends(bool queueSends) { queueSends_ = queueSends; }
 
-  bool getQueueSends() {
-    return queueSends_;
-  }
+  bool getQueueSends() { return queueSends_; }
 
   // client side duplex
   std::shared_ptr<HeaderServerChannel> getDuplexServerChannel() {
@@ -733,9 +698,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   // server side duplex
-  bool isDuplex() {
-    return isDuplex_;
-  }
+  bool isDuplex() { return isDuplex_; }
 
   std::vector<std::unique_ptr<TransportRoutingHandler>> const*
   getRoutingHandlers() const {
@@ -747,9 +710,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     routingHandlers_.push_back(std::move(routingHandler));
   }
 
-  void clearRoutingHandlers() {
-    routingHandlers_.clear();
-  }
+  void clearRoutingHandlers() { routingHandlers_.clear(); }
 
   void setDuplex(bool duplex) {
     // setDuplex may only be called on the server side.
@@ -825,9 +786,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       startedProcessing_ = req == nullptr ? true : stub.getStartedProcessing();
     }
 
-    const std::string& getMethodName() const {
-      return methodName_;
-    }
+    const std::string& getMethodName() const { return methodName_; }
 
     std::chrono::steady_clock::time_point getCreationTimestamp() const {
       return creationTimestamp_;
@@ -837,40 +796,26 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return finishedTimestamp_;
     }
 
-    intptr_t getRootRequestContextId() const {
-      return rootRequestContextId_;
-    }
+    intptr_t getRootRequestContextId() const { return rootRequestContextId_; }
 
-    const std::string& getRequestId() const {
-      return reqId_;
-    }
+    const std::string& getRequestId() const { return reqId_; }
 
-    bool getStartedProcessing() const {
-      return startedProcessing_;
-    }
+    bool getStartedProcessing() const { return startedProcessing_; }
 
     /**
      * Returns empty IOBuff if payload is not present.
      */
-    const folly::IOBuf& getPayload() const {
-      return payload_;
-    }
+    const folly::IOBuf& getPayload() const { return payload_; }
 
     const std::map<std::string, std::string>& getHeaders() const {
       return headers_;
     }
 
-    protocol::PROTOCOL_TYPES getProtoId() const {
-      return protoId_;
-    }
+    protocol::PROTOCOL_TYPES getProtoId() const { return protoId_; }
 
-    const folly::SocketAddress& getPeerAddress() const {
-      return peerAddress_;
-    }
+    const folly::SocketAddress& getPeerAddress() const { return peerAddress_; }
 
-    const std::vector<std::string>& getDebugLog() const {
-      return reqDebugLog_;
-    }
+    const std::vector<std::string>& getDebugLog() const { return reqDebugLog_; }
 
    private:
     const std::string methodName_;

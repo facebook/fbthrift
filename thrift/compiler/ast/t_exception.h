@@ -54,34 +54,18 @@ class t_exception : public t_struct {
 
   // TODO: remove old function "xception" once everything has been swtiched to
   // "exception"
-  bool is_xception() const override {
-    return is_exception();
-  }
+  bool is_xception() const override { return is_exception(); }
 
-  bool is_exception() const override {
-    return true;
-  }
+  bool is_exception() const override { return true; }
 
-  t_error_kind kind() const {
-    return kind_;
-  }
-  void set_kind(t_error_kind kind) {
-    kind_ = kind;
-  }
+  t_error_kind kind() const { return kind_; }
+  void set_kind(t_error_kind kind) { kind_ = kind; }
 
-  t_error_blame blame() const {
-    return blame_;
-  }
-  void set_blame(t_error_blame blame) {
-    blame_ = blame;
-  }
+  t_error_blame blame() const { return blame_; }
+  void set_blame(t_error_blame blame) { blame_ = blame; }
 
-  t_error_safety safety() const {
-    return safety_;
-  }
-  void set_safety(t_error_safety safety) {
-    safety_ = safety;
-  }
+  t_error_safety safety() const { return safety_; }
+  void set_safety(t_error_safety safety) { safety_ = safety; }
 
  private:
   t_error_kind kind_{};

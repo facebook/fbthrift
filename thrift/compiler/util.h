@@ -82,12 +82,8 @@ class scope_guard {
   scope_guard(scope_guard&& that) noexcept
       : full_(std::exchange(that.full_, false)), func_(std::move(that.func_)) {}
   scope_guard& operator=(scope_guard&& that) = delete;
-  ~scope_guard() {
-    full_ ? void(func_()) : void();
-  }
-  void dismiss() {
-    full_ = false;
-  }
+  ~scope_guard() { full_ ? void(func_()) : void(); }
+  void dismiss() { full_ = false; }
 
  private:
   using Func = std::decay_t<F>;

@@ -46,9 +46,7 @@ struct CTestStruct {
 apache::thrift::transport::TMemoryBuffer* newMB();
 uint32_t readMB(apache::thrift::transport::TMemoryBuffer*, uint8_t*, uint32_t);
 void writeMB(
-    apache::thrift::transport::TMemoryBuffer*,
-    const uint8_t*,
-    uint32_t);
+    apache::thrift::transport::TMemoryBuffer*, const uint8_t*, uint32_t);
 void deleteMB(apache::thrift::transport::TMemoryBuffer*);
 
 apache::thrift::test::TestStruct* getTestStruct();

@@ -36,17 +36,11 @@ using ServerMessage = boost::variant<folly::Try<StreamPayload>, SinkComplete>;
 
 class CoroConsumer {
  public:
-  void consume() {
-    baton_.post();
-  }
+  void consume() { baton_.post(); }
 
-  void canceled() {
-    baton_.post();
-  }
+  void canceled() { baton_.post(); }
 
-  folly::coro::Task<void> wait() {
-    co_await baton_;
-  }
+  folly::coro::Task<void> wait() { co_await baton_; }
 
  private:
   folly::coro::Baton baton_;

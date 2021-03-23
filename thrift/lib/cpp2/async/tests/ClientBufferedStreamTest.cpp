@@ -60,12 +60,8 @@ struct ServerCallback : StreamServerCallback {
     requested.post();
     return true;
   }
-  void onStreamCancel() override {
-    std::terminate();
-  }
-  void resetClientCallback(StreamClientCallback&) override {
-    std::terminate();
-  }
+  void onStreamCancel() override { std::terminate(); }
+  void resetClientCallback(StreamClientCallback&) override { std::terminate(); }
 
   folly::coro::Baton requested;
 };

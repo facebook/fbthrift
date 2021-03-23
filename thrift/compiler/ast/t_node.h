@@ -37,21 +37,13 @@ class t_node {
     has_doc_ = true;
   }
 
-  const std::string& get_doc() const {
-    return doc_;
-  }
+  const std::string& get_doc() const { return doc_; }
 
-  bool has_doc() const {
-    return has_doc_;
-  }
+  bool has_doc() const { return has_doc_; }
 
-  void set_lineno(int lineno) {
-    lineno_ = lineno;
-  }
+  void set_lineno(int lineno) { lineno_ = lineno; }
 
-  int get_lineno() const {
-    return lineno_;
-  }
+  int get_lineno() const { return lineno_; }
 
  protected:
   // t_node is abstract.

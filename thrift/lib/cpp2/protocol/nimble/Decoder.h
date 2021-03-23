@@ -87,21 +87,15 @@ class Decoder {
     }
   }
 
-  std::uint32_t nextSizeChunk() {
-    return sizeStream_.nextChunk();
-  }
+  std::uint32_t nextSizeChunk() { return sizeStream_.nextChunk(); }
 
-  std::uint32_t nextContentChunk() {
-    return contentStream_.nextChunk();
-  }
+  std::uint32_t nextContentChunk() { return contentStream_.nextChunk(); }
 
   std::uint32_t nextContentChunk(BufferingNimbleDecoderState& state) {
     return contentStream_.nextChunk(state);
   }
 
-  void skipStringBytes(std::size_t size) {
-    stringCursor_.skip(size);
-  }
+  void skipStringBytes(std::size_t size) { stringCursor_.skip(size); }
 
   void nextBinary(unsigned char* buf, std::size_t size) {
     stringCursor_.pull(buf, size);
@@ -133,21 +127,13 @@ class Decoder {
     stringCursor_.clone(buf, size);
   }
 
-  folly::ByteRange fieldRange() {
-    return fieldCursor_.peekBytes();
-  }
+  folly::ByteRange fieldRange() { return fieldCursor_.peekBytes(); }
 
-  void skipFieldBytes(std::size_t size) {
-    fieldCursor_.skip(size);
-  }
+  void skipFieldBytes(std::size_t size) { fieldCursor_.skip(size); }
 
-  std::uint8_t nextFieldByte() {
-    return fieldCursor_.read<std::uint8_t>();
-  }
+  std::uint8_t nextFieldByte() { return fieldCursor_.read<std::uint8_t>(); }
 
-  std::uint16_t nextFieldShort() {
-    return fieldCursor_.read<std::uint16_t>();
-  }
+  std::uint16_t nextFieldShort() { return fieldCursor_.read<std::uint16_t>(); }
 
   BufferingNimbleDecoderState borrowState() {
     return contentStream_.borrowState();

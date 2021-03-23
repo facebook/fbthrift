@@ -314,9 +314,7 @@ class TSocket
   /**
    * Returns the underlying socket file descriptor.
    */
-  int getSocketFD() {
-    return socket_;
-  }
+  int getSocketFD() { return socket_; }
 
   /**
    * Steals the underlying socket file descriptor.

@@ -112,8 +112,7 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
    * the priority of the clientId.
    */
   std::shared_ptr<AdmissionController> select(
-      const std::string&,
-      const transport::THeader* tHeader) override {
+      const std::string&, const transport::THeader* tHeader) override {
     auto bucketIndex = computeBucketIndex(tHeader);
     if (bucketIndex < 0) {
       return denyAdmissionController_;
@@ -149,9 +148,7 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
     }
   }
 
-  Type getType() override {
-    return AdmissionStrategy::PRIORITY;
-  }
+  Type getType() override { return AdmissionStrategy::PRIORITY; }
 
  private:
   /**

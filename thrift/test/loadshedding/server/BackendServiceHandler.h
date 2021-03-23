@@ -28,12 +28,10 @@ class BackendServiceHandler : virtual public BackendServiceSvIf {
  public:
   BackendServiceHandler();
 
-  void doWork(BackendResponse& response, std::unique_ptr<BackendRequest> req)
-      override;
+  void doWork(
+      BackendResponse& response, std::unique_ptr<BackendRequest> req) override;
 
-  u_int64_t getAndResetRequestCount() {
-    return requestCount_.exchange(0);
-  }
+  u_int64_t getAndResetRequestCount() { return requestCount_.exchange(0); }
 
  private:
   std::atomic<u_int64_t> requestCount_{0};

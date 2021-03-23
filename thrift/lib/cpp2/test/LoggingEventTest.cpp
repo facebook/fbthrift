@@ -48,8 +48,7 @@ class TestServerEventHandler : public ServerEventHandler {
 class TestConnectionEventHandler : public ConnectionEventHandler {
  public:
   MOCK_METHOD2(
-      log,
-      void(const ConnectionLoggingContext&, DynamicFieldsCallback));
+      log, void(const ConnectionLoggingContext&, DynamicFieldsCallback));
 };
 
 class TestEventRegistry : public LoggingEventRegistry {
@@ -99,9 +98,7 @@ THRIFT_PLUGGABLE_FUNC_SET(
 template <typename T>
 class LoggingEventTest : public testing::Test {
  protected:
-  void SetUp() override {
-    apache::thrift::useMockLoggingEventRegistry();
-  }
+  void SetUp() override { apache::thrift::useMockLoggingEventRegistry(); }
 
   template <typename H>
   T& fetchHandler(

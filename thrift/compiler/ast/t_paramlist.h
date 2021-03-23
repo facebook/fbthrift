@@ -26,9 +26,7 @@ class t_paramlist : public t_struct {
  public:
   using t_struct::t_struct;
 
-  bool is_paramlist() const override {
-    return true;
-  }
+  bool is_paramlist() const override { return true; }
 
   t_field* get_stream_field() {
     return has_stream_field_ ? fields_[0].get() : nullptr;

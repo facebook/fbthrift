@@ -42,12 +42,10 @@ class RocketServerHandler {
   virtual void handleSetupFrame(SetupFrame&&, RocketServerConnection&) {}
 
   virtual void handleRequestResponseFrame(
-      RequestResponseFrame&& frame,
-      RocketServerFrameContext&& context) = 0;
+      RequestResponseFrame&& frame, RocketServerFrameContext&& context) = 0;
 
   virtual void handleRequestFnfFrame(
-      RequestFnfFrame&& frame,
-      RocketServerFrameContext&& context) = 0;
+      RequestFnfFrame&& frame, RocketServerFrameContext&& context) = 0;
 
   virtual void handleRequestStreamFrame(
       RequestStreamFrame&&,
@@ -66,9 +64,7 @@ class RocketServerHandler {
 
   virtual void connectionClosing() = 0;
 
-  virtual Cpp2ConnContext* getCpp2ConnContext() {
-    return nullptr;
-  }
+  virtual Cpp2ConnContext* getCpp2ConnContext() { return nullptr; }
 
   virtual void onBeforeHandleFrame() {}
 };

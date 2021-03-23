@@ -56,17 +56,14 @@ class Operation {
         download_(std::make_unique<Download<AsyncClient>>(stats)),
         upload_(std::make_unique<Upload<AsyncClient>>(stats, FLAGS_chunk_size)),
         stream_(std::make_unique<StreamDownload<AsyncClient>>(
-            stats,
-            FLAGS_chunk_size)),
+            stats, FLAGS_chunk_size)),
 #endif
         semifuture_sum_(std::make_unique<SemiFutureSum<AsyncClient>>(stats)),
         co_sum_(std::make_unique<CoSum<AsyncClient>>(stats)) {
   }
   ~Operation() = default;
 
-  int32_t outstandingOps() {
-    return outstanding_ops_;
-  }
+  int32_t outstandingOps() { return outstanding_ops_; }
 
   void async(OP_TYPE op, std::unique_ptr<LoadCallback<AsyncClient>> cb) {
     ++outstanding_ops_;

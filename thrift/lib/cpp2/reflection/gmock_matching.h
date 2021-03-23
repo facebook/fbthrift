@@ -42,8 +42,8 @@ struct ThriftEqMatcher : testing::MatcherInterface<T> {
 #else
   using GMockT = T const&;
 #endif
-  bool MatchAndExplain(GMockT actual, testing::MatchResultListener* listener)
-      const override {
+  bool MatchAndExplain(
+      GMockT actual, testing::MatchResultListener* listener) const override {
     return debug_equals(
         *expected_,
         actual,

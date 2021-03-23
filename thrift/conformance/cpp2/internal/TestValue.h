@@ -119,9 +119,7 @@ uint32_t invoke(const C& writes, W& writer) {
 class EncodeValueRecorder {
  public:
   explicit EncodeValueRecorder(EncodeValue* output) : output_(*output) {}
-  constexpr static bool kSortKeys() {
-    return false;
-  }
+  constexpr static bool kSortKeys() { return false; }
 
   uint32_t writeStructBegin(const char* name) {
     next().writeStructBegin_ref().ensure().name_ref() = name;
@@ -249,13 +247,9 @@ class EncodeValueRecorder {
  private:
   EncodeValue& output_;
 
-  WriteOp& next() {
-    return output_.writes_ref()->emplace_back();
-  }
+  WriteOp& next() { return output_.writes_ref()->emplace_back(); }
 
-  WriteToken& nextToken() {
-    return next().writeToken_ref().ensure();
-  }
+  WriteToken& nextToken() { return next().writeToken_ref().ensure(); }
 };
 
 } // namespace apache::thrift::conformance::detail

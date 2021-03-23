@@ -54,13 +54,9 @@ class t_const_value {
 
   t_const_value() = default;
 
-  explicit t_const_value(int64_t val) noexcept {
-    set_integer(val);
-  }
+  explicit t_const_value(int64_t val) noexcept { set_integer(val); }
 
-  explicit t_const_value(std::string val) {
-    set_string(std::move(val));
-  }
+  explicit t_const_value(std::string val) { set_string(std::move(val)); }
 
   t_const_value(const t_const_value&) = delete;
   t_const_value(t_const_value&&) = delete;
@@ -104,9 +100,7 @@ class t_const_value {
     return clone;
   }
 
-  void assign(t_const_value&& value) {
-    *this = std::move(value);
-  }
+  void assign(t_const_value&& value) { *this = std::move(value); }
 
   void set_string(std::string val) {
     valType_ = CV_STRING;
@@ -151,13 +145,10 @@ class t_const_value {
     return boolVal_;
   }
 
-  void set_map() {
-    valType_ = CV_MAP;
-  }
+  void set_map() { valType_ = CV_MAP; }
 
   void add_map(
-      std::unique_ptr<t_const_value> key,
-      std::unique_ptr<t_const_value> val) {
+      std::unique_ptr<t_const_value> key, std::unique_ptr<t_const_value> val) {
     mapVal_raw_.emplace_back(key.get(), val.get());
     mapVal_.emplace_back(std::move(key), std::move(val));
   }
@@ -167,22 +158,16 @@ class t_const_value {
     return mapVal_raw_;
   }
 
-  void set_list() {
-    valType_ = CV_LIST;
-  }
+  void set_list() { valType_ = CV_LIST; }
 
   void add_list(std::unique_ptr<t_const_value> val) {
     listVal_raw_.push_back(val.get());
     listVal_.push_back(std::move(val));
   }
 
-  const std::vector<t_const_value*>& get_list() const {
-    return listVal_raw_;
-  }
+  const std::vector<t_const_value*>& get_list() const { return listVal_raw_; }
 
-  t_const_value_type get_type() const {
-    return valType_;
-  }
+  t_const_value_type get_type() const { return valType_; }
 
   bool is_empty() const {
     switch (valType_) {
@@ -198,45 +183,27 @@ class t_const_value {
     return false;
   }
 
-  void set_owner(t_const* owner) {
-    owner_ = owner;
-  }
+  void set_owner(t_const* owner) { owner_ = owner; }
 
-  t_const* get_owner() const {
-    return owner_;
-  }
+  t_const* get_owner() const { return owner_; }
 
-  void set_ttype(std::unique_ptr<t_type_ref> type) {
-    type_ = std::move(type);
-  }
+  void set_ttype(std::unique_ptr<t_type_ref> type) { type_ = std::move(type); }
 
   const t_type* get_ttype() const {
     return type_ == nullptr ? nullptr : type_->get_type();
   }
 
-  void set_is_enum(bool value = true) {
-    is_enum_ = value;
-  }
+  void set_is_enum(bool value = true) { is_enum_ = value; }
 
-  bool is_enum() const {
-    return is_enum_;
-  }
+  bool is_enum() const { return is_enum_; }
 
-  void set_enum(t_enum const* tenum) {
-    tenum_ = tenum;
-  }
+  void set_enum(t_enum const* tenum) { tenum_ = tenum; }
 
-  const t_enum* get_enum() const {
-    return tenum_;
-  }
+  const t_enum* get_enum() const { return tenum_; }
 
-  void set_enum_value(t_enum_value const* tenum_val) {
-    tenum_val_ = tenum_val;
-  }
+  void set_enum_value(t_enum_value const* tenum_val) { tenum_val_ = tenum_val; }
 
-  const t_enum_value* get_enum_value() const {
-    return tenum_val_;
-  }
+  const t_enum_value* get_enum_value() const { return tenum_val_; }
 
  private:
   // Use a vector of pairs to store the contents of the map so that we

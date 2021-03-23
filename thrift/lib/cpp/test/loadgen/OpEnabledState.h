@@ -35,9 +35,7 @@ namespace loadgen {
  */
 class OpEnabledState {
  public:
-  OpEnabledState(uint32_t numOpTypes) {
-    enabled_.resize(numOpTypes, true);
-  }
+  OpEnabledState(uint32_t numOpTypes) { enabled_.resize(numOpTypes, true); }
 
   void setEnabled(uint32_t opType, bool enabled) {
     assert(opType < enabled_.size());

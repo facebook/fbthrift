@@ -242,13 +242,9 @@ class TBufferedTransport
   // Tries to put some data back in the beginning of the read buffer.
   void putBack(uint8_t* buf, uint32_t len);
 
-  void open() override {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() override {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
   bool peek() override {
     if (rBase_ == rBound_) {
@@ -281,9 +277,7 @@ class TBufferedTransport
    */
   const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len) override;
 
-  std::shared_ptr<TTransport> getUnderlyingTransport() {
-    return transport_;
-  }
+  std::shared_ptr<TTransport> getUnderlyingTransport() { return transport_; }
 
   /*
    * TVirtualTransport provides a default implementation of readAll().
@@ -384,17 +378,11 @@ class TFramedTransport
     initPointers();
   }
 
-  void open() override {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() override {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() override {
-    return (rBase_ < rBound_) || transport_->peek();
-  }
+  bool peek() override { return (rBase_ < rBound_) || transport_->peek(); }
 
   void close() override {
     flush();
@@ -413,9 +401,7 @@ class TFramedTransport
 
   const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len) override;
 
-  std::shared_ptr<TTransport> getUnderlyingTransport() {
-    return transport_;
-  }
+  std::shared_ptr<TTransport> getUnderlyingTransport() { return transport_; }
 
   /*
    * TVirtualTransport provides a default implementation of readAll().
@@ -564,9 +550,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
    * Construct a TMemoryBuffer with a default-sized buffer,
    * owned by the TMemoryBuffer object.
    */
-  TMemoryBuffer() {
-    initCommon(nullptr, defaultSize, true, 0);
-  }
+  TMemoryBuffer() { initCommon(nullptr, defaultSize, true, 0); }
 
   /**
    * Construct a TMemoryBuffer with a buffer of a specified size,
@@ -574,9 +558,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
    *
    * @param sz  The initial size of the buffer.
    */
-  explicit TMemoryBuffer(uint32_t sz) {
-    initCommon(nullptr, sz, true, 0);
-  }
+  explicit TMemoryBuffer(uint32_t sz) { initCommon(nullptr, sz, true, 0); }
 
   /**
    * Construct a TMemoryBuffer with buf as its initial contents.
@@ -624,9 +606,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  ~TMemoryBuffer() override {
-    cleanup();
-  }
+  ~TMemoryBuffer() override { cleanup(); }
 
   // Set this buffer to observe the next length bytes of buffer.
   void link(TMemoryBuffer* buffer, uint32_t length) {
@@ -638,21 +618,15 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  bool isOpen() override {
-    return true;
-  }
+  bool isOpen() override { return true; }
 
-  bool peek() override {
-    return (rBase_ < wBase_);
-  }
+  bool peek() override { return (rBase_ < wBase_); }
 
   void open() override {}
 
   void close() override {}
 
-  uint32_t getBufferSize() const {
-    return bufferSize_;
-  }
+  uint32_t getBufferSize() const { return bufferSize_; }
 
   // TODO(dreiss): Make bufPtr const.
   void getBuffer(uint8_t** bufPtr, uint32_t* sz) const {
@@ -816,18 +790,14 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   }
 
   // Return number of bytes written
-  uint32_t writeEnd() override {
-    return wBase_ - buffer_;
-  }
+  uint32_t writeEnd() override { return wBase_ - buffer_; }
 
   uint32_t available_read() const {
     // Remember, wBase_ is the real rBound_.
     return wBase_ - rBase_;
   }
 
-  uint32_t available_write() const {
-    return wBound_ - wBase_;
-  }
+  uint32_t available_write() const { return wBound_ - wBase_; }
 
   // Returns a pointer to where the client can write data to append to
   // the TMemoryBuffer, and ensures the buffer is big enough to accommodate a

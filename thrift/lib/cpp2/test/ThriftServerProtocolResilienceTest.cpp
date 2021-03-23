@@ -37,9 +37,7 @@ class Handler : public TestServiceSvIf {
 };
 
 void testTHeaderWithData(
-    const std::string& data,
-    bool expectResponse,
-    bool expectConnectionClose) {
+    const std::string& data, bool expectResponse, bool expectConnectionClose) {
   auto handler = make_shared<Handler>();
   ScopedServerInterfaceThread runner(handler);
 

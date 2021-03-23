@@ -95,8 +95,7 @@ RocketException makeResponseRpcError(
 }
 
 void preprocessProxiedExceptionHeaders(
-    ResponseRpcMetadata& metadata,
-    int32_t version) {
+    ResponseRpcMetadata& metadata, int32_t version) {
   if (version < 4) {
     return;
   }
@@ -493,8 +492,7 @@ void ThriftServerRequestFnf::sendThriftResponse(
 }
 
 void ThriftServerRequestFnf::sendSerializedError(
-    ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf>) noexcept {}
+    ResponseRpcMetadata&&, std::unique_ptr<folly::IOBuf>) noexcept {}
 
 void ThriftServerRequestFnf::closeConnection(
     folly::exception_wrapper ew) noexcept {

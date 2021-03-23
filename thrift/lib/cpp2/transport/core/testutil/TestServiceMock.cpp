@@ -98,8 +98,7 @@ void TestServiceMock::headers() {
 }
 
 void TestServiceMock::hello(
-    std::string& result,
-    std::unique_ptr<std::string> name) {
+    std::string& result, std::unique_ptr<std::string> name) {
   hello_(*name);
   result = "Hello, " + *name;
 }
@@ -110,8 +109,7 @@ void TestServiceMock::checkPort(int32_t port) {
 }
 
 void TestServiceMock::echo(
-    std::string& result,
-    std::unique_ptr<folly::IOBuf> val) {
+    std::string& result, std::unique_ptr<folly::IOBuf> val) {
   echo_(*val);
   folly::io::Cursor c(val.get());
   result = c.readFixedString(val->computeChainDataLength());
@@ -122,8 +120,7 @@ void TestServiceMock::onewayLogBlob(std::unique_ptr<folly::IOBuf> val) {
 }
 
 IntermHeaderService::IntermHeaderService(
-    std::string const& host,
-    int16_t port) {
+    std::string const& host, int16_t port) {
   if (FLAGS_transport == "header") {
     HeaderClientChannel::Ptr channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {

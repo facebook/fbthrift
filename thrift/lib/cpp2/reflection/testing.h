@@ -23,8 +23,8 @@ namespace apache {
 namespace thrift {
 
 template <class T>
-::testing::AssertionResult
-thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
+::testing::AssertionResult thriftEqualHelper(
+    const char* left, const char* right, const T& a, const T& b) {
   ::testing::AssertionResult result(false);
   if (debug_equals(a, b, make_debug_output_callback(result, left, right))) {
     return ::testing::AssertionResult(true);

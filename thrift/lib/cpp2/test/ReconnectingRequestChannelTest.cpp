@@ -79,8 +79,7 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
 }
 
 void ReconnectingRequestChannelTest::runReconnect(
-    TestServiceAsyncClient& client,
-    bool testStreaming) {
+    TestServiceAsyncClient& client, bool testStreaming) {
   EXPECT_CALL(*handler, echoInt(_))
       .WillOnce(Return(1))
       .WillOnce(Return(3))

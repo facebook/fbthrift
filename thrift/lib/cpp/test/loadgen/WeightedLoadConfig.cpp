@@ -34,9 +34,7 @@ WeightedLoadConfig::WeightedLoadConfig(uint32_t numOps) : weightsSum_(0) {
 }
 
 void WeightedLoadConfig::setOpInfo(
-    uint32_t opType,
-    const string& name,
-    uint32_t weight) {
+    uint32_t opType, const string& name, uint32_t weight) {
   if (opType >= weights_.size()) {
     throw TLibraryException("setOpInfo() called with invalid op type");
   }

@@ -67,9 +67,7 @@ TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    AllChunkSizes,
-    SingleRpcChannelTest,
-    testing::Values(0, 1, 2, 4, 10));
+    AllChunkSizes, SingleRpcChannelTest, testing::Values(0, 1, 2, 4, 10));
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
   apache::thrift::server::ServerConfigsMock server;
@@ -176,9 +174,7 @@ class TestRequestCallback : public apache::thrift::RequestCallback {
   explicit TestRequestCallback(folly::Promise<RequestState> promise)
       : promise_(std::move(promise)) {}
 
-  void requestSent() final {
-    rstate_.sent = true;
-  }
+  void requestSent() final { rstate_.sent = true; }
   void replyReceived(ClientReceiveState&& state) final {
     rstate_.reply = true;
     rstate_.receiveState = std::move(state);

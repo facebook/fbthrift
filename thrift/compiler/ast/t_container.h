@@ -40,38 +40,24 @@ class t_container : public t_type {
 
   t_container() = default;
 
-  type container_type() const {
-    return static_cast<type>(get_type_value());
-  }
+  type container_type() const { return static_cast<type>(get_type_value()); }
 
-  bool is_set() const final {
-    return container_type() == type::t_set;
-  }
+  bool is_set() const final { return container_type() == type::t_set; }
 
-  bool is_list() const final {
-    return container_type() == type::t_list;
-  }
+  bool is_list() const final { return container_type() == type::t_list; }
 
-  bool is_map() const final {
-    return container_type() == type::t_map;
-  }
+  bool is_map() const final { return container_type() == type::t_map; }
 
   void set_cpp_name(std::string cpp_name) {
     cpp_name_ = std::move(cpp_name);
     has_cpp_name_ = true;
   }
 
-  bool has_cpp_name() const {
-    return has_cpp_name_;
-  }
+  bool has_cpp_name() const { return has_cpp_name_; }
 
-  const std::string& get_cpp_name() const {
-    return cpp_name_;
-  }
+  const std::string& get_cpp_name() const { return cpp_name_; }
 
-  bool is_container() const override {
-    return true;
-  }
+  bool is_container() const override { return true; }
 
  private:
   std::string cpp_name_;

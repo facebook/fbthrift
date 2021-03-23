@@ -45,9 +45,7 @@ class has_token : public boost::static_visitor<bool> {
     return m_token == ".";
   }
 
-  bool operator()(const map& map) const {
-    return map.count(m_token) == 1;
-  }
+  bool operator()(const map& map) const { return map.count(m_token) == 1; }
 
   bool operator()(const std::shared_ptr<object>& object) const {
     return object->has(m_token);

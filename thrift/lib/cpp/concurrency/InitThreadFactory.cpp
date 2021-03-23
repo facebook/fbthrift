@@ -40,15 +40,11 @@ class InitRunnable : public Runnable {
 
   void run() override {
     threadInitializer_();
-    SCOPE_EXIT {
-      threadFinalizer_();
-    };
+    SCOPE_EXIT { threadFinalizer_(); };
     runnable_->run();
   }
 
-  std::shared_ptr<Thread> thread() override {
-    return runnable_->thread();
-  }
+  std::shared_ptr<Thread> thread() override { return runnable_->thread(); }
 
   void thread(std::shared_ptr<Thread> value) override {
     runnable_->thread(value);
@@ -69,8 +65,7 @@ std::shared_ptr<Thread> InitThreadFactory::newThread(
 }
 
 std::shared_ptr<Thread> InitThreadFactory::newThread(
-    const std::shared_ptr<Runnable>& runnable,
-    DetachState detachState) const {
+    const std::shared_ptr<Runnable>& runnable, DetachState detachState) const {
   return threadFactory_->newThread(
       std::make_shared<InitRunnable>(
           threadInitializer_, threadFinalizer_, runnable),

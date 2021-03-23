@@ -17,10 +17,10 @@
 #ifndef THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_
 #define THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_ 1
 
+#include <limits>
 #include <folly/Conv.h>
 #include <folly/Likely.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
-#include <limits>
 
 /*
  * TCompactProtocol::i*ToZigzag depend on the fact that the right shift
@@ -30,8 +30,7 @@
  * way to implement an arithmetic right shift on their platform.
  */
 static_assert(
-    (-1 >> 1) == -1,
-    "TCompactProtocol requires arithmetic right shift");
+    (-1 >> 1) == -1, "TCompactProtocol requires arithmetic right shift");
 
 namespace apache {
 namespace thrift {
@@ -106,9 +105,7 @@ uint32_t TCompactProtocolT<Transport_>::writeMessageBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeFieldBegin(
-    const char* name,
-    const TType fieldType,
-    const int16_t fieldId) {
+    const char* name, const TType fieldType, const int16_t fieldId) {
   if (fieldType == T_BOOL) {
     booleanField_.name = name;
     booleanField_.fieldType = fieldType;
@@ -157,8 +154,7 @@ uint32_t TCompactProtocolT<Transport_>::writeStructEnd() {
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeListBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   return writeCollectionBegin(elemType, size);
 }
 
@@ -167,8 +163,7 @@ uint32_t TCompactProtocolT<Transport_>::writeListBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeSetBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   return writeCollectionBegin(elemType, size);
 }
 
@@ -178,9 +173,7 @@ uint32_t TCompactProtocolT<Transport_>::writeSetBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeMapBegin(
-    const TType keyType,
-    const TType valType,
-    const uint32_t size) {
+    const TType keyType, const TType valType, const uint32_t size) {
   uint32_t wsize = 0;
 
   if (size == 0) {
@@ -348,8 +341,7 @@ int32_t TCompactProtocolT<Transport_>::writeFieldBeginInternal(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeCollectionBegin(
-    int8_t elemType,
-    int32_t size) {
+    int8_t elemType, int32_t size) {
   uint32_t wsize = 0;
   if (size <= 14) {
     wsize += writeByte(size << 4 | getCompactType(elemType));
@@ -419,9 +411,7 @@ int8_t TCompactProtocolT<Transport_>::getCompactType(int8_t ttype) {
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readMessageBegin(
-    std::string& name,
-    TMessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, TMessageType& messageType, int32_t& seqid) {
   uint32_t rsize = 0;
   int8_t protocolId;
   int8_t versionAndType;
@@ -475,9 +465,7 @@ uint32_t TCompactProtocolT<Transport_>::readStructEnd() {
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readFieldBegin(
-    std::string& /* name */,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /* name */, TType& fieldType, int16_t& fieldId) {
   uint32_t rsize = 0;
   int8_t byte;
   int8_t type;
@@ -525,10 +513,7 @@ uint32_t TCompactProtocolT<Transport_>::readFieldBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) {
   uint32_t rsize = 0;
   int8_t kvType = 0;
   int32_t msize = 0;
@@ -559,9 +544,7 @@ uint32_t TCompactProtocolT<Transport_>::readMapBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readListBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   int8_t size_and_type;
   uint32_t rsize = 0;
   int32_t lsize;
@@ -594,9 +577,7 @@ uint32_t TCompactProtocolT<Transport_>::readListBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readSetBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   return readListBegin(elemType, size, sizeUnknown);
 }
 

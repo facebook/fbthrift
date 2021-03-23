@@ -91,8 +91,7 @@ class HeaderFutureCallback
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<HeaderResult>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor) {}
 
   void replyReceived(ClientReceiveState&& state) override {
@@ -128,8 +127,7 @@ class HeaderFutureCallback<folly::Unit>
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<HeaderResult>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor) {}
 
   void replyReceived(ClientReceiveState&& state) override {
@@ -152,16 +150,11 @@ class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
       folly::Promise<folly::Unit>&& promise,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<folly::Unit>(
-            std::move(promise),
-            std::move(channel)) {}
+            std::move(promise), std::move(channel)) {}
 
-  void requestSent() override {
-    promise_.setValue();
-  }
+  void requestSent() override { promise_.setValue(); }
 
-  void replyReceived(ClientReceiveState&& /*state*/) override {
-    CHECK(false);
-  }
+  void replyReceived(ClientReceiveState&& /*state*/) override { CHECK(false); }
 };
 
 template <>
@@ -215,9 +208,7 @@ class SemiFutureCallback : public RequestCallback {
     promise_.setException(std::move(state.exception()));
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  protected:
   folly::Promise<ClientReceiveState> promise_;
@@ -231,21 +222,15 @@ class OneWaySemiFutureCallback : public RequestCallback {
       std::shared_ptr<apache::thrift::RequestChannel> channel)
       : promise_(std::move(promise)), channel_(std::move(channel)) {}
 
-  void requestSent() override {
-    promise_.setValue();
-  }
+  void requestSent() override { promise_.setValue(); }
 
-  void replyReceived(ClientReceiveState&&) override {
-    CHECK(false);
-  }
+  void replyReceived(ClientReceiveState&&) override { CHECK(false); }
 
   void requestError(ClientReceiveState&& state) override {
     promise_.setException(std::move(state.exception()));
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  protected:
   folly::Promise<folly::Unit> promise_;
@@ -373,16 +358,14 @@ makeOneWaySemiFutureCallback(
 template <bool oneWay>
 class CancellableRequestClientCallback : public RequestClientCallback {
   CancellableRequestClientCallback(
-      RequestClientCallback* wrapped,
-      std::shared_ptr<RequestChannel> channel)
+      RequestClientCallback* wrapped, std::shared_ptr<RequestChannel> channel)
       : callback_(wrapped), channel_(std::move(channel)) {
     DCHECK(wrapped->isInlineSafe());
   }
 
  public:
   static std::unique_ptr<CancellableRequestClientCallback> create(
-      RequestClientCallback* wrapped,
-      std::shared_ptr<RequestChannel> channel) {
+      RequestClientCallback* wrapped, std::shared_ptr<RequestChannel> channel) {
     return std::unique_ptr<CancellableRequestClientCallback>(
         new CancellableRequestClientCallback(wrapped, std::move(channel)));
   }
@@ -420,9 +403,7 @@ class CancellableRequestClientCallback : public RequestClientCallback {
     }
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  private:
   std::atomic<RequestClientCallback*> callback_;

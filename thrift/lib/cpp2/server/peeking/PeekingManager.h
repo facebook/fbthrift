@@ -58,9 +58,7 @@ class PeekingManagerBase : public wangle::ManagedConnection {
     acceptor_->getConnectionManager()->addConnection(this, true);
   }
 
-  void timeoutExpired() noexcept override {
-    dropConnection();
-  }
+  void timeoutExpired() noexcept override { dropConnection(); }
 
   void dropConnection(const std::string& /* errorMsg */ = "") override {
     acceptor_->getConnectionManager()->removeConnection(this);
@@ -71,9 +69,7 @@ class PeekingManagerBase : public wangle::ManagedConnection {
     os << "Peeking the socket " << clientAddr_;
   }
 
-  bool isBusy() const override {
-    return true;
-  }
+  bool isBusy() const override { return true; }
 
   void notifyPendingShutdown() override {}
 
@@ -99,10 +95,7 @@ class CheckTLSPeekingManager : public PeekingManagerBase,
       folly::AsyncSocket::UniquePtr socket,
       std::shared_ptr<apache::thrift::server::TServerObserver> obs)
       : PeekingManagerBase(
-            std::move(acceptor),
-            clientAddr,
-            std::move(tinfo),
-            server),
+            std::move(acceptor), clientAddr, std::move(tinfo), server),
         socket_(std::move(socket)),
         observer_(std::move(obs)),
         peeker_(new wangle::SocketPeeker(*socket_, this, kPeekBytes)) {
@@ -173,9 +166,7 @@ class PreReceivedDataAsyncTransportWrapper
         std::move(socket), std::move(preReceivedData)));
   }
 
-  ReadCallback* getReadCallback() const override {
-    return readCallback_;
-  }
+  ReadCallback* getReadCallback() const override { return readCallback_; }
 
   void setReadCB(folly::AsyncTransport::ReadCallback* callback) override {
     folly::DelayedDestruction::DestructorGuard dg(this);
@@ -222,10 +213,7 @@ class TransportPeekingManager : public PeekingManagerBase,
       apache::thrift::ThriftServer* server,
       folly::AsyncTransport::UniquePtr socket)
       : PeekingManagerBase(
-            std::move(acceptor),
-            clientAddr,
-            std::move(tinfo),
-            server),
+            std::move(acceptor), clientAddr, std::move(tinfo), server),
         socket_(std::move(socket)),
         peeker_(new wangle::TransportPeeker(*socket_, this, kPeekBytes)) {
     peeker_->start();

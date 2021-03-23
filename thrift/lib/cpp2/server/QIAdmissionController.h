@@ -110,17 +110,11 @@ class QIAdmissionController : public AdmissionController {
   }
 
  private:
-  double getResponseRate() const {
-    return outgoingRate_.sum() / windowSec_;
-  }
+  double getResponseRate() const { return outgoingRate_.sum() / windowSec_; }
 
-  size_t getQueueSize() const {
-    return queueSize_;
-  }
+  size_t getQueueSize() const { return queueSize_; }
 
-  double getIntegral() const {
-    return integral_.sum();
-  }
+  double getIntegral() const { return integral_.sum(); }
 
   /**
    * maxQueue represents the maximum number of elements we allow in the queue.
@@ -133,9 +127,7 @@ class QIAdmissionController : public AdmissionController {
     return std::max(minQueueLength_, processTimeoutSec_ * responsePerSec);
   }
 
-  double getMaxIntegral() const {
-    return getMaxQueue() * windowSec_;
-  }
+  double getMaxIntegral() const { return getMaxQueue() * windowSec_; }
 
   /**
    * The queue limit represents the number of elements we allow in the queue,
@@ -156,9 +148,7 @@ class QIAdmissionController : public AdmissionController {
     return std::max(minQueueLength_, maxQ / k);
   }
 
-  double getIntegralRatio() const {
-    return getIntegral() / getMaxIntegral();
-  }
+  double getIntegralRatio() const { return getIntegral() / getMaxIntegral(); }
 
   virtual void reportMetrics(
       const AdmissionController::MetricReportFn& report,
@@ -217,9 +207,7 @@ class QIAdmissionController : public AdmissionController {
   }
 
  private:
-  bool reject() {
-    return false;
-  }
+  bool reject() { return false; }
 
   bool accept() {
     queueSize_ += 1;
@@ -262,8 +250,7 @@ class QIAdmissionController : public AdmissionController {
    * Update the integral value with the queue value for the last interval
    */
   void updateIntegral(
-      size_t valueForLastInterval,
-      typename Clock::time_point now) {
+      size_t valueForLastInterval, typename Clock::time_point now) {
     double dt =
         std::chrono::duration<double>(now - integral_.getLatestTime()).count();
     integral_.addValue(now, valueForLastInterval * dt);

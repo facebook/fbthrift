@@ -44,8 +44,7 @@ std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport,
-          make_unique<ServerFramingHandler>(*this)))) {}
+          transport, make_unique<ServerFramingHandler>(*this)))) {}
 
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
@@ -71,8 +70,7 @@ void HeaderServerChannel::destroy() {
 
 // Header framing
 unique_ptr<IOBuf> HeaderServerChannel::ServerFramingHandler::addFrame(
-    unique_ptr<IOBuf> buf,
-    THeader* header) {
+    unique_ptr<IOBuf> buf, THeader* header) {
   channel_.updateClientType(header->getClientType());
 
   // Note: This THeader function may throw.  However, we don't want to catch
@@ -268,8 +266,7 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
  * an error flag in the header.
  */
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
-    folly::exception_wrapper ew,
-    std::string exCode) {
+    folly::exception_wrapper ew, std::string exCode) {
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
@@ -379,8 +376,7 @@ TServerObserver::SamplingStatus HeaderServerChannel::shouldSample(
 
 // Interface from MessageChannel::RecvCallback
 void HeaderServerChannel::messageReceived(
-    unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header) {
+    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
   bool outOfOrder = (header->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);

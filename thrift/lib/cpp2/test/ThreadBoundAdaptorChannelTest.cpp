@@ -16,11 +16,11 @@
 
 #include <thrift/lib/cpp2/async/ThreadBoundAdaptorChannel.h>
 
+#include <gtest/gtest.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
-#include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RetryingRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -47,8 +47,7 @@ class TestServiceServerMock : public TestServiceSvIf {
   MOCK_METHOD2(
       semifuture_echoIOBufAsByteStream,
       folly::SemiFuture<ServerStream<int8_t>>(
-          std::unique_ptr<folly::IOBuf>,
-          int32_t));
+          std::unique_ptr<folly::IOBuf>, int32_t));
 };
 
 class ThreadBoundAdaptorChannelTest : public Test {

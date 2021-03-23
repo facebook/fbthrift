@@ -145,15 +145,13 @@ struct pretty_print_structure_with_pointers {
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out,
-      std::shared_ptr<T> const& pMember) {
+      OutputStream& out, std::shared_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out,
-      std::unique_ptr<T> const& pMember) {
+      OutputStream& out, std::unique_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 };

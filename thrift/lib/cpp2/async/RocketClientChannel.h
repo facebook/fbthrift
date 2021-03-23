@@ -59,8 +59,7 @@ class RocketClientChannel final : public ClientChannel {
 
   static Ptr newChannel(folly::AsyncTransport::UniquePtr socket);
   static Ptr newChannelWithMetadata(
-      folly::AsyncTransport::UniquePtr socket,
-      RequestSetupMetadata meta);
+      folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta);
 
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
@@ -95,17 +94,11 @@ class RocketClientChannel final : public ClientChannel {
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override;
 
-  folly::EventBase* getEventBase() const override {
-    return evb_;
-  }
+  folly::EventBase* getEventBase() const override { return evb_; }
 
-  uint16_t getProtocolId() override {
-    return protocolId_;
-  }
+  uint16_t getProtocolId() override { return protocolId_; }
 
-  void setProtocolId(uint16_t protocolId) {
-    protocolId_ = protocolId;
-  }
+  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
   folly::AsyncTransport* FOLLY_NULLABLE getTransport() override;
   bool good() override;
@@ -118,18 +111,12 @@ class RocketClientChannel final : public ClientChannel {
   void setOnDetachable(folly::Function<void()> onDetachable) override;
   void unsetOnDetachable() override;
 
-  uint32_t getTimeout() override {
-    return timeout_.count();
-  }
+  uint32_t getTimeout() override { return timeout_.count(); }
   void setTimeout(uint32_t timeoutMs) override;
 
-  CLIENT_TYPE getClientType() override {
-    return THRIFT_ROCKET_CLIENT_TYPE;
-  }
+  CLIENT_TYPE getClientType() override { return THRIFT_ROCKET_CLIENT_TYPE; }
 
-  void setMaxPendingRequests(uint32_t n) {
-    maxInflightRequestsAndStreams_ = n;
-  }
+  void setMaxPendingRequests(uint32_t n) { maxInflightRequestsAndStreams_ = n; }
   SaturationStatus getSaturationStatus() override;
 
   void closeNow() override;
@@ -151,8 +138,7 @@ class RocketClientChannel final : public ClientChannel {
   // supports nesting
   // must be called from evb thread
   InteractionId registerInteraction(
-      apache::thrift::ManagedStringView&& name,
-      int64_t id) override;
+      apache::thrift::ManagedStringView&& name, int64_t id) override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
@@ -173,8 +159,7 @@ class RocketClientChannel final : public ClientChannel {
   folly::Optional<int32_t> serverVersion_;
 
   RocketClientChannel(
-      folly::AsyncTransport::UniquePtr socket,
-      RequestSetupMetadata meta);
+      folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta);
 
   RocketClientChannel(const RocketClientChannel&) = delete;
   RocketClientChannel& operator=(const RocketClientChannel&) = delete;

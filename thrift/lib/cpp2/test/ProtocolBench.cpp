@@ -18,10 +18,10 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
 
+#include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Optional.h>
 #include <folly/portability/GFlags.h>
-#include <glog/logging.h>
 
 #include <vector>
 

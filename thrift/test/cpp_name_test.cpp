@@ -63,13 +63,9 @@ TEST(cpp_name_test, enum_value) {
 // compiles, that should be sufficient to verify this.
 class MyServiceImpl : public MyServiceSvIf {
  public:
-  int getCallCount() {
-    return callCount_;
-  }
+  int getCallCount() { return callCount_; }
 
-  void cppDoNothing() override {
-    callCount_++;
-  }
+  void cppDoNothing() override { callCount_++; }
 
   folly::Future<folly::Unit> future_cppDoNothing() override {
     callCount_++;

@@ -93,9 +93,7 @@ class JSONProtocolWriterCommon {
 
   //  These writers are common to both json and simple-json protocols.
   inline uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   inline uint32_t writeMessageEnd();
   inline uint32_t writeByte(int8_t byte);
   inline uint32_t writeI16(int16_t i16);
@@ -176,9 +174,7 @@ class JSONProtocolReaderCommon {
   explicit JSONProtocolReaderCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
 
-  inline void setAllowDecodeUTF8(bool val) {
-    allowDecodeUTF8_ = val;
-  }
+  inline void setAllowDecodeUTF8(bool val) { allowDecodeUTF8_ = val; }
 
   /**
    * The IOBuf itself is managed by the caller.
@@ -186,15 +182,11 @@ class JSONProtocolReaderCommon {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  void setInput(const folly::io::Cursor& cursor) {
-    in_ = cursor;
-  }
-  void setInput(const folly::IOBuf* buf) {
-    in_.reset(buf);
-  }
+  void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
+  void setInput(const folly::IOBuf* buf) { in_.reset(buf); }
 
-  inline void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   inline void readMessageEnd();
   inline void readByte(int8_t& byte);
   inline void readI16(int16_t& i16);
@@ -209,24 +201,15 @@ class JSONProtocolReaderCommon {
   inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
   inline void readBinary(folly::IOBuf& str);
 
-  const folly::io::Cursor& getCursor() const {
-    return in_;
-  }
+  const folly::io::Cursor& getCursor() const { return in_; }
 
-  size_t getCursorPosition() const {
-    return in_.getCurrentPosition();
-  }
+  size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
   inline uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor,
-      std::unique_ptr<folly::IOBuf>& ser);
+      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser);
 
-  static constexpr std::size_t fixedSizeInContainer(TType) {
-    return 0;
-  }
-  void skipBytes(size_t bytes) {
-    in_.skip(bytes);
-  }
+  static constexpr std::size_t fixedSizeInContainer(TType) { return 0; }
+  void skipBytes(size_t bytes) { in_.skip(bytes); }
 
  protected:
   enum class ContextType { MAP, ARRAY };
@@ -283,9 +266,7 @@ class JSONProtocolReaderCommon {
   // This string's characters must match up with the elements in kEscapeCharVals
   // I don't have '/' on this list even though it appears on www.json.org --
   // it is not in the RFC
-  static constexpr folly::StringPiece kEscapeChars() {
-    return "\"\\/bfnrt";
-  }
+  static constexpr folly::StringPiece kEscapeChars() { return "\"\\/bfnrt"; }
 
   static const uint8_t kEscapeCharVals[8];
   static inline uint8_t hexVal(uint8_t ch);
@@ -303,13 +284,11 @@ class JSONProtocolReaderCommon {
   [[noreturn]] static void throwBadVersion();
   [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsIntegral(
-      folly::StringPiece s,
-      folly::StringPiece typeName);
+      folly::StringPiece s, folly::StringPiece typeName);
   [[noreturn]] static void throwUnrecognizableAsFloatingPoint(
       std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsString(
-      std::string const& s,
-      std::exception const& e);
+      std::string const& s, std::exception const& e);
   [[noreturn]] static void throwUnrecognizableAsAny(std::string const& s);
   [[noreturn]] static void throwInvalidFieldStart(char ch);
   [[noreturn]] static void throwUnexpectedChar(char ch, char expected);

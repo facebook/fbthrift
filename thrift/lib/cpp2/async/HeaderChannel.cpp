@@ -24,8 +24,7 @@ namespace thrift {
 using apache::thrift::transport::THeader;
 
 void HeaderChannel::addRpcOptionHeaders(
-    THeader* header,
-    const RpcOptions& rpcOptions) {
+    THeader* header, const RpcOptions& rpcOptions) {
   if (!clientSupportHeader()) {
     return;
   }

@@ -27,9 +27,7 @@ class MockCallback : public RequestCallback {
  public:
   MockCallback(bool clientError, bool serverError)
       : clientError_(clientError), serverError_(serverError) {}
-  virtual ~MockCallback() {
-    EXPECT_TRUE(callbackReceived_);
-  }
+  virtual ~MockCallback() { EXPECT_TRUE(callbackReceived_); }
 
   void requestSent() override {}
 
@@ -51,9 +49,7 @@ class MockCallback : public RequestCallback {
     EXPECT_TRUE(clientError_ || serverError_);
     callbackReceived_ = true;
   }
-  bool callbackReceived() {
-    return callbackReceived_;
-  }
+  bool callbackReceived() { return callbackReceived_; }
 
  private:
   bool clientError_;

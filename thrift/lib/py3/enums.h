@@ -16,19 +16,19 @@
 
 #pragma once
 
-#include <Python.h>
-#include <folly/Indestructible.h>
-#include <folly/MapUtil.h>
-#include <folly/Range.h>
-#include <folly/SharedMutex.h>
-#include <folly/String.h>
-#include <glog/logging.h>
-#include <thrift/lib/cpp/Thrift.h>
 #include <functional>
 #include <optional>
 #include <shared_mutex>
 #include <string_view>
 #include <unordered_map>
+#include <Python.h>
+#include <glog/logging.h>
+#include <folly/Indestructible.h>
+#include <folly/MapUtil.h>
+#include <folly/Range.h>
+#include <folly/SharedMutex.h>
+#include <folly/String.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace thrift {
 namespace py3 {
@@ -63,17 +63,13 @@ class EnumData {
 
   PyObject* tryAddToCache(int value, PyObject* obj);
 
-  std::size_t size() const {
-    return size_;
-  }
+  std::size_t size() const { return size_; }
 
   std::string_view getPyName(std::string_view name) const {
     return folly::get_default(origToPyNames_, name, name);
   }
 
-  folly::Range<const folly::StringPiece*> getNames() const {
-    return names_;
-  }
+  folly::Range<const folly::StringPiece*> getNames() const { return names_; }
 
  protected:
   using NameMap = std::unordered_map<std::string_view, std::string_view>;

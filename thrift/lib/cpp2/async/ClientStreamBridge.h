@@ -67,8 +67,7 @@ class ClientStreamBridge : public TwoWayBridge<
    public:
     virtual ~FirstResponseCallback() = default;
     virtual void onFirstResponse(
-        FirstResponsePayload&&,
-        ClientPtr clientStreamBridge) = 0;
+        FirstResponsePayload&&, ClientPtr clientStreamBridge) = 0;
     virtual void onFirstResponseError(folly::exception_wrapper) = 0;
   };
 

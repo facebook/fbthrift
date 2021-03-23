@@ -37,9 +37,7 @@ uint8_t JSONProtocolWriterCommon::hexChar(uint8_t val) {
  */
 
 uint32_t JSONProtocolWriterCommon::writeMessageBegin(
-    const std::string& name,
-    MessageType messageType,
-    int32_t seqid) {
+    const std::string& name, MessageType messageType, int32_t seqid) {
   auto ret = beginContext(ContextType::ARRAY);
   ret += writeI32(apache::thrift::detail::json::kThriftVersion1);
   ret += writeString(name);
@@ -371,9 +369,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
  */
 
 void JSONProtocolReaderCommon::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   ensureAndBeginContext(ContextType::ARRAY);
   int64_t tmpVal;
   readI64(tmpVal);
@@ -445,8 +441,7 @@ void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
 }
 
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
-    folly::io::Cursor& snapshot,
-    std::unique_ptr<folly::IOBuf>& ser) {
+    folly::io::Cursor& snapshot, std::unique_ptr<folly::IOBuf>& ser) {
   int32_t size =
       folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
@@ -817,8 +812,7 @@ uint8_t JSONProtocolReaderCommon::hexVal(uint8_t ch) {
 
 template <class Predicate>
 uint32_t JSONProtocolReaderCommon::readWhile(
-    const Predicate& pred,
-    std::string& out) {
+    const Predicate& pred, std::string& out) {
   uint32_t ret = 0;
   for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
     uint32_t size = 0;

@@ -48,27 +48,17 @@ class THttpParser {
   void getReadBuffer(void** bufReturn, size_t* lenReturn);
   bool readDataAvailable(size_t len);
   int getMinBytesRequired();
-  uint32_t getUnparsedDataLen() const {
-    return httpBufLen_ - httpPos_;
-  }
+  uint32_t getUnparsedDataLen() const { return httpBufLen_ - httpPos_; }
   void setDataBuffer(apache::thrift::transport::TMemoryBuffer* buffer) {
     dataBuf_ = buffer;
   }
-  void unsetDataBuffer() {
-    dataBuf_ = nullptr;
-  }
-  void setMaxSize(uint32_t size) {
-    maxSize_ = size;
-  }
-  uint32_t getMaxSize() {
-    return maxSize_;
-  }
+  void unsetDataBuffer() { dataBuf_ = nullptr; }
+  void setMaxSize(uint32_t size) { maxSize_ = size; }
+  uint32_t getMaxSize() { return maxSize_; }
   bool hasReadAheadData() {
     return (state_ == HTTP_PARSE_START) && (httpBufLen_ > httpPos_);
   }
-  bool hasPartialMessage() {
-    return partialMessageSize_ > 0;
-  }
+  bool hasPartialMessage() { return partialMessageSize_ > 0; }
   const std::map<std::string, std::string>& getReadHeaders() {
     return readHeaders_;
   }
@@ -131,17 +121,11 @@ class THttpClientParser : public THttpParser {
     userAgent_ = "C++/THttpClient";
   }
 
-  void setHost(const std::string& host) {
-    host_ = host;
-  }
-  void setPath(const std::string& path) {
-    path_ = path;
-  }
+  void setHost(const std::string& host) { host_ = host; }
+  void setPath(const std::string& path) { path_ = path; }
   void resetConnectClosedByServer();
   bool isConnectClosedByServer();
-  void setUserAgent(std::string userAgent) {
-    userAgent_ = userAgent;
-  }
+  void setUserAgent(std::string userAgent) { userAgent_ = userAgent; }
   std::unique_ptr<folly::IOBuf> constructHeader(
       std::unique_ptr<folly::IOBuf> buf) override;
   std::unique_ptr<folly::IOBuf> constructHeader(

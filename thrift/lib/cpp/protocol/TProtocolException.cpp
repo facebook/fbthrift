@@ -43,8 +43,7 @@ namespace protocol {
 }
 
 [[noreturn]] void TProtocolException::throwMissingRequiredField(
-    folly::StringPiece field,
-    folly::StringPiece type) {
+    folly::StringPiece field, folly::StringPiece type) {
   throw TProtocolException(
       TProtocolException::MISSING_REQUIRED_FIELD,
       fmt::format(

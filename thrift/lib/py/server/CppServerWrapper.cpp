@@ -97,9 +97,7 @@ T getIntAttr(object& pyObject, const char* attrName) {
 
 class CallbackWrapper {
  public:
-  void call(object obj) {
-    callback_(obj);
-  }
+  void call(object obj) { callback_(obj); }
 
   void setCallback(folly::Function<void(object)>&& callback) {
     callback_ = std::move(callback);
@@ -126,9 +124,7 @@ class CppServerEventHandler : public TServerEventHandler {
   void callPythonHandler(TConnectionContext* ctx, const char* method) {
     if (!_Py_IsFinalizing()) {
       PyGILState_STATE state = PyGILState_Ensure();
-      SCOPE_EXIT {
-        PyGILState_Release(state);
-      };
+      SCOPE_EXIT { PyGILState_Release(state); };
 
       // This cast always succeeds because it is called from Cpp2Connection.
       Cpp2ConnContext* cpp2Ctx = dynamic_cast<Cpp2ConnContext*>(ctx);
@@ -146,33 +142,23 @@ class CppServerEventHandler : public TServerEventHandler {
 
 class PythonCallTimestamps : public TServerObserver::CallTimestamps {
  public:
-  void set_readEndNow() {
-    readEnd = clock::now();
-  }
+  void set_readEndNow() { readEnd = clock::now(); }
   uint64_t get_readEndUsec() const noexcept {
     return to_microseconds(readEnd.time_since_epoch());
   }
-  void set_processBeginNow() {
-    processBegin = clock::now();
-  }
+  void set_processBeginNow() { processBegin = clock::now(); }
   uint64_t get_processBeginUsec() const noexcept {
     return to_microseconds(processBegin.time_since_epoch());
   }
-  void set_processEndNow() {
-    processEnd = clock::now();
-  }
+  void set_processEndNow() { processEnd = clock::now(); }
   uint64_t get_processEndUsec() const noexcept {
     return to_microseconds(processEnd.time_since_epoch());
   }
-  void set_writeBeginNow() {
-    writeBegin = clock::now();
-  }
+  void set_writeBeginNow() { writeBegin = clock::now(); }
   uint64_t get_writeBeginUsec() const noexcept {
     return to_microseconds(writeBegin.time_since_epoch());
   }
-  void set_writeEndNow() {
-    writeEnd = clock::now();
-  }
+  void set_writeEndNow() { writeEnd = clock::now(); }
   uint64_t get_writeEndUsec() const noexcept {
     return to_microseconds(writeEnd.time_since_epoch());
   }
@@ -183,67 +169,33 @@ class CppServerObserver : public TServerObserver {
   explicit CppServerObserver(object serverObserver)
       : observer_(serverObserver) {}
 
-  void connAccepted() override {
-    this->call("connAccepted");
-  }
-  void connDropped() override {
-    this->call("connDropped");
-  }
-  void connRejected() override {
-    this->call("connRejected");
-  }
-  void tlsError() override {
-    this->call("tlsError");
-  }
-  void tlsComplete() override {
-    this->call("tlsComplete");
-  }
-  void tlsFallback() override {
-    this->call("tlsFallback");
-  }
-  void tlsResumption() override {
-    this->call("tlsResumption");
-  }
-  void taskKilled() override {
-    this->call("taskKilled");
-  }
-  void taskTimeout() override {
-    this->call("taskTimeout");
-  }
-  void serverOverloaded() override {
-    this->call("serverOverloaded");
-  }
-  void receivedRequest() override {
-    this->call("receivedRequest");
-  }
-  void queuedRequests(int32_t n) override {
-    this->call("queuedRequests", n);
-  }
-  void queueTimeout() override {
-    this->call("queueTimeout");
-  }
-  void sentReply() override {
-    this->call("sentReply");
-  }
-  void activeRequests(int32_t n) override {
-    this->call("activeRequests", n);
-  }
+  void connAccepted() override { this->call("connAccepted"); }
+  void connDropped() override { this->call("connDropped"); }
+  void connRejected() override { this->call("connRejected"); }
+  void tlsError() override { this->call("tlsError"); }
+  void tlsComplete() override { this->call("tlsComplete"); }
+  void tlsFallback() override { this->call("tlsFallback"); }
+  void tlsResumption() override { this->call("tlsResumption"); }
+  void taskKilled() override { this->call("taskKilled"); }
+  void taskTimeout() override { this->call("taskTimeout"); }
+  void serverOverloaded() override { this->call("serverOverloaded"); }
+  void receivedRequest() override { this->call("receivedRequest"); }
+  void queuedRequests(int32_t n) override { this->call("queuedRequests", n); }
+  void queueTimeout() override { this->call("queueTimeout"); }
+  void sentReply() override { this->call("sentReply"); }
+  void activeRequests(int32_t n) override { this->call("activeRequests", n); }
   void callCompleted(const CallTimestamps& runtimes) override {
     this->call(
         "callCompleted",
         reinterpret_cast<const PythonCallTimestamps&>(runtimes));
   }
-  void tlsWithClientCert() override {
-    this->call("tlsWithClientCert");
-  }
+  void tlsWithClientCert() override { this->call("tlsWithClientCert"); }
 
  private:
   template <class... Types>
   void call(const char* method_name, Types... args) {
     PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT {
-      PyGILState_Release(state);
-    };
+    SCOPE_EXIT { PyGILState_Release(state); };
 
     // check if the object has an attribute, because we want to be accepting
     // if we added a new listener callback and didn't yet update call the
@@ -313,9 +265,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
 
           {
             PyGILState_STATE state = PyGILState_Ensure();
-            SCOPE_EXIT {
-              PyGILState_Release(state);
-            };
+            SCOPE_EXIT { PyGILState_Release(state); };
 
 #if PY_MAJOR_VERSION == 2
             auto input =
@@ -437,8 +387,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
    * Ask python if no priority headers were supplied with the request
    */
   concurrency::PRIORITY getMethodPriority(
-      std::string const& fname,
-      Cpp2RequestContext* ctx = nullptr) {
+      std::string const& fname, Cpp2RequestContext* ctx = nullptr) {
     if (ctx) {
       auto requestPriority = ctx->getCallPriority();
       if (requestPriority != concurrency::PRIORITY::N_PRIORITIES) {
@@ -448,9 +397,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
     }
 
     PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT {
-      PyGILState_Release(state);
-    };
+    SCOPE_EXIT { PyGILState_Release(state); };
 
     try {
       return static_cast<concurrency::PRIORITY>(
@@ -471,9 +418,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
 
   void getPythonOnewayMethods() {
     PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT {
-      PyGILState_Release(state);
-    };
+    SCOPE_EXIT { PyGILState_Release(state); };
     object ret = adapter_->attr("oneway_methods")();
     if (ret.is_none()) {
       LOG(ERROR) << "Unexpected error in processor method";
@@ -522,15 +467,11 @@ class CppServerWrapper : public ThriftServer {
     setObserver(std::make_shared<CppServerObserver>(observer));
   }
 
-  object getAddress() {
-    return makePythonAddress(ThriftServer::getAddress());
-  }
+  object getAddress() { return makePythonAddress(ThriftServer::getAddress()); }
 
   void loop() {
     PyThreadState* save_state = PyEval_SaveThread();
-    SCOPE_EXIT {
-      PyEval_RestoreThread(save_state);
-    };
+    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
 
     // Thrift main loop.  This will run indefinitely, until stop() is
     // called.
@@ -630,9 +571,7 @@ class CppServerWrapper : public ThriftServer {
     // only once thrift is all cleaned up.
 
     PyThreadState* save_state = PyEval_SaveThread();
-    SCOPE_EXIT {
-      PyEval_RestoreThread(save_state);
-    };
+    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
     ThriftServer::cleanUp();
   }
 
@@ -664,8 +603,7 @@ class CppServerWrapper : public ThriftServer {
   }
 
   void setNewPriorityQueueThreadManager(
-      size_t numThreads,
-      bool enableTaskStats) {
+      size_t numThreads, bool enableTaskStats) {
     auto tm = ThreadManager::newPriorityQueueThreadManager(
         numThreads, enableTaskStats);
     auto poolThreadName = getCPUWorkerThreadName();

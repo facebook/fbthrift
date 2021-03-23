@@ -65,17 +65,11 @@ class t_const : public t_named {
   /**
    * t_const getters
    */
-  t_program* get_program() const {
-    return program_;
-  }
+  t_program* get_program() const { return program_; }
 
-  const t_type* get_type() const {
-    return type_.get_type();
-  }
+  const t_type* get_type() const { return type_.get_type(); }
 
-  t_const_value* get_value() const {
-    return value_.get();
-  }
+  t_const_value* get_value() const { return value_.get(); }
 
  private:
   t_program* program_;

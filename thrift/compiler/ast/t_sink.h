@@ -48,27 +48,19 @@ class t_sink : public t_type {
     first_response_type_ = std::move(first_response);
   }
 
-  bool has_first_response() const {
-    return first_response_type_ != nullptr;
-  }
+  bool has_first_response() const { return first_response_type_ != nullptr; }
 
   const t_type* get_first_response_type() const {
     return first_response_type_->get_type();
   }
 
-  const t_type* get_sink_type() const {
-    return sink_type_.get_type();
-  }
+  const t_type* get_sink_type() const { return sink_type_.get_type(); }
 
   // TODO: remove old function "xception" once everything has been swtiched to
   // "exception"
-  t_struct* get_sink_xceptions() const {
-    return get_sink_exceptions();
-  }
+  t_struct* get_sink_xceptions() const { return get_sink_exceptions(); }
 
-  t_struct* get_sink_exceptions() const {
-    return sink_exceptions_;
-  }
+  t_struct* get_sink_exceptions() const { return sink_exceptions_; }
 
   const t_type* get_final_response_type() const {
     return final_response_type_.get_type();
@@ -84,9 +76,7 @@ class t_sink : public t_type {
     return final_response_exceptions_;
   }
 
-  bool is_sink() const override {
-    return true;
-  }
+  bool is_sink() const override { return true; }
 
   std::string get_full_name() const override {
     return "sink<" + sink_type_.get_type()->get_full_name() + ", " +
@@ -96,9 +86,7 @@ class t_sink : public t_type {
              : "");
   }
 
-  type get_type_value() const override {
-    return type::t_sink;
-  }
+  type get_type_value() const override { return type::t_sink; }
 
  private:
   t_type_ref sink_type_;
@@ -126,9 +114,7 @@ class t_sink : public t_type {
     set_first_response_type(std::make_unique<t_type_ref>(first_response));
   }
 
-  bool sink_has_first_response() const {
-    return has_first_response();
-  }
+  bool sink_has_first_response() const { return has_first_response(); }
 };
 
 } // namespace compiler

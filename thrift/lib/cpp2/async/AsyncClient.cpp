@@ -22,8 +22,7 @@ namespace apache {
 namespace thrift {
 namespace {
 static InteractionId createInteraction(
-    RequestChannel& channel,
-    std::string_view methodName) {
+    RequestChannel& channel, std::string_view methodName) {
   DCHECK(
       !channel.getEventBase() || channel.getEventBase()->isInEventBaseThread());
   return channel.createInteraction(methodName);
@@ -35,16 +34,14 @@ GeneratedAsyncClient::GeneratedAsyncClient(
     : channel_(std::move(channel)) {}
 
 InteractionHandle::InteractionHandle(
-    std::shared_ptr<RequestChannel> channel,
-    folly::StringPiece methodName)
+    std::shared_ptr<RequestChannel> channel, folly::StringPiece methodName)
     : GeneratedAsyncClient(channel),
       interactionId_(createInteraction(*channel, methodName)) {
   DCHECK(interactionId_);
 }
 
 InteractionHandle::InteractionHandle(
-    std::shared_ptr<RequestChannel> channel,
-    InteractionId id)
+    std::shared_ptr<RequestChannel> channel, InteractionId id)
     : GeneratedAsyncClient(channel), interactionId_(std::move(id)) {
   DCHECK(interactionId_);
 }

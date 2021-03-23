@@ -78,16 +78,16 @@ class Util {
   /**
    * Converts struct timespec to arbitrary-sized ticks since epoch
    */
-  static void
-  toTicks(int64_t& result, const struct timespec& value, int64_t ticksPerSec) {
+  static void toTicks(
+      int64_t& result, const struct timespec& value, int64_t ticksPerSec) {
     return toTicks(result, value.tv_sec, value.tv_nsec, NS_PER_S, ticksPerSec);
   }
 
   /**
    * Converts struct timeval to arbitrary-sized ticks since epoch
    */
-  static void
-  toTicks(int64_t& result, const struct timeval& value, int64_t ticksPerSec) {
+  static void toTicks(
+      int64_t& result, const struct timeval& value, int64_t ticksPerSec) {
     return toTicks(result, value.tv_sec, value.tv_usec, US_PER_S, ticksPerSec);
   }
 
@@ -113,9 +113,7 @@ class Util {
   /**
    * Get current time as milliseconds from epoch
    */
-  static int64_t currentTime() {
-    return currentTimeTicks(MS_PER_S);
-  }
+  static int64_t currentTime() { return currentTimeTicks(MS_PER_S); }
 };
 
 } // namespace concurrency

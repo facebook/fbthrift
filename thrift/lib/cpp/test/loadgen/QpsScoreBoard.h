@@ -61,13 +61,9 @@ class QpsScoreBoard : public ScoreBoard {
   struct OpData {
     OpData() : count(0) {}
 
-    void zero() {
-      count = 0;
-    }
+    void zero() { count = 0; }
 
-    void accumulate(const OpData* other) {
-      count += other->count;
-    }
+    void accumulate(const OpData* other) { count += other->count; }
 
     uint64_t count;
   };

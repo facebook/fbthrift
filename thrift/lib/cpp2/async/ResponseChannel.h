@@ -82,13 +82,9 @@ class ResponseChannelRequest {
 
   virtual bool isOneway() const = 0;
 
-  virtual bool isStream() const {
-    return false;
-  }
+  virtual bool isStream() const { return false; }
 
-  virtual bool isSink() const {
-    return false;
-  }
+  virtual bool isSink() const { return false; }
 
   apache::thrift::RpcKind rpcKind() const {
     if (isStream()) {
@@ -103,9 +99,7 @@ class ResponseChannelRequest {
     return apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   }
 
-  virtual bool isReplyChecksumNeeded() const {
-    return false;
-  }
+  virtual bool isReplyChecksumNeeded() const { return false; }
 
   virtual void sendReply(
       std::unique_ptr<folly::IOBuf>&&,
@@ -136,8 +130,7 @@ class ResponseChannelRequest {
 #endif
 
   virtual void sendErrorWrapped(
-      folly::exception_wrapper ex,
-      std::string exCode) = 0;
+      folly::exception_wrapper ex, std::string exCode) = 0;
 
   virtual void sendQueueTimeoutResponse() {}
 

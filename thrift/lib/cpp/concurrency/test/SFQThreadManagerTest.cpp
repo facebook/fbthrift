@@ -40,8 +40,7 @@ class SFQThreadManagerTest : public testing::Test {
 
  protected:
   std::shared_ptr<ThreadManager> newSFQTM(
-      std::chrono::seconds perturb,
-      size_t numQueues) {
+      std::chrono::seconds perturb, size_t numQueues) {
     SFQThreadManagerConfig config;
     config.setPerturbInterval(perturb)
         .setNumFairQueuesForUpstream(numQueues)

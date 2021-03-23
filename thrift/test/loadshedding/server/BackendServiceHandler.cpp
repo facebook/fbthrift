@@ -24,8 +24,7 @@ using namespace facebook::thrift::test;
 BackendServiceHandler::BackendServiceHandler() {}
 
 void BackendServiceHandler::doWork(
-    BackendResponse& response,
-    std::unique_ptr<BackendRequest> request) {
+    BackendResponse& response, std::unique_ptr<BackendRequest> request) {
   auto wakeup = std::chrono::steady_clock::now() +
       std::chrono::microseconds(*request->time_per_request_ref());
 

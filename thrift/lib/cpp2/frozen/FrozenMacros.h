@@ -74,9 +74,7 @@
         : ViewBase<View, LayoutSelf, T>(layout, position) {} \
     __VA_ARGS__                                              \
   };                                                         \
-  View view(ViewPosition self) const {                       \
-    return View(this, self);                                 \
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 
 #define FROZEN_TYPE(TYPE, ...)                                               \
   template <>                                                                \

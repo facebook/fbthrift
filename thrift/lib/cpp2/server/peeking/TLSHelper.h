@@ -43,8 +43,8 @@ class TLSHelper {
    * a method to serialize plaintext, and only serializes alerts that can
    * be sent over plaintext.
    */
-  static std::unique_ptr<folly::IOBuf>
-  getPlaintextAlert(uint8_t major, uint8_t minor, Alert alert);
+  static std::unique_ptr<folly::IOBuf> getPlaintextAlert(
+      uint8_t major, uint8_t minor, Alert alert);
 };
 } // namespace thrift
 } // namespace apache

@@ -61,8 +61,7 @@ void ThriftClientCallback::onThriftRequestSent() {
 }
 
 void ThriftClientCallback::onThriftResponse(
-    ResponseRpcMetadata&& metadata,
-    std::unique_ptr<IOBuf> payload) noexcept {
+    ResponseRpcMetadata&& metadata, std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {

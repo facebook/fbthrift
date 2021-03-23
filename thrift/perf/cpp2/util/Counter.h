@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <folly/ThreadCachedInt.h>
-#include <glog/logging.h>
 #include <algorithm>
 #include <string>
+#include <glog/logging.h>
+#include <folly/ThreadCachedInt.h>
 
 namespace facebook {
 namespace thrift {

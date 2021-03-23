@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <folly/Range.h>
 #include <string>
+#include <folly/Range.h>
 
 namespace apache {
 namespace thrift {
@@ -67,8 +67,7 @@ struct DebugStringParams {
 //
 template <class ProtocolReader>
 std::string toDebugString(
-    ProtocolReader& inProtoReader,
-    DebugStringParams p = {});
+    ProtocolReader& inProtoReader, DebugStringParams p = {});
 
 // Converts text format -> serialized protocol data
 //

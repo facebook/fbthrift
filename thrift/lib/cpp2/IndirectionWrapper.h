@@ -71,25 +71,15 @@ class IndirectionWrapper {
     return lhs.__fbthrift_data() < rhs.__fbthrift_data();
   }
 
-  void __clear() {
-    __fbthrift_data().__clear();
-  }
+  void __clear() { __fbthrift_data().__clear(); }
 
-  T& __fbthrift_data() & {
-    return *raw_;
-  }
+  T& __fbthrift_data() & { return *raw_; }
 
-  const T& __fbthrift_data() const& {
-    return *raw_;
-  }
+  const T& __fbthrift_data() const& { return *raw_; }
 
-  T&& __fbthrift_data() && {
-    return std::move(*raw_);
-  }
+  T&& __fbthrift_data() && { return std::move(*raw_); }
 
-  const T&& __fbthrift_data() const&& {
-    return std::move(*raw_);
-  }
+  const T&& __fbthrift_data() const&& { return std::move(*raw_); }
 };
 } // namespace thrift
 } // namespace apache

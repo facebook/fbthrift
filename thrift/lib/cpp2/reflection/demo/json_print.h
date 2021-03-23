@@ -37,9 +37,7 @@ struct printer {
     std::cout << what;
   }
 
-  static void print(bool const what) {
-    std::cout << (what ? "true" : "false");
-  }
+  static void print(bool const what) { std::cout << (what ? "true" : "false"); }
 };
 
 template <>

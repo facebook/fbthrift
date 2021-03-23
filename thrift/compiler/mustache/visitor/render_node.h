@@ -28,8 +28,8 @@ SOFTWARE.
 */
 #pragma once
 
-#include <boost/variant/static_visitor.hpp>
 #include <sstream>
+#include <boost/variant/static_visitor.hpp>
 
 #include "thrift/compiler/mustache/mstch.h"
 #include "thrift/compiler/mustache/render_context.h"
@@ -68,9 +68,7 @@ class render_node : public boost::static_visitor<std::string> {
     return render_context::push(m_ctx).render(interpreted);
   }
 
-  std::string operator()(const std::string& value) const {
-    return value;
-  }
+  std::string operator()(const std::string& value) const { return value; }
 
  private:
   render_context& m_ctx;

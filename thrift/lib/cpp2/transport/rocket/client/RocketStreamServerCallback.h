@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <memory>
 #include <utility>
+#include <boost/variant.hpp>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
@@ -70,9 +70,7 @@ class RocketStreamServerCallback : public StreamServerCallback {
 
   void timeoutExpired() noexcept;
 
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  rocket::StreamId streamId() const noexcept { return streamId_; }
 
  protected:
   rocket::RocketClient& client_;
@@ -140,9 +138,7 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
 
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  rocket::StreamId streamId() const noexcept { return streamId_; }
 
  private:
   rocket::RocketClient& client_;
@@ -187,9 +183,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
 
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  rocket::StreamId streamId() const noexcept { return streamId_; }
 
  private:
   rocket::RocketClient& client_;

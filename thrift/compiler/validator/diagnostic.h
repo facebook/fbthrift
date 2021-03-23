@@ -55,9 +55,7 @@ class diagnostic {
       std::string const& message)
       : type_(type), file_(file), line_(line), message_(message) {}
 
-  type getType() const {
-    return type_;
-  }
+  type getType() const { return type_; }
 
   std::string str();
 

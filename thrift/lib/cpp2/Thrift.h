@@ -22,11 +22,11 @@
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
+#include <initializer_list>
+#include <utility>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
-#include <initializer_list>
-#include <utility>
 
 #include <cstdint>
 

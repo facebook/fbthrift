@@ -84,8 +84,7 @@ SingleRpcChannel::~SingleRpcChannel() {
 }
 
 void SingleRpcChannel::sendThriftResponse(
-    ResponseRpcMetadata&& metadata,
-    std::unique_ptr<IOBuf> payload) noexcept {
+    ResponseRpcMetadata&& metadata, std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(evb_->isInEventBaseThread());
   VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
@@ -219,8 +218,7 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
 }
 
 void SingleRpcChannel::onH2StreamClosed(
-    proxygen::ProxygenError error,
-    std::string errorDescription) noexcept {
+    proxygen::ProxygenError error, std::string errorDescription) noexcept {
   VLOG(4) << "onH2StreamClosed";
   if (callback_) {
     std::unique_ptr<TTransportException> ex;
@@ -385,9 +383,7 @@ void SingleRpcChannel::extractHeaderInfo(
 }
 
 void SingleRpcChannel::sendThriftErrorResponse(
-    const string& message,
-    ProtocolId protoId,
-    const string& name) noexcept {
+    const string& message, ProtocolId protoId, const string& name) noexcept {
   ResponseRpcMetadata responseMetadata;
   responseMetadata.protocol_ref() = protoId;
   // Not setting the "ex" header since these errors do not fit into any

@@ -31,9 +31,7 @@ class DuplexChannel {
    public:
     enum WhoEnum { UNKNOWN, CLIENT, SERVER };
     explicit Who(WhoEnum who = UNKNOWN) : who_(who) {}
-    void set(WhoEnum who) {
-      who_ = who;
-    }
+    void set(WhoEnum who) { who_ = who; }
     WhoEnum get() const {
       DCHECK(who_ != UNKNOWN);
       return who_;
@@ -64,16 +62,13 @@ class DuplexChannel {
     return serverChannel_;
   }
 
-  std::shared_ptr<Cpp2Channel> getCpp2Channel() {
-    return cpp2Channel_;
-  }
+  std::shared_ptr<Cpp2Channel> getCpp2Channel() { return cpp2Channel_; }
 
  private:
   class DuplexClientChannel : public HeaderClientChannel {
    public:
     DuplexClientChannel(
-        DuplexChannel& duplex,
-        const std::shared_ptr<Cpp2Channel>& cpp2Channel)
+        DuplexChannel& duplex, const std::shared_ptr<Cpp2Channel>& cpp2Channel)
         : HeaderClientChannel(cpp2Channel), duplex_(&duplex) {}
     void sendMessage(
         Cpp2Channel::SendCallback* callback,
@@ -99,8 +94,7 @@ class DuplexChannel {
   class DuplexServerChannel : public HeaderServerChannel {
    public:
     DuplexServerChannel(
-        DuplexChannel& duplex,
-        const std::shared_ptr<Cpp2Channel>& cpp2Channel)
+        DuplexChannel& duplex, const std::shared_ptr<Cpp2Channel>& cpp2Channel)
         : HeaderServerChannel(cpp2Channel), duplex_(&duplex) {}
     void sendMessage(
         Cpp2Channel::SendCallback* callback,

@@ -71,9 +71,7 @@ class Cpp2Channel
     // swapped transports must be attached to same EventBase
     DCHECK(!transport_ || evb_ == transport->getEventBase());
   }
-  folly::AsyncTransport* getTransport() {
-    return transport_.get();
-  }
+  folly::AsyncTransport* getTransport() { return transport_.get(); }
 
   // Return a shared_ptr of the AsyncTransport
   std::shared_ptr<folly::AsyncTransport> getTransportShared() {

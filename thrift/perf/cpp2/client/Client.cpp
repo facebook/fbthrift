@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <thrift/perf/cpp2/if/gen-cpp2/StreamBenchmark.h>
 #include <thrift/perf/cpp2/util/Operation.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/perf/cpp2/util/Runner.h>
 #include <thrift/perf/cpp2/util/Util.h>
-#include <algorithm>
 
 using facebook::thrift::benchmarks::StreamBenchmarkAsyncClient;
 

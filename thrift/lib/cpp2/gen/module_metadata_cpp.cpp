@@ -58,8 +58,7 @@ ThriftConstValue cvList(std::vector<ThriftConstValue>&& value) {
 }
 
 ThriftConstValue cvStruct(
-    std::string&& name,
-    std::map<std::string, ThriftConstValue>&& fields) {
+    std::string&& name, std::map<std::string, ThriftConstValue>&& fields) {
   ThriftConstValue ret;
   ThriftConstStruct s;
   s.type_ref()->name_ref() = std::move(name);

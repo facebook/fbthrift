@@ -30,17 +30,13 @@ class t_set : public t_container {
  public:
   explicit t_set(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
-  const t_type* get_elem_type() const {
-    return elem_type_.get_type();
-  }
+  const t_type* get_elem_type() const { return elem_type_.get_type(); }
 
   std::string get_full_name() const override {
     return "set<" + elem_type_.get_type()->get_full_name() + ">";
   }
 
-  t_type::type get_type_value() const override {
-    return t_type::type::t_set;
-  }
+  t_type::type get_type_value() const override { return t_type::type::t_set; }
 
  private:
   t_type_ref elem_type_;

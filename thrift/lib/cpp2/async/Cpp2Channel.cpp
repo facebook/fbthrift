@@ -146,8 +146,7 @@ void Cpp2Channel::writeSuccess() noexcept {
 }
 
 void Cpp2Channel::writeError(
-    size_t /* bytesWritten */,
-    const TTransportException& ex) noexcept {
+    size_t /* bytesWritten */, const TTransportException& ex) noexcept {
   assert(sendCallbacks_.size() > 0);
 
   // Pop last write request, call error callback

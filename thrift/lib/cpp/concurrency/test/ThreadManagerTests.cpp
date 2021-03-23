@@ -38,9 +38,7 @@ using namespace apache::thrift::concurrency;
 
 class ThreadManagerTest : public testing::Test {
  public:
-  ~ThreadManagerTest() override {
-    ThreadManager::setObserver(nullptr);
-  }
+  ~ThreadManagerTest() override { ThreadManager::setObserver(nullptr); }
 
  private:
   gflags::FlagSaver flagsaver_;
@@ -553,9 +551,7 @@ TEST_F(ThreadManagerTest, RequestContext) {
    public:
     explicit TestData(int data) : data(data) {}
 
-    bool hasCallback() override {
-      return false;
-    }
+    bool hasCallback() override { return false; }
 
     int data;
   };
@@ -612,8 +608,8 @@ class TestObserver : public ThreadManager::Observer {
       : timesCalled(0), timeout(timeout), expectedName(expectedName) {}
 
   void preRun(folly::RequestContext*) override {}
-  void postRun(folly::RequestContext*, const ThreadManager::RunStats& stats)
-      override {
+  void postRun(
+      folly::RequestContext*, const ThreadManager::RunStats& stats) override {
     EXPECT_EQ(expectedName, stats.threadPoolName);
 
     // Note: Technically could fail if system clock changes.
@@ -638,9 +634,7 @@ class FailThread : public PthreadThread {
       std::shared_ptr<Runnable> runnable)
       : PthreadThread(policy, priority, stackSize, detached, runnable) {}
 
-  void start() override {
-    throw 2;
-  }
+  void start() override { throw 2; }
 };
 
 class FailThreadFactory : public PosixThreadFactory {
@@ -731,8 +725,8 @@ TEST_F(ThreadManagerTest, ObserverAssignedAfterStart) {
     MyObserver(std::string name, std::shared_ptr<std::string> tgt)
         : name_(std::move(name)), tgt_(std::move(tgt)) {}
     void preRun(folly::RequestContext*) override {}
-    void postRun(folly::RequestContext*, const ThreadManager::RunStats&)
-        override {
+    void postRun(
+        folly::RequestContext*, const ThreadManager::RunStats&) override {
       *tgt_ = name_;
     }
 
@@ -856,8 +850,8 @@ TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
 
 std::array<std::function<std::shared_ptr<ThreadManager>()>, 3> factories = {
     std::bind(
-        (std::shared_ptr<ThreadManager>(*)(size_t, bool))
-            ThreadManager::newSimpleThreadManager,
+        (std::shared_ptr<ThreadManager>(*)(
+            size_t, bool))ThreadManager::newSimpleThreadManager,
         1,
         false),
     std::bind(ThreadManager::newPriorityQueueThreadManager, 1, false),
@@ -901,6 +895,4 @@ TEST_P(JoinTest, Join) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    ThreadManagerTest,
-    JoinTest,
-    ::testing::ValuesIn(factories));
+    ThreadManagerTest, JoinTest, ::testing::ValuesIn(factories));

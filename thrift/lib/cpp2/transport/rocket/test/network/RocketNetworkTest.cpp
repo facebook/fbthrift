@@ -77,17 +77,11 @@ class RocketNetworkTest : public testing::Test {
   }
 
  public:
-  void withClient(folly::Function<void(RocketTestClient&)> f) {
-    f(*client_);
-  }
+  void withClient(folly::Function<void(RocketTestClient&)> f) { f(*client_); }
 
-  folly::ManualExecutor* getUserExecutor() {
-    return &userExecutor_;
-  }
+  folly::ManualExecutor* getUserExecutor() { return &userExecutor_; }
 
-  void unsetExpectedSetupMetadata() {
-    server_->setExpectedSetupMetadata({});
-  }
+  void unsetExpectedSetupMetadata() { server_->setExpectedSetupMetadata({}); }
 
  protected:
   std::unique_ptr<RocketTestServer> server_;
@@ -98,9 +92,7 @@ class RocketNetworkTest : public testing::Test {
 struct OnWriteSuccess : RocketClient::WriteSuccessCallback {
   bool writeSuccess{false};
 
-  void onWriteSuccess() noexcept override {
-    writeSuccess = true;
-  }
+  void onWriteSuccess() noexcept override { writeSuccess = true; }
 };
 } // namespace
 
@@ -528,8 +520,7 @@ TEST_F(RocketNetworkTest, ClientCreationAndReconnectStreamOutlivesClient) {
 }
 
 TEST_F(
-    RocketNetworkTest,
-    ClientCreationAndReconnectSubscriptionOutlivesClient) {
+    RocketNetworkTest, ClientCreationAndReconnectSubscriptionOutlivesClient) {
   this->withClient([this](RocketTestClient& client) {
     constexpr size_t kNumRequestedPayloads = 1000000;
     constexpr folly::StringPiece kMetadata("metadata");
@@ -681,15 +672,9 @@ class TestClientCallback : public StreamClientCallback {
     }
   }
 
-  uint64_t payloadsReceived() const {
-    return received_;
-  }
-  uint64_t headersReceived() const {
-    return receivedHeaders_;
-  }
-  folly::exception_wrapper getError() const {
-    return ew_;
-  }
+  uint64_t payloadsReceived() const { return received_; }
+  uint64_t headersReceived() const { return receivedHeaders_; }
+  folly::exception_wrapper getError() const { return ew_; }
 
  private:
   folly::EventBase& evb_;
@@ -932,15 +917,13 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
    public:
     explicit FakeTransport(folly::EventBase* e) : eventBase_(e) {}
     void setReadCB(ReadCallback*) override {}
-    ReadCallback* getReadCallback() const override {
-      return nullptr;
-    }
-    void write(WriteCallback* cb, const void*, size_t, folly::WriteFlags)
-        override {
+    ReadCallback* getReadCallback() const override { return nullptr; }
+    void write(
+        WriteCallback* cb, const void*, size_t, folly::WriteFlags) override {
       callbacks_.push_back(cb);
     }
-    void writev(WriteCallback* cb, const iovec*, size_t, folly::WriteFlags)
-        override {
+    void writev(
+        WriteCallback* cb, const iovec*, size_t, folly::WriteFlags) override {
       callbacks_.push_back(cb);
     }
     void writeChain(
@@ -949,9 +932,7 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
         folly::WriteFlags) override {
       callbacks_.push_back(cb);
     }
-    folly::EventBase* getEventBase() const override {
-      return eventBase_;
-    }
+    folly::EventBase* getEventBase() const override { return eventBase_; }
     void getAddress(folly::SocketAddress*) const override {}
     void close() override {}
     void closeNow() override {
@@ -965,45 +946,23 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
     }
     void shutdownWrite() override {}
     void shutdownWriteNow() override {}
-    bool good() const override {
-      return true;
-    }
-    bool readable() const override {
-      return true;
-    }
-    bool connecting() const override {
-      return true;
-    }
-    bool error() const override {
-      return true;
-    }
+    bool good() const override { return true; }
+    bool readable() const override { return true; }
+    bool connecting() const override { return true; }
+    bool error() const override { return true; }
     void attachEventBase(folly::EventBase*) override {}
     void detachEventBase() override {}
-    bool isDetachable() const override {
-      return true;
-    }
+    bool isDetachable() const override { return true; }
     void setSendTimeout(uint32_t) override {}
-    uint32_t getSendTimeout() const override {
-      return 0u;
-    }
+    uint32_t getSendTimeout() const override { return 0u; }
     void getLocalAddress(folly::SocketAddress*) const override {}
     void getPeerAddress(folly::SocketAddress*) const override {}
-    bool isEorTrackingEnabled() const override {
-      return true;
-    }
+    bool isEorTrackingEnabled() const override { return true; }
     void setEorTracking(bool) override {}
-    size_t getAppBytesWritten() const override {
-      return 0u;
-    }
-    size_t getRawBytesWritten() const override {
-      return 0u;
-    }
-    size_t getAppBytesReceived() const override {
-      return 0u;
-    }
-    size_t getRawBytesReceived() const override {
-      return 0u;
-    }
+    size_t getAppBytesWritten() const override { return 0u; }
+    size_t getRawBytesWritten() const override { return 0u; }
+    size_t getAppBytesReceived() const override { return 0u; }
+    size_t getRawBytesReceived() const override { return 0u; }
 
    private:
     folly::EventBase* eventBase_;

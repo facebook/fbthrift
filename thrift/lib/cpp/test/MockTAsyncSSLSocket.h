@@ -30,13 +30,11 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   using UniquePtr = std::unique_ptr<MockTAsyncSSLSocket, ReleasableDestructor>;
 
   MockTAsyncSSLSocket(
-      const std::shared_ptr<folly::SSLContext> ctx,
-      folly::EventBase* base)
+      const std::shared_ptr<folly::SSLContext> ctx, folly::EventBase* base)
       : TAsyncSSLSocket(ctx, base) {}
 
   static MockTAsyncSSLSocket::UniquePtr newSocket(
-      const std::shared_ptr<folly::SSLContext> ctx,
-      folly::EventBase* base) {
+      const std::shared_ptr<folly::SSLContext> ctx, folly::EventBase* base) {
     return MockTAsyncSSLSocket::UniquePtr(new MockTAsyncSSLSocket(ctx, base));
   }
 
@@ -92,11 +90,9 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   MOCK_CONST_METHOD0(readable, bool());
   MOCK_CONST_METHOD0(hangup, bool());
   MOCK_CONST_METHOD2(
-      getSelectedNextProtocol,
-      void(const unsigned char**, unsigned*));
+      getSelectedNextProtocol, void(const unsigned char**, unsigned*));
   MOCK_CONST_METHOD2(
-      getSelectedNextProtocolNoThrow,
-      bool(const unsigned char**, unsigned*));
+      getSelectedNextProtocolNoThrow, bool(const unsigned char**, unsigned*));
 };
 } // namespace test
 } // namespace thrift

@@ -41,19 +41,15 @@ class VirtualReaderBase {
   virtual bool kOmitsContainerSizes() const = 0;
 
   virtual void setInput(const folly::io::Cursor& cursor) = 0;
-  void setInput(const folly::IOBuf* buf) {
-    setInput(folly::io::Cursor(buf));
-  }
+  void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
 
   virtual void readMessageBegin(
-      std::string& name,
-      MessageType& messageType,
-      int32_t& seqid) = 0;
+      std::string& name, MessageType& messageType, int32_t& seqid) = 0;
   virtual void readMessageEnd() = 0;
   virtual void readStructBegin(std::string& name) = 0;
   virtual void readStructEnd() = 0;
-  virtual void
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) = 0;
+  virtual void readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId) = 0;
   virtual void readFieldEnd() = 0;
   virtual void readMapBegin(TType& keyType, TType& valType, uint32_t& size) = 0;
   virtual void readMapEnd() = 0;
@@ -82,17 +78,10 @@ class VirtualReaderBase {
   virtual const folly::io::Cursor& getCursor() const = 0;
   virtual size_t getCursorPosition() const = 0;
   virtual uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor,
-      std::unique_ptr<folly::IOBuf>& ser) = 0;
-  virtual bool peekMap() {
-    return false;
-  }
-  virtual bool peekSet() {
-    return false;
-  }
-  virtual bool peekList() {
-    return false;
-  }
+      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser) = 0;
+  virtual bool peekMap() { return false; }
+  virtual bool peekSet() { return false; }
+  virtual bool peekList() { return false; }
 };
 
 class VirtualWriterBase {
@@ -111,18 +100,16 @@ class VirtualWriterBase {
   virtual void setOutput(folly::io::QueueAppender&& output) = 0;
 
   virtual uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid) = 0;
+      const std::string& name, MessageType messageType, int32_t seqid) = 0;
   virtual uint32_t writeMessageEnd() = 0;
   virtual uint32_t writeStructBegin(const char* name) = 0;
   virtual uint32_t writeStructEnd() = 0;
-  virtual uint32_t
-  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId) = 0;
+  virtual uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId) = 0;
   virtual uint32_t writeFieldEnd() = 0;
   virtual uint32_t writeFieldStop() = 0;
-  virtual uint32_t
-  writeMapBegin(TType keyType, TType valType, uint32_t size) = 0;
+  virtual uint32_t writeMapBegin(
+      TType keyType, TType valType, uint32_t size) = 0;
   virtual uint32_t writeMapEnd() = 0;
   virtual uint32_t writeListBegin(TType elemType, uint32_t size) = 0;
   virtual uint32_t writeListEnd() = 0;
@@ -142,11 +129,11 @@ class VirtualWriterBase {
   virtual uint32_t writeBinary(const folly::IOBuf& str) = 0;
 
   virtual uint32_t serializedMessageSize(const std::string& name) = 0;
-  virtual uint32_t
-  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) = 0;
+  virtual uint32_t serializedFieldSize(
+      const char* name, TType fieldType, int16_t fieldId) = 0;
   virtual uint32_t serializedStructSize(const char* name) = 0;
-  virtual uint32_t
-  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) = 0;
+  virtual uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) = 0;
   virtual uint32_t serializedSizeMapEnd() = 0;
   virtual uint32_t serializedSizeListBegin(TType elemType, uint32_t size) = 0;
   virtual uint32_t serializedSizeListEnd() = 0;
@@ -197,9 +184,7 @@ class VirtualReader : public VirtualReaderBase {
     return protocol_.protocolType();
   }
 
-  bool kUsesFieldNames() const override {
-    return protocol_.kUsesFieldNames();
-  }
+  bool kUsesFieldNames() const override { return protocol_.kUsesFieldNames(); }
 
   virtual bool kOmitsContainerSizes() const override {
     return protocol_.kOmitsContainerSizes();
@@ -211,81 +196,45 @@ class VirtualReader : public VirtualReaderBase {
   }
 
   void readMessageBegin(
-      std::string& name,
-      MessageType& messageType,
-      int32_t& seqid) override {
+      std::string& name, MessageType& messageType, int32_t& seqid) override {
     protocol_.readMessageBegin(name, messageType, seqid);
   }
-  void readMessageEnd() override {
-    protocol_.readMessageEnd();
-  }
+  void readMessageEnd() override { protocol_.readMessageEnd(); }
   void readStructBegin(std::string& name) override {
     protocol_.readStructBegin(name);
   }
-  void readStructEnd() override {
-    protocol_.readStructEnd();
-  }
-  void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId)
-      override {
+  void readStructEnd() override { protocol_.readStructEnd(); }
+  void readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId) override {
     protocol_.readFieldBegin(name, fieldType, fieldId);
   }
-  void readFieldEnd() override {
-    protocol_.readFieldEnd();
-  }
+  void readFieldEnd() override { protocol_.readFieldEnd(); }
   void readMapBegin(TType& keyType, TType& valType, uint32_t& size) override {
     protocol_.readMapBegin(keyType, valType, size);
   }
-  void readMapEnd() override {
-    protocol_.readMapEnd();
-  }
+  void readMapEnd() override { protocol_.readMapEnd(); }
   void readListBegin(TType& elemType, uint32_t& size) override {
     protocol_.readListBegin(elemType, size);
   }
-  void readListEnd() override {
-    protocol_.readListEnd();
-  }
+  void readListEnd() override { protocol_.readListEnd(); }
   void readSetBegin(TType& elemType, uint32_t& size) override {
     protocol_.readSetBegin(elemType, size);
   }
-  void readSetEnd() override {
-    protocol_.readSetEnd();
-  }
-  void readBool(bool& value) override {
-    protocol_.readBool(value);
-  }
+  void readSetEnd() override { protocol_.readSetEnd(); }
+  void readBool(bool& value) override { protocol_.readBool(value); }
   void readBool(std::vector<bool>::reference value) override {
     protocol_.readBool(value);
   }
-  void readByte(int8_t& byte) override {
-    protocol_.readByte(byte);
-  }
-  void readI16(int16_t& i16) override {
-    protocol_.readI16(i16);
-  }
-  void readI32(int32_t& i32) override {
-    protocol_.readI32(i32);
-  }
-  void readI64(int64_t& i64) override {
-    protocol_.readI64(i64);
-  }
-  void readDouble(double& dub) override {
-    protocol_.readDouble(dub);
-  }
-  void readFloat(float& flt) override {
-    protocol_.readFloat(flt);
-  }
-  void readString(std::string& str) override {
-    protocol_.readString(str);
-  }
-  void readString(folly::fbstring& str) override {
-    protocol_.readString(str);
-  }
-  void readBinary(std::string& str) override {
-    protocol_.readBinary(str);
-  }
-  void readBinary(folly::fbstring& str) override {
-    protocol_.readBinary(str);
-  }
+  void readByte(int8_t& byte) override { protocol_.readByte(byte); }
+  void readI16(int16_t& i16) override { protocol_.readI16(i16); }
+  void readI32(int32_t& i32) override { protocol_.readI32(i32); }
+  void readI64(int64_t& i64) override { protocol_.readI64(i64); }
+  void readDouble(double& dub) override { protocol_.readDouble(dub); }
+  void readFloat(float& flt) override { protocol_.readFloat(flt); }
+  void readString(std::string& str) override { protocol_.readString(str); }
+  void readString(folly::fbstring& str) override { protocol_.readString(str); }
+  void readBinary(std::string& str) override { protocol_.readBinary(str); }
+  void readBinary(folly::fbstring& str) override { protocol_.readBinary(str); }
   virtual void readBinary(
       apache::thrift::detail::SkipNoopString& str) override {
     protocol_.readBinary(str);
@@ -293,18 +242,12 @@ class VirtualReader : public VirtualReaderBase {
   void readBinary(std::unique_ptr<folly::IOBuf>& str) override {
     protocol_.readBinary(str);
   }
-  void readBinary(folly::IOBuf& str) override {
-    protocol_.readBinary(str);
-  }
+  void readBinary(folly::IOBuf& str) override { protocol_.readBinary(str); }
   size_t fixedSizeInContainer(TType type) const override {
     return protocol_.fixedSizeInContainer(type);
   }
-  void skipBytes(size_t bytes) override {
-    protocol_.skipBytes(bytes);
-  }
-  void skip(TType type) override {
-    protocol_.skip(type);
-  }
+  void skipBytes(size_t bytes) override { protocol_.skipBytes(bytes); }
+  void skip(TType type) override { protocol_.skip(type); }
   const folly::io::Cursor& getCursor() const override {
     return protocol_.getCursor();
   }
@@ -312,8 +255,7 @@ class VirtualReader : public VirtualReaderBase {
     return protocol_.getCursorPosition();
   }
   uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor,
-      std::unique_ptr<folly::IOBuf>& ser) override {
+      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser) override {
     return protocol_.readFromPositionAndAppend(cursor, ser);
   }
 
@@ -342,9 +284,7 @@ class VirtualWriter : public VirtualWriterBase {
     return protocol_.protocolType();
   }
 
-  bool kSortKeys() const override {
-    return protocol_.kSortKeys();
-  }
+  bool kSortKeys() const override { return protocol_.kSortKeys(); }
 
   void setOutput(
       folly::IOBufQueue* queue,
@@ -362,64 +302,38 @@ class VirtualWriter : public VirtualWriterBase {
       int32_t seqid) override {
     return protocol_.writeMessageBegin(name, messageType, seqid);
   }
-  uint32_t writeMessageEnd() override {
-    return protocol_.writeMessageEnd();
-  }
+  uint32_t writeMessageEnd() override { return protocol_.writeMessageEnd(); }
   uint32_t writeStructBegin(const char* name) override {
     return protocol_.writeStructBegin(name);
   }
-  uint32_t writeStructEnd() override {
-    return protocol_.writeStructEnd();
-  }
-  uint32_t writeFieldBegin(const char* name, TType fieldType, int16_t fieldId)
-      override {
+  uint32_t writeStructEnd() override { return protocol_.writeStructEnd(); }
+  uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId) override {
     return protocol_.writeFieldBegin(name, fieldType, fieldId);
   }
-  uint32_t writeFieldEnd() override {
-    return protocol_.writeFieldEnd();
-  }
-  uint32_t writeFieldStop() override {
-    return protocol_.writeFieldStop();
-  }
+  uint32_t writeFieldEnd() override { return protocol_.writeFieldEnd(); }
+  uint32_t writeFieldStop() override { return protocol_.writeFieldStop(); }
   uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size) override {
     return protocol_.writeMapBegin(keyType, valType, size);
   }
-  uint32_t writeMapEnd() override {
-    return protocol_.writeMapEnd();
-  }
+  uint32_t writeMapEnd() override { return protocol_.writeMapEnd(); }
   uint32_t writeListBegin(TType elemType, uint32_t size) override {
     return protocol_.writeListBegin(elemType, size);
   }
-  uint32_t writeListEnd() override {
-    return protocol_.writeListEnd();
-  }
+  uint32_t writeListEnd() override { return protocol_.writeListEnd(); }
   uint32_t writeSetBegin(TType elemType, uint32_t size) override {
     return protocol_.writeSetBegin(elemType, size);
   }
-  uint32_t writeSetEnd() override {
-    return protocol_.writeSetEnd();
-  }
-  uint32_t writeBool(bool value) override {
-    return protocol_.writeBool(value);
-  }
-  uint32_t writeByte(int8_t byte) override {
-    return protocol_.writeByte(byte);
-  }
-  uint32_t writeI16(int16_t i16) override {
-    return protocol_.writeI16(i16);
-  }
-  uint32_t writeI32(int32_t i32) override {
-    return protocol_.writeI32(i32);
-  }
-  uint32_t writeI64(int64_t i64) override {
-    return protocol_.writeI64(i64);
-  }
+  uint32_t writeSetEnd() override { return protocol_.writeSetEnd(); }
+  uint32_t writeBool(bool value) override { return protocol_.writeBool(value); }
+  uint32_t writeByte(int8_t byte) override { return protocol_.writeByte(byte); }
+  uint32_t writeI16(int16_t i16) override { return protocol_.writeI16(i16); }
+  uint32_t writeI32(int32_t i32) override { return protocol_.writeI32(i32); }
+  uint32_t writeI64(int64_t i64) override { return protocol_.writeI64(i64); }
   uint32_t writeDouble(double dub) override {
     return protocol_.writeDouble(dub);
   }
-  uint32_t writeFloat(float flt) override {
-    return protocol_.writeFloat(flt);
-  }
+  uint32_t writeFloat(float flt) override { return protocol_.writeFloat(flt); }
   uint32_t writeString(folly::StringPiece str) override {
     return protocol_.writeString(str);
   }
@@ -440,16 +354,14 @@ class VirtualWriter : public VirtualWriterBase {
     return protocol_.serializedMessageSize(name);
   }
   uint32_t serializedFieldSize(
-      const char* name,
-      TType fieldType,
-      int16_t fieldId) override {
+      const char* name, TType fieldType, int16_t fieldId) override {
     return protocol_.serializedFieldSize(name, fieldType, fieldId);
   }
   uint32_t serializedStructSize(const char* name) override {
     return protocol_.serializedStructSize(name);
   }
-  uint32_t serializedSizeMapBegin(TType keyType, TType valType, uint32_t size)
-      override {
+  uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) override {
     return protocol_.serializedSizeMapBegin(keyType, valType, size);
   }
   uint32_t serializedSizeMapEnd() override {

@@ -40,12 +40,10 @@ class AdmissionStrategy {
    * - tHeader: transport header allowing access to request headers
    */
   virtual std::shared_ptr<AdmissionController> select(
-      const std::string& methodName,
-      const transport::THeader* tHeader) = 0;
+      const std::string& methodName, const transport::THeader* tHeader) = 0;
 
   virtual void reportMetrics(
-      const MetricReportFn&,
-      const std::string& prefix) = 0;
+      const MetricReportFn&, const std::string& prefix) = 0;
 
   virtual Type getType() = 0;
 

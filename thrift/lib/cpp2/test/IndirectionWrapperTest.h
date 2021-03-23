@@ -47,19 +47,11 @@ class Seconds {
   Seconds() = default;
   explicit Seconds(int64_t seconds) noexcept : seconds_(seconds) {}
 
-  int64_t value() const {
-    return seconds_;
-  }
-  int64_t& value() {
-    return seconds_;
-  }
+  int64_t value() const { return seconds_; }
+  int64_t& value() { return seconds_; }
 
-  bool operator==(Seconds that) const {
-    return seconds_ == that.seconds_;
-  }
-  bool operator<(Seconds that) const {
-    return seconds_ < that.seconds_;
-  }
+  bool operator==(Seconds that) const { return seconds_ == that.seconds_; }
+  bool operator<(Seconds that) const { return seconds_ < that.seconds_; }
 
  private:
   int64_t seconds_{0};

@@ -40,13 +40,9 @@ class t_program_bundle {
     programs_.push_back(std::move(program));
   }
 
-  t_program* get_root_program() const {
-    return root_program_;
-  }
+  t_program* get_root_program() const { return root_program_; }
 
-  const std::vector<t_program*>& get_programs() const {
-    return programs_raw_;
-  }
+  const std::vector<t_program*>& get_programs() const { return programs_raw_; }
 
  private:
   std::vector<std::unique_ptr<t_program>> programs_;

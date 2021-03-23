@@ -28,9 +28,7 @@ using namespace apache::thrift::test;
 class lulz : public exception {
  public:
   explicit lulz(string message) noexcept : message_(move(message)) {}
-  const char* what() const noexcept override {
-    return message_.c_str();
-  }
+  const char* what() const noexcept override { return message_.c_str(); }
 
  private:
   string message_;
@@ -141,9 +139,7 @@ class ThriftServerExceptionTest : public testing::Test {
       static_pointer_cast<TProcessorEventHandler>(evhandler),
   };
 
-  const Context& ctx() const {
-    return *contexts.back();
-  }
+  const Context& ctx() const { return *contexts.back(); }
 
   template <class E>
   exception_ptr to_eptr(const E& e) {
@@ -159,12 +155,8 @@ class ThriftServerExceptionTest : public testing::Test {
     return exception_wrapper(e); // just an alias
   }
 
-  lulz make_lulz() const {
-    return lulz(message);
-  }
-  Banal make_banal() const {
-    return Banal();
-  }
+  lulz make_lulz() const { return lulz(message); }
+  Banal make_banal() const { return Banal(); }
   Fiery make_fiery() const {
     Fiery f;
     f.message = message;

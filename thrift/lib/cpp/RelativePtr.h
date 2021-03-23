@@ -31,16 +31,12 @@ class RelativePtr {
   OffsetType offset_;
 
  public:
-  RelativePtr() {
-    reset(nullptr);
-  }
+  RelativePtr() { reset(nullptr); }
 
   RelativePtr(const RelativePtr&) = delete;
   RelativePtr& operator=(const RelativePtr&) = delete;
 
-  explicit RelativePtr(T* ptr) {
-    reset(ptr);
-  }
+  explicit RelativePtr(T* ptr) { reset(ptr); }
 
   void reset(T* ptr = nullptr) {
     if (!ptr) {
@@ -64,9 +60,7 @@ class RelativePtr {
     return reinterpret_cast<T*>(target);
   }
 
-  T& operator*() const {
-    return *get();
-  }
+  T& operator*() const { return *get(); }
 };
 
 } // namespace thrift

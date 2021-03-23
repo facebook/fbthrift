@@ -186,9 +186,7 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 } // namespace detail

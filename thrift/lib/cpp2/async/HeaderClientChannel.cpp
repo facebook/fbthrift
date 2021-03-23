@@ -52,15 +52,13 @@ template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 HeaderClientChannel::HeaderClientChannel(
     const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport,
-          make_unique<ClientFramingHandler>(*this)))) {}
+          transport, make_unique<ClientFramingHandler>(*this)))) {}
 
 HeaderClientChannel::HeaderClientChannel(
     WithoutRocketUpgrade,
     const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport,
-          make_unique<ClientFramingHandler>(*this)))) {
+          transport, make_unique<ClientFramingHandler>(*this)))) {
   upgradeToRocket_ = false;
   upgradeState_ = RocketUpgradeState::NO_UPGRADE;
 }
@@ -99,8 +97,7 @@ void HeaderClientChannel::destroy() {
 }
 
 void HeaderClientChannel::useAsHttpClient(
-    const std::string& host,
-    const std::string& uri) {
+    const std::string& host, const std::string& uri) {
   setClientType(THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
   // Do not attempt transport upgrade to rocket if the channel is used as http
@@ -213,9 +210,7 @@ class HeaderClientChannel::RocketUpgradeCallback
     drainPendingRequests();
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  private:
   void drainPendingRequests() {
@@ -492,8 +487,7 @@ void HeaderClientChannel::sendRequestResponse(
 // Header framing
 std::unique_ptr<folly::IOBuf>
 HeaderClientChannel::ClientFramingHandler::addFrame(
-    unique_ptr<IOBuf> buf,
-    THeader* header) {
+    unique_ptr<IOBuf> buf, THeader* header) {
   channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
   return header->addHeader(
@@ -519,8 +513,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
 
 // Interface from MessageChannel::RecvCallback
 void HeaderClientChannel::messageReceived(
-    unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header) {
+    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
   if (!buf) {
@@ -594,8 +587,7 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
 }
 
 void HeaderClientChannel::eraseCallback(
-    uint32_t seqId,
-    TwowayCallback<HeaderClientChannel>* cb) {
+    uint32_t seqId, TwowayCallback<HeaderClientChannel>* cb) {
   CHECK(getEventBase()->isInEventBaseThread());
   auto it = recvCallbacks_.find(seqId);
   CHECK(it != recvCallbacks_.end());

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
 #include <glog/logging.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/portability/Sockets.h>
 
@@ -38,12 +38,8 @@ class X509Cert {
     ssl_ = ctx_.createSSL();
     CHECK(ssl_ != nullptr);
   }
-  ~X509Cert() {
-    SSL_free(ssl_);
-  }
-  X509* getX509() {
-    return SSL_get_certificate(ssl_);
-  }
+  ~X509Cert() { SSL_free(ssl_); }
+  X509* getX509() { return SSL_get_certificate(ssl_); }
 
  private:
   X509Cert(const X509Cert&) = delete;

@@ -185,9 +185,7 @@ class HeaderClientChannel : public ClientChannel,
     setBaseReceivedCallback();
   }
 
-  bool getKeepRegisteredForClose() {
-    return keepRegisteredForClose_;
-  }
+  bool getKeepRegisteredForClose() { return keepRegisteredForClose_; }
 
   folly::EventBase* getEventBase() const override {
     if (isUpgradedToRocket()) {

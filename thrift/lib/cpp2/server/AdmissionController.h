@@ -67,9 +67,7 @@ class DenyAllAdmissionController : public AdmissionController {
  public:
   ~DenyAllAdmissionController() {}
 
-  bool admit() override {
-    return false;
-  }
+  bool admit() override { return false; }
 
   void dequeue() override {}
 
@@ -80,9 +78,7 @@ class AcceptAllAdmissionController : public AdmissionController {
  public:
   ~AcceptAllAdmissionController() {}
 
-  bool admit() override {
-    return true;
-  }
+  bool admit() override { return true; }
 
   void dequeue() override {}
 

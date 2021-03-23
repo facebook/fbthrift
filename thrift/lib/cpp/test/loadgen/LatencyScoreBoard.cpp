@@ -85,8 +85,7 @@ double LatencyScoreBoard::OpData::getLatencyPct(double pct) const {
 }
 
 double LatencyScoreBoard::OpData::getLatencyPctSince(
-    double pct,
-    const OpData* other) const {
+    double pct, const OpData* other) const {
   if (other->count_ >= count_) {
     return 0;
   }

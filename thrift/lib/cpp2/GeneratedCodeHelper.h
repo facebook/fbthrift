@@ -63,9 +63,7 @@ struct ForEachImpl {
 };
 template <int Size, class F, class Tuple>
 struct ForEachImpl<Size, Size, F, Tuple> {
-  static uint32_t forEach(Tuple&& /*tuple*/, F&& /*f*/) {
-    return 0;
-  }
+  static uint32_t forEach(Tuple&& /*tuple*/, F&& /*f*/) { return 0; }
 };
 
 template <int N = 0, class F, class Tuple>
@@ -228,19 +226,13 @@ T& maybe_remove_pointer(T* x) {
 template <bool hasIsSet, size_t count>
 struct IsSetHelper {
   void setIsSet(size_t /*index*/, bool /*value*/ = true) {}
-  bool getIsSet(size_t /*index*/) const {
-    return true;
-  }
+  bool getIsSet(size_t /*index*/) const { return true; }
 };
 
 template <size_t count>
 struct IsSetHelper<true, count> {
-  void setIsSet(size_t index, bool value = true) {
-    isset_[index] = value;
-  }
-  bool getIsSet(size_t index) const {
-    return isset_[index];
-  }
+  void setIsSet(size_t index, bool value = true) { isset_[index] = value; }
+  bool getIsSet(size_t index) const { return isset_[index]; }
 
  private:
   std::array<bool, count> isset_ = {};
@@ -277,18 +269,10 @@ class ThriftPresult
  public:
   using size = std::tuple_size<Fields>;
 
-  CurIsSetHelper& isSet() {
-    return *this;
-  }
-  const CurIsSetHelper& isSet() const {
-    return *this;
-  }
-  Fields& fields() {
-    return *this;
-  }
-  const Fields& fields() const {
-    return *this;
-  }
+  CurIsSetHelper& isSet() { return *this; }
+  const CurIsSetHelper& isSet() const { return *this; }
+  Fields& fields() { return *this; }
+  const Fields& fields() const { return *this; }
 
   // returns lvalue ref to the appropriate FieldData
   template <size_t index>
@@ -394,9 +378,7 @@ template <bool hasIsSet, class... Args>
 class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
  public:
   typedef ThriftPresult<hasIsSet, Args...> Presult;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRUCT;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRUCT; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Presult* value) {
     return value->write(prot);
@@ -443,8 +425,7 @@ T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>);
 
 template <typename Protocol, typename PResult, typename T>
 folly::IOBuf decode_stream_payload_impl(
-    folly::IOBuf& payload,
-    folly::tag_t<folly::IOBuf>);
+    folly::IOBuf& payload, folly::tag_t<folly::IOBuf>);
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload(folly::IOBuf& payload);
@@ -860,8 +841,7 @@ bool setupRequestContextWithMessageBegin(
     folly::EventBase* eb);
 
 MessageBegin deserializeMessageBegin(
-    const folly::IOBuf& buf,
-    protocol::PROTOCOL_TYPES protType);
+    const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
 
 template <class ProtocolReader, class Processor>
 void process_pmap(
@@ -1002,8 +982,7 @@ T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>) {
 
 template <typename Protocol, typename PResult, typename T>
 folly::IOBuf decode_stream_payload_impl(
-    folly::IOBuf& payload,
-    folly::tag_t<folly::IOBuf>) {
+    folly::IOBuf& payload, folly::tag_t<folly::IOBuf>) {
   return std::move(payload);
 }
 
@@ -1185,8 +1164,7 @@ using arg = typename action_traits<F>::arg_type;
 
 template <typename T>
 folly::Future<T> future(
-    folly::SemiFuture<T>&& future,
-    folly::Executor::KeepAlive<> keepAlive) {
+    folly::SemiFuture<T>&& future, folly::Executor::KeepAlive<> keepAlive) {
   if (future.isReady()) {
     return std::move(future).toUnsafeFuture();
   }

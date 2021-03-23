@@ -55,16 +55,10 @@ class LoggingSampler {
   explicit LoggingSampler(SamplingRate samplingRate)
       : samplingRate_{samplingRate}, isSampled_{shouldSample(samplingRate)} {}
 
-  SamplingRate getSamplingRate() const {
-    return samplingRate_;
-  }
+  SamplingRate getSamplingRate() const { return samplingRate_; }
 
-  bool isSampled() const {
-    return isSampled_;
-  }
-  explicit operator bool() const {
-    return isSampled();
-  }
+  bool isSampled() const { return isSampled_; }
+  explicit operator bool() const { return isSampled(); }
 
   static bool shouldSample(SamplingRate);
 
@@ -93,8 +87,7 @@ class ConnectionEventHandler : public LoggingEventHandler {
   virtual ~ConnectionEventHandler() {}
 
   virtual void log(
-      const ConnectionLoggingContext&,
-      DynamicFieldsCallback = {}) {}
+      const ConnectionLoggingContext&, DynamicFieldsCallback = {}) {}
 
   virtual void logSampled(
       const ConnectionLoggingContext&,

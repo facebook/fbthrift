@@ -87,21 +87,11 @@ class CppContextData {
   boost::python::object getLocalAddress() const {
     return makePythonAddress(localAddress_);
   }
-  const Cpp2ConnContext* getConnCtx() const {
-    return connCtx_;
-  }
-  Cpp2RequestContext* getReqCtx() const {
-    return requestCtx_;
-  }
-  const std::string& getHeaderEx() {
-    return headerEx_;
-  }
-  void setHeaderEx(const std::string& headerEx) {
-    headerEx_ = headerEx;
-  }
-  const std::string& getHeaderExWhat() {
-    return headerExWhat_;
-  }
+  const Cpp2ConnContext* getConnCtx() const { return connCtx_; }
+  Cpp2RequestContext* getReqCtx() const { return requestCtx_; }
+  const std::string& getHeaderEx() { return headerEx_; }
+  void setHeaderEx(const std::string& headerEx) { headerEx_ = headerEx; }
+  const std::string& getHeaderExWhat() { return headerExWhat_; }
   void setHeaderExWhat(const std::string& headerExWhat) {
     headerExWhat_ = headerExWhat;
   }

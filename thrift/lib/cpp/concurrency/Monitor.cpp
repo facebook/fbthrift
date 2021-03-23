@@ -45,27 +45,17 @@ class Monitor::Impl {
     init(ownedMutex_.get());
   }
 
-  Impl(Mutex* mutex) : mutex_(nullptr), condInitialized_(false) {
-    init(mutex);
-  }
+  Impl(Mutex* mutex) : mutex_(nullptr), condInitialized_(false) { init(mutex); }
 
   Impl(Monitor* monitor) : mutex_(nullptr), condInitialized_(false) {
     init(&(monitor->mutex()));
   }
 
-  ~Impl() {
-    cleanup();
-  }
+  ~Impl() { cleanup(); }
 
-  Mutex& mutex() {
-    return *mutex_;
-  }
-  void lock() {
-    mutex().lock();
-  }
-  void unlock() {
-    mutex().unlock();
-  }
+  Mutex& mutex() { return *mutex_; }
+  void lock() { mutex().lock(); }
+  void unlock() { mutex().unlock(); }
 
   /**
    * Exception-throwing version of waitForTimeRelative(), called simply

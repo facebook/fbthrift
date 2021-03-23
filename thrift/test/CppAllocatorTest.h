@@ -53,15 +53,13 @@ struct MaybeThrowAllocator : private std::allocator<T> {
 
   template <class U>
   friend bool operator==(
-      MaybeThrowAllocator<T> const&,
-      MaybeThrowAllocator<U> const&) noexcept {
+      MaybeThrowAllocator<T> const&, MaybeThrowAllocator<U> const&) noexcept {
     return true;
   }
 
   template <class U>
   friend bool operator!=(
-      MaybeThrowAllocator<T> const&,
-      MaybeThrowAllocator<U> const&) noexcept {
+      MaybeThrowAllocator<T> const&, MaybeThrowAllocator<U> const&) noexcept {
     return false;
   }
 
@@ -101,25 +99,19 @@ struct StatefulAlloc : private std::allocator<T> {
 
   int state_ = 0;
 
-  T* allocate(size_t size) {
-    return std::allocator<T>::allocate(size);
-  }
+  T* allocate(size_t size) { return std::allocator<T>::allocate(size); }
 
-  void deallocate(T* p, size_t size) {
-    std::allocator<T>::deallocate(p, size);
-  }
+  void deallocate(T* p, size_t size) { std::allocator<T>::deallocate(p, size); }
 
   template <class U>
   friend bool operator==(
-      StatefulAlloc<T> const& a,
-      StatefulAlloc<U> const& b) noexcept {
+      StatefulAlloc<T> const& a, StatefulAlloc<U> const& b) noexcept {
     return a.state_ == b.state_;
   }
 
   template <class U>
   friend bool operator!=(
-      StatefulAlloc<T> const& a,
-      StatefulAlloc<U> const& b) noexcept {
+      StatefulAlloc<T> const& a, StatefulAlloc<U> const& b) noexcept {
     return a.state_ != b.state_;
   }
 };

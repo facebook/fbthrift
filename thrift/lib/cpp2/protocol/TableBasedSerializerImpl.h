@@ -26,16 +26,12 @@ namespace thrift {
 namespace detail {
 
 constexpr TypeInfo kStopType = {
-    protocol::TType::T_STOP,
-    nullptr,
-    nullptr,
-    nullptr};
+    protocol::TType::T_STOP, nullptr, nullptr, nullptr};
 constexpr FieldInfo kStopMarker = {0, false, nullptr, 0, 0, &kStopType};
 
 template <class Protocol_>
 void skip(
-    Protocol_* iprot,
-    ProtocolReaderStructReadState<Protocol_>& readState) {
+    Protocol_* iprot, ProtocolReaderStructReadState<Protocol_>& readState) {
   readState.skip(iprot);
   readState.readFieldEnd(iprot);
   readState.readFieldBeginNoInline(iprot);
@@ -50,8 +46,7 @@ inline void* getMember(const FieldInfo& fieldInfo, void* object) {
 }
 
 inline OptionalThriftValue getValue(
-    const TypeInfo& typeInfo,
-    const void* object) {
+    const TypeInfo& typeInfo, const void* object) {
   if (typeInfo.get) {
     return typeInfo.get(object);
   }
@@ -476,9 +471,7 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, ThriftValue value) {
 
 template <class Protocol_>
 size_t writeField(
-    Protocol_* iprot,
-    const FieldInfo& fieldInfo,
-    const ThriftValue& value) {
+    Protocol_* iprot, const FieldInfo& fieldInfo, const ThriftValue& value) {
   size_t written = iprot->writeFieldBegin(
       fieldInfo.name, fieldInfo.typeInfo->type, fieldInfo.id);
   written += write(iprot, *fieldInfo.typeInfo, value);
@@ -573,8 +566,8 @@ void read(Protocol_* iprot, const StructInfo& structInfo, void* object) {
 }
 
 template <class Protocol_>
-size_t
-write(Protocol_* iprot, const StructInfo& structInfo, const void* object) {
+size_t write(
+    Protocol_* iprot, const StructInfo& structInfo, const void* object) {
   DCHECK(object);
   size_t written = iprot->writeStructBegin(structInfo.name);
   if (UNLIKELY(structInfo.unionExt != nullptr)) {

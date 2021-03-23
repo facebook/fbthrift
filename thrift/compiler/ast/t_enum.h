@@ -57,17 +57,11 @@ class t_enum : public t_type {
     return nullptr;
   }
 
-  bool is_enum() const override {
-    return true;
-  }
+  bool is_enum() const override { return true; }
 
-  std::string get_full_name() const override {
-    return make_full_name("enum");
-  }
+  std::string get_full_name() const override { return make_full_name("enum"); }
 
-  type get_type_value() const override {
-    return type::t_enum;
-  }
+  type get_type_value() const override { return type::t_enum; }
 
  private:
   std::vector<std::unique_ptr<t_enum_value>> enum_values_;

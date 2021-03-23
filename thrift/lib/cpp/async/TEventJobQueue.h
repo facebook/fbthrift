@@ -44,18 +44,14 @@ class TEventRunnable {
   /**
    * Set the event base on this runnable
    */
-  void setEventBase(folly::EventBase* eventBase) {
-    eventBase_ = eventBase;
-  }
+  void setEventBase(folly::EventBase* eventBase) { eventBase_ = eventBase; }
 
   /**
    * Returns the event base this runnable is currently associated with
    *
    * The TEventJobQueue will set this correctly for run and jobComplete
    */
-  folly::EventBase* getEventBase() const {
-    return eventBase_;
-  }
+  folly::EventBase* getEventBase() const { return eventBase_; }
 
   /**
    * derived classes must implement run.
@@ -84,17 +80,11 @@ class TEventJobQueue {
     explicit JobThread(TEventJobQueue* /* parent */) {}
     ~JobThread() override {}
 
-    folly::EventBase* getEventBase() {
-      return &eventBase_;
-    }
+    folly::EventBase* getEventBase() { return &eventBase_; }
 
-    void join() {
-      thread_->join();
-    }
+    void join() { thread_->join(); }
 
-    folly::NotificationQueue<TEventRunnable*>* getQueue() {
-      return &jobQueue_;
-    }
+    folly::NotificationQueue<TEventRunnable*>* getQueue() { return &jobQueue_; }
 
     /**
      * Thread main loop
@@ -148,9 +138,7 @@ class TEventJobQueue {
       : numThreads_(0), curThread_(0), shouldJoin_(true) {}
 
   // Must be called before init() is called
-  void setNumThreads(uint32_t numThreads) {
-    numThreads_ = numThreads;
-  }
+  void setNumThreads(uint32_t numThreads) { numThreads_ = numThreads; }
 
   ~TEventJobQueue() {
     shutdown(true, shouldJoin_); // force

@@ -68,9 +68,7 @@ class TTransport {
   /**
    * Whether this transport is open.
    */
-  virtual bool isOpen() {
-    return false;
-  }
+  virtual bool isOpen() { return false; }
 
   /**
    * Tests whether there is more data to read or if the remote side is
@@ -80,9 +78,7 @@ class TTransport {
    * This is used by a server to check if it should listen for another
    * request.
    */
-  virtual bool peek() {
-    return isOpen();
-  }
+  virtual bool peek() { return isOpen(); }
 
   /**
    * Opens the transport for communications.
@@ -111,9 +107,7 @@ class TTransport {
    * @return How many bytes were actually read
    * @throws TTransportException If an error occurs
    */
-  uint32_t read(uint8_t* buf, uint32_t len) {
-    return read_virt(buf, len);
-  }
+  uint32_t read(uint8_t* buf, uint32_t len) { return read_virt(buf, len); }
   virtual uint32_t read_virt(uint8_t* /* buf */, uint32_t /* len */) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "Base TTransport cannot read.");
@@ -158,9 +152,7 @@ class TTransport {
    * @param buf  The data to write out
    * @throws TTransportException if an error occurs
    */
-  void write(const uint8_t* buf, uint32_t len) {
-    write_virt(buf, len);
-  }
+  void write(const uint8_t* buf, uint32_t len) { write_virt(buf, len); }
   virtual void write_virt(const uint8_t* /* buf */, uint32_t /* len */) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "Base TTransport cannot write.");
@@ -244,9 +236,7 @@ class TTransport {
    * @param len  How many bytes to consume
    * @throws TTransportException If an error occurs
    */
-  void consume(uint32_t len) {
-    consume_virt(len);
-  }
+  void consume(uint32_t len) { consume_virt(len); }
   virtual void consume_virt(uint32_t /* len */) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "Base TTransport cannot consume.");
@@ -313,9 +303,7 @@ class TDuplexTransportFactory {
 template <class Factory_>
 class TSingleTransportFactory : public TDuplexTransportFactory {
  public:
-  TSingleTransportFactory() {
-    factory_.reset(new Factory_());
-  }
+  TSingleTransportFactory() { factory_.reset(new Factory_()); }
 
   explicit TSingleTransportFactory(std::shared_ptr<Factory_> factory)
       : factory_(factory) {}

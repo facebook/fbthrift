@@ -76,8 +76,7 @@ class CloneableUniquePtr : public std::unique_ptr<T, Deleter> {
 
 template <class T, class Deleter>
 void swap(
-    CloneableUniquePtr<T, Deleter>& lhs,
-    CloneableUniquePtr<T, Deleter>& rhs) {
+    CloneableUniquePtr<T, Deleter>& lhs, CloneableUniquePtr<T, Deleter>& rhs) {
   using base = std::unique_ptr<T, Deleter>;
   return swap(static_cast<base&>(lhs), static_cast<base&>(rhs));
 }

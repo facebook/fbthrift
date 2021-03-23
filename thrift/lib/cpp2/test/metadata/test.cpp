@@ -74,9 +74,7 @@ class ServiceMetadataTest : public testing::Test {
     return *response_.metadata_ref();
   }
   ThriftServiceMetadataResponse response_;
-  void resetResponse() {
-    response_ = ThriftServiceMetadataResponse{};
-  }
+  void resetResponse() { response_ = ThriftServiceMetadataResponse{}; }
 };
 
 TEST_F(ServiceMetadataTest, EnumTest) {

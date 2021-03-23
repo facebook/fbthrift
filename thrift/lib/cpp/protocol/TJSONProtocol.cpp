@@ -16,10 +16,10 @@
 
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 
+#include <math.h>
 #include <folly/Conv.h>
 #include <folly/dynamic.h>
 #include <folly/json.h>
-#include <math.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
@@ -209,8 +209,7 @@ static uint32_t skipWhitespace(TJSONProtocol::LookaheadReader& reader) {
 // expected character ch.
 // Throw a protocol exception if it is not.
 static uint32_t readSyntaxChar(
-    TJSONProtocol::LookaheadReader& reader,
-    uint8_t ch) {
+    TJSONProtocol::LookaheadReader& reader, uint8_t ch) {
   uint8_t ch2 = reader.read();
   if (ch2 != ch) {
     throw TProtocolException(
@@ -224,8 +223,7 @@ static uint32_t readSyntaxChar(
 // Reads a structural character (any of '[', ']', '{', '}', ',' and ':'),
 // and any whitespace characters around it
 static uint32_t readStructuralChar(
-    TJSONProtocol::LookaheadReader& reader,
-    uint8_t ch) {
+    TJSONProtocol::LookaheadReader& reader, uint8_t ch) {
   assert(
       ch == TJSONProtocol::kJSONObjectStart ||
       ch == TJSONProtocol::kJSONObjectEnd ||
@@ -304,9 +302,7 @@ class TJSONContext {
   /**
    * Write context data to the transport. Default is to do nothing.
    */
-  virtual uint32_t write(TTransport& /*trans*/) {
-    return 0;
-  }
+  virtual uint32_t write(TTransport& /*trans*/) { return 0; }
 
   /**
    * Read context data from the transport. Default is to do nothing.
@@ -319,9 +315,7 @@ class TJSONContext {
    * Return true if numbers need to be escaped as strings in this context.
    * Default behavior is to return false.
    */
-  virtual bool escapeNum() {
-    return false;
-  }
+  virtual bool escapeNum() { return false; }
 };
 
 // Context class for object member key-value pairs
@@ -359,9 +353,7 @@ class JSONPairContext : public TJSONContext {
   }
 
   // Numbers must be turned into strings if they are the key part of a pair
-  bool escapeNum() override {
-    return colon_;
-  }
+  bool escapeNum() override { return colon_; }
 
  private:
   bool first_;
@@ -632,9 +624,7 @@ uint32_t TJSONProtocol::writeStructEnd() {
 }
 
 uint32_t TJSONProtocol::writeFieldBegin(
-    const char* /*name*/,
-    const TType fieldType,
-    const int16_t fieldId) {
+    const char* /*name*/, const TType fieldType, const int16_t fieldId) {
   uint32_t result = writeJSONInteger(fieldId);
   result += writeJSONObjectStart();
   result += writeJSONString(getTypeNameForTypeID(fieldType));
@@ -650,9 +640,7 @@ uint32_t TJSONProtocol::writeFieldStop() {
 }
 
 uint32_t TJSONProtocol::writeMapBegin(
-    const TType keyType,
-    const TType valType,
-    const uint32_t size) {
+    const TType keyType, const TType valType, const uint32_t size) {
   uint32_t result = writeJSONArrayStart();
   result += writeJSONString(getTypeNameForTypeID(keyType));
   result += writeJSONString(getTypeNameForTypeID(valType));
@@ -666,8 +654,7 @@ uint32_t TJSONProtocol::writeMapEnd() {
 }
 
 uint32_t TJSONProtocol::writeListBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   uint32_t result = writeJSONArrayStart();
   result += writeJSONString(getTypeNameForTypeID(elemType));
   result += writeJSONInteger((int64_t)size);
@@ -679,8 +666,7 @@ uint32_t TJSONProtocol::writeListEnd() {
 }
 
 uint32_t TJSONProtocol::writeSetBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   uint32_t result = writeJSONArrayStart();
   result += writeJSONString(getTypeNameForTypeID(elemType));
   result += writeJSONInteger((int64_t)size);
@@ -991,9 +977,7 @@ uint32_t TJSONProtocol::readJSONArrayEnd() {
 }
 
 uint32_t TJSONProtocol::readMessageBegin(
-    std::string& name,
-    TMessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, TMessageType& messageType, int32_t& seqid) {
   uint32_t result = readJSONArrayStart();
   uint64_t tmpVal = 0;
   result += readJSONInteger(tmpVal);
@@ -1022,9 +1006,7 @@ uint32_t TJSONProtocol::readStructEnd() {
 }
 
 uint32_t TJSONProtocol::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   uint32_t result = 0;
   result += skipJSONWhitespace();
   // Check if we hit the end of the list
@@ -1048,10 +1030,7 @@ uint32_t TJSONProtocol::readFieldEnd() {
 }
 
 uint32_t TJSONProtocol::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) {
   uint64_t tmpVal = 0;
   std::string tmpStr;
   uint32_t result = readJSONArrayStart();
@@ -1071,9 +1050,7 @@ uint32_t TJSONProtocol::readMapEnd() {
 }
 
 uint32_t TJSONProtocol::readListBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   uint64_t tmpVal = 0;
   std::string tmpStr;
   uint32_t result = readJSONArrayStart();
@@ -1090,9 +1067,7 @@ uint32_t TJSONProtocol::readListEnd() {
 }
 
 uint32_t TJSONProtocol::readSetBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   uint64_t tmpVal = 0;
   std::string tmpStr;
   uint32_t result = readJSONArrayStart();

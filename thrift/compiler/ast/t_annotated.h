@@ -58,15 +58,9 @@ class alias_span {
   /* implicit */ alias_span(const C& list)
       : alias_span(list.data(), list.size()) {}
 
-  const_iterator begin() const {
-    return data_;
-  }
-  const_iterator end() const {
-    return data_ + size_;
-  }
-  size_type size() const {
-    return size_;
-  }
+  const_iterator begin() const { return data_; }
+  const_iterator end() const { return data_ + size_; }
+  size_type size() const { return size_; }
 
  private:
   const std::string* data_;
@@ -107,16 +101,15 @@ class t_annotated : public t_node {
   template <
       typename N = std::vector<std::string>,
       typename D = const std::string*>
-  decltype(auto) get_annotation(const N& name, D&& default_value = nullptr)
-      const {
+  decltype(auto) get_annotation(
+      const N& name, D&& default_value = nullptr) const {
     return annotation_or(
         get_annotation_or_null(alias_span{name}),
         std::forward<D>(default_value));
   }
 
   void reset_annotations(
-      std::map<std::string, std::string> annotations,
-      int last_lineno) {
+      std::map<std::string, std::string> annotations, int last_lineno) {
     annotations_ = std::move(annotations);
     last_annotation_lineno_ = last_lineno;
   }
@@ -132,9 +125,7 @@ class t_annotated : public t_node {
   }
   void add_structured_annotation(std::unique_ptr<t_const> annot);
 
-  int last_annotation_lineno() const {
-    return last_annotation_lineno_;
-  }
+  int last_annotation_lineno() const { return last_annotation_lineno_; }
 
  protected:
   // t_annotated is abstract.
@@ -149,13 +140,11 @@ class t_annotated : public t_node {
   }
 
   static const std::string& annotation_or(
-      const std::string* val,
-      const std::string* def) {
+      const std::string* val, const std::string* def) {
     return val ? *val : (def ? *def : kEmptyString);
   }
   static const std::string& annotation_or(
-      const std::string* val,
-      std::string* def) {
+      const std::string* val, std::string* def) {
     return val ? *val : (def ? *def : kEmptyString);
   }
 

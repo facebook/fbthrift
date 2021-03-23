@@ -46,8 +46,7 @@ class GlobalAdmissionStrategy : public AdmissionStrategy {
    * Always return the same shared AdmissionController.
    */
   std::shared_ptr<AdmissionController> select(
-      const std::string&,
-      const transport::THeader*) override {
+      const std::string&, const transport::THeader*) override {
     return admissionController_;
   }
 
@@ -57,9 +56,7 @@ class GlobalAdmissionStrategy : public AdmissionStrategy {
     admissionController_->reportMetrics(report, prefix + "global.");
   }
 
-  Type getType() override {
-    return AdmissionStrategy::GLOBAL;
-  }
+  Type getType() override { return AdmissionStrategy::GLOBAL; }
 
  private:
   std::shared_ptr<AdmissionController> admissionController_;

@@ -37,13 +37,9 @@ class ServerTracker {
   ServerTracker(std::string_view key, ThriftServer& server);
   ~ServerTracker();
 
-  ThriftServer& getServer() const {
-    return server_;
-  }
+  ThriftServer& getServer() const { return server_; }
 
-  const std::string& getKey() const {
-    return key_;
-  }
+  const std::string& getKey() const { return key_; }
 
  private:
   std::string key_;
@@ -56,8 +52,7 @@ void forAllTrackers(folly::FunctionRef<
 size_t getServerCount(std::string_view key);
 
 void forEachServer(
-    std::string_view key,
-    folly::FunctionRef<void(ThriftServer&)>);
+    std::string_view key, folly::FunctionRef<void(ThriftServer&)>);
 
 } // namespace instrumentation
 } // namespace thrift

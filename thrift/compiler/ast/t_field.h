@@ -67,40 +67,24 @@ class t_field : public t_named {
     value_ = std::move(value);
   }
 
-  const t_const_value* get_default_value() const {
-    return value_.get();
-  }
+  const t_const_value* get_default_value() const { return value_.get(); }
 
-  t_const_value* get_default_value() {
-    return value_.get();
-  }
+  t_const_value* get_default_value() { return value_.get(); }
 
-  void set_req(e_req req) {
-    req_ = req;
-  }
+  void set_req(e_req req) { req_ = req; }
 
-  void set_next(const t_field* field) {
-    next_ = field;
-  }
+  void set_next(const t_field* field) { next_ = field; }
 
   /**
    * t_field getters
    */
-  const t_type* get_type() const {
-    return type_.get_type();
-  }
+  const t_type* get_type() const { return type_.get_type(); }
 
-  int32_t get_key() const {
-    return key_;
-  }
+  int32_t get_key() const { return key_; }
 
-  const t_field* get_next() const {
-    return next_;
-  }
+  const t_field* get_next() const { return next_; }
 
-  e_req get_req() const {
-    return req_;
-  }
+  e_req get_req() const { return req_; }
 
   /**
    * Thrift AST nodes are meant to be non-copyable and non-movable, and should
@@ -139,13 +123,9 @@ class t_field : public t_named {
     set_default_value(std::move(value));
   }
 
-  const t_const_value* get_value() const {
-    return get_default_value();
-  }
+  const t_const_value* get_value() const { return get_default_value(); }
 
-  t_const_value* get_value() {
-    return get_default_value();
-  }
+  t_const_value* get_value() { return get_default_value(); }
 };
 
 /**

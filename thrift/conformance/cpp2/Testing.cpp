@@ -58,8 +58,8 @@ std::string toString(const folly::IOBuf& buf) {
   return result;
 }
 
-void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
-    const {
+void MultiSerializer::encode(
+    any_ref value, folly::io::QueueAppender&& appender) const {
   if (value.type() == typeid(int)) {
     ++intEncCount;
     FollyToStringSerializer<int>().encode(value, std::move(appender));

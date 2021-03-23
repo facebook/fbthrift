@@ -88,21 +88,16 @@ class TTransportException : public apache::thrift::TLibraryException {
         options_(0) {}
 
   TTransportException(
-      TTransportExceptionType type,
-      std::string message,
-      int errno_copy)
+      TTransportExceptionType type, std::string message, int errno_copy)
       : apache::thrift::TLibraryException(getMessage(
-            getDefaultMessage(type, std::move(message)),
-            errno_copy)),
+            getDefaultMessage(type, std::move(message)), errno_copy)),
         type_(type),
         errno_(errno_copy),
         options_(0) {}
 
   explicit TTransportException(const folly::AsyncSocketException& ex)
       : TTransportException(
-            TTransportExceptionType(ex.getType()),
-            ex.what(),
-            ex.getErrno()) {}
+            TTransportExceptionType(ex.getType()), ex.what(), ex.getErrno()) {}
 
   ~TTransportException() throw() override {}
 
@@ -112,9 +107,7 @@ class TTransportException : public apache::thrift::TLibraryException {
    *
    * @return Error code
    */
-  TTransportExceptionType getType() const throw() {
-    return type_;
-  }
+  TTransportExceptionType getType() const throw() { return type_; }
 
   enum Options {
     // Channel is still valid (this is a high-level error, not a TCP level
@@ -122,12 +115,8 @@ class TTransportException : public apache::thrift::TLibraryException {
     CHANNEL_IS_VALID = 1 << 0,
   };
 
-  int getOptions() const {
-    return options_;
-  }
-  void setOptions(int options) {
-    options_ = options;
-  }
+  int getOptions() const { return options_; }
+  void setOptions(int options) { options_ = options; }
 
   const char* what() const throw() override {
     if (message_.empty()) {
@@ -174,9 +163,7 @@ class TTransportException : public apache::thrift::TLibraryException {
     }
   }
 
-  int getErrno() const {
-    return errno_;
-  }
+  int getErrno() const { return errno_; }
 
  protected:
   /** Just like strerror_r but returns a C++ string object. */
@@ -192,8 +179,7 @@ class TTransportException : public apache::thrift::TLibraryException {
   }
 
   static std::string getDefaultMessage(
-      TTransportExceptionType type,
-      std::string&& message) {
+      TTransportExceptionType type, std::string&& message) {
     if (message.empty() &&
         static_cast<size_t>(type) >= TTransportExceptionTypeSize::value) {
       return "TTransportException: (Invalid exception type '" +

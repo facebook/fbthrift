@@ -75,9 +75,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       std::unique_ptr<HeaderServerChannel::HeaderRequest>&&) override;
   void channelClosed(folly::exception_wrapper&&) override;
 
-  void start() {
-    channel_->setCallback(this);
-  }
+  void start() { channel_->setCallback(this); }
 
   void stop();
 
@@ -91,20 +89,14 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
   // Managed Connection callbacks
   void describe(std::ostream&) const override {}
-  bool isBusy() const override {
-    return activeRequests_.empty();
-  }
+  bool isBusy() const override { return activeRequests_.empty(); }
   void notifyPendingShutdown() override {}
-  void closeWhenIdle() override {
-    stop();
-  }
+  void closeWhenIdle() override { stop(); }
   void dropConnection(const std::string& /* errorMsg */ = "") override {
     stop();
   }
   void dumpConnectionState(uint8_t /* loglevel */) override {}
-  void addConnection(std::shared_ptr<Cpp2Connection> conn) {
-    this_ = conn;
-  }
+  void addConnection(std::shared_ptr<Cpp2Connection> conn) { this_ = conn; }
 
   void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
     negotiatedCompressionAlgo_ = compressionAlgo;
@@ -130,9 +122,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   std::shared_ptr<apache::thrift::HeaderServerChannel> channel_;
 
   std::shared_ptr<Cpp2Worker> worker_;
-  Cpp2Worker* getWorker() {
-    return worker_.get();
-  }
+  Cpp2Worker* getWorker() { return worker_.get(); }
   Cpp2ConnContext context_;
 
   std::shared_ptr<folly::AsyncTransport> transport_;
@@ -168,28 +158,22 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         std::shared_ptr<Cpp2Connection> con,
         rocket::Payload&& debugPayload);
 
-    bool isActive() const final {
-      return stateMachine_.isActive();
-    }
+    bool isActive() const final { return stateMachine_.isActive(); }
 
     bool tryCancel() {
       return stateMachine_.tryCancel(connection_->getWorker()->getEventBase());
     }
 
-    bool isOneway() const override {
-      return req_->isOneway();
-    }
+    bool isOneway() const override { return req_->isOneway(); }
 
-    bool isStream() const override {
-      return req_->isStream();
-    }
+    bool isStream() const override { return req_->isStream(); }
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&& buf,
         MessageChannel::SendCallback* notUsed = nullptr,
         folly::Optional<uint32_t> crc32c = folly::none) override;
-    void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode)
-        override;
+    void sendErrorWrapped(
+        folly::exception_wrapper ew, std::string exCode) override;
     void sendQueueTimeoutResponse() override;
     void sendTimeoutResponse(
         apache::thrift::HeaderServerChannel::HeaderRequest::TimeoutResponseType
@@ -200,9 +184,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     // Cancel request is ususally called from a different thread than sendReply.
     virtual void cancelRequest();
 
-    Cpp2RequestContext* getContext() {
-      return &reqContext_;
-    }
+    Cpp2RequestContext* getContext() { return &reqContext_; }
 
     server::TServerObserver::CallTimestamps& getTimestamps() {
       return static_cast<server::TServerObserver::CallTimestamps&>(

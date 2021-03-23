@@ -26,9 +26,7 @@ namespace apache {
 namespace thrift {
 
 uint32_t BinaryProtocolWriter::writeMessageBegin(
-    folly::StringPiece name,
-    MessageType messageType,
-    int32_t seqid) {
+    folly::StringPiece name, MessageType messageType, int32_t seqid) {
   int32_t version = (VERSION_1) | ((int32_t)messageType);
   uint32_t wsize = 0;
   wsize += writeI32(version);
@@ -50,9 +48,7 @@ uint32_t BinaryProtocolWriter::writeStructEnd() {
 }
 
 uint32_t BinaryProtocolWriter::writeFieldBegin(
-    const char* /*name*/,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* /*name*/, TType fieldType, int16_t fieldId) {
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)fieldType);
   wsize += writeI16(fieldId);
@@ -68,9 +64,7 @@ uint32_t BinaryProtocolWriter::writeFieldStop() {
 }
 
 uint32_t BinaryProtocolWriter::writeMapBegin(
-    const TType keyType,
-    TType valType,
-    uint32_t size) {
+    const TType keyType, TType valType, uint32_t size) {
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)keyType);
   wsize += writeByte((int8_t)valType);
@@ -214,9 +208,7 @@ uint32_t BinaryProtocolWriter::serializedMessageSize(
 }
 
 uint32_t BinaryProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldType*/,
-    int16_t /*fieldId*/) const {
+    const char* /*name*/, TType /*fieldType*/, int16_t /*fieldId*/) const {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
@@ -227,9 +219,7 @@ uint32_t BinaryProtocolWriter::serializedStructSize(const char* /*name*/
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) const {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeByte() + serializedSizeI32();
 }
 
@@ -238,8 +228,7 @@ uint32_t BinaryProtocolWriter::serializedSizeMapEnd() const {
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/
+    TType /*elemType*/, uint32_t /*size*/
 ) const {
   return serializedSizeByte() + serializedSizeI32();
 }
@@ -249,8 +238,7 @@ uint32_t BinaryProtocolWriter::serializedSizeListEnd() const {
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -353,9 +341,7 @@ uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
  */
 
 void BinaryProtocolReader::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   int32_t sz;
   readI32(sz);
 
@@ -391,9 +377,7 @@ void BinaryProtocolReader::readStructBegin(std::string& name) {
 void BinaryProtocolReader::readStructEnd() {}
 
 void BinaryProtocolReader::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   int8_t type;
   readByte(type);
   fieldType = (TType)type;
@@ -407,9 +391,7 @@ void BinaryProtocolReader::readFieldBegin(
 void BinaryProtocolReader::readFieldEnd() {}
 
 void BinaryProtocolReader::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size) {
+    TType& keyType, TType& valType, uint32_t& size) {
   int8_t k, v;
   int32_t sizei;
   readByte(k);
@@ -573,8 +555,7 @@ void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
 }
 
 uint32_t BinaryProtocolReader::readFromPositionAndAppend(
-    Cursor& snapshot,
-    std::unique_ptr<IOBuf>& ser) {
+    Cursor& snapshot, std::unique_ptr<IOBuf>& ser) {
   int32_t size =
       folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
@@ -599,9 +580,7 @@ uint32_t BinaryProtocolReader::readFromPositionAndAppend(
 }
 
 bool BinaryProtocolReader::advanceToNextField(
-    int16_t nextFieldId,
-    TType nextFieldType,
-    StructReadState& state) {
+    int16_t nextFieldId, TType nextFieldType, StructReadState& state) {
   if (nextFieldType == TType::T_STOP) {
     if (in_.length() && *in_.data() == TType::T_STOP) {
       in_.skipNoAdvance(1);

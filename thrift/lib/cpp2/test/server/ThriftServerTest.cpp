@@ -315,9 +315,7 @@ class ServerErrorCallback : public RequestCallback {
     ew_ = TestServiceAsyncClient::recv_wrapped_voidResponse(state);
     baton_.post();
   }
-  void requestError(ClientReceiveState&&) override {
-    ADD_FAILURE();
-  }
+  void requestError(ClientReceiveState&&) override { ADD_FAILURE(); }
 
  private:
   folly::fibers::Baton& baton_;
@@ -552,8 +550,7 @@ enum LatencyHeaderStatus {
 };
 
 static void validateLatencyHeaders(
-    std::map<std::string, std::string> headers,
-    LatencyHeaderStatus status) {
+    std::map<std::string, std::string> headers, LatencyHeaderStatus status) {
   bool isHeaderExpected = (status == LatencyHeaderStatus::EXPECTED);
   auto queueLatency = folly::get_optional(headers, kQueueLatencyHeader.str());
   ASSERT_EQ(isHeaderExpected, queueLatency.has_value());
@@ -670,9 +667,7 @@ class OverloadTest : public HeaderOrRocketTest,
 class HeaderOrRocket : public HeaderOrRocketTest,
                        public ::testing::WithParamInterface<TransportType> {
  public:
-  void SetUp() override {
-    transport = GetParam();
-  }
+  void SetUp() override { transport = GetParam(); }
 };
 
 TEST_P(HeaderOrRocket, Priority) {
@@ -723,9 +718,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
   class TestInterface : public TestServiceSvIf {
    public:
     TestInterface() {}
-    void voidResponse() override {
-      callback_(getThreadManager());
-    }
+    void voidResponse() override { callback_(getThreadManager()); }
     folly::Function<void(folly::Executor*)> callback_;
   };
 
@@ -775,14 +768,11 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
 }
 
 TEST_P(
-    HeaderOrRocket,
-    ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
+    HeaderOrRocket, ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
   class TestInterface : public TestServiceSvIf {
    public:
     explicit TestInterface(int& testCounter) : testCounter_(testCounter) {}
-    void voidResponse() override {
-      callback_(getThreadManager());
-    }
+    void voidResponse() override { callback_(getThreadManager()); }
     int echoInt(int value) override {
       EXPECT_EQ(value, testCounter_++);
       return value;
@@ -1144,9 +1134,7 @@ TEST_P(OverloadTest, Test) {
   class BlockInterface : public TestServiceSvIf {
    public:
     folly::Baton<> block;
-    void voidResponse() override {
-      block.wait();
-    }
+    void voidResponse() override { block.wait(); }
 
     void async_eb_eventBaseAsync(
         std::unique_ptr<HandlerCallback<std::unique_ptr<::std::string>>>
@@ -1455,12 +1443,8 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
 
 TEST(ThriftServer, BadSendTest) {
   class Callback : public RequestCallback {
-    void requestSent() override {
-      ADD_FAILURE();
-    }
-    void replyReceived(ClientReceiveState&&) override {
-      ADD_FAILURE();
-    }
+    void requestSent() override { ADD_FAILURE(); }
+    void replyReceived(ClientReceiveState&&) override { ADD_FAILURE(); }
     void requestError(ClientReceiveState&& state) override {
       EXPECT_TRUE(state.exception());
       auto ex =
@@ -1586,9 +1570,7 @@ TEST(ThriftServer, FailureInjection) {
 
   auto server = std::dynamic_pointer_cast<ThriftServer>(sst.getServer().lock());
   CHECK(server);
-  SCOPE_EXIT {
-    server->setFailureInjection(ThriftServer::FailureInjection());
-  };
+  SCOPE_EXIT { server->setFailureInjection(ThriftServer::FailureInjection()); };
 
   RpcOptions rpcOptions;
   rpcOptions.setTimeout(std::chrono::milliseconds(100));
@@ -1661,9 +1643,7 @@ class ReadCallbackTest : public folly::AsyncTransport::ReadCallback {
  public:
   void getReadBuffer(void**, size_t*) override {}
   void readDataAvailable(size_t) noexcept override {}
-  void readEOF() noexcept override {
-    eof = true;
-  }
+  void readEOF() noexcept override { eof = true; }
 
   void readErr(const folly::AsyncSocketException&) noexcept override {
     eof = true;
@@ -1914,9 +1894,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
       success_.emplace(false);
     }
 
-    bool success() const {
-      return success_ && *success_;
-    }
+    bool success() const { return success_ && *success_; }
 
    private:
     folly::Optional<bool> success_;
@@ -1945,9 +1923,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
 
     void readDataAvailable(size_t /* len */) noexcept override {}
 
-    void readEOF() noexcept override {
-      remoteClosed_ = true;
-    }
+    void readEOF() noexcept override { remoteClosed_ = true; }
 
     void readErr(const folly::AsyncSocketException& ex) noexcept override {
       ASSERT_EQ(ECONNRESET, ex.getErrno());
@@ -2012,8 +1988,7 @@ class FizzStopTLSConnector
       public fizz::AsyncFizzBase::EndOfTLSCallback {
  public:
   folly::AsyncSocket::UniquePtr connect(
-      const folly::SocketAddress& address,
-      folly::EventBase* eb) {
+      const folly::SocketAddress& address, folly::EventBase* eb) {
     eb_ = eb;
 
     auto sock = folly::AsyncSocket::newSocket(eb_, address);
@@ -2050,8 +2025,8 @@ class FizzStopTLSConnector
     FAIL();
   }
 
-  void endOfTLS(fizz::AsyncFizzBase* transport, std::unique_ptr<folly::IOBuf>)
-      override {
+  void endOfTLS(
+      fizz::AsyncFizzBase* transport, std::unique_ptr<folly::IOBuf>) override {
     auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
     DCHECK(sock);
 
@@ -2295,8 +2270,7 @@ TEST_P(HeaderOrRocket, TaskTimeoutBeforeProcessing) {
    public:
     VoidResponseInterface() = delete;
     VoidResponseInterface(
-        folly::Baton<>& haltBaton,
-        std::atomic<int>& processedCount)
+        folly::Baton<>& haltBaton, std::atomic<int>& processedCount)
         : haltBaton_{haltBaton}, processedCount_{processedCount} {}
 
     void voidResponse() override {
@@ -2527,8 +2501,7 @@ class HeaderOrRocketCompression
   struct InheritanceCompressionCheckProcessor
       : public TestInterface::ProcessorType {
     InheritanceCompressionCheckProcessor(
-        TestServiceSvIf* iface,
-        CompressionAlgorithm compression)
+        TestServiceSvIf* iface, CompressionAlgorithm compression)
         : TestInterface::ProcessorType(iface), compression_(compression) {}
     void processSerializedCompressedRequest(
         ResponseChannelRequest::UniquePtr req,

@@ -208,9 +208,7 @@ inline bool canReadNElements(
  */
 template <class Protocol_, class WireType>
 void skip_n(
-    Protocol_& prot,
-    uint32_t n,
-    std::initializer_list<WireType> types) {
+    Protocol_& prot, uint32_t n, std::initializer_list<WireType> types) {
   size_t sum = 0;
   bool allFixedSizes = true;
   for (auto type : types) {
@@ -232,13 +230,9 @@ void skip_n(
 
 template <class StrType>
 struct StringTraits {
-  static StrType fromStringLiteral(const char* str) {
-    return StrType(str);
-  }
+  static StrType fromStringLiteral(const char* str) { return StrType(str); }
 
-  static bool isEmpty(const StrType& str) {
-    return str.empty();
-  }
+  static bool isEmpty(const StrType& str) { return str.empty(); }
 
   static bool isEqual(const StrType& lhs, const StrType& rhs) {
     return lhs == rhs;
@@ -256,9 +250,7 @@ struct StringTraits<folly::IOBuf> {
     return folly::IOBuf::wrapBufferAsValue(str, strlen(str));
   }
 
-  static bool isEmpty(const folly::IOBuf& str) {
-    return str.empty();
-  }
+  static bool isEmpty(const folly::IOBuf& str) { return str.empty(); }
 
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     return folly::IOBufEqualTo{}(lhs, rhs);

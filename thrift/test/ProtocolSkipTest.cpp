@@ -91,9 +91,7 @@ class SpecializedSkipTest : public testing::Test {
   void test() {
     struct SlowReader : Reader {
       /* implicit */ SlowReader(const Reader& reader) : Reader(reader) {}
-      static size_t fixedSizeInContainer(TType) {
-        return 0;
-      }
+      static size_t fixedSizeInContainer(TType) { return 0; }
     };
 
     auto buf = serialized<Reader>();
@@ -136,11 +134,7 @@ TYPED_TEST_P(SpecializedSkipTest, SimpleJSON) {
 }
 
 REGISTER_TYPED_TEST_CASE_P(
-    SpecializedSkipTest,
-    Compact,
-    Binary,
-    JSON,
-    SimpleJSON);
+    SpecializedSkipTest, Compact, Binary, JSON, SimpleJSON);
 THRIFT_INST_TESTSET_ALL(SpecializedSkipTest);
 
 } // namespace

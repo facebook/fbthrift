@@ -56,9 +56,7 @@ class ClientSink {
         serializer_(std::move(serializer)),
         deserializer_(std::move(deserializer)) {}
 
-  ~ClientSink() {
-    cancel();
-  }
+  ~ClientSink() { cancel(); }
 
   ClientSink(const ClientSink&) = delete;
   ClientSink& operator=(const ClientSink&) = delete;

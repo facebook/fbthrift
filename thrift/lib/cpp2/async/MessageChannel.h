@@ -89,9 +89,7 @@ class MessageChannel : virtual public folly::DelayedDestruction {
    */
   virtual void setReceiveCallback(RecvCallback*) = 0;
 
-  folly::AsyncTransport* getTransport() {
-    return nullptr;
-  }
+  folly::AsyncTransport* getTransport() { return nullptr; }
 };
 
 } // namespace thrift

@@ -23,8 +23,8 @@ namespace py3 {
 template <typename Result>
 class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
  private:
-  typedef folly::exception_wrapper (
-      *Processor)(Result&, apache::thrift::ClientReceiveState&);
+  typedef folly::exception_wrapper (*Processor)(
+      Result&, apache::thrift::ClientReceiveState&);
   Processor processor_;
   apache::thrift::RpcOptions& options_;
 
@@ -35,8 +35,7 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : apache::thrift::FutureCallbackBase<Result>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor),
         options_(options) {}
 
@@ -58,9 +57,7 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
     }
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 };
 
 template <>
@@ -79,8 +76,7 @@ class FutureCallback<folly::Unit>
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : apache::thrift::FutureCallbackBase<folly::Unit>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor),
         options_(options) {}
 
@@ -101,9 +97,7 @@ class FutureCallback<folly::Unit>
     }
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 };
 
 } // namespace py3

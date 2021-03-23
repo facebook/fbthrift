@@ -72,9 +72,7 @@ class RocketClientTestChannel final : public RequestChannel {
     return channel_->getEventBase();
   }
 
-  uint16_t getProtocolId() override {
-    return channel_->getProtocolId();
-  }
+  uint16_t getProtocolId() override { return channel_->getProtocolId(); }
 
   void setDesiredCompressionConfig(CompressionConfig compressionConfig) {
     compressionConfig_ = compressionConfig;

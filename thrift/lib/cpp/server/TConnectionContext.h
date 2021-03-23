@@ -36,14 +36,10 @@ class TConnectionContext {
 
   virtual ~TConnectionContext() = default;
 
-  virtual const folly::SocketAddress* getPeerAddress() const {
-    return nullptr;
-  }
+  virtual const folly::SocketAddress* getPeerAddress() const { return nullptr; }
 
   // Expose the THeader to read headers or other flags
-  transport::THeader* getHeader() const {
-    return header_;
-  }
+  transport::THeader* getHeader() const { return header_; }
 
   bool setHeader(const std::string& key, const std::string& value) {
     if (header_) {
@@ -66,16 +62,12 @@ class TConnectionContext {
     return header_ ? &header_->getHeaders() : nullptr;
   }
 
-  virtual folly::EventBaseManager* getEventBaseManager() {
-    return nullptr;
-  }
+  virtual folly::EventBaseManager* getEventBaseManager() { return nullptr; }
 
   /**
    * Get the user data field.
    */
-  virtual void* getUserData() const {
-    return nullptr;
-  }
+  virtual void* getUserData() const { return nullptr; }
 
   /**
    * Set the user data field.

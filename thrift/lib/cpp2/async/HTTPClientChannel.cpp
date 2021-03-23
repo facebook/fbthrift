@@ -346,8 +346,7 @@ void HTTPClientChannel::setFlowControl(
 // HTTPTransactionCallback methods
 
 HTTPClientChannel::HTTPTransactionCallback::HTTPTransactionCallback(
-    bool oneway,
-    RequestClientCallback::Ptr cb)
+    bool oneway, RequestClientCallback::Ptr cb)
     : oneway_(oneway), cb_(std::move(cb)), txn_(nullptr) {}
 
 HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {

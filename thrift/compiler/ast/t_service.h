@@ -36,13 +36,9 @@ class t_service : public t_type {
  public:
   explicit t_service(t_program* program) : t_type(program), extends_(nullptr) {}
 
-  bool is_service() const override {
-    return true;
-  }
+  bool is_service() const override { return true; }
 
-  void set_extends(t_service* extends) {
-    extends_ = extends;
-  }
+  void set_extends(t_service* extends) { extends_ = extends; }
 
   void add_function(std::unique_ptr<t_function> func) {
     functions_raw_.push_back(func.get());
@@ -53,33 +49,21 @@ class t_service : public t_type {
     return functions_raw_;
   }
 
-  t_service* get_extends() const {
-    return extends_;
-  }
+  t_service* get_extends() const { return extends_; }
 
-  type get_type_value() const override {
-    return type::t_service;
-  }
+  type get_type_value() const override { return type::t_service; }
 
   std::string get_full_name() const override {
     return make_full_name("service");
   }
 
-  bool is_interaction() const {
-    return is_interaction_;
-  }
+  bool is_interaction() const { return is_interaction_; }
 
-  void set_is_interaction() {
-    is_interaction_ = true;
-  }
+  void set_is_interaction() { is_interaction_ = true; }
 
-  bool is_serial_interaction() const {
-    return is_serial_interaction_;
-  }
+  bool is_serial_interaction() const { return is_serial_interaction_; }
 
-  void set_is_serial_interaction() {
-    is_serial_interaction_ = true;
-  }
+  void set_is_serial_interaction() { is_serial_interaction_ = true; }
 
  private:
   std::vector<std::unique_ptr<t_function>> functions_;

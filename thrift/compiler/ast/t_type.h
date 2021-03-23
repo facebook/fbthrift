@@ -92,93 +92,37 @@ class t_type : public t_named {
   /**
    * Default returns for every thrift type
    */
-  virtual bool is_void() const {
-    return false;
-  }
-  virtual bool is_base_type() const {
-    return false;
-  }
-  virtual bool is_string() const {
-    return false;
-  }
-  virtual bool is_bool() const {
-    return false;
-  }
-  virtual bool is_byte() const {
-    return false;
-  }
-  virtual bool is_i16() const {
-    return false;
-  }
-  virtual bool is_i32() const {
-    return false;
-  }
-  virtual bool is_i64() const {
-    return false;
-  }
-  virtual bool is_float() const {
-    return false;
-  }
-  virtual bool is_double() const {
-    return false;
-  }
-  virtual bool is_typedef() const {
-    return false;
-  }
-  virtual bool is_enum() const {
-    return false;
-  }
-  virtual bool is_struct() const {
-    return false;
-  }
-  virtual bool is_union() const {
-    return false;
-  }
+  virtual bool is_void() const { return false; }
+  virtual bool is_base_type() const { return false; }
+  virtual bool is_string() const { return false; }
+  virtual bool is_bool() const { return false; }
+  virtual bool is_byte() const { return false; }
+  virtual bool is_i16() const { return false; }
+  virtual bool is_i32() const { return false; }
+  virtual bool is_i64() const { return false; }
+  virtual bool is_float() const { return false; }
+  virtual bool is_double() const { return false; }
+  virtual bool is_typedef() const { return false; }
+  virtual bool is_enum() const { return false; }
+  virtual bool is_struct() const { return false; }
+  virtual bool is_union() const { return false; }
   // TODO: remove old function "xception" once everything has been swtiched to
   // "exception"
-  virtual bool is_xception() const {
-    return is_exception();
-  }
-  virtual bool is_exception() const {
-    return false;
-  }
-  virtual bool is_container() const {
-    return false;
-  }
-  virtual bool is_list() const {
-    return false;
-  }
-  virtual bool is_set() const {
-    return false;
-  }
-  virtual bool is_map() const {
-    return false;
-  }
-  virtual bool is_sink() const {
-    return false;
-  }
-  virtual bool is_streamresponse() const {
-    return false;
-  }
-  virtual bool is_service() const {
-    return false;
-  }
-  virtual bool is_binary() const {
-    return false;
-  }
-  virtual bool is_paramlist() const {
-    return false;
-  }
+  virtual bool is_xception() const { return is_exception(); }
+  virtual bool is_exception() const { return false; }
+  virtual bool is_container() const { return false; }
+  virtual bool is_list() const { return false; }
+  virtual bool is_set() const { return false; }
+  virtual bool is_map() const { return false; }
+  virtual bool is_sink() const { return false; }
+  virtual bool is_streamresponse() const { return false; }
+  virtual bool is_service() const { return false; }
+  virtual bool is_binary() const { return false; }
+  virtual bool is_paramlist() const { return false; }
 
-  bool is_string_or_binary() const {
-    return is_string() || is_binary();
-  }
-  bool is_any_int() const {
-    return is_i16() || is_i32() || is_i64();
-  }
-  bool is_floating_point() const {
-    return is_double() || is_float();
-  }
+  bool is_string_or_binary() const { return is_string() || is_binary(); }
+  bool is_any_int() const { return is_i16() || is_i32() || is_i64(); }
+  bool is_floating_point() const { return is_double() || is_float(); }
 
   /**
    * Create a unique hash number based on t_type's properties.
@@ -199,9 +143,7 @@ class t_type : public t_named {
   /**
    * t_type getters
    */
-  const t_program* get_program() const {
-    return program_;
-  }
+  const t_program* get_program() const { return program_; }
 
  protected:
   /**
@@ -248,9 +190,7 @@ class t_type : public t_named {
   // TODO(afuller): Delete everything below this point. It's only here for
   // backwards captibility.
 
-  std::string get_impl_full_name() const {
-    return get_full_name();
-  }
+  std::string get_impl_full_name() const { return get_full_name(); }
 };
 
 /**
@@ -268,12 +208,8 @@ class t_type_ref final {
   t_type_ref() = default;
   explicit t_type_ref(const t_type* type) : type_(type) {}
 
-  void set_type(const t_type* type) {
-    type_ = type;
-  }
-  const t_type* get_type() const {
-    return type_;
-  }
+  void set_type(const t_type* type) { type_ = type; }
+  const t_type* get_type() const { return type_; }
 
  private:
   const t_type* type_ = nullptr;

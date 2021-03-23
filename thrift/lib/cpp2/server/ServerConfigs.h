@@ -83,8 +83,7 @@ class ServerConfigs {
 
   // @see BaseThriftServer::getLoad function.
   virtual int64_t getLoad(
-      const std::string& counter = "",
-      bool check_custom = true) const = 0;
+      const std::string& counter = "", bool check_custom = true) const = 0;
 
   // @see ThriftServer::checkOverload function.
   virtual folly::Optional<std::string> checkOverload(

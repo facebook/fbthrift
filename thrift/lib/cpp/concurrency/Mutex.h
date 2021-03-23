@@ -80,17 +80,13 @@ class FOLLY_NODISCARD Guard {
       }
     }
   }
-  ~Guard() {
-    release();
-  }
+  ~Guard() { release(); }
 
   Guard(const Guard&) = delete;
   Guard& operator=(const Guard&) = delete;
 
   // Move constructor/assignment.
-  Guard(Guard&& other) noexcept {
-    *this = std::move(other);
-  }
+  Guard(Guard&& other) noexcept { *this = std::move(other); }
   Guard& operator=(Guard&& other) noexcept {
     if (&other != this) {
       release();
@@ -109,9 +105,7 @@ class FOLLY_NODISCARD Guard {
     return true;
   }
 
-  explicit operator bool() const {
-    return mutex_ != nullptr;
-  }
+  explicit operator bool() const { return mutex_ != nullptr; }
 
  private:
   const Mutex* mutex_ = nullptr;

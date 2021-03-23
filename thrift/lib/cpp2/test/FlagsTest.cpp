@@ -81,8 +81,7 @@ TestFlagsBackend* testBackendPtr;
 bool useDummyBackend{false};
 
 THRIFT_PLUGGABLE_FUNC_SET(
-    std::unique_ptr<apache::thrift::detail::FlagsBackend>,
-    createFlagsBackend) {
+    std::unique_ptr<apache::thrift::detail::FlagsBackend>, createFlagsBackend) {
   if (useDummyBackend) {
     return {};
   }

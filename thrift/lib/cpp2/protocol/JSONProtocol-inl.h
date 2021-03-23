@@ -152,9 +152,7 @@ uint32_t JSONProtocolWriter::writeStructEnd() {
 }
 
 uint32_t JSONProtocolWriter::writeFieldBegin(
-    const char* /*name*/,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* /*name*/, TType fieldType, int16_t fieldId) {
   uint32_t ret = 0;
   ret += writeString(folly::to<std::string>(fieldId));
   ret += writeContext();
@@ -172,8 +170,8 @@ uint32_t JSONProtocolWriter::writeFieldStop() {
   return 0;
 }
 
-uint32_t
-JSONProtocolWriter::writeMapBegin(TType keyType, TType valType, uint32_t size) {
+uint32_t JSONProtocolWriter::writeMapBegin(
+    TType keyType, TType valType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(
@@ -234,9 +232,7 @@ uint32_t JSONProtocolWriter::serializedMessageSize(
 }
 
 uint32_t JSONProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldType*/,
-    int16_t /*fieldId*/) const {
+    const char* /*name*/, TType /*fieldType*/, int16_t /*fieldId*/) const {
   // string plus ":"
   return folly::to_narrow(folly::constexpr_strlen(R"(,"32767":{"typ":})"));
 }
@@ -246,9 +242,7 @@ uint32_t JSONProtocolWriter::serializedStructSize(const char* /*name*/) const {
 }
 
 uint32_t JSONProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) const {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) const {
   return folly::to_narrow(
       folly::constexpr_strlen(R"(["typ","typ",4294967295,{)"));
 }
@@ -258,8 +252,7 @@ uint32_t JSONProtocolWriter::serializedSizeMapEnd() const {
 }
 
 uint32_t JSONProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return folly::to_narrow(folly::constexpr_strlen(R"(["typ",4294967295)"));
 }
 
@@ -268,8 +261,7 @@ uint32_t JSONProtocolWriter::serializedSizeListEnd() const {
 }
 
 uint32_t JSONProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return folly::to_narrow(folly::constexpr_strlen(R"(["typ",4294967295)"));
 }
 
@@ -302,9 +294,7 @@ void JSONProtocolReader::readStructEnd() {
 }
 
 void JSONProtocolReader::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   skipWhitespace();
 
   auto peek = peekCharSafe();
@@ -325,9 +315,7 @@ void JSONProtocolReader::readFieldEnd() {
 }
 
 void JSONProtocolReader::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size) {
+    TType& keyType, TType& valType, uint32_t& size) {
   ensureAndBeginContext(ContextType::ARRAY);
   std::string keyTypeS;
   readString(keyTypeS);

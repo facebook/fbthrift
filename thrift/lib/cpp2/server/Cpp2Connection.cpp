@@ -60,9 +60,7 @@ class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
   void sendQueued() override {}
 
   void messageSent() override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     // do the transport upgrade
     for (auto& routingHandler :
          *cpp2Worker_->getServer()->getRoutingHandlers()) {
@@ -101,9 +99,7 @@ class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
     }
   }
 
-  void messageSendError(folly::exception_wrapper&&) override {
-    delete this;
-  }
+  void messageSendError(folly::exception_wrapper&&) override { delete this; }
 
  private:
   const std::shared_ptr<folly::AsyncTransport>& transport_;
@@ -121,10 +117,10 @@ Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor()),
       duplexChannel_(
-          worker->getServer()->isDuplex() ? std::make_unique<DuplexChannel>(
-                                                DuplexChannel::Who::SERVER,
-                                                transport)
-                                          : nullptr),
+          worker->getServer()->isDuplex()
+              ? std::make_unique<DuplexChannel>(
+                    DuplexChannel::Who::SERVER, transport)
+              : nullptr),
       channel_(
           serverChannel ? serverChannel : // used by client
               duplexChannel_ ? duplexChannel_->getServerChannel()
@@ -655,8 +651,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
 }
 
 void Cpp2Connection::Cpp2Request::sendErrorWrapped(
-    folly::exception_wrapper ew,
-    std::string exCode) {
+    folly::exception_wrapper ew, std::string exCode) {
   if (tryCancel()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();

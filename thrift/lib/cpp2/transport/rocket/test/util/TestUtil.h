@@ -79,12 +79,8 @@ class TestSetup : public testing::Test {
       folly::Function<void()> onDetachable = nullptr,
       folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr);
 
-  void setNumIOThreads(int num) {
-    numIOThreads_ = num;
-  }
-  void setNumWorkerThreads(int num) {
-    numWorkerThreads_ = num;
-  }
+  void setNumIOThreads(int num) { numIOThreads_ = num; }
+  void setNumWorkerThreads(int num) { numWorkerThreads_ = num; }
   void setQueueTimeout(std::chrono::milliseconds timeout) {
     queueTimeout_ = timeout;
   }

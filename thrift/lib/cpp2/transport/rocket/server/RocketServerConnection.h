@@ -115,8 +115,7 @@ class RocketServerConnection final
       uint32_t initialRequestN);
 
   RocketSinkClientCallback& createSinkClientCallback(
-      StreamId streamId,
-      RocketServerConnection& connection);
+      StreamId streamId, RocketServerConnection& connection);
 
   // Parser callbacks
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
@@ -128,13 +127,9 @@ class RocketServerConnection final
       size_t bytesWritten,
       const folly::AsyncSocketException& ex) noexcept final;
 
-  folly::EventBase& getEventBase() const {
-    return evb_;
-  }
+  folly::EventBase& getEventBase() const { return evb_; }
 
-  size_t getNumStreams() const {
-    return streams_.size();
-  }
+  size_t getNumStreams() const { return streams_.size(); }
 
   void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
     negotiatedCompressionAlgo_ = compressionAlgo;
@@ -162,12 +157,9 @@ class RocketServerConnection final
 
   void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
   void scheduleSinkTimeout(
-      folly::HHWheelTimer::Callback*,
-      std::chrono::milliseconds timeout);
+      folly::HHWheelTimer::Callback*, std::chrono::milliseconds timeout);
 
-  void incInflightFinalResponse() {
-    inflightSinkFinalResponses_++;
-  }
+  void incInflightFinalResponse() { inflightSinkFinalResponses_++; }
   void decInflightFinalResponse() {
     DCHECK(inflightSinkFinalResponses_ != 0);
     inflightSinkFinalResponses_--;
@@ -187,9 +179,7 @@ class RocketServerConnection final
     ReadResumableHandle& operator=(ReadResumableHandle&&) = delete;
 
     void resume() &&;
-    folly::EventBase& getEventBase() {
-      return connection_->evb_;
-    }
+    folly::EventBase& getEventBase() { return connection_->evb_; }
 
     Cpp2ConnContext* getCpp2ConnContext() {
       return connection_->frameHandler_->getCpp2ConnContext();
@@ -210,9 +200,7 @@ class RocketServerConnection final
     ReadPausableHandle& operator=(ReadPausableHandle&&) = delete;
 
     ReadResumableHandle pause() &&;
-    folly::EventBase& getEventBase() {
-      return connection_->evb_;
-    }
+    folly::EventBase& getEventBase() { return connection_->evb_; }
 
     Cpp2ConnContext* getCpp2ConnContext() {
       return connection_->frameHandler_->getCpp2ConnContext();
@@ -356,18 +344,12 @@ class RocketServerConnection final
       flushPendingWrites();
     }
 
-    bool empty() const {
-      return !bufferedWrites_;
-    }
+    bool empty() const { return !bufferedWrites_; }
 
    private:
-    void runLoopCallback() noexcept final {
-      flushPendingWrites();
-    }
+    void runLoopCallback() noexcept final { flushPendingWrites(); }
 
-    void timeoutExpired() noexcept final {
-      flushPendingWrites();
-    }
+    void timeoutExpired() noexcept final { flushPendingWrites(); }
 
     void flushPendingWrites() noexcept {
       bufferedWritesCount_ = 0;
@@ -425,9 +407,7 @@ class RocketServerConnection final
       return true;
     }
 
-    void timeoutExpired() noexcept final {
-      tryClose();
-    }
+    void timeoutExpired() noexcept final { tryClose(); }
 
     RocketServerConnection& connection_;
     std::chrono::steady_clock::time_point deadline_;
@@ -444,8 +424,7 @@ class RocketServerConnection final
 
   void closeIfNeeded();
   void flushWrites(
-      std::unique_ptr<folly::IOBuf> writes,
-      WriteBatchContext&& context) {
+      std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context) {
     inflightWritesQueue_.push(std::move(context));
     socket_->writeChain(this, std::move(writes));
   }
@@ -491,9 +470,7 @@ class RocketServerConnection final
     }
   }
 
-  void incInflightRequests() {
-    ++inflightRequests_;
-  }
+  void incInflightRequests() { ++inflightRequests_; }
 
   void decInflightRequests() {
     --inflightRequests_;

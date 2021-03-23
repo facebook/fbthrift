@@ -82,16 +82,14 @@ class TDebugProtocol : public TVirtualProtocol<TDebugProtocol> {
   uint32_t writeStructEnd();
 
   uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId);
+      const char* name, const TType fieldType, const int16_t fieldId);
 
   uint32_t writeFieldEnd();
 
   uint32_t writeFieldStop();
 
-  uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
+  uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeMapEnd();
 
@@ -295,37 +293,21 @@ class TDebugProtocolEx : public apache::thrift::protocol::TDebugProtocol {
     writeSetEnd();
   }
 
-  void write(const bool value) {
-    writeBool(value);
-  }
+  void write(const bool value) { writeBool(value); }
 
-  void write(const int8_t byte) {
-    writeByte(byte);
-  }
+  void write(const int8_t byte) { writeByte(byte); }
 
-  void write(const int16_t i16) {
-    writeI16(i16);
-  }
+  void write(const int16_t i16) { writeI16(i16); }
 
-  void write(const int32_t i32) {
-    writeI32(i32);
-  }
+  void write(const int32_t i32) { writeI32(i32); }
 
-  void write(const int64_t i64) {
-    writeI64(i64);
-  }
+  void write(const int64_t i64) { writeI64(i64); }
 
-  void write(const double dub) {
-    writeDouble(dub);
-  }
+  void write(const double dub) { writeDouble(dub); }
 
-  void write(const float flt) {
-    writeFloat(flt);
-  }
+  void write(const float flt) { writeFloat(flt); }
 
-  void write(const std::string& str) {
-    writeString(str);
-  }
+  void write(const std::string& str) { writeString(str); }
 
   template <typename K, typename V>
   void write(const std::pair<K, V>& p) {

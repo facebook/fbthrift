@@ -34,8 +34,7 @@ namespace thrift {
 namespace rocket {
 
 RocketServerFrameContext::RocketServerFrameContext(
-    RocketServerConnection& connection,
-    StreamId streamId)
+    RocketServerConnection& connection, StreamId streamId)
     : connection_(&connection), streamId_(streamId) {
   connection_->incInflightRequests();
 }
@@ -72,8 +71,7 @@ void RocketServerFrameContext::sendPayload(
 }
 
 void RocketServerFrameContext::sendError(
-    RocketException&& rex,
-    apache::thrift::MessageChannel::SendCallbackPtr cb) {
+    RocketException&& rex, apache::thrift::MessageChannel::SendCallbackPtr cb) {
   DCHECK(connection_);
   connection_->sendError(streamId_, std::move(rex), std::move(cb));
 }

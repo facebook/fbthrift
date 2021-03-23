@@ -103,8 +103,7 @@ class RocketClient : public folly::DelayedDestruction,
   FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(Payload&& request);
 
   void sendRequestFnf(
-      Payload&& request,
-      std::unique_ptr<RequestFnfCallback> callback);
+      Payload&& request, std::unique_ptr<RequestFnfCallback> callback);
 
   void sendRequestStream(
       Payload&& request,
@@ -131,12 +130,9 @@ class RocketClient : public folly::DelayedDestruction,
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
   void sendExtAlignedPage(
-      StreamId streamId,
-      std::unique_ptr<folly::IOBuf> payload,
-      Flags flags);
+      StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
   FOLLY_NODISCARD bool sendExtHeaders(
-      StreamId streamId,
-      HeadersPayload&& payload);
+      StreamId streamId, HeadersPayload&& payload);
 
   bool streamExists(StreamId streamId) const;
 
@@ -150,25 +146,17 @@ class RocketClient : public folly::DelayedDestruction,
     closeCallback_ = std::move(closeCallback);
   }
 
-  bool isAlive() const {
-    return state_ == ConnectionState::CONNECTED;
-  }
+  bool isAlive() const { return state_ == ConnectionState::CONNECTED; }
 
-  folly::exception_wrapper getLastError() const {
-    return error_;
-  }
+  folly::exception_wrapper getLastError() const { return error_; }
 
-  size_t streams() const {
-    return streams_.size();
-  }
+  size_t streams() const { return streams_.size(); }
 
   const folly::AsyncTransport* getTransportWrapper() const {
     return socket_.get();
   }
 
-  folly::AsyncTransport* getTransportWrapper() {
-    return socket_.get();
-  }
+  folly::AsyncTransport* getTransportWrapper() { return socket_.get(); }
 
   bool isDetachable() const {
     if (!evb_) {
@@ -219,9 +207,7 @@ class RocketClient : public folly::DelayedDestruction,
    *
    * Note2: call to detachEventBase() would reset the list back to nullptr.
    */
-  void setFlushList(FlushList* flushList) {
-    flushList_ = flushList;
-  }
+  void setFlushList(FlushList* flushList) { flushList_ = flushList; }
 
   void scheduleTimeout(
       folly::HHWheelTimer::Callback* callback,
@@ -237,21 +223,15 @@ class RocketClient : public folly::DelayedDestruction,
     negotiatedCompressionAlgo_ = compressionAlgo;
   }
 
-  void setAutoCompressSizeLimit(int32_t size) {
-    autoCompressSizeLimit_ = size;
-  }
+  void setAutoCompressSizeLimit(int32_t size) { autoCompressSizeLimit_ = size; }
 
-  void addInteraction() {
-    ++interactions_;
-  }
+  void addInteraction() { ++interactions_; }
   void terminateInteraction(int64_t id);
 
   // Request connection close and fail all the requests.
   void close(folly::exception_wrapper ex) noexcept;
 
-  bool incMemoryUsage(uint32_t) {
-    return true;
-  }
+  bool incMemoryUsage(uint32_t) { return true; }
 
   void decMemoryUsage(uint32_t) {}
 
@@ -363,9 +343,7 @@ class RocketClient : public folly::DelayedDestruction,
     intptr_t storage_;
   };
   struct StreamIdResolver {
-    StreamId operator()(StreamId streamId) const {
-      return streamId;
-    }
+    StreamId operator()(StreamId streamId) const { return streamId; }
 
     StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
       return callbackVariant.match(
@@ -486,34 +464,28 @@ class RocketClient : public folly::DelayedDestruction,
 
   template <typename CallbackType>
   StreamChannelStatus handlePayloadFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleErrorFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleRequestNFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleCancelFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleExtFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   void writeScheduledRequestsToSocket() noexcept;
 
   void maybeScheduleFirstResponseTimeout(
-      StreamId streamId,
-      std::chrono::milliseconds timeout);
+      StreamId streamId, std::chrono::milliseconds timeout);
   folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
 
   bool isFirstResponse(StreamId streamId) const;

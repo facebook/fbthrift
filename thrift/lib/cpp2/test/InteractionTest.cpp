@@ -64,8 +64,8 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return std::make_unique<SemiAdditionHandler>();
   }
 
-  folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
-      override {
+  folly::SemiFuture<int32_t> semifuture_addPrimitive(
+      int32_t a, int32_t b) override {
     return a + b;
   }
 };
@@ -201,18 +201,14 @@ struct CalculatorHandler : CalculatorSvIf {
       acc_ += a;
       co_return;
     }
-    folly::coro::Task<void> co_noop() override {
-      co_return;
-    }
+    folly::coro::Task<void> co_noop() override { co_return; }
     folly::coro::Task<void> co_accumulatePoint(
         std::unique_ptr<::apache::thrift::test::Point> a) override {
       *pacc_.x_ref() += *a->x_ref();
       *pacc_.y_ref() += *a->y_ref();
       co_return;
     }
-    folly::coro::Task<int32_t> co_getPrimitive() override {
-      co_return acc_;
-    }
+    folly::coro::Task<int32_t> co_getPrimitive() override { co_return acc_; }
     folly::coro::Task<std::unique_ptr<::apache::thrift::test::Point>>
     co_getPoint() override {
       co_return folly::copy_to_unique_ptr(pacc_);
@@ -224,8 +220,8 @@ struct CalculatorHandler : CalculatorSvIf {
     return std::make_unique<AdditionHandler>();
   }
 
-  folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
-      override {
+  folly::SemiFuture<int32_t> semifuture_addPrimitive(
+      int32_t a, int32_t b) override {
     return a + b;
   }
 };
@@ -410,12 +406,9 @@ TEST(InteractionCodegenTest, FastTermination) {
     struct SlowAdditionHandler : AdditionHandler {
       folly::coro::Baton &baton_, &destroyed_;
       SlowAdditionHandler(
-          folly::coro::Baton& baton,
-          folly::coro::Baton& destroyed)
+          folly::coro::Baton& baton, folly::coro::Baton& destroyed)
           : baton_(baton), destroyed_(destroyed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<int32_t> co_getPrimitive() override {
         co_await baton_;
@@ -457,12 +450,9 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteraction) {
     struct SlowAdditionHandler : AdditionHandler {
       folly::coro::Baton &baton_, &destroyed_;
       SlowAdditionHandler(
-          folly::coro::Baton& baton,
-          folly::coro::Baton& destroyed)
+          folly::coro::Baton& baton, folly::coro::Baton& destroyed)
           : baton_(baton), destroyed_(destroyed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<void> co_noop() override {
         co_await baton_;
@@ -504,9 +494,7 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
           folly::coro::Baton& destroyed,
           bool& executed)
           : baton_(baton), destroyed_(destroyed), executed_(executed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<void> co_noop() override {
         executed_ = true;
@@ -617,8 +605,7 @@ TEST(InteractionCodegenTest, SerialInteraction) {
       int acc_{0};
       folly::coro::Baton &baton2_, &baton3_;
       SerialAdditionHandler(
-          folly::coro::Baton& baton2,
-          folly::coro::Baton& baton3)
+          folly::coro::Baton& baton2, folly::coro::Baton& baton3)
           : baton2_(baton2), baton3_(baton3) {}
 
       folly::coro::Task<void> co_accumulatePrimitive(int a) override {
@@ -714,9 +701,7 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
       StreamTile(folly::Baton<>& baton, ServerStream<int>& publisherStream)
           : batonRef(baton), publisherStreamRef(publisherStream) {}
 
-      ~StreamTile() {
-        batonRef.post();
-      }
+      ~StreamTile() { batonRef.post(); }
 
       folly::Baton<>& batonRef;
       ServerStream<int>& publisherStreamRef;
@@ -823,8 +808,7 @@ TEST(InteractionCodegenTest, BasicEB) {
     struct AdditionHandler : CalculatorSvIf::AdditionFastIf {
       int acc_{0};
       void async_eb_accumulatePrimitive(
-          std::unique_ptr<HandlerCallback<void>> cb,
-          int32_t a) override {
+          std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
         acc_ += a;
         cb->exception(std::runtime_error("Not Implemented Yet"));
       }

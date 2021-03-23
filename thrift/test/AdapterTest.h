@@ -39,19 +39,11 @@ struct String {
 };
 
 struct OverloadedAdatper {
-  static Num fromThrift(int64_t val) {
-    return Num{val};
-  }
-  static String fromThrift(std::string&& val) {
-    return String{std::move(val)};
-  }
+  static Num fromThrift(int64_t val) { return Num{val}; }
+  static String fromThrift(std::string&& val) { return String{std::move(val)}; }
 
-  static int64_t toThrift(const Num& num) {
-    return num.val;
-  }
-  static const std::string& toThrift(const String& str) {
-    return str.val;
-  }
+  static int64_t toThrift(const Num& num) { return num.val; }
+  static const std::string& toThrift(const String& str) { return str.val; }
 };
 
 } // namespace apache::thrift::test

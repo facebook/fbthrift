@@ -52,21 +52,15 @@ class HTTPClientChannel : public ClientChannel,
   static HTTPClientChannel::Ptr newHTTP2Channel(
       folly::AsyncTransport::UniquePtr transport);
 
-  void setHTTPHost(const std::string& host) {
-    httpHost_ = host;
-  }
-  void setHTTPUrl(const std::string& url) {
-    httpUrl_ = url;
-  }
+  void setHTTPHost(const std::string& host) { httpHost_ = host; }
+  void setHTTPUrl(const std::string& url) { httpUrl_ = url; }
 
   // Sets the maximum pending outgoing requests allowed on this channel.
   // Subject to negotiation with the server, which may dictate a smaller
   // maximum.
   void setMaxPendingRequests(uint32_t num);
 
-  void setProtocolId(uint16_t protocolId) {
-    protocolId_ = protocolId;
-  }
+  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
   // apache::thrift::ClientChannel methods
 
@@ -85,13 +79,9 @@ class HTTPClientChannel : public ClientChannel,
   void setTimeout(uint32_t ms) override {
     timeout_ = std::chrono::milliseconds(ms);
   }
-  uint32_t getTimeout() override {
-    return timeout_.count();
-  }
+  uint32_t getTimeout() override { return timeout_.count(); }
 
-  CLIENT_TYPE getClientType() override {
-    return THRIFT_HTTP_CLIENT_TYPE;
-  }
+  CLIENT_TYPE getClientType() override { return THRIFT_HTTP_CLIENT_TYPE; }
 
   // end apache::thrift::ClientChannel methods
 
@@ -103,9 +93,7 @@ class HTTPClientChannel : public ClientChannel,
 
   // apache::thrift::RequestChannel methods
 
-  folly::EventBase* getEventBase() const override {
-    return evb_;
-  }
+  folly::EventBase* getEventBase() const override { return evb_; }
 
   void sendRequestResponse(
       const RpcOptions&,
@@ -121,13 +109,9 @@ class HTTPClientChannel : public ClientChannel,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
-  void setCloseCallback(CloseCallback* cb) override {
-    closeCallback_ = cb;
-  }
+  void setCloseCallback(CloseCallback* cb) override { closeCallback_ = cb; }
 
-  uint16_t getProtocolId() override {
-    return protocolId_;
-  }
+  uint16_t getProtocolId() override { return protocolId_; }
 
   folly::AsyncTransport* getTransport() override {
     if (httpSession_) {
@@ -250,9 +234,7 @@ class HTTPClientChannel : public ClientChannel,
 
     void requestError(folly::exception_wrapper ex);
 
-    proxygen::HTTPTransaction* getTransaction() noexcept {
-      return txn_;
-    }
+    proxygen::HTTPTransaction* getTransaction() noexcept { return txn_; }
 
    private:
     bool oneway_;

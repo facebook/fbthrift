@@ -27,9 +27,7 @@ constexpr uint8_t kCompactV1ProtocolVersion = 0x01;
 } // namespace detail
 
 inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
-    const std::string& name,
-    MessageType messageType,
-    int32_t seqid) {
+    const std::string& name, MessageType messageType, int32_t seqid) {
   uint32_t wsize = 0;
   wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
@@ -51,9 +49,7 @@ inline uint32_t CompactV1ProtocolWriter::writeDouble(double dub) {
 }
 
 inline void CompactV1ProtocolReader::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   int8_t protocolId;
   int8_t versionAndType;
 

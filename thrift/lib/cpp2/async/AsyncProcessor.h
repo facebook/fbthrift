@@ -106,9 +106,7 @@ class InteractionEventTask : public EventTask {
     }
   }
 
-  void setTile(Tile& tile) {
-    tile_ = &tile;
-  }
+  void setTile(Tile& tile) { tile_ = &tile; }
   void failWith(folly::exception_wrapper ex, std::string exCode);
 
  private:
@@ -143,12 +141,9 @@ class AsyncProcessor : public TProcessorBase {
   virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
 
   virtual void terminateInteraction(
-      int64_t id,
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept;
+      int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept;
   virtual void destroyAllInteractions(
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept;
+      Cpp2ConnContext& conn, folly::EventBase&) noexcept;
 };
 
 class ServerInterface;
@@ -215,8 +210,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   // Sends an error response if validation fails.
   static bool validateRpcKind(
-      ResponseChannelRequest::UniquePtr& req,
-      RpcKind kind);
+      ResponseChannelRequest::UniquePtr& req, RpcKind kind);
 
   // Returns true if setup succeeded and sends an error response otherwise.
   // Always runs in eb thread.
@@ -269,11 +263,9 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
  public:
   void terminateInteraction(
-      int64_t id,
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept final;
-  void destroyAllInteractions(Cpp2ConnContext& conn, folly::EventBase&) noexcept
-      final;
+      int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
+  void destroyAllInteractions(
+      Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
 };
 
 class AsyncProcessorFactory {
@@ -300,15 +292,11 @@ class RequestParams {
   RequestParams(const RequestParams&) = default;
   RequestParams& operator=(const RequestParams&) = default;
 
-  Cpp2RequestContext* getRequestContext() const {
-    return requestContext_;
-  }
+  Cpp2RequestContext* getRequestContext() const { return requestContext_; }
   concurrency::ThreadManager* getThreadManager() const {
     return threadManager_;
   }
-  folly::EventBase* getEventBase() const {
-    return eventBase_;
-  }
+  folly::EventBase* getEventBase() const { return eventBase_; }
 
  private:
   friend class ServerInterface;
@@ -357,9 +345,7 @@ class ServerInterface : public virtual AsyncProcessorFactory {
 
   void setEventBase(folly::EventBase* eb);
 
-  folly::EventBase* getEventBase() {
-    return requestParams_.eventBase_;
-  }
+  folly::EventBase* getEventBase() { return requestParams_.eventBase_; }
 
   /**
    * Override to return a pre-initialized RequestContext.
@@ -371,16 +357,14 @@ class ServerInterface : public virtual AsyncProcessorFactory {
   }
 
   virtual concurrency::PRIORITY getRequestPriority(
-      Cpp2RequestContext* ctx,
-      concurrency::PRIORITY prio);
+      Cpp2RequestContext* ctx, concurrency::PRIORITY prio);
   // TODO: replace with getRequestExecutionScope.
   concurrency::PRIORITY getRequestPriority(Cpp2RequestContext* ctx) {
     return getRequestPriority(ctx, concurrency::NORMAL);
   }
 
   virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
-      Cpp2RequestContext* ctx,
-      concurrency::PRIORITY defaultPriority) {
+      Cpp2RequestContext* ctx, concurrency::PRIORITY defaultPriority) {
     concurrency::ThreadManager::ExecutionScope es(
         getRequestPriority(ctx, defaultPriority));
     return es;
@@ -478,13 +462,9 @@ class HandlerCallbackBase {
       folly::EventBase* eb,
       Tile* interaction = nullptr);
 
-  void exception(std::exception_ptr ex) {
-    doException(ex);
-  }
+  void exception(std::exception_ptr ex) { doException(ex); }
 
-  void exception(folly::exception_wrapper ew) {
-    doExceptionWrapped(ew);
-  }
+  void exception(folly::exception_wrapper ew) { doExceptionWrapped(ew); }
 
   // Warning: just like "throw ex", this captures the STATIC type of ex, not
   // the dynamic type.  If you need the dynamic type, then either you should
@@ -510,14 +490,10 @@ class HandlerCallbackBase {
     return reqCtx_;
   }
 
-  Cpp2RequestContext* getRequestContext() {
-    return reqCtx_;
-  }
+  Cpp2RequestContext* getRequestContext() { return reqCtx_; }
 
   // pointer is valid until any of the finishing functions is called
-  Tile* getInteraction() {
-    return interaction_;
-  }
+  Tile* getInteraction() { return interaction_; }
 
   bool isRequestActive() {
     // If req_ is nullptr probably it is not managed by this HandlerCallback
@@ -525,9 +501,7 @@ class HandlerCallbackBase {
     return !req_ || req_->isActive();
   }
 
-  ResponseChannelRequest* getRequest() {
-    return req_.get();
-  }
+  ResponseChannelRequest* getRequest() { return req_.get(); }
 
   template <class F>
   void runFuncInQueue(F&& func, bool oneway = false);
@@ -610,9 +584,7 @@ class HandlerCallback : public HandlerCallbackBase {
       folly::Executor::KeepAlive<> streamEx = nullptr,
       Tile* interaction = nullptr);
 
-  void result(InputType r) {
-    doResult(std::forward<InputType>(r));
-  }
+  void result(InputType r) { doResult(std::forward<InputType>(r)); }
   void result(std::unique_ptr<ResultType> r);
 
   void complete(folly::Try<T>&& r);
@@ -644,9 +616,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       Cpp2RequestContext* reqCtx,
       Tile* interaction = nullptr);
 
-  void done() {
-    doDone();
-  }
+  void done() { doDone(); }
 
   void complete(folly::Try<folly::Unit>&& r);
 
@@ -860,13 +830,7 @@ HandlerCallback<T>::HandlerCallback(
     folly::Executor::KeepAlive<> streamEx,
     Tile* interaction)
     : HandlerCallbackBase(
-          std::move(req),
-          std::move(ctx),
-          ewp,
-          eb,
-          tm,
-          reqCtx,
-          interaction),
+          std::move(req), std::move(ctx), ewp, eb, tm, reqCtx, interaction),
       cp_(cp),
       streamEx_(std::move(streamEx)) {
   this->protoSeqId_ = protoSeqId;
@@ -961,9 +925,7 @@ template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType&&;
   using CobPtr = std::pair<folly::IOBufQueue, SinkConsumerImpl> (*)(
-      ContextStack*,
-      InputType,
-      folly::Executor::KeepAlive<>);
+      ContextStack*, InputType, folly::Executor::KeepAlive<>);
   static std::pair<folly::IOBufQueue, SinkConsumerImpl> call(
       CobPtr cob,
       int32_t,

@@ -112,18 +112,10 @@ struct ValueHelper<type::map<K, V>> {
 
 class BaseObjectAdapter {
  public:
-  static constexpr ProtocolType protocolType() {
-    return {};
-  }
-  static constexpr bool kUsesFieldNames() {
-    return true;
-  }
-  static constexpr bool kOmitsContainerSizes() {
-    return false;
-  }
-  static constexpr bool kSortKeys() {
-    return false;
-  }
+  static constexpr ProtocolType protocolType() { return {}; }
+  static constexpr bool kUsesFieldNames() { return true; }
+  static constexpr bool kOmitsContainerSizes() { return false; }
+  static constexpr bool kSortKeys() { return false; }
 };
 
 class ObjectWriter : public BaseObjectAdapter {
@@ -137,12 +129,10 @@ class ObjectWriter : public BaseObjectAdapter {
     beginValue().objectValue_ref().ensure();
     return 0;
   }
-  uint32_t writeStructEnd() {
-    return endValue(Value::objectValue);
-  }
+  uint32_t writeStructEnd() { return endValue(Value::objectValue); }
 
-  uint32_t
-  writeFieldBegin(const char* name, TType /*fieldType*/, int16_t /*fieldId*/) {
+  uint32_t writeFieldBegin(
+      const char* name, TType /*fieldType*/, int16_t /*fieldId*/) {
     auto result = cur(Value::objectValue)
                       .mutable_objectValue()
                       .members_ref()
@@ -158,37 +148,29 @@ class ObjectWriter : public BaseObjectAdapter {
     return 0;
   }
 
-  uint32_t writeFieldStop() {
-    return 0;
-  }
+  uint32_t writeFieldStop() { return 0; }
 
-  uint32_t
-  writeMapBegin(const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
+  uint32_t writeMapBegin(
+      const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
     beginValue().mapValue_ref().ensure();
     return 0;
   }
 
-  uint32_t writeMapEnd() {
-    return endValue(Value::mapValue);
-  }
+  uint32_t writeMapEnd() { return endValue(Value::mapValue); }
 
   uint32_t writeListBegin(TType /*elemType*/, uint32_t size) {
     beginValue().listValue_ref().ensure().reserve(size);
     return 0;
   }
 
-  uint32_t writeListEnd() {
-    return endValue(Value::listValue);
-  }
+  uint32_t writeListEnd() { return endValue(Value::listValue); }
 
   uint32_t writeSetBegin(TType /*elemType*/, uint32_t /*size*/) {
     beginValue().setValue_ref().ensure();
     return 0;
   }
 
-  uint32_t writeSetEnd() {
-    return endValue(Value::setValue);
-  }
+  uint32_t writeSetEnd() { return endValue(Value::setValue); }
 
   uint32_t writeBool(bool value) {
     ValueHelper<type::bool_t>::set(beginValue(), value);

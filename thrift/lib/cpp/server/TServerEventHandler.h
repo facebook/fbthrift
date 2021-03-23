@@ -54,9 +54,7 @@ class TServerEventHandler {
    *
    * @param e The exception that caused the failure, if any.
    */
-  virtual void handleServeError(const std::exception& x) {
-    (void)x;
-  }
+  virtual void handleServeError(const std::exception& x) { (void)x; }
 
   void handleServeError() {
     handleServeError(TLibraryException("serve() threw non-exception type"));
@@ -68,9 +66,7 @@ class TServerEventHandler {
    * @param ctx A pointer to the connection context.  The context will remain
    *            valid until the corresponding connectionDestroyed() call.
    */
-  virtual void newConnection(TConnectionContext* ctx) {
-    (void)ctx;
-  }
+  virtual void newConnection(TConnectionContext* ctx) { (void)ctx; }
 
   /**
    * Called when a client has finished request-handling to delete server
@@ -79,9 +75,7 @@ class TServerEventHandler {
    * @param ctx A pointer to the connection context.  The context will be
    *            destroyed after connectionDestroyed() returns.
    */
-  virtual void connectionDestroyed(TConnectionContext* ctx) {
-    (void)ctx;
-  }
+  virtual void connectionDestroyed(TConnectionContext* ctx) { (void)ctx; }
 
  protected:
   /**

@@ -88,8 +88,7 @@ RocketStreamClientCallback& RocketServerConnection::createStreamClientCallback(
 }
 
 RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
-    StreamId streamId,
-    RocketServerConnection& connection) {
+    StreamId streamId, RocketServerConnection& connection) {
   auto callback =
       std::make_unique<RocketSinkClientCallback>(streamId, connection);
   auto& callbackRef = *callback;
@@ -608,8 +607,7 @@ void RocketServerConnection::writeSuccess() noexcept {
 }
 
 void RocketServerConnection::writeErr(
-    size_t /* bytesWritten */,
-    const folly::AsyncSocketException& ex) noexcept {
+    size_t /* bytesWritten */, const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
   auto& context = inflightWritesQueue_.front();
@@ -711,8 +709,7 @@ void RocketServerConnection::sendMetadataPush(
 }
 
 void RocketServerConnection::freeStream(
-    StreamId streamId,
-    bool markRequestComplete) {
+    StreamId streamId, bool markRequestComplete) {
   DestructorGuard dg(this);
 
   bufferedFragments_.erase(streamId);

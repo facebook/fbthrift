@@ -119,10 +119,7 @@ LegacySerializedRequest::LegacySerializedRequest(
     folly::StringPiece methodName,
     SerializedRequest&& serializedRequest)
     : LegacySerializedRequest(
-          protocolId,
-          0,
-          methodName,
-          std::move(serializedRequest)) {}
+          protocolId, 0, methodName, std::move(serializedRequest)) {}
 
 LegacySerializedResponse::LegacySerializedResponse(
     uint16_t protocolId,
@@ -141,10 +138,7 @@ LegacySerializedResponse::LegacySerializedResponse(
     folly::StringPiece methodName,
     SerializedResponse&& serializedResponse)
     : LegacySerializedResponse(
-          protocolId,
-          0,
-          methodName,
-          std::move(serializedResponse)) {}
+          protocolId, 0, methodName, std::move(serializedResponse)) {}
 
 LegacySerializedResponse::LegacySerializedResponse(
     uint16_t protocolId,

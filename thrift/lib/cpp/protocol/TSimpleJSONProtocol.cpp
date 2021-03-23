@@ -44,9 +44,7 @@ Schema* TSimpleJSONProtocol::getSchema() {
 }
 
 uint32_t TSimpleJSONProtocol::writeFieldBegin(
-    const char* name,
-    const TType /*fieldType*/,
-    const int16_t /*fieldId*/) {
+    const char* name, const TType /*fieldType*/, const int16_t /*fieldId*/) {
   return writeJSONString(name);
 }
 
@@ -55,9 +53,7 @@ uint32_t TSimpleJSONProtocol::writeFieldEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::writeMapBegin(
-    const TType /*keyType*/,
-    const TType /*valType*/,
-    const uint32_t /*size*/) {
+    const TType /*keyType*/, const TType /*valType*/, const uint32_t /*size*/) {
   return writeJSONObjectStart();
 }
 
@@ -66,14 +62,12 @@ uint32_t TSimpleJSONProtocol::writeMapEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::writeListBegin(
-    const TType /*elemType*/,
-    const uint32_t /*size*/) {
+    const TType /*elemType*/, const uint32_t /*size*/) {
   return writeJSONArrayStart();
 }
 
 uint32_t TSimpleJSONProtocol::writeSetBegin(
-    const TType /*elemType*/,
-    const uint32_t /*size*/) {
+    const TType /*elemType*/, const uint32_t /*size*/) {
   return writeJSONArrayStart();
 }
 
@@ -105,9 +99,7 @@ uint32_t TSimpleJSONProtocol::readStructEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   uint32_t result = 0;
 
   auto currentType = getCurrentDataType();
@@ -179,10 +171,7 @@ uint32_t TSimpleJSONProtocol::readFieldEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();
@@ -221,9 +210,7 @@ uint32_t TSimpleJSONProtocol::readMapEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::readListBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();
@@ -263,9 +250,7 @@ uint32_t TSimpleJSONProtocol::readListEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::readSetBegin(
-    TType& elemType,
-    uint32_t& size,
-    bool& sizeUnknown) {
+    TType& elemType, uint32_t& size, bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();

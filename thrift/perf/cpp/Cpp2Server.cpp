@@ -56,9 +56,7 @@ DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_string(ticket_seeds, "", "server Ticket seeds file");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(
-    ecc_curve,
-    "prime256v1",
-    "The ECC curve to use for EC handshakes");
+    ecc_curve, "prime256v1", "The ECC curve to use for EC handshakes");
 DEFINE_bool(enable_tfo, true, "Enable TFO");
 DEFINE_int32(tfo_queue_size, 1000, "TFO queue size");
 

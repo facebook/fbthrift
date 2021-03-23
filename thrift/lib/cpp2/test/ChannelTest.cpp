@@ -85,8 +85,7 @@ class EventBaseAborter : public folly::AsyncTimeout {
  public:
   EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
       : folly::AsyncTimeout(
-            eventBase,
-            folly::AsyncTimeout::InternalEnum::INTERNAL),
+            eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL),
         eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }
@@ -200,9 +199,7 @@ class SocketPairTest {
     eventBase_.loop();
   }
 
-  void run() {
-    runWithTimeout();
-  }
+  void run() { runWithTimeout(); }
 
   void getctx(
       std::shared_ptr<folly::SSLContext> clientCtx,
@@ -214,21 +211,13 @@ class SocketPairTest {
     serverCtx->loadPrivateKey(folly::kTestKey);
   }
 
-  int getFd0() {
-    return socket0_->getNetworkSocket().toFd();
-  }
+  int getFd0() { return socket0_->getNetworkSocket().toFd(); }
 
-  int getFd1() {
-    return socket1_->getNetworkSocket().toFd();
-  }
+  int getFd1() { return socket1_->getNetworkSocket().toFd(); }
 
-  shared_ptr<folly::AsyncSocket> getSocket0() {
-    return socket0_;
-  }
+  shared_ptr<folly::AsyncSocket> getSocket0() { return socket0_; }
 
-  shared_ptr<folly::AsyncSocket> getSocket1() {
-    return socket1_;
-  }
+  shared_ptr<folly::AsyncSocket> getSocket1() { return socket1_; }
 
   void runWithTimeout(uint32_t timeoutMS = 6000) {
     preLoop();
@@ -260,21 +249,15 @@ class MessageCallback : public MessageChannel::SendCallback,
 
   void sendQueued() override {}
 
-  void messageSent() override {
-    sent_++;
-  }
-  void messageSendError(folly::exception_wrapper&&) override {
-    sendError_++;
-  }
+  void messageSent() override { sent_++; }
+  void messageSendError(folly::exception_wrapper&&) override { sendError_++; }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&&)
-      override {
+  void messageReceived(
+      unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&&) override {
     recv_++;
     recvBytes_ += buf->computeChainDataLength();
   }
-  void messageChannelEOF() override {
-    recvEOF_++;
-  }
+  void messageChannelEOF() override { recvEOF_++; }
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override {
     sendError_++;
   }
@@ -309,9 +292,7 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
     delete this;
   }
 
-  void channelClosed() override {
-    closed_ = true;
-  }
+  void channelClosed() override { closed_ = true; }
 
   static void reset() {
     closed_ = false;
@@ -379,8 +360,8 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
     EXPECT_EQ(recvBytes_, len_);
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header)
-      override {
+  void messageReceived(
+      unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) override {
     MessageCallback::messageReceived(std::move(buf), std::move(header));
     channel1_->setReceiveCallback(nullptr);
   }
@@ -550,9 +531,7 @@ class HeaderChannelClosedTest
    public:
     explicit Callback(HeaderChannelClosedTest* c) : c_(c) {}
 
-    ~Callback() override {
-      c_->callbackDtor_ = true;
-    }
+    ~Callback() override { c_->callbackDtor_ = true; }
 
     void onResponse(ClientReceiveState&&) noexcept override {
       FAIL() << "should not recv reply from closed channel";
@@ -1155,52 +1134,26 @@ class DestroyAsyncTransport : public folly::AsyncTransport {
   void closeNow() override {}
   void shutdownWrite() override {}
   void shutdownWriteNow() override {}
-  bool good() const override {
-    return true;
-  }
-  bool readable() const override {
-    return false;
-  }
-  bool connecting() const override {
-    return false;
-  }
-  bool error() const override {
-    return false;
-  }
+  bool good() const override { return true; }
+  bool readable() const override { return false; }
+  bool connecting() const override { return false; }
+  bool error() const override { return false; }
   void attachEventBase(folly::EventBase*) override {}
   void detachEventBase() override {}
-  bool isDetachable() const override {
-    return true;
-  }
-  folly::EventBase* getEventBase() const override {
-    return nullptr;
-  }
+  bool isDetachable() const override { return true; }
+  folly::EventBase* getEventBase() const override { return nullptr; }
   void setSendTimeout(uint32_t /* ms */) override {}
-  uint32_t getSendTimeout() const override {
-    return 0;
-  }
+  uint32_t getSendTimeout() const override { return 0; }
   void getLocalAddress(folly::SocketAddress*) const override {}
   void getPeerAddress(folly::SocketAddress*) const override {}
-  size_t getAppBytesWritten() const override {
-    return 0;
-  }
-  size_t getRawBytesWritten() const override {
-    return 0;
-  }
-  size_t getAppBytesReceived() const override {
-    return 0;
-  }
-  size_t getRawBytesReceived() const override {
-    return 0;
-  }
+  size_t getAppBytesWritten() const override { return 0; }
+  size_t getRawBytesWritten() const override { return 0; }
+  size_t getAppBytesReceived() const override { return 0; }
+  size_t getRawBytesReceived() const override { return 0; }
   void setEorTracking(bool /* track */) override {}
-  bool isEorTrackingEnabled() const override {
-    return false;
-  }
+  bool isEorTrackingEnabled() const override { return false; }
 
-  void invokeEOF() {
-    cb_->readEOF();
-  }
+  void invokeEOF() { cb_->readEOF(); }
 
  private:
   folly::AsyncTransport::ReadCallback* cb_;

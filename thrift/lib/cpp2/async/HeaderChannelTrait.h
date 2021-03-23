@@ -40,23 +40,13 @@ class HeaderChannelTrait {
 
   void setClientType(CLIENT_TYPE ct);
   // Force using specified client type when using legacy client types
-  void forceClientType(bool enable) {
-    forceClientType_ = enable;
-  }
-  bool getForceClientType() {
-    return forceClientType_;
-  }
-  CLIENT_TYPE getClientType() {
-    return clientType_;
-  }
+  void forceClientType(bool enable) { forceClientType_ = enable; }
+  bool getForceClientType() { return forceClientType_; }
+  CLIENT_TYPE getClientType() { return clientType_; }
   void updateClientType(CLIENT_TYPE ct);
 
-  uint16_t getFlags() const {
-    return flags_;
-  }
-  void setFlags(uint16_t flags) {
-    flags_ = flags;
-  }
+  uint16_t getFlags() const { return flags_; }
+  void setFlags(uint16_t flags) { flags_ = flags; }
 
   void setTransform(uint16_t transId) {
     for (auto& trans : writeTrans_) {

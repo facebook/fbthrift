@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
 #include "thrift/test/reflection/visitation_same_build_rule.h"
+#include <folly/portability/GTest.h>
 
 TEST(TestStruct, names) {
   std::vector<std::string> expected = {"foo", "bar"};

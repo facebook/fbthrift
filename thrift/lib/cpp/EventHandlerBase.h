@@ -32,9 +32,7 @@ class EventHandlerBase {
  public:
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler);
 
-  void clearEventHandlers() {
-    handlers_.reset();
-  }
+  void clearEventHandlers() { handlers_.reset(); }
 
   folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
       const;

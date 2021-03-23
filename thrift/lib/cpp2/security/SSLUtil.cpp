@@ -27,17 +27,11 @@ class StopTLSSocket : public folly::AsyncSocket {
  public:
   using AsyncSocket::AsyncSocket;
 
-  std::string getSecurityProtocol() const override {
-    return "stopTLS";
-  }
+  std::string getSecurityProtocol() const override { return "stopTLS"; }
 
-  std::string getApplicationProtocol() const noexcept override {
-    return alpn_;
-  }
+  std::string getApplicationProtocol() const noexcept override { return alpn_; }
 
-  void setApplicationProtocol(std::string alpn) noexcept {
-    alpn_ = alpn;
-  }
+  void setApplicationProtocol(std::string alpn) noexcept { alpn_ = alpn; }
 
  private:
   // alpn of original socket, must save

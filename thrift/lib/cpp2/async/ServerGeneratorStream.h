@@ -76,8 +76,7 @@ class ServerGeneratorStream : public TwoWayBridge<
 
  private:
   ServerGeneratorStream(
-      StreamClientCallback* clientCallback,
-      folly::EventBase* clientEb);
+      StreamClientCallback* clientCallback, folly::EventBase* clientEb);
 
   bool wait(ServerStreamConsumer* consumer);
 

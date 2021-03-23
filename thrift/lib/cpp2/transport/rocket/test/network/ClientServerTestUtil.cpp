@@ -259,8 +259,7 @@ RocketTestClient::sendRequestStreamSync(Payload request) {
 }
 
 void RocketTestClient::sendRequestChannel(
-    ChannelClientCallback* callback,
-    Payload request) {
+    ChannelClientCallback* callback, Payload request) {
   evb_.runInEventBaseThread(
       [this, request = std::move(request), callback]() mutable {
         fm_.addTask([this, request = std::move(request), callback]() mutable {
@@ -272,8 +271,7 @@ void RocketTestClient::sendRequestChannel(
 }
 
 void RocketTestClient::sendRequestSink(
-    SinkClientCallback* callback,
-    Payload request) {
+    SinkClientCallback* callback, Payload request) {
   evb_.runInEventBaseThread(
       [this, request = std::move(request), callback]() mutable {
         fm_.addTask([this, request = std::move(request), callback]() mutable {
@@ -329,9 +327,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
         frameHandlerFactory_(std::move(frameHandlerFactory)),
         shutdownPromise_(std::move(shutdownPromise)) {}
 
-  ~RocketTestServerAcceptor() override {
-    EXPECT_EQ(0, connections_);
-  }
+  ~RocketTestServerAcceptor() override { EXPECT_EQ(0, connections_); }
 
   void onNewConnection(
       folly::AsyncTransport::UniquePtr socket,
@@ -346,9 +342,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
     getConnectionManager()->addConnection(connection);
   }
 
-  void onConnectionsDrained() override {
-    shutdownPromise_.set_value();
-  }
+  void onConnectionsDrained() override { shutdownPromise_.set_value(); }
 
   void onConnectionAdded(const wangle::ManagedConnection*) override {
     ++connections_;
@@ -382,8 +376,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       folly::EventBase& ioEvb,
       const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata)
       : ioEvb_(ioEvb), expectedSetupMetadata_(expectedSetupMetadata) {}
-  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& connection)
-      final {
+  void handleSetupFrame(
+      SetupFrame&& frame, RocketServerConnection& connection) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Rocket protocol key
     uint32_t protocolKey;
@@ -410,8 +404,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
   }
 
   void handleRequestResponseFrame(
-      RequestResponseFrame&& frame,
-      RocketServerFrameContext&& context) final {
+      RequestResponseFrame&& frame, RocketServerFrameContext&& context) final {
     auto dam = splitMetadataAndData(frame.payload());
     auto payload = std::move(frame.payload());
     auto dataPiece = getRange(*dam.second);
@@ -433,8 +426,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         nullptr);
   }
 
-  void handleRequestFnfFrame(RequestFnfFrame&&, RocketServerFrameContext&&)
-      final {}
+  void handleRequestFnfFrame(
+      RequestFnfFrame&&, RocketServerFrameContext&&) final {}
 
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
@@ -443,9 +436,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     class TestRocketStreamServerCallback final : public StreamServerCallback {
      public:
       TestRocketStreamServerCallback(
-          StreamClientCallback* clientCallback,
-          size_t n,
-          size_t nEchoHeaders)
+          StreamClientCallback* clientCallback, size_t n, size_t nEchoHeaders)
           : clientCallback_(clientCallback),
             n_(n),
             nEchoHeaders_(nEchoHeaders) {}
@@ -464,9 +455,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         return true;
       }
 
-      void onStreamCancel() override {
-        delete this;
-      }
+      void onStreamCancel() override { delete this; }
 
       bool onSinkHeaders(HeadersPayload&& payload) override {
         auto metadata_ref = payload.payload.otherMetadata_ref();

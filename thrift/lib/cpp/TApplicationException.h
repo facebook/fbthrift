@@ -67,15 +67,12 @@ class TApplicationException : public TException {
       : message_(message), type_(UNKNOWN) {}
 
   TApplicationException(
-      TApplicationExceptionType type,
-      const std::string& message)
+      TApplicationExceptionType type, const std::string& message)
       : message_(message), type_(type) {}
 
   ~TApplicationException() throw() override {}
 
-  const std::string& getMessage() const {
-    return message_;
-  }
+  const std::string& getMessage() const { return message_; }
 
   /**
    * Returns an error code that provides information about the type of error
@@ -83,17 +80,11 @@ class TApplicationException : public TException {
    *
    * @return Error code
    */
-  TApplicationExceptionType getType() const {
-    return type_;
-  }
+  TApplicationExceptionType getType() const { return type_; }
 
-  void setMessage(std::string&& msg) {
-    message_ = std::move(msg);
-  }
+  void setMessage(std::string&& msg) { message_ = std::move(msg); }
 
-  void setType(TApplicationExceptionType type) {
-    type_ = type;
-  }
+  void setType(TApplicationExceptionType type) { type_ = type; }
 
   const char* what() const throw() override {
     if (message_.empty()) {
@@ -282,9 +273,7 @@ class TApplicationException : public TException {
 struct AppClientException : public TApplicationException {
   AppClientException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
-  const auto& name() const noexcept {
-    return name_;
-  }
+  const auto& name() const noexcept { return name_; }
 
  private:
   std::string name_;
@@ -299,9 +288,7 @@ struct AppClientException : public TApplicationException {
 struct AppServerException : TApplicationException {
   AppServerException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
-  const auto& name() const noexcept {
-    return name_;
-  }
+  const auto& name() const noexcept { return name_; }
 
  private:
   std::string name_;

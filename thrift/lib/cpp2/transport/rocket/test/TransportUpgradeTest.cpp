@@ -76,8 +76,7 @@ class TransportUpgradeTest : public TestSetup {
 
   template <typename F>
   void testRawClientRocketUpgradeSync(
-      bool serverUpgradeEnabled,
-      F configureHeaderChannel) {
+      bool serverUpgradeEnabled, F configureHeaderChannel) {
     // enable raw client transport upgrade to rocket
     THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
@@ -107,8 +106,7 @@ class TransportUpgradeTest : public TestSetup {
 
   template <typename F>
   void testRawClientRocketUpgradeAsync(
-      bool serverUpgradeEnabled,
-      F configureHeaderChannel) {
+      bool serverUpgradeEnabled, F configureHeaderChannel) {
     // enable raw client transport upgrade to rocket
     THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
@@ -203,22 +201,19 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeSyncEnabled_BinaryProtocol) {
 }
 
 TEST_F(
-    TransportUpgradeTest,
-    RawClientRocketUpgradeSyncDisabled_BinaryProtocol) {
+    TransportUpgradeTest, RawClientRocketUpgradeSyncDisabled_BinaryProtocol) {
   testRawClientRocketUpgradeSync(
       false /*serverUpgradeEnabled*/, useBinaryProtocol);
 }
 
 TEST_F(
-    TransportUpgradeTest,
-    RawClientRocketUpgradeAsyncEnabled_BinaryProtocol) {
+    TransportUpgradeTest, RawClientRocketUpgradeAsyncEnabled_BinaryProtocol) {
   testRawClientRocketUpgradeAsync(
       true /*serverUpgradeEnabled*/, useBinaryProtocol);
 }
 
 TEST_F(
-    TransportUpgradeTest,
-    RawClientRocketUpgradeAsyncDisabled_BinaryProtocol) {
+    TransportUpgradeTest, RawClientRocketUpgradeAsyncDisabled_BinaryProtocol) {
   testRawClientRocketUpgradeAsync(
       false /*serverUpgradeEnabled*/, useBinaryProtocol);
 }

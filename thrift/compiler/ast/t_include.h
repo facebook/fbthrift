@@ -29,9 +29,7 @@ class t_include : public t_node {
  public:
   explicit t_include(t_program* program) : program_(program) {}
 
-  t_program* get_program() const {
-    return program_;
-  }
+  t_program* get_program() const { return program_; }
 
  private:
   t_program* program_;

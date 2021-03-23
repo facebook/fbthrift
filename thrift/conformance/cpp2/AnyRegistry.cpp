@@ -52,28 +52,24 @@ folly::fbstring maybeGetTypeHash(
 } // namespace
 
 AnyRegistry::TypeEntry::TypeEntry(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type)
+    const std::type_info& typeInfo, ThriftTypeInfo type)
     : typeInfo(typeInfo),
       typeHash(maybeGetTypeHash(type)),
       type(std::move(type)) {}
 
 bool AnyRegistry::registerType(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type) {
+    const std::type_info& typeInfo, ThriftTypeInfo type) {
   return registerTypeImpl(typeInfo, std::move(type)) != nullptr;
 }
 
 bool AnyRegistry::registerSerializer(
-    const std::type_info& type,
-    const AnySerializer* serializer) {
+    const std::type_info& type, const AnySerializer* serializer) {
   return registerSerializerImpl(
       serializer, &registry_.at(std::type_index(type)));
 }
 
 bool AnyRegistry::registerSerializer(
-    const std::type_info& type,
-    std::unique_ptr<AnySerializer> serializer) {
+    const std::type_info& type, std::unique_ptr<AnySerializer> serializer) {
   return registerSerializerImpl(
       std::move(serializer), &registry_.at(std::type_index(type)));
 }
@@ -110,14 +106,12 @@ const std::type_info* AnyRegistry::tryGetTypeId(
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
-    const std::type_info& type,
-    const Protocol& protocol) const noexcept {
+    const std::type_info& type, const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntry(type), protocol);
 }
 
 const AnySerializer* AnyRegistry::getSerializerByUri(
-    const std::string_view uri,
-    const Protocol& protocol) const noexcept {
+    const std::string_view uri, const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntryByUri(uri), protocol);
 }
 
@@ -208,8 +202,7 @@ std::string AnyRegistry::debugString() const {
 }
 
 bool AnyRegistry::forceRegisterType(
-    const std::type_info& typeInfo,
-    std::string type) {
+    const std::type_info& typeInfo, std::string type) {
   if (getTypeEntryByUri(type) != nullptr) {
     return false;
   }
@@ -230,8 +223,7 @@ bool AnyRegistry::forceRegisterType(
 }
 
 auto AnyRegistry::registerTypeImpl(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type) -> TypeEntry* {
+    const std::type_info& typeInfo, ThriftTypeInfo type) -> TypeEntry* {
   validateThriftTypeInfo(type);
   std::vector<folly::fbstring> typeHashs;
   typeHashs.reserve(type.altUris_ref()->size() + 1);
@@ -260,8 +252,7 @@ auto AnyRegistry::registerTypeImpl(
 }
 
 bool AnyRegistry::registerSerializerImpl(
-    const AnySerializer* serializer,
-    TypeEntry* entry) {
+    const AnySerializer* serializer, TypeEntry* entry) {
   if (serializer == nullptr) {
     return false;
   }
@@ -271,8 +262,7 @@ bool AnyRegistry::registerSerializerImpl(
 }
 
 bool AnyRegistry::registerSerializerImpl(
-    std::unique_ptr<AnySerializer> serializer,
-    TypeEntry* entry) {
+    std::unique_ptr<AnySerializer> serializer, TypeEntry* entry) {
   if (!registerSerializerImpl(serializer.get(), entry)) {
     return false;
   }
@@ -319,8 +309,7 @@ void AnyRegistry::indexUri(std::string_view uri, TypeEntry* entry) noexcept {
 }
 
 void AnyRegistry::indexHash(
-    folly::fbstring&& typeHash,
-    TypeEntry* entry) noexcept {
+    folly::fbstring&& typeHash, TypeEntry* entry) noexcept {
   auto res = hashIndex_.emplace(std::move(typeHash), entry);
   DCHECK(res.second);
 }
@@ -382,8 +371,7 @@ auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
-    const TypeEntry* entry,
-    const Protocol& protocol) const noexcept {
+    const TypeEntry* entry, const Protocol& protocol) const noexcept {
   if (entry == nullptr) {
     return nullptr;
   }
@@ -425,8 +413,7 @@ auto AnyRegistry::getAndCheckTypeEntryByHash(
 }
 
 const AnySerializer& AnyRegistry::getAndCheckSerializer(
-    const TypeEntry& entry,
-    const Protocol& protocol) const {
+    const TypeEntry& entry, const Protocol& protocol) const {
   auto itr = entry.serializers.find(protocol);
   if (itr == entry.serializers.end()) {
     folly::throw_exception<std::out_of_range>(fmt::format(

@@ -117,21 +117,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-  ~ThriftRequestCore() override {
-    cancelTimeout();
-  }
+  ~ThriftRequestCore() override { cancelTimeout(); }
 
-  bool isActive() const final {
-    return stateMachine_.isActive();
-  }
+  bool isActive() const final { return stateMachine_.isActive(); }
 
-  bool tryCancel() {
-    return stateMachine_.tryCancel(getEventBase());
-  }
+  bool tryCancel() { return stateMachine_.tryCancel(getEventBase()); }
 
-  RpcKind kind() const {
-    return kind_;
-  }
+  RpcKind kind() const { return kind_; }
 
   bool isOneway() const final {
     return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
@@ -142,13 +134,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
     return static_cast<protocol::PROTOCOL_TYPES>(header_.getProtocolId());
   }
 
-  Cpp2RequestContext* getRequestContext() {
-    return &reqContext_;
-  }
+  Cpp2RequestContext* getRequestContext() { return &reqContext_; }
 
-  const transport::THeader& getTHeader() const {
-    return header_;
-  }
+  const transport::THeader& getTHeader() const { return header_; }
 
   const std::string& getMethodName() const {
     return reqContext_.getMethodName();
@@ -269,9 +257,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-  bool isReplyChecksumNeeded() const override {
-    return checksumRequested_;
-  }
+  bool isReplyChecksumNeeded() const override { return checksumRequested_; }
 
  protected:
   virtual void sendThriftResponse(
@@ -307,9 +293,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 #endif
 
-  bool tryStartProcessing() final {
-    return stateMachine_.tryStartProcessing();
-  }
+  bool tryStartProcessing() final { return stateMachine_.tryStartProcessing(); }
 
   virtual void closeConnection(folly::exception_wrapper) noexcept {
     LOG(FATAL) << "closeConnection not implemented";
@@ -529,9 +513,7 @@ class ThriftRequest final : public ThriftRequestCore {
     scheduleTimeouts();
   }
 
-  ~ThriftRequest() {
-    serverConfigs_.decActiveRequests();
-  }
+  ~ThriftRequest() { serverConfigs_.decActiveRequests(); }
 
  private:
   void sendThriftResponse(

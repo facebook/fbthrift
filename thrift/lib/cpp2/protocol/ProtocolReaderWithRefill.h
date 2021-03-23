@@ -86,15 +86,13 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
   }
 
   inline void readFieldBegin(
-      std::string& name,
-      TType& fieldType,
-      int16_t& fieldId) override {
+      std::string& name, TType& fieldType, int16_t& fieldId) override {
     ensureFieldBegin();
     protocol_.readFieldBegin(name, fieldType, fieldId);
   }
 
-  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size)
-      override {
+  inline void readMapBegin(
+      TType& keyType, TType& valType, uint32_t& size) override {
     ensureMapBegin();
     protocol_.readMapBegin(keyType, valType, size);
   }
@@ -147,21 +145,13 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     protocol_.readFloat(flt);
   }
 
-  inline void readString(std::string& str) override {
-    readStringImpl(str);
-  }
+  inline void readString(std::string& str) override { readStringImpl(str); }
 
-  inline void readString(folly::fbstring& str) override {
-    readStringImpl(str);
-  }
+  inline void readString(folly::fbstring& str) override { readStringImpl(str); }
 
-  inline void readBinary(std::string& str) override {
-    readStringImpl(str);
-  }
+  inline void readBinary(std::string& str) override { readStringImpl(str); }
 
-  inline void readBinary(folly::fbstring& str) override {
-    readStringImpl(str);
-  }
+  inline void readBinary(folly::fbstring& str) override { readStringImpl(str); }
 
   inline void readBinary(apache::thrift::detail::SkipNoopString& str) override {
     readStringImpl(str);
@@ -175,9 +165,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     readBinaryIOBufImpl(str);
   }
 
-  inline void skip(TType type) override {
-    apache::thrift::skip(*this, type);
-  }
+  inline void skip(TType type) override { apache::thrift::skip(*this, type); }
 
  private:
   /**
@@ -310,9 +298,7 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
   }
 
   inline void readFieldBegin(
-      std::string& /*name*/,
-      TType& fieldType,
-      int16_t& fieldId) override {
+      std::string& /*name*/, TType& fieldType, int16_t& fieldId) override {
     int8_t type;
     readByte(type);
     fieldType = (TType)type;
@@ -323,8 +309,8 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     readI16(fieldId);
   }
 
-  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size)
-      override {
+  inline void readMapBegin(
+      TType& keyType, TType& valType, uint32_t& size) override {
     ensureBuffer(6);
     protocol_.readMapBegin(keyType, valType, size);
   }
@@ -378,21 +364,13 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     protocol_.readFloat(flt);
   }
 
-  inline void readString(std::string& str) override {
-    readStringImpl(str);
-  }
+  inline void readString(std::string& str) override { readStringImpl(str); }
 
-  inline void readString(folly::fbstring& str) override {
-    readStringImpl(str);
-  }
+  inline void readString(folly::fbstring& str) override { readStringImpl(str); }
 
-  inline void readBinary(std::string& str) override {
-    readStringImpl(str);
-  }
+  inline void readBinary(std::string& str) override { readStringImpl(str); }
 
-  inline void readBinary(folly::fbstring& str) override {
-    readStringImpl(str);
-  }
+  inline void readBinary(folly::fbstring& str) override { readStringImpl(str); }
 
   inline void readBinary(apache::thrift::detail::SkipNoopString& str) override {
     readStringImpl(str);
@@ -406,9 +384,7 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     readBinaryIOBufImpl(str);
   }
 
-  inline void skip(TType type) override {
-    apache::thrift::skip(*this, type);
-  }
+  inline void skip(TType type) override { apache::thrift::skip(*this, type); }
 
  private:
   template <typename StrType>

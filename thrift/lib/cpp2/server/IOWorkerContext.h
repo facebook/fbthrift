@@ -27,9 +27,7 @@ namespace thrift {
  */
 class IOWorkerContext {
  public:
-  virtual ~IOWorkerContext() {
-    *(alive_->wlock()) = false;
-  }
+  virtual ~IOWorkerContext() { *(alive_->wlock()) = false; }
 
   /**
    * Get the reply queue.

@@ -21,10 +21,10 @@
 #include <thread>
 #include <vector>
 
+#include <glog/logging.h>
 #include <folly/executors/MeteredExecutor.h>
 #include <folly/experimental/FunctionScheduler.h>
 #include <folly/hash/Hash.h>
-#include <glog/logging.h>
 
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -41,18 +41,14 @@ class SFQThreadManagerConfig {
     perturb_ = p;
     return *this;
   }
-  std::chrono::milliseconds getPerturbInterval() const {
-    return perturb_;
-  }
+  std::chrono::milliseconds getPerturbInterval() const { return perturb_; }
 
   // Currently only supporting fair queuing for upstream source.
   SFQThreadManagerConfig& setNumFairQueuesForUpstream(size_t numQueues) {
     numQueues_ = numQueues;
     return *this;
   }
-  size_t getNumFairQueuesForUpstream() const {
-    return numQueues_;
-  }
+  size_t getNumFairQueuesForUpstream() const { return numQueues_; }
 
   SFQThreadManagerConfig& setExecutors(
       std::array<std::shared_ptr<folly::Executor>, N_PRIORITIES> executors) {
@@ -114,8 +110,8 @@ class SFQThreadManager : public ThreadManagerExecutorAdapter {
   explicit SFQThreadManager(SFQThreadManagerConfig config);
   ~SFQThreadManager() override;
 
-  [[nodiscard]] KeepAlive<> getKeepAlive(ExecutionScope es, Source source)
-      const override;
+  [[nodiscard]] KeepAlive<> getKeepAlive(
+      ExecutionScope es, Source source) const override;
 
   [[noreturn]] void add(
       std::shared_ptr<Runnable>,
@@ -151,8 +147,8 @@ class SFQThreadManager : public ThreadManagerExecutorAdapter {
   // mitigate the issue by hashing the tenant IDs here with a periodically
   // changing value so that it is unlikely to persist beyond the current
   // period.
-  folly::MeteredExecutor* getMeteredExecutor(size_t pri, uint64_t tenantId)
-      const {
+  folly::MeteredExecutor* getMeteredExecutor(
+      size_t pri, uint64_t tenantId) const {
     const size_t p = perturbVal_.load(std::memory_order_relaxed);
     const uint64_t perturbedTenantId = perturbId(tenantId, p);
     CHECK_LT(pri, fqs_.size());

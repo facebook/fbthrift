@@ -66,8 +66,7 @@ class RequestContextQueue {
 
   void timeOutSendingRequest(RequestContext& req) noexcept;
   void abortSentRequest(
-      RequestContext& req,
-      transport::TTransportException ex) noexcept;
+      RequestContext& req, transport::TTransportException ex) noexcept;
 
   void markAsResponded(RequestContext& req) noexcept;
 
@@ -88,8 +87,7 @@ class RequestContextQueue {
   // different mechanism for doing this, since there are potentially many
   // response payloads per initiating REQUEST_STREAM context.)
   RequestResponseSet requestResponseContexts_{RequestResponseSet::bucket_traits{
-      rrContextBuckets_.data(),
-      rrContextBuckets_.size()}};
+      rrContextBuckets_.data(), rrContextBuckets_.size()}};
 
   using State = RequestContext::State;
 

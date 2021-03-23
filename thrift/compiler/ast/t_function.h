@@ -133,40 +133,24 @@ class t_function : public t_named {
   /**
    * t_function getters
    */
-  const t_type* get_return_type() const {
-    return return_type_.get_type();
-  }
+  const t_type* get_return_type() const { return return_type_.get_type(); }
 
-  t_paramlist* get_paramlist() const {
-    return paramlist_.get();
-  }
+  t_paramlist* get_paramlist() const { return paramlist_.get(); }
 
   // TODO: remove "xception" function once everything changed to "exception"
-  t_struct* get_xceptions() const {
-    return get_exceptions();
-  }
+  t_struct* get_xceptions() const { return get_exceptions(); }
 
-  t_struct* get_exceptions() const {
-    return exceptions_.get();
-  }
+  t_struct* get_exceptions() const { return exceptions_.get(); }
 
   // TODO: remove "xception" function once everything changed to "exception"
-  t_struct* get_stream_xceptions() const {
-    return get_stream_exceptions();
-  }
+  t_struct* get_stream_xceptions() const { return get_stream_exceptions(); }
 
-  t_struct* get_stream_exceptions() const {
-    return stream_exceptions_.get();
-  }
+  t_struct* get_stream_exceptions() const { return stream_exceptions_.get(); }
 
   // TODO: remove "xception" function once everything changed to "exception"
-  t_struct* get_sink_xceptions() const {
-    return get_sink_exceptions();
-  }
+  t_struct* get_sink_xceptions() const { return get_sink_exceptions(); }
 
-  t_struct* get_sink_exceptions() const {
-    return sink_exceptions_.get();
-  }
+  t_struct* get_sink_exceptions() const { return sink_exceptions_.get(); }
 
   // TODO: remove "xception" function once everything changed to "exception"
   t_struct* get_sink_final_response_xceptions() const {
@@ -177,30 +161,18 @@ class t_function : public t_named {
     return sink_final_response_exceptions_.get();
   }
 
-  bool is_oneway() const {
-    return qualifier_ == t_function_qualifier::one_way;
-  }
+  bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
 
   bool returns_stream() const {
     return return_type_.get_type()->is_streamresponse();
   }
 
-  bool returns_sink() const {
-    return return_type_.get_type()->is_sink();
-  }
+  bool returns_sink() const { return return_type_.get_type()->is_sink(); }
 
-  bool is_interaction_constructor() const {
-    return isInteractionConstructor_;
-  }
-  void set_is_interaction_constructor() {
-    isInteractionConstructor_ = true;
-  }
-  bool is_interaction_member() const {
-    return isInteractionMember_;
-  }
-  void set_is_interaction_member() {
-    isInteractionMember_ = true;
-  }
+  bool is_interaction_constructor() const { return isInteractionConstructor_; }
+  void set_is_interaction_constructor() { isInteractionConstructor_ = true; }
+  bool is_interaction_member() const { return isInteractionMember_; }
+  void set_is_interaction_member() { isInteractionMember_ = true; }
 
  private:
   t_type_ref return_type_;
@@ -232,9 +204,7 @@ class t_function : public t_named {
             std::move(stream_exceptions),
             qualifier) {}
 
-  const t_type* get_returntype() const {
-    return get_return_type();
-  }
+  const t_type* get_returntype() const { return get_return_type(); }
 };
 
 } // namespace compiler

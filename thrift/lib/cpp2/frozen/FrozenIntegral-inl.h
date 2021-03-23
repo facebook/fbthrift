@@ -95,9 +95,7 @@ struct PackedIntegerLayout : public LayoutBase {
     return v;
   }
 
-  static size_t hash(const T& v) {
-    return std::hash<T>()(v);
-  }
+  static size_t hash(const T& v) { return std::hash<T>()(v); }
 };
 
 } // namespace detail

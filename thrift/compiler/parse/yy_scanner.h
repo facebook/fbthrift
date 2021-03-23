@@ -57,9 +57,7 @@ class readonly_file {
     }
   }
 
-  FILE* get_file() const {
-    return file_;
-  }
+  FILE* get_file() const { return file_; }
 
  private:
   FILE* file_ = nullptr;
@@ -115,9 +113,7 @@ class yy_scanner {
     return (!!text) ? std::string{text} : "";
   }
 
-  yyscan_t get_scanner() {
-    return scanner_;
-  }
+  yyscan_t get_scanner() { return scanner_; }
 
  private:
   yyscan_t scanner_ = nullptr;

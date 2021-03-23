@@ -40,18 +40,10 @@ class Opaque {
 
   explicit Opaque(const RawType& val) : val_(val) {}
   Opaque() {}
-  RawType& __value() {
-    return val_;
-  }
-  const RawType& __value() const {
-    return val_;
-  }
-  explicit operator RawType() const {
-    return val_;
-  }
-  bool operator==(const Opaque& rhs) const {
-    return val_ == rhs.val_;
-  }
+  RawType& __value() { return val_; }
+  const RawType& __value() const { return val_; }
+  explicit operator RawType() const { return val_; }
+  bool operator==(const Opaque& rhs) const { return val_ == rhs.val_; }
 };
 
 using OpaqueDouble1 = Opaque<double, std::integral_constant<int, 1>>;

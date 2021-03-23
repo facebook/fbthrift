@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <common/gtest/gtest_extensions.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <memory>
 
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>

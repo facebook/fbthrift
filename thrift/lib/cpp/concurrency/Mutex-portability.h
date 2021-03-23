@@ -78,15 +78,13 @@ inline int pthread_mutex_timedlock(pthread_mutex_t* mutex, const timespec* ts) {
 }
 
 inline int pthread_rwlock_timedwrlock(
-    pthread_rwlock_t* rwlock,
-    const timespec* ts) {
+    pthread_rwlock_t* rwlock, const timespec* ts) {
   return thrift_pthread_timedlock_impl(
       rwlock, ts, pthread_rwlock_wrlock, pthread_rwlock_trywrlock);
 }
 
 inline int pthread_rwlock_timedrdlock(
-    pthread_rwlock_t* rwlock,
-    const timespec* ts) {
+    pthread_rwlock_t* rwlock, const timespec* ts) {
   return thrift_pthread_timedlock_impl(
       rwlock, ts, pthread_rwlock_rdlock, pthread_rwlock_tryrdlock);
 }

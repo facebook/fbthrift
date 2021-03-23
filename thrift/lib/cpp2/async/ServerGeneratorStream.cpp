@@ -29,8 +29,7 @@ template class TwoWayBridge<
     ServerGeneratorStream>;
 
 ServerGeneratorStream::ServerGeneratorStream(
-    StreamClientCallback* clientCallback,
-    folly::EventBase* clientEb)
+    StreamClientCallback* clientCallback, folly::EventBase* clientEb)
     : streamClientCallback_(clientCallback), clientEventBase_(clientEb) {}
 
 ServerGeneratorStream::~ServerGeneratorStream() {}

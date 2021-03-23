@@ -38,15 +38,11 @@ class TNullTransport : public TVirtualTransport<TNullTransport> {
 
   ~TNullTransport() override {}
 
-  bool isOpen() override {
-    return true;
-  }
+  bool isOpen() override { return true; }
 
   void open() override {}
 
-  void write(const uint8_t* /* buf */, uint32_t /* len */) {
-    return;
-  }
+  void write(const uint8_t* /* buf */, uint32_t /* len */) { return; }
 };
 
 } // namespace transport

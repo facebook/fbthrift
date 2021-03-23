@@ -28,12 +28,8 @@ TEST(AtomicQueueTest, Basic) {
   folly::Baton<> consumerBaton;
 
   struct Consumer {
-    void consume() {
-      baton.post();
-    }
-    void canceled() {
-      ADD_FAILURE() << "canceled() shouldn't be called";
-    }
+    void consume() { baton.post(); }
+    void canceled() { ADD_FAILURE() << "canceled() shouldn't be called"; }
     folly::Baton<> baton;
   };
   detail::twowaybridge_detail::AtomicQueue<Consumer, int> atomicQueue;
@@ -87,12 +83,8 @@ TEST(AtomicQueueTest, Basic) {
 
 TEST(AtomicQueueTest, Canceled) {
   struct Consumer {
-    void consume() {
-      ADD_FAILURE() << "consume() shouldn't be called";
-    }
-    void canceled() {
-      canceledCalled = true;
-    }
+    void consume() { ADD_FAILURE() << "consume() shouldn't be called"; }
+    void canceled() { canceledCalled = true; }
     bool canceledCalled{false};
   };
   detail::twowaybridge_detail::AtomicQueue<Consumer, int> atomicQueue;
@@ -114,12 +106,8 @@ TEST(AtomicQueueTest, Canceled) {
 
 TEST(AtomicQueueTest, Stress) {
   struct Consumer {
-    void consume() {
-      baton.post();
-    }
-    void canceled() {
-      ADD_FAILURE() << "canceled() shouldn't be called";
-    }
+    void consume() { baton.post(); }
+    void canceled() { ADD_FAILURE() << "canceled() shouldn't be called"; }
     folly::Baton<> baton;
   };
   detail::twowaybridge_detail::AtomicQueue<Consumer, int> atomicQueue;

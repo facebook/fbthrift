@@ -221,16 +221,14 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   uint32_t writeStructEnd();
 
   uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId);
+      const char* name, const TType fieldType, const int16_t fieldId);
 
   uint32_t writeFieldEnd();
 
   uint32_t writeFieldStop();
 
-  uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
+  uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeMapEnd();
 
@@ -270,9 +268,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
    */
 
   uint32_t readMessageBegin(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid);
+      std::string& name, TMessageType& messageType, int32_t& seqid);
 
   uint32_t readMessageEnd();
 
@@ -280,16 +276,13 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   uint32_t readStructEnd();
 
-  uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readFieldEnd();
 
   uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown);
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown);
 
   uint32_t readMapEnd();
 
@@ -322,9 +315,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   uint32_t readBinary(std::string& str);
 
-  void allowDecodeUTF8(bool allow) {
-    allowDecodeUTF8_ = allow;
-  }
+  void allowDecodeUTF8(bool allow) { allowDecodeUTF8_ = allow; }
 
   class LookaheadReader {
    public:

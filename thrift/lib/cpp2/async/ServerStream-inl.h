@@ -23,8 +23,7 @@ namespace thrift {
 
 template <typename T>
 ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
-    folly::EventBase* eb,
-    int32_t bufferSize) && {
+    folly::EventBase* eb, int32_t bufferSize) && {
   struct : public apache::thrift::detail::ClientStreamBridge::
                FirstResponseCallback {
     void onFirstResponse(

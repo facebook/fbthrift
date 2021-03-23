@@ -38,12 +38,8 @@ class t_named : public t_annotated {
   /**
    * t_type setters
    */
-  void set_name(const std::string& name) {
-    name_ = name;
-  }
-  const std::string& get_name() const {
-    return name_;
-  }
+  void set_name(const std::string& name) { name_ = name; }
+  const std::string& get_name() const { return name_; }
 
  protected:
   // t_named is abstract.

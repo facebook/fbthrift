@@ -52,9 +52,7 @@ folly::AsyncSocket::WriteResult TAsyncSocketIntercepted::performWrite(
 }
 
 folly::AsyncSocket::ReadResult TAsyncSocketIntercepted::performRead(
-    void** buf,
-    size_t* buflen,
-    size_t* offset) {
+    void** buf, size_t* buflen, size_t* offset) {
   ReadResult res = folly::AsyncSocket::performRead(buf, buflen, offset);
 
   if (params_.get() && params_->corruptLastReadByte_ && !res.exception &&

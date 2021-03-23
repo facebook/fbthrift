@@ -103,9 +103,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   RpcOptions opts;
   opts.setTimeout(milliseconds(20));
   auto done = make_shared<Baton<>>();
-  SCOPE_EXIT {
-    done->post();
-  };
+  SCOPE_EXIT { done->post(); };
   EXPECT_CALL(*handler, voidResponse()).WillOnce(Invoke([done] {
     EXPECT_TRUE(done->try_wait_for(seconds(1)));
   }));

@@ -616,9 +616,7 @@ TEST_F(JSONProtocolTest, readStruct) {
 TEST_F(JSONProtocolTest, readMessage) {
   auto input = R"([1,"foobar",1,3])";
   struct Unit {
-    bool operator==(Unit) const {
-      return true;
-    }
+    bool operator==(Unit) const { return true; }
   };
   auto expected = Unit{};
   EXPECT_EQ(expected, reading_cpp2<Unit>(input, [](R& p) {

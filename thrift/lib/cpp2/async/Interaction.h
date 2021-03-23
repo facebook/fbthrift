@@ -46,16 +46,12 @@ class InteractionId {
     CHECK_EQ(id_, 0) << "Interactions must always be terminated";
   }
 
-  operator int64_t() const {
-    return id_;
-  }
+  operator int64_t() const { return id_; }
 
  private:
   InteractionId(int64_t id) : id_(id) {}
 
-  void release() {
-    id_ = 0;
-  }
+  void release() { id_ = 0; }
 
   int64_t id_;
 
@@ -93,8 +89,8 @@ class TilePromise final : public Tile {
   }
 
   template <typename InteractionEventTask>
-  void
-  fulfill(Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
+  void fulfill(
+      Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
     DCHECK(!continuations_.empty());
 
     bool isSerial = dynamic_cast<SerialInteractionTile*>(this), first = true;

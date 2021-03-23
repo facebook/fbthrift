@@ -16,19 +16,17 @@
 
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 
+#include <atomic>
 #include <fmt/format.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-#include <atomic>
 
 namespace apache {
 namespace thrift {
 
 namespace {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
-    bool,
-    includeInRecentRequestsCount,
-    const std::string_view /*methodName*/) {
+    bool, includeInRecentRequestsCount, const std::string_view /*methodName*/) {
   // Users of the module will override the behavior
   return true;
 }

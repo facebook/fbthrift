@@ -44,9 +44,7 @@ using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceSvIf {
  public:
-  int32_t return42(const MyArgs&, int32_t) override {
-    return 42;
-  }
+  int32_t return42(const MyArgs&, int32_t) override { return 42; }
 };
 
 std::shared_ptr<ThriftServer> getServer() {

@@ -36,9 +36,7 @@ class FrozenFileForwardIncompatible : public std::runtime_error {
  public:
   explicit FrozenFileForwardIncompatible(int fileVersion);
 
-  int fileVersion() const {
-    return fileVersion_;
-  }
+  int fileVersion() const { return fileVersion_; }
   int supportedVersion() const {
     return schema::frozen_constants::kCurrentFrozenFileVersion();
   }
@@ -289,8 +287,7 @@ mapFrozen(const std::string& str) = delete;
 
 template <class T>
 MappedFrozen<T> mapFrozen(
-    folly::File file,
-    folly::MemoryMapping::LockMode lockMode) {
+    folly::File file, folly::MemoryMapping::LockMode lockMode) {
   folly::MemoryMapping mapping(std::move(file), 0);
   folly::MemoryMapping::LockFlags flags{};
   flags.lockOnFault = FLAGS_thrift_frozen_util_mlock_on_fault;

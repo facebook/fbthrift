@@ -49,8 +49,8 @@ class Controller {
   Controller(const Controller&) = delete;
   Controller& operator=(const Controller&) = delete;
 
-  void
-  run(uint32_t numThreads, uint32_t maxThreads, double monitorInterval = 1.0);
+  void run(
+      uint32_t numThreads, uint32_t maxThreads, double monitorInterval = 1.0);
 
  private:
   class WorkerRunner;

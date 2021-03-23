@@ -153,8 +153,7 @@ bool setupRequestContextWithMessageBegin(
 }
 
 MessageBegin deserializeMessageBegin(
-    const folly::IOBuf& buf,
-    protocol::PROTOCOL_TYPES protType) {
+    const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType) {
   MessageBegin msgBegin;
   try {
     switch (protType) {

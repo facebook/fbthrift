@@ -36,10 +36,7 @@ namespace compiler {
 class t_typedef : public t_type {
  public:
   t_typedef(
-      t_program* program,
-      t_type_ref type,
-      std::string symbolic,
-      t_scope* scope)
+      t_program* program, t_type_ref type, std::string symbolic, t_scope* scope)
       : t_type(program, symbolic),
         type_(std::move(type)),
         symbolic_(std::move(symbolic)),
@@ -63,33 +60,21 @@ class t_typedef : public t_type {
    */
   bool resolve_placeholder();
 
-  const t_type* get_type() const {
-    return type_.get_type();
-  }
+  const t_type* get_type() const { return type_.get_type(); }
 
-  const std::string& get_symbolic() const {
-    return symbolic_;
-  }
+  const std::string& get_symbolic() const { return symbolic_; }
 
-  bool is_typedef() const override {
-    return true;
-  }
+  bool is_typedef() const override { return true; }
 
   std::string get_full_name() const override {
     return get_type()->get_full_name();
   }
 
-  type get_type_value() const override {
-    return get_type()->get_type_value();
-  }
+  type get_type_value() const override { return get_type()->get_type_value(); }
 
-  uint64_t get_type_id() const override {
-    return get_type()->get_type_id();
-  }
+  uint64_t get_type_id() const override { return get_type()->get_type_id(); }
 
-  bool is_defined() const {
-    return defined_;
-  }
+  bool is_defined() const { return defined_; }
 
   // Returns the first type, in the typedef type hierarchy, matching the
   // given predicate or nullptr.
@@ -110,16 +95,13 @@ class t_typedef : public t_type {
   // Finds the first matching annoation in the typdef's type hierarchy.
   // Return null if not found.
   static const std::string* get_first_annotation_or_null(
-      const t_type* type,
-      alias_span name);
+      const t_type* type, alias_span name);
 
   // Finds the first matching annoation in the typdef's type heiarchy.
   // Return default_value or "" if not found.
   template <typename D = const std::string*>
   static auto get_first_annotation(
-      const t_type* type,
-      alias_span name,
-      D&& default_value = nullptr) {
+      const t_type* type, alias_span name, D&& default_value = nullptr) {
     return annotation_or(
         get_first_annotation_or_null(type, name),
         std::forward<D>(default_value));

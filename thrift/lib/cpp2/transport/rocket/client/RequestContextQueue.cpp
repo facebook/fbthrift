@@ -74,8 +74,7 @@ void RequestContextQueue::timeOutSendingRequest(RequestContext& req) noexcept {
 }
 
 void RequestContextQueue::abortSentRequest(
-    RequestContext& req,
-    transport::TTransportException ex) noexcept {
+    RequestContext& req, transport::TTransportException ex) noexcept {
   if (req.state_ == State::COMPLETE) {
     return;
   }
@@ -122,8 +121,7 @@ void RequestContextQueue::failAllSentWrites(folly::exception_wrapper ew) {
 }
 
 void RequestContextQueue::failQueue(
-    RequestContext::Queue& queue,
-    folly::exception_wrapper ew) {
+    RequestContext::Queue& queue, folly::exception_wrapper ew) {
   while (!queue.empty()) {
     auto& req = queue.front();
     queue.pop_front();

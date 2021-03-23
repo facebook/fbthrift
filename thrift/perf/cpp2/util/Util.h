@@ -52,8 +52,7 @@ folly::AsyncSocket::UniquePtr getSocket(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr) {
+    folly::EventBase* evb, folly::SocketAddress const& addr) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, false);
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
   chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
@@ -62,9 +61,7 @@ static std::unique_ptr<AsyncClient> newHeaderClient(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHTTP2Client(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr,
-    bool encrypted) {
+    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"h2"});
   std::shared_ptr<ClientConnectionIf> conn =
       H2ClientConnection::newHTTP2Connection(std::move(sock));
@@ -76,9 +73,7 @@ static std::unique_ptr<AsyncClient> newHTTP2Client(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newRocketClient(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr,
-    bool encrypted) {
+    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs2"});
   RocketClientChannel::Ptr channel =
       RocketClientChannel::newChannel(std::move(sock));

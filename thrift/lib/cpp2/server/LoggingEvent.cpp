@@ -56,9 +56,7 @@ class Registry {
  public:
   Registry() : reg_(THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
 
-  LoggingEventRegistry& getRegistry() const {
-    return *reg_.get();
-  }
+  LoggingEventRegistry& getRegistry() const { return *reg_.get(); }
 
  private:
   std::unique_ptr<LoggingEventRegistry> reg_;

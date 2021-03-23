@@ -31,9 +31,7 @@ struct KeyExtractor {
 
   // To support VectorAsHashMap
   static const K& getKey(const std::pair<K, V>&& pair) = delete;
-  static const K& getKey(const std::pair<K, V>& pair) {
-    return pair.first;
-  }
+  static const K& getKey(const std::pair<K, V>& pair) { return pair.first; }
 
   static const std::pair<const K, V>* getPointer(
       const std::pair<const K, V>&&) = delete;
@@ -58,13 +56,9 @@ struct KeyExtractor {
 template <class K>
 struct SelfKey {
   using KeyType = K;
-  static const K& getKey(const K& item) {
-    return item;
-  }
+  static const K& getKey(const K& item) { return item; }
 
-  static const K* getPointer(const K& item) {
-    return &item;
-  }
+  static const K* getPointer(const K& item) { return &item; }
 
   static typename Layout<K>::View getViewKey(
       typename Layout<K>::View itemView) {
@@ -92,8 +86,8 @@ struct MapTableLayout
     View(const LayoutSelf* layout, ViewPosition position)
         : Base::View(layout, position) {}
 
-    mapped_type getDefault(const key_type& key, mapped_type def = mapped_type())
-        const {
+    mapped_type getDefault(
+        const key_type& key, mapped_type def = mapped_type()) const {
       auto found = this->find(key);
       if (found == this->end()) {
         return std::move(def);
@@ -119,9 +113,7 @@ struct MapTableLayout
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 
   void print(std::ostream& os, int level) const override {
     Base::print(os, level);

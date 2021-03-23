@@ -40,21 +40,16 @@ namespace rocket {
 namespace detail {
 template <class Metadata>
 Payload makePayload(
-    const Metadata& metadata,
-    std::unique_ptr<folly::IOBuf> data);
+    const Metadata& metadata, std::unique_ptr<folly::IOBuf> data);
 
 extern template Payload makePayload<>(
-    const RequestRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const RequestRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const ResponseRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const ResponseRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const StreamPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const StreamPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const HeadersPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const HeadersPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 
 template <typename Metadata>
 void setCompressionCodec(
@@ -79,15 +74,13 @@ extern template void setCompressionCodec<>(
  * Helper method to compress the payload before sending to the remote endpoint.
  */
 void compressPayload(
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
+    std::unique_ptr<folly::IOBuf>& data, CompressionAlgorithm compression);
 
 /**
  * Helper method to uncompress the payload from remote endpoint.
  */
 folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
-    CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf> data);
+    CompressionAlgorithm compression, std::unique_ptr<folly::IOBuf> data);
 } // namespace detail
 
 template <typename T>
@@ -112,8 +105,7 @@ inline size_t unpackCompact(
 }
 
 std::unique_ptr<folly::IOBuf> uncompressBuffer(
-    std::unique_ptr<folly::IOBuf>&& buffer,
-    CompressionAlgorithm compression);
+    std::unique_ptr<folly::IOBuf>&& buffer, CompressionAlgorithm compression);
 
 namespace detail {
 template <class T, bool uncompressPayload>

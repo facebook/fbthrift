@@ -23,8 +23,7 @@ namespace detail {
 
 template <class Metadata>
 Payload makePayload(
-    const Metadata& metadata,
-    std::unique_ptr<folly::IOBuf> data) {
+    const Metadata& metadata, std::unique_ptr<folly::IOBuf> data) {
   CompactProtocolWriter writer;
   // Default is to leave some headroom for rsocket headers
   size_t serSize = metadata.serializedSizeZC(&writer);
@@ -67,17 +66,13 @@ Payload makePayload(
 }
 
 template Payload makePayload<>(
-    const RequestRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const RequestRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 template Payload makePayload<>(
-    const ResponseRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const ResponseRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 template Payload makePayload<>(
-    const StreamPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const StreamPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 template Payload makePayload<>(
-    const HeadersPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const HeadersPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 
 template <typename Metadata>
 void setCompressionCodec(
@@ -116,8 +111,7 @@ template void setCompressionCodec<>(
     size_t payloadSize);
 
 void compressPayload(
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression) {
+    std::unique_ptr<folly::IOBuf>& data, CompressionAlgorithm compression) {
   folly::io::CodecType codec;
   switch (compression) {
     case CompressionAlgorithm::ZSTD:
@@ -134,8 +128,7 @@ void compressPayload(
 }
 
 folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
-    CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf> data) {
+    CompressionAlgorithm compression, std::unique_ptr<folly::IOBuf> data) {
   folly::io::CodecType codec;
   switch (compression) {
     case CompressionAlgorithm::ZSTD:
@@ -157,8 +150,7 @@ folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
 }
 } // namespace detail
 std::unique_ptr<folly::IOBuf> uncompressBuffer(
-    std::unique_ptr<folly::IOBuf>&& buffer,
-    CompressionAlgorithm compression) {
+    std::unique_ptr<folly::IOBuf>&& buffer, CompressionAlgorithm compression) {
   auto result = detail::uncompressPayload(compression, std::move(buffer));
   if (!result) {
     folly::throw_exception<TApplicationException>(

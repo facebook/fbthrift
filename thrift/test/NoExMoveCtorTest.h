@@ -47,9 +47,7 @@ class ThrowCtorType : public std::string {
   explicit ThrowCtorType(std::string&& other) : std::string(std::move(other)) {}
 
   ThrowCtorType& operator=(const ThrowCtorType& other) = default;
-  ThrowCtorType& operator=(const std::string& /* other */) {
-    return *this;
-  }
+  ThrowCtorType& operator=(const std::string& /* other */) { return *this; }
 };
 
 } // namespace test

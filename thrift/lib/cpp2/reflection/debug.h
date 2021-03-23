@@ -69,18 +69,12 @@ namespace thrift {
  */
 template <typename TC, typename T, typename Callback>
 bool debug_equals(
-    T const& lhs,
-    T const& rhs,
-    Callback&& callback,
-    std::string path = "$") {
+    T const& lhs, T const& rhs, Callback&& callback, std::string path = "$") {
   return apache::thrift::detail::debug_equals<TC>(path, lhs, rhs, callback);
 }
 template <typename T, typename Callback>
 bool debug_equals(
-    T const& lhs,
-    T const& rhs,
-    Callback&& callback,
-    std::string path = "$") {
+    T const& lhs, T const& rhs, Callback&& callback, std::string path = "$") {
   using TC = type_class_of_thrift_class_enum_t<T>;
   return apache::thrift::detail::debug_equals<TC>(path, lhs, rhs, callback);
 }
@@ -96,9 +90,7 @@ bool debug_equals(
 template <typename Output>
 struct debug_output_callback {
   explicit debug_output_callback(
-      Output& out,
-      folly::StringPiece lhs,
-      folly::StringPiece rhs)
+      Output& out, folly::StringPiece lhs, folly::StringPiece rhs)
       : out_(out), lhs_(lhs), rhs_(rhs) {}
 
   template <typename TC, typename T>

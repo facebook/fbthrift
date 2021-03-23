@@ -29,9 +29,7 @@ struct ProtocolReaderWireTypeInfo {
     return ttype;
   }
 
-  static WireType defaultValue() {
-    return protocol::TType::T_STOP;
-  }
+  static WireType defaultValue() { return protocol::TType::T_STOP; }
 };
 
 } // namespace detail

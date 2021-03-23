@@ -23,8 +23,8 @@ namespace chatroom {
 
 class EchoHandler : virtual public EchoSvIf {
  public:
-  void echo(std::string& response, std::unique_ptr<std::string> message)
-      override;
+  void echo(
+      std::string& response, std::unique_ptr<std::string> message) override;
 };
 } // namespace chatroom
 } // namespace example

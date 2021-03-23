@@ -52,13 +52,9 @@ class t_enum_value : public t_named {
   /**
    * t_enum_value getters
    */
-  int32_t get_value() const {
-    return value_;
-  }
+  int32_t get_value() const { return value_; }
 
-  bool has_value() {
-    return has_value_;
-  }
+  bool has_value() { return has_value_; }
 
  private:
   int32_t value_{0};

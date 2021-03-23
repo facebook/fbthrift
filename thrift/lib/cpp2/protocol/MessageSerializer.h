@@ -53,9 +53,7 @@ std::unique_ptr<folly::IOBuf> PargsPresultSerialize(
 
 template <typename ProtocolReader, typename T>
 std::pair<std::string, int> PargsPresultDeserialize(
-    T& valuep,
-    const folly::IOBuf* iobuf,
-    MessageType messageType) {
+    T& valuep, const folly::IOBuf* iobuf, MessageType messageType) {
   ProtocolReader reader;
   reader.setInput(iobuf);
   std::string methodName;

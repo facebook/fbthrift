@@ -19,16 +19,14 @@
 namespace apache::thrift::conformance {
 
 std::any AnySerializer::decode(
-    const std::type_info& typeInfo,
-    folly::io::Cursor& cursor) const {
+    const std::type_info& typeInfo, folly::io::Cursor& cursor) const {
   std::any result;
   decode(typeInfo, cursor, result);
   return result;
 }
 
 void AnySerializer::checkType(
-    const std::type_info& actual,
-    const std::type_info& expected) {
+    const std::type_info& actual, const std::type_info& expected) {
   if (actual != expected) {
     folly::throw_exception(std::bad_any_cast());
   }
