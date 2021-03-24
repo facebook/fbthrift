@@ -51,6 +51,7 @@ include_directories(${THRIFT_HOME})
 include_directories(${THRIFT_BUILD})
 
 # Set directory of the Find$x.cmake files to properly include dependencies
+set(CMAKE_STD_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH
   "${THRIFT_HOME}/thrift/cmake"
   # for in-fbsource builds
@@ -90,17 +91,15 @@ option(thriftpy3
 )
 
 # Find required dependencies for thrift/compiler
-if(compiler_only OR build_all)
+if (compiler_only OR build_all)
   find_package(BISON 3.0.4 REQUIRED)
   find_package(FLEX REQUIRED)
-  include_directories(
-    ${OPENSSL_INCLUDE_DIR}
-  )
+  include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
   include(ThriftLibrary.cmake)
   install(FILES ThriftLibrary.cmake DESTINATION ${INCLUDE_INSTALL_DIR}/thrift)
-endif(compiler_only OR build_all)
+endif ()
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
