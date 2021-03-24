@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/Interaction.h>
+#include <thrift/lib/cpp2/async/ReplyInfo.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
@@ -419,7 +420,7 @@ class ServerInterface : public virtual AsyncProcessorFactory {
  */
 class HandlerCallbackBase {
  private:
-  folly::EventBase::EventBaseQueue& getReplyQueue() {
+  IOWorkerContext::ReplyQueue& getReplyQueue() {
     auto worker = reinterpret_cast<IOWorkerContext*>(
         const_cast<Cpp2Worker*>(reqCtx_->getConnectionContext()->getWorker()));
     DCHECK(worker != nullptr);

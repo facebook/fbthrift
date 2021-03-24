@@ -16,7 +16,11 @@
 
 #pragma once
 
+#include <variant>
+
 #include <folly/io/async/EventBaseAtomicNotificationQueue.h>
+
+#include <thrift/lib/cpp2/async/ReplyInfo.h>
 
 namespace apache {
 namespace thrift {
@@ -27,6 +31,9 @@ namespace thrift {
  */
 class IOWorkerContext {
  public:
+  using ReplyQueue =
+      folly::EventBaseAtomicNotificationQueue<ReplyInfo, ReplyInfoConsumer>;
+
   virtual ~IOWorkerContext() { *(alive_->wlock()) = false; }
 
   /**
@@ -34,7 +41,7 @@ class IOWorkerContext {
    *
    * @returns reference to the queue.
    */
-  virtual folly::EventBase::EventBaseQueue& getReplyQueue() {
+  virtual ReplyQueue& getReplyQueue() {
     DCHECK(replyQueue_ != nullptr);
     return *replyQueue_.get();
   }
@@ -46,7 +53,7 @@ class IOWorkerContext {
    * @param eventBase EventBase to attach the queue.
    */
   void init(folly::EventBase& eventBase) {
-    replyQueue_ = std::make_unique<folly::EventBase::EventBaseQueue>();
+    replyQueue_ = std::make_unique<ReplyQueue>(ReplyInfoConsumer(eventBase));
     replyQueue_->setMaxReadAtOnce(0);
     eventBase.runInEventBaseThread(
         [queue = replyQueue_.get(), &evb = eventBase, alive = alive_] {
@@ -60,7 +67,7 @@ class IOWorkerContext {
 
  private:
   // A dedicated queue for server responses
-  std::unique_ptr<folly::EventBase::EventBaseQueue> replyQueue_;
+  std::unique_ptr<ReplyQueue> replyQueue_;
   // Needed to synchronize deallocating replyQueue_ and
   // calling startConsumingInternal() on eventbase loop.
   std::shared_ptr<folly::Synchronized<bool>> alive_{
