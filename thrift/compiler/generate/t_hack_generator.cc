@@ -4150,7 +4150,7 @@ void t_hack_generator::_generate_recvImpl(
       << indent() << "  inout $mtype,\n"
       << indent() << "  inout $rseqid,\n"
       << indent() << ");\n"
-      << indent() << "if ($mtype == \\TMessageType::EXCEPTION) {\n"
+      << indent() << "if ($mtype === \\TMessageType::EXCEPTION) {\n"
       << indent() << "  $x = new \\TApplicationException();\n"
       << indent() << "  $x->read($this->input_);\n"
       << indent() << "  $this->input_->readMessageEnd();\n"
@@ -4163,7 +4163,7 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "$this->input_->readMessageEnd();\n";
 
   out << indent()
-      << "if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {\n"
+      << "if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {\n"
       << indent() << "  throw new \\TProtocolException(\""
       << tfunction->get_name() << " failed: sequence id is out of order\");\n"
       << indent() << "}\n";
