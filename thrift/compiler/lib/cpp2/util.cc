@@ -415,6 +415,45 @@ bool is_implicit_ref(const t_type* type) {
       get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
 }
 
+bool is_eligible_for_constexpr::check(const t_type* type) {
+  if (type->has_annotation("cpp.indirection")) {
+    // Custom types may not have constexpr constructors.
+    return false;
+  }
+  if (type->is_any_int() || type->is_floating_point() || type->is_bool() ||
+      type->is_enum()) {
+    return true;
+  }
+  if (const auto* s = dynamic_cast<const t_struct*>(type)) {
+    if (type->is_union() || type->is_exception()) {
+      // Union and exception constructors are not defaulted.
+      return false;
+    }
+    if (type->has_annotation(
+            {"cpp.virtual", "cpp2.virtual", "cpp.allocator"})) {
+      return false;
+    }
+    for (const t_field* field : s->fields()) {
+      if (is_explicit_ref(field)) {
+        return false;
+      }
+      if (!(*this)(field->get_type())) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
+bool is_eligible_for_constexpr::operator()(const t_type* type) {
+  auto it = cache_.find(type);
+  if (it != cache_.end()) {
+    return it->second;
+  }
+  return cache_[type] = check(type);
+}
+
 bool is_stack_arguments(
     std::map<std::string, std::string> const& options,
     t_function const& function) {

@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <stdexcept>
+#include <string>
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -94,6 +95,74 @@ TEST_F(UtilTest, is_orderable_struct) {
   s.append(
       std::make_unique<t_field>(&t_base_type::t_string(), "field_name", 1));
   EXPECT_TRUE(cpp2::is_orderable(s));
+}
+
+TEST_F(UtilTest, is_eligible_for_constexpr) {
+  auto is_eligible_for_constexpr = cpp2::is_eligible_for_constexpr();
+  auto i32 = t_base_type::t_i32();
+  EXPECT_TRUE(is_eligible_for_constexpr(&i32));
+  EXPECT_TRUE(is_eligible_for_constexpr(&t_base_type::t_double()));
+  EXPECT_TRUE(is_eligible_for_constexpr(&t_base_type::t_bool()));
+  EXPECT_FALSE(is_eligible_for_constexpr(&t_base_type::t_string()));
+  EXPECT_FALSE(is_eligible_for_constexpr(&t_base_type::t_binary()));
+
+  auto list = t_list(&i32);
+  EXPECT_FALSE(is_eligible_for_constexpr(&list));
+
+  auto set = t_set(&i32);
+  EXPECT_FALSE(is_eligible_for_constexpr(&set));
+
+  auto map = t_map(&i32, &t_base_type::t_double());
+  EXPECT_FALSE(is_eligible_for_constexpr(&map));
+
+  for (auto a : {"cpp.indirection"}) {
+    auto ref = t_base_type::t_i32();
+    ref.set_annotation(a, "true");
+    EXPECT_FALSE(is_eligible_for_constexpr(&ref));
+  }
+
+  for (auto a : {"cpp.template", "cpp2.template", "cpp.type", "cpp2.type"}) {
+    auto type = i32;
+    type.set_annotation(a, "custom_int");
+    EXPECT_TRUE(is_eligible_for_constexpr(&type)) << a;
+  }
+
+  auto program = t_program("path/to/program.thrift");
+  {
+    auto s = t_struct(&program, "struct_name");
+    s.append(std::make_unique<t_field>(&i32, "field1", 1));
+    EXPECT_TRUE(is_eligible_for_constexpr(&s));
+  }
+  for (auto a : {"cpp.virtual", "cpp2.virtual", "cpp.allocator"}) {
+    auto s = t_struct(&program, "struct_name");
+    s.set_annotation(a, "true");
+    EXPECT_FALSE(is_eligible_for_constexpr(&s)) << a;
+  }
+  {
+    auto s = t_struct(&program, "struct_name");
+    s.append(std::make_unique<t_field>(&i32, "field1", 1));
+    s.append(std::make_unique<t_field>(&set, "field2", 2));
+    EXPECT_FALSE(is_eligible_for_constexpr(&s));
+  }
+  for (auto a : {"cpp.ref", "cpp2.ref"}) {
+    auto s = t_struct(&program, "struct_name");
+    auto field = std::make_unique<t_field>(&i32, "field1", 1);
+    field->set_annotation(a, "true");
+    s.append(std::move(field));
+    EXPECT_FALSE(is_eligible_for_constexpr(&s)) << a;
+  }
+  for (auto a : {"cpp.ref_type", "cpp2.ref_type"}) {
+    auto s = t_struct(&program, "struct_name");
+    auto field = std::make_unique<t_field>(&i32, "field1", 1);
+    field->set_annotation(a, "unique");
+    s.append(std::move(field));
+    EXPECT_FALSE(is_eligible_for_constexpr(&s)) << a;
+  }
+
+  auto u = t_union(&program, "union_name");
+  EXPECT_FALSE(is_eligible_for_constexpr(&u));
+  auto e = t_exception(&program, "exception_name");
+  EXPECT_FALSE(is_eligible_for_constexpr(&e));
 }
 
 TEST_F(UtilTest, get_gen_type_class) {

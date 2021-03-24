@@ -179,6 +179,21 @@ inline bool is_ref(const t_field* f) {
 }
 
 /**
+ * Determines if the operations on the C++ representation of type can be
+ * constexpr and, in particular, if the move constructor can be defined as
+ *   constexpr T(T&&) = default;
+ */
+class is_eligible_for_constexpr {
+ public:
+  bool operator()(const t_type* type);
+
+ private:
+  bool check(const t_type* type);
+
+  std::unordered_map<const t_type*, bool> cache_;
+};
+
+/**
  * The value of cpp.ref_type/cpp2.ref_type.
  */
 // TODO(afuller): Replace with type_resolver::find_ref_type.
