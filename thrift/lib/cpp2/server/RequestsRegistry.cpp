@@ -85,7 +85,16 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
 } // namespace
 
 void RecentRequestCounter::increment() {
-  counts_[getCurrentBucket()] += 1;
+  auto currBucket = getCurrentBucket();
+  counts_[currBucket].first += 1;
+  counts_[currBucket].second = ++currActiveCount_;
+}
+
+void RecentRequestCounter::decrement() {
+  if (currActiveCount_ > 0) {
+    auto currBucket = getCurrentBucket();
+    counts_[currBucket].second = --currActiveCount_;
+  }
 }
 
 RecentRequestCounter::Values RecentRequestCounter::get() const {
@@ -109,7 +118,9 @@ uint64_t RecentRequestCounter::getCurrentBucket() const {
     uint64_t ticksToClear = tickDiff < kBuckets ? tickDiff : kBuckets;
 
     while (ticksToClear) {
-      counts_[(lastTick_ + ticksToClear--) % kBuckets] = 0;
+      auto index = (lastTick_ + ticksToClear--) % kBuckets;
+      counts_[index].first = 0;
+      counts_[index].second = currActiveCount_;
     }
     lastTick_ = currentTick;
     currentBucket_ = lastTick_ % kBuckets;
@@ -155,9 +166,9 @@ intptr_t RequestsRegistry::genRootId() {
 }
 
 void RequestsRegistry::registerStub(DebugStub& req) {
-  bool canIncCount =
+  req.includeInRecentRequests_ =
       THRIFT_PLUGGABLE_FUNC(includeInRecentRequestsCount)(req.getMethodName());
-  if (canIncCount) {
+  if (req.includeInRecentRequests_) {
     requestCounter_.increment();
   }
   uint64_t payloadSize = req.getPayloadSize();
@@ -172,6 +183,9 @@ void RequestsRegistry::registerStub(DebugStub& req) {
 }
 
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
+  if (stub.includeInRecentRequests_) {
+    requestCounter_.decrement();
+  }
   if (finishedRequestsLimit_ == 0) {
     return;
   }

@@ -771,7 +771,8 @@ ThriftServer::getServerSnapshot() {
             size_t numRequests = 0;
             for (const auto& workerSnapshot : workerSnapshots) {
               for (uint64_t i = 0; i < ret.first.size(); ++i) {
-                ret.first[i] += workerSnapshot.first[i];
+                ret.first[i].first += workerSnapshot.first[i].first;
+                ret.first[i].second += workerSnapshot.first[i].second;
               }
               numRequests += workerSnapshot.second.size();
             }

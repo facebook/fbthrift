@@ -37,9 +37,12 @@ class ResponseChannelRequest;
 class RecentRequestCounter {
  public:
   static inline constexpr uint64_t kBuckets = 512ul;
-  using Values = std::array<int32_t, kBuckets>;
+  using ArrivalCount = int32_t;
+  using ActiveCount = int32_t;
+  using Values = std::array<std::pair<ArrivalCount, ActiveCount>, kBuckets>;
 
   void increment();
+  void decrement();
   Values get() const;
 
  private:
@@ -48,6 +51,7 @@ class RecentRequestCounter {
   mutable uint64_t currentBucket_{};
   mutable uint64_t lastTick_{};
   mutable Values counts_{};
+  mutable uint64_t currActiveCount_{};
 };
 
 /**
@@ -176,6 +180,7 @@ class RequestsRegistry {
     folly::IntrusiveListHook activeRequestsRegistryHook_;
     size_t refCount_{1};
     RequestStateMachine& stateMachine_;
+    bool includeInRecentRequests_{true};
   };
 
   class Deleter {

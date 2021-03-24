@@ -48,21 +48,26 @@ TEST_F(RecentRequestCounterTest, testGetCurrentBucket) {
   currentTick += 512;
   auto counts = counter.get();
   EXPECT_EQ(getCurrentServerTickCallCount, 2);
-  EXPECT_EQ(counts[0], 0);
+  EXPECT_EQ(counts[0].first, 0);
 }
 
 TEST_F(RecentRequestCounterTest, testIncrement) {
   auto counter = create();
   counter.increment();
   auto counts = counter.get();
-  EXPECT_EQ(counts[0], 1);
+  EXPECT_EQ(counts[0].first, 1);
 
   counter.increment();
   ++currentTick;
   counter.increment();
   counts = counter.get();
-  EXPECT_EQ(counts[0], 1);
-  EXPECT_EQ(counts[1], 2);
+  // arrived requests
+  EXPECT_EQ(counts[0].first, 1);
+  EXPECT_EQ(counts[1].first, 2);
+
+  // active requests
+  EXPECT_EQ(counts[0].second, 3);
+  EXPECT_EQ(counts[1].second, 2);
 }
 
 TEST_F(RecentRequestCounterTest, testGetReturnsMostRecentBucketFirst) {
@@ -72,6 +77,42 @@ TEST_F(RecentRequestCounterTest, testGetReturnsMostRecentBucketFirst) {
   counter.increment();
   counter.increment();
   auto counts = counter.get();
-  EXPECT_EQ(counts[0], 2);
-  EXPECT_EQ(counts[256], 1);
+  // arrived requests
+  EXPECT_EQ(counts[0].first, 2);
+  EXPECT_EQ(counts[256].first, 1);
+
+  // active requests
+  EXPECT_EQ(counts[0].second, 3);
+  EXPECT_EQ(counts[256].second, 1);
+}
+
+TEST_F(RecentRequestCounterTest, testTooManyDecrement) {
+  auto counter = create();
+  counter.decrement();
+  counter.decrement();
+  auto counts = counter.get();
+  // arrived requests
+  EXPECT_EQ(counts[0].first, 0);
+  // active requests
+  EXPECT_EQ(counts[0].second, 0);
+}
+
+TEST_F(RecentRequestCounterTest, testIncrementDecrement) {
+  auto counter = create();
+  counter.increment();
+  counter.decrement();
+  counter.increment();
+  counter.increment();
+  currentTick += 2;
+  counter.decrement();
+  counter.decrement();
+  auto counts = counter.get();
+  // arrived requests
+  EXPECT_EQ(counts[0].first, 0);
+  EXPECT_EQ(counts[1].first, 0);
+  EXPECT_EQ(counts[2].first, 3);
+  // active requests
+  EXPECT_EQ(counts[0].second, 0);
+  EXPECT_EQ(counts[1].second, 2);
+  EXPECT_EQ(counts[2].second, 2);
 }

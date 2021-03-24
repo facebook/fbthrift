@@ -226,8 +226,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
 };
 
 namespace {
-static uint32_t getCurrentServerTickCallCount = 0;
-static uint64_t currentTick = 0;
+static std::atomic<uint64_t> currentTick = 0;
 
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
@@ -237,7 +236,6 @@ THRIFT_PLUGGABLE_FUNC_SET(
 }
 
 THRIFT_PLUGGABLE_FUNC_SET(uint64_t, getCurrentServerTick) {
-  ++getCurrentServerTickCallCount;
   return currentTick;
 }
 } // namespace
@@ -561,7 +559,6 @@ TEST_F(
 
 TEST_F(RequestInstrumentationTest, snapshotRecentRequestCountsTest) {
   currentTick = 0;
-  getCurrentServerTickCallCount = 0;
   folly::Baton baton;
   handler()->setCallback([&](TestInterface*) { baton.post(); });
 
@@ -578,8 +575,9 @@ TEST_F(RequestInstrumentationTest, snapshotRecentRequestCountsTest) {
   baton.wait();
 
   auto snapshot = getServerSnapshot();
-  EXPECT_EQ(snapshot.first[0], 1);
-  EXPECT_EQ(snapshot.first[100], 1);
+  // arrived requests
+  EXPECT_EQ(snapshot.first[0].first, 1);
+  EXPECT_EQ(snapshot.first[100].first, 1);
 }
 
 class RequestInstrumentationTestWithFinishedDebugPayload
