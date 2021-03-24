@@ -974,9 +974,11 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
              << endl;
   }
   // Generate New* function
-  if ((true_type->is_struct() || true_type->is_xception()) &&
-      !true_type->is_union()) {
+  if (true_type->is_struct() || true_type->is_xception()) {
     const t_program* program = tbasetype->get_program();
+    // only declare a return with a pointer if the concrete type isn't
+    // already a pointer
+    const bool needsptr = !(base_type.at(0) == '*');
     string ctor;
     if (program != nullptr && program != program_) {
       string module(package_identifiers[get_real_go_module(program)]);
@@ -985,8 +987,9 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
       ctor = "New" + publicize(tbasetype->get_name());
     }
     f_types_ << "func "
-             << "New" << publicize(new_type_name) << "() *" << new_type_name
-             << " { return " << ctor << "() }" << endl
+             << "New" << publicize(new_type_name) << "() "
+             << (needsptr ? "*" : "") << new_type_name << " { return " << ctor
+             << "() }" << endl
              << endl;
   }
 }

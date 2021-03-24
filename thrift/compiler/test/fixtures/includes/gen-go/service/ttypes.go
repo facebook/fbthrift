@@ -36,5 +36,5 @@ type IncludesTransitiveFoo = *includes1.TransitiveFoo
 
 func IncludesTransitiveFooPtr(v IncludesTransitiveFoo) *IncludesTransitiveFoo { return &v }
 
-func NewIncludesTransitiveFoo() *IncludesTransitiveFoo { return includes1.NewTransitiveFoo() }
+func NewIncludesTransitiveFoo() IncludesTransitiveFoo { return includes1.NewTransitiveFoo() }
 
