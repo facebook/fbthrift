@@ -1281,9 +1281,7 @@ inline constexpr std::string_view kHeaderUexw = "uexw";
 inline constexpr std::string_view kHeaderEx = "ex";
 
 void appendExceptionToHeader(
-    bool declared,
-    const folly::exception_wrapper& ew,
-    Cpp2RequestContext& ctx);
+    bool declared, const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
 
 const AppBaseError* toAppError(const std::exception* ex);
 
