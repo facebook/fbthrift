@@ -149,11 +149,10 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
-    folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
   return std::make_unique<AsyncClientT>(
       ScopedServerInterfaceThread::makeTestClientChannel(
-          std::move(apf), callbackExecutor, std::move(injectFault)));
+          std::move(apf), std::move(injectFault)));
 }
 
 } // namespace thrift

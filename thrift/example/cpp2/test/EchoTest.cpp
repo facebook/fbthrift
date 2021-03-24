@@ -16,9 +16,6 @@
 
 #include <folly/portability/GTest.h>
 
-#include <folly/futures/Future.h>
-#include <folly/io/async/ScopedEventBaseThread.h>
-#include <folly/synchronization/Baton.h>
 #include <thrift/example/cpp2/server/EchoService.h>
 #include <thrift/example/if/gen-cpp2/Echo.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -29,58 +26,23 @@ using example::chatroom::EchoHandler;
 namespace apache {
 namespace thrift {
 
-class AsyncCallback : public RequestCallback {
- public:
-  AsyncCallback(ClientReceiveState* result, folly::Baton<>* baton)
-      : result_(result), baton_(baton) {}
-
-  void requestSent() override {}
-
-  void replyReceived(ClientReceiveState&& state) override {
-    *result_ = std::move(state);
-    baton_->post();
-  }
-
-  void requestError(ClientReceiveState&& state) override {
-    *result_ = std::move(state);
-    baton_->post();
-  }
-
- private:
-  ClientReceiveState* result_;
-  folly::Baton<>* baton_;
-};
-
 class EchoTest : public testing::Test {
  public:
   EchoTest() {
     handler_ = std::make_shared<EchoHandler>();
-    client_ = makeTestClient<EchoAsyncClient>(handler_, runner_.getEventBase());
+    client_ = makeTestClient<EchoAsyncClient>(handler_);
   }
 
   std::shared_ptr<EchoAsyncClient> client_;
 
  private:
-  folly::ScopedEventBaseThread runner_;
   std::shared_ptr<EchoHandler> handler_;
 };
 
-TEST_F(EchoTest, AsyncCall) {
-  ClientReceiveState result;
-  folly::Baton<> baton;
-  auto cb = std::make_unique<AsyncCallback>(&result, &baton);
-  std::string echo = "Echo Message";
-  client_->echo(std::move(cb), echo);
-  baton.wait();
-
-  std::string response;
-  client_->recv_echo(response, result);
+TEST_F(EchoTest, Example) {
+  std::string echo = "Echo Message", response;
+  client_->sync_echo(response, echo);
   EXPECT_EQ(echo, response);
-}
-
-TEST_F(EchoTest, FuturesCall) {
-  std::string echo = "Echo Message";
-  EXPECT_EQ(echo, client_->future_echo(echo).get());
 }
 
 } // namespace thrift

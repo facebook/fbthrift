@@ -96,7 +96,6 @@ class ScopedServerInterfaceThread {
 
   static std::shared_ptr<RequestChannel> makeTestClientChannel(
       std::shared_ptr<AsyncProcessorFactory> apf,
-      folly::Executor* callbackExecutor,
       ScopedServerInterfaceThread::FaultInjectionFunc injectFault);
 
  private:
@@ -130,7 +129,6 @@ class ScopedServerInterfaceThread {
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
-    folly::Executor* callbackExecutor = nullptr,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault = nullptr);
 } // namespace thrift
 } // namespace apache
