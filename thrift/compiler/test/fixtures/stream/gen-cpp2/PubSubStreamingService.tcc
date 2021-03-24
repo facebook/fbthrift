@@ -236,6 +236,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(apache::thri
   PubSubStreamingService_boththrows_presult result;
   if (ew.with_exception([&]( ::cpp2::FooEx& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.fields.get<0>().ref() = e;
     result.fields.setIsSet(0, true);
   }
@@ -320,6 +321,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
   PubSubStreamingService_responseandstreamthrows_presult result;
   if (ew.with_exception([&]( ::cpp2::FooEx& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.fields.get<1>().ref() = e;
     result.fields.setIsSet(1, true);
   }

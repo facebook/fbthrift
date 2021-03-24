@@ -127,12 +127,14 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(apache::thrift::R
   ExtraService_throws_function_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
   )) {} else
   if (ew.with_exception([&]( ::some::valid::ns::AnotherException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
@@ -202,12 +204,14 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(apache::thrift::
   ExtraService_throws_function2_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   )) {} else
   if (ew.with_exception([&]( ::some::valid::ns::AnotherException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
@@ -279,12 +283,14 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(apache::thrift::
   ExtraService_throws_function3_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   )) {} else
   if (ew.with_exception([&]( ::some::valid::ns::AnotherException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }

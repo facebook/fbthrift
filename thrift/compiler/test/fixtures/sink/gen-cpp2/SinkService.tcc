@@ -254,6 +254,7 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(apache::thrift::Respon
   SinkService_methodThrow_presult result;
   if (ew.with_exception([&]( ::cpp2::InitialException& e) {
     ctx->userExceptionWrapped(true, ew);
+    ::apache::thrift::util::appendExceptionToHeader(true, ew, *reqCtx);
     result.fields.get<0>().ref() = e;
     result.fields.setIsSet(0, true);
   }
