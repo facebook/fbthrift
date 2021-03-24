@@ -23,7 +23,9 @@ namespace thrift {
 namespace compiler {
 
 enum class t_error_kind {
-  transient = 0, // The associated RPC might succeed if retried.
+  unspecified = 0, // The kind of error was not specified and the associated RPC
+                   // might succeed if retried.
+  transient, // The associated RPC might succeed if retried.
   stateful, // Server state must be change for the associated RPC to have
             // any chance of succeeding.
   permanent, // The associated RPC can never succeed, and should not be retried.
