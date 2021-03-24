@@ -18,18 +18,18 @@ namespace cpp2 apache.thrift.test
 namespace py3 apache.thrift.test
 
 struct Foo {
-  1: string field1; // Fast to skip in CompactProtocol
-  2: list<string> field2; // slow to skip in CompactProtocol
+  1: list<double> field1; // fast to skip in CompactProtocol
+  2: list<i32> field2; // slow to skip in CompactProtocol
   3: list<double> field3; // fast to skip in CompactProtocol
-  4: map<i32, double> field4; // slow to skip in CompactProtocol
+  4: list<i32> field4; // slow to skip in CompactProtocol
 }
 
 // Identical to Foo, except field3 and field4 are lazy
 struct LazyFoo {
-  1: string field1;
-  2: list<string> field2;
+  1: list<double> field1;
+  2: list<i32> field2;
   3: list<double> field3 (cpp.experimental.lazy);
-  4: map<i32, double> field4 (cpp.experimental.lazy);
+  4: list<i32> field4 (cpp.experimental.lazy);
 }
 
 struct LazyCppRef {

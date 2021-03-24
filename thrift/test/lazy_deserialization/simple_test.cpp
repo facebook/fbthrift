@@ -25,12 +25,10 @@ namespace apache::thrift::test {
 template <class Struct>
 std::unique_ptr<Struct> gen() {
   auto obj = std::make_unique<Struct>();
-  obj->field1_ref().emplace(10, '1');
-  obj->field2_ref().emplace(20, "2");
-  obj->field3_ref().emplace(30, 3.0);
-  for (int i = 0; i < 40; ++i) {
-    obj->field4_ref().ensure()[i] = 4.0;
-  }
+  obj->field1_ref().emplace(10, 1);
+  obj->field2_ref().emplace(20, 2);
+  obj->field3_ref().emplace(30, 3);
+  obj->field3_ref().emplace(40, 4);
   return obj;
 }
 
