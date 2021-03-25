@@ -17,7 +17,7 @@ enum Enum: int {
 }
 
 class Enum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -102,15 +102,15 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Union';
   }
 
-  public function getType(): \test\fixtures\UnionEnum {
+  public function getType()[]: \test\fixtures\UnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case \test\fixtures\UnionEnum::intValue:
         $this->intValue = null;
@@ -124,22 +124,22 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
 }
 
-  public function set_intValue(int $intValue): this {
+  public function set_intValue(int $intValue)[write_props]: this {
     return $this->setx_intValue($intValue);
    }
 
-  public function setx_intValue(int $intValue): this {
+  public function setx_intValue(int $intValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::intValue;
     $this->intValue = $intValue;
     return $this;
   }
 
-  public function get_intValue(): int {
+  public function get_intValue()[]: int {
     return $this->getx_intValue();
   }
 
-  public function getx_intValue(): int {
+  public function getx_intValue()[]: int {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::intValue,
       'get_intValue called on an instance of Union whose current type is %s',
@@ -148,22 +148,22 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->intValue as nonnull;
   }
 
-  public function set_stringValue(string $stringValue): this {
+  public function set_stringValue(string $stringValue)[write_props]: this {
     return $this->setx_stringValue($stringValue);
    }
 
-  public function setx_stringValue(string $stringValue): this {
+  public function setx_stringValue(string $stringValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::stringValue;
     $this->stringValue = $stringValue;
     return $this;
   }
 
-  public function get_stringValue(): string {
+  public function get_stringValue()[]: string {
     return $this->getx_stringValue();
   }
 
-  public function getx_stringValue(): string {
+  public function getx_stringValue()[]: string {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::stringValue,
       'get_stringValue called on an instance of Union whose current type is %s',
@@ -172,7 +172,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->stringValue as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -241,11 +241,11 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'A';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1144,11 +1144,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'B';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

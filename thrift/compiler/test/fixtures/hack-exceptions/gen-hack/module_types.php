@@ -16,7 +16,7 @@ enum MyEnum: int {
 }
 
 class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -65,12 +65,12 @@ class MyException1 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
@@ -93,11 +93,11 @@ class MyException1 extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException1';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -147,12 +147,12 @@ class MyException2 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
@@ -175,11 +175,11 @@ class MyException2 extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException2';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -229,12 +229,12 @@ class MyException3 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
@@ -257,11 +257,11 @@ class MyException3 extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException3';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -311,12 +311,12 @@ class MyException4 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
@@ -339,11 +339,11 @@ class MyException4 extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException4';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -409,11 +409,11 @@ class MyException5 extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException5';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

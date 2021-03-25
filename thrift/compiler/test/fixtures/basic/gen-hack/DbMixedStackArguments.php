@@ -719,11 +719,11 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'DbMixedStackArguments_getDataByKey0_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -789,11 +789,11 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'DbMixedStackArguments_getDataByKey0_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -853,11 +853,11 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'DbMixedStackArguments_getDataByKey1_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -923,11 +923,11 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'DbMixedStackArguments_getDataByKey1_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -950,7 +950,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
 }
 
 class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getServiceMetadata(): \tmeta_ThriftService {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
         "name" => "DbMixedStackArguments",
@@ -1005,7 +1005,7 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
       )
     );
   }
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

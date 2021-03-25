@@ -1625,11 +1625,11 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapList_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1680,11 +1680,11 @@ class NestedContainers_mapList_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapList_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1746,11 +1746,11 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapSet_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1801,11 +1801,11 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapSet_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1867,11 +1867,11 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listMap_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1922,11 +1922,11 @@ class NestedContainers_listMap_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listMap_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1984,11 +1984,11 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listSet_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2039,11 +2039,11 @@ class NestedContainers_listSet_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listSet_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2124,11 +2124,11 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_turtles_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2194,11 +2194,11 @@ class NestedContainers_turtles_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_turtles_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2209,7 +2209,7 @@ class NestedContainers_turtles_result implements \IThriftStruct {
 }
 
 class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getServiceMetadata(): \tmeta_ThriftService {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
         "name" => "NestedContainers",
@@ -2462,7 +2462,7 @@ class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

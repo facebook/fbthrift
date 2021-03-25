@@ -62,14 +62,14 @@ class PubSubStreamingServiceAsyncRpcOptionsClient extends \ThriftClientBase impl
 // HELPER FUNCTIONS AND STRUCTURES
 
 class PubSubStreamingServiceStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getServiceMetadata(): \tmeta_ThriftService {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
         "name" => "PubSubStreamingService",
       )
     );
   }
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

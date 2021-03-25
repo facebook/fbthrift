@@ -1009,7 +1009,7 @@ void t_hack_generator::close_generator() {
     f_consts_ << "\n";
     // write structured annotations
     f_consts_ << indent()
-              << "public static function getAllStructuredAnnotations(): "
+              << "public static function getAllStructuredAnnotations()[]: "
                  "dict<string, dict<string, \\IThriftStruct>> {\n";
     indent_up();
     f_consts_ << indent() << "return dict[\n";
@@ -1090,7 +1090,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   indent_up();
   // Structured annotations
   f_types_ << indent()
-           << "public static function getAllStructuredAnnotations(): "
+           << "public static function getAllStructuredAnnotations()[]: "
               "\\TEnumAnnotations {\n";
   indent_up();
   f_types_ << indent() << "return shape(\n";
@@ -1138,7 +1138,8 @@ void t_hack_generator::generate_const(const t_const* tconst) {
   } else {
     f_consts_ << "<<__Memoize>>\n"
               << indent() << "public static function " << name
-              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
+              << "()[]: " << type_to_typehint(type, false, false, true)
+              << "{\n";
     indent_up();
     f_consts_ << indent() << "return ";
   }
@@ -2493,7 +2494,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
 void t_hack_generator::generate_php_structural_id(
     std::ofstream& out, const t_struct* tstruct, bool asFunction) {
   if (asFunction) {
-    indent(out) << "static function getStructuralID(): int {\n";
+    indent(out) << "static function getStructuralID()[]: int {\n";
     indent_up();
     indent(out) << "return " << generate_structural_id(tstruct) << ";\n";
     indent_down();
@@ -2524,11 +2525,11 @@ void t_hack_generator::generate_php_union_methods(
     std::ofstream& out, const t_struct* tstruct) {
   auto enumName = union_enum_name(tstruct);
 
-  indent(out) << "public function getType(): " << enumName << " {\n";
+  indent(out) << "public function getType()[]: " << enumName << " {\n";
   indent(out) << indent() << "return $this->_type;\n";
   indent(out) << "}\n\n";
 
-  out << indent() << "public function reset(): void {\n";
+  out << indent() << "public function reset()[write_props]: void {\n";
   indent_up();
   out << indent() << "switch ($this->_type) {\n";
   indent_up();
@@ -2551,7 +2552,7 @@ void t_hack_generator::generate_php_union_methods(
     auto typehint = type_to_typehint(field->get_type());
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint
-                << " $" << fieldName << "): this {\n";
+                << " $" << fieldName << ")[write_props]: this {\n";
     indent_up();
     indent(out) << "return $this->setx_" << fieldName << "($" << fieldName
                 << ");\n ";
@@ -2560,7 +2561,7 @@ void t_hack_generator::generate_php_union_methods(
 
     // setx_<fieldName>()
     indent(out) << "public function setx_" << fieldName << "(" << typehint
-                << " $" << fieldName << "): this {\n";
+                << " $" << fieldName << ")[write_props]: this {\n";
     indent_up();
     indent(out) << "$this->reset();\n";
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";\n";
@@ -2570,14 +2571,14 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    indent(out) << "public function get_" << fieldName << "(): " << typehint
+    indent(out) << "public function get_" << fieldName << "()[]: " << typehint
                 << " {\n";
     indent_up();
     indent(out) << "return $this->getx_" << fieldName << "();\n";
     indent_down();
     indent(out) << "}\n\n";
 
-    indent(out) << "public function getx_" << fieldName << "(): " << typehint
+    indent(out) << "public function getx_" << fieldName << "()[]: " << typehint
                 << " {\n";
     indent_up();
     indent(out) << "invariant(\n";
@@ -2680,7 +2681,8 @@ void t_hack_generator::generate_adapter_type_checks(
     return;
   }
 
-  indent(out) << "private static function __hackAdapterTypeChecks(): void {\n";
+  indent(out)
+      << "private static function __hackAdapterTypeChecks()[]: void {\n";
   indent_up();
   for (const auto& kv : adapter_types_) {
     indent(out) << "\\ThriftUtil::requireSameType<" << kv.first
@@ -2824,13 +2826,13 @@ void t_hack_generator::_generate_php_struct_definition(
       std::string enum_type = type_to_typehint(t);
       out << "\n";
       out << indent() << "public function setCodeAsEnum(" << enum_type
-          << " $code): void {\n";
+          << " $code)[write_props]: void {\n";
       if (!enum_transparenttype_) {
         out << indent() << "  /* HH_FIXME[4110] nontransparent enum */\n";
       }
       out << indent() << "  $this->code = $code;" << indent() << "\n"
           << indent() << "}\n\n";
-      out << indent() << "public function getCodeAsEnum(): " << enum_type
+      out << indent() << "public function getCodeAsEnum()[]: " << enum_type
           << " {\n"
           << indent()
           << "  /* HH_FIXME[4110] retain HHVM enforcement semantics */\n"
@@ -2950,7 +2952,7 @@ void t_hack_generator::_generate_php_struct_definition(
     out << "\n";
   }
 
-  out << indent() << "public function getName(): string {\n"
+  out << indent() << "public function getName()[]: string {\n"
       << indent() << "  return '" << name << "';\n"
       << indent() << "}\n\n";
   if (tstruct->is_union()) {
@@ -2971,7 +2973,7 @@ void t_hack_generator::_generate_php_struct_definition(
   }
 
   // Structured annotations
-  indent(out) << "public static function getAllStructuredAnnotations(): "
+  indent(out) << "public static function getAllStructuredAnnotations()[]: "
                  "\\TStructAnnotations {\n";
   indent_up();
   indent(out) << "return shape(\n";
@@ -3151,12 +3153,12 @@ void t_hack_generator::generate_client_event_handler_functions(
 void t_hack_generator::generate_event_handler_functions(
     std::ofstream& /*out*/, std::string cl) {
   f_service_ << indent() << "public function setEventHandler(" << cl
-             << " $event_handler): this {\n"
+             << " $event_handler)[write_props]: this {\n"
              << indent() << "  $this->eventHandler_ = $event_handler;\n"
              << indent() << "  return $this;\n"
              << indent() << "}\n\n";
 
-  indent(f_service_) << "public function getEventHandler(): " << cl << " {\n"
+  indent(f_service_) << "public function getEventHandler()[]: " << cl << " {\n"
                      << indent() << "  return $this->eventHandler_;\n"
                      << indent() << "}\n\n";
 }
@@ -3393,7 +3395,7 @@ void t_hack_generator::generate_service_helpers(
   indent_up();
 
   // Expose service metadata
-  f_service_ << indent() << "public static function getServiceMetadata(): "
+  f_service_ << indent() << "public static function getServiceMetadata()[]: "
              << "\\tmeta_ThriftService {\n";
   indent_up();
 
@@ -3411,7 +3413,7 @@ void t_hack_generator::generate_service_helpers(
 
   // Structured annotations
   f_service_ << indent()
-             << "public static function getAllStructuredAnnotations(): "
+             << "public static function getAllStructuredAnnotations()[]: "
                 "\\TServiceAnnotations {\n";
   indent_up();
   f_service_ << indent() << "return shape(\n";

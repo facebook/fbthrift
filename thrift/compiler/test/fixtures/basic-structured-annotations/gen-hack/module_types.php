@@ -16,7 +16,7 @@ enum MyEnum: int {
 }
 
 class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[
         'structured_annotation_inline' => structured_annotation_inline::fromShape(
@@ -100,11 +100,11 @@ class structured_annotation_inline implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_inline';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -156,11 +156,11 @@ class structured_annotation_with_default implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_with_default';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -240,11 +240,11 @@ class structured_annotation_recursive implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_recursive';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -296,11 +296,11 @@ class structured_annotation_forward implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_forward';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -366,11 +366,11 @@ class structured_annotation_nested implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_nested';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -461,11 +461,11 @@ class MyStruct implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_inline' => structured_annotation_inline::fromShape(
@@ -604,11 +604,11 @@ class MyException extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_nested' => structured_annotation_nested::fromShape(
@@ -704,15 +704,15 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyUnion';
   }
 
-  public function getType(): MyUnionEnum {
+  public function getType()[]: MyUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case MyUnionEnum::first:
         $this->first = null;
@@ -726,22 +726,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     $this->_type = MyUnionEnum::_EMPTY_;
 }
 
-  public function set_first(string $first): this {
+  public function set_first(string $first)[write_props]: this {
     return $this->setx_first($first);
    }
 
-  public function setx_first(string $first): this {
+  public function setx_first(string $first)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::first;
     $this->first = $first;
     return $this;
   }
 
-  public function get_first(): string {
+  public function get_first()[]: string {
     return $this->getx_first();
   }
 
-  public function getx_first(): string {
+  public function getx_first()[]: string {
     invariant(
       $this->_type === MyUnionEnum::first,
       'get_first called on an instance of MyUnion whose current type is %s',
@@ -750,22 +750,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this->first as nonnull;
   }
 
-  public function set_second(int $second): this {
+  public function set_second(int $second)[write_props]: this {
     return $this->setx_second($second);
    }
 
-  public function setx_second(int $second): this {
+  public function setx_second(int $second)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::second;
     $this->second = $second;
     return $this;
   }
 
-  public function get_second(): int {
+  public function get_second()[]: int {
     return $this->getx_second();
   }
 
-  public function getx_second(): int {
+  public function getx_second()[]: int {
     invariant(
       $this->_type === MyUnionEnum::second,
       'get_second called on an instance of MyUnion whose current type is %s',
@@ -774,7 +774,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this->second as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_nested' => structured_annotation_nested::fromShape(

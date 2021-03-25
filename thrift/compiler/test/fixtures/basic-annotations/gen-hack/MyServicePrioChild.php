@@ -397,11 +397,11 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioChild_pang_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -454,11 +454,11 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioChild_pang_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -478,7 +478,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
 }
 
 class MyServicePrioChildStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getServiceMetadata(): \tmeta_ThriftService {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
         "name" => "MyServicePrioChild",
@@ -498,7 +498,7 @@ class MyServicePrioChildStaticMetadata implements \IThriftServiceStaticMetadata 
       )
     );
   }
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

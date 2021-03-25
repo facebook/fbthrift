@@ -16,7 +16,7 @@ enum TestEnum: int {
 }
 
 class TestEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -191,15 +191,15 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'TestUnion';
   }
 
-  public function getType(): TestUnionEnum {
+  public function getType()[]: TestUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case TestUnionEnum::int_value:
         $this->int_value = null;
@@ -225,22 +225,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     $this->_type = TestUnionEnum::_EMPTY_;
 }
 
-  public function set_int_value(int $int_value): this {
+  public function set_int_value(int $int_value)[write_props]: this {
     return $this->setx_int_value($int_value);
    }
 
-  public function setx_int_value(int $int_value): this {
+  public function setx_int_value(int $int_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::int_value;
     $this->int_value = $int_value;
     return $this;
   }
 
-  public function get_int_value(): int {
+  public function get_int_value()[]: int {
     return $this->getx_int_value();
   }
 
-  public function getx_int_value(): int {
+  public function getx_int_value()[]: int {
     invariant(
       $this->_type === TestUnionEnum::int_value,
       'get_int_value called on an instance of TestUnion whose current type is %s',
@@ -249,22 +249,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->int_value as nonnull;
   }
 
-  public function set_str_value(string $str_value): this {
+  public function set_str_value(string $str_value)[write_props]: this {
     return $this->setx_str_value($str_value);
    }
 
-  public function setx_str_value(string $str_value): this {
+  public function setx_str_value(string $str_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::str_value;
     $this->str_value = $str_value;
     return $this;
   }
 
-  public function get_str_value(): string {
+  public function get_str_value()[]: string {
     return $this->getx_str_value();
   }
 
-  public function getx_str_value(): string {
+  public function getx_str_value()[]: string {
     invariant(
       $this->_type === TestUnionEnum::str_value,
       'get_str_value called on an instance of TestUnion whose current type is %s',
@@ -273,22 +273,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->str_value as nonnull;
   }
 
-  public function set_double_value(float $double_value): this {
+  public function set_double_value(float $double_value)[write_props]: this {
     return $this->setx_double_value($double_value);
    }
 
-  public function setx_double_value(float $double_value): this {
+  public function setx_double_value(float $double_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::double_value;
     $this->double_value = $double_value;
     return $this;
   }
 
-  public function get_double_value(): float {
+  public function get_double_value()[]: float {
     return $this->getx_double_value();
   }
 
-  public function getx_double_value(): float {
+  public function getx_double_value()[]: float {
     invariant(
       $this->_type === TestUnionEnum::double_value,
       'get_double_value called on an instance of TestUnion whose current type is %s',
@@ -297,22 +297,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->double_value as nonnull;
   }
 
-  public function set_list_of_strings(varray<string> $list_of_strings): this {
+  public function set_list_of_strings(varray<string> $list_of_strings)[write_props]: this {
     return $this->setx_list_of_strings($list_of_strings);
    }
 
-  public function setx_list_of_strings(varray<string> $list_of_strings): this {
+  public function setx_list_of_strings(varray<string> $list_of_strings)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
     return $this;
   }
 
-  public function get_list_of_strings(): varray<string> {
+  public function get_list_of_strings()[]: varray<string> {
     return $this->getx_list_of_strings();
   }
 
-  public function getx_list_of_strings(): varray<string> {
+  public function getx_list_of_strings()[]: varray<string> {
     invariant(
       $this->_type === TestUnionEnum::list_of_strings,
       'get_list_of_strings called on an instance of TestUnion whose current type is %s',
@@ -321,22 +321,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->list_of_strings as nonnull;
   }
 
-  public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
+  public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints)[write_props]: this {
     return $this->setx_map_of_string_to_ints($map_of_string_to_ints);
    }
 
-  public function setx_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
+  public function setx_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
     return $this;
   }
 
-  public function get_map_of_string_to_ints(): darray<string, int> {
+  public function get_map_of_string_to_ints()[]: darray<string, int> {
     return $this->getx_map_of_string_to_ints();
   }
 
-  public function getx_map_of_string_to_ints(): darray<string, int> {
+  public function getx_map_of_string_to_ints()[]: darray<string, int> {
     invariant(
       $this->_type === TestUnionEnum::map_of_string_to_ints,
       'get_map_of_string_to_ints called on an instance of TestUnion whose current type is %s',
@@ -345,22 +345,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->map_of_string_to_ints as nonnull;
   }
 
-  public function set_struct_foo(Foo $struct_foo): this {
+  public function set_struct_foo(Foo $struct_foo)[write_props]: this {
     return $this->setx_struct_foo($struct_foo);
    }
 
-  public function setx_struct_foo(Foo $struct_foo): this {
+  public function setx_struct_foo(Foo $struct_foo)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::struct_foo;
     $this->struct_foo = $struct_foo;
     return $this;
   }
 
-  public function get_struct_foo(): Foo {
+  public function get_struct_foo()[]: Foo {
     return $this->getx_struct_foo();
   }
 
-  public function getx_struct_foo(): Foo {
+  public function getx_struct_foo()[]: Foo {
     invariant(
       $this->_type === TestUnionEnum::struct_foo,
       'get_struct_foo called on an instance of TestUnion whose current type is %s',
@@ -369,7 +369,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return $this->struct_foo as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -525,11 +525,11 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Foo';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -698,11 +698,11 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'TestStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -854,11 +854,11 @@ class Baz extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Baz';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -911,11 +911,11 @@ class OptBaz extends \TException implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'OptBaz';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

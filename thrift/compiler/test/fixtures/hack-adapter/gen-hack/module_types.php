@@ -161,11 +161,11 @@ class Foo implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Foo';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -173,7 +173,7 @@ class Foo implements \IThriftStruct {
     );
   }
 
-  private static function __hackAdapterTypeChecks(): void {
+  private static function __hackAdapterTypeChecks()[]: void {
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
     \ThriftUtil::requireSameType<\Adapter2::TThriftType, Set<string>>();
@@ -282,11 +282,11 @@ class Bar implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Bar';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -294,7 +294,7 @@ class Bar implements \IThriftStruct {
     );
   }
 
-  private static function __hackAdapterTypeChecks(): void {
+  private static function __hackAdapterTypeChecks()[]: void {
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
   }
 

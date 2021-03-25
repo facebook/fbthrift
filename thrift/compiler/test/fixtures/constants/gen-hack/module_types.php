@@ -14,7 +14,7 @@ enum EmptyEnum: int {
 }
 
 class EmptyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -35,7 +35,7 @@ enum City: int {
 }
 
 class City_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -56,7 +56,7 @@ enum Company: int {
 }
 
 class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -147,11 +147,11 @@ class Internship implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Internship';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -216,11 +216,11 @@ class Range implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Range';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -285,11 +285,11 @@ class struct1 implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'struct1';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -386,11 +386,11 @@ class struct2 implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'struct2';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -469,11 +469,11 @@ class struct3 implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'struct3';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -551,11 +551,11 @@ class struct4 implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'struct4';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -636,15 +636,15 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'union1';
   }
 
-  public function getType(): union1Enum {
+  public function getType()[]: union1Enum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case union1Enum::i:
         $this->i = null;
@@ -658,22 +658,22 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     $this->_type = union1Enum::_EMPTY_;
 }
 
-  public function set_i(int $i): this {
+  public function set_i(int $i)[write_props]: this {
     return $this->setx_i($i);
    }
 
-  public function setx_i(int $i): this {
+  public function setx_i(int $i)[write_props]: this {
     $this->reset();
     $this->_type = union1Enum::i;
     $this->i = $i;
     return $this;
   }
 
-  public function get_i(): int {
+  public function get_i()[]: int {
     return $this->getx_i();
   }
 
-  public function getx_i(): int {
+  public function getx_i()[]: int {
     invariant(
       $this->_type === union1Enum::i,
       'get_i called on an instance of union1 whose current type is %s',
@@ -682,22 +682,22 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $this->i as nonnull;
   }
 
-  public function set_d(float $d): this {
+  public function set_d(float $d)[write_props]: this {
     return $this->setx_d($d);
    }
 
-  public function setx_d(float $d): this {
+  public function setx_d(float $d)[write_props]: this {
     $this->reset();
     $this->_type = union1Enum::d;
     $this->d = $d;
     return $this;
   }
 
-  public function get_d(): float {
+  public function get_d()[]: float {
     return $this->getx_d();
   }
 
-  public function getx_d(): float {
+  public function getx_d()[]: float {
     invariant(
       $this->_type === union1Enum::d,
       'get_d called on an instance of union1 whose current type is %s',
@@ -706,7 +706,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $this->d as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -825,15 +825,15 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'union2';
   }
 
-  public function getType(): union2Enum {
+  public function getType()[]: union2Enum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case union2Enum::i:
         $this->i = null;
@@ -853,22 +853,22 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     $this->_type = union2Enum::_EMPTY_;
 }
 
-  public function set_i(int $i): this {
+  public function set_i(int $i)[write_props]: this {
     return $this->setx_i($i);
    }
 
-  public function setx_i(int $i): this {
+  public function setx_i(int $i)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::i;
     $this->i = $i;
     return $this;
   }
 
-  public function get_i(): int {
+  public function get_i()[]: int {
     return $this->getx_i();
   }
 
-  public function getx_i(): int {
+  public function getx_i()[]: int {
     invariant(
       $this->_type === union2Enum::i,
       'get_i called on an instance of union2 whose current type is %s',
@@ -877,22 +877,22 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this->i as nonnull;
   }
 
-  public function set_d(float $d): this {
+  public function set_d(float $d)[write_props]: this {
     return $this->setx_d($d);
    }
 
-  public function setx_d(float $d): this {
+  public function setx_d(float $d)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::d;
     $this->d = $d;
     return $this;
   }
 
-  public function get_d(): float {
+  public function get_d()[]: float {
     return $this->getx_d();
   }
 
-  public function getx_d(): float {
+  public function getx_d()[]: float {
     invariant(
       $this->_type === union2Enum::d,
       'get_d called on an instance of union2 whose current type is %s',
@@ -901,22 +901,22 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this->d as nonnull;
   }
 
-  public function set_s(struct1 $s): this {
+  public function set_s(struct1 $s)[write_props]: this {
     return $this->setx_s($s);
    }
 
-  public function setx_s(struct1 $s): this {
+  public function setx_s(struct1 $s)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::s;
     $this->s = $s;
     return $this;
   }
 
-  public function get_s(): struct1 {
+  public function get_s()[]: struct1 {
     return $this->getx_s();
   }
 
-  public function getx_s(): struct1 {
+  public function getx_s()[]: struct1 {
     invariant(
       $this->_type === union2Enum::s,
       'get_s called on an instance of union2 whose current type is %s',
@@ -925,22 +925,22 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this->s as nonnull;
   }
 
-  public function set_u(union1 $u): this {
+  public function set_u(union1 $u)[write_props]: this {
     return $this->setx_u($u);
    }
 
-  public function setx_u(union1 $u): this {
+  public function setx_u(union1 $u)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::u;
     $this->u = $u;
     return $this;
   }
 
-  public function get_u(): union1 {
+  public function get_u()[]: union1 {
     return $this->getx_u();
   }
 
-  public function getx_u(): union1 {
+  public function getx_u()[]: union1 {
     invariant(
       $this->_type === union2Enum::u,
       'get_u called on an instance of union2 whose current type is %s',
@@ -949,7 +949,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this->u as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
