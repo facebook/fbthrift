@@ -165,6 +165,11 @@ void ThriftRocketServerHandler::handleSetupFrame(
     auto minVersion = meta.minVersion_ref().value_or(0);
     auto maxVersion = meta.maxVersion_ref().value_or(0);
 
+    THRIFT_CONNECTION_EVENT(rocket.setup).log(connContext_, [&] {
+      return folly::dynamic::object("client_min_version", minVersion)(
+          "client_max_version", maxVersion)("server_version", version_);
+    });
+
     if (minVersion > version_) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
