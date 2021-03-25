@@ -268,6 +268,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                         ResponseRpcErrorCode::QUEUE_TIMEOUT},
                        {kResponseTooBigErrorCode,
                         ResponseRpcErrorCode::RESPONSE_TOO_BIG},
+                       {kMethodUnknownErrorCode,
+                        ResponseRpcErrorCode::UNKNOWN_METHOD},
                        {kRequestTypeDoesntMatchServiceFunctionType,
                         ResponseRpcErrorCode::WRONG_RPC_KIND},
                        {kInteractionIdUnknownErrorCode,
@@ -284,9 +286,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                   return folly::none;
                 }
                 switch (ex.getType()) {
-                  case TApplicationException::UNKNOWN_METHOD:
-                    return ResponseRpcErrorCode::UNKNOWN_METHOD;
-
                   case TApplicationException::PROTOCOL_ERROR:
                   case TApplicationException::INVALID_TRANSFORM:
                   case TApplicationException::UNSUPPORTED_CLIENT_TYPE:

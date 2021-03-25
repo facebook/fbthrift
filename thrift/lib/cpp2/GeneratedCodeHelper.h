@@ -792,15 +792,20 @@ process_missing(
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&&,
-    Cpp2RequestContext* ctx,
+    Cpp2RequestContext*,
     folly::EventBase* eb,
-    concurrency::ThreadManager*,
-    int32_t protoSeqId) {
-  using h = helper_r<ProtocolReader>;
-  const char* fn = "process";
-  auto type = TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD;
-  const auto msg = fmt::format("Method name {} not found", fname);
-  return h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
+    concurrency::ThreadManager*) {
+  if (req) {
+    eb->runInEventBaseThread([request = move(req),
+                              msg = fmt::format(
+                                  "Method name {} not found", fname)]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+              msg),
+          kMethodUnknownErrorCode);
+    });
+  }
 }
 
 template <class ProtocolReader, class Processor>
@@ -812,8 +817,7 @@ process_missing(
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
-    concurrency::ThreadManager* tm,
-    int32_t /*protoSeqId*/) {
+    concurrency::ThreadManager* tm) {
   auto protType = ProtocolReader::protocolType();
   processor->Processor::BaseAsyncProcessor::processSerializedCompressedRequest(
       std::move(req), std::move(serializedRequest), protType, ctx, eb, tm);
@@ -857,14 +861,7 @@ void process_pmap(
   auto pfn = pmap.find(fname);
   if (pfn == pmap.end()) {
     process_missing<ProtocolReader>(
-        proc,
-        fname,
-        std::move(req),
-        std::move(serializedRequest),
-        ctx,
-        eb,
-        tm,
-        ctx->getProtoSeqId());
+        proc, fname, std::move(req), std::move(serializedRequest), ctx, eb, tm);
     return;
   }
 
