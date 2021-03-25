@@ -134,6 +134,7 @@ class ThriftStreamProxy(ThriftTypeProxy):
 class ThriftFieldProxy(Protocol):
     id: int
     name: str
+    pyname: str
     is_optional: bool
     type: ThriftTypeProxy
     thriftType: ThriftField
