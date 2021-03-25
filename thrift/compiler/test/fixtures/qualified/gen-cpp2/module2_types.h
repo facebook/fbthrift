@@ -106,8 +106,9 @@ class Struct final  {
     bool first;
     bool second;
   } __isset = {};
-  bool operator==(const Struct& rhs) const;
-  bool operator<(const Struct& rhs) const;
+
+  bool operator==(const Struct&) const;
+  bool operator<(const Struct&) const;
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> first_ref() const& {
@@ -243,8 +244,9 @@ class BigStruct final  {
     bool s;
     bool id;
   } __isset = {};
-  bool operator==(const BigStruct& rhs) const;
-  bool operator<(const BigStruct& rhs) const;
+
+  bool operator==(const BigStruct&) const;
+  bool operator<(const BigStruct&) const;
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> s_ref() const& {

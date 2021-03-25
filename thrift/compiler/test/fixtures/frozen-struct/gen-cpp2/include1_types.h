@@ -94,8 +94,9 @@ class IncludedA final  {
     bool i32Field;
     bool strField;
   } __isset = {};
-  bool operator==(const IncludedA& rhs) const;
-  bool operator<(const IncludedA& rhs) const;
+
+  bool operator==(const IncludedA&) const;
+  bool operator<(const IncludedA&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {

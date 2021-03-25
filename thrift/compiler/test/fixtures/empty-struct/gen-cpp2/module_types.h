@@ -73,8 +73,9 @@ class Empty final  {
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-  bool operator==(const Empty& rhs) const;
-  bool operator<(const Empty& rhs) const;
+
+  bool operator==(const Empty&) const;
+  bool operator<(const Empty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -197,8 +198,9 @@ class Nada final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const Nada& rhs) const;
-  bool operator<(const Nada& rhs) const;
+
+  bool operator==(const Nada&) const;
+  bool operator<(const Nada&) const;
 
   Type getType() const { return static_cast<Type>(type_); }
 

@@ -142,8 +142,9 @@ class <%struct:name%> <%!
 <% > module_types_h/union_storage%>
 
 <%^struct:cpp_noncomparable%>
-<% > module_types_h/eq_overload%>
-<% > module_types_h/union_operator_less%>
+
+  bool operator==(const <%struct:name%>&) const;
+  bool operator<(const <%struct:name%>&) const;
 <%/struct:cpp_noncomparable%>
 <% > module_types_h/union_setters%>
 
@@ -258,8 +259,9 @@ class <%struct:name%> <%!
 <% > module_types_h/declare_members%>
 <%/struct:fields?%>
 <%^struct:cpp_noncomparable%>
-<% > module_types_h/eq_overload%>
-<% > module_types_h/struct_operator_less%>
+
+  bool operator==(const <%struct:name%>&) const;
+  bool operator<(const <%struct:name%>&) const;
 <%/struct:cpp_noncomparable%>
 <%#struct:fields?%>
 <% > module_types_h/field_ref%>

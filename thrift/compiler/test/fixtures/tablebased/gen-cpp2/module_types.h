@@ -222,8 +222,9 @@ class TrivialTypesStruct final  {
     bool fieldD;
     bool fieldE;
   } __isset = {};
-  bool operator==(const TrivialTypesStruct& rhs) const;
-  bool operator<(const TrivialTypesStruct& rhs) const;
+
+  bool operator==(const TrivialTypesStruct&) const;
+  bool operator<(const TrivialTypesStruct&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldA_ref() const& {
@@ -497,8 +498,9 @@ class ContainerStruct final  {
     bool fieldG;
     bool fieldH;
   } __isset = {};
-  bool operator==(const ContainerStruct& rhs) const;
-  bool operator<(const ContainerStruct& rhs) const;
+
+  bool operator==(const ContainerStruct&) const;
+  bool operator<(const ContainerStruct&) const;
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -899,8 +901,9 @@ class ExampleUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ExampleUnion& rhs) const;
-  bool operator<(const ExampleUnion& rhs) const;
+
+  bool operator==(const ExampleUnion&) const;
+  bool operator<(const ExampleUnion&) const;
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
     __clear();

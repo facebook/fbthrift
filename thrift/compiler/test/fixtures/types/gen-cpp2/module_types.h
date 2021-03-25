@@ -572,8 +572,9 @@ class decorated_struct final  {
   struct __isset {
     bool field;
   } __isset = {};
-  bool operator==(const decorated_struct& rhs) const;
-  bool operator<(const decorated_struct& rhs) const;
+
+  bool operator==(const decorated_struct&) const;
+  bool operator<(const decorated_struct&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_ref() const& {
@@ -707,8 +708,9 @@ class ContainerStruct final  {
     bool fieldG;
     bool fieldH;
   } __isset = {};
-  bool operator==(const ContainerStruct& rhs) const;
-  bool operator<(const ContainerStruct& rhs) const;
+
+  bool operator==(const ContainerStruct&) const;
+  bool operator<(const ContainerStruct&) const;
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -1014,8 +1016,9 @@ class CppTypeStruct final  {
   struct __isset {
     bool fieldA;
   } __isset = {};
-  bool operator==(const CppTypeStruct& rhs) const;
-  bool operator<(const CppTypeStruct& rhs) const;
+
+  bool operator==(const CppTypeStruct&) const;
+  bool operator<(const CppTypeStruct&) const;
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -1122,8 +1125,9 @@ class VirtualStruct  {
   struct __isset {
     bool MyIntField;
   } __isset = {};
-  bool operator==(const VirtualStruct& rhs) const;
-  bool operator<(const VirtualStruct& rhs) const;
+
+  bool operator==(const VirtualStruct&) const;
+  bool operator<(const VirtualStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
@@ -1232,8 +1236,9 @@ class MyStructWithForwardRefEnum final  {
     bool a;
     bool b;
   } __isset = {};
-  bool operator==(const MyStructWithForwardRefEnum& rhs) const;
-  bool operator<(const MyStructWithForwardRefEnum& rhs) const;
+
+  bool operator==(const MyStructWithForwardRefEnum&) const;
+  bool operator<(const MyStructWithForwardRefEnum&) const;
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1372,8 +1377,9 @@ class TrivialNumeric final  {
     bool a;
     bool b;
   } __isset = {};
-  bool operator==(const TrivialNumeric& rhs) const;
-  bool operator<(const TrivialNumeric& rhs) const;
+
+  bool operator==(const TrivialNumeric&) const;
+  bool operator<(const TrivialNumeric&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1512,8 +1518,9 @@ class TrivialNestedWithDefault final  {
     bool z;
     bool n;
   } __isset = {};
-  bool operator==(const TrivialNestedWithDefault& rhs) const;
-  bool operator<(const TrivialNestedWithDefault& rhs) const;
+
+  bool operator==(const TrivialNestedWithDefault&) const;
+  bool operator<(const TrivialNestedWithDefault&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
@@ -1649,8 +1656,9 @@ class ComplexString final  {
     bool a;
     bool b;
   } __isset = {};
-  bool operator==(const ComplexString& rhs) const;
-  bool operator<(const ComplexString& rhs) const;
+
+  bool operator==(const ComplexString&) const;
+  bool operator<(const ComplexString&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1793,8 +1801,9 @@ class ComplexNestedWithDefault final  {
     bool z;
     bool n;
   } __isset = {};
-  bool operator==(const ComplexNestedWithDefault& rhs) const;
-  bool operator<(const ComplexNestedWithDefault& rhs) const;
+
+  bool operator==(const ComplexNestedWithDefault&) const;
+  bool operator<(const ComplexNestedWithDefault&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
@@ -1941,8 +1950,9 @@ class MinPadding final  {
   ::std::int8_t tiny;
 
  public:
-  bool operator==(const MinPadding& rhs) const;
-  bool operator<(const MinPadding& rhs) const;
+
+  bool operator==(const MinPadding&) const;
+  bool operator<(const MinPadding&) const;
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small_ref() const& {
@@ -2435,8 +2445,9 @@ class Renaming final  {
   struct __isset {
     bool bar;
   } __isset = {};
-  bool operator==(const Renaming& rhs) const;
-  bool operator<(const Renaming& rhs) const;
+
+  bool operator==(const Renaming&) const;
+  bool operator<(const Renaming&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
@@ -2543,8 +2554,9 @@ class AnnotatedTypes final  {
     bool binary_field;
     bool list_field;
   } __isset = {};
-  bool operator==(const AnnotatedTypes& rhs) const;
-  bool operator<(const AnnotatedTypes& rhs) const;
+
+  bool operator==(const AnnotatedTypes&) const;
+  bool operator<(const AnnotatedTypes&) const;
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> binary_field_ref() const& {
@@ -2682,8 +2694,9 @@ class ForwardUsageStruct final  {
   struct __isset {
     bool foo;
   } __isset = {};
-  bool operator==(const ForwardUsageStruct& rhs) const;
-  bool operator<(const ForwardUsageStruct& rhs) const;
+
+  bool operator==(const ForwardUsageStruct&) const;
+  bool operator<(const ForwardUsageStruct&) const;
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
@@ -2787,8 +2800,9 @@ class ForwardUsageRoot final  {
   struct __isset {
     bool ForwardUsageStruct;
   } __isset = {};
-  bool operator==(const ForwardUsageRoot& rhs) const;
-  bool operator<(const ForwardUsageRoot& rhs) const;
+
+  bool operator==(const ForwardUsageRoot&) const;
+  bool operator<(const ForwardUsageRoot&) const;
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct_ref() const& {
@@ -2903,8 +2917,9 @@ class ForwardUsageByRef final  {
   struct __isset {
     bool foo;
   } __isset = {};
-  bool operator==(const ForwardUsageByRef& rhs) const;
-  bool operator<(const ForwardUsageByRef& rhs) const;
+
+  bool operator==(const ForwardUsageByRef&) const;
+  bool operator<(const ForwardUsageByRef&) const;
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
@@ -2999,8 +3014,9 @@ class NoexceptMoveEmpty final  {
 
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
   void __clear();
-  bool operator==(const NoexceptMoveEmpty& rhs) const;
-  bool operator<(const NoexceptMoveEmpty& rhs) const;
+
+  bool operator==(const NoexceptMoveEmpty&) const;
+  bool operator<(const NoexceptMoveEmpty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -3075,8 +3091,9 @@ class NoexceptMoveSimpleStruct final  {
   struct __isset {
     bool boolField;
   } __isset = {};
-  bool operator==(const NoexceptMoveSimpleStruct& rhs) const;
-  bool operator<(const NoexceptMoveSimpleStruct& rhs) const;
+
+  bool operator==(const NoexceptMoveSimpleStruct&) const;
+  bool operator<(const NoexceptMoveSimpleStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
@@ -3206,8 +3223,9 @@ class NoexceptMoveComplexStruct final  {
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
   } __isset = {};
-  bool operator==(const NoexceptMoveComplexStruct& rhs) const;
-  bool operator<(const NoexceptMoveComplexStruct& rhs) const;
+
+  bool operator==(const NoexceptMoveComplexStruct&) const;
+  bool operator<(const NoexceptMoveComplexStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
@@ -3667,8 +3685,9 @@ class NoExceptMoveUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const NoExceptMoveUnion& rhs) const;
-  bool operator<(const NoExceptMoveUnion& rhs) const;
+
+  bool operator==(const NoExceptMoveUnion&) const;
+  bool operator<(const NoExceptMoveUnion&) const;
 
   ::std::string& set_string_field(::std::string const &t) {
     __clear();
@@ -3896,8 +3915,9 @@ class AllocatorAware final  {
     bool aa_string;
     bool not_a_container;
   } __isset = {};
-  bool operator==(const AllocatorAware& rhs) const;
-  bool operator<(const AllocatorAware& rhs) const;
+
+  bool operator==(const AllocatorAware&) const;
+  bool operator<(const AllocatorAware&) const;
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list_ref() const& {
@@ -4144,8 +4164,9 @@ class AllocatorAware2 final  {
   struct __isset {
     bool not_a_container;
   } __isset = {};
-  bool operator==(const AllocatorAware2& rhs) const;
-  bool operator<(const AllocatorAware2& rhs) const;
+
+  bool operator==(const AllocatorAware2&) const;
+  bool operator<(const AllocatorAware2&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {

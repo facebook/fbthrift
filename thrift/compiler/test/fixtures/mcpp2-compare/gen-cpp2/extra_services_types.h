@@ -182,8 +182,9 @@ class containerStruct2 final  {
     bool fieldE;
     bool opt_fieldE;
   } __isset = {};
-  bool operator==(const containerStruct2& rhs) const;
-  bool operator<(const containerStruct2& rhs) const;
+
+  bool operator==(const containerStruct2&) const;
+  bool operator<(const containerStruct2&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

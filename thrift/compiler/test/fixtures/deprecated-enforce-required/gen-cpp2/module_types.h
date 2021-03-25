@@ -82,8 +82,9 @@ class Foo final  {
   ::std::int32_t bar;
 
  public:
-  bool operator==(const Foo& rhs) const;
-  bool operator<(const Foo& rhs) const;
+
+  bool operator==(const Foo&) const;
+  bool operator<(const Foo&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> bar_ref() const& {

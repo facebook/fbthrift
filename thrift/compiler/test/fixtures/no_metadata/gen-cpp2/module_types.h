@@ -157,8 +157,9 @@ class MyDataItem final  {
 
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
-  bool operator==(const MyDataItem& rhs) const;
-  bool operator<(const MyDataItem& rhs) const;
+
+  bool operator==(const MyDataItem&) const;
+  bool operator<(const MyDataItem&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -243,8 +244,9 @@ class MyStruct final  {
     bool MyDataField;
     bool myEnum;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
@@ -557,8 +559,9 @@ class MyUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-  bool operator<(const MyUnion& rhs) const;
+
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __clear();

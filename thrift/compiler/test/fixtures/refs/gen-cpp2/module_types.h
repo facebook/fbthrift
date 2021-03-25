@@ -403,8 +403,9 @@ class MyUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-  bool operator<(const MyUnion& rhs) const;
+
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
 
   ::std::int32_t& set_anInteger(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -592,8 +593,9 @@ class MyField final  {
     bool opt_value;
     bool value;
   } __isset = {};
-  bool operator==(const MyField& rhs) const;
-  bool operator<(const MyField& rhs) const;
+
+  bool operator==(const MyField&) const;
+  bool operator<(const MyField&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_value_ref() const& {
@@ -761,8 +763,9 @@ class MyStruct final  {
   std::unique_ptr<::cpp2::MyField> req_ref;
 
  public:
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
   template <typename ..., typename T = std::unique_ptr<::cpp2::MyField>>
   FOLLY_ERASE T& opt_ref_ref() & { return opt_ref; }
 
@@ -874,8 +877,9 @@ class StructWithUnion final  {
     bool aDouble;
     bool f;
   } __isset = {};
-  bool operator==(const StructWithUnion& rhs) const;
-  bool operator<(const StructWithUnion& rhs) const;
+
+  bool operator==(const StructWithUnion&) const;
+  bool operator<(const StructWithUnion&) const;
   template <typename ..., typename T = std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE T& u_ref() & { return u; }
 
@@ -1019,8 +1023,9 @@ class RecursiveStruct final  {
   struct __isset {
     bool mes;
   } __isset = {};
-  bool operator==(const RecursiveStruct& rhs) const;
-  bool operator<(const RecursiveStruct& rhs) const;
+
+  bool operator==(const RecursiveStruct&) const;
+  bool operator<(const RecursiveStruct&) const;
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
@@ -1132,8 +1137,9 @@ class StructWithContainers final  {
   std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const;
 
  public:
-  bool operator==(const StructWithContainers& rhs) const;
-  bool operator<(const StructWithContainers& rhs) const;
+
+  bool operator==(const StructWithContainers&) const;
+  bool operator<(const StructWithContainers&) const;
   template <typename ..., typename T = std::unique_ptr<::std::vector<::std::int32_t>>>
   FOLLY_ERASE T& list_ref_ref() & { return list_ref; }
 
@@ -1275,8 +1281,9 @@ class StructWithSharedConst final  {
   std::shared_ptr<const ::cpp2::MyField> req_shared_const;
 
  public:
-  bool operator==(const StructWithSharedConst& rhs) const;
-  bool operator<(const StructWithSharedConst& rhs) const;
+
+  bool operator==(const StructWithSharedConst&) const;
+  bool operator<(const StructWithSharedConst&) const;
   template <typename ..., typename T = std::shared_ptr<const ::cpp2::MyField>>
   FOLLY_ERASE T& opt_shared_const_ref() & { return opt_shared_const; }
 
@@ -1375,8 +1382,9 @@ class Empty final  {
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-  bool operator==(const Empty& rhs) const;
-  bool operator<(const Empty& rhs) const;
+
+  bool operator==(const Empty&) const;
+  bool operator<(const Empty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1450,8 +1458,9 @@ class StructWithRef final  {
   std::unique_ptr<::cpp2::Empty> req_field;
 
  public:
-  bool operator==(const StructWithRef& rhs) const;
-  bool operator<(const StructWithRef& rhs) const;
+
+  bool operator==(const StructWithRef&) const;
+  bool operator<(const StructWithRef&) const;
   template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1558,8 +1567,9 @@ class StructWithRefTypeUnique final  {
   std::unique_ptr<::cpp2::Empty> req_field;
 
  public:
-  bool operator==(const StructWithRefTypeUnique& rhs) const;
-  bool operator<(const StructWithRefTypeUnique& rhs) const;
+
+  bool operator==(const StructWithRefTypeUnique&) const;
+  bool operator<(const StructWithRefTypeUnique&) const;
   template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1668,8 +1678,9 @@ class StructWithRefTypeShared final  {
   std::shared_ptr<::cpp2::Empty> req_field;
 
  public:
-  bool operator==(const StructWithRefTypeShared& rhs) const;
-  bool operator<(const StructWithRefTypeShared& rhs) const;
+
+  bool operator==(const StructWithRefTypeShared&) const;
+  bool operator<(const StructWithRefTypeShared&) const;
   template <typename ..., typename T = std::shared_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1778,8 +1789,9 @@ class StructWithRefTypeSharedConst final  {
   std::shared_ptr<const ::cpp2::Empty> req_field;
 
  public:
-  bool operator==(const StructWithRefTypeSharedConst& rhs) const;
-  bool operator<(const StructWithRefTypeSharedConst& rhs) const;
+
+  bool operator==(const StructWithRefTypeSharedConst&) const;
+  bool operator<(const StructWithRefTypeSharedConst&) const;
   template <typename ..., typename T = std::shared_ptr<const ::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 
@@ -1881,8 +1893,9 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
   std::unique_ptr<::cpp2::Empty> def_field;
 
  public:
-  bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
-  bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+
+  bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor&) const;
+  bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor&) const;
   template <typename ..., typename T = std::unique_ptr<::cpp2::Empty>>
   FOLLY_ERASE T& def_field_ref() & { return def_field; }
 

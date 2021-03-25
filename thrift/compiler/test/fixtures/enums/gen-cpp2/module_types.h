@@ -162,8 +162,9 @@ class SomeStruct final  {
     bool questionable;
     bool tags;
   } __isset = {};
-  bool operator==(const SomeStruct& rhs) const;
-  bool operator<(const SomeStruct& rhs) const;
+
+  bool operator==(const SomeStruct&) const;
+  bool operator<(const SomeStruct&) const;
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {

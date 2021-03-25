@@ -144,8 +144,9 @@ class AStruct final  {
   struct __isset {
     bool FieldA;
   } __isset = {};
-  bool operator==(const AStruct& rhs) const;
-  bool operator<(const AStruct& rhs) const;
+
+  bool operator==(const AStruct&) const;
+  bool operator<(const AStruct&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
@@ -246,8 +247,9 @@ class AStructB final  {
   std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
 
  public:
-  bool operator==(const AStructB& rhs) const;
-  bool operator<(const AStructB& rhs) const;
+
+  bool operator==(const AStructB&) const;
+  bool operator<(const AStructB&) const;
   template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 

@@ -176,8 +176,9 @@ class MyStructNestedAnnotation final  {
   struct __isset {
     bool name;
   } __isset = {};
-  bool operator==(const MyStructNestedAnnotation& rhs) const;
-  bool operator<(const MyStructNestedAnnotation& rhs) const;
+
+  bool operator==(const MyStructNestedAnnotation&) const;
+  bool operator<(const MyStructNestedAnnotation&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
@@ -311,8 +312,9 @@ class MyStruct final  {
     bool annotation_with_trailing_comma;
     bool empty_annotations;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
@@ -595,8 +597,9 @@ class SecretStruct final  {
     bool id;
     bool password;
   } __isset = {};
-  bool operator==(const SecretStruct& rhs) const;
-  bool operator<(const SecretStruct& rhs) const;
+
+  bool operator==(const SecretStruct&) const;
+  bool operator<(const SecretStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {

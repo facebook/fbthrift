@@ -72,8 +72,9 @@ class FooEx final : public apache::thrift::TException {
 
   FooEx& operator=(const FooEx&) = default;
   void __clear();
-  bool operator==(const FooEx& rhs) const;
-  bool operator<(const FooEx& rhs) const;
+
+  bool operator==(const FooEx&) const;
+  bool operator<(const FooEx&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

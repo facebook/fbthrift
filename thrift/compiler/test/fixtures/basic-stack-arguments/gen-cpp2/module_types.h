@@ -142,8 +142,9 @@ class MyStruct final  {
     bool MyIntField;
     bool MyStringField;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {

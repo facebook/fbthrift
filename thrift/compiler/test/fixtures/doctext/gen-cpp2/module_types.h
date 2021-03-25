@@ -133,8 +133,9 @@ class A final  {
   struct __isset {
     bool useless_field;
   } __isset = {};
-  bool operator==(const A& rhs) const;
-  bool operator<(const A& rhs) const;
+
+  bool operator==(const A&) const;
+  bool operator<(const A&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {

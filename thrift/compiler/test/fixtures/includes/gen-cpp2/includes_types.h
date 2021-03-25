@@ -100,8 +100,9 @@ class Included final  {
     bool MyIntField;
     bool MyTransitiveField;
   } __isset = {};
-  bool operator==(const Included& rhs) const;
-  bool operator<(const Included& rhs) const;
+
+  bool operator==(const Included&) const;
+  bool operator<(const Included&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {

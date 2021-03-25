@@ -86,8 +86,9 @@ class MyStruct final  {
   struct __isset {
     bool OtherStructField;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField_ref() const& {

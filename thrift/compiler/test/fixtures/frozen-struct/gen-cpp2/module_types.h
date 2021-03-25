@@ -189,8 +189,9 @@ class ModuleA final  {
     bool inclAField;
     bool inclBField;
   } __isset = {};
-  bool operator==(const ModuleA& rhs) const;
-  bool operator<(const ModuleA& rhs) const;
+
+  bool operator==(const ModuleA&) const;
+  bool operator<(const ModuleA&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {
@@ -450,8 +451,9 @@ class ModuleB final  {
     bool i32Field;
     bool inclEnumB;
   } __isset = {};
-  bool operator==(const ModuleB& rhs) const;
-  bool operator<(const ModuleB& rhs) const;
+
+  bool operator==(const ModuleB&) const;
+  bool operator<(const ModuleB&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32Field_ref() const& {

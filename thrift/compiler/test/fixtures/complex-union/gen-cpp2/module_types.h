@@ -366,8 +366,9 @@ class ComplexUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ComplexUnion& rhs) const;
-  bool operator<(const ComplexUnion& rhs) const;
+
+  bool operator==(const ComplexUnion&) const;
+  bool operator<(const ComplexUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
@@ -860,8 +861,9 @@ class ListUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ListUnion& rhs) const;
-  bool operator<(const ListUnion& rhs) const;
+
+  bool operator==(const ListUnion&) const;
+  bool operator<(const ListUnion&) const;
 
   ::std::vector<::std::int64_t>& set_intListValue(::std::vector<::std::int64_t> const &t) {
     __clear();
@@ -1148,8 +1150,9 @@ class DataUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const DataUnion& rhs) const;
-  bool operator<(const DataUnion& rhs) const;
+
+  bool operator==(const DataUnion&) const;
+  bool operator<(const DataUnion&) const;
 
   ::std::string& set_binaryData(::std::string const &t) {
     __clear();
@@ -1350,8 +1353,9 @@ class Val final  {
     bool intVal;
     bool typedefValue;
   } __isset = {};
-  bool operator==(const Val& rhs) const;
-  bool operator<(const Val& rhs) const;
+
+  bool operator==(const Val&) const;
+  bool operator<(const Val&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strVal_ref() const& {
@@ -1612,8 +1616,9 @@ class ValUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ValUnion& rhs) const;
-  bool operator<(const ValUnion& rhs) const;
+
+  bool operator==(const ValUnion&) const;
+  bool operator<(const ValUnion&) const;
 
   ::cpp2::Val& set_v1(::cpp2::Val const &t) {
     __clear();
@@ -1901,8 +1906,9 @@ class VirtualComplexUnion  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const VirtualComplexUnion& rhs) const;
-  bool operator<(const VirtualComplexUnion& rhs) const;
+
+  bool operator==(const VirtualComplexUnion&) const;
+  bool operator<(const VirtualComplexUnion&) const;
 
   ::std::string& set_thingOne(::std::string const &t) {
     __clear();
@@ -2093,8 +2099,9 @@ class NonCopyableStruct final  {
   struct __isset {
     bool num;
   } __isset = {};
-  bool operator==(const NonCopyableStruct& rhs) const;
-  bool operator<(const NonCopyableStruct& rhs) const;
+
+  bool operator==(const NonCopyableStruct&) const;
+  bool operator<(const NonCopyableStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> num_ref() const& {
@@ -2232,8 +2239,9 @@ class NonCopyableUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const NonCopyableUnion& rhs) const;
-  bool operator<(const NonCopyableUnion& rhs) const;
+
+  bool operator==(const NonCopyableUnion&) const;
+  bool operator<(const NonCopyableUnion&) const;
 
 
   ::cpp2::NonCopyableStruct& set_s(::cpp2::NonCopyableStruct&& t) {

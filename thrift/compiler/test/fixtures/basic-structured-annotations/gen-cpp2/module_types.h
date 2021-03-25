@@ -227,8 +227,9 @@ class structured_annotation_inline final  {
     bool count;
     bool name;
   } __isset = {};
-  bool operator==(const structured_annotation_inline& rhs) const;
-  bool operator<(const structured_annotation_inline& rhs) const;
+
+  bool operator==(const structured_annotation_inline&) const;
+  bool operator<(const structured_annotation_inline&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
@@ -368,8 +369,9 @@ class structured_annotation_with_default final  {
   struct __isset {
     bool name;
   } __isset = {};
-  bool operator==(const structured_annotation_with_default& rhs) const;
-  bool operator<(const structured_annotation_with_default& rhs) const;
+
+  bool operator==(const structured_annotation_with_default&) const;
+  bool operator<(const structured_annotation_with_default&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
@@ -479,8 +481,9 @@ class structured_annotation_forward final  {
   struct __isset {
     bool count;
   } __isset = {};
-  bool operator==(const structured_annotation_forward& rhs) const;
-  bool operator<(const structured_annotation_forward& rhs) const;
+
+  bool operator==(const structured_annotation_forward&) const;
+  bool operator<(const structured_annotation_forward&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
@@ -590,8 +593,9 @@ class structured_annotation_recursive final  {
     bool recurse;
     bool forward;
   } __isset = {};
-  bool operator==(const structured_annotation_recursive& rhs) const;
-  bool operator<(const structured_annotation_recursive& rhs) const;
+
+  bool operator==(const structured_annotation_recursive&) const;
+  bool operator<(const structured_annotation_recursive&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
@@ -761,8 +765,9 @@ class structured_annotation_nested final  {
     bool name;
     bool nest;
   } __isset = {};
-  bool operator==(const structured_annotation_nested& rhs) const;
-  bool operator<(const structured_annotation_nested& rhs) const;
+
+  bool operator==(const structured_annotation_nested&) const;
+  bool operator<(const structured_annotation_nested&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
@@ -911,8 +916,9 @@ class MyStruct final  {
     bool annotated_recursive;
     bool annotated_nested;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_field_ref() const& {
@@ -1116,8 +1122,9 @@ class MyException final : public apache::thrift::TException {
   struct __isset {
     bool context;
   } __isset = {};
-  bool operator==(const MyException& rhs) const;
-  bool operator<(const MyException& rhs) const;
+
+  bool operator==(const MyException&) const;
+  bool operator<(const MyException&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> context_ref() const& {
@@ -1323,8 +1330,9 @@ class MyUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-  bool operator<(const MyUnion& rhs) const;
+
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
 
   ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string const &t) {
     __clear();

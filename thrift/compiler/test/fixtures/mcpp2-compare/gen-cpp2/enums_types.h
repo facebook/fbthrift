@@ -262,8 +262,9 @@ class SomeStruct final  {
   struct __isset {
     bool fieldA;
   } __isset = {};
-  bool operator==(const SomeStruct& rhs) const;
-  bool operator<(const SomeStruct& rhs) const;
+
+  bool operator==(const SomeStruct&) const;
+  bool operator<(const SomeStruct&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

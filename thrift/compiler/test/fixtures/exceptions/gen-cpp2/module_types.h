@@ -106,8 +106,9 @@ class Banal final : public apache::thrift::TException {
 
   Banal& operator=(const Banal&) = default;
   void __clear();
-  bool operator==(const Banal& rhs) const;
-  bool operator<(const Banal& rhs) const;
+
+  bool operator==(const Banal&) const;
+  bool operator<(const Banal&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -187,8 +188,9 @@ class Fiery final : public apache::thrift::TException {
   ::std::string message;
 
  public:
-  bool operator==(const Fiery& rhs) const;
-  bool operator<(const Fiery& rhs) const;
+
+  bool operator==(const Fiery&) const;
+  bool operator<(const Fiery&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> message_ref() const& {
@@ -306,8 +308,9 @@ class Serious final : public apache::thrift::TException {
   struct __isset {
     bool sonnet;
   } __isset = {};
-  bool operator==(const Serious& rhs) const;
-  bool operator<(const Serious& rhs) const;
+
+  bool operator==(const Serious&) const;
+  bool operator<(const Serious&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> sonnet_ref() const& {
@@ -430,8 +433,9 @@ class ComplexFieldNames final : public apache::thrift::TException {
     bool error_message;
     bool internal_error_message;
   } __isset = {};
-  bool operator==(const ComplexFieldNames& rhs) const;
-  bool operator<(const ComplexFieldNames& rhs) const;
+
+  bool operator==(const ComplexFieldNames&) const;
+  bool operator<(const ComplexFieldNames&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
@@ -588,8 +592,9 @@ class CustomFieldNames final : public apache::thrift::TException {
     bool error_message;
     bool internal_error_message;
   } __isset = {};
-  bool operator==(const CustomFieldNames& rhs) const;
-  bool operator<(const CustomFieldNames& rhs) const;
+
+  bool operator==(const CustomFieldNames&) const;
+  bool operator<(const CustomFieldNames&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {

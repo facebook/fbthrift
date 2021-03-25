@@ -106,8 +106,9 @@ class Foo final  {
     bool field3;
     bool field4;
   } __isset = {};
-  bool operator==(const Foo& rhs) const;
-  bool operator<(const Foo& rhs) const;
+
+  bool operator==(const Foo&) const;
+  bool operator<(const Foo&) const;
   template <typename ..., typename T = std::unique_ptr<::std::string>>
   FOLLY_ERASE T& field1_ref() & { return __fbthrift_read_field_field1(); }
 

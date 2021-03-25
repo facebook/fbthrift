@@ -86,8 +86,9 @@ class ReflectionStruct final  {
   struct __isset {
     bool fieldA;
   } __isset = {};
-  bool operator==(const ReflectionStruct& rhs) const;
-  bool operator<(const ReflectionStruct& rhs) const;
+
+  bool operator==(const ReflectionStruct&) const;
+  bool operator<(const ReflectionStruct&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

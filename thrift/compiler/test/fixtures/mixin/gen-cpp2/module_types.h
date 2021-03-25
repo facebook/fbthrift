@@ -121,8 +121,9 @@ class Mixin1 final  {
   struct __isset {
     bool field1;
   } __isset = {};
-  bool operator==(const Mixin1& rhs) const;
-  bool operator<(const Mixin1& rhs) const;
+
+  bool operator==(const Mixin1&) const;
+  bool operator<(const Mixin1&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1_ref() const& {
@@ -234,8 +235,9 @@ class Mixin2 final  {
     bool m1;
     bool field2;
   } __isset = {};
-  bool operator==(const Mixin2& rhs) const;
-  bool operator<(const Mixin2& rhs) const;
+
+  bool operator==(const Mixin2&) const;
+  bool operator<(const Mixin2&) const;
 
   template <typename..., typename T = ::cpp2::Mixin1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> m1_ref() const& {
@@ -378,8 +380,9 @@ class Mixin3Base final  {
   struct __isset {
     bool field3;
   } __isset = {};
-  bool operator==(const Mixin3Base& rhs) const;
-  bool operator<(const Mixin3Base& rhs) const;
+
+  bool operator==(const Mixin3Base&) const;
+  bool operator<(const Mixin3Base&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3_ref() const& {
@@ -494,8 +497,9 @@ class Foo final  {
     bool m2;
     bool m3;
   } __isset = {};
-  bool operator==(const Foo& rhs) const;
-  bool operator<(const Foo& rhs) const;
+
+  bool operator==(const Foo&) const;
+  bool operator<(const Foo&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4_ref() const& {

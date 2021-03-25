@@ -86,8 +86,9 @@ class Foo final  {
   struct __isset {
     bool bar;
   } __isset = {};
-  bool operator==(const Foo& rhs) const;
-  bool operator<(const Foo& rhs) const;
+
+  bool operator==(const Foo&) const;
+  bool operator<(const Foo&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> bar_ref() const& {

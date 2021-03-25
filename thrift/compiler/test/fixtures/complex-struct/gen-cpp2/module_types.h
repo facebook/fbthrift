@@ -710,8 +710,9 @@ class MyStructFloatFieldThrowExp final  {
     bool myStringField;
     bool myFloatField;
   } __isset = {};
-  bool operator==(const MyStructFloatFieldThrowExp& rhs) const;
-  bool operator<(const MyStructFloatFieldThrowExp& rhs) const;
+
+  bool operator==(const MyStructFloatFieldThrowExp&) const;
+  bool operator<(const MyStructFloatFieldThrowExp&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
@@ -914,8 +915,9 @@ class MyStructMapFloatThrowExp final  {
     bool myLongField;
     bool mapListOfFloats;
   } __isset = {};
-  bool operator==(const MyStructMapFloatThrowExp& rhs) const;
-  bool operator<(const MyStructMapFloatThrowExp& rhs) const;
+
+  bool operator==(const MyStructMapFloatThrowExp&) const;
+  bool operator<(const MyStructMapFloatThrowExp&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
@@ -1040,8 +1042,9 @@ class MyDataItem final  {
 
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
-  bool operator==(const MyDataItem& rhs) const;
-  bool operator<(const MyDataItem& rhs) const;
+
+  bool operator==(const MyDataItem&) const;
+  bool operator<(const MyDataItem&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1200,8 +1203,9 @@ class MyStruct final  {
     bool sByte;
     bool mListList;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
@@ -2105,8 +2109,9 @@ class SimpleStruct final  {
     bool age;
     bool name;
   } __isset = {};
-  bool operator==(const SimpleStruct& rhs) const;
-  bool operator<(const SimpleStruct& rhs) const;
+
+  bool operator==(const SimpleStruct&) const;
+  bool operator<(const SimpleStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> age_ref() const& {
@@ -2300,8 +2305,9 @@ class ComplexNestedStruct final  {
     bool mapKeySetValInt;
     bool mapKeyListValSet;
   } __isset = {};
-  bool operator==(const ComplexNestedStruct& rhs) const;
-  bool operator<(const ComplexNestedStruct& rhs) const;
+
+  bool operator==(const ComplexNestedStruct&) const;
+  bool operator<(const ComplexNestedStruct&) const;
 
   template <typename..., typename T = ::std::set<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> setOfSetOfInt_ref() const& {
@@ -3078,8 +3084,9 @@ class MyUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-  bool operator<(const MyUnion& rhs) const;
+
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __clear();
@@ -3518,8 +3525,9 @@ class defaultStruct final  {
     bool emptyMap;
     bool enumMapDFset;
   } __isset = {};
-  bool operator==(const defaultStruct& rhs) const;
-  bool operator<(const defaultStruct& rhs) const;
+
+  bool operator==(const defaultStruct&) const;
+  bool operator<(const defaultStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongDFset_ref() const& {
@@ -4280,8 +4288,9 @@ class MyStructTypeDef final  {
     bool myListTypedef;
     bool myMapListOfTypeDef;
   } __isset = {};
-  bool operator==(const MyStructTypeDef& rhs) const;
-  bool operator<(const MyStructTypeDef& rhs) const;
+
+  bool operator==(const MyStructTypeDef&) const;
+  bool operator<(const MyStructTypeDef&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myLongField_ref() const& {
@@ -4767,8 +4776,9 @@ class MyUnionFloatFieldThrowExp final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnionFloatFieldThrowExp& rhs) const;
-  bool operator<(const MyUnionFloatFieldThrowExp& rhs) const;
+
+  bool operator==(const MyUnionFloatFieldThrowExp&) const;
+  bool operator<(const MyUnionFloatFieldThrowExp&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __clear();
@@ -5068,8 +5078,9 @@ class TypeRemapped final  {
     bool BigInteger;
     bool binaryTestBuffer;
   } __isset = {};
-  bool operator==(const TypeRemapped& rhs) const;
-  bool operator<(const TypeRemapped& rhs) const;
+
+  bool operator==(const TypeRemapped&) const;
+  bool operator<(const TypeRemapped&) const;
 
   template <typename..., typename T = ::std::map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> lsMap_ref() const& {
@@ -5258,8 +5269,9 @@ class emptyXcep final : public apache::thrift::TException {
 
   emptyXcep& operator=(const emptyXcep&) = default;
   void __clear();
-  bool operator==(const emptyXcep& rhs) const;
-  bool operator<(const emptyXcep& rhs) const;
+
+  bool operator==(const emptyXcep&) const;
+  bool operator<(const emptyXcep&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -5336,8 +5348,9 @@ class reqXcep final : public apache::thrift::TException {
   ::std::int32_t errorCode;
 
  public:
-  bool operator==(const reqXcep& rhs) const;
-  bool operator<(const reqXcep& rhs) const;
+
+  bool operator==(const reqXcep&) const;
+  bool operator<(const reqXcep&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> message_ref() const& {
@@ -5482,8 +5495,9 @@ class optXcep final : public apache::thrift::TException {
     bool message;
     bool errorCode;
   } __isset = {};
-  bool operator==(const optXcep& rhs) const;
-  bool operator<(const optXcep& rhs) const;
+
+  bool operator==(const optXcep&) const;
+  bool operator<(const optXcep&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> message_ref() const& {
@@ -5651,8 +5665,9 @@ class complexException final : public apache::thrift::TException {
     bool structError;
     bool lsMap;
   } __isset = {};
-  bool operator==(const complexException& rhs) const;
-  bool operator<(const complexException& rhs) const;
+
+  bool operator==(const complexException&) const;
+  bool operator<(const complexException&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {

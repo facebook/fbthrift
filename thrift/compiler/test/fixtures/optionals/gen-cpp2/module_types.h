@@ -242,8 +242,9 @@ class Color final  {
     bool blue;
     bool alpha;
   } __isset = {};
-  bool operator==(const Color& rhs) const;
-  bool operator<(const Color& rhs) const;
+
+  bool operator==(const Color&) const;
+  bool operator<(const Color&) const;
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> red_ref() const& {
@@ -453,8 +454,9 @@ class Vehicle final  {
     bool name;
     bool hasAC;
   } __isset = {};
-  bool operator==(const Vehicle& rhs) const;
-  bool operator<(const Vehicle& rhs) const;
+
+  bool operator==(const Vehicle&) const;
+  bool operator<(const Vehicle&) const;
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> color_ref() const& {
@@ -731,8 +733,9 @@ class Person final  {
     bool afraidOfAnimal;
     bool vehicles;
   } __isset = {};
-  bool operator==(const Person& rhs) const;
-  bool operator<(const Person& rhs) const;
+
+  bool operator==(const Person&) const;
+  bool operator<(const Person&) const;
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {

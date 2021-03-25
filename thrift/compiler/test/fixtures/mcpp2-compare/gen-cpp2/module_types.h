@@ -1115,8 +1115,9 @@ class Empty final  {
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-  bool operator==(const Empty& rhs) const;
-  bool operator<(const Empty& rhs) const;
+
+  bool operator==(const Empty&) const;
+  bool operator<(const Empty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1191,8 +1192,9 @@ class ASimpleStruct final  {
   struct __isset {
     bool boolField;
   } __isset = {};
-  bool operator==(const ASimpleStruct& rhs) const;
-  bool operator<(const ASimpleStruct& rhs) const;
+
+  bool operator==(const ASimpleStruct&) const;
+  bool operator<(const ASimpleStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
@@ -1297,8 +1299,9 @@ class ASimpleStructNoexcept final  {
   struct __isset {
     bool boolField;
   } __isset = {};
-  bool operator==(const ASimpleStructNoexcept& rhs) const;
-  bool operator<(const ASimpleStructNoexcept& rhs) const;
+
+  bool operator==(const ASimpleStructNoexcept&) const;
+  bool operator<(const ASimpleStructNoexcept&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
@@ -1428,8 +1431,9 @@ class MyStruct final  {
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
@@ -1890,8 +1894,9 @@ class SimpleUnion  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const SimpleUnion& rhs) const;
-  bool operator<(const SimpleUnion& rhs) const;
+
+  bool operator==(const SimpleUnion&) const;
+  bool operator<(const SimpleUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
@@ -2714,8 +2719,9 @@ class ComplexUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ComplexUnion& rhs) const;
-  bool operator<(const ComplexUnion& rhs) const;
+
+  bool operator==(const ComplexUnion&) const;
+  bool operator<(const ComplexUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
@@ -4215,8 +4221,9 @@ class AnException final : public apache::thrift::TException {
     bool union_typedef;
     bool a_union_typedef_list;
   } __isset = {};
-  bool operator==(const AnException& rhs) const;
-  bool operator<(const AnException& rhs) const;
+
+  bool operator==(const AnException&) const;
+  bool operator<(const AnException&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> code_ref() const& {
@@ -4751,8 +4758,9 @@ class AnotherException : public apache::thrift::TException {
     bool code;
     bool message;
   } __isset = {};
-  bool operator==(const AnotherException& rhs) const;
-  bool operator<(const AnotherException& rhs) const;
+
+  bool operator==(const AnotherException&) const;
+  bool operator<(const AnotherException&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> code_ref() const& {
@@ -5052,8 +5060,9 @@ class containerStruct final  {
     bool fieldAE;
     bool fieldSD;
   } __isset = {};
-  bool operator==(const containerStruct& rhs) const;
-  bool operator<(const containerStruct& rhs) const;
+
+  bool operator==(const containerStruct&) const;
+  bool operator<(const containerStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
@@ -6520,8 +6529,9 @@ class MyIncludedStruct final  {
     bool MyIncludedInt;
     bool MyIncludedStruct;
   } __isset = {};
-  bool operator==(const MyIncludedStruct& rhs) const;
-  bool operator<(const MyIncludedStruct& rhs) const;
+
+  bool operator==(const MyIncludedStruct&) const;
+  bool operator<(const MyIncludedStruct&) const;
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt_ref() const& {
@@ -6791,8 +6801,9 @@ class AnnotatedStruct  {
     bool iobuf_ptr_val;
     bool struct_struct;
   } __isset = {};
-  bool operator==(const AnnotatedStruct& rhs) const;
-  bool operator<(const AnnotatedStruct& rhs) const;
+
+  bool operator==(const AnnotatedStruct&) const;
+  bool operator<(const AnnotatedStruct&) const;
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> no_annotation_ref() const& {
@@ -7733,8 +7744,9 @@ class ComplexContainerStruct final  {
     bool map_of_iobufs;
     bool map_of_iobuf_ptrs;
   } __isset = {};
-  bool operator==(const ComplexContainerStruct& rhs) const;
-  bool operator<(const ComplexContainerStruct& rhs) const;
+
+  bool operator==(const ComplexContainerStruct&) const;
+  bool operator<(const ComplexContainerStruct&) const;
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_of_iobufs_ref() const& {
@@ -7871,8 +7883,9 @@ class FloatStruct final  {
     bool floatField;
     bool doubleField;
   } __isset = {};
-  bool operator==(const FloatStruct& rhs) const;
-  bool operator<(const FloatStruct& rhs) const;
+
+  bool operator==(const FloatStruct&) const;
+  bool operator<(const FloatStruct&) const;
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> floatField_ref() const& {
@@ -8099,8 +8112,9 @@ class FloatUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const FloatUnion& rhs) const;
-  bool operator<(const FloatUnion& rhs) const;
+
+  bool operator==(const FloatUnion&) const;
+  bool operator<(const FloatUnion&) const;
 
   float& set_floatSide(float t = float()) {
     __clear();
@@ -8263,8 +8277,9 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   ::std::int64_t intField;
 
  public:
-  bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
-  bool operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
+
+  bool operator==(const AllRequiredNoExceptMoveCtrStruct&) const;
+  bool operator<(const AllRequiredNoExceptMoveCtrStruct&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> intField_ref() const& {

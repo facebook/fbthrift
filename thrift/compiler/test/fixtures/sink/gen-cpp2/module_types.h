@@ -121,8 +121,9 @@ class InitialResponse final  {
   struct __isset {
     bool content;
   } __isset = {};
-  bool operator==(const InitialResponse& rhs) const;
-  bool operator<(const InitialResponse& rhs) const;
+
+  bool operator==(const InitialResponse&) const;
+  bool operator<(const InitialResponse&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -231,8 +232,9 @@ class FinalResponse final  {
   struct __isset {
     bool content;
   } __isset = {};
-  bool operator==(const FinalResponse& rhs) const;
-  bool operator<(const FinalResponse& rhs) const;
+
+  bool operator==(const FinalResponse&) const;
+  bool operator<(const FinalResponse&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -341,8 +343,9 @@ class SinkPayload final  {
   struct __isset {
     bool content;
   } __isset = {};
-  bool operator==(const SinkPayload& rhs) const;
-  bool operator<(const SinkPayload& rhs) const;
+
+  bool operator==(const SinkPayload&) const;
+  bool operator<(const SinkPayload&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
@@ -451,8 +454,9 @@ class CompatibleWithKeywordSink final  {
   struct __isset {
     bool sink;
   } __isset = {};
-  bool operator==(const CompatibleWithKeywordSink& rhs) const;
-  bool operator<(const CompatibleWithKeywordSink& rhs) const;
+
+  bool operator==(const CompatibleWithKeywordSink&) const;
+  bool operator<(const CompatibleWithKeywordSink&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sink_ref() const& {
@@ -561,8 +565,9 @@ class InitialException final : public apache::thrift::TException {
   struct __isset {
     bool reason;
   } __isset = {};
-  bool operator==(const InitialException& rhs) const;
-  bool operator<(const InitialException& rhs) const;
+
+  bool operator==(const InitialException&) const;
+  bool operator<(const InitialException&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
@@ -675,8 +680,9 @@ class SinkException1 final : public apache::thrift::TException {
   struct __isset {
     bool reason;
   } __isset = {};
-  bool operator==(const SinkException1& rhs) const;
-  bool operator<(const SinkException1& rhs) const;
+
+  bool operator==(const SinkException1&) const;
+  bool operator<(const SinkException1&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {
@@ -790,8 +796,9 @@ class SinkException2 final : public apache::thrift::TException {
   struct __isset {
     bool reason;
   } __isset = {};
-  bool operator==(const SinkException2& rhs) const;
-  bool operator<(const SinkException2& rhs) const;
+
+  bool operator==(const SinkException2&) const;
+  bool operator<(const SinkException2&) const;
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reason_ref() const& {

@@ -338,8 +338,9 @@ class Internship final  {
     bool employer;
     bool compensation;
   } __isset = {};
-  bool operator==(const Internship& rhs) const;
-  bool operator<(const Internship& rhs) const;
+
+  bool operator==(const Internship&) const;
+  bool operator<(const Internship&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> weeks_ref() const& {
@@ -547,8 +548,9 @@ class Range final  {
   ::std::int32_t max;
 
  public:
-  bool operator==(const Range& rhs) const;
-  bool operator<(const Range& rhs) const;
+
+  bool operator==(const Range&) const;
+  bool operator<(const Range&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> min_ref() const& {
@@ -685,8 +687,9 @@ class struct1 final  {
     bool a;
     bool b;
   } __isset = {};
-  bool operator==(const struct1& rhs) const;
-  bool operator<(const struct1& rhs) const;
+
+  bool operator==(const struct1&) const;
+  bool operator<(const struct1&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -835,8 +838,9 @@ class struct2 final  {
     bool c;
     bool d;
   } __isset = {};
-  bool operator==(const struct2& rhs) const;
-  bool operator<(const struct2& rhs) const;
+
+  bool operator==(const struct2&) const;
+  bool operator<(const struct2&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1040,8 +1044,9 @@ class struct3 final  {
     bool b;
     bool c;
   } __isset = {};
-  bool operator==(const struct3& rhs) const;
-  bool operator<(const struct3& rhs) const;
+
+  bool operator==(const struct3&) const;
+  bool operator<(const struct3&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1218,8 +1223,9 @@ class struct4 final  {
     bool b;
     bool c;
   } __isset = {};
-  bool operator==(const struct4& rhs) const;
-  bool operator<(const struct4& rhs) const;
+
+  bool operator==(const struct4&) const;
+  bool operator<(const struct4&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
@@ -1486,8 +1492,9 @@ class union1 final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const union1& rhs) const;
-  bool operator<(const union1& rhs) const;
+
+  bool operator==(const union1&) const;
+  bool operator<(const union1&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
     __clear();
@@ -1790,8 +1797,9 @@ class union2 final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const union2& rhs) const;
-  bool operator<(const union2& rhs) const;
+
+  bool operator==(const union2&) const;
+  bool operator<(const union2&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
     __clear();

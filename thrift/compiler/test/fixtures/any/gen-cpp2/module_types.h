@@ -98,8 +98,9 @@ class MyStruct final  {
   struct __isset {
     bool myString;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-  bool operator<(const MyStruct& rhs) const;
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myString_ref() const& {
@@ -280,8 +281,9 @@ class MyUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-  bool operator<(const MyUnion& rhs) const;
+
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
 
   ::std::string& set_myString(::std::string const &t) {
     __clear();
@@ -421,8 +423,9 @@ class MyException final : public apache::thrift::TException {
   struct __isset {
     bool myString;
   } __isset = {};
-  bool operator==(const MyException& rhs) const;
-  bool operator<(const MyException& rhs) const;
+
+  bool operator==(const MyException&) const;
+  bool operator<(const MyException&) const;
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myString_ref() const& {

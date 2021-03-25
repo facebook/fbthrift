@@ -260,8 +260,9 @@ class SmallStruct final  {
     bool small_A;
     bool small_B;
   } __isset = {};
-  bool operator==(const SmallStruct& rhs) const;
-  bool operator<(const SmallStruct& rhs) const;
+
+  bool operator==(const SmallStruct&) const;
+  bool operator<(const SmallStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> small_A_ref() const& {
@@ -455,8 +456,9 @@ class containerStruct final  {
     bool fieldP;
     bool fieldQ;
   } __isset = {};
-  bool operator==(const containerStruct& rhs) const;
-  bool operator<(const containerStruct& rhs) const;
+
+  bool operator==(const containerStruct&) const;
+  bool operator<(const containerStruct&) const;
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {

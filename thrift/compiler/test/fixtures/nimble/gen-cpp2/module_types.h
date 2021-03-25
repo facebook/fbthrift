@@ -112,8 +112,9 @@ class BasicTypes final  {
     bool third;
     bool isTrue;
   } __isset = {};
-  bool operator==(const BasicTypes& rhs) const;
-  bool operator<(const BasicTypes& rhs) const;
+
+  bool operator==(const BasicTypes&) const;
+  bool operator<(const BasicTypes&) const;
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> first_ref() const& {
