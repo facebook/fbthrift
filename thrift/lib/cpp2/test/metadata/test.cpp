@@ -41,8 +41,7 @@ using apache::thrift::metadata::ThriftServiceMetadataResponse;
 using apache::thrift::metadata::ThriftType;
 
 void check_unstructured_metadata(
-    const std::map<std::string, std::string>& meta,
-    const std::string& prefix) {
+    const std::map<std::string, std::string>& meta, const std::string& prefix) {
   EXPECT_EQ(meta.size(), 2);
   EXPECT_EQ(meta.at(prefix + "_foo"), "1");
   EXPECT_EQ(meta.at(prefix + "_bar"), prefix + "_baz");
