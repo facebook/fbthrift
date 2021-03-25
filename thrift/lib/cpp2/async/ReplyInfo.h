@@ -132,7 +132,7 @@ class ReplyInfoConsumer {
  public:
   explicit ReplyInfoConsumer(folly::EventBase& evb) : evb_(evb) {}
   void operator()(ReplyInfo&& info) noexcept {
-    std::visit([&evb = evb_](auto&& info) { info(evb); }, info);
+    std::visit([&evb = evb_](auto&& visitInfo) { visitInfo(evb); }, info);
   }
 
  private:
