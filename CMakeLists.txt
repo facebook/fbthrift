@@ -61,9 +61,6 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH})
 
 # Find required dependencies
-if(APPLE AND NOT DEFINED OPENSSL_ROOT_DIR)
-  file(GLOB OPENSSL_ROOT_DIR /usr/local/Cellar/openssl*/*)
-endif()
 find_package(OpenSSL REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
