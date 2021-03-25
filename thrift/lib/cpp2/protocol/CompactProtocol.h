@@ -112,6 +112,8 @@ class CompactProtocolWriter {
 
   static constexpr bool kSortKeys() { return false; }
 
+  static constexpr bool kHasIndexSupport() { return true; }
+
   /**
    * The IOBufQueue itself is managed by the caller.
    * It must exist for the life of the CompactProtocol as well,

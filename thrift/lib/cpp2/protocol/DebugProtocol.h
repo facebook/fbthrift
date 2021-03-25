@@ -51,6 +51,8 @@ class DebugProtocolWriter {
 
   static constexpr bool kSortKeys() { return true; }
 
+  static constexpr bool kHasIndexSupport() { return false; }
+
   void setOutput(
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max());

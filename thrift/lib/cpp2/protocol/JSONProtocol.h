@@ -41,6 +41,8 @@ class JSONProtocolWriter : public JSONProtocolWriterCommon {
 
   static constexpr bool kSortKeys() { return false; }
 
+  static constexpr bool kHasIndexSupport() { return false; }
+
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
   inline uint32_t writeFieldBegin(

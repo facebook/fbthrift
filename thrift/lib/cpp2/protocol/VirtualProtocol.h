@@ -92,6 +92,7 @@ class VirtualWriterBase {
   virtual ProtocolType protocolType() const = 0;
 
   virtual bool kSortKeys() const = 0;
+  virtual bool kHasIndexSupport() const = 0;
 
   virtual void setOutput(
       folly::IOBufQueue* queue,
@@ -285,6 +286,10 @@ class VirtualWriter : public VirtualWriterBase {
   }
 
   bool kSortKeys() const override { return protocol_.kSortKeys(); }
+
+  virtual bool kHasIndexSupport() const override {
+    return protocol_.kHasIndexSupport();
+  }
 
   void setOutput(
       folly::IOBufQueue* queue,

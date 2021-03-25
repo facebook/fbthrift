@@ -61,6 +61,8 @@ class BinaryProtocolWriter {
 
   static constexpr bool kSortKeys() { return false; }
 
+  static constexpr bool kHasIndexSupport() { return false; }
+
   /**
    * ...
    * The IOBuf itself is managed by the caller.

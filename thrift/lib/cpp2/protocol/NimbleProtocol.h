@@ -42,6 +42,8 @@ class NimbleProtocolWriter {
 
   static constexpr bool kSortKeys() { return false; }
 
+  static constexpr bool kHasIndexSupport() { return false; }
+
   uint32_t writeMessageBegin(
       const std::string& name, MessageType messageType, int32_t seqid);
   uint32_t writeMessageEnd();
