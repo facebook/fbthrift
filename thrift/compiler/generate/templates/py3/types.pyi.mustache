@@ -57,11 +57,11 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 {{#program:structs}}
 class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
     class __fbthrift_IsSet:
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         {{#field:has_ref_accessor?}}
         {{field:py_name}}: bool
         {{/field:has_ref_accessor?}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
         pass
 
     {{#struct:fields_and_mixin_fields}}
@@ -71,14 +71,14 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
 
     {{/struct:fields_and_mixin_fields}}
     def __init__(
-        self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:py_name}}: _typing.Optional[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}]=None{{/struct:fields}}
+        self, {{#struct:py3_fields?}}*{{/struct:py3_fields?}}{{#struct:py3_fields}},
+        {{field:py_name}}: _typing.Optional[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}]=None{{/struct:py3_fields}}
     ) -> None: ...
 
     {{#struct:plain?}}
     def __call__(
-        self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, __NotSet, None]=NOTSET{{/struct:fields}}
+        self, {{#struct:py3_fields?}}*{{/struct:py3_fields?}}{{#struct:py3_fields}},
+        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, __NotSet, None]=NOTSET{{/struct:py3_fields}}
     ) -> {{struct:name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...
@@ -97,14 +97,14 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
 
     class Type(thrift.py3.types.Enum):
         EMPTY: {{struct:name}}.Type = ...
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         {{field:py_name}}: {{struct:name}}.Type = ...
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
     @staticmethod
-    def fromValue(value: _typing.Union[None, {{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]) -> {{struct:name}}: ...
+    def fromValue(value: _typing.Union[None, {{#struct:py3_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:py3_fields}}]) -> {{struct:name}}: ...
     @__property__
-    def value(self) -> _typing.Union[None, {{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]: ...
+    def value(self) -> _typing.Union[None, {{#struct:py3_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:py3_fields}}]: ...
     @__property__
     def type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}

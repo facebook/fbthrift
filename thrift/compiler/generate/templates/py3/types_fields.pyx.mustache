@@ -40,9 +40,9 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj):
         cdef __{{struct:name}}_FieldsSetter __fbthrift_inst = __{{struct:name}}_FieldsSetter.__new__(__{{struct:name}}_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         __fbthrift_inst._setters[__cstring_view(<const char*>"{{field:py_name}}")] = __{{struct:name}}_FieldsSetter._set_field_{{field:index}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
         return __fbthrift_inst
 
     cdef void set_field(__{{struct:name}}_FieldsSetter self, const char* name, object value) except *:
@@ -51,7 +51,7 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         if found == self._setters.end():
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     {{#field:type}}
 
     cdef void _set_field_{{field:index}}(self, __fbthrift_value) except *:
@@ -83,7 +83,7 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         deref(self._struct_cpp_obj).__isset.{{field:py_name}} = True
         {{/field:isset?}}
     {{/field:type}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
 {{/struct:union?}}
 {{/program:structs}}

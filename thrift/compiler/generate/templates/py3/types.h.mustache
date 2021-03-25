@@ -57,9 +57,9 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}::Type>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
-      {{#struct:fields}}{{#field:hasPyName?}}
+      {{#struct:py3_fields}}{{#field:hasPyName?}}
       {"{{field:py_name}}", "{{field:name}}"},
-      {{/field:hasPyName?}}{{/struct:fields}}
+      {{/field:hasPyName?}}{{/struct:py3_fields}}
     }
   };
   return *pairs;
@@ -74,7 +74,7 @@ template<>
 void reset_field<{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}>(
     {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}& obj, uint16_t index) {
   switch (index) {
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     case {{field:index}}:
       {{^field:reference?}}
       obj.{{field:cppName}}_ref().copy_from(default_inst<{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}>().{{field:cppName}}_ref());
@@ -83,7 +83,7 @@ void reset_field<{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}
       obj.{{field:cppName}}.reset();
       {{/field:reference?}}
       return;
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
   }
 }
 {{/struct:union?}}
@@ -95,9 +95,9 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
-      {{#struct:fields}}{{#field:hasPyName?}}
+      {{#struct:py3_fields}}{{#field:hasPyName?}}
       {"{{field:name}}", "{{field:py_name}}"},
-      {{/field:hasPyName?}}{{/struct:fields}}
+      {{/field:hasPyName?}}{{/struct:py3_fields}}
     }
   };
   return *map;

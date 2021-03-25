@@ -118,19 +118,19 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 {{/first?}}
     {{^struct:union?}}
     cdef cppclass c{{struct:name}}__isset "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         bint {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
-    {{/struct:fields}}
-    {{^struct:fields}}
+    {{/struct:py3_fields}}
+    {{^struct:py3_fields}}
         pass
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
     {{/struct:union?}}
     {{#struct:union?}}
     cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
         c{{struct:name}}__type___EMPTY__ "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         c{{struct:name}}__type_{{field:py_name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
     {{/struct:union?}}
 
     cdef cppclass c{{struct:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
@@ -165,19 +165,19 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
         {{/field:opt_in_req_out?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields_and_mixin_fields}}
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
         c{{struct:name}}__isset __isset
     {{/struct:union?}}
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
         {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:py_name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
         {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:py_name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/CythonCppType}}&){{/field:type}}
-    {{/struct:fields}}{{/struct:union?}}
+    {{/struct:py3_fields}}{{/struct:union?}}
 
 {{/program:structs}}
 
@@ -195,7 +195,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{^struct:union?}}
     cdef __fbthrift_types_fields.__{{struct:name}}_FieldsSetter _fields_setter
     {{!Memoized Python wrappers of struct fields, created lazily}}
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     {{#field:type}}{{#type:struct}}
     cdef {{> types/CythonPythonType}} __fbthrift_cached_{{field:py_name}}
     {{/type:struct}}{{#type:container?}}
@@ -207,7 +207,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/type:iobuf?}}{{#type:iobufRef?}}
     cdef __iobuf.IOBuf __fbthrift_cached_{{field:py_name}}
     {{/type:iobufRef?}}{{/field:type}}
-    {{/struct:fields}}{{/struct:union?}}
+    {{/struct:py3_fields}}{{/struct:union?}}
     {{#struct:union?}}
     cdef readonly __{{struct:name}}Type type
     cdef readonly object value
@@ -218,7 +218,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(
         c{{struct:name}}* base_instance{{^struct:union?}},
-        bint* __isNOTSET{{/struct:union?}}{{#struct:fields}},
+        bint* __isNOTSET{{/struct:union?}}{{#struct:py3_fields}},
         {{#field:type}}{{!
             }}{{#type:cythonTypeNoneable?}}{{!
                 }}{{> types/CythonPythonType}} {{!
@@ -227,7 +227,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 }}object {{!
             }}{{/type:cythonTypeNoneable?}}{{!
             }}{{field:py_name}}{{!
-        }}{{/field:type}}{{/struct:fields}}
+        }}{{/field:type}}{{/struct:py3_fields}}
     ) except *
     {{/struct:union?}}
 

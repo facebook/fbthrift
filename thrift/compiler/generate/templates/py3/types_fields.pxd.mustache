@@ -70,11 +70,11 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj)
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     {{#field:type}}
     cdef void _set_field_{{field:index}}(self, __fbthrift_value) except *
     {{/field:type}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
 {{/struct:union?}}
 {{/program:structs}}

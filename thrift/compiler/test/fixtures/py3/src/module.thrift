@@ -50,6 +50,8 @@ struct SimpleStruct {
   5: i64 big_int;
   6: double real;
   7: float smaller_real;
+  // The next field should not show up anywhere in the generated code.
+  8: i16 hidden_field (py3.hidden);
 }
 
 typedef binary (cpp.type = "foo::Bar") foo_bar

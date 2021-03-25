@@ -866,7 +866,6 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:size", &mstch_py3_struct::getSize},
             {"struct:is_struct_orderable?",
              &mstch_py3_struct::isStructOrderable},
-            {"struct:is_always_set?", &mstch_py3_struct::isAlwaysSet},
             {"struct:cpp_noncomparable", &mstch_py3_struct::cppNonComparable},
             {"struct:cpp_noncopyable?", &mstch_py3_struct::cppNonCopyable},
             {"struct:exception_message?",
@@ -874,23 +873,25 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:exception_message", &mstch_py3_struct::exceptionMessage},
             {"struct:fields_and_mixin_fields",
              &mstch_py3_struct::fields_and_mixin_fields},
+            {"struct:py3_fields", &mstch_py3_struct::py3_fields},
+            {"struct:py3_fields?", &mstch_py3_struct::has_py3_fields},
         });
+    py3_fields_ = strct_->fields();
+    py3_fields_.erase(
+        std::remove_if(
+            py3_fields_.begin(),
+            py3_fields_.end(),
+            [](t_field const* field) {
+              return field->has_annotation("py3.hidden");
+            }),
+        py3_fields_.end());
   }
 
-  mstch::node getSize() { return std::to_string(strct_->fields().size()); }
+  mstch::node getSize() { return std::to_string(py3_fields_.size()); }
 
   mstch::node isStructOrderable() {
     return cpp2::is_orderable(*strct_) &&
         !strct_->has_annotation("no_default_comparators");
-  }
-
-  mstch::node isAlwaysSet() {
-    const auto& members = strct_->fields();
-    return std::any_of(
-        members.begin(), members.end(), [this](const auto* field) {
-          mstch_py3_field f{field, generators_, cache_, pos_, 0};
-          return f.has_default_value();
-        });
   }
 
   mstch::node cppNonComparable() {
@@ -907,13 +908,20 @@ class mstch_py3_struct : public mstch_struct {
 
   mstch::node exceptionMessage() { return strct_->get_annotation("message"); }
 
+  mstch::node py3_fields() { return generate_fields(py3_fields_); }
+
+  mstch::node has_py3_fields() { return !py3_fields_.empty(); }
+
   mstch::node fields_and_mixin_fields() {
-    std::vector<t_field const*> fields = strct_->fields();
+    std::vector<t_field const*> fields = py3_fields_;
     for (auto m : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(m.member);
     }
     return generate_fields(fields);
   }
+
+ private:
+  std::vector<t_field const*> py3_fields_;
 };
 
 class mstch_py3_enum : public mstch_enum {

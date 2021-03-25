@@ -111,10 +111,10 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{^struct:cpp_noncopyable?}}
 
     def __call__({{struct:name}} self, **kwargs):
-        {{^struct:fields?}}
+        {{^struct:py3_fields?}}
         return self
-        {{/struct:fields?}}
-        {{#struct:fields?}}
+        {{/struct:py3_fields?}}
+        {{#struct:py3_fields?}}
         if not kwargs:
             return self
         cdef {{struct:name}} __fbthrift_inst = {{struct:name}}.__new__({{struct:name}})
@@ -123,7 +123,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         for __fbthrift_name, __fbthrift_value in kwargs.items():
             __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
-        {{/struct:fields?}}
+        {{/struct:py3_fields?}}
     {{/struct:cpp_noncopyable?}}
     {{/struct:exception?}}
 
@@ -132,11 +132,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("{{struct:name}}", {
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         {{#field:has_ref_accessor?}}
           "{{field:py_name}}": deref(self._cpp_obj).{{field:py_name}}_ref().has_value(),
         {{/field:has_ref_accessor?}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
         })
 
     @staticmethod
@@ -190,16 +190,16 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     Type = __{{struct:name}}Type
 
     def __init__(
-        self, *{{#struct:fields}},
+        self, *{{#struct:py3_fields}},
         {{#field:type}}{{!
             }}{{#type:cythonTypeNoneable?}}{{!
                 }}{{> types/CythonPythonType}} {{!
             }}{{/type:cythonTypeNoneable?}}{{!
         }}{{/field:type}}{{!
             }}{{field:py_name}}=None{{!
-        }}{{/struct:fields}}
+        }}{{/struct:py3_fields}}
     ):
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         {{#field:type}}
         {{^type:cythonTypeNoneable?}}
         {{^type:container?}}
@@ -214,10 +214,10 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/type:container?}}
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
         self._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
-          NULL,{{#struct:fields}}
-          {{field:py_name}},{{/struct:fields}}
+          NULL,{{#struct:py3_fields}}
+          {{field:py_name}},{{/struct:py3_fields}}
         )))
         self._load_cache()
 
@@ -226,7 +226,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         if value is None:
             return {{struct:name}}()
         {{! We do this with strict types first, then we will do int to float conversion}}
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         {{#field:type}}
         if isinstance(value, {{> types/PythonType}}):
             {{#type:number?}}
@@ -252,8 +252,8 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
             return {{struct:name}}({{field:py_name}}=value)
             {{/type:number?}}
         {{/field:type}}
-        {{/struct:fields}}
-        {{#struct:fields}}
+        {{/struct:py3_fields}}
+        {{#struct:py3_fields}}
         {{#field:type}}
         {{#type:floating_point?}}
         if isinstance(value, {{> types/PythonIsInstanceType}}):
@@ -264,12 +264,12 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
                 pass
         {{/type:floating_point?}}
         {{/field:type}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
     @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(
-        c{{struct:name}}* base_instance{{#struct:fields}},
+        c{{struct:name}}* base_instance{{#struct:py3_fields}},
         {{#field:type}}{{!
             }}{{#type:cythonTypeNoneable?}}{{!
                 }}{{> types/CythonPythonType}} {{!
@@ -278,18 +278,18 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
                 }}object {{!
             }}{{/type:cythonTypeNoneable?}}{{!
             }}{{field:py_name}}{{!
-        }}{{/field:type}}{{/struct:fields}}
+        }}{{/field:type}}{{/struct:py3_fields}}
     ) except *:
         cdef unique_ptr[c{{struct:name}}] c_inst = make_unique[c{{struct:name}}]()
         cdef bint any_set = False
-        {{#struct:fields}}{{#field:type}}
+        {{#struct:py3_fields}}{{#field:type}}
         if {{field:py_name}} is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
             {{> CythonUnionAssignField}}
 
             any_set = True
-        {{/field:type}}{{/struct:fields}}
+        {{/field:type}}{{/struct:py3_fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return cmove(c_inst)
@@ -301,14 +301,14 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         __fbthrift_inst._load_cache()
         return __fbthrift_inst
 
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     @property
     def {{field:py_name}}(self):
         if self.type.value != {{field:key}}:
             raise TypeError(f'Union contains a value of type {self.type.name}, not {{field:py_name}}')
         return self.value
 
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
     def __hash__({{struct:name}} self):
         return  super().__hash__()
@@ -318,13 +318,13 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         cdef int type = self.type.value
         if type == 0:    # Empty
             self.value = None
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         elif type == {{field:key}}:
             {{#field:type}}
             {{> CythonUnionGetter}}
             {{/field:type}}
 
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
 
 {{/struct:union?}}
     {{! Below are some things that are common to structs and unions: }}
