@@ -496,7 +496,7 @@ void ThriftRocketServerHandler::handleRequestWithBadMetadata(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNSUPPORTED_CLIENT_TYPE,
           "Invalid metadata object"),
-      "Corrupted metadata in rsocket request");
+      kRequestParsingErrorCode);
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadChecksum(
@@ -507,7 +507,7 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
-      "Corrupted request");
+      kChecksumMismatchErrorCode);
 }
 
 void ThriftRocketServerHandler::handleDecompressionFailure(
@@ -519,7 +519,7 @@ void ThriftRocketServerHandler::handleDecompressionFailure(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::INVALID_TRANSFORM,
           fmt::format("decompression failure: {}", std::move(reason))),
-      "decompression failure");
+      kRequestParsingErrorCode);
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(

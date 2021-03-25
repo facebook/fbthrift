@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
+#include "thrift/lib/cpp2/async/ResponseChannel.h"
 
 #include <functional>
 #include <memory>
@@ -275,7 +276,11 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                        {kInteractionIdUnknownErrorCode,
                         ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID},
                        {kInteractionConstructorErrorErrorCode,
-                        ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR}});
+                        ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR},
+                       {kRequestParsingErrorCode,
+                        ResponseRpcErrorCode::REQUEST_PARSING_FAILURE},
+                       {kChecksumMismatchErrorCode,
+                        ResponseRpcErrorCode::CHECKSUM_MISMATCH}});
                   if (auto errorCode = folly::get_ptr(errorCodeMap, *exPtr)) {
                     return *errorCode;
                   }
@@ -287,15 +292,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                 }
                 switch (ex.getType()) {
                   case TApplicationException::PROTOCOL_ERROR:
-                  case TApplicationException::INVALID_TRANSFORM:
-                  case TApplicationException::UNSUPPORTED_CLIENT_TYPE:
                     return ResponseRpcErrorCode::REQUEST_PARSING_FAILURE;
-
-                  case TApplicationException::CHECKSUM_MISMATCH:
-                    return ResponseRpcErrorCode::CHECKSUM_MISMATCH;
-
-                  case TApplicationException::INTERRUPTION:
-                    return ResponseRpcErrorCode::INTERRUPTION;
 
                   default:
                     return folly::none;

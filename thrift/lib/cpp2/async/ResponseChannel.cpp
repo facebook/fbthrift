@@ -48,4 +48,5 @@ const std::string kInteractionIdUnknownErrorCode{"26"};
 const std::string kInteractionConstructorErrorErrorCode{"27"};
 const std::string kRequestParsingErrorCode{"28"};
 const std::string kServerIngressMemoryLimitExceededErrorCode{"29"};
+const std::string kChecksumMismatchErrorCode{"30"};
 const std::string kConnectionClosingErrorCode{"-1"};
