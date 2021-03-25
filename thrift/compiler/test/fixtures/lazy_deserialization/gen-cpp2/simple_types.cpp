@@ -89,6 +89,8 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  lhs.field1_ref();
+  rhs.field1_ref();
   if (!!lhs.field1 != !!rhs.field1) {
     return false;
   }
@@ -100,6 +102,8 @@ bool Foo::operator==(const Foo& rhs) const {
   if (!(lhs.field2 == rhs.field2)) {
     return false;
   }
+  lhs.field3_ref();
+  rhs.field3_ref();
   if (!(lhs.field3 == rhs.field3)) {
     return false;
   }
@@ -113,6 +117,8 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  lhs.field1_ref();
+  rhs.field1_ref();
   if (!!lhs.field1 != !!rhs.field1) {
     return !!lhs.field1 < !!rhs.field1;
   }
@@ -124,6 +130,8 @@ bool Foo::operator<(const Foo& rhs) const {
   if (!(lhs.field2 == rhs.field2)) {
     return lhs.field2 < rhs.field2;
   }
+  lhs.field3_ref();
+  rhs.field3_ref();
   if (!(lhs.field3 == rhs.field3)) {
     return lhs.field3 < rhs.field3;
   }

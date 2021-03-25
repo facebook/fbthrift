@@ -21,21 +21,20 @@
 
 namespace apache::thrift::test {
 
-// Use unique_ptr since assignement for lazy field is not implemented
 template <class Struct>
-std::unique_ptr<Struct> gen() {
-  auto obj = std::make_unique<Struct>();
-  obj->field1_ref().emplace(10, 1);
-  obj->field2_ref().emplace(20, 2);
-  obj->field3_ref().emplace(30, 3);
-  obj->field3_ref().emplace(40, 4);
+Struct gen() {
+  Struct obj;
+  obj.field1_ref().emplace(10, 1);
+  obj.field2_ref().emplace(20, 2);
+  obj.field3_ref().emplace(30, 3);
+  obj.field4_ref().emplace(40, 4);
   return obj;
 }
 
 TEST(Serialization, Copyable) {
   auto foo = gen<LazyFoo>();
-  LazyFoo bar = *foo, baz;
-  baz = *foo;
+  LazyFoo bar = foo, baz;
+  baz = foo;
 
   EXPECT_EQ(bar.field1_ref(), baz.field1_ref());
   EXPECT_EQ(bar.field2_ref(), baz.field2_ref());
@@ -45,28 +44,24 @@ TEST(Serialization, Copyable) {
 
 TEST(Serialization, FooToLazyFoo) {
   auto foo = gen<Foo>();
-  auto s = apache::thrift::CompactSerializer::serialize<std::string>(*foo);
+  auto s = CompactSerializer::serialize<std::string>(foo);
+  auto lazyFoo = CompactSerializer::deserialize<LazyFoo>(s);
 
-  LazyFoo lazyFoo;
-  apache::thrift::CompactSerializer::deserialize(s, lazyFoo);
-
-  EXPECT_EQ(foo->field1_ref(), lazyFoo.field1_ref());
-  EXPECT_EQ(foo->field2_ref(), lazyFoo.field2_ref());
-  EXPECT_EQ(foo->field3_ref(), lazyFoo.field3_ref());
-  EXPECT_EQ(foo->field4_ref(), lazyFoo.field4_ref());
+  EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
+  EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
+  EXPECT_EQ(foo.field3_ref(), lazyFoo.field3_ref());
+  EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
 TEST(Serialization, LazyFooToFoo) {
   auto lazyFoo = gen<LazyFoo>();
-  auto s = apache::thrift::CompactSerializer::serialize<std::string>(*lazyFoo);
+  auto s = CompactSerializer::serialize<std::string>(lazyFoo);
+  auto foo = CompactSerializer::deserialize<Foo>(s);
 
-  Foo foo;
-  apache::thrift::CompactSerializer::deserialize(s, foo);
-
-  EXPECT_EQ(foo.field1_ref(), lazyFoo->field1_ref());
-  EXPECT_EQ(foo.field2_ref(), lazyFoo->field2_ref());
-  EXPECT_EQ(foo.field3_ref(), lazyFoo->field3_ref());
-  EXPECT_EQ(foo.field4_ref(), lazyFoo->field4_ref());
+  EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
+  EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
+  EXPECT_EQ(foo.field3_ref(), lazyFoo.field3_ref());
+  EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyFoo, field1);
@@ -76,25 +71,23 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFoo, field4);
 
 TEST(Serialization, CheckDataMember) {
   auto foo = gen<LazyFoo>();
-  auto s = apache::thrift::CompactSerializer::serialize<std::string>(*foo);
+  auto s = CompactSerializer::serialize<std::string>(foo);
+  auto lazyFoo = CompactSerializer::deserialize<LazyFoo>(s);
 
-  LazyFoo lazyFoo;
-  apache::thrift::CompactSerializer::deserialize(s, lazyFoo);
-
-  EXPECT_EQ(get_field1(lazyFoo), foo->field1_ref());
-  EXPECT_EQ(get_field2(lazyFoo), foo->field2_ref());
+  EXPECT_EQ(get_field1(lazyFoo), foo.field1_ref());
+  EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
   EXPECT_TRUE(get_field3(lazyFoo).empty());
   EXPECT_TRUE(get_field4(lazyFoo).empty());
 
-  EXPECT_EQ(lazyFoo.field1_ref(), foo->field1_ref());
-  EXPECT_EQ(lazyFoo.field2_ref(), foo->field2_ref());
-  EXPECT_EQ(lazyFoo.field3_ref(), foo->field3_ref());
-  EXPECT_EQ(lazyFoo.field4_ref(), foo->field4_ref());
+  EXPECT_EQ(lazyFoo.field1_ref(), foo.field1_ref());
+  EXPECT_EQ(lazyFoo.field2_ref(), foo.field2_ref());
+  EXPECT_EQ(lazyFoo.field3_ref(), foo.field3_ref());
+  EXPECT_EQ(lazyFoo.field4_ref(), foo.field4_ref());
 
-  EXPECT_EQ(get_field1(lazyFoo), foo->field1_ref());
-  EXPECT_EQ(get_field2(lazyFoo), foo->field2_ref());
-  EXPECT_EQ(get_field3(lazyFoo), foo->field3_ref());
-  EXPECT_EQ(get_field4(lazyFoo), foo->field4_ref());
+  EXPECT_EQ(get_field1(lazyFoo), foo.field1_ref());
+  EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
+  EXPECT_EQ(get_field3(lazyFoo), foo.field3_ref());
+  EXPECT_EQ(get_field4(lazyFoo), foo.field4_ref());
 }
 
 TEST(Serialization, CppRef) {
@@ -103,19 +96,54 @@ TEST(Serialization, CppRef) {
     foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
     foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
     foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
-    auto s = apache::thrift::CompactSerializer::serialize<std::string>(foo);
-    auto bar = apache::thrift::CompactSerializer::deserialize<LazyCppRef>(s);
+    auto s = CompactSerializer::serialize<std::string>(foo);
+    auto bar = CompactSerializer::deserialize<LazyCppRef>(s);
     EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
     EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
     EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
   }
   {
     LazyCppRef foo;
-    auto s = apache::thrift::CompactSerializer::serialize<std::string>(foo);
-    auto bar = apache::thrift::CompactSerializer::deserialize<LazyCppRef>(s);
+    auto s = CompactSerializer::serialize<std::string>(foo);
+    auto bar = CompactSerializer::deserialize<LazyCppRef>(s);
     EXPECT_FALSE(bar.field1_ref());
     EXPECT_FALSE(bar.field2_ref());
     EXPECT_FALSE(bar.field3_ref());
+  }
+}
+
+TEST(Serialization, Comparison) {
+  {
+    auto foo1 = gen<LazyFoo>();
+    auto s = CompactSerializer::serialize<std::string>(foo1);
+    auto foo2 = CompactSerializer::deserialize<LazyFoo>(s);
+
+    EXPECT_FALSE(get_field1(foo1).empty());
+    EXPECT_FALSE(get_field2(foo1).empty());
+    EXPECT_FALSE(get_field3(foo1).empty());
+    EXPECT_FALSE(get_field4(foo1).empty());
+
+    // field3 and field4 are lazy field, thus they are empty
+    EXPECT_FALSE(get_field1(foo2).empty());
+    EXPECT_FALSE(get_field2(foo2).empty());
+    EXPECT_TRUE(get_field3(foo2).empty());
+    EXPECT_TRUE(get_field4(foo2).empty());
+
+    EXPECT_EQ(foo1, foo2);
+    foo1.field4_ref()->clear();
+    EXPECT_NE(foo1, foo2);
+    foo2.field4_ref()->clear();
+    EXPECT_EQ(foo1, foo2);
+  }
+
+  {
+    auto foo1 = gen<LazyFoo>();
+    auto s = CompactSerializer::serialize<std::string>(foo1);
+    auto foo2 = CompactSerializer::deserialize<LazyFoo>(s);
+
+    foo1.field4_ref()->clear();
+
+    EXPECT_LT(foo1, foo2);
   }
 }
 

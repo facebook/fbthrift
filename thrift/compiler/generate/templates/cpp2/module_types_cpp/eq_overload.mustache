@@ -20,6 +20,10 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
   auto& lhs = *this;
   (void)lhs;
 <%#struct:fields%><%#field:type%>
+<%#field:lazy?%>
+  lhs.<%field:cpp_name%>_ref();
+  rhs.<%field:cpp_name%>_ref();
+<%/field:lazy?%>
 <%#field:cpp_ref?%>
   if (!!lhs.<%field:cpp_name%> != !!rhs.<%field:cpp_name%>) {
     return false;
