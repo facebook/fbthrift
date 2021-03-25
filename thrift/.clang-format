@@ -1,4 +1,5 @@
 # The canary clang-format config file.
+#
 # Changes from head:
 # - AllowAllParametersOfDeclarationOnNextLine: Safe
 # - AllowShortFunctionsOnASingleLine: Safe
