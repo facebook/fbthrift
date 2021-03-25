@@ -31,6 +31,9 @@ void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
   }
 }
 
+void StructMetadata<::cpp2::MyStructNestedAnnotation>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+  thriftStruct.fields_ref()[0].unstructured_annotations_ref() = std::map<std::string, std::string>{};
+}
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs_ref()->emplace("module.MyStructNestedAnnotation", ::apache::thrift::metadata::ThriftStruct{});
@@ -53,7 +56,16 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
     field.structured_annotations_ref() = std::get<4>(f);
     module_MyStructNestedAnnotation.fields_ref()->push_back(std::move(field));
   }
+  StructMetadata::unstructured_annotations(module_MyStructNestedAnnotation);
   return res.first->second;
+}
+void StructMetadata<::cpp2::MyStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+  thriftStruct.fields_ref()[0].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(cpp.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(majorVer)THRIFT_CODEGEN"},};
+  thriftStruct.fields_ref()[1].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(java.swift.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(_package)THRIFT_CODEGEN"},};
+  thriftStruct.fields_ref()[2].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(go.tag)THRIFT_CODEGEN", R"THRIFT_CODEGEN(tag:"somevalue")THRIFT_CODEGEN"},};
+  thriftStruct.fields_ref()[3].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(java.swift.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(class_)THRIFT_CODEGEN"},};
+  thriftStruct.fields_ref()[4].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(custom)THRIFT_CODEGEN", R"THRIFT_CODEGEN(test)THRIFT_CODEGEN"},};
+  thriftStruct.fields_ref()[5].unstructured_annotations_ref() = std::map<std::string, std::string>{};
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
@@ -82,7 +94,12 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     field.structured_annotations_ref() = std::get<4>(f);
     module_MyStruct.fields_ref()->push_back(std::move(field));
   }
+  StructMetadata::unstructured_annotations(module_MyStruct);
   return res.first->second;
+}
+void StructMetadata<::cpp2::SecretStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+  thriftStruct.fields_ref()[0].unstructured_annotations_ref() = std::map<std::string, std::string>{};
+  thriftStruct.fields_ref()[1].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(java.sensitive)THRIFT_CODEGEN", R"THRIFT_CODEGEN(1)THRIFT_CODEGEN"},};
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
@@ -107,6 +124,7 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
     field.structured_annotations_ref() = std::get<4>(f);
     module_SecretStruct.fields_ref()->push_back(std::move(field));
   }
+  StructMetadata::unstructured_annotations(module_SecretStruct);
   return res.first->second;
 }
 

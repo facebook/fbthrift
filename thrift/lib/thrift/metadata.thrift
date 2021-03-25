@@ -173,6 +173,7 @@ struct ThriftField {
   3: string name;
   4: bool is_optional;
   5: list<ThriftConstStruct> structured_annotations;
+  6: optional map<string, string> unstructured_annotations;
 }
 
 struct ThriftStruct {

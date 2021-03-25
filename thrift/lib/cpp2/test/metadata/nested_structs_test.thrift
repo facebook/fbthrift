@@ -27,7 +27,7 @@ enum Continent {
 }
 
 struct Country {
-  1: string name;
+  1: string name (field_foo, field_bar = "field_baz");
   2: Continent continent;
   3: optional string capital;
   4: double population;
