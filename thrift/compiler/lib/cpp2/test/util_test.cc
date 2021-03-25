@@ -98,7 +98,9 @@ TEST_F(UtilTest, is_orderable_struct) {
 }
 
 TEST_F(UtilTest, is_eligible_for_constexpr) {
-  auto is_eligible_for_constexpr = cpp2::is_eligible_for_constexpr();
+  auto is_eligible_for_constexpr = [](const t_type* t) {
+    return cpp2::is_eligible_for_constexpr()(t);
+  };
   auto i32 = t_base_type::t_i32();
   EXPECT_TRUE(is_eligible_for_constexpr(&i32));
   EXPECT_TRUE(is_eligible_for_constexpr(&t_base_type::t_double()));
