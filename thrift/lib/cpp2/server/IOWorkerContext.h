@@ -34,8 +34,6 @@ class IOWorkerContext {
   using ReplyQueue =
       folly::EventBaseAtomicNotificationQueue<ReplyInfo, ReplyInfoConsumer>;
 
-  virtual ~IOWorkerContext() { *(alive_->wlock()) = false; }
-
   /**
    * Get the reply queue.
    *
@@ -53,6 +51,7 @@ class IOWorkerContext {
    * @param eventBase EventBase to attach the queue.
    */
   void init(folly::EventBase& eventBase) {
+    eventBase_ = &eventBase;
     replyQueue_ = std::make_unique<ReplyQueue>(ReplyInfoConsumer(eventBase));
     replyQueue_->setMaxReadAtOnce(0);
     eventBase.runInEventBaseThread(
@@ -65,7 +64,20 @@ class IOWorkerContext {
         });
   }
 
+  virtual ~IOWorkerContext() {
+    *(alive_->wlock()) = false;
+
+    // Workaround destruction order fiasco for DuplexChannel where Cpp2Worker
+    // can be destroyed inline with the request, thus triggering queue's
+    // destruction while processing items from the same queue. Once
+    // DuplexChannel is deprecated, we should make being destructed inline.
+    if (eventBase_) {
+      eventBase_->runInEventBaseThread([queue = std::move(replyQueue_)] {});
+    }
+  }
+
  private:
+  folly::EventBase* eventBase_{nullptr};
   // A dedicated queue for server responses
   std::unique_ptr<ReplyQueue> replyQueue_;
   // Needed to synchronize deallocating replyQueue_ and
