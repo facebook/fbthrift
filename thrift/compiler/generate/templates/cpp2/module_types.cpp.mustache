@@ -62,7 +62,7 @@ constexpr ptrdiff_t fieldOffset<<% > common/namespace_cpp2 %><%struct:name%>>(st
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
     offsetof(<% > common/namespace_cpp2 %><%struct:name%>, <%field:name%>)<%!
-    %><% > common/comma_newline %><%/struct:fields_in_key_order%>};
+    %><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }
 
@@ -74,7 +74,7 @@ constexpr ptrdiff_t issetOffset<<% > common/namespace_cpp2 %><%struct:name%>>(st
     %>offsetof(<% > common/namespace_cpp2 %><%struct:name%>, __isset.<%field:name%>)<%!
     %><%/field:has_isset?%><%!
     %><%^field:has_isset?%><%!
-    %>0<%/field:has_isset?%><% > common/comma_newline %><%/struct:fields_in_key_order%>};
+    %>0<%/field:has_isset?%><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }
 <%/struct:union?%>
@@ -178,7 +178,7 @@ constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:n
   /* .clear */ ::apache::thrift::detail::clearUnion<<% > common/namespace_cpp2 %><%struct:name%>>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<% > common/namespace_cpp2 %><%struct:name%>>(),
   /* .initMember */ {
-  <%#struct:fields_in_key_order%><%#field:type%>::apache::thrift::detail::placementNewUnionValue<<%field:cpp_storage_type%>><% > common/comma_newline %><%!
+  <%#struct:fields_in_key_order%><%#field:type%>::apache::thrift::detail::placementNewUnionValue<<%field:cpp_storage_type%>><% > common/comma_newline%><%!
 %><%/field:type%><%/struct:fields_in_key_order%>},
 };
 <%/struct:union?%>
@@ -206,9 +206,9 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
     %><%#struct:union?%>
     /* .issetOffset */ 0,<%!
     %><%/struct:union?%><%#field:type%>
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<<% > common/type_class %>, <%field:cpp_storage_type%>>::typeInfo,<%!
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<<% > common/type_class%>, <%field:cpp_storage_type%>>::typeInfo,<%!
     %><%/field:type%>
-  }<% > common/comma_newline %><%!
+  }<% > common/comma_newline%><%!
   %><%/struct:fields_in_key_order%>}
 };
 <%/program:tablebased?%>

@@ -19,11 +19,11 @@
 <%^function:eb%>
 <%^service:interaction?%>
 
-<% > service_common/function_return_type %> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {
+<% > service_common/function_return_type%> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
-folly::SemiFuture<<% > service_common/async_return_type %>> <%service:name%>SvIf::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::SemiFuture<<% > service_common/async_return_type%>> <%service:name%>SvIf::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
 <%^type:resolves_to_complex_return?%>
   return apache::thrift::detail::si::semifuture([&] {
     return <%function:cpp_name%>(<% > service_common/param_list_move%>);
@@ -34,7 +34,7 @@ folly::SemiFuture<<% > service_common/async_return_type %>> <%service:name%>SvIf
 <%/type:resolves_to_complex_return?%>
 }
 
-folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::Future<<% > service_common/async_return_type%>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto scope = getRequestContext()->getRequestExecutionScope();
   auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
@@ -43,11 +43,11 @@ folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::fu
 <%#function:coroutine?%>
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::coro::Task<<% > service_common/callback_type%>> <%service:name%>SvIf::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   return folly::coro::toTask(future_<%function:cpp_name%>(<% > service_common/param_list_move%>));
 }
 
-folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
+folly::coro::Task<<% > service_common/callback_type%>> <%service:name%>SvIf::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
   return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
 }
 #endif // FOLLY_HAS_COROUTINES
@@ -56,15 +56,15 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 <%#service:interaction?%>
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::coro::Task<<% > service_common/callback_type%>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   return folly::coro::toTask(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>));
 }
 
-folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
+folly::coro::Task<<% > service_common/callback_type%>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
   return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::SemiFuture<<% > service_common/async_return_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
+folly::SemiFuture<<% > service_common/async_return_type%>> <%service:parent_service_name%>SvIf::<%service:name%>If::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_<%function:name%>");
 }
 <%/service:interaction?%>

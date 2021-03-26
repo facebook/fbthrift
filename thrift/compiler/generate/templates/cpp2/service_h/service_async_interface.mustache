@@ -26,7 +26,7 @@
 <%/function:eb%>
 <%/function:oneway?%>
 <%^function:oneway?%>
-  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > service_common/callback_type %>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > service_common/callback_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
 <%^function:eb%>
   virtual folly::Future<<% > service_common/async_return_type%>> future_<%function:cpp_name%>(<% > service_common/function_param_list%>) = 0;
   virtual folly::SemiFuture<<% > service_common/async_return_type%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) = 0;
