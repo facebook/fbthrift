@@ -2517,3 +2517,102 @@ template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactPro
 
 
 }}}} // apache::thrift::fixtures::types
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::TypedefStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::TypedefStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg) :
+    i32_field(std::move(i32_field__arg)),
+    IntTypedef_field(std::move(IntTypedef_field__arg)),
+    UintTypedef_field(std::move(UintTypedef_field__arg)) {
+  __isset.i32_field = true;
+  __isset.IntTypedef_field = true;
+  __isset.UintTypedef_field = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void TypedefStruct::__clear() {
+  // clear all fields
+  i32_field = 0;
+  IntTypedef_field = 0;
+  UintTypedef_field = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.i32_field == rhs.i32_field)) {
+    return false;
+  }
+  if (!(lhs.IntTypedef_field == rhs.IntTypedef_field)) {
+    return false;
+  }
+  if (!(lhs.UintTypedef_field == rhs.UintTypedef_field)) {
+    return false;
+  }
+  return true;
+}
+
+bool TypedefStruct::operator<(const TypedefStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.i32_field == rhs.i32_field)) {
+    return lhs.i32_field < rhs.i32_field;
+  }
+  if (!(lhs.IntTypedef_field == rhs.IntTypedef_field)) {
+    return lhs.IntTypedef_field < rhs.IntTypedef_field;
+  }
+  if (!(lhs.UintTypedef_field == rhs.UintTypedef_field)) {
+    return lhs.UintTypedef_field < rhs.UintTypedef_field;
+  }
+  return false;
+}
+
+
+void swap(TypedefStruct& a, TypedefStruct& b) {
+  using ::std::swap;
+  swap(a.i32_field_ref().value(), b.i32_field_ref().value());
+  swap(a.IntTypedef_field_ref().value(), b.IntTypedef_field_ref().value());
+  swap(a.UintTypedef_field_ref().value(), b.UintTypedef_field_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void TypedefStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TypedefStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TypedefStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TypedefStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TypedefStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TypedefStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+}}}} // apache::thrift::fixtures::types

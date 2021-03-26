@@ -208,4 +208,11 @@ template <> struct TStructDataStorage<::apache::thrift::fixtures::types::Allocat
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
+template <> struct TStructDataStorage<::apache::thrift::fixtures::types::TypedefStruct> {
+  static constexpr const std::size_t fields_size = 3;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
 }} // apache::thrift

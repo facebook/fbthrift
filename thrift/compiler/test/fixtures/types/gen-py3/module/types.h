@@ -387,6 +387,22 @@ void reset_field<::apache::thrift::fixtures::types::AllocatorAware2>(
 }
 
 template<>
+void reset_field<::apache::thrift::fixtures::types::TypedefStruct>(
+    ::apache::thrift::fixtures::types::TypedefStruct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.i32_field_ref().copy_from(default_inst<::apache::thrift::fixtures::types::TypedefStruct>().i32_field_ref());
+      return;
+    case 1:
+      obj.IntTypedef_field_ref().copy_from(default_inst<::apache::thrift::fixtures::types::TypedefStruct>().IntTypedef_field_ref());
+      return;
+    case 2:
+      obj.UintTypedef_field_ref().copy_from(default_inst<::apache::thrift::fixtures::types::TypedefStruct>().UintTypedef_field_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::fixtures::types::decorated_struct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -609,6 +625,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::fixtures::types::AllocatorAware2>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::fixtures::types::TypedefStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

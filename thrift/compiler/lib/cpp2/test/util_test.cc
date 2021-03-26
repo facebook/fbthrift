@@ -26,6 +26,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -479,6 +480,54 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp.ref_type", "blah");
     EXPECT_THROW(get_storage_type_name(&ui64_field), std::runtime_error);
   }
+}
+
+TEST_F(TypeResolverTest, Typedef_cpptemplate) {
+  t_map imap(&t_base_type::t_i32(), &t_base_type::t_string());
+  t_typedef iumap(&program_, &imap, "iumap", &scope_);
+  iumap.set_annotation("cpp.template", "std::unorderd_map");
+  t_typedef tiumap(&program_, &iumap, "tiumap", &scope_);
+
+  EXPECT_EQ(get_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(
+      get_native_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+
+  // The 'cpp.template' annotations is applied to the typedef; however, the type
+  // resolver only looks for it on container types.
+  // TODO(afuller): Consider making the template annotation propagate through
+  // the typedef.
+  EXPECT_EQ(get_type_name(&iumap), "::path::to::iumap");
+  EXPECT_EQ(get_native_type_name(&iumap), "::path::to::iumap");
+
+  EXPECT_EQ(get_type_name(&tiumap), "::path::to::tiumap");
+  EXPECT_EQ(get_native_type_name(&tiumap), "::path::to::tiumap");
+}
+
+TEST_F(TypeResolverTest, Typedef_cpptype) {
+  t_map imap(&t_base_type::t_i32(), &t_base_type::t_string());
+  t_typedef iumap(&program_, &imap, "iumap", &scope_);
+  iumap.set_annotation(
+      "cpp.type", "std::unorderd_map<::std::int32_t, ::std::string>");
+  t_typedef tiumap(&program_, &iumap, "tiumap", &scope_);
+
+  EXPECT_EQ(get_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(
+      get_native_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+
+  // The 'cpp.type' annotation is respected on the typedef.
+  // TODO(afuller): It seems like this annotation is applied incorrectly and the
+  // annotation should apply to the type being referenced, not the type name of
+  // the typedef itself (which should just be the typedef's specified name)
+  // which is still code-genend, but with the wrong type!
+  EXPECT_EQ(
+      get_type_name(&iumap),
+      "std::unorderd_map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(
+      get_native_type_name(&iumap),
+      "std::unorderd_map<::std::int32_t, ::std::string>");
+
+  EXPECT_EQ(get_type_name(&tiumap), "::path::to::tiumap");
+  EXPECT_EQ(get_native_type_name(&tiumap), "::path::to::tiumap");
 }
 
 } // namespace

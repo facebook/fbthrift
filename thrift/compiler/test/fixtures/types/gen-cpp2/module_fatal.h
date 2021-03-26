@@ -28,6 +28,7 @@ struct __fbthrift_strings_module {
   using ForwardUsageByRef = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'B', 'y', 'R', 'e', 'f'>;
   using ForwardUsageRoot = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'R', 'o', 'o', 't'>;
   using ForwardUsageStruct = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
+  using IntTypedef_field = ::fatal::sequence<char, 'I', 'n', 't', 'T', 'y', 'p', 'e', 'd', 'e', 'f', '_', 'f', 'i', 'e', 'l', 'd'>;
   using MinPadding = ::fatal::sequence<char, 'M', 'i', 'n', 'P', 'a', 'd', 'd', 'i', 'n', 'g'>;
   using MyBinaryField = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd'>;
   using MyBinaryField2 = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd', '2'>;
@@ -53,6 +54,8 @@ struct __fbthrift_strings_module {
   using TrivialNestedWithDefault = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using TrivialNumeric = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'u', 'm', 'e', 'r', 'i', 'c'>;
   using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
+  using TypedefStruct = ::fatal::sequence<char, 'T', 'y', 'p', 'e', 'd', 'e', 'f', 'S', 't', 'r', 'u', 'c', 't'>;
+  using UintTypedef_field = ::fatal::sequence<char, 'U', 'i', 'n', 't', 'T', 'y', 'p', 'e', 'd', 'e', 'f', '_', 'f', 'i', 'e', 'l', 'd'>;
   using VirtualStruct = ::fatal::sequence<char, 'V', 'i', 'r', 't', 'u', 'a', 'l', 'S', 't', 'r', 'u', 'c', 't'>;
   using ZERO = ::fatal::sequence<char, 'Z', 'E', 'R', 'O'>;
   using __fbthrift_hash_140bedbf9c3f6d56a9846d2ba7088798683f4da0c248231336e6a05679e4fdfe = ::fatal::sequence<char, 'n', 'o', 'n', 'e'>;
@@ -81,9 +84,11 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_52947f27873dfc0055cd1c77444997c1984e68f1fc59d8ce37d03289b07a590e = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd', '2'>;
   using __fbthrift_hash_53940ac400998db00c671404e5a93276d9bcd94cf10d533bc9a3c72712e1ca76 = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'u', 'c', 't'>;
   using __fbthrift_hash_594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06 = ::fatal::sequence<char, 'z'>;
+  using __fbthrift_hash_5ab816af8034a41718cabc63bd821ab7283b905d4770d0a2952ce8e00bb38520 = ::fatal::sequence<char, 'U', 'i', 'n', 't', 'T', 'y', 'p', 'e', 'd', 'e', 'f', '_', 'f', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_65365ccb0e1bf324ebefd47a47192f708359172a1ca2add5e66a111816756bdf = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'u', 'c', 't'>;
   using __fbthrift_hash_65bba66356177eb17443bb2709f871192d0e181f094944d7f4da6a4ce2ec3aca = ::fatal::sequence<char, 'A', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', 'A', 'w', 'a', 'r', 'e'>;
   using __fbthrift_hash_68f4d40289380c5c6536b552d834e0a1e0df88fddcd39d4a6d7f3a0b1cf22012 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'F'>;
+  using __fbthrift_hash_6d4b9ee50b6b0430209f88e2ce0c8ffca5a1b4372666061653e53e2278e74300 = ::fatal::sequence<char, 'I', 'n', 't', 'T', 'y', 'p', 'e', 'd', 'e', 'f', '_', 'f', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_7344f88cfc3a0641f9d9c1151035f98a899ffcba15f609b3ace596c7a2e5eeff = ::fatal::sequence<char, 'b', 'o', 'o', 'l', 'F', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_7692c3ad3540bb803c020b3aee66cd8887123234ea0c6e7143c0add73ff431ed = ::fatal::sequence<char, 'o', 'n', 'e'>;
   using __fbthrift_hash_79e4897b515e7d37977a04ed0e467ea2f4c4e220207f77f3b8060ada31502e8d = ::fatal::sequence<char, 'm', 'a', 'j', 'o', 'r', 'V', 'e', 'r'>;
@@ -107,6 +112,7 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_a73c4974ccb5981437f75c22da908dd553c1389729210c7d554a65e1b0f4045a = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'D'>;
   using __fbthrift_hash_acb2b9be972cf644d03da8b8f9c39133d122094133c61c2fdd2b634bfa7177a9 = ::fatal::sequence<char, 'M', 'y', 'M', 'a', 'p', 'E', 'n', 'u', 'm', 'A', 'n', 'd', 'I', 'n', 't'>;
   using __fbthrift_hash_b2a30733d38d491ca5f3dcb7fd435cd0774f957f27f886d82bd5018c558abb72 = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'i', 'n', 'g', 'F', 'i', 'e', 'l', 'd'>;
+  using __fbthrift_hash_b3d13ad22fdfe53e99c368c9c7072081947fb407b6cdbe7f1d3555f02b84dd42 = ::fatal::sequence<char, 'T', 'y', 'p', 'e', 'd', 'e', 'f', 'S', 't', 'r', 'u', 'c', 't'>;
   using __fbthrift_hash_b7d039bee92d4ff161705e900e0bff872e78ff5be3f367911e49edaf3e716947 = ::fatal::sequence<char, 'M', 'y', 'B', 'o', 'o', 'l', 'F', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_b94ffb2aa613f7327b42b6b06bb4997cca951e0db1dca0a84889e524bfe841ef = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using __fbthrift_hash_b990788541621b423065dbd4854d7828982345f9e894712b245de816f7b01c08 = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd'>;
@@ -230,7 +236,8 @@ struct module_module_traits {
       ::fatal::pair<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct, strings::NoexceptMoveSimpleStruct>,
       ::fatal::pair<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct, strings::NoexceptMoveComplexStruct>,
       ::fatal::pair<::apache::thrift::fixtures::types::AllocatorAware, strings::AllocatorAware>,
-      ::fatal::pair<::apache::thrift::fixtures::types::AllocatorAware2, strings::AllocatorAware2>
+      ::fatal::pair<::apache::thrift::fixtures::types::AllocatorAware2, strings::AllocatorAware2>,
+      ::fatal::pair<::apache::thrift::fixtures::types::TypedefStruct, strings::TypedefStruct>
   >;
   using constants = ::fatal::list<
   >;
@@ -279,6 +286,7 @@ class module_tags {
     using NoexceptMoveComplexStruct = __fbthrift_strings::NoexceptMoveComplexStruct;
     using AllocatorAware = __fbthrift_strings::AllocatorAware;
     using AllocatorAware2 = __fbthrift_strings::AllocatorAware2;
+    using TypedefStruct = __fbthrift_strings::TypedefStruct;
   };
   struct __fbthrift_constants {
   };

@@ -316,3 +316,16 @@ cdef class __AllocatorAware2_FieldsSetter(__StructFieldsSetter):
     cdef __AllocatorAware2_FieldsSetter create(_module_types.cAllocatorAware2* struct_cpp_obj)
     cdef void _set_field_0(self, __fbthrift_value) except *
 
+
+ctypedef void (*__TypedefStruct_FieldsSetterFunc)(__TypedefStruct_FieldsSetter, object) except *
+
+cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cTypedefStruct* _struct_cpp_obj
+    cdef cumap[__cstring_view, __TypedefStruct_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __TypedefStruct_FieldsSetter create(_module_types.cTypedefStruct* struct_cpp_obj)
+    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_1(self, __fbthrift_value) except *
+    cdef void _set_field_2(self, __fbthrift_value) except *
+

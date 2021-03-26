@@ -2619,3 +2619,118 @@ class AllocatorAware2 implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * TypedefStruct
+ */
+class TypedefStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'i32_field',
+      'type' => \TType::I32,
+    ),
+    2 => shape(
+      'var' => 'IntTypedef_field',
+      'type' => \TType::I32,
+    ),
+    3 => shape(
+      'var' => 'UintTypedef_field',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'i32_field' => 1,
+    'IntTypedef_field' => 2,
+    'UintTypedef_field' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'i32_field' => ?int,
+    ?'IntTypedef_field' => ?int,
+    ?'UintTypedef_field' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 9104074718450007174;
+  /**
+   * Original thrift field:-
+   * 1: i32 i32_field
+   */
+  public int $i32_field;
+  /**
+   * Original thrift field:-
+   * 2: i32 IntTypedef_field
+   */
+  public int $IntTypedef_field;
+  /**
+   * Original thrift field:-
+   * 3: i32 UintTypedef_field
+   */
+  public int $UintTypedef_field;
+
+  public function __construct(?int $i32_field = null, ?int $IntTypedef_field = null, ?int $UintTypedef_field = null  )[] {
+    $this->i32_field = $i32_field ?? 0;
+    $this->IntTypedef_field = $IntTypedef_field ?? 0;
+    $this->UintTypedef_field = $UintTypedef_field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'i32_field'),
+      Shapes::idx($shape, 'IntTypedef_field'),
+      Shapes::idx($shape, 'UintTypedef_field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'TypedefStruct';
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'i32_field') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['i32_field'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->i32_field = (int)$_tmp0;
+      }
+    }    
+    if (idx($parsed, 'IntTypedef_field') !== null) {
+      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['IntTypedef_field'];
+      if ($_tmp1 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->IntTypedef_field = (int)$_tmp1;
+      }
+    }    
+    if (idx($parsed, 'UintTypedef_field') !== null) {
+      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['UintTypedef_field'];
+      if ($_tmp2 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->UintTypedef_field = (int)$_tmp2;
+      }
+    }    
+  }
+
+}
+

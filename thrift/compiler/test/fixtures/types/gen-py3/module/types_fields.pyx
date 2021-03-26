@@ -949,3 +949,56 @@ cdef class __AllocatorAware2_FieldsSetter(__StructFieldsSetter):
         deref(self._struct_cpp_obj).not_a_container_ref().assign(__fbthrift_value)
         deref(self._struct_cpp_obj).__isset.not_a_container = True
 
+
+@__cython.auto_pickle(False)
+cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __TypedefStruct_FieldsSetter create(_module_types.cTypedefStruct* struct_cpp_obj):
+        cdef __TypedefStruct_FieldsSetter __fbthrift_inst = __TypedefStruct_FieldsSetter.__new__(__TypedefStruct_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"i32_field")] = __TypedefStruct_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"IntTypedef_field")] = __TypedefStruct_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"UintTypedef_field")] = __TypedefStruct_FieldsSetter._set_field_2
+        return __fbthrift_inst
+
+    cdef void set_field(__TypedefStruct_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __TypedefStruct_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, __fbthrift_value) except *:
+        # for field i32_field
+        if __fbthrift_value is None:
+            __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(__fbthrift_value, int):
+            raise TypeError(f'i32_field is not a { int !r}.')
+        __fbthrift_value = <cint32_t> __fbthrift_value
+        deref(self._struct_cpp_obj).i32_field_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).__isset.i32_field = True
+
+    cdef void _set_field_1(self, __fbthrift_value) except *:
+        # for field IntTypedef_field
+        if __fbthrift_value is None:
+            __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(__fbthrift_value, int):
+            raise TypeError(f'IntTypedef_field is not a { int !r}.')
+        __fbthrift_value = <cint32_t> __fbthrift_value
+        deref(self._struct_cpp_obj).IntTypedef_field_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).__isset.IntTypedef_field = True
+
+    cdef void _set_field_2(self, __fbthrift_value) except *:
+        # for field UintTypedef_field
+        if __fbthrift_value is None:
+            __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(__fbthrift_value, int):
+            raise TypeError(f'UintTypedef_field is not a { int !r}.')
+        __fbthrift_value = <cint32_t> __fbthrift_value
+        deref(self._struct_cpp_obj).UintTypedef_field_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).__isset.UintTypedef_field = True
+

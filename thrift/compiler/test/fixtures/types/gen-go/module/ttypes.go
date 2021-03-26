@@ -216,6 +216,14 @@ type TBinary = []byte
 
 func TBinaryPtr(v TBinary) *TBinary { return &v }
 
+type IntTypedef = int32
+
+func IntTypedefPtr(v IntTypedef) *IntTypedef { return &v }
+
+type UintTypedef = IntTypedef
+
+func UintTypedefPtr(v UintTypedef) *UintTypedef { return &v }
+
 // Attributes:
 //  - Field
 type DecoratedStruct struct {
@@ -4727,5 +4735,202 @@ func (p *AllocatorAware2) String() string {
 
   notAContainerVal := fmt.Sprintf("%v", p.NotAContainer)
   return fmt.Sprintf("AllocatorAware2({NotAContainer:%s})", notAContainerVal)
+}
+
+// Attributes:
+//  - I32Field
+//  - IntTypedefField
+//  - UintTypedefField
+type TypedefStruct struct {
+  I32Field int32 `thrift:"i32_field,1" db:"i32_field" json:"i32_field"`
+  IntTypedefField IntTypedef `thrift:"IntTypedef_field,2" db:"IntTypedef_field" json:"IntTypedef_field"`
+  UintTypedefField UintTypedef `thrift:"UintTypedef_field,3" db:"UintTypedef_field" json:"UintTypedef_field"`
+}
+
+func NewTypedefStruct() *TypedefStruct {
+  return &TypedefStruct{}
+}
+
+
+func (p *TypedefStruct) GetI32Field() int32 {
+  return p.I32Field
+}
+
+func (p *TypedefStruct) GetIntTypedefField() IntTypedef {
+  return p.IntTypedefField
+}
+
+func (p *TypedefStruct) GetUintTypedefField() UintTypedef {
+  return p.UintTypedefField
+}
+type TypedefStructBuilder struct {
+  obj *TypedefStruct
+}
+
+func NewTypedefStructBuilder() *TypedefStructBuilder{
+  return &TypedefStructBuilder{
+    obj: NewTypedefStruct(),
+  }
+}
+
+func (p TypedefStructBuilder) Emit() *TypedefStruct{
+  return &TypedefStruct{
+    I32Field: p.obj.I32Field,
+    IntTypedefField: p.obj.IntTypedefField,
+    UintTypedefField: p.obj.UintTypedefField,
+  }
+}
+
+func (t *TypedefStructBuilder) I32Field(i32Field int32) *TypedefStructBuilder {
+  t.obj.I32Field = i32Field
+  return t
+}
+
+func (t *TypedefStructBuilder) IntTypedefField(intTypedefField IntTypedef) *TypedefStructBuilder {
+  t.obj.IntTypedefField = intTypedefField
+  return t
+}
+
+func (t *TypedefStructBuilder) UintTypedefField(uintTypedefField UintTypedef) *TypedefStructBuilder {
+  t.obj.UintTypedefField = uintTypedefField
+  return t
+}
+
+func (t *TypedefStruct) SetI32Field(i32Field int32) *TypedefStruct {
+  t.I32Field = i32Field
+  return t
+}
+
+func (t *TypedefStruct) SetIntTypedefField(intTypedefField IntTypedef) *TypedefStruct {
+  t.IntTypedefField = intTypedefField
+  return t
+}
+
+func (t *TypedefStruct) SetUintTypedefField(uintTypedefField UintTypedef) *TypedefStruct {
+  t.UintTypedefField = uintTypedefField
+  return t
+}
+
+func (p *TypedefStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TypedefStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.I32Field = v
+  }
+  return nil
+}
+
+func (p *TypedefStruct)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    temp := IntTypedef(v)
+    p.IntTypedefField = temp
+  }
+  return nil
+}
+
+func (p *TypedefStruct)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    temp := UintTypedef(v)
+    p.UintTypedefField = temp
+  }
+  return nil
+}
+
+func (p *TypedefStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TypedefStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TypedefStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("i32_field", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:i32_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.I32Field)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.i32_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:i32_field: ", p), err) }
+  return err
+}
+
+func (p *TypedefStruct) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("IntTypedef_field", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:IntTypedef_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.IntTypedefField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.IntTypedef_field (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:IntTypedef_field: ", p), err) }
+  return err
+}
+
+func (p *TypedefStruct) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("UintTypedef_field", thrift.I32, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:UintTypedef_field: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UintTypedefField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.UintTypedef_field (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:UintTypedef_field: ", p), err) }
+  return err
+}
+
+func (p *TypedefStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  i32FieldVal := fmt.Sprintf("%v", p.I32Field)
+  intTypedefFieldVal := fmt.Sprintf("%v", p.IntTypedefField)
+  uintTypedefFieldVal := fmt.Sprintf("%v", p.UintTypedefField)
+  return fmt.Sprintf("TypedefStruct({I32Field:%s IntTypedefField:%s UintTypedefField:%s})", i32FieldVal, intTypedefFieldVal, uintTypedefFieldVal)
 }
 

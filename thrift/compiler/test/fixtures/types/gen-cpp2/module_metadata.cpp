@@ -627,6 +627,32 @@ StructMetadata<::apache::thrift::fixtures::types::AllocatorAware2>::gen(ThriftMe
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::apache::thrift::fixtures::types::TypedefStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.TypedefStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_TypedefStruct = res.first->second;
+  module_TypedefStruct.name_ref() = "module.TypedefStruct";
+  module_TypedefStruct.is_union_ref() = false;
+  static const EncodedThriftField
+  module_TypedefStruct_fields[] = {
+    std::make_tuple(1, "i32_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "IntTypedef_field", false, std::make_unique<Typedef>("module.IntTypedef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "UintTypedef_field", false, std::make_unique<Typedef>("module.UintTypedef", std::make_unique<Typedef>("module.IntTypedef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_TypedefStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
+    module_TypedefStruct.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
 void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

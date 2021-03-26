@@ -978,6 +978,55 @@ cdef __StructSpec get_reflection__AllocatorAware2():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__TypedefStruct():
+    cdef _module_types.TypedefStruct defaults = _module_types.TypedefStruct.create(
+        constant_shared_ptr[_module_types.cTypedefStruct](
+            default_inst[_module_types.cTypedefStruct]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="TypedefStruct",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="i32_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=2,
+            name="IntTypedef_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=3,
+            name="UintTypedef_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     return __MapSpec.create(
         key=int,

@@ -773,6 +773,28 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cint32_t not_a_container
         cAllocatorAware2__isset __isset
 
+    cdef cppclass cTypedefStruct__isset "::apache::thrift::fixtures::types::TypedefStruct::__isset":
+        bint i32_field
+        bint IntTypedef_field
+        bint UintTypedef_field
+
+    cdef cppclass cTypedefStruct "::apache::thrift::fixtures::types::TypedefStruct":
+        cTypedefStruct() except +
+        cTypedefStruct(const cTypedefStruct&) except +
+        bint operator==(cTypedefStruct&)
+        bint operator!=(cTypedefStruct&)
+        bint operator<(cTypedefStruct&)
+        bint operator>(cTypedefStruct&)
+        bint operator<=(cTypedefStruct&)
+        bint operator>=(cTypedefStruct&)
+        __field_ref[cint32_t] i32_field_ref()
+        __field_ref[cint32_t] IntTypedef_field_ref()
+        __field_ref[cint32_t] UintTypedef_field_ref()
+        cint32_t i32_field
+        cint32_t IntTypedef_field
+        cint32_t UintTypedef_field
+        cTypedefStruct__isset __isset
+
 
 
 
@@ -1018,6 +1040,15 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware2])
+
+
+
+cdef class TypedefStruct(thrift.py3.types.Struct):
+    cdef shared_ptr[cTypedefStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__TypedefStruct_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cTypedefStruct])
 
 
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):

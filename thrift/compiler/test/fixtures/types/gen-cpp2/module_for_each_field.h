@@ -228,6 +228,16 @@ struct ForEachField<::apache::thrift::fixtures::types::AllocatorAware2> {
     f(0, static_cast<T&&>(t).not_a_container_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::apache::thrift::fixtures::types::TypedefStruct> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).i32_field_ref()...);
+    f(1, static_cast<T&&>(t).IntTypedef_field_ref()...);
+    f(2, static_cast<T&&>(t).UintTypedef_field_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

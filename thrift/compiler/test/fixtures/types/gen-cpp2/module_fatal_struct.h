@@ -1489,6 +1489,75 @@ class AllocatorAware2_struct_traits {
   >;
 };
 
+class TypedefStruct_struct_traits {
+  class __fbthrift_annotations : public __fbthrift_refl_impl::no_annotations {
+    class __fbthrift_members {
+     public:
+      using i32_field = __fbthrift_refl_impl::reflected_no_annotations;
+      using IntTypedef_field = __fbthrift_refl_impl::reflected_no_annotations;
+      using UintTypedef_field = __fbthrift_refl_impl::reflected_no_annotations;
+    };
+
+   public:
+    using members = __fbthrift_members;
+  };
+
+  struct __fbthrift_member_i32_field {
+    using owner = ::apache::thrift::fixtures::types::TypedefStruct;
+    using name = __fbthrift_strings_module::__fbthrift_hash_463a2e2458322db48dcc738e6792afe31f8fb1883cd29f0ecae7719e93de0818;
+    using type = ::std::int32_t;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::i32_field>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::i32_field>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::i32_field>;
+  };
+  struct __fbthrift_member_IntTypedef_field {
+    using owner = ::apache::thrift::fixtures::types::TypedefStruct;
+    using name = __fbthrift_strings_module::__fbthrift_hash_6d4b9ee50b6b0430209f88e2ce0c8ffca5a1b4372666061653e53e2278e74300;
+    using type = ::apache::thrift::fixtures::types::IntTypedef;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::IntTypedef_field>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::IntTypedef_field>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::IntTypedef_field>;
+  };
+  struct __fbthrift_member_UintTypedef_field {
+    using owner = ::apache::thrift::fixtures::types::TypedefStruct;
+    using name = __fbthrift_strings_module::__fbthrift_hash_5ab816af8034a41718cabc63bd821ab7283b905d4770d0a2952ce8e00bb38520;
+    using type = std::uint32_t;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::UintTypedef_field>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::UintTypedef_field>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::UintTypedef_field>;
+  };
+
+  struct __fbthrift_member {
+    using i32_field = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_i32_field>;
+    using IntTypedef_field = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_IntTypedef_field>;
+    using UintTypedef_field = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_UintTypedef_field>;
+  };
+ public:
+  using type = ::apache::thrift::fixtures::types::TypedefStruct;
+  using name = __fbthrift_strings_module::TypedefStruct;
+  using member = __fbthrift_member;
+  using members = ::fatal::list<
+      member::i32_field,
+      member::IntTypedef_field,
+      member::UintTypedef_field
+  >;
+  using members_annotations = __fbthrift_annotations::members;
+  using metadata = ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(7079524667603799276ull)
+  >;
+};
+
 } // __fbthrift_refl
 
 THRIFT_REGISTER_STRUCT_TRAITS(decorated_struct, __fbthrift_refl::decorated_struct_struct_traits);
@@ -1513,4 +1582,5 @@ THRIFT_REGISTER_STRUCT_TRAITS(NoexceptMoveSimpleStruct, __fbthrift_refl::Noexcep
 THRIFT_REGISTER_STRUCT_TRAITS(NoexceptMoveComplexStruct, __fbthrift_refl::NoexceptMoveComplexStruct_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(AllocatorAware, __fbthrift_refl::AllocatorAware_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(AllocatorAware2, __fbthrift_refl::AllocatorAware2_struct_traits);
+THRIFT_REGISTER_STRUCT_TRAITS(TypedefStruct, __fbthrift_refl::TypedefStruct_struct_traits);
 }}}} // apache::thrift::fixtures::types

@@ -43,6 +43,7 @@ namespace types {
   ::apache::thrift::detail::md::StructMetadata<NoExceptMoveUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<AllocatorAware>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<AllocatorAware2>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<TypedefStruct>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<SomeServiceSvIf>::gen(metadata, serviceContext);
   ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
   return metadata;

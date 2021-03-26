@@ -186,3 +186,11 @@ class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class TypedefStruct_Builder(thrift.py3.builder.StructBuilder):
+    i32_field: _typing.Optional[int]
+    IntTypedef_field: _typing.Optional[int]
+    UintTypedef_field: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

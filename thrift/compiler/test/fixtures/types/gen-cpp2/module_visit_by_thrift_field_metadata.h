@@ -375,6 +375,23 @@ struct VisitByThriftId<::apache::thrift::fixtures::types::AllocatorAware2> {
     }
   }
 };
+
+template <>
+struct VisitByThriftId<::apache::thrift::fixtures::types::TypedefStruct> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).i32_field_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).IntTypedef_field_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).UintTypedef_field_ref());
+    default:
+      throwInvalidThriftId(id, "::apache::thrift::fixtures::types::TypedefStruct");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

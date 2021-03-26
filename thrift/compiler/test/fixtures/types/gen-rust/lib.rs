@@ -12,6 +12,10 @@ pub mod types {
 
     pub type TBinary = ::std::vec::Vec<::std::primitive::u8>;
 
+    pub type IntTypedef = ::std::primitive::i32;
+
+    pub type UintTypedef = crate::types::IntTypedef;
+
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct decorated_struct {
         pub field: ::std::string::String,
@@ -158,6 +162,13 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct AllocatorAware2 {
         pub not_a_container: ::std::primitive::i32,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct TypedefStruct {
+        pub i32_field: ::std::primitive::i32,
+        pub IntTypedef_field: crate::types::IntTypedef,
+        pub UintTypedef_field: crate::types::UintTypedef,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -623,6 +634,8 @@ pub mod types {
             ::std::result::Result::Ok(MyEnumA::from(p.read_i32()?))
         }
     }
+
+
 
 
     impl ::std::default::Default for self::decorated_struct {
@@ -2221,6 +2234,78 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 not_a_container: field_not_a_container.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::TypedefStruct {
+        fn default() -> Self {
+            Self {
+                i32_field: ::std::default::Default::default(),
+                IntTypedef_field: ::std::default::Default::default(),
+                UintTypedef_field: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::TypedefStruct {}
+    unsafe impl ::std::marker::Sync for self::TypedefStruct {}
+
+    impl ::fbthrift::GetTType for self::TypedefStruct {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::TypedefStruct
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("TypedefStruct");
+            p.write_field_begin("i32_field", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.i32_field, p);
+            p.write_field_end();
+            p.write_field_begin("IntTypedef_field", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.IntTypedef_field, p);
+            p.write_field_end();
+            p.write_field_begin("UintTypedef_field", ::fbthrift::TType::I32, 3);
+            ::fbthrift::Serialize::write(&self.UintTypedef_field, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::TypedefStruct
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("IntTypedef_field", ::fbthrift::TType::I32, 2),
+                ::fbthrift::Field::new("UintTypedef_field", ::fbthrift::TType::I32, 3),
+                ::fbthrift::Field::new("i32_field", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field_i32_field = ::std::option::Option::None;
+            let mut field_IntTypedef_field = ::std::option::Option::None;
+            let mut field_UintTypedef_field = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_i32_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_IntTypedef_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 3) => field_UintTypedef_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                i32_field: field_i32_field.unwrap_or_default(),
+                IntTypedef_field: field_IntTypedef_field.unwrap_or_default(),
+                UintTypedef_field: field_UintTypedef_field.unwrap_or_default(),
             })
         }
     }

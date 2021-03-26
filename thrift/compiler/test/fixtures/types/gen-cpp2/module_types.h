@@ -69,6 +69,9 @@ struct aa_map;
 struct aa_string;
 struct not_a_container;
 struct not_a_container;
+struct i32_field;
+struct IntTypedef_field;
+struct UintTypedef_field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_field
@@ -291,6 +294,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(not_a_container);
 #define APACHE_THRIFT_ACCESSOR_not_a_container
 APACHE_THRIFT_DEFINE_ACCESSOR(not_a_container);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_i32_field
+#define APACHE_THRIFT_ACCESSOR_i32_field
+APACHE_THRIFT_DEFINE_ACCESSOR(i32_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_IntTypedef_field
+#define APACHE_THRIFT_ACCESSOR_IntTypedef_field
+APACHE_THRIFT_DEFINE_ACCESSOR(IntTypedef_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_UintTypedef_field
+#define APACHE_THRIFT_ACCESSOR_UintTypedef_field
+APACHE_THRIFT_DEFINE_ACCESSOR(UintTypedef_field);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -505,11 +520,14 @@ class NoexceptMoveComplexStruct;
 class NoExceptMoveUnion;
 class AllocatorAware;
 class AllocatorAware2;
+class TypedefStruct;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 typedef ::std::string TBinary;
+typedef ::std::int32_t IntTypedef;
+typedef ::apache::thrift::fixtures::types::IntTypedef UintTypedef;
 
 }}}} // apache::thrift::fixtures::types
 // END typedefs
@@ -4217,6 +4235,181 @@ class AllocatorAware2 final  {
 
 template <class Protocol_>
 uint32_t AllocatorAware2::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
+class TypedefStruct final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+ public:
+  using __fbthrift_cpp2_type = TypedefStruct;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  TypedefStruct() :
+      i32_field(0),
+      IntTypedef_field(0),
+      UintTypedef_field(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg);
+
+  TypedefStruct(TypedefStruct&&) = default;
+
+  TypedefStruct(const TypedefStruct&) = default;
+
+
+  TypedefStruct& operator=(TypedefStruct&&) = default;
+
+  TypedefStruct& operator=(const TypedefStruct&) = default;
+  void __clear();
+ private:
+  ::std::int32_t i32_field;
+ private:
+  ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field;
+ private:
+  std::uint32_t UintTypedef_field;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool i32_field;
+    bool IntTypedef_field;
+    bool UintTypedef_field;
+  } __isset = {};
+
+  bool operator==(const TypedefStruct&) const;
+  bool operator<(const TypedefStruct&) const;
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32_field_ref() const& {
+    return {this->i32_field, __isset.i32_field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32_field_ref() const&& {
+    return {std::move(this->i32_field), __isset.i32_field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> i32_field_ref() & {
+    return {this->i32_field, __isset.i32_field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32_field_ref() && {
+    return {std::move(this->i32_field), __isset.i32_field};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> IntTypedef_field_ref() const& {
+    return {this->IntTypedef_field, __isset.IntTypedef_field};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> IntTypedef_field_ref() const&& {
+    return {std::move(this->IntTypedef_field), __isset.IntTypedef_field};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> IntTypedef_field_ref() & {
+    return {this->IntTypedef_field, __isset.IntTypedef_field};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> IntTypedef_field_ref() && {
+    return {std::move(this->IntTypedef_field), __isset.IntTypedef_field};
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> UintTypedef_field_ref() const& {
+    return {this->UintTypedef_field, __isset.UintTypedef_field};
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> UintTypedef_field_ref() const&& {
+    return {std::move(this->UintTypedef_field), __isset.UintTypedef_field};
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> UintTypedef_field_ref() & {
+    return {this->UintTypedef_field, __isset.UintTypedef_field};
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> UintTypedef_field_ref() && {
+    return {std::move(this->UintTypedef_field), __isset.UintTypedef_field};
+  }
+
+  ::std::int32_t get_i32_field() const {
+    return i32_field;
+  }
+
+  ::std::int32_t& set_i32_field(::std::int32_t i32_field_) {
+    i32_field = i32_field_;
+    __isset.i32_field = true;
+    return i32_field;
+  }
+
+  ::apache::thrift::fixtures::types::IntTypedef get_IntTypedef_field() const {
+    return IntTypedef_field;
+  }
+
+  ::apache::thrift::fixtures::types::IntTypedef& set_IntTypedef_field(::apache::thrift::fixtures::types::IntTypedef IntTypedef_field_) {
+    IntTypedef_field = IntTypedef_field_;
+    __isset.IntTypedef_field = true;
+    return IntTypedef_field;
+  }
+
+  std::uint32_t get_UintTypedef_field() const {
+    return UintTypedef_field;
+  }
+
+  std::uint32_t& set_UintTypedef_field(std::uint32_t UintTypedef_field_) {
+    UintTypedef_field = UintTypedef_field_;
+    __isset.UintTypedef_field = true;
+    return UintTypedef_field;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< TypedefStruct >;
+  friend void swap(TypedefStruct& a, TypedefStruct& b);
+};
+
+template <class Protocol_>
+uint32_t TypedefStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

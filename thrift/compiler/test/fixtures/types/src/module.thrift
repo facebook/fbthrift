@@ -186,3 +186,12 @@ struct AllocatorAware {
 struct AllocatorAware2 {
   1: i32 not_a_container;
 } (cpp.allocator = "some_allocator")
+
+typedef i32 IntTypedef
+typedef IntTypedef UintTypedef (cpp.type = "std::uint32_t")
+
+struct TypedefStruct {
+  1: i32 i32_field;
+  2: IntTypedef IntTypedef_field;
+  3: UintTypedef UintTypedef_field;
+}
