@@ -306,8 +306,9 @@ uint32_t CompactProtocolWriter::writeBinary(
 uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
   // leave room for varint size
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
   uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
@@ -424,8 +425,9 @@ uint32_t CompactProtocolWriter::serializedSizeBinary(
 uint32_t CompactProtocolWriter::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
   return serializedSizeI32() + static_cast<uint32_t>(size);
 }
@@ -548,7 +550,7 @@ void CompactProtocolReader::readMapBegin(
   if (msize < 0) {
     TProtocolException::throwNegativeSize();
   } else if (container_limit_ && msize > container_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(msize, container_limit_);
   }
 
   keyType = getType((int8_t)((uint8_t)kvType >> 4));
@@ -572,7 +574,7 @@ void CompactProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   if (lsize < 0) {
     TProtocolException::throwNegativeSize();
   } else if (container_limit_ && lsize > container_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(lsize, container_limit_);
   }
 
   elemType = getType((int8_t)(size_and_type & 0x0f));
@@ -650,7 +652,7 @@ void CompactProtocolReader::readStringSize(int32_t& size) {
     TProtocolException::throwNegativeSize();
   }
   if (string_limit_ > 0 && size > string_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 }
 
@@ -668,7 +670,7 @@ void CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
     auto data = in_.peekBytes();
     auto data_avail = std::min(data.size(), size_left);
     if (data.empty()) {
-      TProtocolException::throwExceededSizeLimit();
+      TProtocolException::throwTruncatedData();
     }
 
     str.append((const char*)data.data(), data_avail);

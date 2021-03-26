@@ -525,7 +525,7 @@ uint32_t TCompactProtocolT<Transport_>::readMapBegin(
   if (msize < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
   } else if (container_limit_ && msize > container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit(msize, container_limit_);
   }
 
   keyType = getTType((int8_t)((uint8_t)kvType >> 4));
@@ -559,7 +559,7 @@ uint32_t TCompactProtocolT<Transport_>::readListBegin(
   if (lsize < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
   } else if (container_limit_ && lsize > container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit(lsize, container_limit_);
   }
 
   elemType = getTType((int8_t)(size_and_type & 0x0f));
@@ -711,7 +711,7 @@ uint32_t TCompactProtocolT<Transport_>::readBinary(String_& str) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
   }
   if (string_limit_ > 0 && size > string_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   // Try to borrow first

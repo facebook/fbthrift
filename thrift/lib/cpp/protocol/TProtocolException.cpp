@@ -42,6 +42,13 @@ namespace protocol {
   throw TProtocolException(TProtocolException::SIZE_LIMIT);
 }
 
+[[noreturn]] void TProtocolException::throwExceededSizeLimit(
+    uint32_t size, uint32_t limit) {
+  throw TProtocolException(
+      TProtocolException::SIZE_LIMIT,
+      fmt::format("TProtocolException: {} exceeds size limit {}", size, limit));
+}
+
 [[noreturn]] void TProtocolException::throwMissingRequiredField(
     folly::StringPiece field, folly::StringPiece type) {
   throw TProtocolException(

@@ -166,8 +166,9 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
   return static_cast<uint32_t>(size) * 6 + 3;
 }

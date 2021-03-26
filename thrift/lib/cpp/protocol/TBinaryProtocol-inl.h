@@ -287,8 +287,8 @@ uint32_t TBinaryProtocolT<Transport_>::readMapBegin(
   result += readI32(sizei);
   if (sizei < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  } else if (container_limit_ && sizei > container_limit_) {
+    TProtocolException::throwExceededSizeLimit(sizei, container_limit_);
   }
   size = (uint32_t)sizei;
   sizeUnknown = false;
@@ -311,8 +311,8 @@ uint32_t TBinaryProtocolT<Transport_>::readListBegin(
   result += readI32(sizei);
   if (sizei < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  } else if (container_limit_ && sizei > container_limit_) {
+    TProtocolException::throwExceededSizeLimit(sizei, container_limit_);
   }
   size = (uint32_t)sizei;
   sizeUnknown = false;
@@ -335,8 +335,8 @@ uint32_t TBinaryProtocolT<Transport_>::readSetBegin(
   result += readI32(sizei);
   if (sizei < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  } else if (container_limit_ && sizei > container_limit_) {
+    TProtocolException::throwExceededSizeLimit(sizei, container_limit_);
   }
   size = (uint32_t)sizei;
   sizeUnknown = false;
@@ -443,8 +443,8 @@ uint32_t TBinaryProtocolT<Transport_>::readStringBody(
   if (size < 0) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
   }
-  if (this->string_limit_ > 0 && size > this->string_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  if (string_limit_ > 0 && size > string_limit_) {
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   // Catch empty string case

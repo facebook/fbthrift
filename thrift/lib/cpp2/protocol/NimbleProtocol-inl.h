@@ -299,7 +299,7 @@ inline void NimbleProtocolReader::readMapBegin(
 
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, container_limit_);
   }
 }
 
@@ -311,7 +311,7 @@ inline void NimbleProtocolReader::readListBegin(
   listTypeFromByte(byte, elemType);
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, container_limit_);
   }
 }
 
@@ -421,7 +421,7 @@ template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
   uint32_t size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   decoder_.nextBinary(str, size);
@@ -432,7 +432,7 @@ inline void NimbleProtocolReader::readStringWithContext(
     StrType& str, StructReadState& /* srs */) {
   uint32_t size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   decoder_.nextBinary(str, size);
@@ -469,7 +469,7 @@ inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
   uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
   decoder_.nextBinary(str, size);
 }
@@ -479,7 +479,7 @@ inline void NimbleProtocolReader::readBinaryWithContext(
   uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
   decoder_.nextBinary(str, size);
 }

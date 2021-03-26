@@ -60,8 +60,9 @@ class Decoder {
     apache::thrift::util::readVarint(cursor, stringSize);
 
     auto splice = [&](std::uint64_t size) {
-      if (size != static_cast<std::size_t>(size)) { // when size_t != uint64_t
-        protocol::TProtocolException::throwExceededSizeLimit();
+      std::size_t limit = static_cast<std::size_t>(size);
+      if (size != limit) { // when size_t != uint64_t
+        protocol::TProtocolException::throwExceededSizeLimit(limit, limit);
       }
       folly::io::Cursor result{cursor, (std::size_t)size};
       cursor.skip(size);
@@ -83,7 +84,7 @@ class Decoder {
     stringCursor_ = splice(stringSize);
 
     if (!cursor.isAtEnd()) {
-      protocol::TProtocolException::throwExceededSizeLimit();
+      protocol::TProtocolException::throwTruncatedData();
     }
   }
 
@@ -114,7 +115,7 @@ class Decoder {
       auto data = stringCursor_.peekBytes();
       auto data_avail = std::min(data.size(), size);
       if (data.empty()) {
-        protocol::TProtocolException::throwExceededSizeLimit();
+        protocol::TProtocolException::throwTruncatedData();
       }
 
       str.append(reinterpret_cast<const char*>(data.data()), data_avail);
