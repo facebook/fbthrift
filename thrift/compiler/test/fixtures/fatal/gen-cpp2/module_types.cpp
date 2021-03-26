@@ -2438,7 +2438,7 @@ struct4& struct4::operator=(const struct4& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg) :
+struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),

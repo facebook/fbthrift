@@ -378,7 +378,7 @@ class containerStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector<::cpp2::IndirectionA> fieldN__arg, ::std::vector<::cpp2::IndirectionB> fieldO__arg, ::std::vector<::cpp2::IndirectionC> fieldP__arg, ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr<::cpp2::SmallStruct> fieldS__arg, std::shared_ptr<::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr<::cpp2::SmallStruct> fieldX__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector<::cpp2::IndirectionA> fieldN__arg, ::std::vector<::cpp2::IndirectionB> fieldO__arg, ::std::vector<::cpp2::IndirectionC> fieldP__arg, ::cpp2::MyEnumA fieldQ__arg, ::std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, ::std::unique_ptr<::cpp2::SmallStruct> fieldS__arg, ::std::shared_ptr<::cpp2::SmallStruct> fieldT__arg, ::std::shared_ptr<const ::cpp2::SmallStruct> fieldU__arg, ::std::unique_ptr<::cpp2::SmallStruct> fieldX__arg);
 
   containerStruct(containerStruct&&) = default;
   containerStruct(const containerStruct& src);
@@ -425,15 +425,15 @@ class containerStruct final  {
  private:
   ::cpp2::MyEnumA fieldQ;
  public:
-  std::unique_ptr<::std::map<::std::string, bool>> fieldR;
+  ::std::unique_ptr<::std::map<::std::string, bool>> fieldR;
  public:
-  std::unique_ptr<::cpp2::SmallStruct> fieldS;
+  ::std::unique_ptr<::cpp2::SmallStruct> fieldS;
  public:
-  std::shared_ptr<::cpp2::SmallStruct> fieldT;
+  ::std::shared_ptr<::cpp2::SmallStruct> fieldT;
  public:
-  std::shared_ptr<const ::cpp2::SmallStruct> fieldU;
+  ::std::shared_ptr<const ::cpp2::SmallStruct> fieldU;
  public:
-  std::unique_ptr<::cpp2::SmallStruct> fieldX;
+  ::std::unique_ptr<::cpp2::SmallStruct> fieldX;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -799,60 +799,60 @@ class containerStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ_ref() && {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE T& fieldR_ref() & { return fieldR; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE const T& fieldR_ref() const& { return fieldR; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE T&& fieldR_ref() && { return std::move(fieldR); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::string, bool>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE const T&& fieldR_ref() const&& { return std::move(fieldR); }
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldS_ref() & { return fieldS; }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldS_ref() const& { return fieldS; }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldS_ref() && { return std::move(fieldS); }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldS_ref() const&& { return std::move(fieldS); }
-  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldT_ref() & { return fieldT; }
 
-  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldT_ref() const& { return fieldT; }
 
-  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldT_ref() && { return std::move(fieldT); }
 
-  template <typename ..., typename T = std::shared_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldT_ref() const&& { return std::move(fieldT); }
-  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldU_ref() & { return fieldU; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldU_ref() const& { return fieldU; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldU_ref() && { return std::move(fieldU); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldU_ref() const&& { return std::move(fieldU); }
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T& fieldX_ref() & { return fieldX; }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T& fieldX_ref() const& { return fieldX; }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE T&& fieldX_ref() && { return std::move(fieldX); }
 
-  template <typename ..., typename T = std::unique_ptr<::cpp2::SmallStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::SmallStruct>>
   FOLLY_ERASE const T&& fieldX_ref() const&& { return std::move(fieldX); }
 
   bool get_fieldA() const {

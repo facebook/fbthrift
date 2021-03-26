@@ -361,7 +361,7 @@ class ComplexUnion final  {
     ::std::vector<::std::int64_t> intListValue;
     ::std::vector<::std::string> stringListValue;
     ::cpp2::containerTypedef typedefValue;
-    std::unique_ptr<::std::string> stringRef;
+    ::std::unique_ptr<::std::string> stringRef;
 
     storage_type() {}
     ~storage_type() {}
@@ -461,24 +461,24 @@ class ComplexUnion final  {
     return value_.typedefValue;
   }
 
-  std::unique_ptr<::std::string>& set_stringRef(::std::string const &t) {
+  ::std::unique_ptr<::std::string>& set_stringRef(::std::string const &t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(t));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(t));
     return value_.stringRef;
   }
 
-  std::unique_ptr<::std::string>& set_stringRef(::std::string&& t) {
+  ::std::unique_ptr<::std::string>& set_stringRef(::std::string&& t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(std::move(t)));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::move(t)));
     return value_.stringRef;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> std::unique_ptr<::std::string>& set_stringRef(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::unique_ptr<::std::string>& set_stringRef(T&&... t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
     return value_.stringRef;
   }
 
@@ -507,7 +507,7 @@ class ComplexUnion final  {
     return value_.typedefValue;
   }
 
-  std::unique_ptr<::std::string> const & get_stringRef() const {
+  ::std::unique_ptr<::std::string> const & get_stringRef() const {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
   }
@@ -537,7 +537,7 @@ class ComplexUnion final  {
     return value_.typedefValue;
   }
 
-  std::unique_ptr<::std::string> & mutable_stringRef() {
+  ::std::unique_ptr<::std::string> & mutable_stringRef() {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
   }
@@ -567,7 +567,7 @@ class ComplexUnion final  {
     return std::move(value_.typedefValue);
   }
 
-  std::unique_ptr<::std::string> move_stringRef() {
+  ::std::unique_ptr<::std::string> move_stringRef() {
     assert(type_ == Type::stringRef);
     return std::move(value_.stringRef);
   }

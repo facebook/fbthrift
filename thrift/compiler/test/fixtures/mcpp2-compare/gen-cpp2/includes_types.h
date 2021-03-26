@@ -232,7 +232,7 @@ class AStructB final  {
       FieldA(std::make_shared<::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);
+  AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);
 
   AStructB(AStructB&&) = default;
 
@@ -244,22 +244,22 @@ class AStructB final  {
   AStructB& operator=(const AStructB&) = default;
   void __clear();
  public:
-  std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
+  ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
 
  public:
 
   bool operator==(const AStructB&) const;
   bool operator<(const AStructB&) const;
-  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T&& FieldA_ref() && { return std::move(FieldA); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T&& FieldA_ref() const&& { return std::move(FieldA); }
 
   template <class Protocol_>

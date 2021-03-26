@@ -5330,7 +5330,7 @@ class struct4 final  {
       field3(std::make_unique<::test_cpp2::cpp_reflection::structA>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg);
+  struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg);
 
   struct4(struct4&&) = default;
   struct4(const struct4& src);
@@ -5346,7 +5346,7 @@ class struct4 final  {
  private:
   ::test_cpp2::cpp_reflection::enum1 field2;
  public:
-  std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3;
+  ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -5417,16 +5417,16 @@ class struct4 final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2_ref() && {
     return {std::move(this->field2), __isset.field2};
   }
-  template <typename ..., typename T = std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
+  template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE T& field3_ref() & { return field3; }
 
-  template <typename ..., typename T = std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
+  template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE const T& field3_ref() const& { return field3; }
 
-  template <typename ..., typename T = std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
+  template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE T&& field3_ref() && { return std::move(field3); }
 
-  template <typename ..., typename T = std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
+  template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE const T&& field3_ref() const&& { return std::move(field3); }
 
   ::std::int32_t get_field0() const {

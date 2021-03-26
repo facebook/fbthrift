@@ -81,7 +81,7 @@ class Foo final  {
   Foo() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   Foo(Foo&&) = default;
   Foo(const Foo& src);
@@ -91,7 +91,7 @@ class Foo final  {
   Foo& operator=(const Foo& src);
   void __clear();
  private:
-  mutable std::unique_ptr<::std::string> field1;
+  mutable ::std::unique_ptr<::std::string> field1;
  private:
   ::std::string field2;
  private:
@@ -109,16 +109,16 @@ class Foo final  {
 
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;
-  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE T& field1_ref() & { return __fbthrift_read_field_field1(); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE const T& field1_ref() const& { return __fbthrift_read_field_field1(); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE T&& field1_ref() && { return std::move(__fbthrift_read_field_field1()); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::string>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE const T&& field1_ref() const&& { return std::move(__fbthrift_read_field_field1()); }
 
   template <typename..., typename T = ::std::string>
@@ -231,8 +231,8 @@ class Foo final  {
     std::mutex field3;
   } __fbthrift_deserializationMutex_;
 
-  const std::unique_ptr<::std::string>& __fbthrift_read_field_field1() const;
-  std::unique_ptr<::std::string>& __fbthrift_read_field_field1();
+  const ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1() const;
+  ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1();
   const ::std::vector<::std::int32_t>& __fbthrift_read_field_field3() const;
   ::std::vector<::std::int32_t>& __fbthrift_read_field_field3();
 

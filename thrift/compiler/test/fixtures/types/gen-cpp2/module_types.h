@@ -2781,7 +2781,7 @@ class ForwardUsageRoot final  {
   ForwardUsageRoot() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
+  ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
 
   ForwardUsageRoot(ForwardUsageRoot&&) = default;
   ForwardUsageRoot(const ForwardUsageRoot& src);
@@ -2793,7 +2793,7 @@ class ForwardUsageRoot final  {
  private:
   ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct;
  public:
-  std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
+  ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -2823,16 +2823,16 @@ class ForwardUsageRoot final  {
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> ForwardUsageStruct_ref() && {
     return {std::move(this->ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
-  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE T& ForwardUsageByRef_ref() & { return ForwardUsageByRef; }
 
-  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE const T& ForwardUsageByRef_ref() const& { return ForwardUsageByRef; }
 
-  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE T&& ForwardUsageByRef_ref() && { return std::move(ForwardUsageByRef); }
 
-  template <typename ..., typename T = std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
+  template <typename ..., typename T = ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE const T&& ForwardUsageByRef_ref() const&& { return std::move(ForwardUsageByRef); }
   const ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() const&;
   ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() &;

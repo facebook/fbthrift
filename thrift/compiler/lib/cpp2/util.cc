@@ -192,14 +192,13 @@ std::string type_resolver::gen_type(const t_type* node) {
 std::string type_resolver::gen_storage_type(
     const std::pair<const t_type*, reference_type>& ref_type) {
   const std::string& type_name = get_type_name(ref_type.first);
-  // TODO(afuller): Add '::' prefix.
   switch (ref_type.second) {
     case reference_type::unique:
-      return gen_template_type("std::unique_ptr", {type_name});
+      return gen_template_type("::std::unique_ptr", {type_name});
     case reference_type::shared_mutable:
-      return gen_template_type("std::shared_ptr", {type_name});
+      return gen_template_type("::std::shared_ptr", {type_name});
     case reference_type::shared_const:
-      return gen_template_type("std::shared_ptr", {"const " + type_name});
+      return gen_template_type("::std::shared_ptr", {"const " + type_name});
     default:
       throw std::runtime_error("unknown cpp ref_type");
   }

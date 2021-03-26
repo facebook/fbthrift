@@ -1622,7 +1622,7 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
+ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
     ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
     ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
   __isset.ForwardUsageStruct = true;

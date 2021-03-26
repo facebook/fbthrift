@@ -967,31 +967,31 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
   }
 }
 
-std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
+::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
   __clear();
   type_ = Type::ref_field;
-  ::new (std::addressof(value_.ref_field)) std::unique_ptr<::some::valid::ns::MyStruct>(new std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
+  ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field;
 }
 
-std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
+::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
   __clear();
   type_ = Type::ref_field;
-  ::new (std::addressof(value_.ref_field)) std::unique_ptr<::some::valid::ns::MyStruct>(new std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field;
 }
 
-std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
+::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
   __clear();
   type_ = Type::ref_field2;
-  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const ::some::valid::ns::MyStruct>(new std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
+  ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field2;
 }
 
-std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
+::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
   __clear();
   type_ = Type::ref_field2;
-  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const ::some::valid::ns::MyStruct>(new std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field2;
 }
 
@@ -2553,7 +2553,7 @@ MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg) :
+MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg) :
     MyIncludedInt(std::move(MyIncludedInt__arg)),
     MyIncludedStruct(std::move(MyIncludedStruct__arg)),
     ARefField(std::move(ARefField__arg)),
@@ -2793,7 +2793,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 AnnotatedStruct::~AnnotatedStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg) :
+AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg) :
     no_annotation(std::move(no_annotation__arg)),
     cpp_unique_ref(std::move(cpp_unique_ref__arg)),
     cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -2863,19 +2863,19 @@ void AnnotatedStruct::__clear() {
   no_annotation.__clear();
   if (cpp_unique_ref) cpp_unique_ref->__clear();
   if (cpp2_unique_ref) cpp2_unique_ref->__clear();
-  container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>());
+  container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>());
   if (req_cpp_unique_ref) req_cpp_unique_ref->__clear();
   if (req_cpp2_unique_ref) req_cpp2_unique_ref->__clear();
-  req_container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::string>>>());
+  req_container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::string>>>());
   opt_cpp_unique_ref.reset();
   opt_cpp2_unique_ref.reset();
   opt_container_with_ref.reset();
   if (ref_type_unique) ref_type_unique->__clear();
   if (ref_type_shared) ref_type_shared->__clear();
-  ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>());
+  ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>());
   if (req_ref_type_shared) req_ref_type_shared->__clear();
   if (req_ref_type_const) req_ref_type_const.reset(new typename decltype(req_ref_type_const)::element_type());
-  req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::string>>>());
+  req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::string>>>());
   opt_ref_type_const.reset();
   opt_ref_type_unique.reset();
   opt_ref_type_shared.reset();

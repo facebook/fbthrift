@@ -289,7 +289,7 @@ MyStruct& MyStruct::operator=(const MyStruct& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyField> opt_ref__arg, std::unique_ptr<::cpp2::MyField> ref__arg, std::unique_ptr<::cpp2::MyField> req_ref__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyField> opt_ref__arg, ::std::unique_ptr<::cpp2::MyField> ref__arg, ::std::unique_ptr<::cpp2::MyField> req_ref__arg) :
     opt_ref(std::move(opt_ref__arg)),
     ref(std::move(ref__arg)),
     req_ref(std::move(req_ref__arg)) {}
@@ -462,7 +462,7 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg) :
+StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg) :
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
     f(std::move(f__arg)) {
@@ -717,7 +717,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 StructWithContainers::~StructWithContainers() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<::std::int32_t>> list_ref__arg, std::unique_ptr<::std::set<::std::int32_t>> set_ref__arg, std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref__arg, std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const__arg) :
+StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> list_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> set_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref__arg, ::std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const__arg) :
     list_ref(std::move(list_ref__arg)),
     set_ref(std::move(set_ref__arg)),
     map_ref(std::move(map_ref__arg)),
@@ -727,12 +727,12 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, s
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithContainers::__clear() {
   // clear all fields
-  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
-  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::set<::std::int32_t>>>());
-  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
-  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
-  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::std::set<::std::int32_t>>>());
-  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::vector<::std::int32_t>>>());
+  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
+  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::set<::std::int32_t>>>());
+  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
+  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
+  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::std::set<::std::int32_t>>>());
+  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::std::vector<::std::int32_t>>>());
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -893,7 +893,7 @@ void TccStructTraits<::cpp2::StructWithSharedConst>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const ::cpp2::MyField> shared_const__arg, std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg) :
+StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg) :
     opt_shared_const(std::move(opt_shared_const__arg)),
     shared_const(std::move(shared_const__arg)),
     req_shared_const(std::move(req_shared_const__arg)) {}
@@ -1124,7 +1124,7 @@ StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg) :
+StructWithRef::StructWithRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1288,7 +1288,7 @@ StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefT
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg, std::unique_ptr<::cpp2::Empty> opt_field__arg, std::unique_ptr<::cpp2::Empty> req_field__arg) :
+StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1440,7 +1440,7 @@ void TccStructTraits<::cpp2::StructWithRefTypeShared>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr<::cpp2::Empty> def_field__arg, std::shared_ptr<::cpp2::Empty> opt_field__arg, std::shared_ptr<::cpp2::Empty> req_field__arg) :
+StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, ::std::shared_ptr<::cpp2::Empty> def_field__arg, ::std::shared_ptr<::cpp2::Empty> opt_field__arg, ::std::shared_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1592,7 +1592,7 @@ void TccStructTraits<::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const ::cpp2::Empty> def_field__arg, std::shared_ptr<const ::cpp2::Empty> opt_field__arg, std::shared_ptr<const ::cpp2::Empty> req_field__arg) :
+StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::Empty> def_field__arg, ::std::shared_ptr<const ::cpp2::Empty> opt_field__arg, ::std::shared_ptr<const ::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
@@ -1754,7 +1754,7 @@ StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCt
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr<::cpp2::Empty> def_field__arg) :
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg) :
     def_field(std::move(def_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {

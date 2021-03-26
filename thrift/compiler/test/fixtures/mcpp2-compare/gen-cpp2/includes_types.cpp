@@ -152,7 +152,7 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
+AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AStructB::__clear() {

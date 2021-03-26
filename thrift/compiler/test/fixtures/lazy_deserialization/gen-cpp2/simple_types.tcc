@@ -55,7 +55,7 @@ _readField_field1:
     __fbthrift_serializedData_.field1.makeManaged();
     __fbthrift_isDeserialized_.field1 = false;
   } else {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::string>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::string>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
     this->field1 = std::move(ptr);
   }
@@ -182,7 +182,7 @@ _skip:
     }
   }
 }
-const std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const {
+const ::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const {
 
   if (__fbthrift_isDeserialized_.field1) {
     return field1;
@@ -190,7 +190,7 @@ const std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const 
 
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field1);
   if (!__fbthrift_isDeserialized_.field1) {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::string>>{});
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::string>>{});
 
     ::apache::thrift::CompactProtocolReader reader;
     reader.setInput(&__fbthrift_serializedData_.field1);
@@ -203,7 +203,7 @@ const std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const 
   return field1;
 }
 
-std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() {
+::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() {
   std::as_const(*this).__fbthrift_read_field_field1();
   return field1;
 }

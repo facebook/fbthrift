@@ -446,7 +446,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_opt_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->opt_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -462,7 +462,7 @@ _readField_opt_ref:
 _readField_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -478,7 +478,7 @@ _readField_ref:
 _readField_req_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->req_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -682,7 +682,7 @@ void StructWithUnion::readNoXfer(Protocol_* iprot) {
 _readField_u:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::MyUnion>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::MyUnion>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::variant, ::cpp2::MyUnion>::readWithContext(*iprot, *ptr, _readState);
     this->u = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -993,7 +993,7 @@ void StructWithContainers::readNoXfer(Protocol_* iprot) {
 _readField_list_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->list_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1009,7 +1009,7 @@ _readField_list_ref:
 _readField_set_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::set<::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::set<::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->set_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1025,7 +1025,7 @@ _readField_set_ref:
 _readField_map_ref:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<::std::int32_t, ::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->map_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1041,7 +1041,7 @@ _readField_map_ref:
 _readField_list_ref_unique:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::std::vector<::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->list_ref_unique = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1057,7 +1057,7 @@ _readField_list_ref_unique:
 _readField_set_ref_shared:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::std::set<::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::std::set<::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->set_ref_shared = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1073,7 +1073,7 @@ _readField_set_ref_shared:
 _readField_list_ref_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::std::vector<::std::int32_t>>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::std::vector<::std::int32_t>>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->list_ref_shared_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1367,7 +1367,7 @@ void StructWithSharedConst::readNoXfer(Protocol_* iprot) {
 _readField_opt_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->opt_shared_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1383,7 +1383,7 @@ _readField_opt_shared_const:
 _readField_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->shared_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1399,7 +1399,7 @@ _readField_shared_const:
 _readField_req_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::MyField>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::MyField>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->req_shared_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1682,7 +1682,7 @@ void StructWithRef::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1698,7 +1698,7 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1714,7 +1714,7 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1918,7 +1918,7 @@ void StructWithRefTypeUnique::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1934,7 +1934,7 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -1950,7 +1950,7 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2154,7 +2154,7 @@ void StructWithRefTypeShared::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2170,7 +2170,7 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2186,7 +2186,7 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2390,7 +2390,7 @@ void StructWithRefTypeSharedConst::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2406,7 +2406,7 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2422,7 +2422,7 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<const ::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -2626,7 +2626,7 @@ void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<::cpp2::Empty>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::cpp2::Empty>>());
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
     _readState.afterSubobject(iprot);

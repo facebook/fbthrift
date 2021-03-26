@@ -2712,8 +2712,8 @@ class ComplexUnion final  {
     ::std::string MyBinaryField;
     ::std::string MyBinaryField2;
     ::std::vector<::std::string> MyBinaryListField4;
-    std::unique_ptr<::some::valid::ns::MyStruct> ref_field;
-    std::shared_ptr<const ::some::valid::ns::MyStruct> ref_field2;
+    ::std::unique_ptr<::some::valid::ns::MyStruct> ref_field;
+    ::std::shared_ptr<const ::some::valid::ns::MyStruct> ref_field2;
     ::some::valid::ns::AnException excp_field;
 
     storage_type() {}
@@ -3128,21 +3128,21 @@ class ComplexUnion final  {
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
     return value_.MyBinaryListField4;
   }
-  std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct const &t);
-  std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct const &t);
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
-    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::unique_ptr<::some::valid::ns::MyStruct>, void>;
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::some::valid::ns::MyStruct>, void>;
     __clear();
     type_ = Type::ref_field;
     ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field;
   }
-  std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct const &t);
-  std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct const &t);
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
-    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
     __clear();
     type_ = Type::ref_field2;
     ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
@@ -3290,12 +3290,12 @@ class ComplexUnion final  {
     return value_.MyBinaryListField4;
   }
 
-  std::unique_ptr<::some::valid::ns::MyStruct> const & get_ref_field() const {
+  ::std::unique_ptr<::some::valid::ns::MyStruct> const & get_ref_field() const {
     assert(type_ == Type::ref_field);
     return value_.ref_field;
   }
 
-  std::shared_ptr<const ::some::valid::ns::MyStruct> const & get_ref_field2() const {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> const & get_ref_field2() const {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
   }
@@ -3425,12 +3425,12 @@ class ComplexUnion final  {
     return value_.MyBinaryListField4;
   }
 
-  std::unique_ptr<::some::valid::ns::MyStruct> & mutable_ref_field() {
+  ::std::unique_ptr<::some::valid::ns::MyStruct> & mutable_ref_field() {
     assert(type_ == Type::ref_field);
     return value_.ref_field;
   }
 
-  std::shared_ptr<const ::some::valid::ns::MyStruct> & mutable_ref_field2() {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> & mutable_ref_field2() {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
   }
@@ -3560,12 +3560,12 @@ class ComplexUnion final  {
     return std::move(value_.MyBinaryListField4);
   }
 
-  std::unique_ptr<::some::valid::ns::MyStruct> move_ref_field() {
+  ::std::unique_ptr<::some::valid::ns::MyStruct> move_ref_field() {
     assert(type_ == Type::ref_field);
     return std::move(value_.ref_field);
   }
 
-  std::shared_ptr<const ::some::valid::ns::MyStruct> move_ref_field2() {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> move_ref_field2() {
     assert(type_ == Type::ref_field2);
     return std::move(value_.ref_field2);
   }
@@ -6505,7 +6505,7 @@ class MyIncludedStruct final  {
       ARefField(std::make_unique<::some::valid::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg);
+  MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg);
 
   MyIncludedStruct(MyIncludedStruct&&) = default;
   MyIncludedStruct(const MyIncludedStruct& src);
@@ -6519,7 +6519,7 @@ class MyIncludedStruct final  {
  private:
   ::some::valid::ns::AStruct MyIncludedStruct;
  public:
-  std::unique_ptr<::some::valid::ns::AStruct> ARefField;
+  ::std::unique_ptr<::some::valid::ns::AStruct> ARefField;
  public:
   ::some::valid::ns::AStruct ARequiredField;
 
@@ -6572,16 +6572,16 @@ class MyIncludedStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedStruct_ref() && {
     return {std::move(this->MyIncludedStruct), __isset.MyIncludedStruct};
   }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE T& ARefField_ref() & { return ARefField; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE const T& ARefField_ref() const& { return ARefField; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE T&& ARefField_ref() && { return std::move(ARefField); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE const T&& ARefField_ref() const&& { return std::move(ARefField); }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -6685,7 +6685,7 @@ class AnnotatedStruct  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg);
+  AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg);
   AnnotatedStruct(AnnotatedStruct&& other) noexcept;
 
 
@@ -6697,41 +6697,41 @@ class AnnotatedStruct  {
  private:
   ::some::valid::ns::containerStruct no_annotation;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref;
+  ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
+  ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref;
+  ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique;
  public:
-  std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared;
+  ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared;
  public:
-  std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const;
+  ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const;
  public:
-  std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared;
+  ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared;
  public:
-  std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const;
+  ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const;
  public:
-  std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
+  ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
  public:
-  std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const;
+  ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const;
  public:
-  std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique;
  public:
-  std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared;
+  ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared;
  private:
   ::some::valid::ns::CppFakeI32 base_type;
  private:
@@ -6824,203 +6824,203 @@ class AnnotatedStruct  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> no_annotation_ref() && {
     return {std::move(this->no_annotation), __isset.no_annotation};
   }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp_unique_ref_ref() & { return cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& cpp_unique_ref_ref() const& { return cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& cpp_unique_ref_ref() && { return std::move(cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& { return std::move(cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp2_unique_ref_ref() & { return cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& cpp2_unique_ref_ref() const& { return cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& cpp2_unique_ref_ref() && { return std::move(cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& { return std::move(cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& container_with_ref_ref() & { return container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T& container_with_ref_ref() const& { return container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T&& container_with_ref_ref() && { return std::move(container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T&& container_with_ref_ref() const&& { return std::move(container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp_unique_ref_ref() & { return req_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_cpp_unique_ref_ref() const& { return req_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_cpp_unique_ref_ref() && { return std::move(req_cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& { return std::move(req_cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp2_unique_ref_ref() & { return req_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_cpp2_unique_ref_ref() const& { return req_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && { return std::move(req_cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& { return std::move(req_cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_container_with_ref_ref() & { return req_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T& req_container_with_ref_ref() const& { return req_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T&& req_container_with_ref_ref() && { return std::move(req_container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T&& req_container_with_ref_ref() const&& { return std::move(req_container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp_unique_ref_ref() & { return opt_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_cpp_unique_ref_ref() const& { return opt_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && { return std::move(opt_cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& { return std::move(opt_cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp2_unique_ref_ref() & { return opt_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_cpp2_unique_ref_ref() const& { return opt_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && { return std::move(opt_cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& { return std::move(opt_cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_container_with_ref_ref() & { return opt_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& opt_container_with_ref_ref() const& { return opt_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& opt_container_with_ref_ref() && { return std::move(opt_container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& { return std::move(opt_container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_unique_ref() & { return ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& ref_type_unique_ref() const& { return ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& ref_type_unique_ref() && { return std::move(ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& ref_type_unique_ref() const&& { return std::move(ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_shared_ref() & { return ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& ref_type_shared_ref() const& { return ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& ref_type_shared_ref() && { return std::move(ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& ref_type_shared_ref() const&& { return std::move(ref_type_shared); }
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& ref_type_const_ref() & { return ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T& ref_type_const_ref() const& { return ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T&& ref_type_const_ref() && { return std::move(ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T&& ref_type_const_ref() const&& { return std::move(ref_type_const); }
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_shared_ref() & { return req_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_ref_type_shared_ref() const& { return req_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_ref_type_shared_ref() && { return std::move(req_ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& { return std::move(req_ref_type_shared); }
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_const_ref() & { return req_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_ref_type_const_ref() const& { return req_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_ref_type_const_ref() && { return std::move(req_ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_ref_type_const_ref() const&& { return std::move(req_ref_type_const); }
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_ref_type_unique_ref() & { return req_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T& req_ref_type_unique_ref() const& { return req_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T&& req_ref_type_unique_ref() && { return std::move(req_ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& { return std::move(req_ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_const_ref() & { return opt_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_ref_type_const_ref() const& { return opt_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_ref_type_const_ref() && { return std::move(opt_ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& { return std::move(opt_ref_type_const); }
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_unique_ref() & { return opt_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_ref_type_unique_ref() const& { return opt_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_ref_type_unique_ref() && { return std::move(opt_ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr<::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& { return std::move(opt_ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_ref_type_shared_ref() & { return opt_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& opt_ref_type_shared_ref() const& { return opt_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& opt_ref_type_shared_ref() && { return std::move(opt_ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<::std::int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& { return std::move(opt_ref_type_shared); }
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>

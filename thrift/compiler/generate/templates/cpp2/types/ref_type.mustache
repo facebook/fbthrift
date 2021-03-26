@@ -14,8 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#field:cpp_ref_unique?%>std::unique_ptr<<%/field:cpp_ref_unique?%><%!
-%><%#field:cpp_ref_shared?%>std::shared_ptr<<%/field:cpp_ref_shared?%><%!
-%><%#field:cpp_ref_shared_const?%>std::shared_ptr<const <%/field:cpp_ref_shared_const?%><%!
-%><%type:cpp_type%><%!
-%><%#field:cpp_ref?%>><%/field:cpp_ref?%>
+  // TODO(afuller): Migrage usage to use either field:cpp_deprecated_accessor_type or
+  // field:cpp_storage_type directly and delete this file.
+%><%field:cpp_deprecated_accessor_type%>

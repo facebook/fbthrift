@@ -558,6 +558,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
             {"field:cpp_storage_type", &mstch_cpp2_field::cpp_storage_type},
+            {"field:cpp_deprecated_accessor_type",
+             &mstch_cpp2_field::cpp_deprecated_accessor_type},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
@@ -586,6 +588,13 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node index_plus_one() { return std::to_string(index_ + 1); }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_storage_type() {
+    return context_->resolver().get_storage_type_name(field_);
+  }
+  mstch::node cpp_deprecated_accessor_type() {
+    // The type to use for pre-field_ref backwards compatiblity functions.
+    // These leaked the internal storage type directly.
+    // TODO(afuller): Remove this once templates are updated to use storage
+    // type, and all non-field_ref based accessors have been removed.
     return context_->resolver().get_storage_type_name(field_);
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }

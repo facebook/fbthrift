@@ -432,14 +432,14 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp.ref", "");
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
   {
     t_field ui64_field(&ui64, "hash", 1);
     ui64_field.set_annotation("cpp2.ref", ""); // Works with cpp2.
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
   {
@@ -447,7 +447,7 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp.ref_type", "unique");
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
   {
@@ -455,7 +455,7 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp2.ref_type", "shared"); // Works with cpp2.
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
   {
@@ -463,7 +463,7 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp.ref_type", "shared_mutable");
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
   {
@@ -471,7 +471,7 @@ TEST_F(TypeResolverTest, StorageType) {
     ui64_field.set_annotation("cpp.ref_type", "shared_const");
     EXPECT_EQ(
         get_storage_type_name(&ui64_field),
-        "std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+        "::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
   { // Unrecognized throws an exception.

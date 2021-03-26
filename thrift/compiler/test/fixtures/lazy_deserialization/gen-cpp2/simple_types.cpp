@@ -64,7 +64,7 @@ Foo& Foo::operator=(const Foo& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
