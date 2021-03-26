@@ -36,9 +36,9 @@
 <%/field:lazy?%><%/struct:fields%>
   } __fbthrift_deserializationMutex_;
 
-<%#struct:fields%><%#field:lazy?%><%#field:type%>
-  const <% > types/ref_type%>& __fbthrift_read_field_<%field:cpp_name%>() const;
-  <% > types/ref_type%>& __fbthrift_read_field_<%field:cpp_name%>();
-<%/field:type%><%/field:lazy?%><%/struct:fields%>
+<%#struct:fields%><%#field:lazy?%>
+  const <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>() const;
+  <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>();
+<%/field:lazy?%><%/struct:fields%>
 
 <%/struct:lazy_fields?%>

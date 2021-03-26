@@ -58,7 +58,7 @@ void <%struct:name%>::__clear() {
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>
-  <%field:cpp_name%> = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > types/ref_type%>>());
+  <%field:cpp_name%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:optional?%>
 <%#field:optional?%>
   <%field:cpp_name%>.reset();

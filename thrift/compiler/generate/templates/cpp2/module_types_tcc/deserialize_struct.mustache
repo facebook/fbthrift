@@ -139,7 +139,7 @@ _skip:
 <%#struct:fields%>
 <%#field:type%>
 <%#field:lazy?%>
-const <% > types/ref_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() const {
+const <%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() const {
 
   if (__fbthrift_isDeserialized_.<%field:cpp_name%>) {
     return <%field:cpp_name%>;
@@ -148,18 +148,18 @@ const <% > types/ref_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.<%field:cpp_name%>);
   if (!__fbthrift_isDeserialized_.<%field:cpp_name%>) {
 <%#field:cpp_ref?%>
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<<% > types/ref_type%>>{});
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     auto* ptr = &this-><%field:cpp_name%>;
 <%#type:resolves_to_container?%>
-    this-><%field:cpp_name%> = <% > types/type%>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
+    this-><%field:cpp_name%> = <%type:cpp_type%>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
 <%/type:resolves_to_container?%>
 <%/field:cpp_ref?%>
 
     ::apache::thrift::CompactProtocolReader reader;
     reader.setInput(&__fbthrift_serializedData_.<%field:cpp_name%>);
-    ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <% > types/type%>>::read(reader, *ptr);
+    ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_type%>>::read(reader, *ptr);
 
 <%#field:cpp_ref?%>
     this-><%field:cpp_name%> = std::move(ptr);
@@ -170,7 +170,7 @@ const <% > types/ref_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_
   return <%field:cpp_name%>;
 }
 
-<% > types/ref_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() {
+<%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() {
   std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
   return <%field:cpp_name%>;
 }

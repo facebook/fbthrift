@@ -727,12 +727,12 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithContainers::__clear() {
   // clear all fields
-  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
-  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::set<::std::int32_t>>>());
-  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>());
-  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::vector<::std::int32_t>>>());
-  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<::std::set<::std::int32_t>>>());
-  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::std::vector<::std::int32_t>>>());
+  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
+  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::set<::std::int32_t>>>();
+  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>();
+  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
+  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::set<::std::int32_t>>>();
+  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::vector<::std::int32_t>>>();
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {

@@ -176,7 +176,7 @@ void AStructB::readNoXfer(Protocol_* iprot) {
 _readField_FieldA:
   {
     _readState.beforeSubobject(iprot);
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::shared_ptr<const ::a::different::ns::AStruct>>());
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::a::different::ns::AStruct>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure, ::a::different::ns::AStruct>::readWithContext(*iprot, *ptr, _readState);
     this->FieldA = std::move(ptr);
     _readState.afterSubobject(iprot);

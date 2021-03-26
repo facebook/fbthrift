@@ -329,7 +329,7 @@ void containerStruct::__clear() {
   fieldO.clear();
   fieldP.clear();
   fieldQ = static_cast< ::cpp2::MyEnumA>(0);
-  fieldR = ::apache::thrift::detail::make_mutable_smart_ptr(folly::tag_t<::std::unique_ptr<::std::map<::std::string, bool>>>());
+  fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
   if (fieldS) fieldS->__clear();
   if (fieldT) fieldT->__clear();
   if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());

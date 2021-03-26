@@ -46,19 +46,24 @@ namespace detail {
 template <typename T>
 struct TccStructTraits;
 
-template <class T>
+template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<T>>) {
   return std::make_unique<T>();
 }
 
-template <class T>
+template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T>>) {
   return std::make_shared<T>();
 }
 
-template <class T>
+template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T const>>) {
   return std::make_shared<T>();
+}
+
+template <class T>
+auto make_mutable_smart_ptr() {
+  return make_mutable_smart_ptr(folly::tag_t<T>());
 }
 
 } // namespace detail
