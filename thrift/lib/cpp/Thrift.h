@@ -243,6 +243,12 @@ class FOLLY_EXPORT AppClientError : public AppBaseError {
   bool isClientError() const noexcept override { return true; }
 };
 
+class FOLLY_EXPORT RequestParsingError : public std::runtime_error {
+ public:
+  explicit RequestParsingError(const std::string& what)
+      : std::runtime_error(what) {}
+};
+
 } // namespace thrift
 } // namespace apache
 

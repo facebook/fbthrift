@@ -25,6 +25,7 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -650,12 +651,9 @@ void GeneratedAsyncProcessor::deserializeRequest(
     bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
     iprot.readMessageEnd();
   } catch (const std::exception& ex) {
-    throw TApplicationException(
-        TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
-        ex.what());
+    throw RequestParsingError(ex.what());
   } catch (...) {
-    throw TApplicationException(
-        TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
+    throw RequestParsingError(
         folly::exceptionStr(std::current_exception()).toStdString());
   }
   c->postRead(nullptr, bytes);

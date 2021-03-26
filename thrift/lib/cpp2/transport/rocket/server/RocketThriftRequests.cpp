@@ -286,17 +286,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                   }
                 }
 
-                if (uexPtr) {
-                  // fall through to handle more specific exception
-                  return folly::none;
-                }
-                switch (ex.getType()) {
-                  case TApplicationException::PROTOCOL_ERROR:
-                    return ResponseRpcErrorCode::REQUEST_PARSING_FAILURE;
-
-                  default:
-                    return folly::none;
-                }
+                return folly::none;
               }()) {
             return makeResponseRpcError(*errorCode, ex.getMessage(), metadata);
           }

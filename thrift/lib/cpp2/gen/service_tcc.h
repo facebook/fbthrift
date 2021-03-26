@@ -70,9 +70,19 @@ void process_handle_exn_deserialization(
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
-  if (::apache::thrift::util::toAppError(ew.get_exception())) {
-    ::apache::thrift::util::appendExceptionToHeader(false, ew, *ctx);
+  if (auto rpe = dynamic_cast<const RequestParsingError*>(ew.get_exception())) {
+    eb->runInEventBaseThread([request = std::move(req),
+                              msg = std::string(rpe->what())]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
+              msg),
+          kRequestParsingErrorCode);
+    });
+    return;
   }
+
+  ::apache::thrift::util::appendExceptionToHeader(false, ew, *ctx);
   auto buf = process_serialize_xform_app_exn<Prot>(
       ::apache::thrift::util::toTApplicationException(ew), ctx, method);
   eb->runInEventBaseThread(

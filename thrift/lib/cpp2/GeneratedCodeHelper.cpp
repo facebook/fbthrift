@@ -228,7 +228,7 @@ void appendExceptionToHeader(
     const folly::exception_wrapper& ew,
     Cpp2RequestContext& ctx) {
   auto* ex = ew.get_exception();
-  if (const auto* aex = toAppError(ex)) {
+  if (const auto* aex = dynamic_cast<const AppBaseError*>(ex)) {
     setUserExceptionHeader(
         ctx,
         std::string(aex->name()),
@@ -252,17 +252,13 @@ void appendExceptionToHeader(
   setUserExceptionHeader(ctx, std::move(exName), std::move(exWhat), false);
 }
 
-const AppBaseError* toAppError(
-    const std::exception* ex) { // is derived from AppBaseError
-  return dynamic_cast<const AppBaseError*>(ex);
-}
-
 TApplicationException toTApplicationException(
     const folly::exception_wrapper& ew) {
   auto& ex = *ew.get_exception();
   auto msg = folly::exceptionStr(ex).toStdString();
 
-  if (auto* ae = toAppError(&ex)) { // customized app errors
+  if (auto* ae =
+          dynamic_cast<const AppBaseError*>(&ex)) { // customized app errors
     return TApplicationException(
         TApplicationException::TApplicationExceptionType::UNKNOWN, ex.what());
   } else {
