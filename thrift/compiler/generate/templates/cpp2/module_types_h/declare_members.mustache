@@ -16,7 +16,7 @@
 
 %><%#struct:fields_in_layout_order%><%#field:type%>
  <%field:visibility%>:
-  <%#field:lazy?%>mutable <%/field:lazy?%><% > types/ref_type%> <%field:cpp_name%>;
+  <%#field:lazy?%>mutable <%/field:lazy?%><%field:cpp_storage_type%> <%field:cpp_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
 
  public:

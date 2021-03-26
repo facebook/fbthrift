@@ -173,9 +173,8 @@ std::string render_fatal_string(const std::string& normal_string) {
 
 class cpp2_generator_context {
  public:
-  static cpp2_generator_context create(t_program const* const program) {
-    cpp2_generator_context ctx(program);
-    return ctx;
+  static cpp2_generator_context create(t_program const*) {
+    return cpp2_generator_context();
   }
 
   cpp2_generator_context(cpp2_generator_context&&) = default;
@@ -187,10 +186,13 @@ class cpp2_generator_context {
     return cpp2::is_orderable(seen, memo, type);
   }
 
+  cpp2::type_resolver& resolver() { return resolver_; }
+
  private:
-  explicit cpp2_generator_context(t_program const*) {}
+  cpp2_generator_context() = default;
 
   std::unordered_map<t_type const*, bool> is_orderable_memo_;
+  cpp2::type_resolver resolver_;
 };
 
 class t_mstch_cpp2_generator : public t_mstch_generator {
@@ -220,7 +222,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_service(t_service const* service);
 
   std::shared_ptr<cpp2_generator_context> context_;
-  cpp2::type_resolver resolver_;
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -230,7 +231,7 @@ class mstch_cpp2_enum : public mstch_enum {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum(enm, generators, cache, pos) {
+      : mstch_enum(enm, std::move(generators), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -316,7 +317,8 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_enum_value(enm_value, generators, cache, pos) {
+      : mstch_enum_value(
+            enm_value, std::move(generators), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -374,8 +376,9 @@ class mstch_cpp2_type : public mstch_type {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      cpp2::type_resolver& resolver)
-      : mstch_type(type, generators, cache, pos), resolver_(resolver) {
+      std::shared_ptr<cpp2_generator_context> context)
+      : mstch_type(type, std::move(generators), std::move(cache), pos),
+        context_(std::move(context)) {
     register_methods(
         this,
         {
@@ -485,9 +488,9 @@ class mstch_cpp2_type : public mstch_type {
     }
     return false;
   }
-  mstch::node cpp_type() { return resolver_.get_type_name(type_); }
+  mstch::node cpp_type() { return context_->resolver().get_type_name(type_); }
   mstch::node cpp_native_type() {
-    return resolver_.get_native_type_name(type_);
+    return context_->resolver().get_native_type_name(type_);
   }
   mstch::node cpp_adapter() { return cpp2::type_resolver::find_adapter(type_); }
   mstch::node resolved_cpp_type() { return cpp2::get_type(resolved_type_); }
@@ -533,7 +536,7 @@ class mstch_cpp2_type : public mstch_type {
   }
 
  private:
-  cpp2::type_resolver& resolver_;
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -543,8 +546,10 @@ class mstch_cpp2_field : public mstch_field {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      int32_t index)
-      : mstch_field(field, generators, cache, pos, index) {
+      int32_t index,
+      std::shared_ptr<cpp2_generator_context> context)
+      : mstch_field(field, std::move(generators), std::move(cache), pos, index),
+        context_(std::move(context)) {
     register_methods(
         this,
         {
@@ -552,6 +557,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
+            {"field:cpp_storage_type", &mstch_cpp2_field::cpp_storage_type},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
@@ -579,6 +585,9 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node index_plus_one() { return std::to_string(index_ + 1); }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
+  mstch::node cpp_storage_type() {
+    return context_->resolver().get_storage_type_name(field_);
+  }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
   mstch::node lazy() { return field_is_lazy(field_); }
   mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
@@ -667,6 +676,9 @@ class mstch_cpp2_field : public mstch_field {
     auto suffix = key >= 0 ? std::to_string(key) : "_" + std::to_string(-key);
     return field_->get_name() + "_" + suffix;
   }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class mstch_cpp2_struct : public mstch_struct {
@@ -677,7 +689,7 @@ class mstch_cpp2_struct : public mstch_struct {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_struct(strct, generators, cache, pos),
+      : mstch_struct(strct, std::move(generators), std::move(cache), pos),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -1582,8 +1594,10 @@ class enum_value_cpp2_generator : public enum_value_generator {
 
 class type_cpp2_generator : public type_generator {
  public:
-  explicit type_cpp2_generator(cpp2::type_resolver& resolver) noexcept
-      : resolver_(resolver) {}
+  explicit type_cpp2_generator(
+      std::shared_ptr<cpp2_generator_context> context) noexcept
+      : context_(context) {}
+
   std::shared_ptr<mstch_base> generate(
       t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
@@ -1591,17 +1605,19 @@ class type_cpp2_generator : public type_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_type>(
-        type, generators, cache, pos, resolver_);
+        type, std::move(generators), std::move(cache), pos, context_);
   }
 
  private:
-  cpp2::type_resolver& resolver_;
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class field_cpp2_generator : public field_generator {
  public:
-  field_cpp2_generator() = default;
-  ~field_cpp2_generator() override = default;
+  explicit field_cpp2_generator(
+      std::shared_ptr<cpp2_generator_context> context) noexcept
+      : context_(context) {}
+
   std::shared_ptr<mstch_base> generate(
       t_field const* field,
       std::shared_ptr<mstch_generators const> generators,
@@ -1609,8 +1625,11 @@ class field_cpp2_generator : public field_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const override {
     return std::make_shared<mstch_cpp2_field>(
-        field, generators, cache, pos, index);
+        field, std::move(generators), std::move(cache), pos, index, context_);
   }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class function_cpp2_generator : public function_generator {
@@ -1785,8 +1804,9 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_cpp2_generator>());
   generators_->set_type_generator(
-      std::make_unique<type_cpp2_generator>(resolver_));
-  generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
+      std::make_unique<type_cpp2_generator>(context_));
+  generators_->set_field_generator(
+      std::make_unique<field_cpp2_generator>(context_));
   generators_->set_function_generator(
       std::make_unique<function_cpp2_generator>());
   generators_->set_struct_generator(
