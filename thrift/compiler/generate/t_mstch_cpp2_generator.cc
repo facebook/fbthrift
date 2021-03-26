@@ -569,6 +569,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
+            {"field:zero_copy_arg", &mstch_cpp2_field::zero_copy_arg},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
@@ -646,6 +647,15 @@ class mstch_cpp2_field : public mstch_field {
         field_->get_req() != t_field::e_req::required &&
         (is_cpp_ref_unique_either(field_) ||
          (!t->is_struct() && !t->is_xception()));
+  }
+  mstch::node zero_copy_arg() {
+    switch (field_->get_type()->get_type_value()) {
+      case t_type::type::t_binary:
+      case t_type::type::t_struct:
+        return std::string("true");
+      default:
+        return std::string("false");
+    }
   }
   mstch::node has_fatal_annotations() {
     return get_fatal_annotations(field_->annotations()).size() > 0;
