@@ -482,62 +482,62 @@ class ComplexUnion final  {
     return value_.stringRef;
   }
 
-  ::std::int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string const& get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::vector<::std::int64_t> const & get_intListValue() const {
+  ::std::vector<::std::int64_t> const& get_intListValue() const {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> const & get_stringListValue() const {
+  ::std::vector<::std::string> const& get_stringListValue() const {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-  ::cpp2::containerTypedef const & get_typedefValue() const {
+  ::cpp2::containerTypedef const& get_typedefValue() const {
     assert(type_ == Type::typedefValue);
     return value_.typedefValue;
   }
 
-  ::std::unique_ptr<::std::string> const & get_stringRef() const {
+  ::std::unique_ptr<::std::string> const& get_stringRef() const {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
   }
 
-  ::std::int64_t & mutable_intValue() {
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string & mutable_stringValue() {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::vector<::std::int64_t> & mutable_intListValue() {
+  ::std::vector<::std::int64_t>& mutable_intListValue() {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> & mutable_stringListValue() {
+  ::std::vector<::std::string>& mutable_stringListValue() {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-  ::cpp2::containerTypedef & mutable_typedefValue() {
+  ::cpp2::containerTypedef& mutable_typedefValue() {
     assert(type_ == Type::typedefValue);
     return value_.typedefValue;
   }
 
-  ::std::unique_ptr<::std::string> & mutable_stringRef() {
+  ::std::unique_ptr<::std::string>& mutable_stringRef() {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
   }
@@ -907,22 +907,22 @@ class ListUnion final  {
     return value_.stringListValue;
   }
 
-  ::std::vector<::std::int64_t> const & get_intListValue() const {
+  ::std::vector<::std::int64_t> const& get_intListValue() const {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> const & get_stringListValue() const {
+  ::std::vector<::std::string> const& get_stringListValue() const {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-  ::std::vector<::std::int64_t> & mutable_intListValue() {
+  ::std::vector<::std::int64_t>& mutable_intListValue() {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> & mutable_stringListValue() {
+  ::std::vector<::std::string>& mutable_stringListValue() {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
@@ -1196,22 +1196,22 @@ class DataUnion final  {
     return value_.stringData;
   }
 
-  ::std::string const & get_binaryData() const {
+  ::std::string const& get_binaryData() const {
     assert(type_ == Type::binaryData);
     return value_.binaryData;
   }
 
-  ::std::string const & get_stringData() const {
+  ::std::string const& get_stringData() const {
     assert(type_ == Type::stringData);
     return value_.stringData;
   }
 
-  ::std::string & mutable_binaryData() {
+  ::std::string& mutable_binaryData() {
     assert(type_ == Type::binaryData);
     return value_.binaryData;
   }
 
-  ::std::string & mutable_stringData() {
+  ::std::string& mutable_stringData() {
     assert(type_ == Type::stringData);
     return value_.stringData;
   }
@@ -1662,22 +1662,22 @@ class ValUnion final  {
     return value_.v2;
   }
 
-  ::cpp2::Val const & get_v1() const {
+  ::cpp2::Val const& get_v1() const {
     assert(type_ == Type::v1);
     return value_.v1;
   }
 
-  ::cpp2::Val const & get_v2() const {
+  ::cpp2::Val const& get_v2() const {
     assert(type_ == Type::v2);
     return value_.v2;
   }
 
-  ::cpp2::Val & mutable_v1() {
+  ::cpp2::Val& mutable_v1() {
     assert(type_ == Type::v1);
     return value_.v1;
   }
 
-  ::cpp2::Val & mutable_v2() {
+  ::cpp2::Val& mutable_v2() {
     assert(type_ == Type::v2);
     return value_.v2;
   }
@@ -1952,22 +1952,22 @@ class VirtualComplexUnion  {
     return value_.thingTwo;
   }
 
-  ::std::string const & get_thingOne() const {
+  ::std::string const& get_thingOne() const {
     assert(type_ == Type::thingOne);
     return value_.thingOne;
   }
 
-  ::std::string const & get_thingTwo() const {
+  ::std::string const& get_thingTwo() const {
     assert(type_ == Type::thingTwo);
     return value_.thingTwo;
   }
 
-  ::std::string & mutable_thingOne() {
+  ::std::string& mutable_thingOne() {
     assert(type_ == Type::thingOne);
     return value_.thingOne;
   }
 
-  ::std::string & mutable_thingTwo() {
+  ::std::string& mutable_thingTwo() {
     assert(type_ == Type::thingTwo);
     return value_.thingTwo;
   }
@@ -2258,12 +2258,12 @@ class NonCopyableUnion final  {
     return value_.s;
   }
 
-  ::cpp2::NonCopyableStruct const & get_s() const {
+  ::cpp2::NonCopyableStruct const& get_s() const {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-  ::cpp2::NonCopyableStruct & mutable_s() {
+  ::cpp2::NonCopyableStruct& mutable_s() {
     assert(type_ == Type::s);
     return value_.s;
   }

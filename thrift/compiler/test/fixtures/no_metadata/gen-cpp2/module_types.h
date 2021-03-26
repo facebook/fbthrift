@@ -612,32 +612,32 @@ class MyUnion final  {
     return value_.myDataItem;
   }
 
-  ::cpp2::MyEnum const & get_myEnum() const {
+  ::cpp2::MyEnum const& get_myEnum() const {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::cpp2::MyStruct const & get_myStruct() const {
+  ::cpp2::MyStruct const& get_myStruct() const {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-  ::cpp2::MyDataItem const & get_myDataItem() const {
+  ::cpp2::MyDataItem const& get_myDataItem() const {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-  ::cpp2::MyEnum & mutable_myEnum() {
+  ::cpp2::MyEnum& mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::cpp2::MyStruct & mutable_myStruct() {
+  ::cpp2::MyStruct& mutable_myStruct() {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-  ::cpp2::MyDataItem & mutable_myDataItem() {
+  ::cpp2::MyDataItem& mutable_myDataItem() {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }

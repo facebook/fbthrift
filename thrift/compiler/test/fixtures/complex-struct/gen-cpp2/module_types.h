@@ -3172,62 +3172,62 @@ class MyUnion final  {
     return value_.intValue;
   }
 
-  ::cpp2::MyEnum const & get_myEnum() const {
+  ::cpp2::MyEnum const& get_myEnum() const {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::cpp2::MyStruct const & get_myStruct() const {
+  ::cpp2::MyStruct const& get_myStruct() const {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-  ::cpp2::MyDataItem const & get_myDataItem() const {
+  ::cpp2::MyDataItem const& get_myDataItem() const {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-  ::cpp2::ComplexNestedStruct const & get_complexNestedStruct() const {
+  ::cpp2::ComplexNestedStruct const& get_complexNestedStruct() const {
     assert(type_ == Type::complexNestedStruct);
     return value_.complexNestedStruct;
   }
 
-  ::std::int64_t const & get_longValue() const {
+  ::std::int64_t const& get_longValue() const {
     assert(type_ == Type::longValue);
     return value_.longValue;
   }
 
-  ::std::int32_t const & get_intValue() const {
+  ::std::int32_t const& get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::cpp2::MyEnum & mutable_myEnum() {
+  ::cpp2::MyEnum& mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::cpp2::MyStruct & mutable_myStruct() {
+  ::cpp2::MyStruct& mutable_myStruct() {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-  ::cpp2::MyDataItem & mutable_myDataItem() {
+  ::cpp2::MyDataItem& mutable_myDataItem() {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-  ::cpp2::ComplexNestedStruct & mutable_complexNestedStruct() {
+  ::cpp2::ComplexNestedStruct& mutable_complexNestedStruct() {
     assert(type_ == Type::complexNestedStruct);
     return value_.complexNestedStruct;
   }
 
-  ::std::int64_t & mutable_longValue() {
+  ::std::int64_t& mutable_longValue() {
     assert(type_ == Type::longValue);
     return value_.longValue;
   }
 
-  ::std::int32_t & mutable_intValue() {
+  ::std::int32_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
@@ -4850,42 +4850,42 @@ class MyUnionFloatFieldThrowExp final  {
     return value_.complexNestedStruct;
   }
 
-  ::cpp2::MyEnum const & get_myEnum() const {
+  ::cpp2::MyEnum const& get_myEnum() const {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::std::vector<::std::vector<float>> const & get_setFloat() const {
+  ::std::vector<::std::vector<float>> const& get_setFloat() const {
     assert(type_ == Type::setFloat);
     return value_.setFloat;
   }
 
-  ::cpp2::MyDataItem const & get_myDataItem() const {
+  ::cpp2::MyDataItem const& get_myDataItem() const {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-  ::cpp2::ComplexNestedStruct const & get_complexNestedStruct() const {
+  ::cpp2::ComplexNestedStruct const& get_complexNestedStruct() const {
     assert(type_ == Type::complexNestedStruct);
     return value_.complexNestedStruct;
   }
 
-  ::cpp2::MyEnum & mutable_myEnum() {
+  ::cpp2::MyEnum& mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-  ::std::vector<::std::vector<float>> & mutable_setFloat() {
+  ::std::vector<::std::vector<float>>& mutable_setFloat() {
     assert(type_ == Type::setFloat);
     return value_.setFloat;
   }
 
-  ::cpp2::MyDataItem & mutable_myDataItem() {
+  ::cpp2::MyDataItem& mutable_myDataItem() {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-  ::cpp2::ComplexNestedStruct & mutable_complexNestedStruct() {
+  ::cpp2::ComplexNestedStruct& mutable_complexNestedStruct() {
     assert(type_ == Type::complexNestedStruct);
     return value_.complexNestedStruct;
   }

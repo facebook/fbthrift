@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields%>
-  <%field:cpp_deprecated_accessor_type%> & mutable_<%field:cpp_name%>() {
+  <%field:cpp_deprecated_accessor_type%>& mutable_<%field:cpp_name%>() {
     assert(type_ == Type::<%field:cpp_name%>);
     return value_.<%field:cpp_name%>;
   }

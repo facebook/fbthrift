@@ -306,12 +306,12 @@ class MyUnion final  {
     return value_.myString;
   }
 
-  ::std::string const & get_myString() const {
+  ::std::string const& get_myString() const {
     assert(type_ == Type::myString);
     return value_.myString;
   }
 
-  ::std::string & mutable_myString() {
+  ::std::string& mutable_myString() {
     assert(type_ == Type::myString);
     return value_.myString;
   }

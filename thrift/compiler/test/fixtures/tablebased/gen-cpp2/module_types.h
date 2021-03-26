@@ -947,22 +947,22 @@ class ExampleUnion final  {
     return value_.fieldB;
   }
 
-  ::test::fixtures::tablebased::ContainerStruct const & get_fieldA() const {
+  ::test::fixtures::tablebased::ContainerStruct const& get_fieldA() const {
     assert(type_ == Type::fieldA);
     return value_.fieldA;
   }
 
-  ::test::fixtures::tablebased::TrivialTypesStruct const & get_fieldB() const {
+  ::test::fixtures::tablebased::TrivialTypesStruct const& get_fieldB() const {
     assert(type_ == Type::fieldB);
     return value_.fieldB;
   }
 
-  ::test::fixtures::tablebased::ContainerStruct & mutable_fieldA() {
+  ::test::fixtures::tablebased::ContainerStruct& mutable_fieldA() {
     assert(type_ == Type::fieldA);
     return value_.fieldA;
   }
 
-  ::test::fixtures::tablebased::TrivialTypesStruct & mutable_fieldB() {
+  ::test::fixtures::tablebased::TrivialTypesStruct& mutable_fieldB() {
     assert(type_ == Type::fieldB);
     return value_.fieldB;
   }

@@ -54,7 +54,7 @@ void SomeStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_reasonable:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->reasonable, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->reasonable, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reasonable = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -69,7 +69,7 @@ _readField_reasonable:
   }
 _readField_fine:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->fine, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->fine, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fine = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -84,7 +84,7 @@ _readField_fine:
   }
 _readField_questionable:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->questionable, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->questionable, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.questionable = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -101,7 +101,7 @@ _readField_tags:
   {
     _readState.beforeSubobject(iprot);
     this->tags = ::std::set<::std::int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, this->tags, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, this->tags, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.tags = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -179,13 +179,13 @@ uint32_t SomeStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SomeStruct");
   xfer += prot_->serializedFieldSize("reasonable", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
   xfer += prot_->serializedFieldSize("fine", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
   xfer += prot_->serializedFieldSize("questionable", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
   xfer += prot_->serializedFieldSize("tags", apache::thrift::protocol::T_SET, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, this->tags);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, this->tags);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -195,13 +195,13 @@ uint32_t SomeStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SomeStruct");
   xfer += prot_->serializedFieldSize("reasonable", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->reasonable);
   xfer += prot_->serializedFieldSize("fine", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->fine);
   xfer += prot_->serializedFieldSize("questionable", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::serializedSize<false>(*prot_, this->questionable);
   xfer += prot_->serializedFieldSize("tags", apache::thrift::protocol::T_SET, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, this->tags);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, this->tags);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -211,16 +211,16 @@ uint32_t SomeStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SomeStruct");
   xfer += prot_->writeFieldBegin("reasonable", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->reasonable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->reasonable);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fine", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->fine);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->fine);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("questionable", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->questionable);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->questionable);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("tags", apache::thrift::protocol::T_SET, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, this->tags);
+  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, this->tags);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

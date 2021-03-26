@@ -3717,22 +3717,22 @@ class NoExceptMoveUnion final  {
     return value_.i32_field;
   }
 
-  ::std::string const & get_string_field() const {
+  ::std::string const& get_string_field() const {
     assert(type_ == Type::string_field);
     return value_.string_field;
   }
 
-  ::std::int32_t const & get_i32_field() const {
+  ::std::int32_t const& get_i32_field() const {
     assert(type_ == Type::i32_field);
     return value_.i32_field;
   }
 
-  ::std::string & mutable_string_field() {
+  ::std::string& mutable_string_field() {
     assert(type_ == Type::string_field);
     return value_.string_field;
   }
 
-  ::std::int32_t & mutable_i32_field() {
+  ::std::int32_t& mutable_i32_field() {
     assert(type_ == Type::i32_field);
     return value_.i32_field;
   }

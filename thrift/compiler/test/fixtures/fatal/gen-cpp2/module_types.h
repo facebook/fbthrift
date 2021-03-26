@@ -1266,42 +1266,42 @@ class union1 final  {
     return value_.ue;
   }
 
-  ::std::int32_t const & get_ui() const {
+  ::std::int32_t const& get_ui() const {
     assert(type_ == Type::ui);
     return value_.ui;
   }
 
-  double const & get_ud() const {
+  double const& get_ud() const {
     assert(type_ == Type::ud);
     return value_.ud;
   }
 
-  ::std::string const & get_us() const {
+  ::std::string const& get_us() const {
     assert(type_ == Type::us);
     return value_.us;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 const & get_ue() const {
+  ::test_cpp2::cpp_reflection::enum1 const& get_ue() const {
     assert(type_ == Type::ue);
     return value_.ue;
   }
 
-  ::std::int32_t & mutable_ui() {
+  ::std::int32_t& mutable_ui() {
     assert(type_ == Type::ui);
     return value_.ui;
   }
 
-  double & mutable_ud() {
+  double& mutable_ud() {
     assert(type_ == Type::ud);
     return value_.ud;
   }
 
-  ::std::string & mutable_us() {
+  ::std::string& mutable_us() {
     assert(type_ == Type::us);
     return value_.us;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 & mutable_ue() {
+  ::test_cpp2::cpp_reflection::enum1& mutable_ue() {
     assert(type_ == Type::ue);
     return value_.ue;
   }
@@ -1667,42 +1667,42 @@ class union2 final  {
     return value_.ue_2;
   }
 
-  ::std::int32_t const & get_ui_2() const {
+  ::std::int32_t const& get_ui_2() const {
     assert(type_ == Type::ui_2);
     return value_.ui_2;
   }
 
-  double const & get_ud_2() const {
+  double const& get_ud_2() const {
     assert(type_ == Type::ud_2);
     return value_.ud_2;
   }
 
-  ::std::string const & get_us_2() const {
+  ::std::string const& get_us_2() const {
     assert(type_ == Type::us_2);
     return value_.us_2;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 const & get_ue_2() const {
+  ::test_cpp2::cpp_reflection::enum1 const& get_ue_2() const {
     assert(type_ == Type::ue_2);
     return value_.ue_2;
   }
 
-  ::std::int32_t & mutable_ui_2() {
+  ::std::int32_t& mutable_ui_2() {
     assert(type_ == Type::ui_2);
     return value_.ui_2;
   }
 
-  double & mutable_ud_2() {
+  double& mutable_ud_2() {
     assert(type_ == Type::ud_2);
     return value_.ud_2;
   }
 
-  ::std::string & mutable_us_2() {
+  ::std::string& mutable_us_2() {
     assert(type_ == Type::us_2);
     return value_.us_2;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 & mutable_ue_2() {
+  ::test_cpp2::cpp_reflection::enum1& mutable_ue_2() {
     assert(type_ == Type::ue_2);
     return value_.ue_2;
   }
@@ -2068,42 +2068,42 @@ class union3 final  {
     return value_.ue_3;
   }
 
-  ::std::int32_t const & get_ui_3() const {
+  ::std::int32_t const& get_ui_3() const {
     assert(type_ == Type::ui_3);
     return value_.ui_3;
   }
 
-  double const & get_ud_3() const {
+  double const& get_ud_3() const {
     assert(type_ == Type::ud_3);
     return value_.ud_3;
   }
 
-  ::std::string const & get_us_3() const {
+  ::std::string const& get_us_3() const {
     assert(type_ == Type::us_3);
     return value_.us_3;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 const & get_ue_3() const {
+  ::test_cpp2::cpp_reflection::enum1 const& get_ue_3() const {
     assert(type_ == Type::ue_3);
     return value_.ue_3;
   }
 
-  ::std::int32_t & mutable_ui_3() {
+  ::std::int32_t& mutable_ui_3() {
     assert(type_ == Type::ui_3);
     return value_.ui_3;
   }
 
-  double & mutable_ud_3() {
+  double& mutable_ud_3() {
     assert(type_ == Type::ud_3);
     return value_.ud_3;
   }
 
-  ::std::string & mutable_us_3() {
+  ::std::string& mutable_us_3() {
     assert(type_ == Type::us_3);
     return value_.us_3;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 & mutable_ue_3() {
+  ::test_cpp2::cpp_reflection::enum1& mutable_ue_3() {
     assert(type_ == Type::ue_3);
     return value_.ue_3;
   }
@@ -2657,52 +2657,52 @@ class unionA final  {
     return value_.a;
   }
 
-  ::std::int32_t const & get_i() const {
+  ::std::int32_t const& get_i() const {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double const & get_d() const {
+  double const& get_d() const {
     assert(type_ == Type::d);
     return value_.d;
   }
 
-  ::std::string const & get_s() const {
+  ::std::string const& get_s() const {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 const & get_e() const {
+  ::test_cpp2::cpp_reflection::enum1 const& get_e() const {
     assert(type_ == Type::e);
     return value_.e;
   }
 
-  ::test_cpp2::cpp_reflection::structA const & get_a() const {
+  ::test_cpp2::cpp_reflection::structA const& get_a() const {
     assert(type_ == Type::a);
     return value_.a;
   }
 
-  ::std::int32_t & mutable_i() {
+  ::std::int32_t& mutable_i() {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double & mutable_d() {
+  double& mutable_d() {
     assert(type_ == Type::d);
     return value_.d;
   }
 
-  ::std::string & mutable_s() {
+  ::std::string& mutable_s() {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-  ::test_cpp2::cpp_reflection::enum1 & mutable_e() {
+  ::test_cpp2::cpp_reflection::enum1& mutable_e() {
     assert(type_ == Type::e);
     return value_.e;
   }
 
-  ::test_cpp2::cpp_reflection::structA & mutable_a() {
+  ::test_cpp2::cpp_reflection::structA& mutable_a() {
     assert(type_ == Type::a);
     return value_.a;
   }
@@ -7205,282 +7205,282 @@ class union_with_special_names final  {
     return value_.fields;
   }
 
-  ::std::int32_t const & get_get() const {
+  ::std::int32_t const& get_get() const {
     assert(type_ == Type::get);
     return value_.get;
   }
 
-  ::std::int32_t const & get_getter() const {
+  ::std::int32_t const& get_getter() const {
     assert(type_ == Type::getter);
     return value_.getter;
   }
 
-  ::std::int32_t const & get_lists() const {
+  ::std::int32_t const& get_lists() const {
     assert(type_ == Type::lists);
     return value_.lists;
   }
 
-  ::std::int32_t const & get_maps() const {
+  ::std::int32_t const& get_maps() const {
     assert(type_ == Type::maps);
     return value_.maps;
   }
 
-  ::std::int32_t const & get_name() const {
+  ::std::int32_t const& get_name() const {
     assert(type_ == Type::name);
     return value_.name;
   }
 
-  ::std::int32_t const & get_name_to_value() const {
+  ::std::int32_t const& get_name_to_value() const {
     assert(type_ == Type::name_to_value);
     return value_.name_to_value;
   }
 
-  ::std::int32_t const & get_names() const {
+  ::std::int32_t const& get_names() const {
     assert(type_ == Type::names);
     return value_.names;
   }
 
-  ::std::int32_t const & get_prefix_tree() const {
+  ::std::int32_t const& get_prefix_tree() const {
     assert(type_ == Type::prefix_tree);
     return value_.prefix_tree;
   }
 
-  ::std::int32_t const & get_sets() const {
+  ::std::int32_t const& get_sets() const {
     assert(type_ == Type::sets);
     return value_.sets;
   }
 
-  ::std::int32_t const & get_setter() const {
+  ::std::int32_t const& get_setter() const {
     assert(type_ == Type::setter);
     return value_.setter;
   }
 
-  ::std::int32_t const & get_str() const {
+  ::std::int32_t const& get_str() const {
     assert(type_ == Type::str);
     return value_.str;
   }
 
-  ::std::int32_t const & get_strings() const {
+  ::std::int32_t const& get_strings() const {
     assert(type_ == Type::strings);
     return value_.strings;
   }
 
-  ::std::int32_t const & get_type() const {
+  ::std::int32_t const& get_type() const {
     assert(type_ == Type::type);
     return value_.type;
   }
 
-  ::std::int32_t const & get_value() const {
+  ::std::int32_t const& get_value() const {
     assert(type_ == Type::value);
     return value_.value;
   }
 
-  ::std::int32_t const & get_value_to_name() const {
+  ::std::int32_t const& get_value_to_name() const {
     assert(type_ == Type::value_to_name);
     return value_.value_to_name;
   }
 
-  ::std::int32_t const & get_values() const {
+  ::std::int32_t const& get_values() const {
     assert(type_ == Type::values);
     return value_.values;
   }
 
-  ::std::int32_t const & get_id() const {
+  ::std::int32_t const& get_id() const {
     assert(type_ == Type::id);
     return value_.id;
   }
 
-  ::std::int32_t const & get_ids() const {
+  ::std::int32_t const& get_ids() const {
     assert(type_ == Type::ids);
     return value_.ids;
   }
 
-  ::std::int32_t const & get_descriptor() const {
+  ::std::int32_t const& get_descriptor() const {
     assert(type_ == Type::descriptor);
     return value_.descriptor;
   }
 
-  ::std::int32_t const & get_descriptors() const {
+  ::std::int32_t const& get_descriptors() const {
     assert(type_ == Type::descriptors);
     return value_.descriptors;
   }
 
-  ::std::int32_t const & get_key() const {
+  ::std::int32_t const& get_key() const {
     assert(type_ == Type::key);
     return value_.key;
   }
 
-  ::std::int32_t const & get_keys() const {
+  ::std::int32_t const& get_keys() const {
     assert(type_ == Type::keys);
     return value_.keys;
   }
 
-  ::std::int32_t const & get_annotation() const {
+  ::std::int32_t const& get_annotation() const {
     assert(type_ == Type::annotation);
     return value_.annotation;
   }
 
-  ::std::int32_t const & get_annotations() const {
+  ::std::int32_t const& get_annotations() const {
     assert(type_ == Type::annotations);
     return value_.annotations;
   }
 
-  ::std::int32_t const & get_member() const {
+  ::std::int32_t const& get_member() const {
     assert(type_ == Type::member);
     return value_.member;
   }
 
-  ::std::int32_t const & get_members() const {
+  ::std::int32_t const& get_members() const {
     assert(type_ == Type::members);
     return value_.members;
   }
 
-  ::std::int32_t const & get_field() const {
+  ::std::int32_t const& get_field() const {
     assert(type_ == Type::field);
     return value_.field;
   }
 
-  ::std::int32_t const & get_fields() const {
+  ::std::int32_t const& get_fields() const {
     assert(type_ == Type::fields);
     return value_.fields;
   }
 
-  ::std::int32_t & mutable_get() {
+  ::std::int32_t& mutable_get() {
     assert(type_ == Type::get);
     return value_.get;
   }
 
-  ::std::int32_t & mutable_getter() {
+  ::std::int32_t& mutable_getter() {
     assert(type_ == Type::getter);
     return value_.getter;
   }
 
-  ::std::int32_t & mutable_lists() {
+  ::std::int32_t& mutable_lists() {
     assert(type_ == Type::lists);
     return value_.lists;
   }
 
-  ::std::int32_t & mutable_maps() {
+  ::std::int32_t& mutable_maps() {
     assert(type_ == Type::maps);
     return value_.maps;
   }
 
-  ::std::int32_t & mutable_name() {
+  ::std::int32_t& mutable_name() {
     assert(type_ == Type::name);
     return value_.name;
   }
 
-  ::std::int32_t & mutable_name_to_value() {
+  ::std::int32_t& mutable_name_to_value() {
     assert(type_ == Type::name_to_value);
     return value_.name_to_value;
   }
 
-  ::std::int32_t & mutable_names() {
+  ::std::int32_t& mutable_names() {
     assert(type_ == Type::names);
     return value_.names;
   }
 
-  ::std::int32_t & mutable_prefix_tree() {
+  ::std::int32_t& mutable_prefix_tree() {
     assert(type_ == Type::prefix_tree);
     return value_.prefix_tree;
   }
 
-  ::std::int32_t & mutable_sets() {
+  ::std::int32_t& mutable_sets() {
     assert(type_ == Type::sets);
     return value_.sets;
   }
 
-  ::std::int32_t & mutable_setter() {
+  ::std::int32_t& mutable_setter() {
     assert(type_ == Type::setter);
     return value_.setter;
   }
 
-  ::std::int32_t & mutable_str() {
+  ::std::int32_t& mutable_str() {
     assert(type_ == Type::str);
     return value_.str;
   }
 
-  ::std::int32_t & mutable_strings() {
+  ::std::int32_t& mutable_strings() {
     assert(type_ == Type::strings);
     return value_.strings;
   }
 
-  ::std::int32_t & mutable_type() {
+  ::std::int32_t& mutable_type() {
     assert(type_ == Type::type);
     return value_.type;
   }
 
-  ::std::int32_t & mutable_value() {
+  ::std::int32_t& mutable_value() {
     assert(type_ == Type::value);
     return value_.value;
   }
 
-  ::std::int32_t & mutable_value_to_name() {
+  ::std::int32_t& mutable_value_to_name() {
     assert(type_ == Type::value_to_name);
     return value_.value_to_name;
   }
 
-  ::std::int32_t & mutable_values() {
+  ::std::int32_t& mutable_values() {
     assert(type_ == Type::values);
     return value_.values;
   }
 
-  ::std::int32_t & mutable_id() {
+  ::std::int32_t& mutable_id() {
     assert(type_ == Type::id);
     return value_.id;
   }
 
-  ::std::int32_t & mutable_ids() {
+  ::std::int32_t& mutable_ids() {
     assert(type_ == Type::ids);
     return value_.ids;
   }
 
-  ::std::int32_t & mutable_descriptor() {
+  ::std::int32_t& mutable_descriptor() {
     assert(type_ == Type::descriptor);
     return value_.descriptor;
   }
 
-  ::std::int32_t & mutable_descriptors() {
+  ::std::int32_t& mutable_descriptors() {
     assert(type_ == Type::descriptors);
     return value_.descriptors;
   }
 
-  ::std::int32_t & mutable_key() {
+  ::std::int32_t& mutable_key() {
     assert(type_ == Type::key);
     return value_.key;
   }
 
-  ::std::int32_t & mutable_keys() {
+  ::std::int32_t& mutable_keys() {
     assert(type_ == Type::keys);
     return value_.keys;
   }
 
-  ::std::int32_t & mutable_annotation() {
+  ::std::int32_t& mutable_annotation() {
     assert(type_ == Type::annotation);
     return value_.annotation;
   }
 
-  ::std::int32_t & mutable_annotations() {
+  ::std::int32_t& mutable_annotations() {
     assert(type_ == Type::annotations);
     return value_.annotations;
   }
 
-  ::std::int32_t & mutable_member() {
+  ::std::int32_t& mutable_member() {
     assert(type_ == Type::member);
     return value_.member;
   }
 
-  ::std::int32_t & mutable_members() {
+  ::std::int32_t& mutable_members() {
     assert(type_ == Type::members);
     return value_.members;
   }
 
-  ::std::int32_t & mutable_field() {
+  ::std::int32_t& mutable_field() {
     assert(type_ == Type::field);
     return value_.field;
   }
 
-  ::std::int32_t & mutable_fields() {
+  ::std::int32_t& mutable_fields() {
     assert(type_ == Type::fields);
     return value_.fields;
   }

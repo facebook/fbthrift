@@ -1510,22 +1510,22 @@ class union1 final  {
     return value_.d;
   }
 
-  ::std::int32_t const & get_i() const {
+  ::std::int32_t const& get_i() const {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double const & get_d() const {
+  double const& get_d() const {
     assert(type_ == Type::d);
     return value_.d;
   }
 
-  ::std::int32_t & mutable_i() {
+  ::std::int32_t& mutable_i() {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double & mutable_d() {
+  double& mutable_d() {
     assert(type_ == Type::d);
     return value_.d;
   }
@@ -1857,42 +1857,42 @@ class union2 final  {
     return value_.u;
   }
 
-  ::std::int32_t const & get_i() const {
+  ::std::int32_t const& get_i() const {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double const & get_d() const {
+  double const& get_d() const {
     assert(type_ == Type::d);
     return value_.d;
   }
 
-  ::cpp2::struct1 const & get_s() const {
+  ::cpp2::struct1 const& get_s() const {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-  ::cpp2::union1 const & get_u() const {
+  ::cpp2::union1 const& get_u() const {
     assert(type_ == Type::u);
     return value_.u;
   }
 
-  ::std::int32_t & mutable_i() {
+  ::std::int32_t& mutable_i() {
     assert(type_ == Type::i);
     return value_.i;
   }
 
-  double & mutable_d() {
+  double& mutable_d() {
     assert(type_ == Type::d);
     return value_.d;
   }
 
-  ::cpp2::struct1 & mutable_s() {
+  ::cpp2::struct1& mutable_s() {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-  ::cpp2::union1 & mutable_u() {
+  ::cpp2::union1& mutable_u() {
     assert(type_ == Type::u);
     return value_.u;
   }

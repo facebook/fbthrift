@@ -1926,22 +1926,22 @@ class SimpleUnion  {
     return value_.stringValue;
   }
 
-  ::std::int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string const& get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::int64_t & mutable_intValue() {
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string & mutable_stringValue() {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
@@ -3170,272 +3170,272 @@ class ComplexUnion final  {
     return value_.excp_field;
   }
 
-  ::std::int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::int64_t const & get_opt_intValue() const {
+  ::std::int64_t const& get_opt_intValue() const {
     assert(type_ == Type::opt_intValue);
     return value_.opt_intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string const& get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::string const & get_opt_stringValue() const {
+  ::std::string const& get_opt_stringValue() const {
     assert(type_ == Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
-  ::std::int16_t const & get_intValue2() const {
+  ::std::int16_t const& get_intValue2() const {
     assert(type_ == Type::intValue2);
     return value_.intValue2;
   }
 
-  ::std::int32_t const & get_intValue3() const {
+  ::std::int32_t const& get_intValue3() const {
     assert(type_ == Type::intValue3);
     return value_.intValue3;
   }
 
-  double const & get_doubelValue() const {
+  double const& get_doubelValue() const {
     assert(type_ == Type::doubelValue);
     return value_.doubelValue;
   }
 
-  bool const & get_boolValue() const {
+  bool const& get_boolValue() const {
     assert(type_ == Type::boolValue);
     return value_.boolValue;
   }
 
-  ::std::vector<::std::int32_t> const & get_union_list() const {
+  ::std::vector<::std::int32_t> const& get_union_list() const {
     assert(type_ == Type::union_list);
     return value_.union_list;
   }
 
-  ::std::set<::std::int64_t> const & get_union_set() const {
+  ::std::set<::std::int64_t> const& get_union_set() const {
     assert(type_ == Type::union_set);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, ::std::int32_t> const & get_union_map() const {
+  ::std::map<::std::string, ::std::int32_t> const& get_union_map() const {
     assert(type_ == Type::union_map);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, ::std::int32_t> const & get_opt_union_map() const {
+  ::std::map<::std::string, ::std::int32_t> const& get_opt_union_map() const {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
   }
 
-  ::some::valid::ns::MyEnumA const & get_enum_field() const {
+  ::some::valid::ns::MyEnumA const& get_enum_field() const {
     assert(type_ == Type::enum_field);
     return value_.enum_field;
   }
 
-  ::std::vector<::some::valid::ns::MyEnumA> const & get_enum_container() const {
+  ::std::vector<::some::valid::ns::MyEnumA> const& get_enum_container() const {
     assert(type_ == Type::enum_container);
     return value_.enum_container;
   }
 
-  ::some::valid::ns::MyStruct const & get_a_struct() const {
+  ::some::valid::ns::MyStruct const& get_a_struct() const {
     assert(type_ == Type::a_struct);
     return value_.a_struct;
   }
 
-  ::std::set<::some::valid::ns::MyStruct> const & get_a_set_struct() const {
+  ::std::set<::some::valid::ns::MyStruct> const& get_a_set_struct() const {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
   }
 
-  ::some::valid::ns::SimpleUnion const & get_a_union() const {
+  ::some::valid::ns::SimpleUnion const& get_a_union() const {
     assert(type_ == Type::a_union);
     return value_.a_union;
   }
 
-  ::some::valid::ns::SimpleUnion const & get_opt_a_union() const {
+  ::some::valid::ns::SimpleUnion const& get_opt_a_union() const {
     assert(type_ == Type::opt_a_union);
     return value_.opt_a_union;
   }
 
-  ::std::vector<::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
+  ::std::vector<::some::valid::ns::SimpleUnion> const& get_a_union_list() const {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
   }
 
-  ::some::valid::ns::unionTypeDef const & get_a_union_typedef() const {
+  ::some::valid::ns::unionTypeDef const& get_a_union_typedef() const {
     assert(type_ == Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
-  ::std::vector<::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
+  ::std::vector<::some::valid::ns::unionTypeDef> const& get_a_union_typedef_list() const {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string const & get_MyBinaryField() const {
+  ::std::string const& get_MyBinaryField() const {
     assert(type_ == Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
-  ::std::string const & get_MyBinaryField2() const {
+  ::std::string const& get_MyBinaryField2() const {
     assert(type_ == Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string> const & get_MyBinaryListField4() const {
+  ::std::vector<::std::string> const& get_MyBinaryListField4() const {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
 
-  ::std::unique_ptr<::some::valid::ns::MyStruct> const & get_ref_field() const {
+  ::std::unique_ptr<::some::valid::ns::MyStruct> const& get_ref_field() const {
     assert(type_ == Type::ref_field);
     return value_.ref_field;
   }
 
-  ::std::shared_ptr<const ::some::valid::ns::MyStruct> const & get_ref_field2() const {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> const& get_ref_field2() const {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
   }
 
-  ::some::valid::ns::AnException const & get_excp_field() const {
+  ::some::valid::ns::AnException const& get_excp_field() const {
     assert(type_ == Type::excp_field);
     return value_.excp_field;
   }
 
-  ::std::int64_t & mutable_intValue() {
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::int64_t & mutable_opt_intValue() {
+  ::std::int64_t& mutable_opt_intValue() {
     assert(type_ == Type::opt_intValue);
     return value_.opt_intValue;
   }
 
-  ::std::string & mutable_stringValue() {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::string & mutable_opt_stringValue() {
+  ::std::string& mutable_opt_stringValue() {
     assert(type_ == Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
-  ::std::int16_t & mutable_intValue2() {
+  ::std::int16_t& mutable_intValue2() {
     assert(type_ == Type::intValue2);
     return value_.intValue2;
   }
 
-  ::std::int32_t & mutable_intValue3() {
+  ::std::int32_t& mutable_intValue3() {
     assert(type_ == Type::intValue3);
     return value_.intValue3;
   }
 
-  double & mutable_doubelValue() {
+  double& mutable_doubelValue() {
     assert(type_ == Type::doubelValue);
     return value_.doubelValue;
   }
 
-  bool & mutable_boolValue() {
+  bool& mutable_boolValue() {
     assert(type_ == Type::boolValue);
     return value_.boolValue;
   }
 
-  ::std::vector<::std::int32_t> & mutable_union_list() {
+  ::std::vector<::std::int32_t>& mutable_union_list() {
     assert(type_ == Type::union_list);
     return value_.union_list;
   }
 
-  ::std::set<::std::int64_t> & mutable_union_set() {
+  ::std::set<::std::int64_t>& mutable_union_set() {
     assert(type_ == Type::union_set);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, ::std::int32_t> & mutable_union_map() {
+  ::std::map<::std::string, ::std::int32_t>& mutable_union_map() {
     assert(type_ == Type::union_map);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, ::std::int32_t> & mutable_opt_union_map() {
+  ::std::map<::std::string, ::std::int32_t>& mutable_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
   }
 
-  ::some::valid::ns::MyEnumA & mutable_enum_field() {
+  ::some::valid::ns::MyEnumA& mutable_enum_field() {
     assert(type_ == Type::enum_field);
     return value_.enum_field;
   }
 
-  ::std::vector<::some::valid::ns::MyEnumA> & mutable_enum_container() {
+  ::std::vector<::some::valid::ns::MyEnumA>& mutable_enum_container() {
     assert(type_ == Type::enum_container);
     return value_.enum_container;
   }
 
-  ::some::valid::ns::MyStruct & mutable_a_struct() {
+  ::some::valid::ns::MyStruct& mutable_a_struct() {
     assert(type_ == Type::a_struct);
     return value_.a_struct;
   }
 
-  ::std::set<::some::valid::ns::MyStruct> & mutable_a_set_struct() {
+  ::std::set<::some::valid::ns::MyStruct>& mutable_a_set_struct() {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
   }
 
-  ::some::valid::ns::SimpleUnion & mutable_a_union() {
+  ::some::valid::ns::SimpleUnion& mutable_a_union() {
     assert(type_ == Type::a_union);
     return value_.a_union;
   }
 
-  ::some::valid::ns::SimpleUnion & mutable_opt_a_union() {
+  ::some::valid::ns::SimpleUnion& mutable_opt_a_union() {
     assert(type_ == Type::opt_a_union);
     return value_.opt_a_union;
   }
 
-  ::std::vector<::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
+  ::std::vector<::some::valid::ns::SimpleUnion>& mutable_a_union_list() {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
   }
 
-  ::some::valid::ns::unionTypeDef & mutable_a_union_typedef() {
+  ::some::valid::ns::unionTypeDef& mutable_a_union_typedef() {
     assert(type_ == Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
-  ::std::vector<::some::valid::ns::unionTypeDef> & mutable_a_union_typedef_list() {
+  ::std::vector<::some::valid::ns::unionTypeDef>& mutable_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string & mutable_MyBinaryField() {
+  ::std::string& mutable_MyBinaryField() {
     assert(type_ == Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
-  ::std::string & mutable_MyBinaryField2() {
+  ::std::string& mutable_MyBinaryField2() {
     assert(type_ == Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string> & mutable_MyBinaryListField4() {
+  ::std::vector<::std::string>& mutable_MyBinaryListField4() {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
 
-  ::std::unique_ptr<::some::valid::ns::MyStruct> & mutable_ref_field() {
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& mutable_ref_field() {
     assert(type_ == Type::ref_field);
     return value_.ref_field;
   }
 
-  ::std::shared_ptr<const ::some::valid::ns::MyStruct> & mutable_ref_field2() {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& mutable_ref_field2() {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
   }
 
-  ::some::valid::ns::AnException & mutable_excp_field() {
+  ::some::valid::ns::AnException& mutable_excp_field() {
     assert(type_ == Type::excp_field);
     return value_.excp_field;
   }
@@ -8130,22 +8130,22 @@ class FloatUnion final  {
     return value_.doubleSide;
   }
 
-  float const & get_floatSide() const {
+  float const& get_floatSide() const {
     assert(type_ == Type::floatSide);
     return value_.floatSide;
   }
 
-  double const & get_doubleSide() const {
+  double const& get_doubleSide() const {
     assert(type_ == Type::doubleSide);
     return value_.doubleSide;
   }
 
-  float & mutable_floatSide() {
+  float& mutable_floatSide() {
     assert(type_ == Type::floatSide);
     return value_.floatSide;
   }
 
-  double & mutable_doubleSide() {
+  double& mutable_doubleSide() {
     assert(type_ == Type::doubleSide);
     return value_.doubleSide;
   }

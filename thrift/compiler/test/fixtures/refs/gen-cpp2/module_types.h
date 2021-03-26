@@ -435,22 +435,22 @@ class MyUnion final  {
     return value_.aString;
   }
 
-  ::std::int32_t const & get_anInteger() const {
+  ::std::int32_t const& get_anInteger() const {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  ::std::string const & get_aString() const {
+  ::std::string const& get_aString() const {
     assert(type_ == Type::aString);
     return value_.aString;
   }
 
-  ::std::int32_t & mutable_anInteger() {
+  ::std::int32_t& mutable_anInteger() {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  ::std::string & mutable_aString() {
+  ::std::string& mutable_aString() {
     assert(type_ == Type::aString);
     return value_.aString;
   }

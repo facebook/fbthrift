@@ -1362,22 +1362,22 @@ class MyUnion final  {
     return value_.second;
   }
 
-  ::cpp2::annotated_inline_string const & get_first() const {
+  ::cpp2::annotated_inline_string const& get_first() const {
     assert(type_ == Type::first);
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_i64 const & get_second() const {
+  ::cpp2::annotated_inline_i64 const& get_second() const {
     assert(type_ == Type::second);
     return value_.second;
   }
 
-  ::cpp2::annotated_inline_string & mutable_first() {
+  ::cpp2::annotated_inline_string& mutable_first() {
     assert(type_ == Type::first);
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_i64 & mutable_second() {
+  ::cpp2::annotated_inline_i64& mutable_second() {
     assert(type_ == Type::second);
     return value_.second;
   }
