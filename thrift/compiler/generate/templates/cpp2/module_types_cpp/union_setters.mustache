@@ -16,17 +16,17 @@
 
 %><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%><%#field:cpp_ref?%>
 
-<% > types/ref_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%> const &t) {
+<%field:cpp_deprecated_accessor_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%> const &t) {
   __clear();
   type_ = Type::<%field:cpp_name%>;
-  ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(t));
+  ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(t));
   return value_.<%field:cpp_name%>;
 }
 
-<% > types/ref_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%>&& t) {
+<%field:cpp_deprecated_accessor_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%>&& t) {
   __clear();
   type_ = Type::<%field:cpp_name%>;
-  ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(std::move(t)));
+  ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(std::move(t)));
   return value_.<%field:cpp_name%>;
 }
 <%/field:cpp_ref?%><%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%>

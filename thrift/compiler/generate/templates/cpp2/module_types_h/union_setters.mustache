@@ -26,11 +26,11 @@
   }
   <%/type:string_or_binary?%>
   <%#type:string_or_binary?%>
-  <% > types/ref_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> const &t) {
+  <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> const &t) {
     __clear();
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(t));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(t));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(t);
@@ -38,11 +38,11 @@
     return value_.<%field:cpp_name%>;
   }
 
-  <% > types/ref_type%>& set_<%field:cpp_name%>(<%type:cpp_type%>&& t) {
+  <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(<%type:cpp_type%>&& t) {
     __clear();
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(std::move(t)));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(std::move(t)));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(std::move(t));
@@ -50,11 +50,11 @@
     return value_.<%field:cpp_name%>;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<<%type:cpp_type%>, T...>> <% > types/ref_type%>& set_<%field:cpp_name%>(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<<%type:cpp_type%>, T...>> <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(T&&... t) {
     __clear();
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(std::forward<T>(t)...));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(std::forward<T>(t)...));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(std::forward<T>(t)...);
@@ -90,11 +90,11 @@
   }
   <%/field:cpp_ref?%>
   <%#field:cpp_ref?%>
-  <% > types/ref_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> const &t);
-  <% > types/ref_type%>& set_<%field:cpp_name%>(<%type:cpp_type%>&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<<%type:cpp_type%>, T...>> <% > types/ref_type%>& set_<%field:cpp_name%>(T&&... t) {
+  <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> const &t);
+  <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(<%type:cpp_type%>&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<<%type:cpp_type%>, T...>> <%field:cpp_deprecated_accessor_type%>& set_<%field:cpp_name%>(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
-    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), <% > types/ref_type%>, void>;
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), <%field:cpp_storage_type%>, void>;
     __clear();
     type_ = Type::<%field:cpp_name%>;
     ::new (std::addressof(value_.<%field:cpp_name%>)) ref_(new typename ref_::element_type(std::forward<T>(t)...));

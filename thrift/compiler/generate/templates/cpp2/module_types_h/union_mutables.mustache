@@ -14,10 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%#field:type%>
-  <% > types/ref_type%> & mutable_<%field:cpp_name%>() {
+%><%#struct:fields%>
+  <%field:cpp_deprecated_accessor_type%> & mutable_<%field:cpp_name%>() {
     assert(type_ == Type::<%field:cpp_name%>);
     return value_.<%field:cpp_name%>;
   }
 
-<%/field:type%><%/struct:fields%>
+<%/struct:fields%>

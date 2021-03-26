@@ -593,8 +593,8 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_deprecated_accessor_type() {
     // The type to use for pre-field_ref backwards compatiblity functions.
     // These leaked the internal storage type directly.
-    // TODO(afuller): Remove this once templates are updated to use storage
-    // type, and all non-field_ref based accessors have been removed.
+    // TODO(afuller): Remove this once all non-field_ref based accessors have
+    // been removed.
     return context_->resolver().get_storage_type_name(field_);
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
