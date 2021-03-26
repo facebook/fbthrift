@@ -2262,6 +2262,26 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   EXPECT_EQ(received_reply, server_reply);
 }
 
+TEST_P(HeaderOrRocket, PreprocessHeaders) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+
+  runner.getThriftServer().setPreprocess([&](auto& params) -> PreprocessResult {
+    auto p = folly::get_ptr(params.headers, "foo");
+    if (!p) {
+      ADD_FAILURE() << "expected to see header 'foo'";
+    } else if (*p != "bar") {
+      ADD_FAILURE() << "expected to see header with value 'bar'";
+    }
+    return {};
+  });
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader("foo", "bar");
+  client->sync_voidResponse(rpcOptions);
+}
+
 TEST_P(HeaderOrRocket, TaskTimeoutBeforeProcessing) {
   folly::Baton haltBaton;
   std::atomic<int> processedCount{0};
