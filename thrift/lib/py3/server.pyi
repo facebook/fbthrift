@@ -66,8 +66,8 @@ class ServiceInterface(AsyncProcessorFactory):
     async def __aexit__(
         self,
         exc_type: Optional[Type[BaseException]],
-        exc: Optional[Exception],
-        tb: Optional[TracebackType],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
     ) -> Optional[bool]: ...
 
 hT = TypeVar("hT", bound=AsyncProcessorFactory)
