@@ -26,7 +26,6 @@ from typing import (
     Type,
     TypeVar,
     Union,
-    AsyncContextManager,
 )
 
 from thrift.py3.common import Headers, Priority
@@ -49,9 +48,8 @@ class ClientType(Enum):
     THRIFT_UNKNOWN_CLIENT_TYPE: ClientType = ...
     THRIFT_UNFRAMED_COMPACT_DEPRECATED: ClientType = ...
 
-class Client(AsyncContextManager[Client]):
+class Client:
     def set_persistent_header(self, key: str, value: str) -> None: ...
-    # pyre-ignore[14]: False alarm
     async def __aenter__(self: TClient) -> TClient: ...
     async def __aexit__(
         self,
