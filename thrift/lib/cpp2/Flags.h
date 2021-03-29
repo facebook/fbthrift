@@ -21,7 +21,7 @@
 #include <folly/Optional.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/experimental/observer/SimpleObservable.h>
-#include <folly/synchronization/CallOnce.h>
+#include <folly/synchronization/DelayedInit.h>
 
 namespace apache {
 namespace thrift {
@@ -61,14 +61,10 @@ class FlagWrapper {
   FlagWrapper(folly::StringPiece name, T defaultValue)
       : name_(name), defaultValue_(defaultValue) {}
 
-  T get() {
-    init();
-    return snapshot_.load(std::memory_order_relaxed);
-  }
+  T get() { return *ensureInit(); }
 
   folly::observer::Observer<T> observe() {
-    init();
-    return *observer_;
+    return ensureInit().getUnderlyingObserver();
   }
 
   // Methods to set mock value for Flags.
@@ -78,15 +74,9 @@ class FlagWrapper {
   }
 
  private:
-  void init() {
-    if (UNLIKELY(!folly::test_once(initFlag_))) {
-      initSlow();
-    }
-  }
-
-  FOLLY_NOINLINE void initSlow() {
-    folly::call_once(initFlag_, [&] {
-      observer_ = folly::observer::makeValueObserver(
+  folly::observer::ReadMostlyAtomicObserver<T>& ensureInit() {
+    return observer_.try_emplace_with([this] {
+      return folly::observer::makeValueObserver(
           [overrideObserver = getFlagObserver<T>(name_),
            mockObserver = mockObservable_.getObserver(),
            defaultValue = defaultValue_] {
@@ -100,16 +90,10 @@ class FlagWrapper {
             }
             return defaultValue;
           });
-      snapshotUpdateCallback_ =
-          observer_->addCallback([&](auto snapshot) { snapshot_ = *snapshot; });
     });
   }
 
-  folly::once_flag initFlag_;
-  std::atomic<T> snapshot_{};
-  folly::Optional<folly::observer::Observer<T>> observer_;
-  folly::observer::CallbackHandle snapshotUpdateCallback_;
-
+  folly::DelayedInit<folly::observer::ReadMostlyAtomicObserver<T>> observer_;
   folly::StringPiece name_;
   const T defaultValue_;
   folly::observer::SimpleObservable<folly::Optional<T>> mockObservable_{
