@@ -148,7 +148,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   bool isAlive() const { return state_ == ConnectionState::CONNECTED; }
 
-  folly::exception_wrapper getLastError() const { return error_; }
+  const folly::exception_wrapper& getLastError() const { return error_; }
 
   size_t streams() const { return streams_.size(); }
 
