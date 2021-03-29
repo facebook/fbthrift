@@ -161,6 +161,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
+    connContext_.readSetupMetadata(meta);
 
     auto minVersion = meta.minVersion_ref().value_or(0);
     auto maxVersion = meta.maxVersion_ref().value_or(0);
@@ -180,7 +181,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
-    connContext_.readSetupMetadata(meta);
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(meta);
