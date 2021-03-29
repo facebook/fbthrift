@@ -215,6 +215,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::optional<instrumentation::ServerTracker> tracker_;
 
+  bool quickExitOnShutdownTimeout_ = false;
+
  public:
   ThriftServer();
 
@@ -759,6 +761,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   static folly::observer::Observer<std::list<std::string>>
   defaultNextProtocols();
+
+  bool getQuickExitOnShutdownTimeout() const {
+    return quickExitOnShutdownTimeout_;
+  }
+
+  void setQuickExitOnShutdownTimeout(bool quickExitOnShutdownTimeout) {
+    quickExitOnShutdownTimeout_ = quickExitOnShutdownTimeout;
+  }
 
   /**
    * For each request debug stub, a snapshot information can be constructed to

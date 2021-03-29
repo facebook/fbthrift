@@ -58,6 +58,18 @@ THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
 
+namespace {
+
+[[noreturn]] void try_quick_exit(int code) {
+#if defined(_GLIBCXX_HAVE_AT_QUICK_EXIT)
+  std::quick_exit(code);
+#else
+  std::exit(code);
+#endif
+}
+
+} // namespace
+
 namespace apache {
 namespace thrift {
 
@@ -571,14 +583,23 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       if (!worker->waitForStop(deadline)) {
+        auto msgTemplate =
+            "Could not drain active requests within allotted deadline. "
+            "Deadline value: {} secs. {} because undefined behavior is possible. "
+            "Underlying reasons could be either requests that have never "
+            "terminated, long running requests, or long queues that could "
+            "not be fully processed.";
+        if (quickExitOnShutdownTimeout_) {
+          LOG(ERROR) << fmt::format(
+              msgTemplate,
+              workersJoinTimeout_.count(),
+              "quick_exiting (no coredump)");
+          // similar to abort but without generating a coredump
+          try_quick_exit(124);
+        }
         if (FLAGS_thrift_abort_if_exceeds_shutdown_deadline) {
-          LOG(FATAL)
-              << "Could not drain active requests within allotted deadline. "
-              << "Deadline value: " << workersJoinTimeout_.count() << " secs. "
-              << "Abort because undefined behavior is possible. "
-              << "Underlying reasons could be either requests that have never"
-                 " terminated, long running requests, or long queues that could"
-                 " not be fully processed.";
+          LOG(FATAL) << fmt::format(
+              msgTemplate, workersJoinTimeout_.count(), "Aborting");
         }
       }
     }
