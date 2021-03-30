@@ -119,41 +119,52 @@ bool isMaybeRocketFrame(const folly::IOBuf& data) {
     return false;
   }
 
-  folly::io::Cursor cursor(&data);
-  auto size = readFrameOrMetadataSize(cursor);
-  if (size + Serializer::kBytesForFrameOrMetadataLength != data.length()) {
-    return false;
-  }
-  const size_t kMinFrameSize = 6;
-  if (size < kMinFrameSize) {
-    return false;
-  }
-
-  auto streamId = static_cast<uint32_t>(readStreamId(cursor));
-  if (streamId != 0 && streamId % 2 == 0) {
-    // Thrift only uses client -> server streams
-    return false;
-  }
-
-  auto const pair = readFrameTypeAndFlagsUnsafe(cursor);
-  switch (static_cast<FrameType>(pair.first)) {
-    case FrameType::SETUP:
-    case FrameType::KEEPALIVE:
-    case FrameType::METADATA_PUSH:
-      return streamId == 0;
-    case FrameType::REQUEST_RESPONSE:
-    case FrameType::REQUEST_FNF:
-    case FrameType::REQUEST_STREAM:
-    case FrameType::REQUEST_CHANNEL:
-    case FrameType::REQUEST_N:
-    case FrameType::CANCEL:
-    case FrameType::PAYLOAD:
-      return streamId != 0;
-    case FrameType::ERROR:
-    case FrameType::EXT:
-      return true;
-    default:
+  try {
+    folly::io::Cursor cursor(&data);
+    auto size = readFrameOrMetadataSize(cursor);
+    if (size + Serializer::kBytesForFrameOrMetadataLength != data.length()) {
       return false;
+    }
+    const size_t kMinFrameSize = 6;
+    if (size < kMinFrameSize) {
+      return false;
+    }
+
+    auto streamId = static_cast<uint32_t>(readStreamId(cursor));
+    if (streamId != 0 && streamId % 2 == 0) {
+      // Thrift only uses client -> server streams
+      return false;
+    }
+
+    const uint16_t frameTypeAndFlags = cursor.readBE<uint16_t>();
+    const uint16_t flags = frameTypeAndFlags & Flags::mask();
+    const uint16_t kMinFlag = 1 << 5;
+    if (flags != 0 && flags < kMinFlag) {
+      return false;
+    }
+
+    const uint8_t frameType = frameTypeAndFlags >> Flags::frameTypeOffset();
+    switch (static_cast<FrameType>(frameType)) {
+      case FrameType::SETUP:
+      case FrameType::KEEPALIVE:
+      case FrameType::METADATA_PUSH:
+        return streamId == 0;
+      case FrameType::REQUEST_RESPONSE:
+      case FrameType::REQUEST_FNF:
+      case FrameType::REQUEST_STREAM:
+      case FrameType::REQUEST_CHANNEL:
+      case FrameType::REQUEST_N:
+      case FrameType::CANCEL:
+      case FrameType::PAYLOAD:
+        return streamId != 0;
+      case FrameType::ERROR:
+      case FrameType::EXT:
+        return true;
+      default:
+        return false;
+    }
+  } catch (...) {
+    return false;
   }
 }
 } // namespace rocket
