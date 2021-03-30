@@ -251,5 +251,22 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::rangeCancelAt(
   };
 }
 
+apache::thrift::SinkConsumer<int32_t, bool>
+TestSinkService::rangeSlowFinalResponse(int32_t from, int32_t to) {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [from, to](folly::coro::AsyncGenerator<int32_t&&> gen)
+          -> folly::coro::Task<bool> {
+        int32_t i = from;
+        while (auto item = co_await gen.next()) {
+          EXPECT_EQ(i++, *item);
+        }
+        EXPECT_EQ(i, to + 1);
+        co_await folly::coro::sleep(std::chrono::seconds{5});
+        co_return true;
+      },
+      10 /* buffer size */
+  };
+}
+
 } // namespace testservice
 } // namespace testutil

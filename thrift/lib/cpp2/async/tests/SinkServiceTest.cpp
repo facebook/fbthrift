@@ -279,5 +279,51 @@ TEST_F(SinkServiceTest, SinkServerCancellation) {
       });
 }
 
+TEST_F(SinkServiceTest, SinkClientCancellation) {
+  // cancel when async generator get stuck
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto sink = co_await client.co_unSubscribedSink();
+        folly::CancellationSource cancelSource;
+
+        folly::coro::co_invoke([&cancelSource]() -> folly::coro::Task<void> {
+          co_await folly::coro::sleep(std::chrono::milliseconds{200});
+          cancelSource.requestCancellation();
+        })
+            .scheduleOn(co_await folly::coro::co_current_executor)
+            .start();
+
+        EXPECT_THROW(
+            co_await folly::coro::co_withCancellation(
+                cancelSource.getToken(),
+                sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+                  co_await neverStream();
+                  for (int i = 0; i <= 10; i++) {
+                    co_yield std::move(i);
+                  }
+                }())),
+            folly::OperationCancelled);
+        co_await waitNoLeak(client);
+      });
+
+  // cancel when final response being slow
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto sink = co_await client.co_rangeSlowFinalResponse(0, 10);
+        folly::CancellationSource cancelSource;
+
+        EXPECT_THROW(
+            co_await folly::coro::co_withCancellation(
+                cancelSource.getToken(),
+                sink.sink([&]() -> folly::coro::AsyncGenerator<int&&> {
+                  for (int i = 0; i <= 10; i++) {
+                    co_yield std::move(i);
+                  }
+                  cancelSource.requestCancellation();
+                }())),
+            folly::OperationCancelled);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

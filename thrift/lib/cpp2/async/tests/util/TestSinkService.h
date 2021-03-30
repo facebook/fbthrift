@@ -58,6 +58,9 @@ class TestSinkService : public TestSinkServiceSvIf {
   apache::thrift::SinkConsumer<int32_t, bool> rangeCancelAt(
       int32_t from, int32_t to, int32_t cancelAt) override;
 
+  apache::thrift::SinkConsumer<int32_t, bool> rangeSlowFinalResponse(
+      int32_t from, int32_t to) override;
+
   void purge() override;
 
  private:

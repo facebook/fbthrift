@@ -178,10 +178,7 @@ void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
   ew.handle(
       [&](rocket::RocketException& rex) {
-        client_.sendError(
-            streamId_,
-            rocket::RocketException(
-                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+        client_.sendError(streamId_, std::move(rex));
       },
       [&](...) {
         client_.sendError(
@@ -325,10 +322,7 @@ void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen);
   ew.handle(
       [&](rocket::RocketException& rex) {
-        client_.sendError(
-            streamId_,
-            rocket::RocketException(
-                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+        client_.sendError(streamId_, std::move(rex));
       },
       [&](...) {
         client_.sendError(
