@@ -37,20 +37,19 @@ class FooEx(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iter
 
 
 
-class ClientBufferedStream__i32(thrift.py3.stream.ClientBufferedStream):
+class ClientBufferedStream__i32(thrift.py3.stream.ClientBufferedStream[int]):
     def __aiter__(self) -> _typing.AsyncIterator[int]: ...
     async def __anext__(self) -> int: ...
 
-class Stream__i32(thrift.py3.stream.Stream):
+class ServerStream__i32(thrift.py3.stream.ServerStream[int]):
     pass
 
-class ResponseAndClientBufferedStream__i32_i32(thrift.py3.stream.ResponseAndClientBufferedStream):
+class ResponseAndClientBufferedStream__i32_i32(thrift.py3.stream.ResponseAndClientBufferedStream[int, int]):
     def __iter__(self) -> _typing.Tuple[
         int,
         ClientBufferedStream__i32,
     ]: ...
 
-
-class ResponseAndStream__i32_i32(thrift.py3.stream.ResponseAndStream):
+class ResponseAndServerStream__i32_i32(thrift.py3.stream.ResponseAndServerStream[int, int]):
     pass
 

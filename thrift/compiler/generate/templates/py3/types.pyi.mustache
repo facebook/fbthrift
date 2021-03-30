@@ -160,23 +160,22 @@ class {{> types/CythonPythonType}}({{> types/PEP484Containers}}, _typing.Hashabl
 {{#program:has_stream?}}
 
 {{#program:stream_types}}
-class ClientBufferedStream__{{type:flat_name}}(thrift.py3.stream.ClientBufferedStream):
+class ClientBufferedStream__{{type:flat_name}}(thrift.py3.stream.ClientBufferedStream[{{ > types/PEP484Type}}]):
     def __aiter__(self) -> _typing.AsyncIterator[{{ > types/PEP484Type}}]: ...
     async def __anext__(self) -> {{ > types/PEP484Type}}: ...
 
-class Stream__{{type:flat_name}}(thrift.py3.stream.Stream):
+class ServerStream__{{type:flat_name}}(thrift.py3.stream.ServerStream[{{ > types/PEP484Type}}]):
     pass
 
 {{/program:stream_types}}
 {{#program:response_and_stream_types}}{{!
-}}class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(thrift.py3.stream.ResponseAndClientBufferedStream):
+}}class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(thrift.py3.stream.ResponseAndClientBufferedStream[{{#type:stream_first_response_type}}{{> types/PEP484Type}}{{/type:stream_first_response_type}}, {{#type:stream_elem_type}}{{> types/PEP484Type}}{{/type:stream_elem_type}}]):
     def __iter__(self) -> _typing.Tuple[
         {{#type:stream_first_response_type}}{{> types/PEP484Type}}{{/type:stream_first_response_type}},
         {{#type:stream_elem_type}}ClientBufferedStream__{{type:flat_name}}{{/type:stream_elem_type}},
     ]: ...
 
-
-class ResponseAndStream__{{> stream/ResponseClassNameSuffix}}(thrift.py3.stream.ResponseAndStream):
+class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(thrift.py3.stream.ResponseAndServerStream[{{#type:stream_first_response_type}}{{> types/PEP484Type}}{{/type:stream_first_response_type}}, {{#type:stream_elem_type}}{{> types/PEP484Type}}{{/type:stream_elem_type}}]):
     pass
 
 {{/program:response_and_stream_types}}
