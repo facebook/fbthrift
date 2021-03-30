@@ -310,6 +310,10 @@ class RequestParams {
 
 class ServerInterface : public virtual AsyncProcessorFactory {
  public:
+  ServerInterface() = default;
+  ServerInterface(const ServerInterface&) = delete;
+  ServerInterface& operator=(const ServerInterface&) = delete;
+
   [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
   getConnectionContext() const {
     return requestParams_.requestContext_;
