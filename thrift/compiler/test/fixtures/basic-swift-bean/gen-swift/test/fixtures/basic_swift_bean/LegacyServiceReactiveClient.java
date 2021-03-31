@@ -42,7 +42,7 @@ public class LegacyServiceReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _creategetPointsWriter(final Set<String> key, final long legacyStuff) {
     return oprot -> {

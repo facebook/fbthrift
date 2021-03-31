@@ -89,9 +89,7 @@ public interface DbMixedStackArguments extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("DbMixedStackArguments")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key);
 
         default reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key, RpcOptions rpcOptions) {

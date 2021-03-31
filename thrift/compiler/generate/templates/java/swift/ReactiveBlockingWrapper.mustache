@@ -32,7 +32,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
 
   @java.lang.Override
   public void close() {
-    _delegate.close();
+    _delegate.dispose();
   }
 
   {{#service:supportedFunctions}}

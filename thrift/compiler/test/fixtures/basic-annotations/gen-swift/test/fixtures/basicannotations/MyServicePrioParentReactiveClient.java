@@ -41,7 +41,7 @@ public class MyServicePrioParentReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createpingWriter() {
     return oprot -> {

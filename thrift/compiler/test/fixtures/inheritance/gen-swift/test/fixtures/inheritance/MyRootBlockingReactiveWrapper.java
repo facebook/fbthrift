@@ -21,7 +21,7 @@ public class MyRootBlockingReactiveWrapper
     }
 
     @java.lang.Override
-    public void close() {
+    public void dispose() {
         _delegate.close();
     }
 

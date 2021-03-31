@@ -109,7 +109,7 @@ public class RaiserReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createdoBlandWriter() {
     return oprot -> {

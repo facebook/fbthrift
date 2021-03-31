@@ -40,7 +40,7 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createpangWriter() {
     return oprot -> {

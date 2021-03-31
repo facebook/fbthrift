@@ -185,9 +185,7 @@ public interface NestedContainers extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo);
 
         default reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo, RpcOptions rpcOptions) {

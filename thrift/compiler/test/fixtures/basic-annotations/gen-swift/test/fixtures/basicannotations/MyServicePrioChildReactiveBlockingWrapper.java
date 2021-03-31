@@ -20,7 +20,7 @@ public class MyServicePrioChildReactiveBlockingWrapper  extends test.fixtures.ba
 
   @java.lang.Override
   public void close() {
-    _delegate.close();
+    _delegate.dispose();
   }
 
   @java.lang.Override

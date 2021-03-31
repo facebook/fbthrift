@@ -110,9 +110,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     {{/service:supportedFunctions}}
 
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
-    interface Reactive extends Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
         {{#service:supportedFunctions}}
         reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 

@@ -40,7 +40,7 @@ public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReact
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createdoMidWriter() {
     return oprot -> {

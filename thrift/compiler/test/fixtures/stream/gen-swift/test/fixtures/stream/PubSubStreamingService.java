@@ -26,9 +26,7 @@ public interface PubSubStreamingService extends java.io.Closeable {
     @java.lang.Override void close();
 
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To);
 
         default reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To, RpcOptions rpcOptions) {

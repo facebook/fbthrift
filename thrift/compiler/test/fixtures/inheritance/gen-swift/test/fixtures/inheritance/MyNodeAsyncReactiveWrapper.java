@@ -19,7 +19,7 @@ public class MyNodeAsyncReactiveWrapper  extends test.fixtures.inheritance.MyRoo
     }
 
     @java.lang.Override
-    public void close() {
+    public void dispose() {
         _delegate.close();
     }
 

@@ -45,7 +45,7 @@ public class MyServiceReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createqueryWriter(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) {
     return oprot -> {

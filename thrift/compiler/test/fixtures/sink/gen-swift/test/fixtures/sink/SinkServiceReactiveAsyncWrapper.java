@@ -20,7 +20,7 @@ public class SinkServiceReactiveAsyncWrapper
 
   @java.lang.Override
   public void close() {
-    _delegate.close();
+    _delegate.dispose();
   }
 
 }

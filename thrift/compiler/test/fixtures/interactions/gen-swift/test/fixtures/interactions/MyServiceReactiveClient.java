@@ -40,7 +40,7 @@ public class MyServiceReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createfooWriter() {
     return oprot -> {

@@ -21,7 +21,7 @@ public class MyNodeBlockingReactiveWrapper  extends test.fixtures.inheritance.My
     }
 
     @java.lang.Override
-    public void close() {
+    public void dispose() {
         _delegate.close();
     }
 

@@ -149,9 +149,7 @@ public interface Raiser extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("Raiser")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<Void> doBland();
 
         default reactor.core.publisher.Mono<Void> doBland(RpcOptions rpcOptions) {

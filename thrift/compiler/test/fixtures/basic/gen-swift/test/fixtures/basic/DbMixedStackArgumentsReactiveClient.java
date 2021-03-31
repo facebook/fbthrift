@@ -43,7 +43,7 @@ public class DbMixedStackArgumentsReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _creategetDataByKey0Writer(final String key) {
     return oprot -> {

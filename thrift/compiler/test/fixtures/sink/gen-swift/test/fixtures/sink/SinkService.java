@@ -26,9 +26,7 @@ public interface SinkService extends java.io.Closeable {
     @java.lang.Override void close();
 
     @com.facebook.swift.service.ThriftService("SinkService")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads);
 
         default reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, RpcOptions rpcOptions) {

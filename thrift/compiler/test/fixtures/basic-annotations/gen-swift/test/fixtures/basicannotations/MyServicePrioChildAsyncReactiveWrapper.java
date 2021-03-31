@@ -19,7 +19,7 @@ public class MyServicePrioChildAsyncReactiveWrapper  extends test.fixtures.basic
     }
 
     @java.lang.Override
-    public void close() {
+    public void dispose() {
         _delegate.close();
     }
 

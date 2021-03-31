@@ -51,9 +51,7 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
     }
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
-    interface Reactive extends Closeable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
         reactor.core.publisher.Mono<Void> pang();
 
         default reactor.core.publisher.Mono<Void> pang(RpcOptions rpcOptions) {

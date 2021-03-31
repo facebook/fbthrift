@@ -40,7 +40,7 @@ public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReact
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createdoLeafWriter() {
     return oprot -> {

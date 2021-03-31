@@ -77,9 +77,7 @@ public interface MyServicePrioParent extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("MyServicePrioParent")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<Void> ping();
 
         default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {

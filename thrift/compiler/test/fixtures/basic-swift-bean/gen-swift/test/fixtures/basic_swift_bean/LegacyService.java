@@ -63,9 +63,7 @@ public interface LegacyService extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("LegacyService")
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-
+    interface Reactive extends reactor.core.Disposable {
         reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff);
 
         default reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff, RpcOptions rpcOptions) {

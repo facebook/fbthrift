@@ -111,7 +111,7 @@ public class PubSubStreamingServiceReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createreturnstreamWriter(final int i32From, final int i32To) {
     return oprot -> {

@@ -49,7 +49,7 @@ public class NestedContainersReactiveClient
   }
 
   @java.lang.Override
-  public void close() {}
+  public void dispose() {}
 
   private com.facebook.swift.transport.payload.Writer _createmapListWriter(final Map<Integer, List<Integer>> foo) {
     return oprot -> {
