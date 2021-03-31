@@ -488,8 +488,8 @@ class RpcOptions {
    * @param routingKey routing key, e.g. consistent hashing seed
    * @return reference to this object
    */
-  RpcOptions& setRoutingKey(const std::string& routingKey) {
-    routingKey_ = routingKey;
+  RpcOptions& setRoutingKey(std::string routingKey) {
+    routingKey_ = std::move(routingKey);
     return *this;
   }
 
@@ -499,8 +499,8 @@ class RpcOptions {
    * @param shardId shard ID to use for service discovery
    * @return reference to this object
    */
-  RpcOptions& setShardId(const std::string& shardId) {
-    shardId_ = shardId;
+  RpcOptions& setShardId(std::string shardId) {
+    shardId_ = std::move(shardId);
     return *this;
   }
 
@@ -546,8 +546,8 @@ class RpcOptions {
 
   int64_t getInteractionId() const { return interactionId_; }
 
-  RpcOptions& setLoggingContext(const std::string& loggingContext) {
-    loggingContext_ = loggingContext;
+  RpcOptions& setLoggingContext(std::string loggingContext) {
+    loggingContext_ = std::move(loggingContext);
     return *this;
   }
 
