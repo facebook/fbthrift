@@ -52,6 +52,9 @@ class ManagedStringView {
     return is_owned() ? std::string_view{string_} : view_;
   }
 
+  const char* data() const { return view().data(); }
+  std::size_t size() const { return view().size(); }
+
   friend bool operator==(const ManagedStringView& a, std::string_view b) {
     return a.view() == b;
   }

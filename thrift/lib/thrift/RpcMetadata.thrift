@@ -90,7 +90,7 @@ struct NegotiationParameters {
 
 // String type optimized for generated code
 typedef string (
-  cpp.type = "ManagedStringViewWithConversions",
+  cpp.type = "::apache::thrift::ManagedStringViewWithConversions",
 ) ManagedStringViewField
 
 struct InteractionCreate {
