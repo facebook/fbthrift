@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -41,7 +41,7 @@ from folly.optional cimport cOptional as __cOptional
 cimport module0.types as _module0_types
 cimport module1.types as _module1_types
 
-cimport module2.types_fields as __fbthrift_types_fields
+cimport module2.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module2/types.h":
   pass
@@ -102,7 +102,7 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
 
 cdef class Struct(thrift.py3.types.Struct):
     cdef shared_ptr[cStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
     cdef _module0_types.Struct __fbthrift_cached_first
     cdef _module1_types.Struct __fbthrift_cached_second
 
@@ -113,7 +113,7 @@ cdef class Struct(thrift.py3.types.Struct):
 
 cdef class BigStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBigStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__BigStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__BigStruct_FieldsSetter _fields_setter
     cdef Struct __fbthrift_cached_s
 
     @staticmethod

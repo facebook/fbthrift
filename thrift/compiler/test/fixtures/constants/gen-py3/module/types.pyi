@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import __NotSet, NOTSET

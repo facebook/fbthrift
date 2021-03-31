@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -69,13 +69,13 @@ cdef __UnionTypeEnumData __ComplexUnion_union_type_enum_data  = __UnionTypeEnumD
 @__cython.auto_pickle(False)
 cdef class __ComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __ComplexUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __ComplexUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __ComplexUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -102,13 +102,13 @@ cdef __UnionTypeEnumData __ListUnion_union_type_enum_data  = __UnionTypeEnumData
 @__cython.auto_pickle(False)
 cdef class __ListUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __ListUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __ListUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __ListUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -135,13 +135,13 @@ cdef __UnionTypeEnumData __DataUnion_union_type_enum_data  = __UnionTypeEnumData
 @__cython.auto_pickle(False)
 cdef class __DataUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __DataUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __DataUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __DataUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -168,13 +168,13 @@ cdef __UnionTypeEnumData __ValUnion_union_type_enum_data  = __UnionTypeEnumData.
 @__cython.auto_pickle(False)
 cdef class __ValUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __ValUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __ValUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __ValUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -201,13 +201,13 @@ cdef __UnionTypeEnumData __VirtualComplexUnion_union_type_enum_data  = __UnionTy
 @__cython.auto_pickle(False)
 cdef class __VirtualComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __VirtualComplexUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __VirtualComplexUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __VirtualComplexUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -234,13 +234,13 @@ cdef __UnionTypeEnumData __NonCopyableUnion_union_type_enum_data  = __UnionTypeE
 @__cython.auto_pickle(False)
 cdef class __NonCopyableUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __NonCopyableUnion_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __NonCopyableUnion_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __NonCopyableUnion_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -432,7 +432,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return ComplexUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cComplexUnion](
             self._cpp_obj,
             (<ComplexUnion>other)._cpp_obj,
@@ -453,19 +453,19 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.ComplexUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cComplexUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 6
+        self._fbthrift_struct_size = 6
 
-    cdef __iobuf.IOBuf _serialize(ComplexUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(ComplexUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cComplexUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(ComplexUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(ComplexUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cComplexUnion]()
         with nogil:
@@ -565,7 +565,7 @@ cdef class ListUnion(thrift.py3.types.Union):
         return ListUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cListUnion](
             self._cpp_obj,
             (<ListUnion>other)._cpp_obj,
@@ -586,19 +586,19 @@ cdef class ListUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.ListUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cListUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(ListUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(ListUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cListUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(ListUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(ListUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cListUnion]()
         with nogil:
@@ -698,7 +698,7 @@ cdef class DataUnion(thrift.py3.types.Union):
         return DataUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cDataUnion](
             self._cpp_obj,
             (<DataUnion>other)._cpp_obj,
@@ -719,19 +719,19 @@ cdef class DataUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.DataUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cDataUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(DataUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(DataUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cDataUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(DataUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(DataUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cDataUnion]()
         with nogil:
@@ -745,7 +745,7 @@ cdef class DataUnion(thrift.py3.types.Union):
 cdef class Val(thrift.py3.types.Struct):
     def __init__(Val self, **kwargs):
         self._cpp_obj = make_shared[cVal]()
-        self._fields_setter = __fbthrift_types_fields.__Val_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Val_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Val self, **kwargs):
@@ -753,15 +753,15 @@ cdef class Val(thrift.py3.types.Struct):
             return self
         cdef Val __fbthrift_inst = Val.__new__(Val)
         __fbthrift_inst._cpp_obj = make_shared[cVal](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Val_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Val_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("Val", {
           "strVal": deref(self._cpp_obj).strVal_ref().has_value(),
           "intVal": deref(self._cpp_obj).intVal_ref().has_value(),
@@ -802,7 +802,7 @@ cdef class Val(thrift.py3.types.Struct):
         return Val.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cVal](
             self._cpp_obj,
             (<Val>other)._cpp_obj,
@@ -823,19 +823,19 @@ cdef class Val(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Val"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cVal](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 3
+        self._fbthrift_struct_size = 3
 
-    cdef __iobuf.IOBuf _serialize(Val self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(Val self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cVal](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(Val self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(Val self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cVal]()
         with nogil:
@@ -933,7 +933,7 @@ cdef class ValUnion(thrift.py3.types.Union):
         return ValUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cValUnion](
             self._cpp_obj,
             (<ValUnion>other)._cpp_obj,
@@ -954,19 +954,19 @@ cdef class ValUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.ValUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cValUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(ValUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(ValUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cValUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(ValUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(ValUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cValUnion]()
         with nogil:
@@ -1066,7 +1066,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return VirtualComplexUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cVirtualComplexUnion](
             self._cpp_obj,
             (<VirtualComplexUnion>other)._cpp_obj,
@@ -1087,19 +1087,19 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.VirtualComplexUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cVirtualComplexUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(VirtualComplexUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(VirtualComplexUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cVirtualComplexUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(VirtualComplexUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(VirtualComplexUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cVirtualComplexUnion]()
         with nogil:
@@ -1113,13 +1113,13 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
     def __init__(NonCopyableStruct self, **kwargs):
         self._cpp_obj = make_shared[cNonCopyableStruct]()
-        self._fields_setter = __fbthrift_types_fields.__NonCopyableStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__NonCopyableStruct_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("NonCopyableStruct", {
           "num": deref(self._cpp_obj).num_ref().has_value(),
         })
@@ -1143,7 +1143,7 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         raise TypeError("NonCopyableStruct is noncopyable")
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cNonCopyableStruct](
             self._cpp_obj,
             (<NonCopyableStruct>other)._cpp_obj,
@@ -1164,19 +1164,19 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.NonCopyableStruct"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNonCopyableStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(NonCopyableStruct self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(NonCopyableStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cNonCopyableStruct](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(NonCopyableStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(NonCopyableStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNonCopyableStruct]()
         with nogil:
@@ -1253,7 +1253,7 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
         raise TypeError("NonCopyableUnion is noncopyable")
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cNonCopyableUnion](
             self._cpp_obj,
             (<NonCopyableUnion>other)._cpp_obj,
@@ -1274,19 +1274,19 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.NonCopyableUnion"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNonCopyableUnion](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(NonCopyableUnion self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(NonCopyableUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cNonCopyableUnion](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(NonCopyableUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(NonCopyableUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNonCopyableUnion]()
         with nogil:

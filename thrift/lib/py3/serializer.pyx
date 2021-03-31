@@ -14,7 +14,7 @@
 
 from thrift.py3.types cimport Struct
 from folly.iobuf cimport IOBuf
-cimport folly.iobuf as _iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common import Protocol
 from thrift.py3.exceptions import Error
 
@@ -57,17 +57,17 @@ def serialize_with_header_iobuf(Struct tstruct not None, protocol=Protocol.COMPA
     header.setProtocolId(protocol)
     if transform is not Transform.NONE:
         header.setTransform(transform)
-    return _iobuf.from_unique_ptr(header.addHeader(_iobuf.move(buf._ours), pheaders))
+    return _fbthrift_iobuf.from_unique_ptr(header.addHeader(_fbthrift_iobuf.move(buf._ours), pheaders))
 
 
 def deserialize_from_header(structKlass, buf not None):
     # Clone because we will take the guts.
     cdef IOBuf iobuf = buf.clone() if isinstance(buf, IOBuf) else IOBuf(buf)
-    cdef _iobuf.cIOBufQueue queue = _iobuf.cIOBufQueue(_iobuf.cacheChainLength())
-    queue.append(_iobuf.move(iobuf._ours))
+    cdef _fbthrift_iobuf.cIOBufQueue queue = _fbthrift_iobuf.cIOBufQueue(_fbthrift_iobuf.cacheChainLength())
+    queue.append(_fbthrift_iobuf.move(iobuf._ours))
     cdef cTHeader header
     cdef map[string, string] pheaders
     cdef size_t needed = 0
     cbuf = header.removeHeader(&queue, needed, pheaders)
     protoid = Protocol(header.getProtocolId())
-    return deserialize(structKlass, _iobuf.from_unique_ptr(_iobuf.move(cbuf)), protocol=protoid)
+    return deserialize(structKlass, _fbthrift_iobuf.from_unique_ptr(_fbthrift_iobuf.move(cbuf)), protocol=protoid)

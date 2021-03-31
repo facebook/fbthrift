@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -69,13 +69,13 @@ cdef __UnionTypeEnumData __Nada_union_type_enum_data  = __UnionTypeEnumData.crea
 @__cython.auto_pickle(False)
 cdef class __Nada_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __Nada_union_type_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __Nada_union_type_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __Nada_union_type_enum_data.get_all_names()
 
     def __len__(cls):
@@ -96,16 +96,16 @@ __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta
 cdef class Empty(thrift.py3.types.Struct):
     def __init__(Empty self, **kwargs):
         self._cpp_obj = make_shared[cEmpty]()
-        self._fields_setter = __fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Empty self, **kwargs):
         return self
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("Empty", {
         })
 
@@ -126,7 +126,7 @@ cdef class Empty(thrift.py3.types.Struct):
         return Empty.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cEmpty](
             self._cpp_obj,
             (<Empty>other)._cpp_obj,
@@ -147,19 +147,19 @@ cdef class Empty(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Empty"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cEmpty](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 0
+        self._fbthrift_struct_size = 0
 
-    cdef __iobuf.IOBuf _serialize(Empty self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(Empty self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cEmpty](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(Empty self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(Empty self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cEmpty]()
         with nogil:
@@ -221,7 +221,7 @@ cdef class Nada(thrift.py3.types.Union):
         return Nada.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cNada](
             self._cpp_obj,
             (<Nada>other)._cpp_obj,
@@ -242,19 +242,19 @@ cdef class Nada(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.Nada"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNada](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 0
+        self._fbthrift_struct_size = 0
 
-    cdef __iobuf.IOBuf _serialize(Nada self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(Nada self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cNada](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(Nada self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(Nada self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNada]()
         with nogil:

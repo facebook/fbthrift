@@ -69,7 +69,7 @@ cdef class StructMeta(type):
     """
     @staticmethod
     def isset(Object struct):
-        return struct.__fbthrift_isset()
+        return struct._fbthrift_isset()
 
 
 class _IsSet:
@@ -93,32 +93,32 @@ cdef class Struct:
     cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0:
         return 0
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
-    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef string_view _fbthrift_get_field_name_by_index(self, size_t idx):
         raise NotImplementedError()
 
     def __init__(self, **kwargs):
         for name, value in kwargs.items():
             if value is not None:
-                self.__fbthrift_set_field(name, value)
+                self._fbthrift_set_field(name, value)
 
     def __hash__(self):
-        if not self.__hash:
+        if not self._fbthrift_hash:
             value_tuple = tuple(v for _, v in self)
-            self.__hash = hash(
+            self._fbthrift_hash = hash(
                 value_tuple if value_tuple
                 else type(self)  # Hash the class there are no fields
             )
-        return self.__hash
+        return self._fbthrift_hash
 
     def __iter__(self):
-        for i in range(self.__fbthrift_struct_size):
-            name = sv_to_str(self.__fbthrift_get_field_name_by_index(i))
+        for i in range(self._fbthrift_struct_size):
+            name = sv_to_str(self._fbthrift_get_field_name_by_index(i))
             yield name, getattr(self, name)
 
-    cdef bint __noncomparable_eq(self, other):
+    cdef bint _fbthrift_noncomparable_eq(self, other):
         if self is other:
             return True
         name = None  # as sentinel to indicate if no fields
@@ -128,7 +128,7 @@ cdef class Struct:
         # in case of no fields, only True when identity equal (begining).
         return name is not None
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         pass
 
     def __reduce__(self):
@@ -144,7 +144,7 @@ cdef class Struct:
         """
         return self.__copy__()
 
-    cdef object __cmp_sametype(self, other, int op):
+    cdef object _fbthrift_cmp_sametype(self, other, int op):
         if (not isinstance(self, Struct) or not isinstance(other, Struct) or
                 (not isinstance(other, type(self)) and not isinstance(self, type(other)))):
             if op == Py_EQ:  # different types are never equal
@@ -170,16 +170,16 @@ cdef class Union(Struct):
     """
     Base class for all thrift Unions
     """
-    cdef bint __noncomparable_eq(self, other):
+    cdef bint _fbthrift_noncomparable_eq(self, other):
         return self.type == other.type and self.value == other.value
 
     def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash((
+        if not self._fbthrift_hash:
+            self._fbthrift_hash = hash((
                 self.type,
                 self.value,
             ))
-        return self.__hash
+        return self._fbthrift_hash
 
     def __repr__(self):
         return f"{type(self).__name__}(type={self.type.name}, value={self.value!r})"
@@ -201,9 +201,9 @@ cdef class Container:
     Base class for all thrift containers
     """
     def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self))
-        return self.__hash
+        if not self._fbthrift_hash:
+            self._fbthrift_hash = hash(tuple(self))
+        return self._fbthrift_hash
 
     def __len__(self):
         raise NotImplementedError()
@@ -219,6 +219,9 @@ cdef class List(Container):
 
     def __add__(self, other):
         return type(self)(itertools.chain(self, other))
+
+    def __radd__(List self, other):
+        return type(other)(itertools.chain(other, self))
 
     def __eq__(self, other):
         return list_compare(self, other, Py_EQ)
@@ -321,7 +324,7 @@ cdef class Set(Container):
     def issuperset(self, other):
         return self >= other
 
-    cdef __py_richcmp(self, other, int op):
+    cdef _fbthrift_py_richcmp(self, other, int op):
         if op == Py_LT:
             return pySet.__lt__(self, other)
         elif op == Py_LE:
@@ -335,28 +338,44 @@ cdef class Set(Container):
         elif op == Py_GE:
             return pySet.__ge__(self, other)
 
-    cdef __do_set_op(self, other, cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, cSetOp op):
         raise NotImplementedError()
 
     def __and__(self, other):
+        # TODO: Remove isinstance check after upgrading to Cython 3
         if isinstance(self, Set):
-            return (<Set>self).__do_set_op(other, cSetOp.AND)
-        return (<Set>other).__do_set_op(self, cSetOp.AND)
+            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.AND)
+        return (<Set>other)._fbthrift_do_set_op(self, cSetOp.AND)
 
     def __sub__(self, other):
+        # TODO: Remove isinstance check after upgrading to Cython 3
         if isinstance(self, Set):
-            return (<Set>self).__do_set_op(other, cSetOp.SUB)
-        return  (<Set>other).__do_set_op(self, cSetOp.REVSUB)
+            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.SUB)
+        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.REVSUB)
 
     def __or__(self, other):
+        # TODO: Remove isinstance check after upgrading to Cython 3
         if isinstance(self, Set):
-            return (<Set>self).__do_set_op(other, cSetOp.OR)
-        return  (<Set>other).__do_set_op(self, cSetOp.OR)
+            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.OR)
+        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.OR)
 
     def __xor__(self, other):
+        # TODO: Remove isinstance check after upgrading to Cython 3
         if isinstance(self, Set):
-            return (<Set>self).__do_set_op(other, cSetOp.XOR)
-        return  (<Set>other).__do_set_op(self, cSetOp.XOR)
+            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.XOR)
+        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.XOR)
+
+    def __rand__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.AND)
+
+    def __ror__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.OR)
+
+    def __rxor__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.XOR)
+
+    def __rsub__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.REVSUB)
 
 
 @cython.auto_pickle(False)
@@ -383,9 +402,9 @@ cdef class Map(Container):
         return not self.__eq__(other)
 
     def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self.items()))
-        return self.__hash
+        if not self._fbthrift_hash:
+            self._fbthrift_hash = hash(tuple(self.items()))
+        return self._fbthrift_hash
 
     def __repr__(self):
         if not self:
@@ -533,13 +552,13 @@ cdef class UnionTypeEnumData(EnumData):
 
 @cython.auto_pickle(False)
 cdef class EnumMeta(type):
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return NotImplemented
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return NotImplemented
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return NotImplemented
 
     def __call__(cls, value):
@@ -547,24 +566,24 @@ cdef class EnumMeta(type):
             return value
         if not isinstance(value, int):
             raise ValueError(f"{repr(value)} is not a valid {cls.__name__}")
-        return cls.__get_by_value(value)
+        return cls._fbthrift_get_by_value(value)
 
     def __getitem__(cls, name):
         if not isinstance(name, str):
             raise KeyError(name)
         try:
-            return cls.__get_by_name(str(name))
+            return cls._fbthrift_get_by_name(str(name))
         except AttributeError:
             raise KeyError(name)
 
     def __getattribute__(cls, str name not None):
-        if name.startswith("__") or name == "mro":
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
             return super().__getattribute__(name)
-        return cls.__get_by_name(name)
+        return cls._fbthrift_get_by_name(name)
 
     def __iter__(cls):
-        for name in cls.__get_all_names():
-            yield cls.__get_by_name(name)
+        for name in cls._fbthrift_get_all_names():
+            yield cls._fbthrift_get_by_name(name)
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -582,7 +601,7 @@ cdef class EnumMeta(type):
         return MappingProxyType({inst.name: inst for inst in cls.__iter__()})
 
     def __dir__(cls):
-        return ['__class__', '__doc__', '__members__', '__module__'] + [name for name in cls.__get_all_names()]
+        return ['__class__', '__doc__', '__members__', '__module__'] + [name for name in cls._fbthrift_get_all_names()]
 
 
 @cython.auto_pickle(False)
@@ -595,7 +614,7 @@ cdef class CompiledEnum:
             raise TypeError('__new__ is disabled in the interest of type-safety')
         self.name = name
         self.value = value
-        self.__hash = hash(name)
+        self._fbthrift_hash = hash(name)
         self.__str = f"{type(self).__name__}.{name}"
         self.__repr = f"<{self.__str}: {value}>"
 
@@ -617,7 +636,7 @@ cdef class CompiledEnum:
         return self.value
 
     def __hash__(self):
-        return self.__hash
+        return self._fbthrift_hash
 
     def __reduce__(self):
         return type(self), (self.value,)

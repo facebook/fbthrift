@@ -25,10 +25,10 @@ By convention, it assumes the c++ structure that is being manipulated is named
 citem.
 
 }}{{#type:iobuf?}}{{!
-  }}__iobuf.IOBuf.create(citem.get(), self){{!
+  }}_fbthrift_iobuf.IOBuf.create(citem.get(), self){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}__iobuf.IOBuf.create(citem.get().get(), self){{!
+  }}_fbthrift_iobuf.IOBuf.create(citem.get().get(), self){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}(<const char*>citem.data())[:citem.size()]{{!

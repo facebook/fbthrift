@@ -36,33 +36,33 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field strVal
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cVal](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'strVal is not a { str !r}.')
-        deref(self._struct_cpp_obj).strVal_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).strVal_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.strVal = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field intVal
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cVal](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'intVal is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).intVal_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).intVal_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.intVal = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field typedefValue
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cVal](deref(self._struct_cpp_obj), 2)
             return
-        deref(self._struct_cpp_obj).typedefValue_ref().assign(deref(_module_types.Map__i16_string(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).typedefValue_ref().assign(deref(_module_types.Map__i16_string(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.typedefValue = True
 
 
@@ -83,14 +83,14 @@ cdef class __NonCopyableStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field num
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNonCopyableStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'num is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).num_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).num_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.num = True
 

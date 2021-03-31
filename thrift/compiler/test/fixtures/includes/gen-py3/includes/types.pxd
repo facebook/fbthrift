@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -40,7 +40,7 @@ from thrift.py3.common cimport (
 from folly.optional cimport cOptional as __cOptional
 cimport transitive.types as _transitive_types
 
-cimport includes.types_fields as __fbthrift_types_fields
+cimport includes.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/includes/types.h":
   pass
@@ -82,7 +82,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
 
 cdef class Included(thrift.py3.types.Struct):
     cdef shared_ptr[cIncluded] _cpp_obj
-    cdef __fbthrift_types_fields.__Included_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Included_FieldsSetter _fields_setter
     cdef _transitive_types.Foo __fbthrift_cached_MyTransitiveField
 
     @staticmethod

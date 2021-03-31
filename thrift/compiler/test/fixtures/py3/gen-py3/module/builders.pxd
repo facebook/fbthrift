@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
@@ -18,7 +18,7 @@ cdef class SimpleException_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class OptionalRefStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public __iobuf.IOBuf optional_blob
+    cdef public _fbthrift_iobuf.IOBuf optional_blob
 
 
 cdef class SimpleStruct_Builder(thrift.py3.builder.StructBuilder):
@@ -44,7 +44,7 @@ cdef class ComplexStruct_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class BinaryUnion_Builder(thrift.py3.builder.StructBuilder):
-    cdef public __iobuf.IOBuf iobuf_val
+    cdef public _fbthrift_iobuf.IOBuf iobuf_val
 
 
 cdef class BinaryUnionStruct_Builder(thrift.py3.builder.StructBuilder):

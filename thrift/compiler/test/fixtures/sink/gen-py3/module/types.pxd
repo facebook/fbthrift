@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -174,7 +174,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class InitialResponse(thrift.py3.types.Struct):
     cdef shared_ptr[cInitialResponse] _cpp_obj
-    cdef __fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cInitialResponse])
@@ -183,7 +183,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 cdef class FinalResponse(thrift.py3.types.Struct):
     cdef shared_ptr[cFinalResponse] _cpp_obj
-    cdef __fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cFinalResponse])
@@ -192,7 +192,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 cdef class SinkPayload(thrift.py3.types.Struct):
     cdef shared_ptr[cSinkPayload] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkPayload])
@@ -201,7 +201,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     cdef shared_ptr[cCompatibleWithKeywordSink] _cpp_obj
-    cdef __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink])
@@ -210,7 +210,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cInitialException] _cpp_obj
-    cdef __fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cInitialException])
@@ -219,7 +219,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSinkException1] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkException1])
@@ -228,7 +228,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSinkException2] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkException2])

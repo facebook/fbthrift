@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -40,7 +40,7 @@ from thrift.py3.common cimport (
 from folly.optional cimport cOptional as __cOptional
 cimport c.types as _c_types
 
-cimport b.types_fields as __fbthrift_types_fields
+cimport b.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/b/types.h":
   pass

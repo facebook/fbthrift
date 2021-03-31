@@ -20,10 +20,10 @@ Used in semistream object callbacks to convert the returned cpp folly::optional 
 to a python type.
 
 }}{{#type:iobuf?}}{{!
-  }}__iobuf.from_unique_ptr(_value){{!
+  }}_fbthrift_iobuf.from_unique_ptr(_value){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}__iobuf.from_unique_ptr(move_iobuf(_value)){{!
+  }}_fbthrift_iobuf.from_unique_ptr(move_iobuf(_value)){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}(<const char*>_value.data())[:_value.size()]{{!

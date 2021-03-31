@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -93,7 +93,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])

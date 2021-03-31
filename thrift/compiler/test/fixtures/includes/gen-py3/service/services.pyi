@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta

@@ -35,7 +35,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -72,7 +72,7 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj)
     {{#struct:py3_fields}}
     {{#field:type}}
-    cdef void _set_field_{{field:index}}(self, __fbthrift_value) except *
+    cdef void _set_field_{{field:index}}(self, _fbthrift_value) except *
     {{/field:type}}
     {{/struct:py3_fields}}
 

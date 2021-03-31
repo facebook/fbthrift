@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import __NotSet, NOTSET
@@ -59,16 +59,16 @@ class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Itera
         optional_blob: bool
         pass
 
-    optional_blob: Final[_typing.Optional[__iobuf.IOBuf]] = ...
+    optional_blob: Final[_typing.Optional[_fbthrift_iobuf.IOBuf]] = ...
 
     def __init__(
         self, *,
-        optional_blob: _typing.Optional[__iobuf.IOBuf]=None
+        optional_blob: _typing.Optional[_fbthrift_iobuf.IOBuf]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        optional_blob: _typing.Union[__iobuf.IOBuf, __NotSet, None]=NOTSET
+        optional_blob: _typing.Union[_fbthrift_iobuf.IOBuf, __NotSet, None]=NOTSET
     ) -> OptionalRefStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalRefStruct'], bytes]]: ...
@@ -207,11 +207,11 @@ class BinaryUnion(thrift.py3.types.Union, _typing.Hashable):
         iobuf_val: bool
         pass
 
-    iobuf_val: Final[__iobuf.IOBuf] = ...
+    iobuf_val: Final[_fbthrift_iobuf.IOBuf] = ...
 
     def __init__(
         self, *,
-        iobuf_val: _typing.Optional[__iobuf.IOBuf]=None
+        iobuf_val: _typing.Optional[_fbthrift_iobuf.IOBuf]=None
     ) -> None: ...
 
     def __hash__(self) -> int: ...
@@ -225,9 +225,9 @@ class BinaryUnion(thrift.py3.types.Union, _typing.Hashable):
         iobuf_val: BinaryUnion.Type = ...
 
     @staticmethod
-    def fromValue(value: _typing.Union[None, __iobuf.IOBuf]) -> BinaryUnion: ...
+    def fromValue(value: _typing.Union[None, _fbthrift_iobuf.IOBuf]) -> BinaryUnion: ...
     @__property__
-    def value(self) -> _typing.Union[None, __iobuf.IOBuf]: ...
+    def value(self) -> _typing.Union[None, _fbthrift_iobuf.IOBuf]: ...
     @__property__
     def type(self) -> "BinaryUnion.Type": ...
 
@@ -614,6 +614,6 @@ WORD_LIST: List__string = ...
 SOME_MAP: List__Map__i32_double = ...
 DIGITS: Set__i32 = ...
 A_CONST_MAP: Map__string_SimpleStruct = ...
-IOBufPtr = __iobuf.IOBuf
-IOBuf = __iobuf.IOBuf
+IOBufPtr = _fbthrift_iobuf.IOBuf
+IOBuf = _fbthrift_iobuf.IOBuf
 foo_bar = bytes

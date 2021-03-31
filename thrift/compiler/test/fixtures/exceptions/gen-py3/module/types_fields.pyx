@@ -51,14 +51,14 @@ cdef class __Fiery_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field message
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cFiery](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'message is not a { str !r}.')
-        deref(self._struct_cpp_obj).message_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
 
 @__cython.auto_pickle(False)
@@ -78,14 +78,14 @@ cdef class __Serious_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field sonnet
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cSerious](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'sonnet is not a { str !r}.')
-        deref(self._struct_cpp_obj).sonnet_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).sonnet_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.sonnet = True
 
 
@@ -107,24 +107,24 @@ cdef class __ComplexFieldNames_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field error_message
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexFieldNames](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'error_message is not a { str !r}.')
-        deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.error_message = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field internal_error_message
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexFieldNames](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'internal_error_message is not a { str !r}.')
-        deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.internal_error_message = True
 
 
@@ -146,23 +146,23 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field error_message
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cCustomFieldNames](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'error_message is not a { str !r}.')
-        deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.error_message = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field internal_error_message
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cCustomFieldNames](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'internal_error_message is not a { str !r}.')
-        deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.internal_error_message = True
 

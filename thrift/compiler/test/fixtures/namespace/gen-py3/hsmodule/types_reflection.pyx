@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,

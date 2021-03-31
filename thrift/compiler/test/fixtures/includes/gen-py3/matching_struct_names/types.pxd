@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -40,7 +40,7 @@ from thrift.py3.common cimport (
 from folly.optional cimport cOptional as __cOptional
 cimport module.types as _module_types
 
-cimport matching_struct_names.types_fields as __fbthrift_types_fields
+cimport matching_struct_names.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/matching_struct_names/types.h":
   pass
@@ -104,7 +104,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -113,7 +113,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class Combo(thrift.py3.types.Struct):
     cdef shared_ptr[cCombo] _cpp_obj
-    cdef __fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
     cdef List__List__MyStruct __fbthrift_cached_listOfOurMyStructLists
     cdef List__module_MyStruct __fbthrift_cached_theirMyStructList
     cdef List__MyStruct __fbthrift_cached_ourMyStructList

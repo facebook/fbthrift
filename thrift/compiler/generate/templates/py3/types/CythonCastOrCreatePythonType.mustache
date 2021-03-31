@@ -19,7 +19,7 @@ cast a field to its Cython Python Type if not a container,
 otherwise create a container type with constructor
 
 }}{{^type:container?}}{{!
-}}(<{{> types/CythonPythonType}}?>__fbthrift_value){{!
+}}(<{{> types/CythonPythonType}}?>_fbthrift_value){{!
 }}{{/type:container?}}{{#type:container?}}{{!
-}}{{> types/CythonPythonType }}(__fbthrift_value){{!
+}}{{> types/CythonPythonType }}(_fbthrift_value){{!
 }}{{/type:container?}}

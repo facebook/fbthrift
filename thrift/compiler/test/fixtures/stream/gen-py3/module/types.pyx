@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -65,13 +65,13 @@ cimport module.types_reflection as _types_reflection
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __init__(FooEx self, *args, **kwargs):
         self._cpp_obj = make_shared[cFooEx]()
-        self._fields_setter = __fbthrift_types_fields.__FooEx_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__FooEx_FieldsSetter.create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FooEx", {
         })
 
@@ -93,7 +93,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         return FooEx.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cFooEx](
             self._cpp_obj,
             (<FooEx>other)._cpp_obj,
@@ -114,11 +114,11 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.FooEx"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cFooEx](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 0
+        self._fbthrift_struct_size = 0
 
 
 

@@ -35,23 +35,23 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field myEnum
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_test_fixtures_enumstrict_module_types.cMyStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _test_fixtures_enumstrict_module_types.MyEnum):
-            raise TypeError(f'field myEnum value: {repr(__fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyEnum }.')
-        deref(self._struct_cpp_obj).myEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyEnum><int>__fbthrift_value)
+        if not isinstance(_fbthrift_value, _test_fixtures_enumstrict_module_types.MyEnum):
+            raise TypeError(f'field myEnum value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyEnum }.')
+        deref(self._struct_cpp_obj).myEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyEnum><int>_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.myEnum = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field myBigEnum
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_test_fixtures_enumstrict_module_types.cMyStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _test_fixtures_enumstrict_module_types.MyBigEnum):
-            raise TypeError(f'field myBigEnum value: {repr(__fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyBigEnum }.')
-        deref(self._struct_cpp_obj).myBigEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyBigEnum><int>__fbthrift_value)
+        if not isinstance(_fbthrift_value, _test_fixtures_enumstrict_module_types.MyBigEnum):
+            raise TypeError(f'field myBigEnum value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyBigEnum }.')
+        deref(self._struct_cpp_obj).myBigEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyBigEnum><int>_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.myBigEnum = True
 

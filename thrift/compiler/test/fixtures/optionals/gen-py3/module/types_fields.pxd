@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,10 +51,10 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Color_FieldsSetter create(_module_types.cColor* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Vehicle_FieldsSetterFunc)(__Vehicle_FieldsSetter, object) except *
@@ -65,11 +65,11 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Vehicle_FieldsSetter create(_module_types.cVehicle* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-    cdef void _set_field_4(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Person_FieldsSetterFunc)(__Person_FieldsSetter, object) except *
@@ -80,14 +80,14 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Person_FieldsSetter create(_module_types.cPerson* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-    cdef void _set_field_4(self, __fbthrift_value) except *
-    cdef void _set_field_5(self, __fbthrift_value) except *
-    cdef void _set_field_6(self, __fbthrift_value) except *
-    cdef void _set_field_7(self, __fbthrift_value) except *
-    cdef void _set_field_8(self, __fbthrift_value) except *
-    cdef void _set_field_9(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
+    cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
+    cdef void _set_field_7(self, _fbthrift_value) except *
+    cdef void _set_field_8(self, _fbthrift_value) except *
+    cdef void _set_field_9(self, _fbthrift_value) except *
 

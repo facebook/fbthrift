@@ -11,7 +11,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 cimport includes.types as _includes_types
 
@@ -292,7 +292,7 @@ cdef __InterfaceSpec get_reflection__ReturnService(bint for_clients):
                     },
                 ),
             ),
-            result=__iobuf.IOBuf,
+            result=_fbthrift_iobuf.IOBuf,
             result_kind=__NumberType.NOT_A_NUMBER,
             exceptions=(
             ),
@@ -312,7 +312,7 @@ cdef __InterfaceSpec get_reflection__ReturnService(bint for_clients):
                     },
                 ),
             ),
-            result=__iobuf.IOBuf,
+            result=_fbthrift_iobuf.IOBuf,
             result_kind=__NumberType.NOT_A_NUMBER,
             exceptions=(
             ),

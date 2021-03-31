@@ -21,8 +21,8 @@ c++ object. The work is mostly done in CythonCppBasicType, but this file handles
 custom type overrides from the cpp.type annotation.
 
 }}{{#type:hasCustomType?}}{{!
-  }}{{#type:iobuf?}}__iobuf.cIOBuf{{/type:iobuf?}}{{!
-  }}{{#type:iobufRef?}}unique_ptr[__iobuf.cIOBuf]{{/type:iobufRef?}}{{!
+  }}{{#type:iobuf?}}_fbthrift_iobuf.cIOBuf{{/type:iobuf?}}{{!
+  }}{{#type:iobufRef?}}unique_ptr[_fbthrift_iobuf.cIOBuf]{{/type:iobufRef?}}{{!
   }}{{^type:iobuf?}}{{^type:iobufRef?}}{{!
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!

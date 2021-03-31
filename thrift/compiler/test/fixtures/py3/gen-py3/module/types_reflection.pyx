@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -64,7 +64,7 @@ cdef __StructSpec get_reflection__OptionalRefStruct():
         __FieldSpec.create(
             id=1,
             name="optional_blob",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
             default=None,
@@ -302,7 +302,7 @@ cdef __StructSpec get_reflection__BinaryUnion():
         __FieldSpec.create(
             id=1,
             name="iobuf_val",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

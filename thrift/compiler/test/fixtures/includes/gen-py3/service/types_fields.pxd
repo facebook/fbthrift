@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol

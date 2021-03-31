@@ -34,14 +34,14 @@ cdef class __decorated_struct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cdecorated_struct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'field is not a { str !r}.')
-        deref(self._struct_cpp_obj).field_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.field = True
 
 
@@ -69,68 +69,68 @@ cdef class __ContainerStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field fieldA
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 0)
             return
-        deref(self._struct_cpp_obj).fieldA_ref().assign(deref(_module_types.List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldA_ref().assign(deref(_module_types.List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldA = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field fieldB
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 1)
             return
-        deref(self._struct_cpp_obj).fieldB_ref().assign(deref(_module_types.std_list__List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldB_ref().assign(deref(_module_types.std_list__List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldB = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field fieldC
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 2)
             return
-        deref(self._struct_cpp_obj).fieldC_ref().assign(deref(_module_types.std_deque__List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldC_ref().assign(deref(_module_types.std_deque__List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldC = True
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field fieldD
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 3)
             return
-        deref(self._struct_cpp_obj).fieldD_ref().assign(deref(_module_types.folly_fbvector__List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldD_ref().assign(deref(_module_types.folly_fbvector__List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldD = True
 
-    cdef void _set_field_4(self, __fbthrift_value) except *:
+    cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field fieldE
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 4)
             return
-        deref(self._struct_cpp_obj).fieldE_ref().assign(deref(_module_types.folly_small_vector__List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldE_ref().assign(deref(_module_types.folly_small_vector__List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldE = True
 
-    cdef void _set_field_5(self, __fbthrift_value) except *:
+    cdef void _set_field_5(self, _fbthrift_value) except *:
         # for field fieldF
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 5)
             return
-        deref(self._struct_cpp_obj).fieldF_ref().assign(deref(_module_types.folly_sorted_vector_set__Set__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldF_ref().assign(deref(_module_types.folly_sorted_vector_set__Set__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldF = True
 
-    cdef void _set_field_6(self, __fbthrift_value) except *:
+    cdef void _set_field_6(self, _fbthrift_value) except *:
         # for field fieldG
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 6)
             return
-        deref(self._struct_cpp_obj).fieldG_ref().assign(deref(_module_types.folly_sorted_vector_map__Map__i32_string(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldG_ref().assign(deref(_module_types.folly_sorted_vector_map__Map__i32_string(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldG = True
 
-    cdef void _set_field_7(self, __fbthrift_value) except *:
+    cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field fieldH
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cContainerStruct](deref(self._struct_cpp_obj), 7)
             return
-        deref(self._struct_cpp_obj).fieldH_ref().assign(deref(_module_types.std_unordered_map__Map__i32_string(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldH_ref().assign(deref(_module_types.std_unordered_map__Map__i32_string(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldH = True
 
 
@@ -151,12 +151,12 @@ cdef class __CppTypeStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field fieldA
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cCppTypeStruct](deref(self._struct_cpp_obj), 0)
             return
-        deref(self._struct_cpp_obj).fieldA_ref().assign(deref(_module_types.std_list_int32_t__List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).fieldA_ref().assign(deref(_module_types.std_list_int32_t__List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.fieldA = True
 
 
@@ -177,15 +177,15 @@ cdef class __VirtualStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field MyIntField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cVirtualStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'MyIntField is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).MyIntField_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.MyIntField = True
 
 
@@ -207,24 +207,24 @@ cdef class __MyStructWithForwardRefEnum_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field a
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStructWithForwardRefEnum](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _module_types.MyForwardRefEnum):
-            raise TypeError(f'field a value: {repr(__fbthrift_value)} is not of the enum type { _module_types.MyForwardRefEnum }.')
-        deref(self._struct_cpp_obj).a_ref().assign(<_module_types.cMyForwardRefEnum><int>__fbthrift_value)
+        if not isinstance(_fbthrift_value, _module_types.MyForwardRefEnum):
+            raise TypeError(f'field a value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyForwardRefEnum }.')
+        deref(self._struct_cpp_obj).a_ref().assign(<_module_types.cMyForwardRefEnum><int>_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.a = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStructWithForwardRefEnum](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _module_types.MyForwardRefEnum):
-            raise TypeError(f'field b value: {repr(__fbthrift_value)} is not of the enum type { _module_types.MyForwardRefEnum }.')
-        deref(self._struct_cpp_obj).b_ref().assign(<_module_types.cMyForwardRefEnum><int>__fbthrift_value)
+        if not isinstance(_fbthrift_value, _module_types.MyForwardRefEnum):
+            raise TypeError(f'field b value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyForwardRefEnum }.')
+        deref(self._struct_cpp_obj).b_ref().assign(<_module_types.cMyForwardRefEnum><int>_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.b = True
 
 
@@ -246,25 +246,25 @@ cdef class __TrivialNumeric_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field a
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTrivialNumeric](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'a is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).a_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).a_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.a = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTrivialNumeric](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, bool):
+        if not isinstance(_fbthrift_value, bool):
             raise TypeError(f'b is not a { bool !r}.')
-        deref(self._struct_cpp_obj).b_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).b_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.b = True
 
 
@@ -286,25 +286,25 @@ cdef class __TrivialNestedWithDefault_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field z
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTrivialNestedWithDefault](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'z is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).z_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).z_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.z = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field n
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTrivialNestedWithDefault](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _module_types.TrivialNumeric):
+        if not isinstance(_fbthrift_value, _module_types.TrivialNumeric):
             raise TypeError(f'n is not a { _module_types.TrivialNumeric !r}.')
-        deref(self._struct_cpp_obj).n_ref().assign(deref((<_module_types.TrivialNumeric?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).n_ref().assign(deref((<_module_types.TrivialNumeric?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.n = True
 
 
@@ -326,22 +326,22 @@ cdef class __ComplexString_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field a
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexString](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'a is not a { str !r}.')
-        deref(self._struct_cpp_obj).a_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).a_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.a = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexString](deref(self._struct_cpp_obj), 1)
             return
-        deref(self._struct_cpp_obj).b_ref().assign(deref(_module_types.Map__string_i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).b_ref().assign(deref(_module_types.Map__string_i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.b = True
 
 
@@ -363,24 +363,24 @@ cdef class __ComplexNestedWithDefault_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field z
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexNestedWithDefault](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'z is not a { str !r}.')
-        deref(self._struct_cpp_obj).z_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).z_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.z = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field n
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cComplexNestedWithDefault](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _module_types.ComplexString):
+        if not isinstance(_fbthrift_value, _module_types.ComplexString):
             raise TypeError(f'n is not a { _module_types.ComplexString !r}.')
-        deref(self._struct_cpp_obj).n_ref().assign(deref((<_module_types.ComplexString?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).n_ref().assign(deref((<_module_types.ComplexString?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.n = True
 
 
@@ -405,55 +405,55 @@ cdef class __MinPadding_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field small
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMinPadding](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'small is not a { int !r}.')
-        __fbthrift_value = <cint8_t> __fbthrift_value
-        deref(self._struct_cpp_obj).small_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint8_t> _fbthrift_value
+        deref(self._struct_cpp_obj).small_ref().assign(_fbthrift_value)
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field big
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMinPadding](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'big is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).big_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).big_ref().assign(_fbthrift_value)
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field medium
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMinPadding](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'medium is not a { int !r}.')
-        __fbthrift_value = <cint16_t> __fbthrift_value
-        deref(self._struct_cpp_obj).medium_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint16_t> _fbthrift_value
+        deref(self._struct_cpp_obj).medium_ref().assign(_fbthrift_value)
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field biggish
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMinPadding](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'biggish is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).biggish_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).biggish_ref().assign(_fbthrift_value)
 
-    cdef void _set_field_4(self, __fbthrift_value) except *:
+    cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field tiny
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMinPadding](deref(self._struct_cpp_obj), 4)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'tiny is not a { int !r}.')
-        __fbthrift_value = <cint8_t> __fbthrift_value
-        deref(self._struct_cpp_obj).tiny_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint8_t> _fbthrift_value
+        deref(self._struct_cpp_obj).tiny_ref().assign(_fbthrift_value)
 
 
 @__cython.auto_pickle(False)
@@ -476,46 +476,46 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field MyIntField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'MyIntField is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).MyIntField_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.MyIntField = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyStringField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'MyStringField is not a { str !r}.')
-        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.MyStringField = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field majorVer
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'majorVer is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).majorVer_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).majorVer_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.majorVer = True
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field data
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(__fbthrift_value, _module_types.MyDataItem):
+        if not isinstance(_fbthrift_value, _module_types.MyDataItem):
             raise TypeError(f'data is not a { _module_types.MyDataItem !r}.')
-        deref(self._struct_cpp_obj).data_ref().assign(deref((<_module_types.MyDataItem?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).data_ref().assign(deref((<_module_types.MyDataItem?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.data = True
 
 
@@ -553,15 +553,15 @@ cdef class __Renaming_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field foo
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cRenaming](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'foo is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).foo_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).foo_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.foo = True
 
 
@@ -583,22 +583,22 @@ cdef class __AnnotatedTypes_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field binary_field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedTypes](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, bytes):
+        if not isinstance(_fbthrift_value, bytes):
             raise TypeError(f'binary_field is not a { bytes !r}.')
-        deref(self._struct_cpp_obj).binary_field_ref().assign(cmove(bytes_to_string(__fbthrift_value)))
+        deref(self._struct_cpp_obj).binary_field_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
         deref(self._struct_cpp_obj).__isset.binary_field = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field list_field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedTypes](deref(self._struct_cpp_obj), 1)
             return
-        deref(self._struct_cpp_obj).list_field_ref().assign(deref(_module_types.List__std_unordered_map__Map__i32_string(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).list_field_ref().assign(deref(_module_types.List__std_unordered_map__Map__i32_string(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.list_field = True
 
 
@@ -620,24 +620,24 @@ cdef class __ForwardUsageRoot_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field ForwardUsageStruct
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cForwardUsageRoot](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _module_types.ForwardUsageStruct):
+        if not isinstance(_fbthrift_value, _module_types.ForwardUsageStruct):
             raise TypeError(f'ForwardUsageStruct is not a { _module_types.ForwardUsageStruct !r}.')
-        deref(self._struct_cpp_obj).ForwardUsageStruct_ref().assign(deref((<_module_types.ForwardUsageStruct?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).ForwardUsageStruct_ref().assign(deref((<_module_types.ForwardUsageStruct?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.ForwardUsageStruct = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field ForwardUsageByRef
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cForwardUsageRoot](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _module_types.ForwardUsageByRef):
+        if not isinstance(_fbthrift_value, _module_types.ForwardUsageByRef):
             raise TypeError(f'ForwardUsageByRef is not a { _module_types.ForwardUsageByRef !r}.')
-        deref(self._struct_cpp_obj).ForwardUsageByRef = make_unique[_module_types.cForwardUsageByRef](deref((<_module_types.ForwardUsageByRef?>__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).ForwardUsageByRef = make_unique[_module_types.cForwardUsageByRef](deref((<_module_types.ForwardUsageByRef?>_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -657,14 +657,14 @@ cdef class __ForwardUsageStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field foo
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cForwardUsageStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _module_types.ForwardUsageRoot):
+        if not isinstance(_fbthrift_value, _module_types.ForwardUsageRoot):
             raise TypeError(f'foo is not a { _module_types.ForwardUsageRoot !r}.')
-        deref(self._struct_cpp_obj).foo_ref().assign(deref((<_module_types.ForwardUsageRoot?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).foo_ref().assign(deref((<_module_types.ForwardUsageRoot?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.foo = True
 
 
@@ -685,14 +685,14 @@ cdef class __ForwardUsageByRef_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field foo
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cForwardUsageByRef](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _module_types.ForwardUsageRoot):
+        if not isinstance(_fbthrift_value, _module_types.ForwardUsageRoot):
             raise TypeError(f'foo is not a { _module_types.ForwardUsageRoot !r}.')
-        deref(self._struct_cpp_obj).foo_ref().assign(deref((<_module_types.ForwardUsageRoot?> __fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).foo_ref().assign(deref((<_module_types.ForwardUsageRoot?> _fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.foo = True
 
 
@@ -730,15 +730,15 @@ cdef class __NoexceptMoveSimpleStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field boolField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveSimpleStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'boolField is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).boolField_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).boolField_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.boolField = True
 
 
@@ -767,90 +767,90 @@ cdef class __NoexceptMoveComplexStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field MyBoolField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, bool):
+        if not isinstance(_fbthrift_value, bool):
             raise TypeError(f'MyBoolField is not a { bool !r}.')
-        deref(self._struct_cpp_obj).MyBoolField_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).MyBoolField_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.MyBoolField = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyIntField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'MyIntField is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).MyIntField_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.MyIntField = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field MyStringField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'MyStringField is not a { str !r}.')
-        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.MyStringField = True
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field MyStringField2
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'MyStringField2 is not a { str !r}.')
-        deref(self._struct_cpp_obj).MyStringField2_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).MyStringField2_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.MyStringField2 = True
 
-    cdef void _set_field_4(self, __fbthrift_value) except *:
+    cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field MyBinaryField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 4)
             return
-        if not isinstance(__fbthrift_value, bytes):
+        if not isinstance(_fbthrift_value, bytes):
             raise TypeError(f'MyBinaryField is not a { bytes !r}.')
-        deref(self._struct_cpp_obj).MyBinaryField_ref().assign(cmove(bytes_to_string(__fbthrift_value)))
+        deref(self._struct_cpp_obj).MyBinaryField_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
         deref(self._struct_cpp_obj).__isset.MyBinaryField = True
 
-    cdef void _set_field_5(self, __fbthrift_value) except *:
+    cdef void _set_field_5(self, _fbthrift_value) except *:
         # for field MyBinaryField2
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 5)
             return
-        if not isinstance(__fbthrift_value, bytes):
+        if not isinstance(_fbthrift_value, bytes):
             raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
-        deref(self._struct_cpp_obj).MyBinaryField2_ref().assign(cmove(bytes_to_string(__fbthrift_value)))
+        deref(self._struct_cpp_obj).MyBinaryField2_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
         deref(self._struct_cpp_obj).__isset.MyBinaryField2 = True
 
-    cdef void _set_field_6(self, __fbthrift_value) except *:
+    cdef void _set_field_6(self, _fbthrift_value) except *:
         # for field MyBinaryField3
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 6)
             return
-        if not isinstance(__fbthrift_value, bytes):
+        if not isinstance(_fbthrift_value, bytes):
             raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
-        deref(self._struct_cpp_obj).MyBinaryField3_ref().assign(cmove(bytes_to_string(__fbthrift_value)))
+        deref(self._struct_cpp_obj).MyBinaryField3_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
 
-    cdef void _set_field_7(self, __fbthrift_value) except *:
+    cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field MyBinaryListField4
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 7)
             return
-        deref(self._struct_cpp_obj).MyBinaryListField4_ref().assign(deref(_module_types.List__binary(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).MyBinaryListField4_ref().assign(deref(_module_types.List__binary(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.MyBinaryListField4 = True
 
-    cdef void _set_field_8(self, __fbthrift_value) except *:
+    cdef void _set_field_8(self, _fbthrift_value) except *:
         # for field MyMapEnumAndInt
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cNoexceptMoveComplexStruct](deref(self._struct_cpp_obj), 8)
             return
-        deref(self._struct_cpp_obj).MyMapEnumAndInt_ref().assign(deref(_module_types.Map__MyEnumA_string(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).MyMapEnumAndInt_ref().assign(deref(_module_types.Map__MyEnumA_string(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.MyMapEnumAndInt = True
 
 
@@ -875,49 +875,49 @@ cdef class __AllocatorAware_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field aa_list
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 0)
             return
-        deref(self._struct_cpp_obj).aa_list_ref().assign(deref(_module_types.List__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).aa_list_ref().assign(deref(_module_types.List__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.aa_list = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field aa_set
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 1)
             return
-        deref(self._struct_cpp_obj).aa_set_ref().assign(deref(_module_types.Set__i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).aa_set_ref().assign(deref(_module_types.Set__i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.aa_set = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field aa_map
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 2)
             return
-        deref(self._struct_cpp_obj).aa_map_ref().assign(deref(_module_types.Map__i32_i32(__fbthrift_value)._cpp_obj))
+        deref(self._struct_cpp_obj).aa_map_ref().assign(deref(_module_types.Map__i32_i32(_fbthrift_value)._cpp_obj))
         deref(self._struct_cpp_obj).__isset.aa_map = True
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field aa_string
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'aa_string is not a { str !r}.')
-        deref(self._struct_cpp_obj).aa_string_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
+        deref(self._struct_cpp_obj).aa_string_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
         deref(self._struct_cpp_obj).__isset.aa_string = True
 
-    cdef void _set_field_4(self, __fbthrift_value) except *:
+    cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field not_a_container
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 4)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'not_a_container is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).not_a_container_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).not_a_container_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.not_a_container = True
 
 
@@ -938,15 +938,15 @@ cdef class __AllocatorAware2_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field not_a_container
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cAllocatorAware2](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'not_a_container is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).not_a_container_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).not_a_container_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.not_a_container = True
 
 
@@ -969,36 +969,36 @@ cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field i32_field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'i32_field is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).i32_field_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).i32_field_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.i32_field = True
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field IntTypedef_field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'IntTypedef_field is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).IntTypedef_field_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).IntTypedef_field_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.IntTypedef_field = True
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field UintTypedef_field
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cTypedefStruct](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'UintTypedef_field is not a { int !r}.')
-        __fbthrift_value = <cint32_t> __fbthrift_value
-        deref(self._struct_cpp_obj).UintTypedef_field_ref().assign(__fbthrift_value)
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).UintTypedef_field_ref().assign(_fbthrift_value)
         deref(self._struct_cpp_obj).__isset.UintTypedef_field = True
 

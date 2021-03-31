@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,7 +51,7 @@ cdef class __Mixin1_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Mixin1_FieldsSetter create(_module_types.cMixin1* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Mixin2_FieldsSetterFunc)(__Mixin2_FieldsSetter, object) except *
@@ -62,8 +62,8 @@ cdef class __Mixin2_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Mixin2_FieldsSetter create(_module_types.cMixin2* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Mixin3Base_FieldsSetterFunc)(__Mixin3Base_FieldsSetter, object) except *
@@ -74,7 +74,7 @@ cdef class __Mixin3Base_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Mixin3Base_FieldsSetter create(_module_types.cMixin3Base* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Foo_FieldsSetterFunc)(__Foo_FieldsSetter, object) except *
@@ -85,7 +85,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Foo_FieldsSetter create(_module_types.cFoo* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
 

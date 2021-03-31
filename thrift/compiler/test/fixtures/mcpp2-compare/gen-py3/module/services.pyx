@@ -47,8 +47,8 @@ if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
 
 cimport folly.futures
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
@@ -233,10 +233,10 @@ cdef class Promise_float:
 
 @cython.auto_pickle(False)
 cdef class Promise___iobuf_cIOBuf:
-    cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise
+    cdef cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise):
         cdef Promise___iobuf_cIOBuf inst = Promise___iobuf_cIOBuf.__new__(Promise___iobuf_cIOBuf)
         inst.cPromise = cmove(cPromise)
         return inst
@@ -273,10 +273,10 @@ cdef class Promise_cint64_t:
 
 @cython.auto_pickle(False)
 cdef class Promise_unique_ptr__iobuf_cIOBuf:
-    cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise
+    cdef cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise):
         cdef Promise_unique_ptr__iobuf_cIOBuf inst = Promise_unique_ptr__iobuf_cIOBuf.__new__(Promise_unique_ptr__iobuf_cIOBuf)
         inst.cPromise = cmove(cPromise)
         return inst
@@ -1725,7 +1725,7 @@ async def ReturnService_list_UnionReturn_coro(
 cdef api void call_cy_ReturnService_readDataEb(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise,
+    cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise,
     cint64_t size
 ):
     cdef Promise___iobuf_cIOBuf __promise = Promise___iobuf_cIOBuf.create(cmove(cPromise))
@@ -1772,12 +1772,12 @@ async def ReturnService_readDataEb_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(((<__iobuf.IOBuf>result).c_clone()))
+        promise.cPromise.setValue(((<_fbthrift_iobuf.IOBuf>result).c_clone()))
 
 cdef api void call_cy_ReturnService_readData(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise,
+    cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise,
     cint64_t size
 ):
     cdef Promise_unique_ptr__iobuf_cIOBuf __promise = Promise_unique_ptr__iobuf_cIOBuf.create(cmove(cPromise))
@@ -1824,7 +1824,7 @@ async def ReturnService_readData_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[unique_ptr[__iobuf.cIOBuf]](((<__iobuf.IOBuf>result).c_clone())))
+        promise.cPromise.setValue(make_unique[unique_ptr[_fbthrift_iobuf.cIOBuf]](((<_fbthrift_iobuf.IOBuf>result).c_clone())))
 
 cdef api void call_cy_ParamService_void_ret_i16_param(
     object self,

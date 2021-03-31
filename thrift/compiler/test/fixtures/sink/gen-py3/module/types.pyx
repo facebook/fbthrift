@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -63,7 +63,7 @@ cimport module.types_reflection as _types_reflection
 cdef class InitialResponse(thrift.py3.types.Struct):
     def __init__(InitialResponse self, **kwargs):
         self._cpp_obj = make_shared[cInitialResponse]()
-        self._fields_setter = __fbthrift_types_fields.__InitialResponse_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__InitialResponse_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(InitialResponse self, **kwargs):
@@ -71,15 +71,15 @@ cdef class InitialResponse(thrift.py3.types.Struct):
             return self
         cdef InitialResponse __fbthrift_inst = InitialResponse.__new__(InitialResponse)
         __fbthrift_inst._cpp_obj = make_shared[cInitialResponse](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__InitialResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__InitialResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialResponse", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
@@ -106,7 +106,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         return InitialResponse.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cInitialResponse](
             self._cpp_obj,
             (<InitialResponse>other)._cpp_obj,
@@ -127,19 +127,19 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.InitialResponse"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cInitialResponse](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(InitialResponse self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(InitialResponse self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cInitialResponse](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(InitialResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(InitialResponse self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cInitialResponse]()
         with nogil:
@@ -151,7 +151,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 cdef class FinalResponse(thrift.py3.types.Struct):
     def __init__(FinalResponse self, **kwargs):
         self._cpp_obj = make_shared[cFinalResponse]()
-        self._fields_setter = __fbthrift_types_fields.__FinalResponse_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__FinalResponse_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(FinalResponse self, **kwargs):
@@ -159,15 +159,15 @@ cdef class FinalResponse(thrift.py3.types.Struct):
             return self
         cdef FinalResponse __fbthrift_inst = FinalResponse.__new__(FinalResponse)
         __fbthrift_inst._cpp_obj = make_shared[cFinalResponse](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__FinalResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__FinalResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FinalResponse", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
@@ -194,7 +194,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         return FinalResponse.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cFinalResponse](
             self._cpp_obj,
             (<FinalResponse>other)._cpp_obj,
@@ -215,19 +215,19 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.FinalResponse"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cFinalResponse](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(FinalResponse self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(FinalResponse self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cFinalResponse](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(FinalResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(FinalResponse self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cFinalResponse]()
         with nogil:
@@ -239,7 +239,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 cdef class SinkPayload(thrift.py3.types.Struct):
     def __init__(SinkPayload self, **kwargs):
         self._cpp_obj = make_shared[cSinkPayload]()
-        self._fields_setter = __fbthrift_types_fields.__SinkPayload_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__SinkPayload_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(SinkPayload self, **kwargs):
@@ -247,15 +247,15 @@ cdef class SinkPayload(thrift.py3.types.Struct):
             return self
         cdef SinkPayload __fbthrift_inst = SinkPayload.__new__(SinkPayload)
         __fbthrift_inst._cpp_obj = make_shared[cSinkPayload](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__SinkPayload_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__SinkPayload_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkPayload", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
@@ -282,7 +282,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         return SinkPayload.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cSinkPayload](
             self._cpp_obj,
             (<SinkPayload>other)._cpp_obj,
@@ -303,19 +303,19 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.SinkPayload"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSinkPayload](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(SinkPayload self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(SinkPayload self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cSinkPayload](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(SinkPayload self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(SinkPayload self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cSinkPayload]()
         with nogil:
@@ -327,7 +327,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __init__(CompatibleWithKeywordSink self, **kwargs):
         self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
-        self._fields_setter = __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(CompatibleWithKeywordSink self, **kwargs):
@@ -335,15 +335,15 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
             return self
         cdef CompatibleWithKeywordSink __fbthrift_inst = CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
         __fbthrift_inst._cpp_obj = make_shared[cCompatibleWithKeywordSink](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("CompatibleWithKeywordSink", {
           "sink": deref(self._cpp_obj).sink_ref().has_value(),
         })
@@ -370,7 +370,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         return CompatibleWithKeywordSink.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cCompatibleWithKeywordSink](
             self._cpp_obj,
             (<CompatibleWithKeywordSink>other)._cpp_obj,
@@ -391,19 +391,19 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.CompatibleWithKeywordSink"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cCompatibleWithKeywordSink](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cCompatibleWithKeywordSink](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(CompatibleWithKeywordSink self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(CompatibleWithKeywordSink self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
         with nogil:
@@ -415,13 +415,13 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __init__(InitialException self, *args, **kwargs):
         self._cpp_obj = make_shared[cInitialException]()
-        self._fields_setter = __fbthrift_types_fields.__InitialException_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__InitialException_FieldsSetter.create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialException", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
@@ -449,7 +449,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         return InitialException.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cInitialException](
             self._cpp_obj,
             (<InitialException>other)._cpp_obj,
@@ -470,11 +470,11 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.InitialException"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cInitialException](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
 
 
@@ -482,13 +482,13 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __init__(SinkException1 self, *args, **kwargs):
         self._cpp_obj = make_shared[cSinkException1]()
-        self._fields_setter = __fbthrift_types_fields.__SinkException1_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__SinkException1_FieldsSetter.create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException1", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
@@ -516,7 +516,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
         return SinkException1.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cSinkException1](
             self._cpp_obj,
             (<SinkException1>other)._cpp_obj,
@@ -537,11 +537,11 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.SinkException1"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSinkException1](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
 
 
@@ -549,13 +549,13 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     def __init__(SinkException2 self, *args, **kwargs):
         self._cpp_obj = make_shared[cSinkException2]()
-        self._fields_setter = __fbthrift_types_fields.__SinkException2_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__SinkException2_FieldsSetter.create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException2", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
@@ -583,7 +583,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
         return SinkException2.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cSinkException2](
             self._cpp_obj,
             (<SinkException2>other)._cpp_obj,
@@ -604,11 +604,11 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.SinkException2"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSinkException2](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
 
 

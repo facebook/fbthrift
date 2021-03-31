@@ -96,19 +96,19 @@ cdef class GeneratedError(Error):
             except StopIteration:
                 raise TypeError(f"{type(self).__name__}() only takes {idx} arguments")
             else:
-                self.__fbthrift_set_field(name, value)
+                self._fbthrift_set_field(name, value)
         for name in names_iter:
             value = kwargs.pop(name, None)
             if value is not None:
-                self.__fbthrift_set_field(name, value)
+                self._fbthrift_set_field(name, value)
         if kwargs:  # still something left
             raise TypeError(f"{type(self).__name__}() found duplicate/undefined arguments {repr(kwargs)}")
         _builtins.Exception.__init__(self, *(value for _, value in self))
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
-    cdef object __cmp_sametype(self, other, int op):
+    cdef object _fbthrift_cmp_sametype(self, other, int op):
         if not isinstance(other, type(self)):
             if op == Py_EQ:  # different types are never equal
                 return False
@@ -117,10 +117,10 @@ cdef class GeneratedError(Error):
             return NotImplemented
         # otherwise returns None
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         pass
 
-    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef string_view _fbthrift_get_field_name_by_index(self, size_t idx):
         raise NotImplementedError()
 
     def __repr__(self):
@@ -128,8 +128,8 @@ cdef class GeneratedError(Error):
         return f"{type(self).__name__}({fields})"
 
     def __iter_names(self):
-        for i in range(self.__fbthrift_struct_size):
-            yield sv_to_str(self.__fbthrift_get_field_name_by_index(i))
+        for i in range(self._fbthrift_struct_size):
+            yield sv_to_str(self._fbthrift_get_field_name_by_index(i))
 
     def __iter__(self):
         for name in self.__iter_names():

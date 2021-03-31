@@ -40,8 +40,8 @@ from thrift.py3.common cimport (
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 cimport cython
 

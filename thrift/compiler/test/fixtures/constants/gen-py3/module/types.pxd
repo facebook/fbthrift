@@ -21,7 +21,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -266,7 +266,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class Internship(thrift.py3.types.Struct):
     cdef shared_ptr[cInternship] _cpp_obj
-    cdef __fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
     cdef object __fbthrift_cached_employer
 
     @staticmethod
@@ -276,7 +276,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
 cdef class Range(thrift.py3.types.Struct):
     cdef shared_ptr[cRange] _cpp_obj
-    cdef __fbthrift_types_fields.__Range_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Range_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cRange])
@@ -285,7 +285,7 @@ cdef class Range(thrift.py3.types.Struct):
 
 cdef class struct1(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct1] _cpp_obj
-    cdef __fbthrift_types_fields.__struct1_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__struct1_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cstruct1])
@@ -294,7 +294,7 @@ cdef class struct1(thrift.py3.types.Struct):
 
 cdef class struct2(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct2] _cpp_obj
-    cdef __fbthrift_types_fields.__struct2_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__struct2_FieldsSetter _fields_setter
     cdef struct1 __fbthrift_cached_c
     cdef List__i32 __fbthrift_cached_d
 
@@ -305,7 +305,7 @@ cdef class struct2(thrift.py3.types.Struct):
 
 cdef class struct3(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct3] _cpp_obj
-    cdef __fbthrift_types_fields.__struct3_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__struct3_FieldsSetter _fields_setter
     cdef struct2 __fbthrift_cached_c
 
     @staticmethod
@@ -315,7 +315,7 @@ cdef class struct3(thrift.py3.types.Struct):
 
 cdef class struct4(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct4] _cpp_obj
-    cdef __fbthrift_types_fields.__struct4_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__struct4_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cstruct4])

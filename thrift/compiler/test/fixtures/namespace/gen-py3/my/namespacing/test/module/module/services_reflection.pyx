@@ -11,7 +11,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types

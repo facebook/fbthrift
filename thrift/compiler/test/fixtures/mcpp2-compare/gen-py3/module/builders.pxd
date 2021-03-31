@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
@@ -179,8 +179,8 @@ cdef class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public set set_type
     cdef public dict map_type
     cdef public dict map_struct_type
-    cdef public __iobuf.IOBuf iobuf_type
-    cdef public __iobuf.IOBuf iobuf_ptr
+    cdef public _fbthrift_iobuf.IOBuf iobuf_type
+    cdef public _fbthrift_iobuf.IOBuf iobuf_ptr
     cdef public list list_i32_template
     cdef public list list_string_template
     cdef public set set_template
@@ -192,8 +192,8 @@ cdef class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint indirection_a
     cdef public list indirection_b
     cdef public set indirection_c
-    cdef public __iobuf.IOBuf iobuf_type_val
-    cdef public __iobuf.IOBuf iobuf_ptr_val
+    cdef public _fbthrift_iobuf.IOBuf iobuf_type_val
+    cdef public _fbthrift_iobuf.IOBuf iobuf_ptr_val
     cdef public object struct_struct
 
 

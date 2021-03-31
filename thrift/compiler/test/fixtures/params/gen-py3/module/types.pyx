@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -297,9 +297,9 @@ cdef class Set__i32(thrift.py3.types.Set):
                 (<Set__i32> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
         cdef shared_ptr[cset[cint32_t]] result

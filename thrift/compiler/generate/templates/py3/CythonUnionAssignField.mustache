@@ -60,7 +60,7 @@ on a union.
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
   }}{{#type:iobuf?}}{{!
-    }}deref(c_inst).set_{{field:py_name}}(deref((<__iobuf.IOBuf?>{{field:py_name}}).c_clone().release())) {{!
+    }}deref(c_inst).set_{{field:py_name}}(deref((<_fbthrift_iobuf.IOBuf?>{{field:py_name}}).c_clone().release())) {{!
   }}{{/type:iobuf?}}{{!
   }}{{^type:iobuf?}}{{!
     }}deref(c_inst).set_{{field:py_name}}({{field:py_name}}){{!

@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
@@ -339,35 +339,35 @@ class ReturnServiceInterface(
     def pass_context_readDataEb(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, __iobuf.IOBuf]
+                _typing.Coroutine[_typing.Any, _typing.Any, _fbthrift_iobuf.IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, __iobuf.IOBuf]
+        _typing.Coroutine[_typing.Any, _typing.Any, _fbthrift_iobuf.IOBuf]
     ]: ...
 
     @abstractmethod
     async def readDataEb(
         self,
         size: int
-    ) -> __iobuf.IOBuf: ...
+    ) -> _fbthrift_iobuf.IOBuf: ...
 
     @staticmethod
     def pass_context_readData(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, __iobuf.IOBuf]
+                _typing.Coroutine[_typing.Any, _typing.Any, _fbthrift_iobuf.IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, __iobuf.IOBuf]
+        _typing.Coroutine[_typing.Any, _typing.Any, _fbthrift_iobuf.IOBuf]
     ]: ...
 
     @abstractmethod
     async def readData(
         self,
         size: int
-    ) -> __iobuf.IOBuf: ...
+    ) -> _fbthrift_iobuf.IOBuf: ...
     pass
 
 

@@ -45,7 +45,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -65,13 +65,13 @@ cdef __EnumData __MyEnumA_enum_data  = __EnumData.create(thrift.py3.types.create
 @__cython.auto_pickle(False)
 cdef class __MyEnumAMeta(thrift.py3.types.EnumMeta):
 
-    def __get_by_name(cls, str name):
+    def _fbthrift_get_by_name(cls, str name):
         return __MyEnumA_enum_data.get_by_name(name)
 
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __MyEnumA_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __MyEnumA_enum_data.get_all_names()
 
     def __len__(cls):
@@ -104,7 +104,7 @@ __SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)
 cdef class SmallStruct(thrift.py3.types.Struct):
     def __init__(SmallStruct self, **kwargs):
         self._cpp_obj = make_shared[cSmallStruct]()
-        self._fields_setter = __fbthrift_types_fields.__SmallStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__SmallStruct_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(SmallStruct self, **kwargs):
@@ -112,15 +112,15 @@ cdef class SmallStruct(thrift.py3.types.Struct):
             return self
         cdef SmallStruct __fbthrift_inst = SmallStruct.__new__(SmallStruct)
         __fbthrift_inst._cpp_obj = make_shared[cSmallStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__SmallStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__SmallStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("SmallStruct", {
           "small_A": deref(self._cpp_obj).small_A_ref().has_value(),
           "small_B": deref(self._cpp_obj).small_B_ref().has_value(),
@@ -153,7 +153,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         return SmallStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cSmallStruct](
             self._cpp_obj,
             (<SmallStruct>other)._cpp_obj,
@@ -174,19 +174,19 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.SmallStruct"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSmallStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(SmallStruct self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(SmallStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cSmallStruct](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(SmallStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(SmallStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cSmallStruct]()
         with nogil:
@@ -198,7 +198,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 cdef class containerStruct(thrift.py3.types.Struct):
     def __init__(containerStruct self, **kwargs):
         self._cpp_obj = make_shared[ccontainerStruct]()
-        self._fields_setter = __fbthrift_types_fields.__containerStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__containerStruct_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(containerStruct self, **kwargs):
@@ -206,15 +206,15 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return self
         cdef containerStruct __fbthrift_inst = containerStruct.__new__(containerStruct)
         __fbthrift_inst._cpp_obj = make_shared[ccontainerStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__containerStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__containerStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("containerStruct", {
           "fieldA": deref(self._cpp_obj).fieldA_ref().has_value(),
           "fieldB": deref(self._cpp_obj).fieldB_ref().has_value(),
@@ -408,7 +408,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         return containerStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[ccontainerStruct](
             self._cpp_obj,
             (<containerStruct>other)._cpp_obj,
@@ -429,19 +429,19 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.containerStruct"
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[ccontainerStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 22
+        self._fbthrift_struct_size = 22
 
-    cdef __iobuf.IOBuf _serialize(containerStruct self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(containerStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[ccontainerStruct](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(containerStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(containerStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[ccontainerStruct]()
         with nogil:
@@ -606,9 +606,9 @@ cdef class Set__i32(thrift.py3.types.Set):
                 (<Set__i32> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__i32):
             other = Set__i32(other)
         cdef shared_ptr[cset[cint32_t]] result
@@ -1483,9 +1483,9 @@ cdef class Set__bool(thrift.py3.types.Set):
                 (<Set__bool> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__bool):
             other = Set__bool(other)
         cdef shared_ptr[cset[cbool]] result
@@ -1570,9 +1570,9 @@ cdef class Set__Set__bool(thrift.py3.types.Set):
                 (<Set__Set__bool> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__Set__bool):
             other = Set__Set__bool(other)
         cdef shared_ptr[cset[cset[cbool]]] result
@@ -1657,9 +1657,9 @@ cdef class Set__Set__Set__bool(thrift.py3.types.Set):
                 (<Set__Set__Set__bool> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__Set__Set__bool):
             other = Set__Set__Set__bool(other)
         cdef shared_ptr[cset[cset[cset[cbool]]]] result
@@ -1744,9 +1744,9 @@ cdef class Set__List__i32(thrift.py3.types.Set):
                 (<Set__List__i32> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__List__i32):
             other = Set__List__i32(other)
         cdef shared_ptr[cset[vector[cint32_t]]] result
@@ -1826,9 +1826,9 @@ cdef class Set__string(thrift.py3.types.Set):
                 (<Set__string> other)._cpp_obj,
                 op,
             )
-        return self.__py_richcmp(other, op)
+        return self._fbthrift_py_richcmp(other, op)
 
-    cdef __do_set_op(self, other, __cSetOp op):
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
         if not isinstance(other, Set__string):
             other = Set__string(other)
         cdef shared_ptr[cset[string]] result

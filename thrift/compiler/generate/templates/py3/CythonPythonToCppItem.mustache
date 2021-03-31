@@ -26,10 +26,10 @@ named item, for use in sets, lists, and map values. If you need to use a map
 key, include the parallel CythonPythonToCppKey file instead.
 
 }}{{#type:iobuf?}}{{!
-  }}deref((<__iobuf.IOBuf?>item).c_clone()){{!
+  }}deref((<_fbthrift_iobuf.IOBuf?>item).c_clone()){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}(<__iobuf.IOBuf?>item).c_clone(){{!
+  }}(<_fbthrift_iobuf.IOBuf?>item).c_clone(){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}{{> types/CythonCppType}}(move(<string>item)){{!

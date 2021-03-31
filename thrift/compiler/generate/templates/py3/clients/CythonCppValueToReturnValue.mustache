@@ -20,10 +20,10 @@ Used in cython client callbacks to convert the returned cpp value type
 to a python type.
 
 }}{{#type:iobuf?}}{{!
-  }}__iobuf.from_unique_ptr(result.value().clone()){{!
+  }}_fbthrift_iobuf.from_unique_ptr(result.value().clone()){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}__iobuf.from_unique_ptr(move_iobuf(result.value())){{!
+  }}_fbthrift_iobuf.from_unique_ptr(move_iobuf(result.value())){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}(<const char*>result.value().data())[:result.value().size()]{{!

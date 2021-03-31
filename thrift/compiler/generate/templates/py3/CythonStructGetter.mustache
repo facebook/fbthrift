@@ -24,14 +24,14 @@ if they have been previously retrieved.
 
 }}{{#type:iobuf?}}{{!
 }}if self.__fbthrift_cached_{{field:py_name}} is None:
-    self.__fbthrift_cached_{{field:py_name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{> CythonFieldRef}}), self)
+    self.__fbthrift_cached_{{field:py_name}} = _fbthrift_iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{> CythonFieldRef}}), self)
 return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
 }}if self.__fbthrift_cached_{{field:py_name}} is None:
     if not deref(self._cpp_obj).{{> CythonFieldValueRef}}:
         return None
-    self.__fbthrift_cached_{{field:py_name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{> CythonFieldValueRef}}.get(), self)
+    self.__fbthrift_cached_{{field:py_name}} = _fbthrift_iobuf.IOBuf.create(deref(self._cpp_obj).{{> CythonFieldValueRef}}.get(), self)
 return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!

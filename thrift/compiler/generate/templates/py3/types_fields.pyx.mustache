@@ -54,22 +54,22 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     {{#struct:py3_fields}}
     {{#field:type}}
 
-    cdef void _set_field_{{field:index}}(self, __fbthrift_value) except *:
+    cdef void _set_field_{{field:index}}(self, _fbthrift_value) except *:
         # for field {{field:py_name}}
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[{{> types/CurrentModuleTypes}}.c{{struct:name}}](deref(self._struct_cpp_obj), {{field:index}})
             return
         {{^type:container?}}
         {{#type:enum?}}
-        if not isinstance(__fbthrift_value, {{> types/PythonType}}):
-            raise TypeError(f'field {{field:py_name}} value: {repr(__fbthrift_value)} is not of the enum type { {{> types/PythonType}} }.')
+        if not isinstance(_fbthrift_value, {{> types/PythonType}}):
+            raise TypeError(f'field {{field:py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{> types/PythonType}} }.')
         {{/type:enum?}}
         {{^type:enum?}}
-        if not isinstance(__fbthrift_value, {{> types/PythonIsInstanceType}}):
+        if not isinstance(_fbthrift_value, {{> types/PythonIsInstanceType}}):
             raise TypeError(f'{{field:py_name}} is not a { {{> types/PythonType}} !r}.')
         {{#type:integer?}}
         {{! inject cython int overflow checks }}
-        __fbthrift_value = <{{> types/CythonPythonType}}> __fbthrift_value
+        _fbthrift_value = <{{> types/CythonPythonType}}> _fbthrift_value
         {{/type:integer?}}
         {{/type:enum?}}
         {{/type:container?}}

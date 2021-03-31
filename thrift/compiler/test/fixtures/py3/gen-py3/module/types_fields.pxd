@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,7 +51,7 @@ cdef class __SimpleException_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __SimpleException_FieldsSetter create(_module_types.cSimpleException* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__OptionalRefStruct_FieldsSetterFunc)(__OptionalRefStruct_FieldsSetter, object) except *
@@ -62,7 +62,7 @@ cdef class __OptionalRefStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __OptionalRefStruct_FieldsSetter create(_module_types.cOptionalRefStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__SimpleStruct_FieldsSetterFunc)(__SimpleStruct_FieldsSetter, object) except *
@@ -73,13 +73,13 @@ cdef class __SimpleStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __SimpleStruct_FieldsSetter create(_module_types.cSimpleStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-    cdef void _set_field_4(self, __fbthrift_value) except *
-    cdef void _set_field_5(self, __fbthrift_value) except *
-    cdef void _set_field_6(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
+    cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
 
 
 ctypedef void (*__ComplexStruct_FieldsSetterFunc)(__ComplexStruct_FieldsSetter, object) except *
@@ -90,15 +90,15 @@ cdef class __ComplexStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __ComplexStruct_FieldsSetter create(_module_types.cComplexStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-    cdef void _set_field_4(self, __fbthrift_value) except *
-    cdef void _set_field_5(self, __fbthrift_value) except *
-    cdef void _set_field_6(self, __fbthrift_value) except *
-    cdef void _set_field_7(self, __fbthrift_value) except *
-    cdef void _set_field_8(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
+    cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
+    cdef void _set_field_7(self, _fbthrift_value) except *
+    cdef void _set_field_8(self, _fbthrift_value) except *
 
 
 ctypedef void (*__BinaryUnionStruct_FieldsSetterFunc)(__BinaryUnionStruct_FieldsSetter, object) except *
@@ -109,5 +109,5 @@ cdef class __BinaryUnionStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __BinaryUnionStruct_FieldsSetter create(_module_types.cBinaryUnionStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 

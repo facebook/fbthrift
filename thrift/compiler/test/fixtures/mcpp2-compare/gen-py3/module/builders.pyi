@@ -7,7 +7,7 @@
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 import includes.types as _includes_types
@@ -199,8 +199,8 @@ class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
     set_type: _typing.Optional[set]
     map_type: _typing.Optional[dict]
     map_struct_type: _typing.Optional[dict]
-    iobuf_type: _typing.Optional[__iobuf.IOBuf]
-    iobuf_ptr: _typing.Optional[__iobuf.IOBuf]
+    iobuf_type: _typing.Optional[_fbthrift_iobuf.IOBuf]
+    iobuf_ptr: _typing.Optional[_fbthrift_iobuf.IOBuf]
     list_i32_template: _typing.Optional[list]
     list_string_template: _typing.Optional[list]
     set_template: _typing.Optional[set]
@@ -212,8 +212,8 @@ class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
     indirection_a: _typing.Optional[int]
     indirection_b: _typing.Optional[list]
     indirection_c: _typing.Optional[set]
-    iobuf_type_val: _typing.Optional[__iobuf.IOBuf]
-    iobuf_ptr_val: _typing.Optional[__iobuf.IOBuf]
+    iobuf_type_val: _typing.Optional[_fbthrift_iobuf.IOBuf]
+    iobuf_ptr_val: _typing.Optional[_fbthrift_iobuf.IOBuf]
     struct_struct: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
