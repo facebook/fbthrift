@@ -31,8 +31,6 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  constexpr bool kIsProtocolSupported =
-      apache::thrift::ProtocolType::T_COMPACT_PROTOCOL == Protocol_::protocolType();
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -48,7 +46,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
     goto _loop;
   }
 _readField_field1:
-  if constexpr (kIsProtocolSupported) {
+  if (iprot->kHasDeferredRead()) {
     auto cursor = iprot->getCursor();
     iprot->skip(apache::thrift::protocol::T_STRING);
     cursor.clone(__fbthrift_serializedData_.field1, iprot->getCursor() - cursor);
@@ -83,7 +81,7 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  if constexpr (kIsProtocolSupported) {
+  if (iprot->kHasDeferredRead()) {
     auto cursor = iprot->getCursor();
     iprot->skip(apache::thrift::protocol::T_LIST);
     cursor.clone(__fbthrift_serializedData_.field3, iprot->getCursor() - cursor);

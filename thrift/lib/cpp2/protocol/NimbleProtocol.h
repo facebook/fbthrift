@@ -142,6 +142,8 @@ class NimbleProtocolReader {
 
   static constexpr bool kOmitsContainerSizes() { return false; }
 
+  static constexpr bool kHasDeferredRead() { return false; }
+
   void setInput(const folly::io::Cursor& cursor) { decoder_.setInput(cursor); }
 
   /**

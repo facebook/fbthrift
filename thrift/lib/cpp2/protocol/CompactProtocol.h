@@ -270,6 +270,8 @@ class CompactProtocolReader {
 
   static constexpr bool kOmitsContainerSizes() { return false; }
 
+  static constexpr bool kHasDeferredRead() { return true; }
+
   void setStringSizeLimit(int32_t string_limit) {
     string_limit_ = string_limit;
   }

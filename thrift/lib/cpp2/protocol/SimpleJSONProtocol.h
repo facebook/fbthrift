@@ -106,6 +106,8 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
 
   static constexpr bool kOmitsContainerElemTypes() { return true; }
 
+  static constexpr bool kHasDeferredRead() { return false; }
+
   /**
    * Reading functions
    */

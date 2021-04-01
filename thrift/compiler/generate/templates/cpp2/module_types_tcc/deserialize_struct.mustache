@@ -17,10 +17,6 @@
 %><%^program:tablebased?%>
 template <class Protocol_>
 void <%struct:name%>::readNoXfer(Protocol_* iprot) {
-<%#struct:lazy_fields?%>
-  constexpr bool kIsProtocolSupported =
-      apache::thrift::ProtocolType::T_COMPACT_PROTOCOL == Protocol_::protocolType();
-<%/struct:lazy_fields?%>
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -45,7 +41,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%/first?%>
 _readField_<%field:cpp_name%>:
 <%#field:lazy?%>
-  if constexpr (kIsProtocolSupported) {
+  if (iprot->kHasDeferredRead()) {
     auto cursor = iprot->getCursor();
     iprot->skip(apache::thrift::protocol::<% > module_types_tcc/struct_type%>);
     cursor.clone(__fbthrift_serializedData_.<%field:cpp_name%>, iprot->getCursor() - cursor);
