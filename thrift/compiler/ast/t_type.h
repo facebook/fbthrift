@@ -143,6 +143,11 @@ class t_type : public t_named {
   /**
    * t_type getters
    */
+  const t_program* program() const { return program_; }
+
+  /**
+   * TODO: remove, see: T84718055
+   */
   const t_program* get_program() const { return program_; }
 
  protected:
@@ -209,6 +214,11 @@ class t_type_ref final {
   explicit t_type_ref(const t_type* type) : type_(type) {}
 
   void set_type(const t_type* type) { type_ = type; }
+  const t_type* type() const { return type_; }
+
+  /**
+   * TODO: remove, see: T84718055
+   */
   const t_type* get_type() const { return type_; }
 
  private:
