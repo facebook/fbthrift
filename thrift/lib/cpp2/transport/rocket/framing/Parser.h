@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/Flags.h>
 
 THRIFT_FLAG_DECLARE_int64(rocket_parser_resize_period_seconds);
+THRIFT_FLAG_DECLARE_bool(rocket_parser_dont_hold_buffer_enabled);
 
 namespace apache {
 namespace thrift {
@@ -44,7 +45,9 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
       : owner_(owner),
         resizeBufferTimeout_(resizeBufferTimeout),
         periodicResizeBufferTimeout_(
-            THRIFT_FLAG(rocket_parser_resize_period_seconds)) {}
+            THRIFT_FLAG(rocket_parser_resize_period_seconds)),
+        newBufferLogicEnabled_(
+            THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled)) {}
 
   ~Parser() override {
     if (currentFrameLength_) {
@@ -63,27 +66,55 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
 
   bool isBufferMovable() noexcept override { return true; }
 
+  // TODO: This should be removed once the new buffer logic controlled by
+  // THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
   void timeoutExpired() noexcept override;
 
+  // TODO: This should be removed once the new buffer logic controlled by
+  // THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
   const folly::IOBuf& getReadBuffer() const { return readBuffer_; }
 
+  // TODO: This should be removed once the new buffer logic controlled by
+  // THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
   void setReadBuffer(folly::IOBuf&& buffer) { readBuffer_ = std::move(buffer); }
 
   size_t getReadBufferSize() const { return bufferSize_; }
 
   void setReadBufferSize(size_t size) { bufferSize_ = size; }
 
+  // TODO: This should be removed once the new buffer logic controlled by
+  // THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
   void resizeBuffer();
+
+  size_t getReadBufLength() const {
+    if (newBufferLogicEnabled_) {
+      return readBufQueue_.chainLength();
+    }
+    return readBuffer_.computeChainDataLength();
+  }
+
+  bool getNewBufferLogicEnabled() const { return newBufferLogicEnabled_; }
 
   static constexpr size_t kMinBufferSize{256};
   static constexpr size_t kMaxBufferSize{4096};
 
  private:
+  void getReadBufferOld(void** bufout, size_t* lenout);
+  void getReadBufferNew(void** bufout, size_t* lenout);
+  void readDataAvailableOld(size_t nbytes);
+  void readDataAvailableNew(size_t nbytes);
+
+  // TODO: This should be removed once the new buffer logic controlled by
+  // THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
   static constexpr std::chrono::milliseconds kDefaultBufferResizeInterval{
       std::chrono::seconds(3)};
 
   T& owner_;
   size_t bufferSize_{kMinBufferSize};
+  // TODO: readBuffer_, lastResizeTime_, resizeBufferTimeout_ and
+  // periodicResizeBufferTimeout_ should be removed once the new buffer logic
+  // controlled by THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is
+  // stable.
   folly::IOBuf readBuffer_{folly::IOBuf::CreateOp(), bufferSize_};
   std::chrono::steady_clock::time_point lastResizeTime_{
       std::chrono::steady_clock::now()};
@@ -92,8 +123,11 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   bool enablePageAlignment_{false};
   bool aligning_{false};
   size_t currentFrameLength_{0};
-  // only used by readBufferAvailable API
-  folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};
+  // used by readDataAvailable or readBufferAvailable API (only one will be
+  // invoked for a given AsyncTransport)
+  folly::IOBufQueue readBufQueue_{folly::IOBufQueue::cacheChainLength()};
+  // Flag that controls if the parser should use the new buffer logic
+  const bool newBufferLogicEnabled_;
 };
 
 } // namespace rocket

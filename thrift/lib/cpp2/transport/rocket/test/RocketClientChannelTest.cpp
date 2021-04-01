@@ -230,6 +230,24 @@ TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
   std::move(future).getVia(&evb);
 }
 
+TEST_F(RocketClientChannelTest, LargeRequestResponse) {
+  // send and receive large IOBufs to test rocket parser correctness in handling
+  // large (larger than kMaxBufferSize) payloads
+  folly::EventBase evb;
+  auto client = makeClient(evb);
+
+  auto orig = std::string(1024 * 1024, 'x');
+  auto iobuf = folly::IOBuf::copyBuffer(orig);
+
+  test::IOBufPtr response;
+  client.sync_echoIOBuf(
+      RpcOptions().setTimeout(std::chrono::seconds(30)), response, *iobuf);
+  EXPECT_EQ(
+      response->computeChainDataLength(), iobuf->computeChainDataLength());
+  auto res = response->moveToFbString();
+  EXPECT_EQ(orig, res);
+}
+
 namespace {
 
 folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSync(

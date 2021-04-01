@@ -486,8 +486,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       const size_t n_;
       const size_t nEchoHeaders_;
     };
-
-    folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
+    std::unique_ptr<folly::IOBuf> buffer =
+        std::move(frame.payload()).data()->clone();
+    folly::StringPiece data(buffer->coalesce());
     if (data.removePrefix("error:application")) {
       clientCallback->onFirstResponseError(
           folly::make_exception_wrapper<

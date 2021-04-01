@@ -40,7 +40,7 @@ namespace thrift {
 namespace rocket {
 
 template <class T>
-void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
+void Parser<T>::getReadBufferOld(void** bufout, size_t* lenout) {
   DCHECK(!readBuffer_.isChained());
   if (LIKELY(!aligning_)) {
     if (periodicResizeBufferTimeout_ == 0) {
@@ -65,82 +65,168 @@ void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
 }
 
 template <class T>
-void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
-  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
+void Parser<T>::getReadBufferNew(void** bufout, size_t* lenout) {
+  const auto ret = readBufQueue_.preallocate(bufferSize_, kMaxBufferSize);
+  *bufout = ret.first;
+  *lenout = ret.second;
+  return;
+}
 
-  try {
-    readBuffer_.append(nbytes);
+template <class T>
+void Parser<T>::readDataAvailableOld(size_t nbytes) {
+  readBuffer_.append(nbytes);
 
-    while (!readBuffer_.empty()) {
-      if (readBuffer_.length() < Serializer::kMinimumFrameHeaderLength) {
-        return;
-      }
-
-      folly::io::Cursor cursor(&readBuffer_);
-      const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
-          readFrameOrMetadataSize(cursor);
-
-      if (!currentFrameLength_) {
-        if (!owner_.incMemoryUsage(totalFrameSize)) {
-          return;
-        }
-        currentFrameLength_ = totalFrameSize;
-      }
-
-      readStreamId(cursor);
-      uint8_t frameType;
-      std::tie(frameType, std::ignore) = readFrameTypeAndFlagsUnsafe(cursor);
-      if (UNLIKELY(
-              static_cast<FrameType>(frameType) == FrameType::EXT &&
-              !aligning_)) {
-        if (readBuffer_.length() < Serializer::kBytesForFrameOrMetadataLength +
-                ExtFrame::frameHeaderSize()) {
-          return;
-        }
-
-        ExtFrameType extType = readExtFrameType(cursor);
-        if (UNLIKELY(extType == ExtFrameType::ALIGNED_PAGE)) {
-          enablePageAlignment_ = true;
-          if (alignTo4k(
-                  readBuffer_,
-                  Serializer::kBytesForFrameOrMetadataLength +
-                      ExtFrame::frameHeaderSize(),
-                  totalFrameSize)) {
-            aligning_ = true;
-          }
-        }
-      }
-
-      if (readBuffer_.length() < totalFrameSize) {
-        if (readBuffer_.length() + readBuffer_.tailroom() < totalFrameSize) {
-          DCHECK(!readBuffer_.isChained());
-          readBuffer_.unshareOne();
-          bufferSize_ = std::max<size_t>(bufferSize_, totalFrameSize);
-          readBuffer_.reserve(
-              0 /* minHeadroom */,
-              bufferSize_ - readBuffer_.length() /* minTailroom */);
-        }
-        return;
-      }
-
-      // Otherwise, we have a full frame to handle.
-      const size_t bytesToClone =
-          totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
-      cursor.reset(&readBuffer_);
-      readFrameOrMetadataSize(cursor);
-      std::unique_ptr<folly::IOBuf> frame;
-      cursor.clone(frame, bytesToClone);
-      owner_.decMemoryUsage(currentFrameLength_);
-      currentFrameLength_ = 0;
-      readBuffer_.trimStart(totalFrameSize);
-      aligning_ = false;
-      owner_.handleFrame(std::move(frame));
+  while (!readBuffer_.empty()) {
+    if (readBuffer_.length() < Serializer::kMinimumFrameHeaderLength) {
+      return;
     }
 
-    if (periodicResizeBufferTimeout_ != 0 && !isScheduled() &&
-        bufferSize_ > kMaxBufferSize) {
-      owner_.scheduleTimeout(
-          this, std::chrono::seconds(periodicResizeBufferTimeout_));
+    folly::io::Cursor cursor(&readBuffer_);
+    const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
+        readFrameOrMetadataSize(cursor);
+
+    if (!currentFrameLength_) {
+      if (!owner_.incMemoryUsage(totalFrameSize)) {
+        return;
+      }
+      currentFrameLength_ = totalFrameSize;
+    }
+
+    readStreamId(cursor);
+    uint8_t frameType;
+    std::tie(frameType, std::ignore) = readFrameTypeAndFlagsUnsafe(cursor);
+    if (UNLIKELY(
+            static_cast<FrameType>(frameType) == FrameType::EXT &&
+            !aligning_)) {
+      if (readBuffer_.length() < Serializer::kBytesForFrameOrMetadataLength +
+              ExtFrame::frameHeaderSize()) {
+        return;
+      }
+
+      ExtFrameType extType = readExtFrameType(cursor);
+      if (UNLIKELY(extType == ExtFrameType::ALIGNED_PAGE)) {
+        enablePageAlignment_ = true;
+        if (alignTo4k(
+                readBuffer_,
+                Serializer::kBytesForFrameOrMetadataLength +
+                    ExtFrame::frameHeaderSize(),
+                totalFrameSize)) {
+          aligning_ = true;
+        }
+      }
+    }
+
+    if (readBuffer_.length() < totalFrameSize) {
+      if (readBuffer_.length() + readBuffer_.tailroom() < totalFrameSize) {
+        DCHECK(!readBuffer_.isChained());
+        readBuffer_.unshareOne();
+        bufferSize_ = std::max<size_t>(bufferSize_, totalFrameSize);
+        readBuffer_.reserve(
+            0 /* minHeadroom */,
+            bufferSize_ - readBuffer_.length() /* minTailroom */);
+      }
+      return;
+    }
+
+    // Otherwise, we have a full frame to handle.
+    const size_t bytesToClone =
+        totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
+    cursor.reset(&readBuffer_);
+    readFrameOrMetadataSize(cursor);
+    std::unique_ptr<folly::IOBuf> frame;
+    cursor.clone(frame, bytesToClone);
+    owner_.decMemoryUsage(currentFrameLength_);
+    currentFrameLength_ = 0;
+    readBuffer_.trimStart(totalFrameSize);
+    aligning_ = false;
+    owner_.handleFrame(std::move(frame));
+  }
+
+  if (periodicResizeBufferTimeout_ != 0 && !isScheduled() &&
+      bufferSize_ > kMaxBufferSize) {
+    owner_.scheduleTimeout(
+        this, std::chrono::seconds(periodicResizeBufferTimeout_));
+  }
+}
+
+template <class T>
+void Parser<T>::readDataAvailableNew(size_t nbytes) {
+  readBufQueue_.postallocate(nbytes);
+
+  while (!readBufQueue_.empty()) {
+    if (readBufQueue_.chainLength() < Serializer::kMinimumFrameHeaderLength) {
+      return;
+    }
+    folly::io::Cursor cursor(readBufQueue_.front());
+    const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
+        readFrameOrMetadataSize(cursor);
+
+    if (!currentFrameLength_) {
+      if (!owner_.incMemoryUsage(totalFrameSize)) {
+        return;
+      }
+      currentFrameLength_ = totalFrameSize;
+    }
+
+    readStreamId(cursor);
+    uint8_t frameType;
+    std::tie(frameType, std::ignore) = readFrameTypeAndFlagsUnsafe(cursor);
+    if (UNLIKELY(
+            static_cast<FrameType>(frameType) == FrameType::EXT &&
+            !aligning_)) {
+      if (readBufQueue_.chainLength() <
+          Serializer::kBytesForFrameOrMetadataLength +
+              ExtFrame::frameHeaderSize()) {
+        return;
+      }
+
+      ExtFrameType extType = readExtFrameType(cursor);
+      if (UNLIKELY(extType == ExtFrameType::ALIGNED_PAGE)) {
+        enablePageAlignment_ = true;
+        if (alignTo4kBufQueue(
+                readBufQueue_,
+                Serializer::kBytesForFrameOrMetadataLength +
+                    ExtFrame::frameHeaderSize(),
+                totalFrameSize)) {
+          aligning_ = true;
+        }
+      }
+    }
+
+    if (readBufQueue_.chainLength() < currentFrameLength_) {
+      bufferSize_ = std::max<size_t>(
+          bufferSize_, currentFrameLength_ - readBufQueue_.chainLength());
+      return;
+    }
+    // Otherwise, we have a full frame to handle.
+    readBufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
+    auto frame = readBufQueue_.split(
+        currentFrameLength_ - Serializer::kBytesForFrameOrMetadataLength);
+    owner_.handleFrame(std::move(frame));
+    owner_.decMemoryUsage(currentFrameLength_);
+    currentFrameLength_ = 0;
+    bufferSize_ = kMinBufferSize;
+    aligning_ = false;
+  }
+}
+
+template <class T>
+void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
+  if (newBufferLogicEnabled_) {
+    getReadBufferNew(bufout, lenout);
+  } else {
+    getReadBufferOld(bufout, lenout);
+  }
+}
+
+template <class T>
+void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
+  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
+  try {
+    if (newBufferLogicEnabled_) {
+      readDataAvailableNew(nbytes);
+    } else {
+      readDataAvailableOld(nbytes);
     }
 
   } catch (...) {
@@ -168,6 +254,8 @@ void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
   owner_.close(transport::TTransportException(ex));
 }
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 template <class T>
 void Parser<T>::timeoutExpired() noexcept {
   if (LIKELY(!aligning_)) {
@@ -180,13 +268,13 @@ void Parser<T>::readBufferAvailable(
     std::unique_ptr<folly::IOBuf> buf) noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
   try {
-    bufQueue_.append(std::move(buf));
-    while (!bufQueue_.empty()) {
-      if (bufQueue_.chainLength() <
+    readBufQueue_.append(std::move(buf));
+    while (!readBufQueue_.empty()) {
+      if (readBufQueue_.chainLength() <
           Serializer::kBytesForFrameOrMetadataLength) {
         return;
       }
-      folly::io::Cursor cursor(bufQueue_.front());
+      folly::io::Cursor cursor(readBufQueue_.front());
 
       if (!currentFrameLength_) {
         currentFrameLength_ = Serializer::kBytesForFrameOrMetadataLength +
@@ -197,12 +285,12 @@ void Parser<T>::readBufferAvailable(
         }
       }
 
-      if (bufQueue_.chainLength() < currentFrameLength_) {
+      if (readBufQueue_.chainLength() < currentFrameLength_) {
         return;
       }
 
-      bufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
-      auto frame = bufQueue_.split(
+      readBufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
+      auto frame = readBufQueue_.split(
           currentFrameLength_ - Serializer::kBytesForFrameOrMetadataLength);
       owner_.handleFrame(std::move(frame));
       owner_.decMemoryUsage(currentFrameLength_);
@@ -216,6 +304,8 @@ void Parser<T>::readBufferAvailable(
   }
 }
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 template <class T>
 void Parser<T>::resizeBuffer() {
   if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() >= kMaxBufferSize) {
@@ -235,6 +325,8 @@ template <class T>
 constexpr size_t Parser<T>::kMinBufferSize;
 template <class T>
 constexpr size_t Parser<T>::kMaxBufferSize;
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 template <class T>
 constexpr std::chrono::milliseconds Parser<T>::kDefaultBufferResizeInterval;
 

@@ -26,6 +26,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/container/F14Map.h>
+#include <folly/experimental/observer/Observer.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
