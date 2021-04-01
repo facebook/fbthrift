@@ -23,7 +23,7 @@ namespace compiler {
 /*
  * Boolean to determine during runtime if we are running on a Windows platform
  */
-constexpr bool isWindows() {
+constexpr bool platform_is_windows() {
 #ifdef _WIN32
   return true;
 #else

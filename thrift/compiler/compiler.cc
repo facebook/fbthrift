@@ -230,7 +230,7 @@ std::string parseArgs(
       bool out_path_is_absolute = (flag == "out");
 
       // Strip out trailing \ on a Windows path
-      if (isWindows()) {
+      if (platform_is_windows()) {
         int last = out_path.length() - 1;
         if (out_path[last] == '\\') {
           out_path.erase(last);
