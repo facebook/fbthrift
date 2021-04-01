@@ -78,12 +78,7 @@ using Writers = testing::Types<
     CompactV1ProtocolWriter,
     DebugProtocolWriter,
     JSONProtocolWriter,
-    SimpleJSONProtocolWriter,
-    VirtualWriter<BinaryProtocolWriter>,
-    VirtualWriter<CompactProtocolWriter>,
-    VirtualWriter<DebugProtocolWriter>,
-    VirtualWriter<JSONProtocolWriter>,
-    VirtualWriter<SimpleJSONProtocolWriter>>;
+    SimpleJSONProtocolWriter>;
 
 using Readers = testing::Types<
     BinaryProtocolReader,
