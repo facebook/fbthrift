@@ -38,9 +38,9 @@ typedef byte Byte
 typedef float Float
 typedef double Double
 // @lint-ignore THRIFTFORMAT (for autodeps)
-typedef map<string, string>
-  (cpp.type = "folly::F14FastMap<std::string, folly::fbstring>")
-  F14MapFollyString
+typedef map<string, string> (
+  cpp.type = "folly::F14FastMap<std::string, folly::fbstring>",
+) F14MapFollyString
 typedef list<i32> (cpp2.type = "std::vector<uint32_t>") Uint32List
 
 exception UnusedError {
