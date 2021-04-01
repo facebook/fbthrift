@@ -376,17 +376,17 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string union_enum_name(const t_struct* tstruct, bool decl = false) {
-    return union_enum_name(tstruct->get_name(), tstruct->get_program(), decl);
+    return union_enum_name(tstruct->get_name(), tstruct->program(), decl);
   }
 
   std::string union_field_to_enum(
       const t_struct* tstruct, const t_field* tfield, const std::string& name) {
     // If null is passed,  it refer to empty;
     if (tfield) {
-      return union_enum_name(name, tstruct->get_program()) +
+      return union_enum_name(name, tstruct->program()) +
           "::" + tfield->get_name();
     } else {
-      return union_enum_name(name, tstruct->get_program()) + "::" + UNION_EMPTY;
+      return union_enum_name(name, tstruct->program()) + "::" + UNION_EMPTY;
     }
   }
 
@@ -429,7 +429,7 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string php_namespace(const t_service* s) {
-    return php_namespace(s->get_program());
+    return php_namespace(s->program());
   }
 
   std::string hack_name(
@@ -448,11 +448,11 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string hack_name(const t_type* t, bool decl = false) {
-    return hack_name(t->get_name(), t->get_program(), decl);
+    return hack_name(t->get_name(), t->program(), decl);
   }
 
   std::string hack_name(const t_service* s, bool decl = false) {
-    return hack_name(s->get_name(), s->get_program(), decl);
+    return hack_name(s->get_name(), s->program(), decl);
   }
 
   std::string php_path(const t_program* p) {
@@ -471,9 +471,7 @@ class t_hack_generator : public t_oop_generator {
     return ns + '/' + p->name();
   }
 
-  std::string php_path(const t_service* s) {
-    return php_path(s->get_program());
-  }
+  std::string php_path(const t_service* s) { return php_path(s->program()); }
 
   const char* UNION_EMPTY = "_EMPTY_";
 
@@ -494,8 +492,8 @@ class t_hack_generator : public t_oop_generator {
       const t_service* svc,
       const std::string& name,
       bool extends = false) {
-    if (extends && !hack_namespace(svc->get_program()).empty()) {
-      return hack_name(name, svc->get_program());
+    if (extends && !hack_namespace(svc->program()).empty()) {
+      return hack_name(name, svc->program());
     }
     return (extends && has_hack_namespace ? "\\" : "") +
         (mangle ? php_namespace(svc) : "") + name;
@@ -1940,12 +1938,12 @@ void t_hack_generator::generate_php_struct_struct_trait(
   if (const auto* structtrait =
           tstruct->get_annotation_or_null("php.structtrait")) {
     if (structtrait->empty() || *structtrait == "1") {
-      traitName = hack_name(name, tstruct->get_program()) + "Trait";
+      traitName = hack_name(name, tstruct->program()) + "Trait";
     } else {
-      traitName = hack_name(*structtrait, tstruct->get_program());
+      traitName = hack_name(*structtrait, tstruct->program());
     }
   } else if (struct_trait_) {
-    traitName = hack_name(name, tstruct->get_program()) + "Trait";
+    traitName = hack_name(name, tstruct->program()) + "Trait";
   }
 
   if (!traitName.empty()) {
@@ -2607,7 +2605,7 @@ void t_hack_generator::generate_php_union_enum(
           tstruct->get_annotation_or_null("hack.union_enum_attributes")) {
     indent(out) << "<<" << *union_enum_attributes << ">>\n";
   }
-  out << "enum " << union_enum_name(name, tstruct->get_program(), true)
+  out << "enum " << union_enum_name(name, tstruct->program(), true)
       << ": int {\n";
 
   indent_up();
@@ -2715,7 +2713,7 @@ void t_hack_generator::_generate_php_struct_definition(
     f_types_ << "<<" << *attributes << ">>\n";
   }
   out << (generateAsTrait ? "trait " : "class ")
-      << hack_name(name, tstruct->get_program(), true);
+      << hack_name(name, tstruct->program(), true);
   if (generateAsTrait) {
     out << "Trait";
   } else if (is_exception) {
@@ -2724,7 +2722,7 @@ void t_hack_generator::_generate_php_struct_definition(
   out << " implements \\IThriftStruct";
 
   if (tstruct->is_union()) {
-    out << ", \\IThriftUnion<" << union_enum_name(name, tstruct->get_program())
+    out << ", \\IThriftUnion<" << union_enum_name(name, tstruct->program())
         << ">";
   }
 
@@ -2843,7 +2841,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   if (tstruct->is_union()) {
     // Generate _type to store which field is set and initialize it to _EMPTY_
-    indent(out) << "protected " << union_enum_name(name, tstruct->get_program())
+    indent(out) << "protected " << union_enum_name(name, tstruct->program())
                 << " $_type = " << union_field_to_enum(tstruct, nullptr, name)
                 << ";\n";
   }

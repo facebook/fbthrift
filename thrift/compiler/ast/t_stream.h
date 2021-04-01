@@ -32,7 +32,7 @@ class t_stream_response : public t_type {
   explicit t_stream_response(t_type_ref elem_type, t_struct* throws = nullptr)
       : elem_type_(std::move(elem_type)), throws_(throws) {}
 
-  const t_type* get_elem_type() const { return elem_type_.get_type(); }
+  const t_type* get_elem_type() const { return elem_type_.type(); }
 
   void set_first_response_type(
       std::unique_ptr<t_type_ref> first_response_type) {
@@ -44,17 +44,17 @@ class t_stream_response : public t_type {
   const t_type* get_first_response_type() const {
     // TODO(afuller): Fix call sites that don't check has_first_response().
     // assert(first_response_type_ != nullptr);
-    return has_first_response() ? first_response_type_->get_type() : nullptr;
+    return has_first_response() ? first_response_type_->type() : nullptr;
   }
 
   bool is_streamresponse() const override { return true; }
 
   std::string get_full_name() const override {
     if (has_first_response()) {
-      return first_response_type_->get_type()->get_full_name() + ", stream<" +
-          elem_type_.get_type()->get_full_name() + ">";
+      return first_response_type_->type()->get_full_name() + ", stream<" +
+          elem_type_.type()->get_full_name() + ">";
     }
-    return "stream<" + elem_type_.get_type()->get_full_name() + ">";
+    return "stream<" + elem_type_.type()->get_full_name() + ">";
   }
 
   type get_type_value() const override { return type::t_stream; }

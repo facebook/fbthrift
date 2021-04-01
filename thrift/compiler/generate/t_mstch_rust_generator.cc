@@ -408,7 +408,7 @@ class mstch_rust_struct : public mstch_struct {
   }
   mstch::node rust_name() { return mangle_type(strct_->get_name()); }
   mstch::node rust_package() {
-    return get_import_name(strct_->get_program(), options_);
+    return get_import_name(strct_->program(), options_);
   }
   mstch::node rust_is_ord() {
     if (strct_->has_annotation("rust.ord")) {
@@ -460,7 +460,7 @@ class mstch_rust_service : public mstch_service {
   }
   mstch::node rust_functions();
   mstch::node rust_package() {
-    return get_import_name(service_->get_program(), options_);
+    return get_import_name(service_->program(), options_);
   }
   mstch::node rust_snake() {
     return service_->get_annotation(
@@ -472,17 +472,15 @@ class mstch_rust_service : public mstch_service {
   mstch::node rust_extended_services() {
     mstch::array extended_services;
     const t_service* service = service_;
-    std::string type_prefix =
-        get_import_name(service_->get_program(), options_);
+    std::string type_prefix = get_import_name(service_->program(), options_);
     std::string as_ref_impl = "&self.parent";
     while (true) {
       const t_service* parent_service = service->get_extends();
       if (parent_service == nullptr) {
         break;
       }
-      if (parent_service->get_program() != service->get_program()) {
-        type_prefix +=
-            "::dependencies::" + parent_service->get_program()->name();
+      if (parent_service->program() != service->program()) {
+        type_prefix += "::dependencies::" + parent_service->program()->name();
       }
       mstch::map node;
       node["extendedService:packagePrefix"] = type_prefix;
@@ -629,7 +627,7 @@ class mstch_rust_enum : public mstch_enum {
   }
   mstch::node rust_name() { return mangle_type(enm_->get_name()); }
   mstch::node rust_package() {
-    return get_import_name(enm_->get_program(), options_);
+    return get_import_name(enm_->program(), options_);
   }
   mstch::node variants_by_name() {
     std::vector<t_enum_value*> variants = enm_->get_enum_values();
@@ -670,7 +668,7 @@ class mstch_rust_type : public mstch_type {
   }
   mstch::node rust_name() { return mangle_type(type_->get_name()); }
   mstch::node rust_package() {
-    return get_import_name(type_->get_program(), options_);
+    return get_import_name(type_->program(), options_);
   }
   mstch::node rust_type() {
     const std::string& rust_type = type_->get_annotation("rust.type");
@@ -895,7 +893,7 @@ class mstch_rust_value : public mstch_base {
   mstch::node is_enum() { return type_->is_enum(); }
   mstch::node enum_package() {
     if (const_value_->is_enum()) {
-      return get_import_name(const_value_->get_enum()->get_program(), options_);
+      return get_import_name(const_value_->get_enum()->program(), options_);
     }
     return mstch::node();
   }

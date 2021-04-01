@@ -149,7 +149,7 @@ class mstch_py3_type : public mstch_type {
   }
 
   mstch::node isExternalProgram() {
-    auto p = type_->get_program();
+    auto p = type_->program();
     return p && p != prog_;
   }
 
@@ -215,7 +215,7 @@ class mstch_py3_type : public mstch_type {
         custom_prefix = to_cython_type() + "__";
       }
     }
-    const t_program* typeProgram = type_->get_program();
+    const t_program* typeProgram = type_->program();
     if (typeProgram && typeProgram != prog_) {
       custom_prefix += typeProgram->name() + "_";
     }
@@ -234,7 +234,7 @@ class mstch_py3_type : public mstch_type {
 
  protected:
   const t_program* get_type_program() const {
-    if (const t_program* p = type_->get_program()) {
+    if (const t_program* p = type_->program()) {
       return p;
     }
     return prog_;
@@ -496,7 +496,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   void add_typedef_namespace(const t_type* type) {
-    auto prog = type->get_program();
+    auto prog = type->program();
     if (prog && prog != program_) {
       const auto& path = prog->path();
       if (includeNamespaces_.find(path) != includeNamespaces_.end()) {
@@ -703,23 +703,21 @@ class mstch_py3_service : public mstch_service {
         });
   }
 
-  mstch::node isExternalProgram() { return prog_ != service_->get_program(); }
+  mstch::node isExternalProgram() { return prog_ != service_->program(); }
 
   mstch::node cppNamespaces() {
     return createStringArray(
-        cpp2::get_gen_namespace_components(*service_->get_program()));
+        cpp2::get_gen_namespace_components(*service_->program()));
   }
 
   mstch::node py3Namespaces() {
     return createStringArray(
-        split_namespace(service_->get_program()->get_namespace("py3")));
+        split_namespace(service_->program()->get_namespace("py3")));
   }
 
-  mstch::node programName() { return service_->get_program()->name(); }
+  mstch::node programName() { return service_->program()->name(); }
 
-  mstch::node includePrefix() {
-    return service_->get_program()->include_prefix();
-  }
+  mstch::node includePrefix() { return service_->program()->include_prefix(); }
 
   mstch::node get_supported_functions() {
     std::vector<t_function*> funcs;

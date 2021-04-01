@@ -659,7 +659,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
       // dynamic casts and t_type::is_* calls.
       type = add_unnamed_typedef(
           std::make_unique<t_typedef>(
-              const_cast<t_program*>(type->get_program()),
+              const_cast<t_program*>(type->program()),
               type,
               type->get_name(),
               scope_cache),

@@ -60,7 +60,7 @@ class t_typedef : public t_type {
    */
   bool resolve_placeholder();
 
-  const t_type* get_type() const { return type_.get_type(); }
+  const t_type* get_type() const { return type_.type(); }
 
   const std::string& get_symbolic() const { return symbolic_; }
 

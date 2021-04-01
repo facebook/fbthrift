@@ -336,7 +336,7 @@ class mstch_swift_struct : public mstch_struct {
         "struct:extendRuntimeException?", "legacy_extend_runtime_exception");
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(strct_->get_program()));
+    return get_namespace_or_default(*(strct_->program()));
   }
   mstch::node is_struct_union() { return strct_->is_union(); }
   mstch::node is_union_field_type_unique() {
@@ -421,7 +421,7 @@ class mstch_swift_service : public mstch_service {
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(service_->get_program()));
+    return get_namespace_or_default(*(service_->program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(service_->get_name(), true);
@@ -660,7 +660,7 @@ class mstch_swift_field : public mstch_field {
       } else if (type->is_enum()) {
         // we use fromInteger(0) as default value as it may be null or the enum
         // entry for 0.
-        auto javaNamespace = get_namespace_or_default(*(type->get_program()));
+        auto javaNamespace = get_namespace_or_default(*(type->program()));
         auto enumType = java::mangle_java_name(type->get_name(), true);
         return javaNamespace + "." + enumType + ".fromInteger(0)";
       }
@@ -713,7 +713,7 @@ class mstch_swift_enum : public mstch_enum {
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(enm_->get_program()));
+    return get_namespace_or_default(*(enm_->program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(enm_->get_name(), true);

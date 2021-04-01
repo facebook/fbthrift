@@ -1541,7 +1541,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(
     } else if (ttype->is_base_type() || ttype->is_enum()) {
       out << indent() << ret_equals << "@(" << field_name << ");" << std::endl;
       if (ttype->is_enum()) {
-        const t_program* program = ttype->get_program();
+        const t_program* program = ttype->program();
         std::string ToStringFunctionName = program
             ? (program->get_namespace("cocoa") + ttype->get_name() +
                kToStringPostfix)
@@ -2674,7 +2674,7 @@ void t_cocoa_generator::generate_serialize_list_element(
  */
 std::string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
   if (ttype->is_typedef() || ttype->is_enum()) {
-    const t_program* program = ttype->get_program();
+    const t_program* program = ttype->program();
     return program ? (program->get_namespace("cocoa") + ttype->get_name())
                    : ttype->get_name();
   }
@@ -2690,7 +2690,7 @@ std::string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
     result = "TBaseStructArray";
   } else {
     // Check for prefix
-    const t_program* program = ttype->get_program();
+    const t_program* program = ttype->program();
     result = program ? (program->get_namespace("cocoa") + ttype->get_name())
                      : ttype->get_name();
   }

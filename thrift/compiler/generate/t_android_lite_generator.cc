@@ -409,8 +409,8 @@ string t_android_lite_generator::type_name(
   ttype = ttype->get_true_type();
   if (ttype->is_struct() || ttype->is_enum()) {
     string suffix = ttype->is_struct() ? "Logger" : "Enum";
-    string name = capitalize(ttype->get_program()->name()) + suffix;
-    string package = ttype->get_program()->get_namespace("android_lite");
+    string name = capitalize(ttype->program()->name()) + suffix;
+    string package = ttype->program()->get_namespace("android_lite");
     return package.empty() || package == package_name_ ? name
                                                        : package + "." + name;
   } else {
@@ -421,14 +421,14 @@ string t_android_lite_generator::type_name(
 
 string t_android_lite_generator::full_property_name(
     const t_struct* tstruct, const t_field* tfield) {
-  return capitalize(tstruct->get_program()->name()) + "." +
-      tstruct->get_name() + "_" + tfield->get_name();
+  return capitalize(tstruct->program()->name()) + "." + tstruct->get_name() +
+      "_" + tfield->get_name();
 }
 
 string t_android_lite_generator::full_enum_name(
     const t_enum* tenum, int offset) {
-  return capitalize(tenum->get_program()->name()) + "Enum." +
-      tenum->get_name() + "_" + tenum->find_value(offset)->get_name();
+  return capitalize(tenum->program()->name()) + "Enum." + tenum->get_name() +
+      "_" + tenum->find_value(offset)->get_name();
 }
 
 const string t_android_lite_generator::logger_name() {
@@ -836,8 +836,8 @@ void t_android_lite_generator::print_const_value(
       out << ";" << endl;
     }
   } else if (type->is_struct()) {
-    string eventType_key = capitalize(type->get_program()->name()) +
-        ".EventType." + type->get_name();
+    string eventType_key =
+        capitalize(type->program()->name()) + ".EventType." + type->get_name();
     out << name << " = new " << type_name(type, false, true) << "("
         << eventType_key << ");" << endl;
     if (!in_static) {

@@ -191,7 +191,7 @@ mstch::node mstch_enum::values() {
 mstch::node mstch_type::get_struct() {
   if (type_->is_struct() || type_->is_xception()) {
     std::string id =
-        type_->get_program()->name() + get_type_namespace(type_->get_program());
+        type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
         std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
         generators_->struct_generator_.get(),
@@ -204,7 +204,7 @@ mstch::node mstch_type::get_struct() {
 mstch::node mstch_type::get_enum() {
   if (resolved_type_->is_enum()) {
     std::string id =
-        type_->get_program()->name() + get_type_namespace(type_->get_program());
+        type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
         std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
         generators_->enum_generator_.get(),
@@ -585,8 +585,8 @@ mstch::node mstch_service::extends() {
 
 mstch::node mstch_service::generate_cached_extended_service(
     const t_service* service) {
-  std::string id = service->get_program()->name() +
-      get_service_namespace(service->get_program());
+  std::string id =
+      service->program()->name() + get_service_namespace(service->program());
   size_t element_index = 0;
   size_t element_count = 1;
   return generate_element_cached(

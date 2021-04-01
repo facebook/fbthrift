@@ -149,7 +149,7 @@ mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
 }
 
 mstch::map t_mstch_pyi_generator::extend_type(const t_type& type) {
-  const auto type_program = type.get_program();
+  const auto type_program = type.program();
   const auto program = type_program ? type_program : get_program();
   const auto modulePath = get_py_namespace(*program, "ttypes");
   bool externalProgram = false;
@@ -167,7 +167,7 @@ mstch::map t_mstch_pyi_generator::extend_type(const t_type& type) {
 }
 
 mstch::map t_mstch_pyi_generator::extend_service(const t_service& service) {
-  const auto program = service.get_program();
+  const auto program = service.program();
   const auto& pyNamespaces = get_py_namespace(*program);
   bool externalProgram = false;
   const auto& prog_path = program->path();

@@ -1984,8 +1984,7 @@ void t_py_generator::generate_service(const t_service* tservice) {
 
   if (tservice->get_extends() != nullptr) {
     f_service_ << "import "
-               << get_real_py_module(tservice->get_extends()->get_program())
-               << "."
+               << get_real_py_module(tservice->get_extends()->program()) << "."
                << rename_reserved_keywords(tservice->get_extends()->get_name())
                << endl;
   }
@@ -3413,7 +3412,7 @@ string t_py_generator::argument_list(const t_struct* tstruct) {
 }
 
 string t_py_generator::type_name(const t_type* ttype) {
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
   if (ttype->is_service()) {
     return get_real_py_module(program) + "." +
         rename_reserved_keywords(ttype->get_name());

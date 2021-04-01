@@ -307,7 +307,7 @@ class t_php_generator : public t_oop_generator {
   }
 
   std::string php_namespace(const t_service* s) {
-    return php_namespace(s->get_program());
+    return php_namespace(s->program());
   }
 
   std::string php_path(const t_program* p) {
@@ -326,9 +326,7 @@ class t_php_generator : public t_oop_generator {
     return ns + '/' + p->name();
   }
 
-  std::string php_path(const t_service* s) {
-    return php_path(s->get_program());
-  }
+  std::string php_path(const t_service* s) { return php_path(s->program()); }
 
   void generate_lazy_init_for_constant(
       ofstream& out,
@@ -820,14 +818,14 @@ void t_php_generator::generate_enum(const t_enum* tenum) {
   // a downer.
   if (hphpenum_) {
     if (is_bitmask_enum(tenum)) {
-      f_types_ << "final class " << php_namespace(tenum->get_program())
+      f_types_ << "final class " << php_namespace(tenum->program())
                << tenum->get_name() << " extends Flags {" << endl;
     } else {
-      f_types_ << "final class " << php_namespace(tenum->get_program())
+      f_types_ << "final class " << php_namespace(tenum->program())
                << tenum->get_name() << " extends Enum {" << endl;
     }
   } else {
-    f_types_ << "final class " << php_namespace(tenum->get_program())
+    f_types_ << "final class " << php_namespace(tenum->program())
              << tenum->get_name() << " {" << endl;
   }
 
@@ -868,9 +866,9 @@ void t_php_generator::generate_enum(const t_enum* tenum) {
   if (save_constants_in_global_) {
     // generate global array of enum values
     if (!hphpenum_) {
-      f_types_ << "$GLOBALS['" << php_namespace(tenum->get_program()) << "E_"
+      f_types_ << "$GLOBALS['" << php_namespace(tenum->program()) << "E_"
                << tenum->get_name()
-               << "'] = " << php_namespace(tenum->get_program())
+               << "'] = " << php_namespace(tenum->program())
                << tenum->get_name() << "::$__values;" << endl
                << endl;
     }
@@ -1005,7 +1003,7 @@ string t_php_generator::render_const_value(
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
   } else if (type->is_struct() || type->is_xception()) {
-    out << "new " << php_namespace(type->get_program()) << type->get_name()
+    out << "new " << php_namespace(type->program()) << type->get_name()
         << "(array(" << endl;
     indent_up();
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
@@ -1106,10 +1104,10 @@ void t_php_generator::generate_php_type_spec(ofstream& out, const t_type* t) {
     // Noop, type is all we need
   } else if (t->is_enum()) {
     const t_enum* tenum = (t_enum*)t;
-    indent(out) << "'enum' => '" << php_namespace(tenum->get_program())
+    indent(out) << "'enum' => '" << php_namespace(tenum->program())
                 << tenum->get_name() << "'," << endl;
   } else if (t->is_struct() || t->is_xception()) {
-    indent(out) << "'class' => '" << php_namespace(t->get_program())
+    indent(out) << "'class' => '" << php_namespace(t->program())
                 << t->get_name() << "'," << endl;
   } else if (t->is_map()) {
     const t_type* ktype = ((t_map*)t)->get_key_type()->get_true_type();
@@ -1208,9 +1206,8 @@ void t_php_generator::generate_php_struct_definition(
     autoload_out.close();
 
     f_types_ << "$GLOBALS['THRIFT_AUTOLOAD']['"
-             << lowercase(php_namespace(tstruct->get_program()) + name)
-             << "'] = '" << php_path(program_) << "/" << f_struct << "';"
-             << endl;
+             << lowercase(php_namespace(tstruct->program()) + name) << "'] = '"
+             << php_path(program_) << "/" << f_struct << "';" << endl;
 
   } else {
     _generate_php_struct_definition(out, tstruct, is_exception, name);
@@ -1233,7 +1230,7 @@ void t_php_generator::_generate_php_struct_definition(
   vector<t_field*>::const_iterator m_iter;
 
   generate_php_docstring(out, tstruct);
-  out << "class " << php_namespace(tstruct->get_program()) << name;
+  out << "class " << php_namespace(tstruct->program()) << name;
   if (is_exception) {
     out << " extends TException";
   } else if (oop_) {
@@ -1298,7 +1295,7 @@ void t_php_generator::_generate_php_struct_definition(
     indent_up();
     out << indent() << "throw new TProtocolException(" << endl;
     indent_up();
-    out << indent() << "'" << php_namespace(tstruct->get_program()) << name
+    out << indent() << "'" << php_namespace(tstruct->program()) << name
         << " constructor must be passed array or null'" << endl;
     indent_down();
     out << indent() << ");" << endl;
@@ -1315,7 +1312,7 @@ void t_php_generator::_generate_php_struct_definition(
 
   string param = (members.size() > 0) ? "($vals);" : "();";
   out << indent() << "public static function __set_state($vals) {" << endl
-      << indent() << "  return new " << php_namespace(tstruct->get_program())
+      << indent() << "  return new " << php_namespace(tstruct->program())
       << name << param << endl
       << indent() << "}" << endl
       << endl;
@@ -1818,10 +1815,10 @@ void t_php_generator::generate_process_function(
                      << endl;
   indent_up();
 
-  string argsname = php_namespace(tservice->get_program()) + service_name_ +
-      "_" + tfunction->get_name() + "_args";
-  string resultname = php_namespace(tservice->get_program()) + service_name_ +
-      "_" + tfunction->get_name() + "_result";
+  string argsname = php_namespace(tservice->program()) + service_name_ + "_" +
+      tfunction->get_name() + "_args";
+  string resultname = php_namespace(tservice->program()) + service_name_ + "_" +
+      tfunction->get_name() + "_result";
   const string& fn_name = tfunction->get_name();
 
   f_service_ << indent()
@@ -1904,7 +1901,7 @@ void t_php_generator::generate_process_function(
   for (exc_num = 0, x_iter = xceptions.begin(); x_iter != xceptions.end();
        ++x_iter, ++exc_num) {
     f_service_ << indent() << "} catch ("
-               << php_namespace((*x_iter)->get_type()->get_program())
+               << php_namespace((*x_iter)->get_type()->program())
                << (*x_iter)->get_type()->get_name() << " $exc" << exc_num
                << ") {" << endl;
     if (!tfunction->is_oneway()) {
@@ -2247,7 +2244,7 @@ void t_php_generator::generate_service_rest(
         f_service_ << indent() << "if ($" << (*a_iter)->get_name()
                    << " !== null) {" << endl
                    << indent() << "  $" << (*a_iter)->get_name() << " = new "
-                   << php_namespace(atype->get_program()) << atype->get_name()
+                   << php_namespace(atype->program()) << atype->get_name()
                    << "(json_decode($" << (*a_iter)->get_name() << ", true));"
                    << endl
                    << indent() << "}" << endl;
@@ -2411,8 +2408,8 @@ void t_php_generator::_generate_service_client(
                 << endl;
     scope_up(out);
 
-    std::string argsname = php_namespace(tservice->get_program()) +
-        service_name_ + "_" + (*f_iter)->get_name() + "_args";
+    std::string argsname = php_namespace(tservice->program()) + service_name_ +
+        "_" + (*f_iter)->get_name() + "_args";
 
     out << indent() << "$currentseqid = $this->getsequenceid();" << endl
         << indent() << "$args = new " << argsname << "();" << endl;
@@ -2519,7 +2516,7 @@ void t_php_generator::_generate_service_client(
     scope_down(out);
 
     if (!(*f_iter)->is_oneway()) {
-      std::string resultname = php_namespace(tservice->get_program()) +
+      std::string resultname = php_namespace(tservice->program()) +
           service_name_ + "_" + (*f_iter)->get_name() + "_result";
 
       t_function recv_function(
@@ -2866,7 +2863,7 @@ void t_php_generator::generate_deserialize_field(
 void t_php_generator::generate_deserialize_struct(
     ofstream& out, const t_struct* tstruct, string prefix) {
   out << indent() << "$" << prefix << " = new "
-      << php_namespace(tstruct->get_program()) << tstruct->get_name() << "();"
+      << php_namespace(tstruct->program()) << tstruct->get_name() << "();"
       << endl
       << indent() << "$xfer += $" << prefix << "->read($input);" << endl;
 }
@@ -3336,10 +3333,10 @@ string t_php_generator::declare_field(
       if (obj) {
         if (thrift) {
           // A thrift object requires an array in __construct__
-          result += " = new " + php_namespace(type->get_program()) +
+          result += " = new " + php_namespace(type->program()) +
               type->get_name() + "(array())";
         } else {
-          result += " = new " + php_namespace(type->get_program()) +
+          result += " = new " + php_namespace(type->program()) +
               type->get_name() + "()";
         }
       } else {

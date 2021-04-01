@@ -521,7 +521,7 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node namespace_cpp2() {
-    return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
+    return t_mstch_cpp2_generator::get_namespace_array(type_->program());
   }
   mstch::node type_class() { return cpp2::get_gen_type_class(*resolved_type_); }
   mstch::node type_class_with_indirection() {
@@ -529,7 +529,7 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node program_name() {
     std::string name;
-    if (auto prog = type_->get_program()) {
+    if (auto prog = type_->program()) {
       name = prog->name();
     }
     return name;
@@ -906,7 +906,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::to_string(strct_->get_type_id());
   }
   mstch::node metadata_name() {
-    return strct_->get_program()->name() + "_" + strct_->get_name();
+    return strct_->program()->name() + "_" + strct_->get_name();
   }
 
   mstch::node get_num_union_members() {
@@ -1113,26 +1113,25 @@ class mstch_cpp2_service : public mstch_service {
   std::string get_service_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
-  mstch::node program_name() { return service_->get_program()->name(); }
-  mstch::node program_path() { return service_->get_program()->path(); }
+  mstch::node program_name() { return service_->program()->name(); }
+  mstch::node program_path() { return service_->program()->path(); }
   mstch::node cpp_includes() {
-    return t_mstch_cpp2_generator::cpp_includes(service_->get_program());
+    return t_mstch_cpp2_generator::cpp_includes(service_->program());
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
-        service_->get_program(), cache_->parsed_options_["include_prefix"]);
+        service_->program(), cache_->parsed_options_["include_prefix"]);
   }
   mstch::node thrift_includes() {
     mstch::array a{};
-    for (auto const* program :
-         service_->get_program()->get_included_programs()) {
+    for (auto const* program : service_->program()->get_included_programs()) {
       a.push_back(generators_->program_generator_->generate_cached(
           program, generators_, cache_));
     }
     return a;
   }
   mstch::node namespace_cpp2() {
-    return t_mstch_cpp2_generator::get_namespace_array(service_->get_program());
+    return t_mstch_cpp2_generator::get_namespace_array(service_->program());
   }
   mstch::node oneway_functions() {
     std::vector<t_function const*> oneway_functions;
@@ -1152,7 +1151,7 @@ class mstch_cpp2_service : public mstch_service {
     return false;
   }
   mstch::node metadata_name() {
-    return service_->get_program()->name() + "_" + service_->get_name();
+    return service_->program()->name() + "_" + service_->get_name();
   }
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");
@@ -1556,7 +1555,7 @@ class mstch_cpp2_program : public mstch_program {
             auto* strct =
                 const_cast<t_struct*>(dynamic_cast<const t_struct*>(type));
             // We're only interested in types defined in the current program.
-            if (strct->get_program() == program) {
+            if (strct->program() == program) {
               deps.emplace_back(strct);
             }
           }

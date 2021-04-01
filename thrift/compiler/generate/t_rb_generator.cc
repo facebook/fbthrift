@@ -679,7 +679,7 @@ void t_rb_generator::generate_service(const t_service* tservice) {
   f_service_ << "require '" << underscore(program_name_) << "_types'" << endl
              << endl;
 
-  begin_namespace(f_service_, ruby_modules(tservice->get_program()));
+  begin_namespace(f_service_, ruby_modules(tservice->program()));
 
   indent(f_service_) << "module " << capitalize(tservice->get_name()) << endl;
   indent_up();
@@ -692,7 +692,7 @@ void t_rb_generator::generate_service(const t_service* tservice) {
   indent_down();
   indent(f_service_) << "end" << endl << endl;
 
-  end_namespace(f_service_, ruby_modules(tservice->get_program()));
+  end_namespace(f_service_, ruby_modules(tservice->program()));
 
   // Close service file
   f_service_.close();
@@ -1027,7 +1027,7 @@ string t_rb_generator::type_name(const t_type* ttype) {
 
 string t_rb_generator::full_type_name(const t_type* ttype) {
   string prefix = "";
-  vector<std::string> modules = ruby_modules(ttype->get_program());
+  vector<std::string> modules = ruby_modules(ttype->program());
   for (vector<std::string>::iterator m_iter = modules.begin();
        m_iter != modules.end();
        ++m_iter) {

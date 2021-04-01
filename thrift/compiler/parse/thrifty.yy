@@ -1054,11 +1054,11 @@ Function:
       auto rettype = own($4);
       auto* paramlist = $7;
       t_struct* streamthrows = nullptr;
-      if (const auto* tstream_resp = dynamic_cast<const t_stream_response*>(rettype->get_type())) {
+      if (const auto* tstream_resp = dynamic_cast<const t_stream_response*>(rettype->type())) {
         streamthrows = tstream_resp->get_throws_struct();
       }
       t_function* func;
-      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype->get_type())) {
+      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype->type())) {
         // TODO(afuller): Remove special case for sink.
         func = new t_function(
           tsink,
@@ -1088,8 +1088,8 @@ Function:
     {
       driver.debug("Function => tok_performs FieldType");
       auto ret = own($2);
-      std::string name = ret->get_type()
-          ? "create" + ret->get_type()->get_name()
+      std::string name = ret->type()
+          ? "create" + ret->type()->get_name()
           : "<interaction placeholder>";
       $$ = new t_function(
         std::move(*ret),

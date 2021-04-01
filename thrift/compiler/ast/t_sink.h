@@ -51,10 +51,10 @@ class t_sink : public t_type {
   bool has_first_response() const { return first_response_type_ != nullptr; }
 
   const t_type* get_first_response_type() const {
-    return first_response_type_->get_type();
+    return first_response_type_->type();
   }
 
-  const t_type* get_sink_type() const { return sink_type_.get_type(); }
+  const t_type* get_sink_type() const { return sink_type_.type(); }
 
   // TODO: remove old function "xception" once everything has been swtiched to
   // "exception"
@@ -63,7 +63,7 @@ class t_sink : public t_type {
   t_struct* get_sink_exceptions() const { return sink_exceptions_; }
 
   const t_type* get_final_response_type() const {
-    return final_response_type_.get_type();
+    return final_response_type_.type();
   }
 
   // TODO: remove old function "xception" once everything has been swtiched to
@@ -79,10 +79,10 @@ class t_sink : public t_type {
   bool is_sink() const override { return true; }
 
   std::string get_full_name() const override {
-    return "sink<" + sink_type_.get_type()->get_full_name() + ", " +
-        final_response_type_.get_type()->get_full_name() + ">" +
+    return "sink<" + sink_type_.type()->get_full_name() + ", " +
+        final_response_type_.type()->get_full_name() + ">" +
         (sink_has_first_response()
-             ? (", " + first_response_type_->get_type()->get_full_name())
+             ? (", " + first_response_type_->type()->get_full_name())
              : "");
   }
 

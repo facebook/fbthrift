@@ -190,7 +190,7 @@ class t_const_value {
   void set_ttype(std::unique_ptr<t_type_ref> type) { type_ = std::move(type); }
 
   const t_type* get_ttype() const {
-    return type_ == nullptr ? nullptr : type_->get_type();
+    return type_ == nullptr ? nullptr : type_->type();
   }
 
   void set_is_enum(bool value = true) { is_enum_ = value; }

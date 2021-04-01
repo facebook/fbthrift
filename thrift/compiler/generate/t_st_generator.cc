@@ -1058,7 +1058,7 @@ string t_st_generator::argument_list(const t_struct* tstruct) {
 
 string t_st_generator::type_name(const t_type* ttype) {
   string prefix = "";
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
   if (program != nullptr && program != program_) {
     if (!ttype->is_service()) {
       prefix = program->name() + "_types.";

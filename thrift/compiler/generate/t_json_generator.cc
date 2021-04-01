@@ -282,8 +282,8 @@ string t_json_generator::type_to_spec_args(const t_type* ttype) {
       ttype->is_struct() || ttype->is_xception() || ttype->is_service() ||
       ttype->is_enum() || ttype->is_typedef()) {
     string module = "";
-    if (ttype->get_program() != program_) {
-      module = ttype->get_program()->name() + ".";
+    if (ttype->program() != program_) {
+      module = ttype->program()->name() + ".";
     }
     return "\"" + module + ttype->get_name() + "\"";
   } else if (ttype->is_map()) {
@@ -316,7 +316,7 @@ string t_json_generator::type_to_spec_args(const t_type* ttype) {
  * applicable).
  */
 string t_json_generator::type_name(const t_type* ttype) {
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
   if (program != nullptr && program != program_) {
     const string& json_namespace = program->get_namespace("json");
     return (!json_namespace.empty() ? json_namespace : program->name()) + "." +

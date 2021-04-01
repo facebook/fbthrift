@@ -540,7 +540,7 @@ string t_hs_generator::render_const_value(
     for (auto& c_iter : constants) {
       int val = c_iter->get_value();
       if (val == value->get_integer()) {
-        const t_program* prog = type->get_program();
+        const t_program* prog = type->program();
         if (prog != nullptr)
           out << capitalize(prog->name()) << "_Types.";
         out << capitalize(c_iter->get_name());
@@ -1026,7 +1026,7 @@ void t_hs_generator::generate_service(const t_service* tservice) {
 
   if (tservice->get_extends()) {
     auto extends_service = tservice->get_extends();
-    auto extends_program = extends_service->get_program();
+    auto extends_program = extends_service->program();
     f_service_ << "import qualified " << get_module_prefix(extends_program)
                << capitalize(extends_service->get_name()) << nl;
   }
@@ -1182,7 +1182,7 @@ void t_hs_generator::generate_service_interface(const t_service* tservice) {
 
   string sname = capitalize(service_name_);
   if (tservice->get_extends() != nullptr) {
-    auto extends_program = tservice->get_extends()->get_program();
+    auto extends_program = tservice->get_extends()->program();
     string extends = unqualified_type_name(tservice->get_extends());
     indent(f_iface_) << "import qualified "
                      << get_module_prefix(extends_program) << extends
@@ -1250,7 +1250,7 @@ void t_hs_generator::generate_service_client(const t_service* tservice) {
                     << exports << ") where" << nl;
 
   if (tservice->get_extends() != nullptr) {
-    auto extends_program = tservice->get_extends()->get_program();
+    auto extends_program = tservice->get_extends()->program();
     extends = unqualified_type_name(tservice->get_extends());
     indent(f_client_) << "import qualified "
                       << get_module_prefix(extends_program) << extends
@@ -1400,7 +1400,7 @@ void t_hs_generator::generate_service_server(const t_service* tservice) {
 
   indent(f_service_) << "_ -> ";
   if (tservice->get_extends() != nullptr) {
-    f_service_ << get_module_prefix(tservice->get_extends()->get_program())
+    f_service_ << get_module_prefix(tservice->get_extends()->program())
                << unqualified_type_name(tservice->get_extends())
                << ".proc_ handler (iprot,oprot) (name,typ,seqid)" << nl;
   } else {
@@ -2045,7 +2045,7 @@ string t_hs_generator::unqualified_type_name(
 }
 
 string t_hs_generator::type_name_qualifier(const t_type* ttype) {
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
 
   if (ttype->is_service()) {
     return capitalize(program->name()) + "_Iface.";

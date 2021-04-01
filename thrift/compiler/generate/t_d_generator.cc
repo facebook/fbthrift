@@ -230,8 +230,7 @@ class t_d_generator : public t_oop_generator {
 
     const t_service* extends_service = tservice->get_extends();
     if (extends_service != nullptr) {
-      f_service << "import "
-                << render_package(*(extends_service->get_program()))
+      f_service << "import " << render_package(*(extends_service->program()))
                 << extends_service->get_name() << ";" << endl;
     }
 
@@ -265,8 +264,8 @@ class t_d_generator : public t_oop_generator {
     if (!exception_types.empty())
       f_service << endl;
     for (const auto* et : exception_types) {
-      indent(f_service) << "alias " << render_package(*et->get_program())
-                        << et->get_program()->name() << "_types"
+      indent(f_service) << "alias " << render_package(*et->program())
+                        << et->program()->name() << "_types"
                         << "." << et->get_name() << " " << et->get_name() << ";"
                         << endl;
     }
@@ -355,7 +354,7 @@ class t_d_generator : public t_oop_generator {
         << endl
         << " * avoid overwriting it when running the generator again." << endl
         << " */" << endl
-        << "module " << render_package(*tservice->get_program()) << svc_name
+        << "module " << render_package(*tservice->program()) << svc_name
         << "_server;" << endl
         << endl
         << "import std.stdio;" << endl
@@ -366,8 +365,8 @@ class t_d_generator : public t_oop_generator {
         << "import thrift.transport.buffered;" << endl
         << "import thrift.util.hashset;" << endl
         << endl
-        << "import " << render_package(*tservice->get_program()) << svc_name
-        << ";" << endl
+        << "import " << render_package(*tservice->program()) << svc_name << ";"
+        << endl
         << "import " << render_package(*get_program()) << program_name_
         << "_types;" << endl
         << endl
@@ -681,7 +680,7 @@ class t_d_generator : public t_oop_generator {
     }
 
     string type_name;
-    const t_program* type_program = ttype->get_program();
+    const t_program* type_program = ttype->program();
     if (type_program != get_program()) {
       if (ttype->is_service()) {
         type_name = render_package(*type_program) + ttype->get_name() + "." +

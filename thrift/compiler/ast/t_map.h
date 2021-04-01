@@ -32,14 +32,14 @@ class t_map : public t_container {
   t_map(t_type_ref key_type, t_type_ref val_type)
       : key_type_(std::move(key_type)), val_type_(std::move(val_type)) {}
 
-  const t_type* get_key_type() const { return key_type_.get_type(); }
+  const t_type* get_key_type() const { return key_type_.type(); }
 
-  const t_type* get_val_type() const { return val_type_.get_type(); }
+  const t_type* get_val_type() const { return val_type_.type(); }
 
   std::string get_full_name() const override {
     return (
-        "map<" + key_type_.get_type()->get_full_name() + ", " +
-        val_type_.get_type()->get_full_name() + ">");
+        "map<" + key_type_.type()->get_full_name() + ", " +
+        val_type_.type()->get_full_name() + ">");
   }
 
   t_type::type get_type_value() const override { return t_type::type::t_map; }

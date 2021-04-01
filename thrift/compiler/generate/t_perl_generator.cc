@@ -369,8 +369,8 @@ string t_perl_generator::render_const_value(
   } else if (type->is_enum()) {
     out << value->get_integer();
   } else if (type->is_struct() || type->is_xception()) {
-    out << "new " << perl_namespace(type->get_program()) << type->get_name()
-        << "({" << endl;
+    out << "new " << perl_namespace(type->program()) << type->get_name() << "({"
+        << endl;
     indent_up();
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
@@ -473,7 +473,7 @@ void t_perl_generator::generate_perl_struct_definition(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   std::string name = name_prefix + tstruct->get_name();
-  out << "package " << perl_namespace(tstruct->get_program()) << name << ";\n";
+  out << "package " << perl_namespace(tstruct->program()) << name << ";\n";
   if (is_exception) {
     out << "use base qw(Thrift::TException);\n";
   }
@@ -482,8 +482,7 @@ void t_perl_generator::generate_perl_struct_definition(
   out << "use base qw(Class::Accessor);\n";
 
   if (members.size() > 0) {
-    out << perl_namespace(tstruct->get_program()) << name
-        << "->mk_accessors( qw( ";
+    out << perl_namespace(tstruct->program()) << name << "->mk_accessors( qw( ";
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       const t_type* t = (*m_iter)->get_type()->get_true_type();
       if (!t->is_xception()) {
@@ -685,12 +684,12 @@ void t_perl_generator::generate_service(const t_service* tservice) {
       ///      "package "<<service_name_<<";"<<endl<<
       autogen_comment() << perl_includes();
 
-  f_service_ << "use " << perl_namespace(tservice->get_program()) << "Types;"
+  f_service_ << "use " << perl_namespace(tservice->program()) << "Types;"
              << endl;
 
   const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
-    f_service_ << "use " << perl_namespace(extends_s->get_program())
+    f_service_ << "use " << perl_namespace(extends_s->program())
                << extends_s->get_name() << ";" << endl;
   }
 
@@ -722,7 +721,7 @@ void t_perl_generator::generate_service_processor(const t_service* tservice) {
   string extends_processor = "";
   const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
-    extends = perl_namespace(extends_s->get_program()) + extends_s->get_name();
+    extends = perl_namespace(extends_s->program()) + extends_s->get_name();
     extends_processor = "use base qw(" + extends + "Processor);";
   }
 
@@ -817,9 +816,9 @@ void t_perl_generator::generate_process_function(
 
   f_service_ << indent() << "my ($self, $seqid, $input, $output) = @_;" << endl;
 
-  string argsname = perl_namespace(tservice->get_program()) + service_name_ +
-      "_" + tfunction->get_name() + "_args";
-  string resultname = perl_namespace(tservice->get_program()) + service_name_ +
+  string argsname = perl_namespace(tservice->program()) + service_name_ + "_" +
+      tfunction->get_name() + "_args";
+  string resultname = perl_namespace(tservice->program()) + service_name_ +
       "_" + tfunction->get_name() + "_result";
 
   f_service_ << indent() << "my $args = new " << argsname << "();" << endl
@@ -868,7 +867,7 @@ void t_perl_generator::generate_process_function(
     indent_down();
     for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
       f_service_ << indent() << "}; if( UNIVERSAL::isa($@,'"
-                 << perl_namespace((*x_iter)->get_type()->get_program())
+                 << perl_namespace((*x_iter)->get_type()->program())
                  << (*x_iter)->get_type()->get_name() << "') ){ " << endl;
 
       if (!tfunction->is_oneway()) {
@@ -954,7 +953,7 @@ void t_perl_generator::generate_service_interface(const t_service* tservice) {
   string extends_if = "";
   const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
-    extends_if = "use base qw(" + perl_namespace(extends_s->get_program()) +
+    extends_if = "use base qw(" + perl_namespace(extends_s->program()) +
         extends_s->get_name() + "If);";
   }
 
@@ -985,7 +984,7 @@ void t_perl_generator::generate_service_rest(const t_service* tservice) {
   const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
     extends = extends_s->get_name();
-    extends_if = "use base qw(" + perl_namespace(extends_s->get_program()) +
+    extends_if = "use base qw(" + perl_namespace(extends_s->program()) +
         extends_s->get_name() + "Rest);";
   }
   f_service_ << "package " << perl_namespace(program_) << service_name_
@@ -1044,7 +1043,7 @@ void t_perl_generator::generate_service_client(const t_service* tservice) {
   string extends_client = "";
   const t_service* extends_s = tservice->get_extends();
   if (extends_s != nullptr) {
-    extends = perl_namespace(extends_s->get_program()) + extends_s->get_name();
+    extends = perl_namespace(extends_s->program()) + extends_s->get_name();
     extends_client = "use base qw(" + extends + "Client);";
   }
 
@@ -1123,8 +1122,8 @@ void t_perl_generator::generate_service_client(const t_service* tservice) {
 
     indent_up();
 
-    std::string argsname = perl_namespace(tservice->get_program()) +
-        service_name_ + "_" + (*f_iter)->get_name() + "_args";
+    std::string argsname = perl_namespace(tservice->program()) + service_name_ +
+        "_" + (*f_iter)->get_name() + "_args";
 
     // Serialize the request header
     f_service_ << indent() << "$self->{output}->writeMessageBegin('"
@@ -1149,7 +1148,7 @@ void t_perl_generator::generate_service_client(const t_service* tservice) {
     f_service_ << "}" << endl;
 
     if (!(*f_iter)->is_oneway()) {
-      std::string resultname = perl_namespace(tservice->get_program()) +
+      std::string resultname = perl_namespace(tservice->program()) +
           service_name_ + "_" + (*f_iter)->get_name() + "_result";
 
       t_function recv_function(
@@ -1301,7 +1300,7 @@ void t_perl_generator::generate_deserialize_field(
 void t_perl_generator::generate_deserialize_struct(
     ofstream& out, const t_struct* tstruct, string prefix) {
   out << indent() << "$" << prefix << " = new "
-      << perl_namespace(tstruct->get_program()) << tstruct->get_name() << "();"
+      << perl_namespace(tstruct->program()) << tstruct->get_name() << "();"
       << endl
       << indent() << "$xfer += $" << prefix << "->read($input);" << endl;
 }
@@ -1645,7 +1644,7 @@ string t_perl_generator::declare_field(
       result += " = []";
     } else if (type->is_struct() || type->is_xception()) {
       if (obj) {
-        result += " = new " + perl_namespace(type->get_program()) +
+        result += " = new " + perl_namespace(type->program()) +
             type->get_name() + "()";
       } else {
         result += " = undef";

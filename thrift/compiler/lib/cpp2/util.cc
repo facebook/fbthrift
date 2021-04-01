@@ -311,11 +311,11 @@ std::string type_resolver::gen_template_type(
 }
 
 std::string type_resolver::gen_namespaced_name(const t_type* node) {
-  if (node->get_program() == nullptr) {
+  if (node->program() == nullptr) {
     // No namespace.
     return node->get_name();
   }
-  return get_gen_namespace(*node->get_program()) + "::" + node->get_name();
+  return get_gen_namespace(*node->program()) + "::" + node->get_name();
 }
 
 const std::string& type_resolver::get_namespace(const t_program* program) {

@@ -1508,7 +1508,7 @@ string t_csharp_generator::type_name(
     return "List<" + type_name(tlist->get_elem_type(), true) + ">";
   }
 
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
   if (program != nullptr && program != program_) {
     string ns = program->get_namespace("csharp");
     if (!ns.empty()) {

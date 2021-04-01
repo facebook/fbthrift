@@ -71,16 +71,13 @@ class t_function : public t_named {
         stream_exceptions_(std::move(stream_exceptions)),
         qualifier_(qualifier) {
     // sinks are supposed to use the other ctor
-    assert(
-        return_type_.get_type() == nullptr ||
-        !return_type_.get_type()->is_sink());
+    assert(return_type_.type() == nullptr || !return_type_.type()->is_sink());
     if (is_oneway()) {
       if (!exceptions_->get_members().empty()) {
         throw std::string("Oneway methods can't throw exceptions.");
       }
 
-      if (return_type_.get_type() == nullptr ||
-          !return_type_.get_type()->is_void()) {
+      if (return_type_.type() == nullptr || !return_type_.type()->is_void()) {
         throw std::string("Oneway methods must have void return type.");
       }
     }
@@ -97,8 +94,8 @@ class t_function : public t_named {
     sink_final_response_exceptions_ = std::make_unique<t_struct>(nullptr);
 
     if (!stream_exceptions_->get_members().empty()) {
-      if (return_type_.get_type() == nullptr ||
-          !return_type_.get_type()->is_streamresponse()) {
+      if (return_type_.type() == nullptr ||
+          !return_type_.type()->is_streamresponse()) {
         throw std::string("`stream throws` only valid on stream methods");
       }
     }
@@ -133,7 +130,7 @@ class t_function : public t_named {
   /**
    * t_function getters
    */
-  const t_type* get_return_type() const { return return_type_.get_type(); }
+  const t_type* get_return_type() const { return return_type_.type(); }
 
   t_paramlist* get_paramlist() const { return paramlist_.get(); }
 
@@ -164,10 +161,10 @@ class t_function : public t_named {
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
 
   bool returns_stream() const {
-    return return_type_.get_type()->is_streamresponse();
+    return return_type_.type()->is_streamresponse();
   }
 
-  bool returns_sink() const { return return_type_.get_type()->is_sink(); }
+  bool returns_sink() const { return return_type_.type()->is_sink(); }
 
   bool is_interaction_constructor() const { return isInteractionConstructor_; }
   void set_is_interaction_constructor() { isInteractionConstructor_ = true; }

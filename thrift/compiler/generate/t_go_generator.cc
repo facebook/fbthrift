@@ -1329,7 +1329,7 @@ void t_go_generator::generate_go_struct_initializer(
         !(dynamic_cast<const t_struct*>(ttype)->is_union());
     string publicized_name;
     string module;
-    if (auto&& program = ttype->get_program()) {
+    if (auto&& program = ttype->program()) {
       if (program != program_) {
         module = package_identifiers[get_real_go_module(program)] + ".";
       }
@@ -3675,7 +3675,7 @@ void t_go_generator::generate_deserialize_struct(
 
   out << indent() << prefix << eq << (pointer_field ? "" : "*");
 
-  const t_program* program = tstruct->get_program();
+  const t_program* program = tstruct->program();
   if (program != nullptr && program != program_) {
     out << package_identifiers[get_real_go_module(program)] << ".";
   }
@@ -4247,7 +4247,7 @@ string t_go_generator::argument_list(const t_struct* tstruct) {
 }
 
 string t_go_generator::type_name(const t_type* ttype) {
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
 
   if (program != nullptr && program != program_) {
     string module(get_real_go_module(program));

@@ -78,7 +78,7 @@ class t_field : public t_named {
   /**
    * t_field getters
    */
-  const t_type* get_type() const { return type_.get_type(); }
+  const t_type* get_type() const { return type_.type(); }
 
   int32_t get_key() const { return key_; }
 

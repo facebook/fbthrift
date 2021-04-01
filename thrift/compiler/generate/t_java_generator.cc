@@ -507,7 +507,7 @@ string t_java_generator::render_const_value(
     }
   } else if (type->is_enum()) {
     std::string namespace_prefix =
-        type->get_program()->get_namespace(namespace_key_);
+        type->program()->get_namespace(namespace_key_);
     if (namespace_prefix.length() > 0) {
       namespace_prefix += ".";
     }
@@ -3660,7 +3660,7 @@ string t_java_generator::type_name(
   }
 
   // Check for namespacing
-  const t_program* program = ttype->get_program();
+  const t_program* program = ttype->program();
   if (program != nullptr && program != program_) {
     const string& package = program->get_namespace(namespace_key_);
     if (!package.empty()) {
@@ -4021,7 +4021,7 @@ void t_java_generator::generate_isset_set(ofstream& out, const t_field* field) {
 
 std::string t_java_generator::get_enum_class_name(const t_type* type) {
   string package = "";
-  const t_program* program = type->get_program();
+  const t_program* program = type->program();
   if (program != nullptr && program != program_) {
     package = program->get_namespace(namespace_key_);
     if (package != "") {

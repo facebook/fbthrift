@@ -378,7 +378,7 @@ int t_html_generator::print_type(const t_type* ttype) {
     f_out_ << ttype->get_name();
     len = ttype->get_name().size();
   } else {
-    string prog_name = ttype->get_program()->name();
+    string prog_name = ttype->program()->name();
     const string& type_name = ttype->get_name();
     f_out_ << "<a href=\"" << prog_name << ".html#";
     if (ttype->is_typedef()) {
@@ -392,7 +392,7 @@ int t_html_generator::print_type(const t_type* ttype) {
     }
     f_out_ << type_name << "\">";
     len = type_name.size();
-    if (ttype->get_program() != program_) {
+    if (ttype->program() != program_) {
       f_out_ << prog_name << ".";
       len += prog_name.size() + 1;
     }
