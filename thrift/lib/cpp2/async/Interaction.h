@@ -84,7 +84,7 @@ class SerialInteractionTile : public Tile {
 
 class TilePromise final : public Tile {
  public:
-  void addContinuation(std::shared_ptr<concurrency::Runnable> task) {
+  void addContinuation(std::unique_ptr<concurrency::Runnable> task) {
     continuations_.push_back(std::move(task));
   }
 
@@ -120,7 +120,7 @@ class TilePromise final : public Tile {
   }
 
  private:
-  std::deque<std::shared_ptr<concurrency::Runnable>> continuations_;
+  std::deque<std::unique_ptr<concurrency::Runnable>> continuations_;
   friend class GeneratedAsyncProcessor;
 };
 

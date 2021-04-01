@@ -239,7 +239,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
  private:
   template <typename ChildType>
-  static std::shared_ptr<EventTask> makeEventTaskForRequest(
+  static std::unique_ptr<concurrency::Runnable> makeEventTaskForRequest(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
@@ -698,7 +698,8 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 }
 
 template <typename ChildType>
-std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
+std::unique_ptr<concurrency::Runnable>
+GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
     SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
@@ -720,14 +721,14 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
   };
 
   if (!tile) {
-    return std::make_shared<EventTask>(
+    return std::make_unique<EventTask>(
         std::move(taskFn),
         std::move(req),
         eb,
         kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   }
 
-  return std::make_shared<InteractionEventTask>(
+  return std::make_unique<InteractionEventTask>(
       [=, taskFn = std::move(taskFn)](
           ResponseChannelRequest::UniquePtr rq, Tile& tileRef) mutable {
         ctx->setTile(tileRef);
