@@ -93,6 +93,8 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
 
   static constexpr bool kOmitsContainerSizes() { return false; }
 
+  static constexpr bool kOmitsStringSizes() { return true; }
+
   static constexpr bool kHasDeferredRead() { return false; }
 
   inline void readStructBegin(std::string& name);

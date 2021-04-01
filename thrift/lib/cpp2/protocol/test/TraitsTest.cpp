@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 
 #include <cstdint>
@@ -64,4 +67,130 @@ TEST_F(TraitsTest, protocol_type) {
   EXPECT_EQ(
       TType::T_FLOAT,
       (protocol_type_v<indy_tag<tc::floating_point>, indy_value<float>>));
+}
+
+template <typename T>
+class FixedCostSkipTest : public testing::Test {};
+
+struct Struct {};
+enum class Enum {};
+
+using TypeClassesAndType = ::testing::Types<
+    std::pair<tc::string, std::string>,
+    std::pair<tc::integral, int8_t>,
+    std::pair<tc::integral, int16_t>,
+    std::pair<tc::integral, int32_t>,
+    std::pair<tc::integral, int64_t>,
+    std::pair<tc::enumeration, Enum>,
+    std::pair<tc::floating_point, float>,
+    std::pair<tc::floating_point, double>,
+    std::pair<tc::structure, Struct>,
+    std::pair<tc::variant, Struct>>;
+
+TYPED_TEST_CASE(FixedCostSkipTest, TypeClassesAndType);
+
+TYPED_TEST(FixedCostSkipTest, Compact) {
+  using P = CompactProtocolReader;
+  using TC = typename TypeParam::first_type;
+  using T = typename TypeParam::second_type;
+
+  EXPECT_EQ(
+      (!std::is_same_v<TC, tc::structure> && !std::is_same_v<TC, tc::variant>),
+      (fixed_cost_skip_v<P, TC, T>));
+
+  EXPECT_EQ(
+      (std::is_same_v<T, int8_t> || //
+       std::is_same_v<T, float> || //
+       std::is_same_v<T, double>),
+      (fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>));
+
+  EXPECT_EQ(
+      (std::is_same_v<T, int8_t> || //
+       std::is_same_v<T, float> || //
+       std::is_same_v<T, double>),
+      (fixed_cost_skip_v<P, tc::set<TC>, std::set<T>>));
+
+  EXPECT_EQ(
+      (fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>),
+      (fixed_cost_skip_v<
+          P,
+          tc::map<tc::integral, TC>,
+          std::map<std::int8_t, T>>));
+
+  EXPECT_FALSE( //
+      (fixed_cost_skip_v<
+          P,
+          tc::map<tc::integral, TC>,
+          std::map<std::int16_t, T>>));
+
+  EXPECT_FALSE((
+      fixed_cost_skip_v<P, tc::map<tc::string, TC>, std::map<std::string, T>>));
+}
+
+TYPED_TEST(FixedCostSkipTest, Binary) {
+  using P = BinaryProtocolReader;
+  using TC = typename TypeParam::first_type;
+  using T = typename TypeParam::second_type;
+
+  EXPECT_EQ(
+      (!std::is_same_v<TC, tc::structure> && !std::is_same_v<TC, tc::variant>),
+      (fixed_cost_skip_v<P, TC, T>));
+
+  EXPECT_EQ(
+      (std::is_same_v<TC, tc::integral> ||
+       std::is_same_v<TC, tc::floating_point> ||
+       std::is_same_v<TC, tc::enumeration>),
+      (fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>));
+
+  EXPECT_EQ(
+      (std::is_same_v<TC, tc::integral> ||
+       std::is_same_v<TC, tc::floating_point> ||
+       std::is_same_v<TC, tc::enumeration>),
+      (fixed_cost_skip_v<P, tc::set<TC>, std::set<T>>));
+
+  EXPECT_EQ(
+      (fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>),
+      (fixed_cost_skip_v<
+          P,
+          tc::map<tc::integral, TC>,
+          std::map<std::int8_t, T>>));
+
+  EXPECT_EQ(
+      (fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>),
+      (fixed_cost_skip_v<
+          P,
+          tc::map<tc::integral, TC>,
+          std::map<std::int16_t, T>>));
+
+  EXPECT_FALSE((
+      fixed_cost_skip_v<P, tc::map<tc::string, TC>, std::map<std::string, T>>));
+}
+
+TYPED_TEST(FixedCostSkipTest, SimpleJSON) {
+  using P = SimpleJSONProtocolReader;
+  using TC = typename TypeParam::first_type;
+  using T = typename TypeParam::second_type;
+
+  EXPECT_EQ(
+      (std::is_same_v<TC, tc::integral> ||
+       std::is_same_v<TC, tc::floating_point> ||
+       std::is_same_v<TC, tc::enumeration>),
+      (fixed_cost_skip_v<P, TC, T>));
+
+  EXPECT_FALSE((fixed_cost_skip_v<P, tc::list<TC>, std::vector<T>>));
+
+  EXPECT_FALSE((fixed_cost_skip_v<P, tc::set<TC>, std::set<T>>));
+
+  EXPECT_FALSE((fixed_cost_skip_v<
+                P,
+                tc::map<tc::integral, TC>,
+                std::map<std::int8_t, T>>));
+
+  EXPECT_FALSE((fixed_cost_skip_v<
+                P,
+                tc::map<tc::integral, TC>,
+                std::map<std::int16_t, T>>));
+
+  EXPECT_FALSE((
+      fixed_cost_skip_v<P, tc::map<tc::string, TC>, std::map<std::string, T>>));
 }
