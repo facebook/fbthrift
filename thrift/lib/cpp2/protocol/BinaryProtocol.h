@@ -154,7 +154,7 @@ class BinaryProtocolWriter {
   inline uint32_t serializedSizeSerializedData(
       std::unique_ptr<folly::IOBuf> const& data) const;
 
- protected:
+ private:
   /**
    * Cursor to write the data out to.
    */

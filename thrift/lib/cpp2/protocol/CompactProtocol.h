@@ -137,16 +137,10 @@ class CompactProtocolWriter {
   inline uint32_t writeStructEnd();
   inline uint32_t writeFieldBegin(
       const char* name, TType fieldType, int16_t fieldId);
-  inline uint32_t writeFieldBeginInternal(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId,
-      int8_t typeOverride);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
   inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
   inline uint32_t writeMapEnd();
-  inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
   inline uint32_t writeListBegin(TType elemType, uint32_t size);
   inline uint32_t writeListEnd();
   inline uint32_t writeSetBegin(TType elemType, uint32_t size);
@@ -226,6 +220,8 @@ class CompactProtocolWriter {
    * write()/writeBE()/writeLE().
    */
   QueueAppender out_;
+
+ private:
   ExternalBufferSharing sharing_;
 
   struct {
@@ -236,6 +232,14 @@ class CompactProtocolWriter {
 
   apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_{-1};
+
+  inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
+
+  inline uint32_t writeFieldBeginInternal(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId,
+      int8_t typeOverride);
 };
 
 class CompactProtocolReader {
