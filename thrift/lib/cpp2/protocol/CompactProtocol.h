@@ -157,11 +157,6 @@ class CompactProtocolWriter {
   inline uint32_t writeBinary(folly::ByteRange str);
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   inline uint32_t writeBinary(const IOBuf& str);
-  inline uint32_t writeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& /*data*/) {
-    // TODO
-    return 0;
-  }
 
   /**
    * Functions that return the serialized size
@@ -207,11 +202,6 @@ class CompactProtocolWriter {
   inline uint32_t serializedSizeZCBinary(
       std::unique_ptr<IOBuf> const& /*v*/) const;
   inline uint32_t serializedSizeZCBinary(IOBuf const& /*v*/) const;
-  inline uint32_t serializedSizeSerializedData(
-      std::unique_ptr<folly::IOBuf> const& /*data*/) const {
-    // TODO (kek)
-    return 0;
-  }
 
  protected:
   /**

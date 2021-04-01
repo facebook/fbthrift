@@ -183,21 +183,6 @@ uint32_t BinaryProtocolWriter::writeBinary(const folly::IOBuf& str) {
   return result + static_cast<uint32_t>(size);
 }
 
-uint32_t BinaryProtocolWriter::writeSerializedData(
-    const std::unique_ptr<IOBuf>& buf) {
-  if (!buf) {
-    return 0;
-  }
-  // TODO: insert() just chains IOBufs together. Consider copying data to the
-  // output buffer as it was already preallocated with the correct size.
-  auto clone = buf->clone();
-  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
-    clone->makeManaged();
-  }
-  out_.insert(std::move(clone));
-  return folly::to_narrow(buf->computeChainDataLength());
-}
-
 /**
  * Functions that return the serialized size
  */
@@ -329,13 +314,6 @@ uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
   return (size > folly::IOBufQueue::kMaxPackCopy)
       ? serializedSizeI32() // too big to pack: size only
       : static_cast<uint32_t>(size) + serializedSizeI32(); // size + packed data
-}
-
-uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
-    std::unique_ptr<IOBuf> const& /*buf*/) const {
-  // writeSerializedData's implementation just chains IOBufs together. Thus
-  // we don't expect external buffer space for it.
-  return 0;
 }
 
 /**

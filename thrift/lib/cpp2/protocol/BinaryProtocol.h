@@ -107,8 +107,6 @@ class BinaryProtocolWriter {
   inline uint32_t writeBinary(folly::ByteRange str);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   inline uint32_t writeBinary(const folly::IOBuf& str);
-  inline uint32_t writeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data);
 
   /**
    * Functions that return the [estimated] serialized size
@@ -151,8 +149,6 @@ class BinaryProtocolWriter {
   inline uint32_t serializedSizeZCBinary(
       std::unique_ptr<folly::IOBuf> const&) const;
   inline uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
-  inline uint32_t serializedSizeSerializedData(
-      std::unique_ptr<folly::IOBuf> const& data) const;
 
  private:
   /**

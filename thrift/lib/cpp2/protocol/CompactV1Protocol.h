@@ -63,7 +63,6 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   inline uint32_t writeDouble(double dub);
   using CompactProtocolWriter::writeBinary;
   using CompactProtocolWriter::writeFloat;
-  using CompactProtocolWriter::writeSerializedData;
   using CompactProtocolWriter::writeString;
 
   using CompactProtocolWriter::serializedFieldSize;
@@ -80,7 +79,6 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::serializedSizeListEnd;
   using CompactProtocolWriter::serializedSizeMapBegin;
   using CompactProtocolWriter::serializedSizeMapEnd;
-  using CompactProtocolWriter::serializedSizeSerializedData;
   using CompactProtocolWriter::serializedSizeSetBegin;
   using CompactProtocolWriter::serializedSizeSetEnd;
   using CompactProtocolWriter::serializedSizeStop;

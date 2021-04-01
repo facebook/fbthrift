@@ -106,8 +106,6 @@ class JSONProtocolWriterCommon {
   inline uint32_t writeBinary(folly::ByteRange v);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   inline uint32_t writeBinary(const folly::IOBuf& str);
-  inline uint32_t writeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data);
 
   //  These sizes are common to both json and simple-json protocols.
   inline uint32_t serializedSizeByte(int8_t = 0) const;
@@ -127,8 +125,6 @@ class JSONProtocolWriterCommon {
   inline uint32_t serializedSizeZCBinary(
       const std::unique_ptr<folly::IOBuf>& /*v*/) const;
   inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
-  inline uint32_t serializedSizeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data) const;
 
  protected:
   enum class ContextType { MAP, ARRAY };

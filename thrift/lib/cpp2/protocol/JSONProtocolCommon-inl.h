@@ -109,15 +109,6 @@ uint32_t JSONProtocolWriterCommon::writeBinary(const folly::IOBuf& str) {
   return ret + writeJSONBase64(str.clone()->coalesce());
 }
 
-uint32_t JSONProtocolWriterCommon::writeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& buf) {
-  if (!buf) {
-    return 0;
-  }
-  out_.insert(buf->clone());
-  return folly::to_narrow(buf->computeChainDataLength());
-}
-
 uint32_t JSONProtocolWriterCommon::serializedSizeByte(int8_t /*val*/) const {
   // 3 bytes for serialized, plus it might be a key, plus context
   return 6;
@@ -193,13 +184,6 @@ uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
     folly::IOBuf const&) const {
   // size only
   return serializedSizeI32();
-}
-
-uint32_t JSONProtocolWriterCommon::serializedSizeSerializedData(
-    std::unique_ptr<folly::IOBuf> const& /*buf*/) const {
-  // writeSerializedData's implementation just chains IOBufs together. Thus
-  // we don't expect external buffer space for it.
-  return 0;
 }
 
 /**

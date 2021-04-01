@@ -85,10 +85,6 @@ class DebugProtocolWriter {
   uint32_t writeBinary(folly::ByteRange v);
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   uint32_t writeBinary(const folly::IOBuf& str);
-  uint32_t writeSerializedData(const std::unique_ptr<folly::IOBuf>& /*data*/) {
-    // TODO
-    return 0;
-  }
 
   /**
    * Functions that return the serialized size
