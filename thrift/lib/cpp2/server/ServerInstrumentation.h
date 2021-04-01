@@ -22,6 +22,7 @@
 #include <string_view>
 
 #include <folly/Function.h>
+#include <folly/experimental/PrimaryPtr.h>
 
 namespace apache {
 namespace thrift {
@@ -32,6 +33,32 @@ namespace instrumentation {
 
 constexpr std::string_view kThriftServerTrackerKey = "thrift_server";
 
+class ServerTrackerRef {
+ public:
+  bool tryWithLock(
+      folly::FunctionRef<void(std::string_view, ThriftServer&)> f) {
+    if (auto locked = ref_.lock()) {
+      DCHECK(locked->server);
+      f(locked->key, *locked->server);
+      return true;
+    }
+
+    return false;
+  }
+
+ private:
+  friend class ServerTracker;
+  struct ControlBlock {
+    ControlBlock(std::string_view k, ThriftServer& s) : key(k), server(&s) {}
+    std::string_view key;
+    ThriftServer* server;
+  };
+
+  explicit ServerTrackerRef(folly::PrimaryPtrRef<ControlBlock> ref)
+      : ref_(std::move(ref)) {}
+  folly::PrimaryPtrRef<ControlBlock> ref_;
+};
+
 class ServerTracker {
  public:
   ServerTracker(std::string_view key, ThriftServer& server);
@@ -39,15 +66,15 @@ class ServerTracker {
 
   ThriftServer& getServer() const { return server_; }
 
+  ServerTrackerRef ref() const { return ServerTrackerRef{cb_.ref()}; }
+
   const std::string& getKey() const { return key_; }
 
  private:
   std::string key_;
   ThriftServer& server_;
+  folly::PrimaryPtr<ServerTrackerRef::ControlBlock> cb_;
 };
-
-void forAllTrackers(folly::FunctionRef<
-                    void(std::string_view, const std::set<ServerTracker*>&)>);
 
 size_t getServerCount(std::string_view key);
 

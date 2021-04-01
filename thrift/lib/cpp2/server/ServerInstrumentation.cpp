@@ -38,16 +38,6 @@ class TrackerCollection {
   TrackerCollection(TrackerCollection const&) = delete;
   void operator=(TrackerCollection const&) = delete;
 
-  void forAllTrackers(
-      folly::FunctionRef<
-          void(std::string_view, const std::set<ServerTracker*>&)> f) const {
-    servers_.withRLock([&](const Map& map) {
-      for (const auto& [key, trackers] : map) {
-        f(key, trackers);
-      }
-    });
-  }
-
   void forTrackersWithKey(
       std::string_view key,
       folly::FunctionRef<void(const std::set<ServerTracker*>&)> f) const {
@@ -78,11 +68,14 @@ TrackerCollection& getTrackerCollection() {
 } // namespace
 
 ServerTracker::ServerTracker(std::string_view key, ThriftServer& server)
-    : key_(key), server_(server) {
+    : key_(key),
+      server_(server),
+      cb_(std::make_unique<ServerTrackerRef::ControlBlock>(key_, server_)) {
   getTrackerCollection().addTracker(key_, *this);
 }
 
 ServerTracker::~ServerTracker() {
+  cb_.join();
   getTrackerCollection().removeTracker(key_, *this);
 }
 
@@ -92,12 +85,6 @@ size_t getServerCount(std::string_view key) {
       key,
       [&](const std::set<ServerTracker*>& trackers) { ret = trackers.size(); });
   return ret;
-}
-
-void forAllTrackers(
-    folly::FunctionRef<void(std::string_view, const std::set<ServerTracker*>&)>
-        f) {
-  getTrackerCollection().forAllTrackers(f);
 }
 
 void forEachServer(
