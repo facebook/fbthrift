@@ -66,10 +66,6 @@ cdef __EnumData __MyEnumA_enum_data  = __EnumData.create(thrift.py3.types.create
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyEnumAMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyEnumA_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyEnumA_enum_data.get_by_value(value)
 
@@ -78,6 +74,11 @@ cdef class __MyEnumAMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyEnumA_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnumA_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -107,10 +108,6 @@ cdef __EnumData __AnnotatedEnum_enum_data  = __EnumData.create(thrift.py3.types.
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __AnnotatedEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __AnnotatedEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __AnnotatedEnum_enum_data.get_by_value(value)
 
@@ -119,6 +116,11 @@ cdef class __AnnotatedEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __AnnotatedEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __AnnotatedEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -148,10 +150,6 @@ cdef __EnumData __AnnotatedEnum2_enum_data  = __EnumData.create(thrift.py3.types
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __AnnotatedEnum2Meta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __AnnotatedEnum2_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __AnnotatedEnum2_enum_data.get_by_value(value)
 
@@ -160,6 +158,11 @@ cdef class __AnnotatedEnum2Meta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __AnnotatedEnum2_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __AnnotatedEnum2_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -189,10 +192,6 @@ cdef __EnumData __MyEnumB_enum_data  = __EnumData.create(thrift.py3.types.create
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyEnumBMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyEnumB_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyEnumB_enum_data.get_by_value(value)
 
@@ -201,6 +200,11 @@ cdef class __MyEnumBMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyEnumB_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnumB_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -234,10 +238,6 @@ cdef __UnionTypeEnumData __SimpleUnion_union_type_enum_data  = __UnionTypeEnumDa
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __SimpleUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __SimpleUnion_union_type_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __SimpleUnion_union_type_enum_data.get_by_value(value)
 
@@ -246,6 +246,11 @@ cdef class __SimpleUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __SimpleUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __SimpleUnion_union_type_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -267,10 +272,6 @@ cdef __UnionTypeEnumData __ComplexUnion_union_type_enum_data  = __UnionTypeEnumD
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __ComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __ComplexUnion_union_type_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __ComplexUnion_union_type_enum_data.get_by_value(value)
 
@@ -279,6 +280,11 @@ cdef class __ComplexUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __ComplexUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __ComplexUnion_union_type_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -300,10 +306,6 @@ cdef __UnionTypeEnumData __FloatUnion_union_type_enum_data  = __UnionTypeEnumDat
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __FloatUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __FloatUnion_union_type_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __FloatUnion_union_type_enum_data.get_by_value(value)
 
@@ -312,6 +314,11 @@ cdef class __FloatUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __FloatUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __FloatUnion_union_type_enum_data.get_by_name(name)
 
 
 @__cython.final

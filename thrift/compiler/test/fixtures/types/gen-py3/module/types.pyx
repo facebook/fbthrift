@@ -66,10 +66,6 @@ cdef __EnumData __has_bitwise_ops_enum_data  = __EnumData.create(thrift.py3.type
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __has_bitwise_opsMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __has_bitwise_ops_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __has_bitwise_ops_enum_data.get_by_value(value)
 
@@ -78,6 +74,11 @@ cdef class __has_bitwise_opsMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __has_bitwise_ops_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __has_bitwise_ops_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -107,10 +108,6 @@ cdef __EnumData __is_unscoped_enum_data  = __EnumData.create(thrift.py3.types.cr
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __is_unscopedMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __is_unscoped_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __is_unscoped_enum_data.get_by_value(value)
 
@@ -119,6 +116,11 @@ cdef class __is_unscopedMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __is_unscoped_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __is_unscoped_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -148,10 +150,6 @@ cdef __EnumData __MyForwardRefEnum_enum_data  = __EnumData.create(thrift.py3.typ
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyForwardRefEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyForwardRefEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyForwardRefEnum_enum_data.get_by_value(value)
 
@@ -160,6 +158,11 @@ cdef class __MyForwardRefEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyForwardRefEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyForwardRefEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -189,10 +192,6 @@ cdef __EnumData __MyEnumA_enum_data  = __EnumData.create(thrift.py3.types.create
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyEnumAMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyEnumA_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyEnumA_enum_data.get_by_value(value)
 
@@ -201,6 +200,11 @@ cdef class __MyEnumAMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyEnumA_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnumA_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -234,10 +238,6 @@ cdef __UnionTypeEnumData __NoExceptMoveUnion_union_type_enum_data  = __UnionType
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __NoExceptMoveUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __NoExceptMoveUnion_union_type_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __NoExceptMoveUnion_union_type_enum_data.get_by_value(value)
 
@@ -246,6 +246,11 @@ cdef class __NoExceptMoveUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __NoExceptMoveUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __NoExceptMoveUnion_union_type_enum_data.get_by_name(name)
 
 
 @__cython.final

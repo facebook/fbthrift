@@ -64,10 +64,6 @@ cdef __EnumData __AnEnum_enum_data  = __EnumData.create(thrift.py3.types.createE
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __AnEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __AnEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __AnEnum_enum_data.get_by_value(value)
 
@@ -76,6 +72,11 @@ cdef class __AnEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __AnEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __AnEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -105,10 +106,6 @@ cdef __EnumFlagsData __Flags_enum_data  = __EnumFlagsData.create(thrift.py3.type
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __FlagsMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __Flags_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __Flags_enum_data.get_by_value(value)
 
@@ -117,6 +114,11 @@ cdef class __FlagsMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __Flags_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __Flags_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -153,10 +155,6 @@ cdef __UnionTypeEnumData __BinaryUnion_union_type_enum_data  = __UnionTypeEnumDa
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __BinaryUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __BinaryUnion_union_type_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __BinaryUnion_union_type_enum_data.get_by_value(value)
 
@@ -165,6 +163,11 @@ cdef class __BinaryUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __BinaryUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __BinaryUnion_union_type_enum_data.get_by_name(name)
 
 
 @__cython.final

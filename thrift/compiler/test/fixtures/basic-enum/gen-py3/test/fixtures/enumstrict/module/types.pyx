@@ -64,10 +64,6 @@ cdef __EnumData __EmptyEnum_enum_data  = __EnumData.create(thrift.py3.types.crea
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __EmptyEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __EmptyEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __EmptyEnum_enum_data.get_by_value(value)
 
@@ -76,6 +72,11 @@ cdef class __EmptyEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __EmptyEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __EmptyEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -105,10 +106,6 @@ cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createE
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyEnum_enum_data.get_by_value(value)
 
@@ -117,6 +114,11 @@ cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -146,10 +148,6 @@ cdef __EnumData __MyBigEnum_enum_data  = __EnumData.create(thrift.py3.types.crea
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyBigEnumMeta(thrift.py3.types.EnumMeta):
-
-    def _fbthrift_get_by_name(cls, str name):
-        return __MyBigEnum_enum_data.get_by_name(name)
-
     def _fbthrift_get_by_value(cls, int value):
         return __MyBigEnum_enum_data.get_by_value(value)
 
@@ -158,6 +156,11 @@ cdef class __MyBigEnumMeta(thrift.py3.types.EnumMeta):
 
     def __len__(cls):
         return __MyBigEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyBigEnum_enum_data.get_by_name(name)
 
 
 @__cython.final

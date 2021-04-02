@@ -552,9 +552,6 @@ cdef class UnionTypeEnumData(EnumData):
 
 @cython.auto_pickle(False)
 cdef class EnumMeta(type):
-    def _fbthrift_get_by_name(cls, str name):
-        return NotImplemented
-
     def _fbthrift_get_by_value(cls, int value):
         return NotImplemented
 
@@ -569,21 +566,18 @@ cdef class EnumMeta(type):
         return cls._fbthrift_get_by_value(value)
 
     def __getitem__(cls, name):
-        if not isinstance(name, str):
-            raise KeyError(name)
+        if type(name) is not str:
+            if not isinstance(name, str):
+                raise KeyError(name)
+            name = str(name) # cast to str for Cython
         try:
-            return cls._fbthrift_get_by_name(str(name))
+            return getattr(cls, name)
         except AttributeError:
             raise KeyError(name)
 
-    def __getattribute__(cls, str name not None):
-        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
-            return super().__getattribute__(name)
-        return cls._fbthrift_get_by_name(name)
-
     def __iter__(cls):
         for name in cls._fbthrift_get_all_names():
-            yield cls._fbthrift_get_by_name(name)
+            yield getattr(cls, name)
 
     def __reversed__(cls):
         return reversed(iter(cls))
