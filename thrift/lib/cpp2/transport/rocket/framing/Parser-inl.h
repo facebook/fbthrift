@@ -194,8 +194,7 @@ void Parser<T>::readDataAvailableNew(size_t nbytes) {
     }
 
     if (readBufQueue_.chainLength() < currentFrameLength_) {
-      bufferSize_ = std::max<size_t>(
-          bufferSize_, currentFrameLength_ - readBufQueue_.chainLength());
+      bufferSize_ = currentFrameLength_ - readBufQueue_.chainLength();
       return;
     }
     // Otherwise, we have a full frame to handle.
