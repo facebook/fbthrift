@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
+#include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
@@ -64,23 +65,6 @@ thread_local uint32_t ThriftRocketServerHandler::sample_{0};
 namespace {
 bool isMetadataValid(const RequestRpcMetadata& metadata) {
   return metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref();
-}
-
-bool isMonitoringMethod(std::string_view methodName) {
-  static const folly::sorted_vector_set<std::string_view>&
-      monitoringMethodNames = *new folly::sorted_vector_set<std::string_view>{
-          "getCounters",
-          "getRegexCounters",
-          "getSelectedCounters",
-          "getCounter",
-          "getExportedValues",
-          "getSelectedExportedValues",
-          "getRegexExportedValues",
-          "getExportedValue",
-          "getRegexCountersCompressed",
-          "getCountersCompressed",
-      };
-  return monitoringMethodNames.count(methodName) > 0;
 }
 } // namespace
 
@@ -446,7 +430,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
       THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
   if (UNLIKELY(monitoringLogSampler.isSampled())) {
     if (LIKELY(connContext_.getInterfaceKind() != InterfaceKind::MONITORING)) {
-      if (UNLIKELY(isMonitoringMethod(request->getMethodName()))) {
+      if (UNLIKELY(isMonitoringMethodName(request->getMethodName()))) {
         THRIFT_CONNECTION_EVENT(monitoring_over_user)
             .logSampled(connContext_, monitoringLogSampler);
       }

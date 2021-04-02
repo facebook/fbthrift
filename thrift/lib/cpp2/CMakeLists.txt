@@ -167,6 +167,7 @@ add_library(
   server/Cpp2Worker.cpp
   server/LoggingEvent.cpp
   server/LoggingEventHelper.cpp
+  server/MonitoringMethodNames.cpp
   server/RequestDebugLog.cpp
   server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
