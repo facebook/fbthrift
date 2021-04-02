@@ -22,8 +22,9 @@
 #include <mutex>
 
 #include <folly/Function.h>
+#include <folly/ScopeGuard.h>
 #include <folly/portability/Unistd.h>
-
+#include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
@@ -126,6 +127,7 @@ class FunctionRunner : public virtual Runnable {
       }
     }
     if (intervalMs_ != -1) {
+      auto g = folly::makeGuard([&] { repFinished_.post(); });
       std::unique_lock<std::mutex> l(mutex_);
       while (repFunc_ && repFunc_()) {
         // this wait could time out (normal interval-"sleep" case),
@@ -137,23 +139,32 @@ class FunctionRunner : public virtual Runnable {
     }
   }
 
-  void stop() {
-    std::unique_lock<std::mutex> l(mutex_);
-    if (repFunc_) {
-      repFunc_ = nullptr;
-      cond_.notify_one();
+  void stop() { stopRep(); }
+
+  ~FunctionRunner() override {
+    if (stopRep()) {
+      repFinished_.wait();
     }
   }
 
-  ~FunctionRunner() override { stop(); }
-
  private:
+  bool stopRep() {
+    std::lock_guard<std::mutex> g(mutex_);
+    if (!repFunc_) {
+      return false;
+    }
+    repFunc_ = nullptr;
+    cond_.notify_one();
+    return true;
+  }
+
   VoidFunc func_;
   BoolFunc repFunc_;
   const int intervalMs_{-1}; // -1 iff invalid (no periodic function)
   VoidFunc initFunc_;
   std::mutex mutex_;
   std::condition_variable cond_;
+  folly::Baton<> repFinished_;
 };
 
 } // namespace concurrency
