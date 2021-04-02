@@ -23,12 +23,15 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
+#include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
+
+THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 
 namespace apache {
 namespace thrift {
@@ -543,6 +546,17 @@ void Cpp2Connection::requestReceived(
     reqContext->setRequestTimeout(clientTimeout);
   } else {
     reqContext->setRequestTimeout(taskTimeout);
+  }
+
+  // Log monitoring methods that are called over header interface so that they
+  // can be migrated to rocket monitoring interface.
+  LoggingSampler monitoringLogSampler{
+      THRIFT_FLAG(monitoring_over_header_logging_sample_rate)};
+  if (monitoringLogSampler.isSampled()) {
+    if (isMonitoringMethodName(methodName)) {
+      THRIFT_CONNECTION_EVENT(monitoring_over_header)
+          .logSampled(context_, monitoringLogSampler);
+    }
   }
 
   try {
