@@ -378,7 +378,7 @@ class CancellableRequestClientCallback : public RequestClientCallback {
   void onRequestSent() noexcept override {
     if (oneWay) {
       if (auto callback =
-              callback_.exchange(nullptr, std::memory_order_relaxed)) {
+              callback_.exchange(nullptr, std::memory_order_acq_rel)) {
         callback->onRequestSent();
       } else {
         delete this;
@@ -388,7 +388,7 @@ class CancellableRequestClientCallback : public RequestClientCallback {
   void onResponse(ClientReceiveState&& state) noexcept override {
     CHECK(!oneWay);
     if (auto callback =
-            callback_.exchange(nullptr, std::memory_order_relaxed)) {
+            callback_.exchange(nullptr, std::memory_order_acq_rel)) {
       callback->onResponse(std::move(state));
     } else {
       delete this;
@@ -396,7 +396,7 @@ class CancellableRequestClientCallback : public RequestClientCallback {
   }
   void onResponseError(folly::exception_wrapper ew) noexcept override {
     if (auto callback =
-            callback_.exchange(nullptr, std::memory_order_relaxed)) {
+            callback_.exchange(nullptr, std::memory_order_acq_rel)) {
       callback->onResponseError(std::move(ew));
     } else {
       delete this;
