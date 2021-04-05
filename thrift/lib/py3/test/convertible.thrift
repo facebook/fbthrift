@@ -44,3 +44,10 @@ union Union {
   4: Simple simpleField;
   5: string name (py3.name = "name_");
 }
+
+struct OptionalDefaultsStruct {
+  // @lint-ignore FBTHRIFTSANITY
+  1: optional string sillyString = "default string";
+  // @lint-ignore FBTHRIFTSANITY
+  2: optional Color sillyColor = Color.RED;
+}

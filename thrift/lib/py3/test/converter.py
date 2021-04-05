@@ -18,6 +18,7 @@ import unittest
 import convertible.ttypes as ttypes
 import convertible.types as types
 from thrift.py3.converter import to_py3_struct
+from thrift.py3.types import Struct
 
 
 class ConverterTest(unittest.TestCase):
@@ -133,3 +134,10 @@ class ConverterTest(unittest.TestCase):
         )
         self.assertEqual(complex_union.type, types.Union.Type.simpleField)
         self.assertEqual(complex_union.simpleField.intField, 42)
+
+    def test_optional_defaults(self) -> None:
+        converted = to_py3_struct(
+            types.OptionalDefaultsStruct, ttypes.OptionalDefaultsStruct()
+        )
+        self.assertFalse(Struct.isset(converted).sillyString)
+        self.assertFalse(Struct.isset(converted).sillyColor)
