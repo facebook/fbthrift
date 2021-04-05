@@ -432,13 +432,7 @@ fn test_unknown_union() -> Result<()> {
     let u = Un::default();
 
     let s = String::from_utf8(serialize(&u).to_vec()).unwrap();
-    // Note that this currently deviates from cpp2
-    // but extra fields in json is okay as it roundtrips the same
-    let expected_string = r#"{
-        "UnknownField":-1
-    }"#
-    .replace(" ", "")
-    .replace("\n", "");
+    let expected_string = "{}";
     assert_eq!(expected_string, s);
 
     // Assert that deserialize builts the exact same struct
@@ -449,16 +443,21 @@ fn test_unknown_union() -> Result<()> {
     // Build an explicit unknown
     let explicit_unknown = Un::UnknownField(100);
     let s2 = String::from_utf8(serialize(&explicit_unknown).to_vec()).unwrap();
-    let expected_string = r#"{
-        "UnknownField":100
-    }"#
-    .replace(" ", "")
-    .replace("\n", "");
+    let expected_string = "{}";
     assert_eq!(expected_string, s2);
 
     // Deserializes to the default -1 case, this matches the other
     // protocols behavior
     assert_eq!(u, deserialize(s2).unwrap());
+
+    // backwards compat test
+    let old_output = r#"{
+        "UnknownField":-1
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+
+    assert_eq!(u, deserialize(old_output).unwrap());
 
     Ok(())
 }

@@ -85,11 +85,7 @@ pub mod types {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("Nada");
             match self {
-                Nada::UnknownField(x) => {
-                    p.write_field_begin("UnknownField", ::fbthrift::TType::I32, *x as ::std::primitive::i16);
-                    x.write(p);
-                    p.write_field_end();
-                }
+                Nada::UnknownField(_) => {}
             }
             p.write_field_stop();
             p.write_struct_end();

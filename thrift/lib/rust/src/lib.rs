@@ -105,6 +105,3 @@ pub trait ThriftEnum: Sized {
 // ---
 // Keep in sync with the UNKNOWN_ID constant in //common/rust/thrift/ast.
 pub const __UNKNOWN_ID: i32 = i32::MIN;
-
-
-// TODO(azw): do not serialize "UnknownField" union's to match cpp
