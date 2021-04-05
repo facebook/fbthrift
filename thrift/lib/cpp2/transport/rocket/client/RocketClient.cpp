@@ -72,8 +72,7 @@ transport::TTransportException toTransportException(
 RocketClient::RocketClient(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame,
-    folly::Function<void(MetadataPushFrame&&)> onMetadataPush)
+    std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
       socket_(std::move(socket)),
       setupFrame_(std::move(setupFrame)),
@@ -81,8 +80,7 @@ RocketClient::RocketClient(
       writeLoopCallback_(*this),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
-      eventBaseDestructionCallback_(*this),
-      onMetadataPush_(std::move(onMetadataPush)) {
+      eventBaseDestructionCallback_(*this) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
   if (auto socket = dynamic_cast<folly::AsyncSocket*>(socket_.get())) {
@@ -103,13 +101,8 @@ RocketClient::~RocketClient() {
 RocketClient::Ptr RocketClient::create(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame,
-    folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
-  return Ptr(new RocketClient(
-      evb,
-      std::move(socket),
-      std::move(setupFrame),
-      std::move(onMetadataPush)));
+    std::unique_ptr<SetupFrame> setupFrame) {
+  return Ptr(new RocketClient(evb, std::move(socket), std::move(setupFrame)));
 }
 
 void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -151,8 +144,41 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     // constructing the METADATA_PUSH frame for validation
     MetadataPushFrame mdPushFrame(std::move(frame));
-    if (onMetadataPush_) {
-      onMetadataPush_(std::move(mdPushFrame));
+    if (!mdPushFrame.metadata()) {
+      return;
+    }
+    ServerPushMetadata serverMeta;
+    try {
+      unpackCompact(serverMeta, std::move(mdPushFrame.metadata()));
+    } catch (...) {
+      close(transport::TTransportException(
+          transport::TTransportException::CORRUPTED_DATA,
+          "Failed to deserialize metadata push frame"));
+      return;
+    }
+    switch (serverMeta.getType()) {
+      case ServerPushMetadata::setupResponse: {
+        serverVersion_ =
+            serverMeta.setupResponse_ref()->version_ref().value_or(0);
+        break;
+      }
+      case ServerPushMetadata::streamHeadersPush: {
+        DCHECK(!serverVersion_ || *serverVersion_ >= 7);
+        StreamId sid(
+            serverMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
+        auto it = streams_.find(sid);
+        if (it != streams_.end()) {
+          it->match([&](auto* serverCallbackPtr) {
+            serverCallbackPtr->onStreamHeaders(
+                HeadersPayload(serverMeta.streamHeadersPush_ref()
+                                   ->headersPayloadContent_ref()
+                                   .value_or({})));
+          });
+        }
+        return;
+      }
+      default:
+        break;
     }
     return;
   }
@@ -369,6 +395,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
   }
 
   if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
+    DCHECK(!serverVersion_ || *serverVersion_ < 7);
     auto headersPayload = unpack<HeadersPayload>(std::move(extFrame.payload()));
     if (headersPayload.hasException()) {
       return serverCallback.onStreamError(
@@ -797,21 +824,33 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
       rocket::Flags::none().complete(true));
 }
 
-bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
+bool RocketClient::sendHeadersPush(
+    StreamId streamId, HeadersPayload&& payload) {
   auto g = makeRequestCountGuard();
   auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
                      transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
-        << "sendExtHeaders failed, closing now: " << ex.what();
+        << "sendHeadersPush failed, closing now: " << ex.what();
     close(std::move(ex));
   };
-  return sendFrame(
-      ExtFrame(
-          streamId,
-          pack(std::move(payload)),
-          rocket::Flags::none().ignore(true),
-          ExtFrameType::HEADERS_PUSH),
-      std::move(onError));
+  if (serverVersion_ && *serverVersion_ >= 7) {
+    ClientPushMetadata clientMeta;
+    clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+        static_cast<uint32_t>(streamId);
+    clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+        std::move(payload.payload);
+    return sendFrame(
+        MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
+        std::move(onError));
+  } else {
+    return sendFrame(
+        ExtFrame(
+            streamId,
+            pack(std::move(payload)),
+            rocket::Flags::none().ignore(true),
+            ExtFrameType::HEADERS_PUSH),
+        std::move(onError));
+  }
 }
 
 void RocketClient::sendExtAlignedPage(
@@ -1165,20 +1204,34 @@ void RocketClient::terminateInteraction(int64_t id) {
     return;
   }
 
-  InteractionTerminate term;
-  term.set_interactionId(id);
-  std::ignore = sendFrame(
-      ExtFrame(
-          StreamId(),
-          Payload::makeFromData(packCompact(std::move(term))),
-          Flags::none(),
-          ExtFrameType::INTERACTION_TERMINATE),
+  auto onError =
       [dg = DestructorGuard(this),
+       this,
        guard = std::move(guard),
        ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(WARNING, 1000)
-            << "terminateInteraction failed: " << ex.what();
-      });
+            << "terminateInteraction failed, closing now: " << ex.what();
+        close(std::move(ex));
+      };
+  InteractionTerminate term;
+  term.interactionId_ref() = id;
+
+  // if server supports it, use metadata push frame for interaction termination
+  if (serverVersion_ && *serverVersion_ >= 7) {
+    ClientPushMetadata clientMeta;
+    clientMeta.interactionTerminate_ref() = std::move(term);
+    std::ignore = sendFrame(
+        MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
+        std::move(onError));
+  } else {
+    std::ignore = sendFrame(
+        ExtFrame(
+            StreamId(),
+            Payload::makeFromData(packCompact(std::move(term))),
+            Flags::none(),
+            ExtFrameType::INTERACTION_TERMINATE),
+        std::move(onError));
+  }
 }
 
 } // namespace rocket

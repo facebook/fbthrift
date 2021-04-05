@@ -329,8 +329,19 @@ struct SetupResponse {
   1: optional i32 version;
 }
 
+struct StreamHeadersPush {
+  1: optional i32 streamId;
+  2: optional HeadersPayloadContent headersPayloadContent;
+}
+
 union ServerPushMetadata {
   1: SetupResponse setupResponse;
+  2: StreamHeadersPush streamHeadersPush;
+}
+
+union ClientPushMetadata {
+  1: InteractionTerminate interactionTerminate;
+  2: StreamHeadersPush streamHeadersPush;
 }
 
 struct HeadersPayloadContent {

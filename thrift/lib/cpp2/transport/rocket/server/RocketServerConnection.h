@@ -235,6 +235,8 @@ class RocketServerConnection final
     }
   }
 
+  int32_t getVersion() const { return frameHandler_->getVersion(); }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code

@@ -72,6 +72,9 @@ class RocketNetworkTest : public testing::Test {
   }
 
   void TearDown() override {
+    if (client_) {
+      client_->verifyVersion();
+    }
     client_.reset();
     server_.reset();
   }
@@ -172,7 +175,6 @@ TEST_F(RocketNetworkTest, RequestResponseBasic) {
     EXPECT_EQ(kData, getRange(*dam.second));
     EXPECT_TRUE(reply->hasNonemptyMetadata());
     EXPECT_EQ(kMetadata, getRange(*dam.first));
-    client.wait();
   });
 }
 
@@ -311,8 +313,7 @@ TEST_F(RocketNetworkTest, RocketClientEventBaseDestruction) {
   auto client = RocketClient::create(
       *evb,
       std::move(socket),
-      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()),
-      {});
+      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()));
   EXPECT_NE(nullptr, client->getTransportWrapper());
 
   evb.reset();
@@ -974,8 +975,7 @@ TEST_F(RocketNetworkTest, CloseNowWithPendingWriteCallback) {
   auto client = RocketClient::create(
       *evb,
       std::move(sock),
-      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()),
-      {});
+      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()));
   // write something to the socket, without holding keepalive of evb and waiting
   // for write callback
   client->cancelStream(StreamId(1));

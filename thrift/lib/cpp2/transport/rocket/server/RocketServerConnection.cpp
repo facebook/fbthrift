@@ -309,6 +309,7 @@ void RocketServerConnection::handleUntrackedFrame(
       ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
       switch (extFrame.extFrameType()) {
         case ExtFrameType::INTERACTION_TERMINATE: {
+          DCHECK_LT(getVersion(), 7);
           InteractionTerminate term;
           unpackCompact(term, extFrame.payload().buffer());
           frameHandler_->terminateInteraction(term.get_interactionId());
@@ -324,6 +325,49 @@ void RocketServerConnection::handleUntrackedFrame(
           }
           return;
       }
+    }
+
+    case FrameType::METADATA_PUSH: {
+      MetadataPushFrame metadataFrame(std::move(frame));
+      ClientPushMetadata clientMeta;
+      try {
+        unpackCompact(clientMeta, metadataFrame.metadata());
+      } catch (...) {
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID, "Failed to deserialize metadata push frame"));
+        return;
+      }
+      switch (clientMeta.getType()) {
+        case ClientPushMetadata::interactionTerminate: {
+          DCHECK_GE(getVersion(), 7);
+          frameHandler_->terminateInteraction(
+              *clientMeta.interactionTerminate_ref()->interactionId_ref());
+          break;
+        }
+        case ClientPushMetadata::streamHeadersPush: {
+          DCHECK_GE(getVersion(), 7);
+          StreamId sid(
+              clientMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
+          auto it = streams_.find(sid);
+          if (it != streams_.end()) {
+            folly::variant_match(
+                it->second,
+                [&](const std::unique_ptr<RocketStreamClientCallback>&
+                        clientCallback) {
+                  std::ignore =
+                      clientCallback->getStreamServerCallback().onSinkHeaders(
+                          HeadersPayload(clientMeta.streamHeadersPush_ref()
+                                             ->headersPayloadContent_ref()
+                                             .value_or({})));
+                },
+                [&](const std::unique_ptr<RocketSinkClientCallback>&) {});
+          }
+          break;
+        }
+        default:
+          break;
+      }
+      return;
     }
 
     default:
@@ -374,6 +418,7 @@ void RocketServerConnection::handleStreamFrame(
       ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
       switch (extFrame.extFrameType()) {
         case ExtFrameType::HEADERS_PUSH: {
+          DCHECK_LT(getVersion(), 7);
           auto& serverCallback = clientCallback.getStreamServerCallback();
           auto headers = unpack<HeadersPayload>(std::move(extFrame.payload()));
           if (headers.hasException()) {

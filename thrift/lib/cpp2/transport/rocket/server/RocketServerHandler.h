@@ -67,6 +67,8 @@ class RocketServerHandler {
   virtual Cpp2ConnContext* getCpp2ConnContext() { return nullptr; }
 
   virtual void onBeforeHandleFrame() {}
+
+  virtual int32_t getVersion() const { return 0; }
 };
 
 } // namespace rocket

@@ -37,7 +37,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders,
-    const folly::Optional<int32_t>& version);
+    const std::optional<int32_t>& version);
 
 void fillTHeaderFromResponseRpcMetadata(
     ResponseRpcMetadata& responseMetadata, transport::THeader& header);

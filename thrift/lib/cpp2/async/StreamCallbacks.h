@@ -48,6 +48,8 @@ struct HeadersPayload {
   HeadersPayload(HeadersPayloadContent p, HeadersPayloadMetadata md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
+  explicit HeadersPayload(HeadersPayloadContent&& p) : payload(std::move(p)) {}
+
   explicit HeadersPayload(StreamPayloadMetadata&& sp) {
     payload.otherMetadata_ref().copy_from(sp.otherMetadata_ref());
     metadata.compression_ref().copy_from(sp.compression_ref());

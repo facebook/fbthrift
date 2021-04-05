@@ -65,7 +65,8 @@ namespace rocket {
 namespace test {
 
 namespace {
-constexpr int32_t kversion = 10;
+constexpr int32_t kClientVersion = 6;
+constexpr int32_t kServerVersion = 10;
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
 makeTestResponse(
     std::unique_ptr<folly::IOBuf> requestMetadata,
@@ -113,6 +114,7 @@ rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
   RequestSetupMetadata meta;
   meta.opaque_ref() = {};
   *meta.opaque_ref() = std::move(md);
+  meta.maxVersion_ref() = kClientVersion;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -294,26 +296,19 @@ void RocketTestClient::connect() {
     client_ = RocketClient::create(
         evb_,
         std::move(socket),
-        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()),
-        [this](MetadataPushFrame&& frame) {
-          if (!frame.metadata()) {
-            return;
-          }
-
-          CompactProtocolReader reader;
-          reader.setInput(frame.metadata());
-          ServerPushMetadata metadata;
-          metadata.read(&reader);
-          EXPECT_EQ(
-              kversion,
-              metadata.setupResponse_ref()->version_ref().value_or(0));
-          b_.post();
-        });
+        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()));
   });
 }
 
 void RocketTestClient::disconnect() {
   evb_.runInEventBaseThread([client = std::move(client_)] {});
+}
+
+void RocketTestClient::verifyVersion() {
+  if (client_ && client_->getServerVersion().has_value()) {
+    EXPECT_EQ(
+        std::min(kClientVersion, kServerVersion), *client_->getServerVersion());
+  }
 }
 
 namespace {
@@ -393,9 +388,10 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     meta.read(&reader);
     EXPECT_EQ(reader.getCursorPosition(), frame.payload().metadataSize());
     EXPECT_EQ(expectedSetupMetadata_, meta.opaque_ref().value_or({}));
+    version_ = std::min(kServerVersion, meta.maxVersion_ref().value_or(0));
     ServerPushMetadata serverMeta;
     serverMeta.set_setupResponse();
-    serverMeta.setupResponse_ref()->version_ref() = kversion;
+    serverMeta.setupResponse_ref()->version_ref() = version_;
     CompactProtocolWriter compactProtocolWriter;
     folly::IOBufQueue queue;
     compactProtocolWriter.setOutput(&queue);
@@ -565,10 +561,13 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
   void connectionClosing() final {}
 
+  int32_t getVersion() const final { return version_; }
+
  private:
   folly::EventBase& ioEvb_;
   const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata_;
   folly::ScopedEventBaseThread threadManagerThread_;
+  int32_t version_{0};
 };
 
 RocketTestServer::RocketTestServer()

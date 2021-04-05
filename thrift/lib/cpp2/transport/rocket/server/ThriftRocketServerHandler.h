@@ -98,6 +98,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   void onBeforeHandleFrame() override;
 
+  int32_t getVersion() const final { return version_; }
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;

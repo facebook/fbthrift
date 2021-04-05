@@ -45,7 +45,7 @@ void RocketStreamServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
 }
 bool RocketStreamServerCallback::onSinkHeaders(HeadersPayload&& payload) {
-  return client_.sendExtHeaders(streamId_, std::move(payload));
+  return client_.sendHeadersPush(streamId_, std::move(payload));
 }
 
 void RocketStreamServerCallback::onInitialPayload(

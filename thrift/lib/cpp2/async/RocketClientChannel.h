@@ -156,7 +156,6 @@ class RocketClientChannel final : public ClientChannel {
   const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
   folly::F14FastMap<int64_t, ManagedStringView> pendingInteractions_;
-  folly::Optional<int32_t> serverVersion_;
 
   RocketClientChannel(
       folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta);
@@ -194,7 +193,7 @@ class RocketClientChannel final : public ClientChannel {
 
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
-  void handleMetadataPush(rocket::MetadataPushFrame&& frame);
+  const std::optional<int32_t>& getServerVersion() const;
 
   auto inflightGuard() {
     ++shared_->inflightRequests;

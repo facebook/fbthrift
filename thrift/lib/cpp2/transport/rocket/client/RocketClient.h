@@ -74,8 +74,7 @@ class RocketClient : public folly::DelayedDestruction,
   static Ptr create(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame,
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
+      std::unique_ptr<SetupFrame> setupFrame);
 
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
   class RequestResponseCallback : public WriteSuccessCallback {
@@ -131,7 +130,7 @@ class RocketClient : public folly::DelayedDestruction,
   void sendComplete(StreamId streamId, bool closeStream);
   void sendExtAlignedPage(
       StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
-  FOLLY_NODISCARD bool sendExtHeaders(
+  FOLLY_NODISCARD bool sendHeadersPush(
       StreamId streamId, HeadersPayload&& payload);
 
   bool streamExists(StreamId streamId) const;
@@ -177,11 +176,6 @@ class RocketClient : public folly::DelayedDestruction,
 
   void setOnDetachable(folly::Function<void()> onDetachable) {
     onDetachable_ = std::move(onDetachable);
-  }
-
-  void setOnMetadataPush(
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
-    onMetadataPush_ = std::move(onMetadataPush);
   }
 
   void notifyIfDetachable() {
@@ -234,6 +228,10 @@ class RocketClient : public folly::DelayedDestruction,
   bool incMemoryUsage(uint32_t) { return true; }
 
   void decMemoryUsage(uint32_t) {}
+
+  const std::optional<int32_t>& getServerVersion() const {
+    return serverVersion_;
+  }
 
  private:
   folly::EventBase* evb_;
@@ -427,13 +425,12 @@ class RocketClient : public folly::DelayedDestruction,
   };
   OnEventBaseDestructionCallback eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
-  folly::Function<void(MetadataPushFrame&&)> onMetadataPush_;
+  std::optional<int32_t> serverVersion_;
 
   RocketClient(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame,
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
+      std::unique_ptr<SetupFrame> setupFrame);
 
   template <typename Frame, typename OnError>
   FOLLY_NODISCARD bool sendFrame(Frame&& frame, OnError&& onError);

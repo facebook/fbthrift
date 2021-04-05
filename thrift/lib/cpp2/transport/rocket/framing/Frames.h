@@ -408,6 +408,8 @@ class MetadataPushFrame {
 
   static constexpr size_t frameHeaderSize() { return 6; }
 
+  constexpr StreamId streamId() const noexcept { return StreamId{0}; }
+
   std::unique_ptr<folly::IOBuf> metadata() && { return std::move(metadata_); }
 
   const folly::IOBuf* metadata() & { return metadata_.get(); }

@@ -159,11 +159,20 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
 }
 
 bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
-  connection_.sendExt(
-      streamId_,
-      pack(payload),
-      Flags::none().ignore(true),
-      ExtFrameType::HEADERS_PUSH);
+  if (connection_.getVersion() >= 7) {
+    ServerPushMetadata serverMeta;
+    serverMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+        static_cast<uint32_t>(streamId_);
+    serverMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+        std::move(payload.payload);
+    connection_.sendMetadataPush(packCompact(std::move(serverMeta)));
+  } else {
+    connection_.sendExt(
+        streamId_,
+        pack(payload),
+        Flags::none().ignore(true),
+        ExtFrameType::HEADERS_PUSH);
+  }
   return true;
 }
 
