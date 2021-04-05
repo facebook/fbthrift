@@ -240,20 +240,21 @@ class CompactProtocolReader {
 
   explicit CompactProtocolReader(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
-      : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit),
+      : in_(nullptr),
+        string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit),
         container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit),
         sharing_(sharing),
-        in_(nullptr),
+
         boolValue_({false, false}) {}
 
   CompactProtocolReader(
       int32_t string_limit,
       int32_t container_limit,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
-      : string_limit_(string_limit),
+      : in_(nullptr),
+        string_limit_(string_limit),
         container_limit_(container_limit),
         sharing_(sharing),
-        in_(nullptr),
         boolValue_({false, false}) {}
 
   static constexpr ProtocolType protocolType() {
@@ -397,8 +398,15 @@ class CompactProtocolReader {
   };
 
  protected:
+  /**
+   * Cursor to manipulate the buffer to read from.  Throws an exception if
+   * there is not enough data tor ead the whole struct.
+   */
+  Cursor in_;
+
   inline void readStringSize(int32_t& size);
 
+ private:
   template <typename StrType>
   inline void readStringBody(StrType& str, int32_t size);
 
@@ -427,12 +435,6 @@ class CompactProtocolReader {
   int32_t string_limit_;
   int32_t container_limit_;
   ExternalBufferSharing sharing_;
-
-  /**
-   * Cursor to manipulate the buffer to read from.  Throws an exception if
-   * there is not enough data tor ead the whole struct.
-   */
-  Cursor in_;
 
   apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_{-1};
