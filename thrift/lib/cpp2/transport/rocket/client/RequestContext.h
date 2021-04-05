@@ -48,6 +48,7 @@ class RequestContext {
   };
 
   enum class State : uint8_t {
+    DEFERRED_INIT, /* still needs to be intialized with server version */
     WRITE_NOT_SCHEDULED,
     WRITE_SCHEDULED,
     WRITE_SENDING, /* AsyncSocket::writeChain() called, but WriteCallback has
@@ -67,6 +68,24 @@ class RequestContext {
         frameType_(Frame::frameType()),
         writeSuccessCallback_(writeSuccessCallback) {
     serialize(std::forward<Frame>(frame), setupFrame);
+  }
+
+  template <class InitFunc>
+  RequestContext(
+      InitFunc&& initFunc,
+      const std::optional<int32_t>& serverVersion,
+      StreamId streamId,
+      RequestContextQueue& queue,
+      WriteSuccessCallback* writeSuccessCallback = nullptr)
+      : queue_(queue),
+        streamId_(streamId),
+        writeSuccessCallback_(writeSuccessCallback) {
+    if (UNLIKELY(!serverVersion)) {
+      deferredInit_ = std::forward<InitFunc>(initFunc);
+      state_ = State::DEFERRED_INIT;
+    } else {
+      std::tie(serializedFrame_, frameType_) = initFunc(*serverVersion);
+    }
   }
 
   RequestContext(const RequestContext&) = delete;
@@ -125,12 +144,22 @@ class RequestContext {
 
   bool hasPartialPayload() const { return responsePayload_.hasValue(); }
 
+  void initWithVersion(int32_t serverVersion) {
+    if (!deferredInit_) {
+      return;
+    }
+    DCHECK(state_ == State::DEFERRED_INIT);
+    std::tie(serializedFrame_, frameType_) = deferredInit_(serverVersion);
+    DCHECK(serializedFrame_ && frameType_ != FrameType::RESERVED);
+    state_ = State::WRITE_NOT_SCHEDULED;
+  }
+
  private:
   RequestContextQueue& queue_;
   folly::SafeIntrusiveListHook queueHook_;
   std::unique_ptr<folly::IOBuf> serializedFrame_;
-  const StreamId streamId_;
-  const FrameType frameType_;
+  StreamId streamId_;
+  FrameType frameType_;
   State state_{State::WRITE_NOT_SCHEDULED};
   bool lastInWriteBatch_{false};
   bool isDummyEndOfBatchMarker_{false};
@@ -142,6 +171,8 @@ class RequestContext {
   folly::HHWheelTimer::Callback* timeoutCallback_{nullptr};
   folly::Try<Payload> responsePayload_;
   WriteSuccessCallback* const writeSuccessCallback_{nullptr};
+  folly::Function<std::pair<std::unique_ptr<folly::IOBuf>, FrameType>(int32_t)>
+      deferredInit_{nullptr};
 
   template <class Frame>
   void serialize(Frame&& frame, SetupFrame* setupFrame) {

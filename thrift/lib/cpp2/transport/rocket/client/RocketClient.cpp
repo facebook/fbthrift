@@ -51,6 +51,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+THRIFT_FLAG_DEFINE_int64(rocket_server_version_timeout_ms, 500);
+
 namespace {
 folly::exception_wrapper err(folly::Try<void> t) {
   return t.hasException() ? std::move(t.exception())
@@ -142,7 +144,6 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     }
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
-    // constructing the METADATA_PUSH frame for validation
     MetadataPushFrame mdPushFrame(std::move(frame));
     if (!mdPushFrame.metadata()) {
       return;
@@ -158,8 +159,8 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     }
     switch (serverMeta.getType()) {
       case ServerPushMetadata::setupResponse: {
-        serverVersion_ =
-            serverMeta.setupResponse_ref()->version_ref().value_or(0);
+        setServerVersion(
+            serverMeta.setupResponse_ref()->version_ref().value_or(0));
         break;
       }
       case ServerPushMetadata::streamHeadersPush: {
@@ -716,45 +717,76 @@ void RocketClient::sendRequestStreamChannel(
       firstResponseTimeout);
 }
 
+template <class OnError>
+class RocketClient::SendFrameContext : public folly::fibers::Baton::Waiter {
+ public:
+  template <class Frame>
+  SendFrameContext(RocketClient& client, Frame&& frame, OnError&& onError)
+      : client_(client),
+        ctx_(std::forward<Frame>(frame), client_.queue_),
+        onError_(std::forward<OnError>(onError)) {}
+
+  template <class InitFunc>
+  SendFrameContext(
+      RocketClient& client,
+      InitFunc&& initFunc,
+      StreamId streamId,
+      OnError&& onError)
+      : client_(client),
+        ctx_(
+            std::forward<InitFunc>(initFunc),
+            client_.serverVersion_,
+            streamId,
+            client_.queue_),
+        onError_(std::forward<OnError>(onError)) {
+    // if server version is not yet available, start buffering requests
+    if (UNLIKELY(ctx_.state() == RequestContext::State::DEFERRED_INIT)) {
+      client_.onServerVersionRequired();
+    }
+  }
+
+  FOLLY_NODISCARD static bool run(std::unique_ptr<SendFrameContext> self) {
+    if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
+      self->onError_(toTransportException(std::move(ew)));
+      return false;
+    }
+    auto& ctx = self->ctx_;
+    ctx.waitForWriteToCompleteSchedule(self.release());
+    return true;
+  }
+
+ private:
+  void post() override {
+    std::unique_ptr<SendFrameContext> self(this);
+    auto writeCompleted = ctx_.waitForWriteToCompleteResult();
+    if (writeCompleted.hasException()) {
+      self->onError_(
+          toTransportException(std::move(writeCompleted.exception())));
+    }
+  }
+
+  RocketClient& client_;
+  RequestContext ctx_;
+  std::decay_t<OnError> onError_;
+};
+
 template <typename Frame, typename OnError>
 bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
-  class Context : public folly::fibers::Baton::Waiter {
-   public:
-    Context(RocketClient& client, Frame&& frame, OnError&& onError)
-        : client_(client),
-          ctx_(std::forward<Frame>(frame), client_.queue_),
-          onError_(std::forward<OnError>(onError)) {}
-
-    FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
-      if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
-        self->onError_(toTransportException(std::move(ew)));
-        return false;
-      }
-
-      auto& ctx = self->ctx_;
-      ctx.waitForWriteToCompleteSchedule(self.release());
-
-      return true;
-    }
-
-   private:
-    void post() override {
-      std::unique_ptr<Context> self(this);
-
-      auto writeCompleted = ctx_.waitForWriteToCompleteResult();
-      if (writeCompleted.hasException()) {
-        self->onError_(
-            toTransportException(std::move(writeCompleted.exception())));
-      }
-    }
-
-    RocketClient& client_;
-    RequestContext ctx_;
-    std::decay_t<OnError> onError_;
-  };
-
+  using Context = SendFrameContext<OnError>;
   auto ctx = std::make_unique<Context>(
       *this, std::forward<Frame>(frame), std::forward<OnError>(onError));
+  return Context::run(std::move(ctx));
+}
+
+template <typename DeferredInitFunc, typename OnError>
+bool RocketClient::sendVersionDependentFrame(
+    DeferredInitFunc&& deferredInit, StreamId streamId, OnError&& onError) {
+  using Context = SendFrameContext<OnError>;
+  auto ctx = std::make_unique<Context>(
+      *this,
+      std::forward<DeferredInitFunc>(deferredInit),
+      streamId,
+      std::forward<OnError>(onError));
   return Context::run(std::move(ctx));
 }
 
@@ -833,24 +865,32 @@ bool RocketClient::sendHeadersPush(
         << "sendHeadersPush failed, closing now: " << ex.what();
     close(std::move(ex));
   };
-  if (serverVersion_ && *serverVersion_ >= 7) {
-    ClientPushMetadata clientMeta;
-    clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
-        static_cast<uint32_t>(streamId);
-    clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
-        std::move(payload.payload);
-    return sendFrame(
-        MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
-        std::move(onError));
-  } else {
-    return sendFrame(
-        ExtFrame(
-            streamId,
-            pack(std::move(payload)),
-            rocket::Flags::none().ignore(true),
-            ExtFrameType::HEADERS_PUSH),
-        std::move(onError));
-  }
+  return sendVersionDependentFrame(
+      [=, payload = std::move(payload)](int32_t serverVersion) mutable {
+        if (serverVersion >= 7) {
+          ClientPushMetadata clientMeta;
+          clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+              static_cast<uint32_t>(streamId);
+          clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+              std::move(payload.payload);
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              MetadataPushFrame::makeFromMetadata(
+                  packCompact(std::move(clientMeta)))
+                  .serialize(),
+              FrameType::METADATA_PUSH);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ExtFrame(
+                  streamId,
+                  pack(std::move(payload)),
+                  rocket::Flags::none().ignore(true),
+                  ExtFrameType::HEADERS_PUSH)
+                  .serialize(),
+              FrameType::EXT);
+        }
+      },
+      streamId,
+      std::move(onError));
 }
 
 void RocketClient::sendExtAlignedPage(
@@ -888,13 +928,7 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   }
 
   queue_.enqueueScheduledWrite(ctx);
-  if (!writeLoopCallback_.isLoopCallbackScheduled()) {
-    if (flushList_) {
-      flushList_->push_back(writeLoopCallback_);
-    } else {
-      evb_->runInLoop(&writeLoopCallback_);
-    }
-  }
+  scheduleWriteLoopCallback();
   return {};
 }
 
@@ -919,6 +953,16 @@ void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
   }
   rescheduled_ = false;
   client_.writeScheduledRequestsToSocket();
+}
+
+void RocketClient::scheduleWriteLoopCallback() {
+  if (!writeLoopCallback_.isLoopCallbackScheduled()) {
+    if (flushList_) {
+      flushList_->push_back(writeLoopCallback_);
+    } else {
+      evb_->runInLoop(&writeLoopCallback_);
+    }
+  }
 }
 
 void RocketClient::writeScheduledRequestsToSocket() noexcept {
@@ -1213,24 +1257,55 @@ void RocketClient::terminateInteraction(int64_t id) {
             << "terminateInteraction failed, closing now: " << ex.what();
         close(std::move(ex));
       };
-  InteractionTerminate term;
-  term.interactionId_ref() = id;
 
-  // if server supports it, use metadata push frame for interaction termination
-  if (serverVersion_ && *serverVersion_ >= 7) {
-    ClientPushMetadata clientMeta;
-    clientMeta.interactionTerminate_ref() = std::move(term);
-    std::ignore = sendFrame(
-        MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
-        std::move(onError));
-  } else {
-    std::ignore = sendFrame(
-        ExtFrame(
-            StreamId(),
-            Payload::makeFromData(packCompact(std::move(term))),
-            Flags::none(),
-            ExtFrameType::INTERACTION_TERMINATE),
-        std::move(onError));
+  std::ignore = sendVersionDependentFrame(
+      [id](int32_t serverVersion) {
+        InteractionTerminate term;
+        term.interactionId_ref() = id;
+        if (serverVersion >= 7) {
+          ClientPushMetadata clientMeta;
+          clientMeta.interactionTerminate_ref() = std::move(term);
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              MetadataPushFrame::makeFromMetadata(
+                  packCompact(std::move(clientMeta)))
+                  .serialize(),
+              FrameType::METADATA_PUSH);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ExtFrame(
+                  StreamId(),
+                  Payload::makeFromData(packCompact(std::move(term))),
+                  Flags::none(),
+                  ExtFrameType::INTERACTION_TERMINATE)
+                  .serialize(),
+              FrameType::EXT);
+        }
+      },
+      StreamId(),
+      std::move(onError));
+}
+
+void RocketClient::onServerVersionRequired() {
+  // if a version dependent frame is scheduled but server setup response has
+  // not been received, buffer all other requests until server version is
+  // known
+  DCHECK(!serverVersion_);
+  if (!queue_.startBufferingRequests()) {
+    return; // already buffering
+  }
+  // include a timeout to close the connection if server does not respond
+  serverVersionTimeout_.reset(new ServerVersionTimeout(*this));
+  evb_->timer().scheduleTimeout(
+      serverVersionTimeout_.get(),
+      std::chrono::milliseconds(THRIFT_FLAG(rocket_server_version_timeout_ms)));
+}
+
+void RocketClient::setServerVersion(uint32_t serverVersion) {
+  // set server version, cancel timeout and resolve any buffered requests
+  serverVersion_ = serverVersion;
+  serverVersionTimeout_.reset();
+  if (queue_.resolveWriteBuffer(serverVersion)) {
+    scheduleWriteLoopCallback();
   }
 }
 

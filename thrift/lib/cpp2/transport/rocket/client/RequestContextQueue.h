@@ -75,6 +75,31 @@ class RequestContextQueue {
 
   RequestContext* getRequestResponseContext(StreamId streamId);
 
+  bool startBufferingRequests() {
+    if (!writeBufferQueue_) {
+      writeBufferQueue_.reset(new RequestContext::Queue());
+      return true;
+    }
+    return false;
+  }
+
+  bool resolveWriteBuffer(uint32_t serverVersion) {
+    if (!writeBufferQueue_) {
+      return false;
+    }
+    auto queue = std::move(writeBufferQueue_);
+    if (queue->empty()) {
+      return false;
+    }
+    while (!queue->empty()) {
+      auto& req = queue->front();
+      queue->pop_front();
+      req.initWithVersion(serverVersion);
+      enqueueScheduledWrite(req);
+    }
+    return true;
+  }
+
  private:
   using RequestResponseSet = RequestContext::UnorderedSet;
 
@@ -91,6 +116,7 @@ class RequestContextQueue {
 
   using State = RequestContext::State;
 
+  std::unique_ptr<RequestContext::Queue> writeBufferQueue_;
   // Requests for which AsyncSocket::writev() has not been called yet
   RequestContext::Queue writeScheduledQueue_;
   // Requests for which AsyncSocket::writev() has been called but completion

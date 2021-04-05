@@ -53,7 +53,9 @@
 
 namespace {
 const int64_t kRocketClientMaxVersion = 6;
-}
+// request buffering needs setup response from server, available from version 5
+const int64_t kRocketClientMinVersion = 5;
+} // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, false);
 THRIFT_FLAG_DEFINE_int64(rocket_client_max_version, kRocketClientMaxVersion);
@@ -573,6 +575,7 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
   meta.maxVersion_ref() =
       std::min(kRocketClientMaxVersion, THRIFT_FLAG(rocket_client_max_version));
+  meta.minVersion_ref() = kRocketClientMinVersion;
   if (const auto& hostMetadata = ClientChannel::getHostMetadata()) {
     meta.clientMetadata_ref().ensure().hostname_ref().from_optional(
         hostMetadata->hostname);

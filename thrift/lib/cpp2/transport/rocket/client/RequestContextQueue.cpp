@@ -25,6 +25,10 @@ namespace thrift {
 namespace rocket {
 
 void RequestContextQueue::enqueueScheduledWrite(RequestContext& req) noexcept {
+  if (UNLIKELY(writeBufferQueue_ != nullptr)) {
+    writeBufferQueue_->push_back(req);
+    return;
+  }
   DCHECK(req.state_ == State::WRITE_NOT_SCHEDULED);
 
   req.state_ = State::WRITE_SCHEDULED;
@@ -114,6 +118,15 @@ void RequestContextQueue::failAllScheduledWrites(folly::exception_wrapper ew) {
           fmt::format(
               "Dropping unsent request. Connection closed after: {}",
               ew.what())));
+  if (writeBufferQueue_) {
+    failQueue(
+        *writeBufferQueue_,
+        transport::TTransportException(
+            transport::TTransportException::NOT_OPEN,
+            fmt::format(
+                "Dropping unsent request. Connection closed after: {}",
+                ew.what())));
+  }
 }
 
 void RequestContextQueue::failAllSentWrites(folly::exception_wrapper ew) {

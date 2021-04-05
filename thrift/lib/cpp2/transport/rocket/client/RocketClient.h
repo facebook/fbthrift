@@ -386,6 +386,7 @@ class RocketClient : public folly::DelayedDestruction,
     bool rescheduled_{false};
   };
   WriteLoopCallback writeLoopCallback_;
+  void scheduleWriteLoopCallback();
   class DetachableLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit DetachableLoopCallback(RocketClient& client) : client_(client) {}
@@ -432,8 +433,15 @@ class RocketClient : public folly::DelayedDestruction,
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
+  template <class OnError>
+  class SendFrameContext;
+
   template <typename Frame, typename OnError>
   FOLLY_NODISCARD bool sendFrame(Frame&& frame, OnError&& onError);
+
+  template <typename InitFunc, typename OnError>
+  FOLLY_NODISCARD bool sendVersionDependentFrame(
+      InitFunc&& initFunc, StreamId streamId, OnError&& onError);
 
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
@@ -496,6 +504,23 @@ class RocketClient : public folly::DelayedDestruction,
       }
     });
   }
+
+  class ServerVersionTimeout : public folly::HHWheelTimer::Callback {
+   public:
+    explicit ServerVersionTimeout(RocketClient& client) : client_(client) {}
+
+    void timeoutExpired() noexcept override {
+      client_.close(transport::TTransportException(
+          apache::thrift::transport::TTransportException::TIMED_OUT,
+          "Server version not reported"));
+    }
+
+   private:
+    RocketClient& client_;
+  };
+  std::unique_ptr<ServerVersionTimeout> serverVersionTimeout_;
+  void onServerVersionRequired();
+  void setServerVersion(uint32_t serverVersion);
 
   // Close the connection and fail all the requests *inline*. This should not be
   // called inline from any of the callbacks triggered by RocketClient.
