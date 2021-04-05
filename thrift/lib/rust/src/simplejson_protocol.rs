@@ -558,6 +558,7 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             Some(b'"') => Ok(TType::UTF8),
             Some(b'n') => Ok(TType::Void),
             Some(b't') | Some(b'f') => Ok(TType::Bool),
+            Some(b'-') => Ok(TType::Double),
             Some(b) if (b as char).is_ascii_digit() => Ok(TType::Double),
             ch => bail!(
                 "Expected [, {{, or \", or number after {:?}",

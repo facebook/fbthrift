@@ -151,5 +151,12 @@ TEST(JsonTest, nullStuff) {
   ASSERT_EQ(stru, outStruct);
 }
 
+TEST(JsonTest, unknownUnion) {
+  azw::Un u;
+
+  auto t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(u);
+  ASSERT_EQ(t, "{}");
+}
+
 } // namespace azw
 } // namespace facebook
