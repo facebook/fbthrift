@@ -18,6 +18,10 @@ public class MyLeafReactiveBlockingWrapper  extends test.fixtures.inheritance.My
     this._delegate = _delegate;
   }
 
+  public MyLeafReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new MyLeafReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -26,6 +30,18 @@ public class MyLeafReactiveBlockingWrapper  extends test.fixtures.inheritance.My
   @java.lang.Override
   public void doLeaf() throws org.apache.thrift.TException {
       _delegate.doLeaf().block();
+  }
+
+  @java.lang.Override
+  public void doLeaf(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.doLeaf().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> doLeafWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.doLeafWrapper(rpcOptions).block();
   }
 
 }

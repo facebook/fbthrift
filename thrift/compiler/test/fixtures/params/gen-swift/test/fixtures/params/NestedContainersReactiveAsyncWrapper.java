@@ -18,6 +18,10 @@ public class NestedContainersReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
+  public NestedContainersReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new NestedContainersReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -29,8 +33,36 @@ public class NestedContainersReactiveAsyncWrapper
   }
 
   @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> mapList(
+    final Map<Integer, List<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.mapList(foo, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> mapListWrapper(
+    final Map<Integer, List<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.mapListWrapper(foo, rpcOptions));
+  }
+
+  @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> mapSet(final Map<Integer, Set<Integer>> foo) {
       return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.mapSet(foo));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> mapSet(
+    final Map<Integer, Set<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.mapSet(foo, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> mapSetWrapper(
+    final Map<Integer, Set<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.mapSetWrapper(foo, rpcOptions));
   }
 
   @java.lang.Override
@@ -39,13 +71,55 @@ public class NestedContainersReactiveAsyncWrapper
   }
 
   @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> listMap(
+    final List<Map<Integer, Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.listMap(foo, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> listMapWrapper(
+    final List<Map<Integer, Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.listMapWrapper(foo, rpcOptions));
+  }
+
+  @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> listSet(final List<Set<Integer>> foo) {
       return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.listSet(foo));
   }
 
   @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> listSet(
+    final List<Set<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.listSet(foo, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> listSetWrapper(
+    final List<Set<Integer>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.listSetWrapper(foo, rpcOptions));
+  }
+
+  @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) {
       return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.turtles(foo));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> turtles(
+    final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.turtles(foo, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> turtlesWrapper(
+    final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.turtlesWrapper(foo, rpcOptions));
   }
 
 }

@@ -18,6 +18,10 @@ public class MyServiceReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
+  public MyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new MyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -26,6 +30,18 @@ public class MyServiceReactiveBlockingWrapper
   @java.lang.Override
   public void foo() throws org.apache.thrift.TException {
       _delegate.foo().block();
+  }
+
+  @java.lang.Override
+  public void foo(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.foo().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> fooWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.fooWrapper(rpcOptions).block();
   }
 
 }

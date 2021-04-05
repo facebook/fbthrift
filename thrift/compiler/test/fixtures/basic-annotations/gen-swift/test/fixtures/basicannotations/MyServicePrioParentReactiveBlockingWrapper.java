@@ -18,6 +18,10 @@ public class MyServicePrioParentReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
+  public MyServicePrioParentReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new MyServicePrioParentReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -27,9 +31,33 @@ public class MyServicePrioParentReactiveBlockingWrapper
   public void ping() throws org.apache.thrift.TException {
       _delegate.ping().block();
   }
+
+  @java.lang.Override
+  public void ping(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.ping().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> pingWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.pingWrapper(rpcOptions).block();
+  }
   @java.lang.Override
   public void pong() throws org.apache.thrift.TException {
       _delegate.pong().block();
+  }
+
+  @java.lang.Override
+  public void pong(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.pong().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> pongWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.pongWrapper(rpcOptions).block();
   }
 
 }

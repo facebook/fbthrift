@@ -30,6 +30,10 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
     this._delegate = _delegate;
   }
 
+  public {{service:javaCapitalName}}ReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new {{service:javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -37,15 +41,38 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
 
   {{#service:supportedFunctions}}
   @java.lang.Override
-  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
-  Exceptions
-  }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+          Exceptions
+        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
       _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
     {{/function:voidType}}
     {{^function:voidType}}
       return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
     {{/function:voidType}}
+  }
+
+  @java.lang.Override
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        com.facebook.swift.transport.client.RpcOptions rpcOptions){{!
+          Exceptions
+        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+    {{#function:voidType}}
+      _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+    {{/function:voidType}}
+    {{^function:voidType}}
+      return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+    {{/function:voidType}}
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
+    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+    com.facebook.swift.transport.client.RpcOptions rpcOptions){{!
+      Exceptions
+    }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+      return _delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
   }
   {{/service:supportedFunctions}}
 

@@ -18,18 +18,50 @@ public class DbMixedStackArgumentsReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
+  public DbMixedStackArgumentsReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new DbMixedStackArgumentsReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
   }
 
   @java.lang.Override
-  public byte[] getDataByKey0(final String key) throws org.apache.thrift.TException {
+  public byte[] getDataByKey0( final String key) throws org.apache.thrift.TException {
       return _delegate.getDataByKey0(key).block();
   }
+
   @java.lang.Override
-  public byte[] getDataByKey1(final String key) throws org.apache.thrift.TException {
+  public byte[] getDataByKey0(
+        final String key,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataByKey0(key).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<byte[]> getDataByKey0Wrapper(
+    final String key,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataByKey0Wrapper(key, rpcOptions).block();
+  }
+  @java.lang.Override
+  public byte[] getDataByKey1( final String key) throws org.apache.thrift.TException {
       return _delegate.getDataByKey1(key).block();
+  }
+
+  @java.lang.Override
+  public byte[] getDataByKey1(
+        final String key,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataByKey1(key).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<byte[]> getDataByKey1Wrapper(
+    final String key,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataByKey1Wrapper(key, rpcOptions).block();
   }
 
 }

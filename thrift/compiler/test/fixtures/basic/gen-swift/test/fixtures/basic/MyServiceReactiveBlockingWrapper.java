@@ -18,6 +18,10 @@ public class MyServiceReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
+  public MyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(new MyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
+  }
+
   @java.lang.Override
   public void close() {
     _delegate.dispose();
@@ -27,33 +31,145 @@ public class MyServiceReactiveBlockingWrapper
   public void ping() throws org.apache.thrift.TException {
       _delegate.ping().block();
   }
+
+  @java.lang.Override
+  public void ping(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.ping().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> pingWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.pingWrapper(rpcOptions).block();
+  }
   @java.lang.Override
   public String getRandomData() throws org.apache.thrift.TException {
       return _delegate.getRandomData().block();
   }
+
   @java.lang.Override
-  public void sink(final long sink) throws org.apache.thrift.TException {
+  public String getRandomData(
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getRandomData().block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<String> getRandomDataWrapper(
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getRandomDataWrapper(rpcOptions).block();
+  }
+  @java.lang.Override
+  public void sink( final long sink) throws org.apache.thrift.TException {
       _delegate.sink(sink).block();
   }
+
   @java.lang.Override
-  public void putDataById(final long id,final String data) throws org.apache.thrift.TException {
+  public void sink(
+        final long sink,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.sink(sink).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> sinkWrapper(
+    final long sink,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.sinkWrapper(sink, rpcOptions).block();
+  }
+  @java.lang.Override
+  public void putDataById( final long id, final String data) throws org.apache.thrift.TException {
       _delegate.putDataById(id, data).block();
   }
+
   @java.lang.Override
-  public boolean hasDataById(final long id) throws org.apache.thrift.TException {
+  public void putDataById(
+        final long id,
+        final String data,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.putDataById(id, data).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> putDataByIdWrapper(
+    final long id,
+    final String data,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.putDataByIdWrapper(id, data, rpcOptions).block();
+  }
+  @java.lang.Override
+  public boolean hasDataById( final long id) throws org.apache.thrift.TException {
       return _delegate.hasDataById(id).block();
   }
+
   @java.lang.Override
-  public String getDataById(final long id) throws org.apache.thrift.TException {
+  public boolean hasDataById(
+        final long id,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.hasDataById(id).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Boolean> hasDataByIdWrapper(
+    final long id,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.hasDataByIdWrapper(id, rpcOptions).block();
+  }
+  @java.lang.Override
+  public String getDataById( final long id) throws org.apache.thrift.TException {
       return _delegate.getDataById(id).block();
   }
+
   @java.lang.Override
-  public void deleteDataById(final long id) throws org.apache.thrift.TException {
-      _delegate.deleteDataById(id).block();
+  public String getDataById(
+        final long id,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataById(id).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<String> getDataByIdWrapper(
+    final long id,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.getDataByIdWrapper(id, rpcOptions).block();
   }
   @java.lang.Override
-  public void lobDataById(final long id,final String data) throws org.apache.thrift.TException {
+  public void deleteDataById( final long id) throws org.apache.thrift.TException {
+      _delegate.deleteDataById(id).block();
+  }
+
+  @java.lang.Override
+  public void deleteDataById(
+        final long id,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.deleteDataById(id).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> deleteDataByIdWrapper(
+    final long id,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.deleteDataByIdWrapper(id, rpcOptions).block();
+  }
+  @java.lang.Override
+  public void lobDataById( final long id, final String data) throws org.apache.thrift.TException {
       _delegate.lobDataById(id, data).block();
+  }
+
+  @java.lang.Override
+  public void lobDataById(
+        final long id,
+        final String data,
+        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.lobDataById(id, data).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.swift.transport.client.ResponseWrapper<Void> lobDataByIdWrapper(
+    final long id,
+    final String data,
+    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.lobDataByIdWrapper(id, data, rpcOptions).block();
   }
 
 }
