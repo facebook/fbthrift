@@ -37,31 +37,30 @@ will only build selected fixtures under `thrift/compiler/test/fixtures`.
 * Invoke directly (if buck is not available):
 
     thrift/compiler/test/build_fixtures.py \
-            --build-dir [$BUILDDIR]        \
+            --thrift-bin [$THRIFTBIN]      \
             --fixture-root [$FIXTUREROOT]  \
             --fixture-names [$FIXTURENAMES]
 
-where $BUILDDIR/thrift/compiler/thrift is the thrift compiler (If using
-Buck to build the thrift compiler, the $BUILDDIR default will work),
+$THRIFTBIN is the absolute or relative path to thrift compiler executable.
 $FIXTUREROOT/thrift/compiler/test/fixtures is the fixture dir (defaults
 to the current working directory) and $FIXTURENAMES is a list of
 fixture names to build specifically (default is to build all fixtures).
 """
-BUCK_OUT = "buck-out/gen"
 FIXTURE_ROOT = "."
+THRIFT_REL = "thrift/compiler/thrift"
 
 
 def parsed_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--build-dir",
-        dest="build_dir",
+        "--thrift-bin",
+        dest="thrift_bin",
         help=(
-            "$BUILDDIR/thrift/compiler/thrift is where thrift compiler is"
-            " located, defaults to buck's build dir"
+            "Absolute path or relative path to thrift compiler executable. "
+            "For relative path, we will search script's path and all parents"
         ),
         type=str,
-        default=BUCK_OUT,
+        default=THRIFT_REL,
     )
     parser.add_argument(
         "--fixture-root",
@@ -103,15 +102,13 @@ def read_lines(path):
 
 
 args = parsed_args()
-build_dir = args.build_dir
 fixture_root = args.fixture_root
 exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift_rel = os.path.join(build_dir, "thrift/compiler/thrift")
-thrift = ascend_find_exe(exe, thrift_rel)
+thrift = ascend_find_exe(exe, args.thrift_bin)
 
 if thrift is None:
-    sys.stderr.write("error: cannot find the Thrift compiler ({})\n".format(thrift_rel))
-    sys.stderr.write("(run `buck build thrift/compiler:thrift` to build it yourself)\n")
+    tb = args.thrift_bin
+    sys.stderr.write("error: cannot find the Thrift compiler ({})\n".format(tb))
     sys.exit(1)
 
 fixture_dir = os.path.join(fixture_root, "thrift/compiler/test/fixtures")
