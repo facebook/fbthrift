@@ -27,7 +27,6 @@
 
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/Executor.h>
-#include <folly/SharedMutex.h>
 #include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
@@ -311,10 +310,6 @@ class ThreadManager : public virtual folly::Executor {
       ExecutionScope es, Source level) const = 0;
 
   class Impl;
-
- protected:
-  static folly::SharedMutex observerLock_;
-  static std::shared_ptr<Observer> observer_;
 };
 
 /**

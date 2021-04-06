@@ -31,6 +31,7 @@
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
+#include <folly/Synchronized.h>
 #include <folly/ThreadLocal.h>
 #include <folly/VirtualExecutor.h>
 #include <folly/concurrency/PriorityUnboundedQueueSet.h>
@@ -115,6 +116,29 @@ class Deleter {
   bool owning_{true};
 };
 
+auto& getThreadManagerObserverSingleton() {
+  class Storage {
+   public:
+    void set(std::shared_ptr<ThreadManager::Observer> o) {
+      instance_.exchange(std::move(o));
+      isset_.store(true, std::memory_order_relaxed);
+    }
+    std::shared_ptr<ThreadManager::Observer> get() {
+      // Optimistic check lock free
+      if (!isset_.load(std::memory_order_relaxed)) {
+        return {};
+      }
+      return instance_.copy();
+    }
+
+   private:
+    std::atomic<bool> isset_{false};
+    folly::Synchronized<std::shared_ptr<ThreadManager::Observer>> instance_;
+  };
+
+  static auto& observer = *new Storage();
+  return observer;
+}
 } // namespace
 
 /**
@@ -592,12 +616,8 @@ class ThreadManager::Impl::Worker : public Runnable {
         }
       }
 
-      if (manager_->observer_) {
-        // Hold lock to ensure that observer_ does not get deleted
-        folly::SharedMutex::ReadHolder g(manager_->observerLock_);
-        if (manager_->observer_) {
-          manager_->observer_->preRun(task->getContext().get());
-        }
+      if (auto observer = getThreadManagerObserverSingleton().get()) {
+        observer->preRun(task->getContext().get());
       }
 
       // Check if the task is expired
@@ -997,19 +1017,13 @@ void ThreadManager::Impl::reportTaskStats(
     ++numTasks_;
   }
 
-  // Optimistic check lock free
-  if (ThreadManager::Impl::observer_) {
-    // Hold lock to ensure that observer_ does not get deleted.
-    folly::SharedMutex::ReadHolder g(ThreadManager::Impl::observerLock_);
-    if (ThreadManager::Impl::observer_) {
-      // Note: We are assuming the namePrefix_ does not change after the thread
-      // is started.
-      // TODO: enforce this.
-      auto seriesName = folly::to<std::string>(namePrefix_, statContext());
-      ThreadManager::Impl::observer_->postRun(
-          task.getContext().get(),
-          {seriesName, queueBegin, workBegin, workEnd});
-    }
+  if (auto observer = getThreadManagerObserverSingleton().get()) {
+    // Note: We are assuming the namePrefix_ does not change after the
+    // thread is started.
+    // TODO: enforce this.
+    auto seriesName = folly::to<std::string>(namePrefix_, statContext());
+    observer->postRun(
+        task.getContext().get(), {seriesName, queueBegin, workBegin, workEnd});
   }
 }
 
@@ -1543,10 +1557,7 @@ folly::Executor::KeepAlive<> ThreadManagerExecutorAdapter::getKeepAlive(
 
 void ThreadManager::setObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
-  {
-    folly::SharedMutex::WriteHolder g(observerLock_);
-    observer_.swap(observer);
-  }
+  getThreadManagerObserverSingleton().set(std::move(observer));
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
@@ -1614,9 +1625,6 @@ PriorityThreadManager::newPriorityThreadManager(
   return newPriorityThreadManager(
       {{2, 2, 2, normalThreadsCount, 2}}, enableTaskStats);
 }
-
-folly::SharedMutex ThreadManager::observerLock_;
-std::shared_ptr<ThreadManager::Observer> ThreadManager::observer_;
 
 } // namespace concurrency
 } // namespace thrift
