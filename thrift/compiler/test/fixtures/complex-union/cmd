@@ -1,4 +1,4 @@
-android_lite src/module.thrift
+android src/module.thrift
 go src/module.thrift
 java src/module.thrift
 hack:json=1,protected_unions=1 src/module.thrift

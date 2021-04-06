@@ -4,14 +4,18 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
+import java.util.BitSet;
+import java.util.Arrays;
+@SuppressWarnings({ "unused" })
+public class Constants {
 
-
-
-import com.facebook.thrift.lite.*;
-import com.facebook.thrift.lite.protocol.*;
-
-
-public class ModuleConstants {
   public static final Map<Long,List<String>> TEST_MAP = new HashMap<Long,List<String>>();
   static {
     List<String> tmp0 = new ArrayList<String>();

@@ -1,4 +1,4 @@
-android_lite:annotate src/module.thrift
+android:annotate src/module.thrift
 java src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_py3 src/module.thrift
