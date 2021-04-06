@@ -506,8 +506,7 @@ void Cpp2Connection::requestReceived(
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
 
-  logSetupConnectionEventsOnce(
-      setupLoggingFlag_, t2r->getContext()->getMethodName(), context_);
+  logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
 
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));

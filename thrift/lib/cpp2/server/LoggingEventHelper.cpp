@@ -48,14 +48,8 @@ void logNonTLSEvent(const ConnectionLoggingContext& context) {
 } // namespace
 
 void logSetupConnectionEventsOnce(
-    folly::once_flag& flag,
-    std::string_view methodName,
-    const ConnectionLoggingContext& context) {
+    folly::once_flag& flag, const ConnectionLoggingContext& context) {
   static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
-    if (methodName == "getCounters" || methodName == "getStatus" ||
-        methodName == "getRegexCounters") {
-      return false;
-    }
     try {
       if (auto transport = context.getTransport()) {
         const auto& protocol = context.getSecurityProtocol();

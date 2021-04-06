@@ -413,8 +413,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
-  logSetupConnectionEventsOnce(
-      setupLoggingFlag_, request->getMethodName(), connContext_);
+  logSetupConnectionEventsOnce(setupLoggingFlag_, connContext_);
 
   auto* cpp2ReqCtx = request->getRequestContext();
   auto& timestamps = cpp2ReqCtx->getTimestamps();
