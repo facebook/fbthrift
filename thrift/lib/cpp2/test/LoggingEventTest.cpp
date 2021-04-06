@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/RocketClientTestChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -35,7 +36,9 @@ using apache::thrift::ConnectionEventHandler;
 using apache::thrift::ConnectionLoggingContext;
 using apache::thrift::LoggingEventRegistry;
 using apache::thrift::ServerEventHandler;
+using apache::thrift::ServerTrackerHandler;
 using apache::thrift::ThriftServer;
+using apache::thrift::instrumentation::ServerTracker;
 
 constexpr std::string_view kServe = "serve";
 // Note not setting a ssl config is seen as a manual override
@@ -55,6 +58,11 @@ class TestConnectionEventHandler : public ConnectionEventHandler {
       log, void(const ConnectionLoggingContext&, DynamicFieldsCallback));
 };
 
+class TestServerTrackerHandler : public ServerTrackerHandler {
+ public:
+  MOCK_METHOD1(log, void(const ServerTracker&));
+};
+
 class TestEventRegistry : public LoggingEventRegistry {
  public:
   TestEventRegistry() {
@@ -62,6 +70,9 @@ class TestEventRegistry : public LoggingEventRegistry {
     connectionEventMap_[kNonTls] = makeHandler<TestConnectionEventHandler>();
     connectionEventMap_[kRocketSetup] =
         makeHandler<TestConnectionEventHandler>();
+    serverTrackerMap_
+        [apache::thrift::instrumentation::kThriftServerTrackerKey] =
+            makeHandler<TestServerTrackerHandler>();
   }
 
   ServerEventHandler& getServerEventHandler(
@@ -80,6 +91,11 @@ class TestEventRegistry : public LoggingEventRegistry {
     return *handler;
   }
 
+  ServerTrackerHandler& getServerTrackerHandler(
+      std::string_view key) const override {
+    return *serverTrackerMap_.at(key).get();
+  }
+
  private:
   template <typename T>
   std::unique_ptr<T> makeHandler() {
@@ -92,6 +108,8 @@ class TestEventRegistry : public LoggingEventRegistry {
       serverEventMap_;
   std::unordered_map<std::string_view, std::unique_ptr<ConnectionEventHandler>>
       connectionEventMap_;
+  std::unordered_map<std::string_view, std::unique_ptr<ServerTrackerHandler>>
+      serverTrackerMap_;
 };
 
 THRIFT_PLUGGABLE_FUNC_SET(
@@ -161,6 +179,15 @@ class ServerEventLogTest : public LoggingEventTest<TestServerEventHandler> {
   }
 };
 
+class ServerTrackerLogTest : public LoggingEventTest<TestServerTrackerHandler> {
+ protected:
+  void expectServerTrackerCall(std::string_view key, size_t times) {
+    auto& handler =
+        fetchHandler(&LoggingEventRegistry::getServerTrackerHandler, key);
+    EXPECT_CALL(handler, log(testing::_)).Times(times);
+  }
+};
+
 class TestServiceHandler : public apache::thrift::test::TestServiceSvIf {
  public:
   void voidResponse() override {}
@@ -168,6 +195,13 @@ class TestServiceHandler : public apache::thrift::test::TestServiceSvIf {
 
 TEST_F(ServerEventLogTest, serverTest) {
   expectServerEventCall(kServe, 1);
+  auto handler = std::make_shared<TestServiceHandler>();
+  apache::thrift::ScopedServerInterfaceThread server(handler);
+}
+
+TEST_F(ServerTrackerLogTest, serverTest) {
+  expectServerTrackerCall(
+      apache::thrift::instrumentation::kThriftServerTrackerKey, 1);
   auto handler = std::make_shared<TestServiceHandler>();
   apache::thrift::ScopedServerInterfaceThread server(handler);
 }

@@ -22,6 +22,7 @@
 #include <folly/MapUtil.h>
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 
 namespace apache {
 namespace thrift {
@@ -72,6 +73,7 @@ ServerTracker::ServerTracker(std::string_view key, ThriftServer& server)
       server_(server),
       cb_(std::make_unique<ServerTrackerRef::ControlBlock>(key_, server_)) {
   getTrackerCollection().addTracker(key_, *this);
+  getLoggingEventRegistry().getServerTrackerHandler(key_).log(*this);
 }
 
 ServerTracker::~ServerTracker() {

@@ -49,6 +49,10 @@ class ThriftServer;
 class Cpp2Worker;
 class Cpp2ConnContext;
 
+namespace instrumentation {
+class ServerTracker;
+} // namespace instrumentation
+
 class LoggingSampler {
  public:
   using SamplingRate = int64_t;
@@ -109,6 +113,12 @@ class ApplicationEventHandler : public LoggingEventHandler {
   virtual ~ApplicationEventHandler() {}
 };
 
+class ServerTrackerHandler {
+ public:
+  virtual void log(const instrumentation::ServerTracker&) {}
+  virtual ~ServerTrackerHandler() {}
+};
+
 class LoggingEventRegistry {
  public:
   virtual ServerEventHandler& getServerEventHandler(
@@ -117,6 +127,9 @@ class LoggingEventRegistry {
       std::string_view eventKey) const = 0;
   virtual ApplicationEventHandler& getApplicationEventHandler(
       std::string_view eventKey) const = 0;
+  virtual ServerTrackerHandler& getServerTrackerHandler(
+      std::string_view trackerKey) const = 0;
+
   virtual ~LoggingEventRegistry() {}
 };
 
