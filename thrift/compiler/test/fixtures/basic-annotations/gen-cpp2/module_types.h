@@ -159,7 +159,7 @@ class MyStructNestedAnnotation final  {
   [[deprecated("This constructor is deprecated")]]
   MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg);
 
-  MyStructNestedAnnotation(MyStructNestedAnnotation&&) = default;
+  MyStructNestedAnnotation(MyStructNestedAnnotation&&) noexcept;
 
   MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 
@@ -277,7 +277,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
   MyStruct(const MyStruct&) = default;
 
@@ -577,7 +577,7 @@ class SecretStruct final  {
   [[deprecated("This constructor is deprecated")]]
   SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg);
 
-  SecretStruct(SecretStruct&&) = default;
+  SecretStruct(SecretStruct&&) noexcept;
 
   SecretStruct(const SecretStruct&) = default;
 

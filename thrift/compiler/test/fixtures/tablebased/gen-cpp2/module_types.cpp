@@ -148,6 +148,18 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TrivialTypesStruct::TrivialTypesStruct(TrivialTypesStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<TrivialTypesStruct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg, ::test::fixtures::tablebased::IOBufPtr fieldD__arg, ::test::fixtures::tablebased::ExampleEnum fieldE__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
@@ -321,6 +333,21 @@ ContainerStruct::ContainerStruct() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ContainerStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg) :

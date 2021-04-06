@@ -36,6 +36,14 @@ void TccStructTraits<::cpp2::Mixin1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin1::Mixin1(Mixin1&& other) noexcept  :
+    field1(std::move(other.field1)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Mixin1>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
     field1(std::move(field1__arg)) {
   __isset.field1 = true;
@@ -113,6 +121,15 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin2::Mixin2(Mixin2&& other) noexcept  :
+    m1(std::move(other.m1)),
+    field2(std::move(other.field2)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Mixin2>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
@@ -224,6 +241,14 @@ void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
+    field3(std::move(other.field3)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Mixin3Base>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg) :
     field3(std::move(field3__arg)) {
   __isset.field3 = true;
@@ -301,6 +326,16 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(Foo&& other) noexcept  :
+    field4(std::move(other.field4)),
+    m2(std::move(other.m2)),
+    m3(std::move(other.m3)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Foo>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg) :

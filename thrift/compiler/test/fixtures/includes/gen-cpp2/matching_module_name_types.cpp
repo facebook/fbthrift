@@ -35,6 +35,8 @@ void TccStructTraits<::matching_module_name::MyStruct>::translateFieldName(
 
 namespace matching_module_name {
 
+static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg) :
     OtherStructField(std::move(OtherStructField__arg)) {

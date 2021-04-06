@@ -69,7 +69,7 @@ class Foo final  {
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg);
 
-  Foo(Foo&&) = default;
+  constexpr Foo(Foo&&) = default;
 
   Foo(const Foo&) = default;
 

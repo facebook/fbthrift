@@ -207,7 +207,7 @@ class structured_annotation_inline final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg);
 
-  structured_annotation_inline(structured_annotation_inline&&) = default;
+  structured_annotation_inline(structured_annotation_inline&&) noexcept;
 
   structured_annotation_inline(const structured_annotation_inline&) = default;
 
@@ -352,7 +352,7 @@ class structured_annotation_with_default final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg);
 
-  structured_annotation_with_default(structured_annotation_with_default&&) = default;
+  structured_annotation_with_default(structured_annotation_with_default&&) noexcept;
 
   structured_annotation_with_default(const structured_annotation_with_default&) = default;
 
@@ -464,7 +464,7 @@ class structured_annotation_forward final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg);
 
-  structured_annotation_forward(structured_annotation_forward&&) = default;
+  constexpr structured_annotation_forward(structured_annotation_forward&&) = default;
 
   structured_annotation_forward(const structured_annotation_forward&) = default;
 
@@ -570,7 +570,7 @@ class structured_annotation_recursive final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg);
 
-  structured_annotation_recursive(structured_annotation_recursive&&) = default;
+  structured_annotation_recursive(structured_annotation_recursive&&) noexcept;
 
   structured_annotation_recursive(const structured_annotation_recursive&) = default;
 
@@ -745,7 +745,7 @@ class structured_annotation_nested final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg);
 
-  structured_annotation_nested(structured_annotation_nested&&) = default;
+  structured_annotation_nested(structured_annotation_nested&&) noexcept;
 
   structured_annotation_nested(const structured_annotation_nested&) = default;
 
@@ -890,7 +890,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
   MyStruct(const MyStruct&) = default;
 
@@ -1105,7 +1105,7 @@ class MyException final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   MyException(apache::thrift::FragileConstructor, ::std::string context__arg);
 
-  MyException(MyException&&) = default;
+  MyException(MyException&&) noexcept;
 
   MyException(const MyException&) = default;
 

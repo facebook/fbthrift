@@ -36,6 +36,11 @@ void TccStructTraits<::cpp2::Banal>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal(Banal&& other) noexcept { (void)other; }THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Banal>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Banal::__clear() {
@@ -98,6 +103,14 @@ void TccStructTraits<::cpp2::Fiery>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Fiery::Fiery(Fiery&& other) noexcept  :
+    message(std::move(other.message)) {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Fiery>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
@@ -169,6 +182,14 @@ void TccStructTraits<::cpp2::Serious>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Serious::Serious(Serious&& other) noexcept  :
+    sonnet(std::move(other.sonnet)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Serious>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
@@ -248,6 +269,15 @@ void TccStructTraits<::cpp2::ComplexFieldNames>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
+    error_message(std::move(other.error_message)),
+    internal_error_message(std::move(other.internal_error_message)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ComplexFieldNames>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
@@ -337,6 +367,15 @@ void TccStructTraits<::cpp2::CustomFieldNames>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
+    error_message(std::move(other.error_message)),
+    internal_error_message(std::move(other.internal_error_message)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<CustomFieldNames>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :

@@ -136,7 +136,7 @@ class SomeStruct final  {
   [[deprecated("This constructor is deprecated")]]
   SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);
 
-  SomeStruct(SomeStruct&&) = default;
+  SomeStruct(SomeStruct&&) noexcept;
 
   SomeStruct(const SomeStruct&) = default;
 

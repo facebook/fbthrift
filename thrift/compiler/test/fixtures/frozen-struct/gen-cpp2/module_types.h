@@ -154,7 +154,7 @@ class ModuleA final  {
   [[deprecated("This constructor is deprecated")]]
   ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg);
 
-  ModuleA(ModuleA&&) = default;
+  ModuleA(ModuleA&&) noexcept;
 
   ModuleA(const ModuleA&) = default;
 
@@ -431,7 +431,7 @@ class ModuleB final  {
   [[deprecated("This constructor is deprecated")]]
   ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg);
 
-  ModuleB(ModuleB&&) = default;
+  constexpr ModuleB(ModuleB&&) = default;
 
   ModuleB(const ModuleB&) = default;
 

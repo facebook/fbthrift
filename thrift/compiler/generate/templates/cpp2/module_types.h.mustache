@@ -191,23 +191,13 @@ class <%struct:name%> <%!
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
-<%#struct:cpp_noexcept_move_ctor%>
-<%^struct:fields?%>
-  <%struct:name%>(<%struct:name%>&& other) noexcept {}
-<%/struct:fields?%>
-<%#struct:fields?%>
-<%#struct:is_large?%>
-  <%struct:name%>(<%struct:name%>&& other) noexcept;
-<%/struct:is_large?%>
-<%^struct:is_large?%>
-  <% > module_types_cpp/move_ctor%>
-<%/struct:is_large?%>
-<%/struct:fields?%>
-<%/struct:cpp_noexcept_move_ctor%>
-<%^struct:cpp_noexcept_move_ctor%>
 
-  <%struct:name%>(<%struct:name%>&&) = default;
-<%/struct:cpp_noexcept_move_ctor%>
+<%#struct:is_eligible_for_constexpr?%>
+  constexpr <%struct:name%>(<%struct:name%>&&) = default;
+<%/struct:is_eligible_for_constexpr?%>
+<%^struct:is_eligible_for_constexpr?%>
+  <%struct:name%>(<%struct:name%>&&) noexcept;
+<%/struct:is_eligible_for_constexpr?%>
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
 

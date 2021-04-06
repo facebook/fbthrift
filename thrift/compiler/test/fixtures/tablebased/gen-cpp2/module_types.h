@@ -192,7 +192,7 @@ class TrivialTypesStruct final  {
   [[deprecated("This constructor is deprecated")]]
   TrivialTypesStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg, ::test::fixtures::tablebased::IOBufPtr fieldD__arg, ::test::fixtures::tablebased::ExampleEnum fieldE__arg);
 
-  TrivialTypesStruct(TrivialTypesStruct&&) = default;
+  TrivialTypesStruct(TrivialTypesStruct&&) noexcept;
   TrivialTypesStruct(const TrivialTypesStruct& src);
 
 
@@ -457,7 +457,7 @@ class ContainerStruct final  {
   [[deprecated("This constructor is deprecated")]]
   ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg);
 
-  ContainerStruct(ContainerStruct&&) = default;
+  ContainerStruct(ContainerStruct&&) noexcept;
 
   ContainerStruct(const ContainerStruct&) = default;
 

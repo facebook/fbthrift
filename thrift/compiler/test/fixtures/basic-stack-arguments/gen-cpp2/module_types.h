@@ -122,7 +122,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
   MyStruct(const MyStruct&) = default;
 

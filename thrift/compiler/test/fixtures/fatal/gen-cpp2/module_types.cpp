@@ -540,6 +540,15 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structA::structA(structA&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<structA>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
@@ -771,6 +780,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structB>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+static_assert(std::is_nothrow_move_constructible<structB>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     c(std::move(c__arg)),
@@ -871,6 +882,43 @@ structC::structC() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 structC::~structC() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structC::structC(structC&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    d(std::move(other.d)),
+    e(std::move(other.e)),
+    f(std::move(other.f)),
+    g(std::move(other.g)),
+    h(std::move(other.h)),
+    i(std::move(other.i)),
+    j(std::move(other.j)),
+    j1(std::move(other.j1)),
+    j2(std::move(other.j2)),
+    j3(std::move(other.j3)),
+    k(std::move(other.k)),
+    k1(std::move(other.k1)),
+    k2(std::move(other.k2)),
+    k3(std::move(other.k3)),
+    l(std::move(other.l)),
+    l1(std::move(other.l1)),
+    l2(std::move(other.l2)),
+    l3(std::move(other.l3)),
+    m1(std::move(other.m1)),
+    m2(std::move(other.m2)),
+    m3(std::move(other.m3)),
+    n1(std::move(other.n1)),
+    n2(std::move(other.n2)),
+    n3(std::move(other.n3)),
+    o1(std::move(other.o1)),
+    o2(std::move(other.o2)),
+    o3(std::move(other.o3)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<structC>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg, ::test_cpp2::cpp_reflection::enum1 e__arg, ::test_cpp2::cpp_reflection::enum2 f__arg, ::test_cpp2::cpp_reflection::union1 g__arg, ::test_cpp2::cpp_reflection::unionA h__arg, ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<::std::int32_t> j__arg, ::std::vector<::std::int32_t> j1__arg, ::std::vector<::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<::std::int32_t> k__arg, ::std::set<::std::int32_t> k1__arg, ::std::set<::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set<::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<::std::int32_t, ::std::int32_t> l__arg, ::std::map<::std::int32_t, ::std::int32_t> l1__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> m1__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, ::std::int32_t> n1__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> o1__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> o3__arg) :
@@ -1576,6 +1624,19 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 struct1::~struct1() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(struct1&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    field4(std::move(other.field4)),
+    field5(std::move(other.field5)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct1>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::enum2 field3__arg, ::test_cpp2::cpp_reflection::union1 field4__arg, ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
@@ -1751,6 +1812,20 @@ struct2::struct2() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct2::~struct2() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(struct2&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct2>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
@@ -1960,6 +2035,31 @@ struct3::struct3() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct3::~struct3() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(struct3&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    fieldI(std::move(other.fieldI)),
+    fieldJ(std::move(other.fieldJ)),
+    fieldK(std::move(other.fieldK)),
+    fieldL(std::move(other.fieldL)),
+    fieldM(std::move(other.fieldM)),
+    fieldN(std::move(other.fieldN)),
+    fieldO(std::move(other.fieldO)),
+    fieldP(std::move(other.fieldP)),
+    fieldQ(std::move(other.fieldQ)),
+    fieldR(std::move(other.fieldR)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct3>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg, ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<::std::int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<::std::int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set<::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
@@ -2438,6 +2538,17 @@ struct4& struct4::operator=(const struct4& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(struct4&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct4>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
@@ -2574,6 +2685,18 @@ struct5::struct5() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct5::~struct5() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct5::struct5(struct5&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    field4(std::move(other.field4)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct5>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::structA field3__arg, ::test_cpp2::cpp_reflection::structB field4__arg) :
@@ -2734,6 +2857,14 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_binary>::translateField
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_binary::struct_binary(struct_binary&& other) noexcept  :
+    bi(std::move(other.bi)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct_binary>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg) :
     bi(std::move(bi__arg)) {
   __isset.bi = true;
@@ -2811,6 +2942,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_A_struct>::translateFieldN
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+static_assert(std::is_nothrow_move_constructible<dep_A_struct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
@@ -2951,6 +3084,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_B_struct>::translateFieldN
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+static_assert(std::is_nothrow_move_constructible<dep_B_struct>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     b(std::move(b__arg)),
@@ -3089,6 +3224,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::annotated>::translateFieldName
 } // namespace apache
 
 namespace test_cpp2 { namespace cpp_reflection {
+
+static_assert(std::is_nothrow_move_constructible<annotated>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) :
@@ -3461,6 +3598,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_special_names>::tr
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+static_assert(std::is_nothrow_move_constructible<struct_with_special_names>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, ::std::int32_t get__arg, ::std::int32_t getter__arg, ::std::int32_t lists__arg, ::std::int32_t maps__arg, ::std::int32_t name__arg, ::std::int32_t name_to_value__arg, ::std::int32_t names__arg, ::std::int32_t prefix_tree__arg, ::std::int32_t sets__arg, ::std::int32_t setter__arg, ::std::int32_t str__arg, ::std::int32_t strings__arg, ::std::int32_t type__arg, ::std::int32_t value__arg, ::std::int32_t value_to_name__arg, ::std::int32_t values__arg, ::std::int32_t id__arg, ::std::int32_t ids__arg, ::std::int32_t descriptor__arg, ::std::int32_t descriptors__arg, ::std::int32_t key__arg, ::std::int32_t keys__arg, ::std::int32_t annotation__arg, ::std::int32_t annotations__arg, ::std::int32_t member__arg, ::std::int32_t members__arg, ::std::int32_t field__arg, ::std::int32_t fields__arg) :
     get(std::move(get__arg)),
@@ -3820,6 +3959,18 @@ struct_with_indirections::struct_with_indirections() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct_with_indirections::~struct_with_indirections() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_with_indirections::struct_with_indirections(struct_with_indirections&& other) noexcept  :
+    real(std::move(other.real)),
+    fake(std::move(other.fake)),
+    number(std::move(other.number)),
+    result(std::move(other.result)),
+    phrase(std::move(other.phrase)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct_with_indirections>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, ::std::int32_t real__arg, ::test_cpp2::cpp_reflection::FakeI32 fake__arg, ::test_cpp2::cpp_reflection::HasANumber number__arg, ::test_cpp2::cpp_reflection::HasAResult result__arg, ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :

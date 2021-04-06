@@ -77,6 +77,19 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 ModuleA::~ModuleA() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ModuleA::ModuleA(ModuleA&& other) noexcept  :
+    i32Field(std::move(other.i32Field)),
+    strField(std::move(other.strField)),
+    listField(std::move(other.listField)),
+    mapField(std::move(other.mapField)),
+    inclAField(std::move(other.inclAField)),
+    inclBField(std::move(other.inclBField)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ModuleA>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)),
@@ -260,6 +273,8 @@ void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
 } // namespace apache
 
 namespace some { namespace ns {
+
+static_assert(std::is_nothrow_move_constructible<ModuleB>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :

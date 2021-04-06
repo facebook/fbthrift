@@ -148,7 +148,7 @@ class MyDataItem final  {
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
-  MyDataItem(MyDataItem&&) = default;
+  constexpr MyDataItem(MyDataItem&&) = default;
 
   MyDataItem(const MyDataItem&) = default;
 
@@ -218,7 +218,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
   MyStruct(const MyStruct&) = default;
 

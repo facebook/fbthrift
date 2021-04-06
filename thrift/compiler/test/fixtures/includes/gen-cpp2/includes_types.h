@@ -80,7 +80,7 @@ class Included final  {
   [[deprecated("This constructor is deprecated")]]
   Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg);
 
-  Included(Included&&) = default;
+  constexpr Included(Included&&) = default;
 
   Included(const Included&) = default;
 

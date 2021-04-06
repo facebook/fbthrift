@@ -74,7 +74,7 @@ class IncludedA final  {
   [[deprecated("This constructor is deprecated")]]
   IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg);
 
-  IncludedA(IncludedA&&) = default;
+  IncludedA(IncludedA&&) noexcept;
 
   IncludedA(const IncludedA&) = default;
 

@@ -36,6 +36,15 @@ void TccStructTraits<::some::ns::IncludedA>::translateFieldName(
 namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+IncludedA::IncludedA(IncludedA&& other) noexcept  :
+    i32Field(std::move(other.i32Field)),
+    strField(std::move(other.strField)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<IncludedA>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)) {

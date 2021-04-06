@@ -104,7 +104,7 @@ class InitialResponse final  {
   [[deprecated("This constructor is deprecated")]]
   InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
 
-  InitialResponse(InitialResponse&&) = default;
+  InitialResponse(InitialResponse&&) noexcept;
 
   InitialResponse(const InitialResponse&) = default;
 
@@ -215,7 +215,7 @@ class FinalResponse final  {
   [[deprecated("This constructor is deprecated")]]
   FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
 
-  FinalResponse(FinalResponse&&) = default;
+  FinalResponse(FinalResponse&&) noexcept;
 
   FinalResponse(const FinalResponse&) = default;
 
@@ -326,7 +326,7 @@ class SinkPayload final  {
   [[deprecated("This constructor is deprecated")]]
   SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg);
 
-  SinkPayload(SinkPayload&&) = default;
+  SinkPayload(SinkPayload&&) noexcept;
 
   SinkPayload(const SinkPayload&) = default;
 
@@ -437,7 +437,7 @@ class CompatibleWithKeywordSink final  {
   [[deprecated("This constructor is deprecated")]]
   CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg);
 
-  CompatibleWithKeywordSink(CompatibleWithKeywordSink&&) = default;
+  CompatibleWithKeywordSink(CompatibleWithKeywordSink&&) noexcept;
 
   CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 
@@ -548,7 +548,7 @@ class InitialException final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg);
 
-  InitialException(InitialException&&) = default;
+  InitialException(InitialException&&) noexcept;
 
   InitialException(const InitialException&) = default;
 
@@ -663,7 +663,7 @@ class SinkException1 final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg);
 
-  SinkException1(SinkException1&&) = default;
+  SinkException1(SinkException1&&) noexcept;
 
   SinkException1(const SinkException1&) = default;
 
@@ -779,7 +779,7 @@ class SinkException2 final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg);
 
-  SinkException2(SinkException2&&) = default;
+  SinkException2(SinkException2&&) noexcept;
 
   SinkException2(const SinkException2&) = default;
 

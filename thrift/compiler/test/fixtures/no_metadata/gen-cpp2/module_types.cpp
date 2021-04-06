@@ -68,6 +68,8 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+static_assert(std::is_nothrow_move_constructible<MyDataItem>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -131,6 +133,17 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    MyStringField(std::move(other.MyStringField)),
+    MyDataField(std::move(other.MyDataField)),
+    myEnum(std::move(other.myEnum)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg) :

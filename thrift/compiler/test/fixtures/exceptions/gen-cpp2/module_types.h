@@ -97,7 +97,7 @@ class Banal final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   Banal(apache::thrift::FragileConstructor);
 
-  Banal(Banal&&) = default;
+  Banal(Banal&&) noexcept;
 
   Banal(const Banal&) = default;
 
@@ -175,7 +175,7 @@ class Fiery final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   Fiery(apache::thrift::FragileConstructor, ::std::string message__arg);
 
-  Fiery(Fiery&&) = default;
+  Fiery(Fiery&&) noexcept;
 
   Fiery(const Fiery&) = default;
 
@@ -291,7 +291,7 @@ class Serious final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg);
 
-  Serious(Serious&&) = default;
+  Serious(Serious&&) noexcept;
 
   Serious(const Serious&) = default;
 
@@ -413,7 +413,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
 
-  ComplexFieldNames(ComplexFieldNames&&) = default;
+  ComplexFieldNames(ComplexFieldNames&&) noexcept;
 
   ComplexFieldNames(const ComplexFieldNames&) = default;
 
@@ -572,7 +572,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
 
-  CustomFieldNames(CustomFieldNames&&) = default;
+  CustomFieldNames(CustomFieldNames&&) noexcept;
 
   CustomFieldNames(const CustomFieldNames&) = default;
 

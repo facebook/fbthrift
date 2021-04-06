@@ -83,7 +83,7 @@ class Foo final  {
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
-  Foo(Foo&&) = default;
+  Foo(Foo&&) noexcept;
   Foo(const Foo& src);
 
 

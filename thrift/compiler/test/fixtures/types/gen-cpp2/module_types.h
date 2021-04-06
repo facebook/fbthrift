@@ -573,7 +573,7 @@ class decorated_struct final  {
   [[deprecated("This constructor is deprecated")]]
   decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg);
 
-  decorated_struct(decorated_struct&&) = default;
+  decorated_struct(decorated_struct&&) noexcept;
 
   decorated_struct(const decorated_struct&) = default;
 
@@ -685,7 +685,7 @@ class ContainerStruct final  {
   [[deprecated("This constructor is deprecated")]]
   ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
 
-  ContainerStruct(ContainerStruct&&) = default;
+  ContainerStruct(ContainerStruct&&) noexcept;
 
   ContainerStruct(const ContainerStruct&) = default;
 
@@ -1017,7 +1017,7 @@ class CppTypeStruct final  {
   [[deprecated("This constructor is deprecated")]]
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
 
-  CppTypeStruct(CppTypeStruct&&) = default;
+  CppTypeStruct(CppTypeStruct&&) noexcept;
 
   CppTypeStruct(const CppTypeStruct&) = default;
 
@@ -1123,7 +1123,7 @@ class VirtualStruct  {
   [[deprecated("This constructor is deprecated")]]
   VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg);
 
-  VirtualStruct(VirtualStruct&&) = default;
+  VirtualStruct(VirtualStruct&&) noexcept;
 
   VirtualStruct(const VirtualStruct&) = default;
 
@@ -1234,7 +1234,7 @@ class MyStructWithForwardRefEnum final  {
   [[deprecated("This constructor is deprecated")]]
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
 
-  MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
+  MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) noexcept;
 
   MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 
@@ -1375,7 +1375,7 @@ class TrivialNumeric final  {
   [[deprecated("This constructor is deprecated")]]
   TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg);
 
-  TrivialNumeric(TrivialNumeric&&) = default;
+  constexpr TrivialNumeric(TrivialNumeric&&) = default;
 
   TrivialNumeric(const TrivialNumeric&) = default;
 
@@ -1516,7 +1516,7 @@ class TrivialNestedWithDefault final  {
   [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
 
-  TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
+  constexpr TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
 
   TrivialNestedWithDefault(const TrivialNestedWithDefault&) = default;
 
@@ -1654,7 +1654,7 @@ class ComplexString final  {
   [[deprecated("This constructor is deprecated")]]
   ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg);
 
-  ComplexString(ComplexString&&) = default;
+  ComplexString(ComplexString&&) noexcept;
 
   ComplexString(const ComplexString&) = default;
 
@@ -1799,7 +1799,7 @@ class ComplexNestedWithDefault final  {
   [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg);
 
-  ComplexNestedWithDefault(ComplexNestedWithDefault&&) = default;
+  ComplexNestedWithDefault(ComplexNestedWithDefault&&) noexcept;
 
   ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
 
@@ -1947,7 +1947,7 @@ class MinPadding final  {
   [[deprecated("This constructor is deprecated")]]
   MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg);
 
-  MinPadding(MinPadding&&) = default;
+  MinPadding(MinPadding&&) noexcept;
 
   MinPadding(const MinPadding&) = default;
 
@@ -2172,7 +2172,7 @@ class MyDataItem final  {
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
-  MyDataItem(MyDataItem&&) = default;
+  constexpr MyDataItem(MyDataItem&&) = default;
 
   MyDataItem(const MyDataItem&) = default;
 
@@ -2239,7 +2239,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
   MyStruct(const MyStruct&) = default;
 
@@ -2446,7 +2446,7 @@ class Renaming final  {
   [[deprecated("This constructor is deprecated")]]
   Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
 
-  Renaming(Renaming&&) = default;
+  constexpr Renaming(Renaming&&) = default;
 
   Renaming(const Renaming&) = default;
 
@@ -2552,7 +2552,7 @@ class AnnotatedTypes final  {
   [[deprecated("This constructor is deprecated")]]
   AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
 
-  AnnotatedTypes(AnnotatedTypes&&) = default;
+  AnnotatedTypes(AnnotatedTypes&&) noexcept;
 
   AnnotatedTypes(const AnnotatedTypes&) = default;
 
@@ -2695,7 +2695,7 @@ class ForwardUsageStruct final  {
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
 
-  ForwardUsageStruct(ForwardUsageStruct&&) = default;
+  ForwardUsageStruct(ForwardUsageStruct&&) noexcept;
 
   ForwardUsageStruct(const ForwardUsageStruct&) = default;
 
@@ -2801,7 +2801,7 @@ class ForwardUsageRoot final  {
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
 
-  ForwardUsageRoot(ForwardUsageRoot&&) = default;
+  ForwardUsageRoot(ForwardUsageRoot&&) noexcept;
   ForwardUsageRoot(const ForwardUsageRoot& src);
 
 
@@ -2918,7 +2918,7 @@ class ForwardUsageByRef final  {
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
 
-  ForwardUsageByRef(ForwardUsageByRef&&) = default;
+  ForwardUsageByRef(ForwardUsageByRef&&) noexcept;
 
   ForwardUsageByRef(const ForwardUsageByRef&) = default;
 
@@ -3023,7 +3023,8 @@ class NoexceptMoveEmpty final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveEmpty(apache::thrift::FragileConstructor);
-  NoexceptMoveEmpty(NoexceptMoveEmpty&& other) noexcept {}
+
+  constexpr NoexceptMoveEmpty(NoexceptMoveEmpty&&) = default;
 
   NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
 
@@ -3091,9 +3092,9 @@ class NoexceptMoveSimpleStruct final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
-  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
-      boolField(std::move(other.boolField)),
-      __isset(other.__isset) {}
+
+  constexpr NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&&) = default;
+
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
 
 
@@ -3198,7 +3199,8 @@ class NoexceptMoveComplexStruct final  {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
-  NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept;
+
+  NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&) noexcept;
 
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
 
@@ -3876,7 +3878,7 @@ class AllocatorAware final  {
   [[deprecated("This constructor is deprecated")]]
   AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg);
 
-  AllocatorAware(AllocatorAware&&) = default;
+  AllocatorAware(AllocatorAware&&) noexcept;
 
   AllocatorAware(const AllocatorAware&) = default;
 
@@ -4152,7 +4154,7 @@ class AllocatorAware2 final  {
   [[deprecated("This constructor is deprecated")]]
   AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg);
 
-  AllocatorAware2(AllocatorAware2&&) = default;
+  AllocatorAware2(AllocatorAware2&&) noexcept;
 
   AllocatorAware2(const AllocatorAware2&) = default;
 
@@ -4274,7 +4276,7 @@ class TypedefStruct final  {
   [[deprecated("This constructor is deprecated")]]
   TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg);
 
-  TypedefStruct(TypedefStruct&&) = default;
+  TypedefStruct(TypedefStruct&&) noexcept;
 
   TypedefStruct(const TypedefStruct&) = default;
 

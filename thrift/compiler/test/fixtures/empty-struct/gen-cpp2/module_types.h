@@ -64,7 +64,7 @@ class Empty final  {
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
 
-  Empty(Empty&&) = default;
+  constexpr Empty(Empty&&) = default;
 
   Empty(const Empty&) = default;
 

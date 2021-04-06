@@ -63,7 +63,7 @@ class FooEx final : public apache::thrift::TException {
   [[deprecated("This constructor is deprecated")]]
   FooEx(apache::thrift::FragileConstructor);
 
-  FooEx(FooEx&&) = default;
+  FooEx(FooEx&&) noexcept;
 
   FooEx(const FooEx&) = default;
 

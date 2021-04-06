@@ -116,7 +116,7 @@ class A final  {
   [[deprecated("This constructor is deprecated")]]
   A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg);
 
-  A(A&&) = default;
+  constexpr A(A&&) = default;
 
   A(const A&) = default;
 

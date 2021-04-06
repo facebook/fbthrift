@@ -18,17 +18,19 @@
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_h/base_ctor%>
 
-<%#struct:cpp_noexcept_move_ctor%>
-<%#struct:fields?%>
-<%struct:name%>::<% > module_types_cpp/move_ctor%>
-
-<%/struct:fields?%>
-<%/struct:cpp_noexcept_move_ctor%>
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%struct:name%>::~<%struct:name%>() {}
 
 <%/struct:is_large?%>
+<%^struct:is_eligible_for_constexpr?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+<%struct:name%>::<% > module_types_cpp/move_ctor%><%!
+%>THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+<%/struct:is_eligible_for_constexpr?%>
+static_assert(std::is_nothrow_move_constructible<<%struct:name%>>::value);
+
 <% > module_types_cpp/fragile_ctor%>
 
 void <%struct:name%>::__clear() {

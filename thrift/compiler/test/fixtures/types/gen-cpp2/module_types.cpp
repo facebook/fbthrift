@@ -168,6 +168,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::decorated_struct>::trans
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+decorated_struct::decorated_struct(decorated_struct&& other) noexcept  :
+    field(std::move(other.field)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<decorated_struct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg) :
     field(std::move(field__arg)) {
   __isset.field = true;
@@ -252,6 +260,21 @@ ContainerStruct::ContainerStruct() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ContainerStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
@@ -436,6 +459,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CppTypeStruct::CppTypeStruct(CppTypeStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<CppTypeStruct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
@@ -523,6 +554,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+VirtualStruct::VirtualStruct(VirtualStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<VirtualStruct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg) :
     MyIntField(std::move(MyIntField__arg)) {
   __isset.MyIntField = true;
@@ -600,6 +639,15 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEn
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStructWithForwardRefEnum>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
@@ -690,6 +738,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::transla
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+static_assert(std::is_nothrow_move_constructible<TrivialNumeric>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg) :
     a(std::move(a__arg)),
@@ -778,6 +828,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+static_assert(std::is_nothrow_move_constructible<TrivialNestedWithDefault>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
@@ -889,6 +941,15 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexString::ComplexString(ComplexString&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ComplexString>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
@@ -984,6 +1045,15 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedWithDefault::ComplexNestedWithDefault(ComplexNestedWithDefault&& other) noexcept  :
+    z(std::move(other.z)),
+    n(std::move(other.n)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ComplexNestedWithDefault>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg) :
@@ -1095,6 +1165,18 @@ void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFi
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MinPadding::MinPadding(MinPadding&& other) noexcept  :
+    big(std::move(other.big)),
+    biggish(std::move(other.biggish)),
+    medium(std::move(other.medium)),
+    small(std::move(other.small)),
+    tiny(std::move(other.tiny)) {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MinPadding>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg) :
     big(std::move(big__arg)),
     biggish(std::move(biggish__arg)),
@@ -1201,6 +1283,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFi
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+static_assert(std::is_nothrow_move_constructible<MyDataItem>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1252,6 +1336,17 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFiel
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    MyStringField(std::move(other.MyStringField)),
+    majorVer(std::move(other.majorVer)),
+    data(std::move(other.data)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg) :
@@ -1345,6 +1440,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFiel
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+static_assert(std::is_nothrow_move_constructible<Renaming>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     bar(std::move(bar__arg)) {
@@ -1423,6 +1520,15 @@ void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::transla
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnnotatedTypes::AnnotatedTypes(AnnotatedTypes&& other) noexcept  :
+    binary_field(std::move(other.binary_field)),
+    list_field(std::move(other.list_field)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<AnnotatedTypes>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
@@ -1507,6 +1613,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::tra
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageStruct::ForwardUsageStruct(ForwardUsageStruct&& other) noexcept  :
+    foo(std::move(other.foo)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ForwardUsageStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
@@ -1620,6 +1734,15 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
   swap(*this, tmp);
   return *this;
 }
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageRoot::ForwardUsageRoot(ForwardUsageRoot&& other) noexcept  :
+    ForwardUsageStruct(std::move(other.ForwardUsageStruct)),
+    ForwardUsageByRef(std::move(other.ForwardUsageByRef)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ForwardUsageRoot>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
@@ -1752,6 +1875,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::tran
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageByRef::ForwardUsageByRef(ForwardUsageByRef&& other) noexcept  :
+    foo(std::move(other.foo)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ForwardUsageByRef>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     foo(std::move(foo__arg)) {
   __isset.foo = true;
@@ -1850,6 +1981,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::tran
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+static_assert(std::is_nothrow_move_constructible<NoexceptMoveEmpty>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1913,6 +2046,8 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+static_assert(std::is_nothrow_move_constructible<NoexceptMoveSimpleStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -2001,7 +2136,12 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
   { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
 
-NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept :
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept  :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
     MyStringField(std::move(other.MyStringField)),
@@ -2012,10 +2152,9 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
-
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
+static_assert(std::is_nothrow_move_constructible<NoexceptMoveComplexStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
@@ -2320,6 +2459,18 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 AllocatorAware::~AllocatorAware() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
+    aa_list(std::move(other.aa_list)),
+    aa_set(std::move(other.aa_set)),
+    aa_map(std::move(other.aa_map)),
+    aa_string(std::move(other.aa_string)),
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<AllocatorAware>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg) :
     aa_list(std::move(aa_list__arg)),
     aa_set(std::move(aa_set__arg)),
@@ -2463,6 +2614,14 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::transl
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<AllocatorAware2>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg) :
     not_a_container(std::move(not_a_container__arg)) {
   __isset.not_a_container = true;
@@ -2540,6 +2699,16 @@ void TccStructTraits<::apache::thrift::fixtures::types::TypedefStruct>::translat
 } // namespace apache
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypedefStruct::TypedefStruct(TypedefStruct&& other) noexcept  :
+    i32_field(std::move(other.i32_field)),
+    IntTypedef_field(std::move(other.IntTypedef_field)),
+    UintTypedef_field(std::move(other.UintTypedef_field)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<TypedefStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg) :

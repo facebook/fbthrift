@@ -313,7 +313,7 @@ class Internship final  {
   [[deprecated("This constructor is deprecated")]]
   Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg);
 
-  Internship(Internship&&) = default;
+  Internship(Internship&&) noexcept;
 
   Internship(const Internship&) = default;
 
@@ -533,7 +533,7 @@ class Range final  {
   [[deprecated("This constructor is deprecated")]]
   Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg);
 
-  Range(Range&&) = default;
+  constexpr Range(Range&&) = default;
 
   Range(const Range&) = default;
 
@@ -667,7 +667,7 @@ class struct1 final  {
   [[deprecated("This constructor is deprecated")]]
   struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg);
 
-  struct1(struct1&&) = default;
+  struct1(struct1&&) noexcept;
 
   struct1(const struct1&) = default;
 
@@ -812,7 +812,7 @@ class struct2 final  {
   [[deprecated("This constructor is deprecated")]]
   struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg);
 
-  struct2(struct2&&) = default;
+  struct2(struct2&&) noexcept;
 
   struct2(const struct2&) = default;
 
@@ -1021,7 +1021,7 @@ class struct3 final  {
   [[deprecated("This constructor is deprecated")]]
   struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg);
 
-  struct3(struct3&&) = default;
+  struct3(struct3&&) noexcept;
 
   struct3(const struct3&) = default;
 
@@ -1200,7 +1200,7 @@ class struct4 final  {
   [[deprecated("This constructor is deprecated")]]
   struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg);
 
-  struct4(struct4&&) = default;
+  struct4(struct4&&) noexcept;
 
   struct4(const struct4&) = default;
 

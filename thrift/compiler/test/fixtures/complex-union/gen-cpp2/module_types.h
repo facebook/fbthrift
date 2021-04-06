@@ -1330,7 +1330,7 @@ class Val final  {
   [[deprecated("This constructor is deprecated")]]
   Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg);
 
-  Val(Val&&) = default;
+  Val(Val&&) noexcept;
 
   Val(const Val&) = default;
 
@@ -2086,7 +2086,7 @@ class NonCopyableStruct final  {
   [[deprecated("This constructor is deprecated")]]
   NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg);
 
-  NonCopyableStruct(NonCopyableStruct&&) = default;
+  constexpr NonCopyableStruct(NonCopyableStruct&&) = default;
 
 
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;

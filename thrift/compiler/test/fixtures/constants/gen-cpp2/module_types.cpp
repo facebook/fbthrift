@@ -135,6 +135,17 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Internship::Internship(Internship&& other) noexcept  :
+    weeks(std::move(other.weeks)),
+    title(std::move(other.title)),
+    employer(std::move(other.employer)),
+    compensation(std::move(other.compensation)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Internship>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
@@ -242,6 +253,8 @@ void TccStructTraits<::cpp2::Range>::translateFieldName(
 
 namespace cpp2 {
 
+static_assert(std::is_nothrow_move_constructible<Range>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
     min(std::move(min__arg)),
@@ -321,6 +334,15 @@ void TccStructTraits<::cpp2::struct1>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(struct1&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct1>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
@@ -410,6 +432,17 @@ void TccStructTraits<::cpp2::struct2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(struct2&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    d(std::move(other.d)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct2>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg) :
@@ -549,6 +582,16 @@ void TccStructTraits<::cpp2::struct3>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(struct3&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct3>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -666,6 +709,16 @@ void TccStructTraits<::cpp2::struct4>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(struct4&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<struct4>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg) :

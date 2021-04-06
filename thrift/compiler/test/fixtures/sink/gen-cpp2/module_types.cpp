@@ -36,6 +36,14 @@ void TccStructTraits<::cpp2::InitialResponse>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
+    content(std::move(other.content)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<InitialResponse>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
     content(std::move(content__arg)) {
   __isset.content = true;
@@ -113,6 +121,14 @@ void TccStructTraits<::cpp2::FinalResponse>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
+    content(std::move(other.content)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<FinalResponse>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
@@ -194,6 +210,14 @@ void TccStructTraits<::cpp2::SinkPayload>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
+    content(std::move(other.content)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<SinkPayload>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg) :
     content(std::move(content__arg)) {
   __isset.content = true;
@@ -271,6 +295,14 @@ void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
+    sink(std::move(other.sink)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<CompatibleWithKeywordSink>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg) :
@@ -352,6 +384,14 @@ void TccStructTraits<::cpp2::InitialException>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+InitialException::InitialException(InitialException&& other) noexcept  :
+    reason(std::move(other.reason)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<InitialException>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
@@ -431,6 +471,14 @@ void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException1::SinkException1(SinkException1&& other) noexcept  :
+    reason(std::move(other.reason)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<SinkException1>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
@@ -508,6 +556,14 @@ void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException2::SinkException2(SinkException2&& other) noexcept  :
+    reason(std::move(other.reason)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<SinkException2>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg) :

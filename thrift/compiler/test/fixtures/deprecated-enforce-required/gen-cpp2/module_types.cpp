@@ -35,6 +35,8 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+static_assert(std::is_nothrow_move_constructible<Foo>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
     bar(std::move(bar__arg)) {}

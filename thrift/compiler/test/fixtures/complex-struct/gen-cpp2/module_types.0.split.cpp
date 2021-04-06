@@ -69,6 +69,17 @@ void TccStructTraits<::cpp2::MyStructFloatFieldThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&& other) noexcept  :
+    myLongField(std::move(other.myLongField)),
+    MyByteField(std::move(other.MyByteField)),
+    myStringField(std::move(other.myStringField)),
+    myFloatField(std::move(other.myFloatField)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStructFloatFieldThrowExp>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg) :
     myLongField(std::move(myLongField__arg)),
     MyByteField(std::move(MyByteField__arg)),
@@ -178,6 +189,15 @@ void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
+    age(std::move(other.age)),
+    name(std::move(other.name)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<SimpleStruct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg) :
     age(std::move(age__arg)),
     name(std::move(name__arg)) {
@@ -266,6 +286,8 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+static_assert(std::is_nothrow_move_constructible<MyDataItem>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -336,6 +358,31 @@ ComplexNestedStruct::ComplexNestedStruct() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ComplexNestedStruct::~ComplexNestedStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedStruct::ComplexNestedStruct(ComplexNestedStruct&& other) noexcept  :
+    setOfSetOfInt(std::move(other.setOfSetOfInt)),
+    listofListOfListOfListOfEnum(std::move(other.listofListOfListOfListOfEnum)),
+    listOfListOfMyStruct(std::move(other.listOfListOfMyStruct)),
+    setOfListOfListOfLong(std::move(other.setOfListOfListOfLong)),
+    setOfSetOfsetOfLong(std::move(other.setOfSetOfsetOfLong)),
+    mapStructListOfListOfLong(std::move(other.mapStructListOfListOfLong)),
+    mKeyStructValInt(std::move(other.mKeyStructValInt)),
+    listOfMapKeyIntValInt(std::move(other.listOfMapKeyIntValInt)),
+    listOfMapKeyStrValList(std::move(other.listOfMapKeyStrValList)),
+    mapKeySetValLong(std::move(other.mapKeySetValLong)),
+    mapKeyListValLong(std::move(other.mapKeyListValLong)),
+    mapKeyMapValMap(std::move(other.mapKeyMapValMap)),
+    mapKeySetValMap(std::move(other.mapKeySetValMap)),
+    NestedMaps(std::move(other.NestedMaps)),
+    mapKeyIntValList(std::move(other.mapKeyIntValList)),
+    mapKeyIntValSet(std::move(other.mapKeyIntValSet)),
+    mapKeySetValInt(std::move(other.mapKeySetValInt)),
+    mapKeyListValSet(std::move(other.mapKeyListValSet)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<ComplexNestedStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<::std::int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector<::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<::std::int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<::std::int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map<::cpp2::MyStruct, ::std::int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<::std::int32_t>, ::std::int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, ::std::int32_t> mapKeyListValLong__arg, ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> NestedMaps__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<::std::int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>, ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
@@ -789,6 +836,15 @@ void TccStructTraits<::cpp2::reqXcep>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep(reqXcep&& other) noexcept  :
+    message(std::move(other.message)),
+    errorCode(std::move(other.errorCode)) {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<reqXcep>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :

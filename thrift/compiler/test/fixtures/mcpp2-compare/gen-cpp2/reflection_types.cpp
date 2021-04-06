@@ -35,6 +35,8 @@ void TccStructTraits<::cpp2::ReflectionStruct>::translateFieldName(
 
 namespace cpp2 {
 
+static_assert(std::is_nothrow_move_constructible<ReflectionStruct>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {

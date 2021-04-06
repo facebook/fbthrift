@@ -61,6 +61,14 @@ const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    myString(std::move(other.myString)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
     myString(std::move(myString__arg)) {
   __isset.myString = true;
@@ -249,6 +257,14 @@ namespace cpp2 {
 const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyException";
 }
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyException::MyException(MyException&& other) noexcept  :
+    myString(std::move(other.myString)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :

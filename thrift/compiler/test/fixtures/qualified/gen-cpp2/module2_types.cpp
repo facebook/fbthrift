@@ -36,6 +36,15 @@ void TccStructTraits<::module2::Struct>::translateFieldName(
 namespace module2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Struct::Struct(Struct&& other) noexcept  :
+    first(std::move(other.first)),
+    second(std::move(other.second)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Struct>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)) {
@@ -163,6 +172,15 @@ void TccStructTraits<::module2::BigStruct>::translateFieldName(
 } // namespace apache
 
 namespace module2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+BigStruct::BigStruct(BigStruct&& other) noexcept  :
+    s(std::move(other.s)),
+    id(std::move(other.id)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<BigStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg) :

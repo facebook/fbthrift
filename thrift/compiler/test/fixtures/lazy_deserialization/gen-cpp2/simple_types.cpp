@@ -64,6 +64,17 @@ Foo& Foo::operator=(const Foo& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(Foo&& other) noexcept  :
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    field4(std::move(other.field4)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<Foo>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> field1__arg, ::std::string field2__arg, ::std::vector<::std::int32_t> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),

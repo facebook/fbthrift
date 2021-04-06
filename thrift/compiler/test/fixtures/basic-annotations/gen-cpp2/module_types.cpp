@@ -69,6 +69,14 @@ void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
+    name(std::move(other.name)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStructNestedAnnotation>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
     name(std::move(name__arg)) {
   __isset.name = true;
@@ -154,6 +162,19 @@ MyStruct::MyStruct() :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    majorVer(std::move(other.majorVer)),
+    package(std::move(other.package)),
+    annotation_with_quote(std::move(other.annotation_with_quote)),
+    class_(std::move(other.class_)),
+    annotation_with_trailing_comma(std::move(other.annotation_with_trailing_comma)),
+    empty_annotations(std::move(other.empty_annotations)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
@@ -283,6 +304,15 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
+    id(std::move(other.id)),
+    password(std::move(other.password)),
+    __isset(other.__isset) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<SecretStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :

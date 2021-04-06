@@ -200,6 +200,8 @@ void TccStructTraits<::facebook::ns::qwerty::SomeStruct>::translateFieldName(
 
 namespace facebook { namespace ns { namespace qwerty {
 
+static_assert(std::is_nothrow_move_constructible<SomeStruct>::value);
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {

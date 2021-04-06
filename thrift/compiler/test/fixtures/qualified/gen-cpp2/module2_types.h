@@ -86,7 +86,7 @@ class Struct final  {
   [[deprecated("This constructor is deprecated")]]
   Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg);
 
-  Struct(Struct&&) = default;
+  Struct(Struct&&) noexcept;
 
   Struct(const Struct&) = default;
 
@@ -224,7 +224,7 @@ class BigStruct final  {
   [[deprecated("This constructor is deprecated")]]
   BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg);
 
-  BigStruct(BigStruct&&) = default;
+  BigStruct(BigStruct&&) noexcept;
 
   BigStruct(const BigStruct&) = default;
 

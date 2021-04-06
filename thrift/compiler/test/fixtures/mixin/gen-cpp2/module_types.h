@@ -104,7 +104,7 @@ class Mixin1 final  {
   [[deprecated("This constructor is deprecated")]]
   Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg);
 
-  Mixin1(Mixin1&&) = default;
+  Mixin1(Mixin1&&) noexcept;
 
   Mixin1(const Mixin1&) = default;
 
@@ -215,7 +215,7 @@ class Mixin2 final  {
   [[deprecated("This constructor is deprecated")]]
   Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg);
 
-  Mixin2(Mixin2&&) = default;
+  Mixin2(Mixin2&&) noexcept;
 
   Mixin2(const Mixin2&) = default;
 
@@ -363,7 +363,7 @@ class Mixin3Base final  {
   [[deprecated("This constructor is deprecated")]]
   Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg);
 
-  Mixin3Base(Mixin3Base&&) = default;
+  Mixin3Base(Mixin3Base&&) noexcept;
 
   Mixin3Base(const Mixin3Base&) = default;
 
@@ -474,7 +474,7 @@ class Foo final  {
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg);
 
-  Foo(Foo&&) = default;
+  Foo(Foo&&) noexcept;
 
   Foo(const Foo&) = default;
 

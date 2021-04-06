@@ -730,8 +730,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
             {"struct:cpp_noncomparable", &mstch_cpp2_struct::cpp_noncomparable},
             {"struct:cpp_noexcept_move", &mstch_cpp2_struct::cpp_noexcept_move},
-            {"struct:cpp_noexcept_move_ctor",
-             &mstch_cpp2_struct::cpp_noexcept_move_ctor},
+            {"struct:is_eligible_for_constexpr?",
+             &mstch_cpp2_struct::is_eligible_for_constexpr},
             {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
@@ -822,11 +822,8 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node cpp_noexcept_move() {
     return strct_->has_annotation("cpp.noexcept_move");
   }
-  mstch::node cpp_noexcept_move_ctor() {
-    return strct_->has_annotation(
-        {"cpp.noexcept_move",
-         "cpp.noexcept_move_ctor",
-         "cpp2.noexcept_move_ctor"});
+  mstch::node is_eligible_for_constexpr() {
+    return is_eligible_for_constexpr_(strct_);
   }
   mstch::node cpp_virtual() {
     return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
@@ -1052,6 +1049,7 @@ class mstch_cpp2_struct : public mstch_struct {
 
   std::vector<const t_field*> fields_in_key_order_;
   std::vector<const t_field*> fields_in_layout_order_;
+  cpp2::is_eligible_for_constexpr is_eligible_for_constexpr_;
 };
 
 class mstch_cpp2_function : public mstch_function {

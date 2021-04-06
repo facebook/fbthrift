@@ -203,7 +203,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
 
-  MyStruct(MyStruct&&) = default;
+  constexpr MyStruct(MyStruct&&) = default;
 
   MyStruct(const MyStruct&) = default;
 

@@ -36,6 +36,11 @@ void TccStructTraits<::cpp2::FooEx>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+FooEx::FooEx(FooEx&& other) noexcept { (void)other; }THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+static_assert(std::is_nothrow_move_constructible<FooEx>::value);
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FooEx::FooEx(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void FooEx::__clear() {
