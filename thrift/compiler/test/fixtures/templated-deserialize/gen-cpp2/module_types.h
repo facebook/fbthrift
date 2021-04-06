@@ -240,7 +240,7 @@ class SmallStruct final  {
   [[deprecated("This constructor is deprecated")]]
   SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg);
 
-  constexpr SmallStruct(SmallStruct&&) = default;
+  SmallStruct(SmallStruct&&) = default;
 
   SmallStruct(const SmallStruct&) = default;
 

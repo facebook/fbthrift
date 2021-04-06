@@ -1375,7 +1375,7 @@ class TrivialNumeric final  {
   [[deprecated("This constructor is deprecated")]]
   TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg);
 
-  constexpr TrivialNumeric(TrivialNumeric&&) = default;
+  TrivialNumeric(TrivialNumeric&&) = default;
 
   TrivialNumeric(const TrivialNumeric&) = default;
 
@@ -1516,7 +1516,7 @@ class TrivialNestedWithDefault final  {
   [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
 
-  constexpr TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
+  TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
 
   TrivialNestedWithDefault(const TrivialNestedWithDefault&) = default;
 
@@ -2172,7 +2172,7 @@ class MyDataItem final  {
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
-  constexpr MyDataItem(MyDataItem&&) = default;
+  MyDataItem(MyDataItem&&) = default;
 
   MyDataItem(const MyDataItem&) = default;
 
@@ -2446,7 +2446,7 @@ class Renaming final  {
   [[deprecated("This constructor is deprecated")]]
   Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
 
-  constexpr Renaming(Renaming&&) = default;
+  Renaming(Renaming&&) = default;
 
   Renaming(const Renaming&) = default;
 
@@ -3024,7 +3024,7 @@ class NoexceptMoveEmpty final  {
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveEmpty(apache::thrift::FragileConstructor);
 
-  constexpr NoexceptMoveEmpty(NoexceptMoveEmpty&&) = default;
+  NoexceptMoveEmpty(NoexceptMoveEmpty&&) = default;
 
   NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
 
@@ -3093,7 +3093,7 @@ class NoexceptMoveSimpleStruct final  {
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
 
-  constexpr NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&&) = default;
+  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&&) = default;
 
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
 

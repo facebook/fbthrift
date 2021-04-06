@@ -533,7 +533,7 @@ class Range final  {
   [[deprecated("This constructor is deprecated")]]
   Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg);
 
-  constexpr Range(Range&&) = default;
+  Range(Range&&) = default;
 
   Range(const Range&) = default;
 

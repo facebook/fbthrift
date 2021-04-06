@@ -69,7 +69,7 @@ class MyStruct final  {
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg);
 
-  constexpr MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) = default;
 
   MyStruct(const MyStruct&) = default;
 

@@ -823,7 +823,8 @@ class mstch_cpp2_struct : public mstch_struct {
     return strct_->has_annotation("cpp.noexcept_move");
   }
   mstch::node is_eligible_for_constexpr() {
-    return is_eligible_for_constexpr_(strct_);
+    return is_eligible_for_constexpr_(strct_) ||
+        strct_->has_annotation({"cpp.methods", "cpp2.methods"});
   }
   mstch::node cpp_virtual() {
     return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});

@@ -216,7 +216,7 @@ class Color final  {
   [[deprecated("This constructor is deprecated")]]
   Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg);
 
-  constexpr Color(Color&&) = default;
+  Color(Color&&) = default;
 
   Color(const Color&) = default;
 

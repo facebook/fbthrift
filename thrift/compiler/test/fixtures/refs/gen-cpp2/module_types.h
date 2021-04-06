@@ -571,7 +571,7 @@ class MyField final  {
   [[deprecated("This constructor is deprecated")]]
   MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg);
 
-  constexpr MyField(MyField&&) = default;
+  MyField(MyField&&) = default;
 
   MyField(const MyField&) = default;
 
@@ -1373,7 +1373,7 @@ class Empty final  {
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
 
-  constexpr Empty(Empty&&) = default;
+  Empty(Empty&&) = default;
 
   Empty(const Empty&) = default;
 

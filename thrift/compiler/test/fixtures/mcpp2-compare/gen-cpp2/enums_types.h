@@ -245,7 +245,7 @@ class SomeStruct final  {
   [[deprecated("This constructor is deprecated")]]
   SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
-  constexpr SomeStruct(SomeStruct&&) = default;
+  SomeStruct(SomeStruct&&) = default;
 
   SomeStruct(const SomeStruct&) = default;
 

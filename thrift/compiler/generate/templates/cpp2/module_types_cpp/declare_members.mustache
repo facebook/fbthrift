@@ -29,7 +29,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 %>THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%/struct:is_eligible_for_constexpr?%>
-static_assert(std::is_nothrow_move_constructible<<%struct:name%>>::value);
 
 <% > module_types_cpp/fragile_ctor%>
 

@@ -35,7 +35,6 @@ void TccStructTraits<::cpp2::BasicTypes>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<BasicTypes>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg) :

@@ -2086,7 +2086,7 @@ class NonCopyableStruct final  {
   [[deprecated("This constructor is deprecated")]]
   NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg);
 
-  constexpr NonCopyableStruct(NonCopyableStruct&&) = default;
+  NonCopyableStruct(NonCopyableStruct&&) = default;
 
 
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;

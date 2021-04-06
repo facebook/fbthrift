@@ -75,7 +75,6 @@ structured_annotation_inline::structured_annotation_inline(structured_annotation
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<structured_annotation_inline>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
@@ -172,7 +171,6 @@ structured_annotation_with_default::structured_annotation_with_default(structure
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<structured_annotation_with_default>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg) :
@@ -253,7 +251,6 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<structured_annotation_forward>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
@@ -342,7 +339,6 @@ structured_annotation_recursive::structured_annotation_recursive(structured_anno
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<structured_annotation_recursive>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg) :
@@ -490,7 +486,6 @@ structured_annotation_nested::structured_annotation_nested(structured_annotation
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<structured_annotation_nested>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
@@ -610,7 +605,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
@@ -727,7 +721,6 @@ MyException::MyException(MyException&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string context__arg) :

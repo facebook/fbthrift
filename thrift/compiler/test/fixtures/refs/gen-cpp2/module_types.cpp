@@ -178,7 +178,6 @@ void TccStructTraits<::cpp2::MyField>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<MyField>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyField::MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg) :
@@ -298,7 +297,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyField> opt_ref__arg, ::std::unique_ptr<::cpp2::MyField> ref__arg, ::std::unique_ptr<::cpp2::MyField> req_ref__arg) :
@@ -481,7 +479,6 @@ StructWithUnion::StructWithUnion(StructWithUnion&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithUnion>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg) :
@@ -629,7 +626,6 @@ RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<RecursiveStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg) :
@@ -757,7 +753,6 @@ StructWithContainers::StructWithContainers(StructWithContainers&& other) noexcep
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithContainers>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> list_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> set_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>> map_ref__arg, ::std::unique_ptr<::std::vector<::std::int32_t>> list_ref_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const__arg) :
@@ -943,7 +938,6 @@ StructWithSharedConst::StructWithSharedConst(StructWithSharedConst&& other) noex
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithSharedConst>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg) :
@@ -1100,7 +1094,6 @@ void TccStructTraits<::cpp2::Empty>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<Empty>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
@@ -1186,7 +1179,6 @@ StructWithRef::StructWithRef(StructWithRef&& other) noexcept  :
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithRef>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRef::StructWithRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
@@ -1360,7 +1352,6 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(StructWithRefTypeUnique&& other
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithRefTypeUnique>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
@@ -1522,7 +1513,6 @@ StructWithRefTypeShared::StructWithRefTypeShared(StructWithRefTypeShared&& other
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithRefTypeShared>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, ::std::shared_ptr<::cpp2::Empty> def_field__arg, ::std::shared_ptr<::cpp2::Empty> opt_field__arg, ::std::shared_ptr<::cpp2::Empty> req_field__arg) :
@@ -1684,7 +1674,6 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(StructWithRefTypeShar
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithRefTypeSharedConst>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::Empty> def_field__arg, ::std::shared_ptr<const ::cpp2::Empty> opt_field__arg, ::std::shared_ptr<const ::cpp2::Empty> req_field__arg) :
@@ -1854,7 +1843,6 @@ StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCt
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<StructWithRefAndAnnotCppNoexceptMoveCtor>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg) :

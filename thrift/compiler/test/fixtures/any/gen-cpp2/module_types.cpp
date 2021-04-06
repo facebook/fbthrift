@@ -66,7 +66,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
@@ -264,7 +263,6 @@ MyException::MyException(MyException&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :

@@ -41,7 +41,6 @@ InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<InitialResponse>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
@@ -128,7 +127,6 @@ FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<FinalResponse>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
@@ -215,7 +213,6 @@ SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<SinkPayload>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg) :
@@ -302,7 +299,6 @@ CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&&
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<CompatibleWithKeywordSink>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg) :
@@ -389,7 +385,6 @@ InitialException::InitialException(InitialException&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<InitialException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
@@ -476,7 +471,6 @@ SinkException1::SinkException1(SinkException1&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<SinkException1>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg) :
@@ -563,7 +557,6 @@ SinkException2::SinkException2(SinkException2&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<SinkException2>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg) :

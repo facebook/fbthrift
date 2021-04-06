@@ -167,7 +167,6 @@ void TccStructTraits<::some::valid::ns::Empty>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<Empty>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
@@ -237,7 +236,6 @@ void TccStructTraits<::some::valid::ns::ASimpleStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<ASimpleStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -312,7 +310,6 @@ void TccStructTraits<::some::valid::ns::ASimpleStructNoexcept>::translateFieldNa
 
 namespace some { namespace valid { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<ASimpleStructNoexcept>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
@@ -424,7 +421,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
@@ -1180,7 +1176,6 @@ AnException::AnException(AnException&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<AnException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
@@ -1538,7 +1533,6 @@ AnotherException::AnotherException(AnotherException&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<AnotherException>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg) :
@@ -1697,58 +1691,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct::~containerStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-containerStruct::containerStruct(containerStruct&& other) noexcept  :
-    fieldA(std::move(other.fieldA)),
-    req_fieldA(std::move(other.req_fieldA)),
-    opt_fieldA(std::move(other.opt_fieldA)),
-    fieldB(std::move(other.fieldB)),
-    req_fieldB(std::move(other.req_fieldB)),
-    opt_fieldB(std::move(other.opt_fieldB)),
-    fieldC(std::move(other.fieldC)),
-    req_fieldC(std::move(other.req_fieldC)),
-    opt_fieldC(std::move(other.opt_fieldC)),
-    fieldD(std::move(other.fieldD)),
-    fieldE(std::move(other.fieldE)),
-    req_fieldE(std::move(other.req_fieldE)),
-    opt_fieldE(std::move(other.opt_fieldE)),
-    fieldF(std::move(other.fieldF)),
-    fieldG(std::move(other.fieldG)),
-    fieldH(std::move(other.fieldH)),
-    fieldI(std::move(other.fieldI)),
-    fieldJ(std::move(other.fieldJ)),
-    fieldK(std::move(other.fieldK)),
-    fieldL(std::move(other.fieldL)),
-    fieldM(std::move(other.fieldM)),
-    fieldN(std::move(other.fieldN)),
-    fieldO(std::move(other.fieldO)),
-    fieldP(std::move(other.fieldP)),
-    fieldQ(std::move(other.fieldQ)),
-    fieldR(std::move(other.fieldR)),
-    req_fieldR(std::move(other.req_fieldR)),
-    opt_fieldR(std::move(other.opt_fieldR)),
-    fieldS(std::move(other.fieldS)),
-    fieldT(std::move(other.fieldT)),
-    fieldU(std::move(other.fieldU)),
-    fieldV(std::move(other.fieldV)),
-    req_fieldV(std::move(other.req_fieldV)),
-    opt_fieldV(std::move(other.opt_fieldV)),
-    fieldW(std::move(other.fieldW)),
-    fieldX(std::move(other.fieldX)),
-    req_fieldX(std::move(other.req_fieldX)),
-    opt_fieldX(std::move(other.opt_fieldX)),
-    fieldY(std::move(other.fieldY)),
-    fieldZ(std::move(other.fieldZ)),
-    fieldAA(std::move(other.fieldAA)),
-    fieldAB(std::move(other.fieldAB)),
-    fieldAC(std::move(other.fieldAC)),
-    fieldAD(std::move(other.fieldAD)),
-    fieldAE(std::move(other.fieldAE)),
-    fieldSD(std::move(other.fieldSD)),
-    __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-static_assert(std::is_nothrow_move_constructible<containerStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<::std::int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::some::valid::ns::simpleTypeDef fieldN__arg, ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector<::some::valid::ns::mostComplexTypeDef> fieldP__arg, ::some::valid::ns::MyEnumA fieldQ__arg, ::some::valid::ns::MyEnumA fieldR__arg, ::some::valid::ns::MyEnumA req_fieldR__arg, ::some::valid::ns::MyEnumA opt_fieldR__arg, ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldU__arg, ::some::valid::ns::MyStruct fieldV__arg, ::some::valid::ns::MyStruct req_fieldV__arg, ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set<::some::valid::ns::MyStruct> fieldW__arg, ::some::valid::ns::ComplexUnion fieldX__arg, ::some::valid::ns::ComplexUnion req_fieldX__arg, ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector<::some::valid::ns::ComplexUnion> fieldY__arg, ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector<::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> fieldAB__arg, ::some::valid::ns::MyEnumB fieldAC__arg, ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, ::std::int32_t> fieldAE__arg, ::some::valid::ns::IndirectionD fieldSD__arg) :
@@ -2656,7 +2598,6 @@ MyIncludedStruct::MyIncludedStruct(MyIncludedStruct&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<MyIncludedStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg) :
@@ -2855,52 +2796,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnnotatedStruct::~AnnotatedStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept  :
-    no_annotation(std::move(other.no_annotation)),
-    cpp_unique_ref(std::move(other.cpp_unique_ref)),
-    cpp2_unique_ref(std::move(other.cpp2_unique_ref)),
-    container_with_ref(std::move(other.container_with_ref)),
-    req_cpp_unique_ref(std::move(other.req_cpp_unique_ref)),
-    req_cpp2_unique_ref(std::move(other.req_cpp2_unique_ref)),
-    req_container_with_ref(std::move(other.req_container_with_ref)),
-    opt_cpp_unique_ref(std::move(other.opt_cpp_unique_ref)),
-    opt_cpp2_unique_ref(std::move(other.opt_cpp2_unique_ref)),
-    opt_container_with_ref(std::move(other.opt_container_with_ref)),
-    ref_type_unique(std::move(other.ref_type_unique)),
-    ref_type_shared(std::move(other.ref_type_shared)),
-    ref_type_const(std::move(other.ref_type_const)),
-    req_ref_type_shared(std::move(other.req_ref_type_shared)),
-    req_ref_type_const(std::move(other.req_ref_type_const)),
-    req_ref_type_unique(std::move(other.req_ref_type_unique)),
-    opt_ref_type_const(std::move(other.opt_ref_type_const)),
-    opt_ref_type_unique(std::move(other.opt_ref_type_unique)),
-    opt_ref_type_shared(std::move(other.opt_ref_type_shared)),
-    base_type(std::move(other.base_type)),
-    list_type(std::move(other.list_type)),
-    set_type(std::move(other.set_type)),
-    map_type(std::move(other.map_type)),
-    map_struct_type(std::move(other.map_struct_type)),
-    iobuf_type(std::move(other.iobuf_type)),
-    iobuf_ptr(std::move(other.iobuf_ptr)),
-    list_i32_template(std::move(other.list_i32_template)),
-    list_string_template(std::move(other.list_string_template)),
-    set_template(std::move(other.set_template)),
-    map_template(std::move(other.map_template)),
-    typedef_list_template(std::move(other.typedef_list_template)),
-    typedef_deque_template(std::move(other.typedef_deque_template)),
-    typedef_set_template(std::move(other.typedef_set_template)),
-    typedef_map_template(std::move(other.typedef_map_template)),
-    indirection_a(std::move(other.indirection_a)),
-    indirection_b(std::move(other.indirection_b)),
-    indirection_c(std::move(other.indirection_c)),
-    iobuf_type_val(std::move(other.iobuf_type_val)),
-    iobuf_ptr_val(std::move(other.iobuf_ptr_val)),
-    struct_struct(std::move(other.struct_struct)),
-    __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-static_assert(std::is_nothrow_move_constructible<AnnotatedStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg) :
@@ -3635,7 +3530,6 @@ ComplexContainerStruct::ComplexContainerStruct(ComplexContainerStruct&& other) n
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<ComplexContainerStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
@@ -3746,7 +3640,6 @@ void TccStructTraits<::some::valid::ns::FloatStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<FloatStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg) :
@@ -3955,7 +3848,6 @@ void TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::trans
 
 namespace some { namespace valid { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<AllRequiredNoExceptMoveCtrStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :

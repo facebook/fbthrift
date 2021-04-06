@@ -68,7 +68,6 @@ void TccStructTraits<::cpp2::A>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<A>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :

@@ -68,7 +68,6 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
 
 namespace a { namespace different { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<AStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
@@ -159,7 +158,6 @@ AStructB::AStructB(AStructB&& other) noexcept  :
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<AStructB>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :

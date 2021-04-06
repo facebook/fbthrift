@@ -38,7 +38,6 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(Banal&& other) noexcept { (void)other; }THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<Banal>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
@@ -110,7 +109,6 @@ Fiery::Fiery(Fiery&& other) noexcept  :
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<Fiery>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
@@ -189,7 +187,6 @@ Serious::Serious(Serious&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<Serious>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
@@ -277,7 +274,6 @@ ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<ComplexFieldNames>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
@@ -375,7 +371,6 @@ CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<CustomFieldNames>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :

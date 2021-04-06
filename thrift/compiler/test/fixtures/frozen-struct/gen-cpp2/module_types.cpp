@@ -87,7 +87,6 @@ ModuleA::ModuleA(ModuleA&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<ModuleA>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg) :
@@ -274,7 +273,6 @@ void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
 
 namespace some { namespace ns {
 
-static_assert(std::is_nothrow_move_constructible<ModuleB>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :

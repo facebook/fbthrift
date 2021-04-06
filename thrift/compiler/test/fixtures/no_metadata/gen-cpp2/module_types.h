@@ -148,7 +148,7 @@ class MyDataItem final  {
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
-  constexpr MyDataItem(MyDataItem&&) = default;
+  MyDataItem(MyDataItem&&) = default;
 
   MyDataItem(const MyDataItem&) = default;
 

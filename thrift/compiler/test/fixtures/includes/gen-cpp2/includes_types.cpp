@@ -35,7 +35,6 @@ void TccStructTraits<::cpp2::Included>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<Included>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg) :

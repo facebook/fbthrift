@@ -87,7 +87,7 @@ class BasicTypes final  {
   [[deprecated("This constructor is deprecated")]]
   BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg);
 
-  constexpr BasicTypes(BasicTypes&&) = default;
+  BasicTypes(BasicTypes&&) = default;
 
   BasicTypes(const BasicTypes&) = default;
 

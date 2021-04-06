@@ -42,7 +42,6 @@ IncludedB::IncludedB(IncludedB&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<IncludedB>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedB::IncludedB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :

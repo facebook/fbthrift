@@ -134,7 +134,6 @@ void TccStructTraits<::test::fixtures::enumstrict::MyStruct>::translateFieldName
 
 namespace test { namespace fixtures { namespace enumstrict {
 
-static_assert(std::is_nothrow_move_constructible<MyStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg) :

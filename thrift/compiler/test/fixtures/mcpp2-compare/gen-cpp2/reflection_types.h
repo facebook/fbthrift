@@ -69,7 +69,7 @@ class ReflectionStruct final  {
   [[deprecated("This constructor is deprecated")]]
   ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
-  constexpr ReflectionStruct(ReflectionStruct&&) = default;
+  ReflectionStruct(ReflectionStruct&&) = default;
 
   ReflectionStruct(const ReflectionStruct&) = default;
 

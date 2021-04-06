@@ -404,7 +404,6 @@ Val::Val(Val&& other) noexcept  :
     __isset(other.__isset) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-static_assert(std::is_nothrow_move_constructible<Val>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg) :
@@ -757,7 +756,6 @@ void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
 
 namespace cpp2 {
 
-static_assert(std::is_nothrow_move_constructible<NonCopyableStruct>::value);
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :

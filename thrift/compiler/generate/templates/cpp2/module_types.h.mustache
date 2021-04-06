@@ -193,7 +193,7 @@ class <%struct:name%> <%!
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
 
 <%#struct:is_eligible_for_constexpr?%>
-  constexpr <%struct:name%>(<%struct:name%>&&) = default;
+  <%struct:name%>(<%struct:name%>&&) = default;
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:is_eligible_for_constexpr?%>
   <%struct:name%>(<%struct:name%>&&) noexcept;

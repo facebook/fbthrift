@@ -127,7 +127,7 @@ class AStruct final  {
   [[deprecated("This constructor is deprecated")]]
   AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg);
 
-  constexpr AStruct(AStruct&&) = default;
+  AStruct(AStruct&&) = default;
 
   AStruct(const AStruct&) = default;
 

@@ -464,7 +464,7 @@ class structured_annotation_forward final  {
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg);
 
-  constexpr structured_annotation_forward(structured_annotation_forward&&) = default;
+  structured_annotation_forward(structured_annotation_forward&&) = default;
 
   structured_annotation_forward(const structured_annotation_forward&) = default;
 

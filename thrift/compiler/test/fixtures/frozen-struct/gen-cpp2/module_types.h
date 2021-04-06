@@ -431,7 +431,7 @@ class ModuleB final  {
   [[deprecated("This constructor is deprecated")]]
   ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg);
 
-  constexpr ModuleB(ModuleB&&) = default;
+  ModuleB(ModuleB&&) = default;
 
   ModuleB(const ModuleB&) = default;
 
