@@ -305,6 +305,29 @@ TEST_F(RocketNetworkTest, RequestResponseDeadServer) {
       std::move(reply.exception()));
 }
 
+TEST_F(RocketNetworkTest, ServerShutdown) {
+  this->withClient([server =
+                        std::move(server_)](RocketTestClient& client) mutable {
+    constexpr folly::StringPiece kMetadata{"metadata"};
+    constexpr folly::StringPiece kData{"data_echo:"};
+
+    auto reply = client.sendRequestResponseSync(
+        Payload::makeFromMetadataAndData(kMetadata, kData));
+
+    EXPECT_TRUE(reply.hasValue());
+    EXPECT_TRUE(reply->hasNonemptyMetadata());
+
+    server.reset();
+
+    auto tew = client.getRawClient().getLastError();
+    auto tex = tew.get_exception<transport::TTransportException>();
+    ASSERT_NE(nullptr, tex);
+    EXPECT_EQ(
+        TTransportException::TTransportExceptionType::NOT_OPEN, tex->getType());
+    EXPECT_EQ("Server shutdown", std::string(tex->what()));
+  });
+}
+
 TEST_F(RocketNetworkTest, RocketClientEventBaseDestruction) {
   auto evb = std::make_unique<folly::EventBase>();
   folly::AsyncSocket::UniquePtr socket(new folly::AsyncSocket(

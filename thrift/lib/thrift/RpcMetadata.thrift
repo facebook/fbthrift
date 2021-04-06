@@ -334,9 +334,18 @@ struct StreamHeadersPush {
   2: optional HeadersPayloadContent headersPayloadContent;
 }
 
+enum DrainCompleteCode {
+  EXCEEDED_INGRESS_MEM_LIMIT = 1,
+}
+
+struct DrainCompletePush {
+  1: optional DrainCompleteCode drainCompleteCode;
+}
+
 union ServerPushMetadata {
   1: SetupResponse setupResponse;
   2: StreamHeadersPush streamHeadersPush;
+  3: DrainCompletePush drainCompletePush;
 }
 
 union ClientPushMetadata {

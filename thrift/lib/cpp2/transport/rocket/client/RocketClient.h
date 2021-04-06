@@ -487,6 +487,8 @@ class RocketClient : public folly::DelayedDestruction,
   StreamChannelStatus handleExtFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
+  void handleErrorCode(ErrorCode errorCode);
+
   void writeScheduledRequestsToSocket() noexcept;
 
   void maybeScheduleFirstResponseTimeout(

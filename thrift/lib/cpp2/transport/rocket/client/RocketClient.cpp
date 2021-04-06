@@ -118,30 +118,8 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
-    switch (errorFrame.errorCode()) {
-      case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
-        auto drainEx = transport::TTransportException(
-            apache::thrift::transport::TTransportException::NOT_OPEN,
-            "Server shutdown");
-        if (state_ == ConnectionState::ERROR) {
-          error_ = std::move(drainEx);
-        } else {
-          close(drainEx);
-        }
-      } break;
-      case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
-        auto ex = RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
-        if (state_ == ConnectionState::ERROR) {
-          error_ = std::move(ex);
-        } else {
-          close(ex);
-        }
-      } break;
-      default:
-        return close(transport::TTransportException(
-            apache::thrift::transport::TTransportException::END_OF_FILE,
-            "Unhandled error frame on control stream."));
-    }
+    handleErrorCode(errorFrame.errorCode());
+    return;
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     MetadataPushFrame mdPushFrame(std::move(frame));
@@ -175,6 +153,20 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
                                    ->headersPayloadContent_ref()
                                    .value_or({})));
           });
+        }
+        return;
+      }
+      case ServerPushMetadata::drainCompletePush: {
+        DCHECK(!serverVersion_ || *serverVersion_ >= 7);
+        auto drainCode =
+            serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
+        if (drainCode &&
+            *drainCode == DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT) {
+          handleErrorCode(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
+        } else {
+          close(transport::TTransportException(
+              apache::thrift::transport::TTransportException::NOT_OPEN,
+              "Server shutdown"));
         }
         return;
       }
@@ -416,6 +408,35 @@ StreamChannelStatus RocketClient::handleExtFrame(
           "Received unhandleable ext frame type ({}) without ignore flag",
           static_cast<uint32_t>(extFrame.extFrameType()))));
   return StreamChannelStatus::ContractViolation;
+}
+
+void RocketClient::handleErrorCode(ErrorCode errorCode) {
+  switch (errorCode) {
+    case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
+      auto drainEx = transport::TTransportException(
+          apache::thrift::transport::TTransportException::NOT_OPEN,
+          "Server shutdown");
+      if (state_ == ConnectionState::ERROR) {
+        error_ = std::move(drainEx);
+      } else {
+        close(std::move(drainEx));
+      }
+      break;
+    }
+    case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
+      auto ex = RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
+      if (state_ == ConnectionState::ERROR) {
+        error_ = std::move(ex);
+      } else {
+        close(std::move(ex));
+      }
+      break;
+    }
+    default:
+      close(transport::TTransportException(
+          apache::thrift::transport::TTransportException::END_OF_FILE,
+          "Unhandled error frame on control stream."));
+  }
 }
 
 folly::Try<Payload> RocketClient::sendRequestResponseSync(

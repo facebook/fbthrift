@@ -65,7 +65,7 @@ namespace rocket {
 namespace test {
 
 namespace {
-constexpr int32_t kClientVersion = 6;
+constexpr int32_t kClientVersion = 7;
 constexpr int32_t kServerVersion = 10;
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
 makeTestResponse(

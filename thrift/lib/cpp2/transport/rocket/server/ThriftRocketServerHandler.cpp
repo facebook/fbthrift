@@ -48,7 +48,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
 namespace {
-const int64_t kRocketServerMaxVersion = 6;
+const int64_t kRocketServerMaxVersion = 7;
 }
 
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);

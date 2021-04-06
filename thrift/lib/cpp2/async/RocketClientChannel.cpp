@@ -52,7 +52,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace {
-const int64_t kRocketClientMaxVersion = 6;
+const int64_t kRocketClientMaxVersion = 7;
 // request buffering needs setup response from server, available from version 5
 const int64_t kRocketClientMinVersion = 5;
 } // namespace

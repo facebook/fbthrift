@@ -124,7 +124,21 @@ void RocketServerConnection::closeIfNeeded() {
     // Immediately stop processing new requests
     socket_->setReadCB(nullptr);
 
-    sendError(StreamId{0}, RocketException(drainingErrorCode_));
+    // for version 7+, send custom error code via metadata push
+    if (getVersion() >= 7) {
+      std::optional<DrainCompleteCode> code;
+      if (drainingErrorCode_ == ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT) {
+        code = DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT;
+      }
+      ServerPushMetadata serverMeta;
+      serverMeta.drainCompletePush_ref()
+          .ensure()
+          .drainCompleteCode_ref()
+          .from_optional(code);
+      sendMetadataPush(packCompact(std::move(serverMeta)));
+    } else {
+      sendError(StreamId{0}, RocketException(drainingErrorCode_));
+    }
 
     state_ = ConnectionState::CLOSING;
     frameHandler_->connectionClosing();
