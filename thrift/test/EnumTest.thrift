@@ -59,6 +59,8 @@ struct MyStruct {
   4: MyEnum1 me1_t1 = 1;
   5: MyEnum1 me1_t2 = ME1_1;
   6: MyEnum1 me1_t3 = MyEnum1.ME1_1;
+  7: MyEnum1 me1_nodefault;
+  8: optional MyEnum1 me1_optional;
 }
 
 const MyEnum4 c_me4_a = ME4_A;
