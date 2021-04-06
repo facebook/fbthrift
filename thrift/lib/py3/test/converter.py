@@ -137,7 +137,11 @@ class ConverterTest(unittest.TestCase):
 
     def test_optional_defaults(self) -> None:
         converted = to_py3_struct(
-            types.OptionalDefaultsStruct, ttypes.OptionalDefaultsStruct()
+            # pyre-fixme[16]: Module `types` has no attribute `OptionalDefaultsStruct`.
+            # pyre-fixme[16]: Module `ttypes` has no attribute `OptionalDefaultsStruct`.
+            types.OptionalDefaultsStruct,
+            # pyre-fixme[16]: Module `ttypes` has no attribute `OptionalDefaultsStruct`.
+            ttypes.OptionalDefaultsStruct(),
         )
         self.assertFalse(Struct.isset(converted).sillyString)
         self.assertFalse(Struct.isset(converted).sillyColor)
