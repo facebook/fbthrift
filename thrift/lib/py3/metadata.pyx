@@ -242,7 +242,6 @@ cdef class ThriftFieldProxy:
     cdef readonly ThriftMetadata thriftMeta
     cdef readonly int id
     cdef readonly str name
-    cdef readonly str pyname
     cdef readonly int is_optional
     cdef readonly tuple structuredAnnotations
 
@@ -254,10 +253,13 @@ cdef class ThriftFieldProxy:
         self.name = self.thriftType.name
         self.is_optional = self.thriftType.is_optional
         self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
-        if self.thriftType.unstructured_annotations is not None and "py3.name" in self.thriftType.unstructured_annotations:
-            self.pyname = self.thriftType.unstructured_annotations["py3.name"]
-        else:
-            self.pyname = self.name
+
+    @property
+    def pyname(self):
+        if self.thriftType.unstructured_annotations is None:
+            raise TypeError('The pyname field requires the thrift option `thrift_cpp2_options = ["deprecated_unstructured_annotations_in_metadata"]` to be enabled')
+        return self.thriftType.unstructured_annotations.get("py3.name", self.name)
+
 
 
 cdef class ThriftStructProxy(ThriftTypeProxy):
