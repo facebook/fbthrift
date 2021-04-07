@@ -17,6 +17,7 @@
 
 from typing import Any, Type, TypeVar
 
+from thrift.py3.reflection import inspect
 from thrift.py3.types import Enum, Struct
 from thrift.Thrift import TType
 from thrift.util import parse_struct_spec
@@ -30,23 +31,34 @@ def to_py_struct(cls: Type[T], obj: Struct) -> T:
 
 
 def _to_py_struct(cls: Type[T], obj: Struct) -> T:
+    try:
+        field_id_to_py3_name = {
+            field_spec.id: (field_spec.annotations.get("py3.name") or field_spec.name)
+            for field_spec in inspect(obj).fields
+        }
+    except TypeError:
+        field_id_to_py3_name = {}
     # pyre-fixme[16]: `T` has no attribute `isUnion`.
     if cls.isUnion():
         return cls(
             **{
                 field.name: _to_py_field(
-                    field.type, field.type_args, getattr(obj, field.name)
+                    field.type,
+                    field.type_args,
+                    getattr(obj, field_id_to_py3_name.get(field.id, field.name)),
                 )
                 for field in parse_struct_spec(cls)
                 # pyre-fixme[16]: `Struct` has no attribute `type`.
-                if field.name == obj.type.name
+                if field_id_to_py3_name.get(field.id, field.name) == obj.type.name
             }
         )
     else:
         return cls(
             **{
                 field.name: _to_py_field(
-                    field.type, field.type_args, getattr(obj, field.name)
+                    field.type,
+                    field.type_args,
+                    getattr(obj, field_id_to_py3_name.get(field.id, field.name)),
                 )
                 for field in parse_struct_spec(cls)
             }

@@ -41,7 +41,7 @@ union Union {
   1: i32 intField;
   2: string strField;
   3: list<i32> intList;
-  4: Simple simpleField;
+  4: Simple simpleField (py3.name = "simple_");
   5: string name (py3.name = "name_");
 }
 
