@@ -22,7 +22,7 @@
 #include <stdexcept>
 
 #include <boost/filesystem.hpp>
-#include <thrift/compiler/mustache/mstch.h>
+#include <thrift/compiler/detail/mustache/mstch.h>
 
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>

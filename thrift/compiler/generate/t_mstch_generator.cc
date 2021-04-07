@@ -23,7 +23,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <thrift/compiler/mustache/mstch.h>
+#include <thrift/compiler/detail/mustache/mstch.h>
 
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
