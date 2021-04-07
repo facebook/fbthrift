@@ -18,6 +18,7 @@
 #include <atomic>
 #include <thread>
 #include <folly/ThreadLocal.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
@@ -175,6 +176,8 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     }
     co_await finished_;
   }
+
+  folly::coro::Task<void> co_noop() override { co_return; }
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<InstrumentationTestProcessor>(this);
@@ -650,8 +653,14 @@ class ServerInstrumentationTest : public testing::Test {};
 TEST_F(ServerInstrumentationTest, simpleServerTest) {
   ThriftServer serverNotServing;
   ScopedServerInterfaceThread server0(std::make_shared<TestInterface>());
+  // We need to make sure server is really serving, the simplest way is
+  // to wait for the first request to be completed.
+  folly::coro::blockingWait(
+      server0.newClient<InstrumentationTestServiceAsyncClient>()->co_noop());
   {
     ScopedServerInterfaceThread server1(std::make_shared<TestInterface>());
+    folly::coro::blockingWait(
+        server1.newClient<InstrumentationTestServiceAsyncClient>()->co_noop());
     EXPECT_EQ(
         instrumentation::getServerCount(
             instrumentation::kThriftServerTrackerKey),

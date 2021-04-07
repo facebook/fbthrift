@@ -31,4 +31,5 @@ service InstrumentationTestService {
   );
   void runCallback();
   void runCallback2();
+  void noop() (cpp.coroutine);
 }
