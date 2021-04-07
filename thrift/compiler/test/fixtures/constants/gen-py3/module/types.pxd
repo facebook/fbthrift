@@ -83,11 +83,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cInternship__isset "::cpp2::Internship::__isset":
-        bint weeks
-        bint title
-        bint employer
-        bint compensation
 
     cdef cppclass cInternship "::cpp2::Internship":
         cInternship() except +
@@ -106,11 +101,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string title
         cCompany employer
         double compensation
-        cInternship__isset __isset
 
-    cdef cppclass cRange__isset "::cpp2::Range::__isset":
-        bint min
-        bint max
 
     cdef cppclass cRange "::cpp2::Range":
         cRange() except +
@@ -125,11 +116,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __required_field_ref[cint32_t] max_ref()
         cint32_t min
         cint32_t max
-        cRange__isset __isset
 
-    cdef cppclass cstruct1__isset "::cpp2::struct1::__isset":
-        bint a
-        bint b
 
     cdef cppclass cstruct1 "::cpp2::struct1":
         cstruct1() except +
@@ -144,13 +131,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] b_ref()
         cint32_t a
         string b
-        cstruct1__isset __isset
 
-    cdef cppclass cstruct2__isset "::cpp2::struct2::__isset":
-        bint a
-        bint b
-        bint c
-        bint d
 
     cdef cppclass cstruct2 "::cpp2::struct2":
         cstruct2() except +
@@ -169,12 +150,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string b
         cstruct1 c
         vector[cint32_t] d
-        cstruct2__isset __isset
 
-    cdef cppclass cstruct3__isset "::cpp2::struct3::__isset":
-        bint a
-        bint b
-        bint c
 
     cdef cppclass cstruct3 "::cpp2::struct3":
         cstruct3() except +
@@ -191,12 +167,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string a
         cint32_t b
         cstruct2 c
-        cstruct3__isset __isset
 
-    cdef cppclass cstruct4__isset "::cpp2::struct4::__isset":
-        bint a
-        bint b
-        bint c
 
     cdef cppclass cstruct4 "::cpp2::struct4":
         cstruct4() except +
@@ -213,7 +184,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint32_t a
         double b
         cint8_t c
-        cstruct4__isset __isset
 
     cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",

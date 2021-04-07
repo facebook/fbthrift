@@ -75,9 +75,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cSmallStruct__isset "::cpp2::SmallStruct::__isset":
-        bint small_A
-        bint small_B
 
     cdef cppclass cSmallStruct "::cpp2::SmallStruct":
         cSmallStruct() except +
@@ -92,31 +89,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint32_t] small_B_ref()
         cbool small_A
         cint32_t small_B
-        cSmallStruct__isset __isset
 
-    cdef cppclass ccontainerStruct__isset "::cpp2::containerStruct::__isset":
-        bint fieldA
-        bint fieldB
-        bint fieldC
-        bint fieldD
-        bint fieldE
-        bint fieldF
-        bint fieldG
-        bint fieldH
-        bint fieldI
-        bint fieldJ
-        bint fieldK
-        bint fieldL
-        bint fieldM
-        bint fieldN
-        bint fieldO
-        bint fieldP
-        bint fieldQ
-        bint fieldR
-        bint fieldS
-        bint fieldT
-        bint fieldU
-        bint fieldX
 
     cdef cppclass ccontainerStruct "::cpp2::containerStruct":
         ccontainerStruct() except +
@@ -166,7 +139,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[cSmallStruct] fieldT
         shared_ptr[const cSmallStruct] fieldU
         unique_ptr[cSmallStruct] fieldX
-        ccontainerStruct__isset __isset
 
 
 

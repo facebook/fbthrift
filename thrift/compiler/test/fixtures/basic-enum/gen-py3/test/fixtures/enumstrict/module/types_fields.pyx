@@ -43,7 +43,6 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _test_fixtures_enumstrict_module_types.MyEnum):
             raise TypeError(f'field myEnum value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyEnum }.')
         deref(self._struct_cpp_obj).myEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyEnum><int>_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.myEnum = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field myBigEnum
@@ -53,5 +52,4 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _test_fixtures_enumstrict_module_types.MyBigEnum):
             raise TypeError(f'field myBigEnum value: {repr(_fbthrift_value)} is not of the enum type { _test_fixtures_enumstrict_module_types.MyBigEnum }.')
         deref(self._struct_cpp_obj).myBigEnum_ref().assign(<_test_fixtures_enumstrict_module_types.cMyBigEnum><int>_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.myBigEnum = True
 

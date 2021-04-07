@@ -42,7 +42,6 @@ cdef class __InitialResponse_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'content is not a { str !r}.')
         deref(self._struct_cpp_obj).content_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.content = True
 
 
 @__cython.auto_pickle(False)
@@ -70,7 +69,6 @@ cdef class __FinalResponse_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'content is not a { str !r}.')
         deref(self._struct_cpp_obj).content_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.content = True
 
 
 @__cython.auto_pickle(False)
@@ -98,7 +96,6 @@ cdef class __SinkPayload_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'content is not a { str !r}.')
         deref(self._struct_cpp_obj).content_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.content = True
 
 
 @__cython.auto_pickle(False)
@@ -126,7 +123,6 @@ cdef class __CompatibleWithKeywordSink_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'sink is not a { str !r}.')
         deref(self._struct_cpp_obj).sink_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.sink = True
 
 
 @__cython.auto_pickle(False)
@@ -154,7 +150,6 @@ cdef class __InitialException_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'reason is not a { str !r}.')
         deref(self._struct_cpp_obj).reason_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.reason = True
 
 
 @__cython.auto_pickle(False)
@@ -182,7 +177,6 @@ cdef class __SinkException1_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'reason is not a { str !r}.')
         deref(self._struct_cpp_obj).reason_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.reason = True
 
 
 @__cython.auto_pickle(False)
@@ -211,5 +205,4 @@ cdef class __SinkException2_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'reason is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).reason_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.reason = True
 

@@ -58,8 +58,6 @@ cdef extern from "src/gen-cpp2/matching_struct_names_metadata.h" namespace "apac
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint field
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -72,13 +70,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>=(cMyStruct&)
         __field_ref[string] field_ref()
         string field
-        cMyStruct__isset __isset
 
-    cdef cppclass cCombo__isset "::cpp2::Combo::__isset":
-        bint listOfOurMyStructLists
-        bint theirMyStructList
-        bint ourMyStructList
-        bint listOfTheirMyStructList
 
     cdef cppclass cCombo "::cpp2::Combo":
         cCombo() except +
@@ -97,7 +89,6 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         vector[_module_types.cMyStruct] theirMyStructList
         vector[cMyStruct] ourMyStructList
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
-        cCombo__isset __isset
 
 
 

@@ -44,7 +44,6 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'MyIntField is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyIntField = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyStringField
@@ -54,5 +53,4 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'MyStringField is not a { str !r}.')
         deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.MyStringField = True
 

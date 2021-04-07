@@ -45,7 +45,6 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'red is not a { float !r}.')
         deref(self._struct_cpp_obj).red_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.red = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field green
@@ -55,7 +54,6 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'green is not a { float !r}.')
         deref(self._struct_cpp_obj).green_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.green = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field blue
@@ -65,7 +63,6 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'blue is not a { float !r}.')
         deref(self._struct_cpp_obj).blue_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.blue = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field alpha
@@ -75,7 +72,6 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'alpha is not a { float !r}.')
         deref(self._struct_cpp_obj).alpha_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.alpha = True
 
 
 @__cython.auto_pickle(False)
@@ -107,7 +103,6 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.Color):
             raise TypeError(f'color is not a { _module_types.Color !r}.')
         deref(self._struct_cpp_obj).color_ref().assign(deref((<_module_types.Color?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.color = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field licensePlate
@@ -117,7 +112,6 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'licensePlate is not a { str !r}.')
         deref(self._struct_cpp_obj).licensePlate_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.licensePlate = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field description
@@ -127,7 +121,6 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'description is not a { str !r}.')
         deref(self._struct_cpp_obj).description_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.description = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field name
@@ -137,7 +130,6 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'name is not a { str !r}.')
         deref(self._struct_cpp_obj).name_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.name = True
 
     cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field hasAC
@@ -147,7 +139,6 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, bool):
             raise TypeError(f'hasAC is not a { bool !r}.')
         deref(self._struct_cpp_obj).hasAC_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.hasAC = True
 
 
 @__cython.auto_pickle(False)
@@ -185,7 +176,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'id is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).id_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.id = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field name
@@ -195,7 +185,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'name is not a { str !r}.')
         deref(self._struct_cpp_obj).name_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.name = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field age
@@ -206,7 +195,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'age is not a { int !r}.')
         _fbthrift_value = <cint16_t> _fbthrift_value
         deref(self._struct_cpp_obj).age_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.age = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field address
@@ -216,7 +204,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'address is not a { str !r}.')
         deref(self._struct_cpp_obj).address_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.address = True
 
     cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field favoriteColor
@@ -226,7 +213,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.Color):
             raise TypeError(f'favoriteColor is not a { _module_types.Color !r}.')
         deref(self._struct_cpp_obj).favoriteColor_ref().assign(deref((<_module_types.Color?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.favoriteColor = True
 
     cdef void _set_field_5(self, _fbthrift_value) except *:
         # for field friends
@@ -234,7 +220,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cPerson](deref(self._struct_cpp_obj), 5)
             return
         deref(self._struct_cpp_obj).friends_ref().assign(deref(_module_types.Set__i64(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.friends = True
 
     cdef void _set_field_6(self, _fbthrift_value) except *:
         # for field bestFriend
@@ -245,7 +230,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'bestFriend is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).bestFriend_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.bestFriend = True
 
     cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field petNames
@@ -253,7 +237,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cPerson](deref(self._struct_cpp_obj), 7)
             return
         deref(self._struct_cpp_obj).petNames_ref().assign(deref(_module_types.Map__Animal_string(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.petNames = True
 
     cdef void _set_field_8(self, _fbthrift_value) except *:
         # for field afraidOfAnimal
@@ -263,7 +246,6 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.Animal):
             raise TypeError(f'field afraidOfAnimal value: {repr(_fbthrift_value)} is not of the enum type { _module_types.Animal }.')
         deref(self._struct_cpp_obj).afraidOfAnimal_ref().assign(<_module_types.cAnimal><int>_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.afraidOfAnimal = True
 
     cdef void _set_field_9(self, _fbthrift_value) except *:
         # for field vehicles
@@ -271,5 +253,4 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cPerson](deref(self._struct_cpp_obj), 9)
             return
         deref(self._struct_cpp_obj).vehicles_ref().assign(deref(_module_types.List__Vehicle(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.vehicles = True
 

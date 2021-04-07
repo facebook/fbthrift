@@ -69,14 +69,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint MyIntField
-        bint MyStringField
-        bint MyDataField
-        bint myEnum
-        bint oneway
-        bint readonly
-        bint idempotent
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -101,10 +93,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cbool oneway
         cbool readonly
         cbool idempotent
-        cMyStruct__isset __isset
 
-    cdef cppclass cMyDataItem__isset "::cpp2::MyDataItem::__isset":
-        pass
 
     cdef cppclass cMyDataItem "::cpp2::MyDataItem":
         cMyDataItem() except +
@@ -115,7 +104,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyDataItem&)
         bint operator<=(cMyDataItem&)
         bint operator>=(cMyDataItem&)
-        cMyDataItem__isset __isset
 
     cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",

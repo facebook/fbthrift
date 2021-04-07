@@ -57,11 +57,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cFoo__isset "::cpp2::Foo::__isset":
-        bint myInteger
-        bint myString
-        bint myBools
-        bint myNumbers
 
     cdef cppclass cFoo "::cpp2::Foo":
         cFoo() except +
@@ -80,7 +75,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string myString
         vector[cbool] myBools
         vector[cint32_t] myNumbers
-        cFoo__isset __isset
 
 
 

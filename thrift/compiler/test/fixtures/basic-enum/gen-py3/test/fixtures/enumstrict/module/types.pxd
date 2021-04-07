@@ -83,9 +83,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test::fixtures::enumstrict":
-    cdef cppclass cMyStruct__isset "::test::fixtures::enumstrict::MyStruct::__isset":
-        bint myEnum
-        bint myBigEnum
 
     cdef cppclass cMyStruct "::test::fixtures::enumstrict::MyStruct":
         cMyStruct() except +
@@ -100,7 +97,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __field_ref[cMyBigEnum] myBigEnum_ref()
         cMyEnum myEnum
         cMyBigEnum myBigEnum
-        cMyStruct__isset __isset
 
 
 

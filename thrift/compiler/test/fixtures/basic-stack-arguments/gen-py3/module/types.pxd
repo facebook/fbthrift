@@ -69,9 +69,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint MyIntField
-        bint MyStringField
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -86,7 +83,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] MyStringField_ref()
         cint64_t MyIntField
         string MyStringField
-        cMyStruct__isset __isset
 
 
 

@@ -43,5 +43,4 @@ cdef class __HsFoo_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'MyInt is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).MyInt_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyInt = True
 

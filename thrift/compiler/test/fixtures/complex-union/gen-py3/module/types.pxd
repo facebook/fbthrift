@@ -129,10 +129,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const string& get_stringData() const
         string& set_stringData(const string&)
 
-    cdef cppclass cVal__isset "::cpp2::Val::__isset":
-        bint strVal
-        bint intVal
-        bint typedefValue
 
     cdef cppclass cVal "::cpp2::Val":
         cVal() except +
@@ -149,7 +145,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string strVal
         cint32_t intVal
         cmap[cint16_t,string] typedefValue
-        cVal__isset __isset
 
     cdef enum cValUnion__type "::cpp2::ValUnion::Type":
         cValUnion__type___EMPTY__ "::cpp2::ValUnion::Type::__EMPTY__",
@@ -191,8 +186,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const string& get_thingTwo() const
         string& set_thingTwo(const string&)
 
-    cdef cppclass cNonCopyableStruct__isset "::cpp2::NonCopyableStruct::__isset":
-        bint num
 
     cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct":
         cNonCopyableStruct() except +
@@ -204,7 +197,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cNonCopyableStruct&)
         __field_ref[cint64_t] num_ref()
         cint64_t num
-        cNonCopyableStruct__isset __isset
 
     cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
         cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",

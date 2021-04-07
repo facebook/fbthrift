@@ -44,7 +44,6 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'strVal is not a { str !r}.')
         deref(self._struct_cpp_obj).strVal_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.strVal = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field intVal
@@ -55,7 +54,6 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'intVal is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).intVal_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.intVal = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field typedefValue
@@ -63,7 +61,6 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cVal](deref(self._struct_cpp_obj), 2)
             return
         deref(self._struct_cpp_obj).typedefValue_ref().assign(deref(_module_types.Map__i16_string(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.typedefValue = True
 
 
 @__cython.auto_pickle(False)
@@ -92,5 +89,4 @@ cdef class __NonCopyableStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'num is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).num_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.num = True
 

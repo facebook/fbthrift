@@ -57,8 +57,6 @@ cdef extern from "gen-cpp2/c_metadata.h" namespace "apache::thrift::detail::md":
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/c_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cC__isset "::cpp2::C::__isset":
-        bint i
 
     cdef cppclass cC "::cpp2::C":
         cC() except +
@@ -71,7 +69,6 @@ cdef extern from "gen-cpp2/c_types_custom_protocol.h" namespace "::cpp2":
         bint operator>=(cC&)
         __field_ref[cint64_t] i_ref()
         cint64_t i
-        cC__isset __isset
 
 
 

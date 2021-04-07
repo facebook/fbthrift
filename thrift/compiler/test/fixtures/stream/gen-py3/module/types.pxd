@@ -64,8 +64,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cFooEx__isset "::cpp2::FooEx::__isset":
-        pass
 
     cdef cppclass cFooEx "::cpp2::FooEx"(cTException):
         cFooEx() except +
@@ -76,7 +74,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFooEx&)
         bint operator<=(cFooEx&)
         bint operator>=(cFooEx&)
-        cFooEx__isset __isset
 
 
 

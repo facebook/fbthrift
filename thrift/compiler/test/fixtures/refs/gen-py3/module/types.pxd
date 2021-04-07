@@ -89,10 +89,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const string& get_aString() const
         string& set_aString(const string&)
 
-    cdef cppclass cMyField__isset "::cpp2::MyField::__isset":
-        bint opt_value
-        bint value
-        bint req_value
 
     cdef cppclass cMyField "::cpp2::MyField":
         cMyField() except +
@@ -109,12 +105,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint64_t opt_value
         cint64_t value
         cint64_t req_value
-        cMyField__isset __isset
 
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint opt_ref
-        bint ref
-        bint req_ref
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -128,12 +119,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyField] opt_ref
         unique_ptr[cMyField] ref
         unique_ptr[cMyField] req_ref
-        cMyStruct__isset __isset
 
-    cdef cppclass cStructWithUnion__isset "::cpp2::StructWithUnion::__isset":
-        bint u
-        bint aDouble
-        bint f
 
     cdef cppclass cStructWithUnion "::cpp2::StructWithUnion":
         cStructWithUnion() except +
@@ -149,10 +135,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyUnion] u
         double aDouble
         cMyField f
-        cStructWithUnion__isset __isset
 
-    cdef cppclass cRecursiveStruct__isset "::cpp2::RecursiveStruct::__isset":
-        bint mes
 
     cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct":
         cRecursiveStruct() except +
@@ -165,15 +148,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cRecursiveStruct&)
         __optional_field_ref[vector[cRecursiveStruct]] mes_ref()
         vector[cRecursiveStruct] mes
-        cRecursiveStruct__isset __isset
 
-    cdef cppclass cStructWithContainers__isset "::cpp2::StructWithContainers::__isset":
-        bint list_ref
-        bint set_ref
-        bint map_ref
-        bint list_ref_unique
-        bint set_ref_shared
-        bint list_ref_shared_const
 
     cdef cppclass cStructWithContainers "::cpp2::StructWithContainers":
         cStructWithContainers() except +
@@ -190,12 +165,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[vector[cint32_t]] list_ref_unique
         shared_ptr[cset[cint32_t]] set_ref_shared
         shared_ptr[const vector[cint32_t]] list_ref_shared_const
-        cStructWithContainers__isset __isset
 
-    cdef cppclass cStructWithSharedConst__isset "::cpp2::StructWithSharedConst::__isset":
-        bint opt_shared_const
-        bint shared_const
-        bint req_shared_const
 
     cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst":
         cStructWithSharedConst() except +
@@ -209,10 +179,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cMyField] opt_shared_const
         shared_ptr[const cMyField] shared_const
         shared_ptr[const cMyField] req_shared_const
-        cStructWithSharedConst__isset __isset
 
-    cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
-        pass
 
     cdef cppclass cEmpty "::cpp2::Empty":
         cEmpty() except +
@@ -223,12 +190,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
-        cEmpty__isset __isset
 
-    cdef cppclass cStructWithRef__isset "::cpp2::StructWithRef::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRef "::cpp2::StructWithRef":
         cStructWithRef() except +
@@ -242,12 +204,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
-        cStructWithRef__isset __isset
 
-    cdef cppclass cStructWithRefTypeUnique__isset "::cpp2::StructWithRefTypeUnique::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
         cStructWithRefTypeUnique() except +
@@ -261,12 +218,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
-        cStructWithRefTypeUnique__isset __isset
 
-    cdef cppclass cStructWithRefTypeShared__isset "::cpp2::StructWithRefTypeShared::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared":
         cStructWithRefTypeShared() except +
@@ -280,12 +232,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[cEmpty] def_field
         shared_ptr[cEmpty] opt_field
         shared_ptr[cEmpty] req_field
-        cStructWithRefTypeShared__isset __isset
 
-    cdef cppclass cStructWithRefTypeSharedConst__isset "::cpp2::StructWithRefTypeSharedConst::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst":
         cStructWithRefTypeSharedConst() except +
@@ -299,10 +246,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cEmpty] def_field
         shared_ptr[const cEmpty] opt_field
         shared_ptr[const cEmpty] req_field
-        cStructWithRefTypeSharedConst__isset __isset
 
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor__isset "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor::__isset":
-        bint def_field
 
     cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
         cStructWithRefAndAnnotCppNoexceptMoveCtor() except +
@@ -314,7 +258,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         unique_ptr[cEmpty] def_field
-        cStructWithRefAndAnnotCppNoexceptMoveCtor__isset __isset
 
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):

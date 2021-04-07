@@ -57,8 +57,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
-        pass
 
     cdef cppclass cEmpty "::cpp2::Empty":
         cEmpty() except +
@@ -69,7 +67,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
-        cEmpty__isset __isset
 
     cdef enum cNada__type "::cpp2::Nada::Type":
         cNada__type___EMPTY__ "::cpp2::Nada::Type::__EMPTY__",

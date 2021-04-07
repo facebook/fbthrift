@@ -57,8 +57,6 @@ cdef extern from "gen-cpp2/transitive_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/transitive_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cFoo__isset "::cpp2::Foo::__isset":
-        bint a
 
     cdef cppclass cFoo "::cpp2::Foo":
         cFoo() except +
@@ -71,7 +69,6 @@ cdef extern from "gen-cpp2/transitive_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cFoo&)
         __field_ref[cint64_t] a_ref()
         cint64_t a
-        cFoo__isset __isset
 
 
 

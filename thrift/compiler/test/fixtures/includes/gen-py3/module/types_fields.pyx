@@ -44,7 +44,6 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _includes_types.Included):
             raise TypeError(f'MyIncludedField is not a { _includes_types.Included !r}.')
         deref(self._struct_cpp_obj).MyIncludedField_ref().assign(deref((<_includes_types.Included?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyIncludedField = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyOtherIncludedField
@@ -54,7 +53,6 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _includes_types.Included):
             raise TypeError(f'MyOtherIncludedField is not a { _includes_types.Included !r}.')
         deref(self._struct_cpp_obj).MyOtherIncludedField_ref().assign(deref((<_includes_types.Included?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyOtherIncludedField = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field MyIncludedInt
@@ -65,5 +63,4 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'MyIncludedInt is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).MyIncludedInt_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyIncludedInt = True
 

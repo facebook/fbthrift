@@ -86,7 +86,6 @@ cdef class __Serious_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'sonnet is not a { str !r}.')
         deref(self._struct_cpp_obj).sonnet_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.sonnet = True
 
 
 @__cython.auto_pickle(False)
@@ -115,7 +114,6 @@ cdef class __ComplexFieldNames_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'error_message is not a { str !r}.')
         deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.error_message = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field internal_error_message
@@ -125,7 +123,6 @@ cdef class __ComplexFieldNames_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'internal_error_message is not a { str !r}.')
         deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.internal_error_message = True
 
 
 @__cython.auto_pickle(False)
@@ -154,7 +151,6 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'error_message is not a { str !r}.')
         deref(self._struct_cpp_obj).error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.error_message = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field internal_error_message
@@ -164,5 +160,4 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'internal_error_message is not a { str !r}.')
         deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.internal_error_message = True
 

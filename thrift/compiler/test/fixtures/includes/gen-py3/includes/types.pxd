@@ -58,9 +58,6 @@ cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detai
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cIncluded__isset "::cpp2::Included::__isset":
-        bint MyIntField
-        bint MyTransitiveField
 
     cdef cppclass cIncluded "::cpp2::Included":
         cIncluded() except +
@@ -75,7 +72,6 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
         __field_ref[_transitive_types.cFoo] MyTransitiveField_ref()
         cint64_t MyIntField
         _transitive_types.cFoo MyTransitiveField
-        cIncluded__isset __isset
 
 
 

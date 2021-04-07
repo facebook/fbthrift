@@ -79,9 +79,6 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         {{^field:has_ref_accessor?}}
         deref(self._struct_cpp_obj).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
         {{/field:has_ref_accessor?}}
-        {{#field:isset?}}
-        deref(self._struct_cpp_obj).__isset.{{field:py_name}} = True
-        {{/field:isset?}}
     {{/field:type}}
     {{/struct:py3_fields}}
 

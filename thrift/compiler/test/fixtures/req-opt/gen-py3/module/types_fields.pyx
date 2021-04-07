@@ -55,7 +55,6 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'myString is not a { str !r}.')
         deref(self._struct_cpp_obj).myString_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.myString = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field myBools
@@ -63,7 +62,6 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cFoo](deref(self._struct_cpp_obj), 2)
             return
         deref(self._struct_cpp_obj).myBools_ref().assign(deref(_module_types.List__bool(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.myBools = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field myNumbers

@@ -57,8 +57,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cBanal__isset "::cpp2::Banal::__isset":
-        pass
 
     cdef cppclass cBanal "::cpp2::Banal"(cTException):
         cBanal() except +
@@ -69,10 +67,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cBanal&)
         bint operator<=(cBanal&)
         bint operator>=(cBanal&)
-        cBanal__isset __isset
 
-    cdef cppclass cFiery__isset "::cpp2::Fiery::__isset":
-        bint message
 
     cdef cppclass cFiery "::cpp2::Fiery"(cTException):
         cFiery() except +
@@ -85,10 +80,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cFiery&)
         __required_field_ref[string] message_ref()
         string message
-        cFiery__isset __isset
 
-    cdef cppclass cSerious__isset "::cpp2::Serious::__isset":
-        bint sonnet
 
     cdef cppclass cSerious "::cpp2::Serious"(cTException):
         cSerious() except +
@@ -101,11 +93,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSerious&)
         __optional_field_ref[string] sonnet_ref()
         string sonnet
-        cSerious__isset __isset
 
-    cdef cppclass cComplexFieldNames__isset "::cpp2::ComplexFieldNames::__isset":
-        bint error_message
-        bint internal_error_message
 
     cdef cppclass cComplexFieldNames "::cpp2::ComplexFieldNames"(cTException):
         cComplexFieldNames() except +
@@ -120,11 +108,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] internal_error_message_ref()
         string error_message
         string internal_error_message
-        cComplexFieldNames__isset __isset
 
-    cdef cppclass cCustomFieldNames__isset "::cpp2::CustomFieldNames::__isset":
-        bint error_message
-        bint internal_error_message
 
     cdef cppclass cCustomFieldNames "::cpp2::CustomFieldNames"(cTException):
         cCustomFieldNames() except +
@@ -139,7 +123,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] internal_error_message_ref()
         string error_message
         string internal_error_message
-        cCustomFieldNames__isset __isset
 
 
 

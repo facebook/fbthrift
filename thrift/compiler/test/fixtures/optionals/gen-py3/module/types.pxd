@@ -69,11 +69,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cColor__isset "::cpp2::Color::__isset":
-        bint red
-        bint green
-        bint blue
-        bint alpha
 
     cdef cppclass cColor "::cpp2::Color":
         cColor() except +
@@ -92,14 +87,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         double green
         double blue
         double alpha
-        cColor__isset __isset
 
-    cdef cppclass cVehicle__isset "::cpp2::Vehicle::__isset":
-        bint color
-        bint licensePlate
-        bint description
-        bint name
-        bint hasAC
 
     cdef cppclass cVehicle "::cpp2::Vehicle":
         cVehicle() except +
@@ -120,19 +108,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string description
         string name
         cbool hasAC
-        cVehicle__isset __isset
 
-    cdef cppclass cPerson__isset "::cpp2::Person::__isset":
-        bint id
-        bint name
-        bint age
-        bint address
-        bint favoriteColor
-        bint friends
-        bint bestFriend
-        bint petNames
-        bint afraidOfAnimal
-        bint vehicles
 
     cdef cppclass cPerson "::cpp2::Person":
         cPerson() except +
@@ -163,7 +139,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cmap[cAnimal,string] petNames
         cAnimal afraidOfAnimal
         vector[cVehicle] vehicles
-        cPerson__isset __isset
 
 
 

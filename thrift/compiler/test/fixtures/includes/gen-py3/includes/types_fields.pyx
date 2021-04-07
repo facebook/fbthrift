@@ -44,7 +44,6 @@ cdef class __Included_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'MyIntField is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyIntField = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyTransitiveField
@@ -54,5 +53,4 @@ cdef class __Included_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _transitive_types.Foo):
             raise TypeError(f'MyTransitiveField is not a { _transitive_types.Foo !r}.')
         deref(self._struct_cpp_obj).MyTransitiveField_ref().assign(deref((<_transitive_types.Foo?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyTransitiveField = True
 

@@ -45,7 +45,6 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'opt_value is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).opt_value_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.opt_value = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field value
@@ -56,7 +55,6 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'value is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).value_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.value = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field req_value
@@ -152,7 +150,6 @@ cdef class __StructWithUnion_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'aDouble is not a { float !r}.')
         deref(self._struct_cpp_obj).aDouble_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.aDouble = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field f
@@ -162,7 +159,6 @@ cdef class __StructWithUnion_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.MyField):
             raise TypeError(f'f is not a { _module_types.MyField !r}.')
         deref(self._struct_cpp_obj).f_ref().assign(deref((<_module_types.MyField?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.f = True
 
 
 @__cython.auto_pickle(False)
@@ -188,7 +184,6 @@ cdef class __RecursiveStruct_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cRecursiveStruct](deref(self._struct_cpp_obj), 0)
             return
         deref(self._struct_cpp_obj).mes_ref().assign(deref(_module_types.List__RecursiveStruct(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.mes = True
 
 
 @__cython.auto_pickle(False)

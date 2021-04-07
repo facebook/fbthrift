@@ -43,5 +43,4 @@ cdef class __C_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'i is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).i_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.i = True
 

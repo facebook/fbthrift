@@ -116,15 +116,6 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_metadata.h"
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
-    {{^struct:union?}}
-    cdef cppclass c{{struct:name}}__isset "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
-    {{#struct:py3_fields}}
-        bint {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
-    {{/struct:py3_fields}}
-    {{^struct:py3_fields}}
-        pass
-    {{/struct:py3_fields}}
-    {{/struct:union?}}
     {{#struct:union?}}
     cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
         c{{struct:name}}__type___EMPTY__ "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
@@ -168,7 +159,6 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
     {{#struct:py3_fields}}
         {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:py3_fields}}
-        c{{struct:name}}__isset __isset
     {{/struct:union?}}
     {{#struct:union?}}
         c{{struct:name}}__type getType() const

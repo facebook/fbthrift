@@ -55,7 +55,6 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'title is not a { str !r}.')
         deref(self._struct_cpp_obj).title_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.title = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field employer
@@ -65,7 +64,6 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.Company):
             raise TypeError(f'field employer value: {repr(_fbthrift_value)} is not of the enum type { _module_types.Company }.')
         deref(self._struct_cpp_obj).employer_ref().assign(<_module_types.cCompany><int>_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.employer = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field compensation
@@ -75,7 +73,6 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'compensation is not a { float !r}.')
         deref(self._struct_cpp_obj).compensation_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.compensation = True
 
 
 @__cython.auto_pickle(False)
@@ -144,7 +141,6 @@ cdef class __struct1_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'a is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).a_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.a = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
@@ -154,7 +150,6 @@ cdef class __struct1_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'b is not a { str !r}.')
         deref(self._struct_cpp_obj).b_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.b = True
 
 
 @__cython.auto_pickle(False)
@@ -186,7 +181,6 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'a is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).a_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.a = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
@@ -196,7 +190,6 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'b is not a { str !r}.')
         deref(self._struct_cpp_obj).b_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.b = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field c
@@ -206,7 +199,6 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.struct1):
             raise TypeError(f'c is not a { _module_types.struct1 !r}.')
         deref(self._struct_cpp_obj).c_ref().assign(deref((<_module_types.struct1?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.c = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field d
@@ -214,7 +206,6 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cstruct2](deref(self._struct_cpp_obj), 3)
             return
         deref(self._struct_cpp_obj).d_ref().assign(deref(_module_types.List__i32(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.d = True
 
 
 @__cython.auto_pickle(False)
@@ -244,7 +235,6 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'a is not a { str !r}.')
         deref(self._struct_cpp_obj).a_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.a = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
@@ -255,7 +245,6 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'b is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).b_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.b = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field c
@@ -265,7 +254,6 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.struct2):
             raise TypeError(f'c is not a { _module_types.struct2 !r}.')
         deref(self._struct_cpp_obj).c_ref().assign(deref((<_module_types.struct2?> _fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.c = True
 
 
 @__cython.auto_pickle(False)
@@ -296,7 +284,6 @@ cdef class __struct4_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'a is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).a_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.a = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field b
@@ -306,7 +293,6 @@ cdef class __struct4_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'b is not a { float !r}.')
         deref(self._struct_cpp_obj).b_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.b = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field c
@@ -317,5 +303,4 @@ cdef class __struct4_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'c is not a { int !r}.')
         _fbthrift_value = <cint8_t> _fbthrift_value
         deref(self._struct_cpp_obj).c_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.c = True
 

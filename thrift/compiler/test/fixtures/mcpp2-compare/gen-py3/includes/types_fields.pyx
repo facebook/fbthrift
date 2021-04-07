@@ -43,7 +43,6 @@ cdef class __AStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'FieldA is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).FieldA_ref().assign(_fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.FieldA = True
 
 
 @__cython.auto_pickle(False)

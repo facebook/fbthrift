@@ -78,8 +78,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3::simple":
-    cdef cppclass cSimpleException__isset "::py3::simple::SimpleException::__isset":
-        bint err_code
 
     cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException):
         cSimpleException() except +
@@ -92,10 +90,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>=(cSimpleException&)
         __field_ref[cint16_t] err_code_ref()
         cint16_t err_code
-        cSimpleException__isset __isset
 
-    cdef cppclass cOptionalRefStruct__isset "::py3::simple::OptionalRefStruct::__isset":
-        bint optional_blob
 
     cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct":
         cOptionalRefStruct() except +
@@ -108,16 +103,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>=(cOptionalRefStruct&)
         __optional_field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] optional_blob_ref()
         unique_ptr[_fbthrift_iobuf.cIOBuf] optional_blob
-        cOptionalRefStruct__isset __isset
 
-    cdef cppclass cSimpleStruct__isset "::py3::simple::SimpleStruct::__isset":
-        bint is_on
-        bint tiny_int
-        bint small_int
-        bint nice_sized_int
-        bint big_int
-        bint real
-        bint smaller_real
 
     cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct":
         cSimpleStruct() except +
@@ -142,18 +128,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         cint64_t big_int
         double real
         float smaller_real
-        cSimpleStruct__isset __isset
 
-    cdef cppclass cComplexStruct__isset "::py3::simple::ComplexStruct::__isset":
-        bint structOne
-        bint structTwo
-        bint an_integer
-        bint name
-        bint an_enum
-        bint some_bytes
-        bint sender "from"
-        bint cdef_ "cdef"
-        bint bytes_with_cpp_type
 
     cdef cppclass cComplexStruct "::py3::simple::ComplexStruct":
         cComplexStruct() except +
@@ -182,7 +157,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         string sender "from"
         string cdef_ "cdef"
         foo_Bar bytes_with_cpp_type
-        cComplexStruct__isset __isset
 
     cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::Type":
         cBinaryUnion__type___EMPTY__ "::py3::simple::BinaryUnion::Type::__EMPTY__",
@@ -195,15 +169,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         const _fbthrift_iobuf.cIOBuf& get_iobuf_val() const
         _fbthrift_iobuf.cIOBuf& set_iobuf_val(const _fbthrift_iobuf.cIOBuf&)
 
-    cdef cppclass cBinaryUnionStruct__isset "::py3::simple::BinaryUnionStruct::__isset":
-        bint u
 
     cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct":
         cBinaryUnionStruct() except +
         cBinaryUnionStruct(const cBinaryUnionStruct&) except +
         __field_ref[cBinaryUnion] u_ref()
         cBinaryUnion u
-        cBinaryUnionStruct__isset __isset
 
 
 

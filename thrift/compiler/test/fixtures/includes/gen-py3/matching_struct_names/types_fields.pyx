@@ -42,7 +42,6 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'field is not a { str !r}.')
         deref(self._struct_cpp_obj).field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.field = True
 
 
 @__cython.auto_pickle(False)
@@ -71,7 +70,6 @@ cdef class __Combo_FieldsSetter(__StructFieldsSetter):
             __reset_field[_matching_struct_names_types.cCombo](deref(self._struct_cpp_obj), 0)
             return
         deref(self._struct_cpp_obj).listOfOurMyStructLists_ref().assign(deref(_matching_struct_names_types.List__List__MyStruct(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.listOfOurMyStructLists = True
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field theirMyStructList
@@ -79,7 +77,6 @@ cdef class __Combo_FieldsSetter(__StructFieldsSetter):
             __reset_field[_matching_struct_names_types.cCombo](deref(self._struct_cpp_obj), 1)
             return
         deref(self._struct_cpp_obj).theirMyStructList_ref().assign(deref(_matching_struct_names_types.List__module_MyStruct(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.theirMyStructList = True
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field ourMyStructList
@@ -87,7 +84,6 @@ cdef class __Combo_FieldsSetter(__StructFieldsSetter):
             __reset_field[_matching_struct_names_types.cCombo](deref(self._struct_cpp_obj), 2)
             return
         deref(self._struct_cpp_obj).ourMyStructList_ref().assign(deref(_matching_struct_names_types.List__MyStruct(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.ourMyStructList = True
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field listOfTheirMyStructList
@@ -95,5 +91,4 @@ cdef class __Combo_FieldsSetter(__StructFieldsSetter):
             __reset_field[_matching_struct_names_types.cCombo](deref(self._struct_cpp_obj), 3)
             return
         deref(self._struct_cpp_obj).listOfTheirMyStructList_ref().assign(deref(_matching_struct_names_types.List__List__module_MyStruct(_fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.listOfTheirMyStructList = True
 

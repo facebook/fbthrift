@@ -59,9 +59,6 @@ cdef extern from "src/gen-cpp2/module2_metadata.h" namespace "apache::thrift::de
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::module2":
-    cdef cppclass cStruct__isset "::module2::Struct::__isset":
-        bint first
-        bint second
 
     cdef cppclass cStruct "::module2::Struct":
         cStruct() except +
@@ -76,11 +73,7 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         __field_ref[_module1_types.cStruct] second_ref()
         _module0_types.cStruct first
         _module1_types.cStruct second
-        cStruct__isset __isset
 
-    cdef cppclass cBigStruct__isset "::module2::BigStruct::__isset":
-        bint s
-        bint id
 
     cdef cppclass cBigStruct "::module2::BigStruct":
         cBigStruct() except +
@@ -95,7 +88,6 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         __field_ref[cint32_t] id_ref()
         cStruct s
         cint32_t id
-        cBigStruct__isset __isset
 
 
 

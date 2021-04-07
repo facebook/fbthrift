@@ -341,8 +341,6 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some::valid::ns":
-    cdef cppclass cEmpty__isset "::some::valid::ns::Empty::__isset":
-        pass
 
     cdef cppclass cEmpty "::some::valid::ns::Empty":
         cEmpty() except +
@@ -353,10 +351,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
-        cEmpty__isset __isset
 
-    cdef cppclass cASimpleStruct__isset "::some::valid::ns::ASimpleStruct::__isset":
-        bint boolField
 
     cdef cppclass cASimpleStruct "::some::valid::ns::ASimpleStruct":
         cASimpleStruct() except +
@@ -365,10 +360,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator!=(cASimpleStruct&)
         __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
-        cASimpleStruct__isset __isset
 
-    cdef cppclass cASimpleStructNoexcept__isset "::some::valid::ns::ASimpleStructNoexcept::__isset":
-        bint boolField
 
     cdef cppclass cASimpleStructNoexcept "::some::valid::ns::ASimpleStructNoexcept":
         cASimpleStructNoexcept() except +
@@ -381,18 +373,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cASimpleStructNoexcept&)
         __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
-        cASimpleStructNoexcept__isset __isset
 
-    cdef cppclass cMyStruct__isset "::some::valid::ns::MyStruct::__isset":
-        bint MyBoolField
-        bint MyIntField
-        bint MyStringField
-        bint MyStringField2
-        bint MyBinaryField
-        bint MyBinaryField2
-        bint MyBinaryField3
-        bint MyBinaryListField4
-        bint MyMapEnumAndInt
 
     cdef cppclass cMyStruct "::some::valid::ns::MyStruct":
         cMyStruct() except +
@@ -421,7 +402,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         string MyBinaryField3
         vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
-        cMyStruct__isset __isset
 
     cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
@@ -538,22 +518,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         const cAnException& get_excp_field() const
         cAnException& set_excp_field(const cAnException&)
 
-    cdef cppclass cAnException__isset "::some::valid::ns::AnException::__isset":
-        bint code
-        bint req_code
-        bint message2
-        bint req_message
-        bint exception_list
-        bint exception_set
-        bint exception_map
-        bint req_exception_map
-        bint enum_field
-        bint enum_container
-        bint a_struct
-        bint a_set_struct
-        bint a_union_list
-        bint union_typedef
-        bint a_union_typedef_list
 
     cdef cppclass cAnException "::some::valid::ns::AnException"(cTException):
         cAnException() except +
@@ -594,12 +558,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         vector[cSimpleUnion] a_union_list
         cset[cSimpleUnion] union_typedef
         vector[cset[cSimpleUnion]] a_union_typedef_list
-        cAnException__isset __isset
 
-    cdef cppclass cAnotherException__isset "::some::valid::ns::AnotherException::__isset":
-        bint code
-        bint req_code
-        bint message
 
     cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException):
         cAnotherException() except +
@@ -616,55 +575,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         cint32_t code
         cint32_t req_code
         string message
-        cAnotherException__isset __isset
 
-    cdef cppclass ccontainerStruct__isset "::some::valid::ns::containerStruct::__isset":
-        bint fieldA
-        bint req_fieldA
-        bint opt_fieldA
-        bint fieldB
-        bint req_fieldB
-        bint opt_fieldB
-        bint fieldC
-        bint req_fieldC
-        bint opt_fieldC
-        bint fieldD
-        bint fieldE
-        bint req_fieldE
-        bint opt_fieldE
-        bint fieldF
-        bint fieldG
-        bint fieldH
-        bint fieldI
-        bint fieldJ
-        bint fieldK
-        bint fieldL
-        bint fieldM
-        bint fieldN
-        bint fieldO
-        bint fieldP
-        bint fieldQ
-        bint fieldR
-        bint req_fieldR
-        bint opt_fieldR
-        bint fieldS
-        bint fieldT
-        bint fieldU
-        bint fieldV
-        bint req_fieldV
-        bint opt_fieldV
-        bint fieldW
-        bint fieldX
-        bint req_fieldX
-        bint opt_fieldX
-        bint fieldY
-        bint fieldZ
-        bint fieldAA
-        bint fieldAB
-        bint fieldAC
-        bint fieldAD
-        bint fieldAE
-        bint fieldSD
 
     cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct":
         ccontainerStruct() except +
@@ -766,13 +677,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         _includes_types.cAnEnum fieldAD
         cmap[string,cint32_t] fieldAE
         FooBar fieldSD
-        ccontainerStruct__isset __isset
 
-    cdef cppclass cMyIncludedStruct__isset "::some::valid::ns::MyIncludedStruct::__isset":
-        bint MyIncludedInt
-        bint MyIncludedStruct
-        bint ARefField
-        bint ARequiredField
 
     cdef cppclass cMyIncludedStruct "::some::valid::ns::MyIncludedStruct":
         cMyIncludedStruct() except +
@@ -790,49 +695,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         _includes_types.cAStruct MyIncludedStruct
         unique_ptr[_includes_types.cAStruct] ARefField
         _includes_types.cAStruct ARequiredField
-        cMyIncludedStruct__isset __isset
 
-    cdef cppclass cAnnotatedStruct__isset "::some::valid::ns::AnnotatedStruct::__isset":
-        bint no_annotation
-        bint cpp_unique_ref
-        bint cpp2_unique_ref
-        bint container_with_ref
-        bint req_cpp_unique_ref
-        bint req_cpp2_unique_ref
-        bint req_container_with_ref
-        bint opt_cpp_unique_ref
-        bint opt_cpp2_unique_ref
-        bint opt_container_with_ref
-        bint ref_type_unique
-        bint ref_type_shared
-        bint ref_type_const
-        bint req_ref_type_shared
-        bint req_ref_type_const
-        bint req_ref_type_unique
-        bint opt_ref_type_const
-        bint opt_ref_type_unique
-        bint opt_ref_type_shared
-        bint base_type
-        bint list_type
-        bint set_type
-        bint map_type
-        bint map_struct_type
-        bint iobuf_type
-        bint iobuf_ptr
-        bint list_i32_template
-        bint list_string_template
-        bint set_template
-        bint map_template
-        bint typedef_list_template
-        bint typedef_deque_template
-        bint typedef_set_template
-        bint typedef_map_template
-        bint indirection_a
-        bint indirection_b
-        bint indirection_c
-        bint iobuf_type_val
-        bint iobuf_ptr_val
-        bint struct_struct
 
     cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct":
         cAnnotatedStruct() except +
@@ -900,11 +763,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         _fbthrift_iobuf.cIOBuf iobuf_type_val
         unique_ptr[_fbthrift_iobuf.cIOBuf] iobuf_ptr_val
         ccontainerStruct struct_struct
-        cAnnotatedStruct__isset __isset
 
-    cdef cppclass cComplexContainerStruct__isset "::some::valid::ns::ComplexContainerStruct::__isset":
-        bint map_of_iobufs
-        bint map_of_iobuf_ptrs
 
     cdef cppclass cComplexContainerStruct "::some::valid::ns::ComplexContainerStruct":
         cComplexContainerStruct() except +
@@ -919,11 +778,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
         cmap[string,_fbthrift_iobuf.cIOBuf] map_of_iobufs
         cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]] map_of_iobuf_ptrs
-        cComplexContainerStruct__isset __isset
 
-    cdef cppclass cFloatStruct__isset "::some::valid::ns::FloatStruct::__isset":
-        bint floatField
-        bint doubleField
 
     cdef cppclass cFloatStruct "::some::valid::ns::FloatStruct":
         cFloatStruct() except +
@@ -938,7 +793,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[double] doubleField_ref()
         float floatField
         double doubleField
-        cFloatStruct__isset __isset
 
     cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::Type":
         cFloatUnion__type___EMPTY__ "::some::valid::ns::FloatUnion::Type::__EMPTY__",
@@ -960,8 +814,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         const double& get_doubleSide() const
         double& set_doubleSide(const double&)
 
-    cdef cppclass cAllRequiredNoExceptMoveCtrStruct__isset "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct::__isset":
-        bint intField
 
     cdef cppclass cAllRequiredNoExceptMoveCtrStruct "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct":
         cAllRequiredNoExceptMoveCtrStruct() except +
@@ -974,7 +826,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
         __required_field_ref[cint64_t] intField_ref()
         cint64_t intField
-        cAllRequiredNoExceptMoveCtrStruct__isset __isset
 
 
 

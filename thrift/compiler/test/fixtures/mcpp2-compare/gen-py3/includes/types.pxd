@@ -71,8 +71,6 @@ cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detai
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
-    cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":
-        bint FieldA
 
     cdef cppclass cAStruct "::a::different::ns::AStruct":
         cAStruct() except +
@@ -85,10 +83,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>=(cAStruct&)
         __field_ref[cint32_t] FieldA_ref()
         cint32_t FieldA
-        cAStruct__isset __isset
 
-    cdef cppclass cAStructB__isset "::a::different::ns::AStructB::__isset":
-        bint FieldA
 
     cdef cppclass cAStructB "::a::different::ns::AStructB":
         cAStructB() except +
@@ -100,7 +95,6 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator<=(cAStructB&)
         bint operator>=(cAStructB&)
         shared_ptr[const cAStruct] FieldA
-        cAStructB__isset __isset
 
 
 
