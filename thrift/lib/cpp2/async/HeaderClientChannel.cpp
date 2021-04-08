@@ -55,12 +55,14 @@ HeaderClientChannel::HeaderClientChannel(
           transport, make_unique<ClientFramingHandler>(*this)))) {}
 
 HeaderClientChannel::HeaderClientChannel(
-    WithoutRocketUpgrade,
+    WithRocketUpgrade rocketUpgrade,
     const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport, make_unique<ClientFramingHandler>(*this)))) {
-  upgradeToRocket_ = false;
-  upgradeState_ = RocketUpgradeState::NO_UPGRADE;
+  upgradeToRocket_ = rocketUpgrade.enabled;
+  if (!rocketUpgrade.enabled) {
+    upgradeState_ = RocketUpgradeState::NO_UPGRADE;
+  }
 }
 
 HeaderClientChannel::HeaderClientChannel(

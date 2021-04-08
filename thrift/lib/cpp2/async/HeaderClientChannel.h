@@ -59,9 +59,17 @@ class HeaderClientChannel : public ClientChannel,
   explicit HeaderClientChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport);
 
-  struct WithoutRocketUpgrade {};
+  struct WithRocketUpgrade {
+    bool enabled{true};
+  };
+  struct WithoutRocketUpgrade {
+    /* implicit */ operator WithRocketUpgrade() const {
+      return WithRocketUpgrade{false};
+    }
+  };
+
   HeaderClientChannel(
-      WithoutRocketUpgrade,
+      WithRocketUpgrade rocketUpgrade,
       const std::shared_ptr<folly::AsyncTransport>& transport);
 
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
@@ -76,9 +84,9 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   static Ptr newChannel(
-      WithoutRocketUpgrade,
+      WithRocketUpgrade rocketUpgrade,
       const std::shared_ptr<folly::AsyncTransport>& transport) {
-    return Ptr(new HeaderClientChannel(WithoutRocketUpgrade{}, transport));
+    return Ptr(new HeaderClientChannel(std::move(rocketUpgrade), transport));
   }
 
   virtual void sendMessage(
