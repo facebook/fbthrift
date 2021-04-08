@@ -448,7 +448,7 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
         ManagedStringView::from_static(message),
         std::exchange(interaction_, nullptr))(*getEventBase());
   } else {
-    getReplyQueue().putMessage(
+    putMessageInReplyQueue(
         std::in_place_type_t<AppOverloadExceptionInfo>(),
         std::move(req_),
         ManagedStringView(message),
@@ -466,7 +466,7 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
         std::move(queue),
         crc32c)(*getEventBase());
   } else {
-    getReplyQueue().putMessage(
+    putMessageInReplyQueue(
         std::in_place_type_t<QueueReplyInfo>(),
         std::move(req_),
         std::exchange(interaction_, nullptr),
@@ -487,7 +487,7 @@ void HandlerCallbackBase::sendReply(
         std::move(req_), std::move(stream), std::move(queue), crc32c)(
         *getEventBase());
   } else {
-    getReplyQueue().putMessage(
+    putMessageInReplyQueue(
         std::in_place_type_t<StreamReplyInfo>(),
         std::move(req_),
         std::move(stream),
@@ -512,7 +512,7 @@ void HandlerCallbackBase::sendReply(
         std::move(req_), std::move(sinkConsumer), std::move(queue), crc32c)(
         *getEventBase());
   } else {
-    getReplyQueue().putMessage(
+    putMessageInReplyQueue(
         std::in_place_type_t<SinkConsumerReplyInfo>(),
         std::move(req_),
         std::move(sinkConsumer),

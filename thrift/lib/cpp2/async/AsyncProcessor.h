@@ -534,6 +534,9 @@ class HandlerCallbackBase {
   template <typename F, typename T>
   void callExceptionInEventBaseThread(F&& f, T&& ex);
 
+  template <typename Reply, typename... A>
+  void putMessageInReplyQueue(std::in_place_type_t<Reply> tag, A&&... a);
+
   void sendReply(folly::IOBufQueue queue);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
@@ -828,6 +831,21 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
           releaseInteraction(interaction, eb);
           f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
         });
+  }
+}
+
+template <typename Reply, typename... A>
+void HandlerCallbackBase::putMessageInReplyQueue(
+    std::in_place_type_t<Reply> tag, A&&... a) {
+  if constexpr (folly::kIsWindows) {
+    // TODO(T88449658): We are seeing performance regression on Windows if we
+    // use the reply queue. The exact cause is under investigation. Before it is
+    // fixed, we can use the default EventBase queue on Windows for now.
+    auto eb = getEventBase();
+    eb->runInEventBaseThread(
+        [eb, reply = Reply(static_cast<A&&>(a)...)]() mutable { reply(*eb); });
+  } else {
+    getReplyQueue().putMessage(tag, static_cast<A&&>(a)...);
   }
 }
 
