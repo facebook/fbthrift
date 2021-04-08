@@ -188,10 +188,34 @@ class is_eligible_for_constexpr {
   bool operator()(const t_type* type);
 
  private:
-  bool check(const t_type* type);
-
   std::unordered_map<const t_type*, bool> cache_;
 };
+
+// Invokes f on each field of s and nested structs. The traversal is performed
+// transitively in a depth-first order and interrupted if f returns false.
+template <typename F>
+void for_each_transitive_field(const t_struct* s, F f) {
+  struct field_info {
+    const t_struct* owner;
+    size_t index;
+  };
+  auto fields = std::vector<field_info>{1, {s, 0}};
+  while (!fields.empty()) {
+    auto& fi = fields.back();
+    if (fi.index == fi.owner->fields().size()) {
+      fields.pop_back();
+      continue;
+    }
+    const t_field* field = fi.owner->get_field(fi.index);
+    if (!f(field)) {
+      return;
+    }
+    ++fi.index;
+    if (const auto* sub = dynamic_cast<const t_struct*>(field->get_type())) {
+      fields.push_back({sub, 0});
+    }
+  }
+}
 
 /**
  * The value of cpp.ref_type/cpp2.ref_type.

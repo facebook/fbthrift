@@ -414,43 +414,58 @@ bool is_implicit_ref(const t_type* type) {
       get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
 }
 
-bool is_eligible_for_constexpr::check(const t_type* type) {
-  if (type->has_annotation("cpp.indirection")) {
-    // Custom types may not have constexpr constructors.
-    return false;
-  }
-  if (type->is_any_int() || type->is_floating_point() || type->is_bool() ||
-      type->is_enum()) {
-    return true;
+bool is_eligible_for_constexpr::operator()(const t_type* type) {
+  enum class eligible { unknown, yes, no };
+  auto check = [this](const t_type* t) {
+    auto it = cache_.find(t);
+    if (it != cache_.end()) {
+      return it->second ? eligible::yes : eligible::no;
+    }
+    bool result = false;
+    if (t->has_annotation("cpp.indirection")) {
+      // Custom types may not have constexpr constructors.
+      result = false;
+    } else if (
+        t->is_any_int() || t->is_floating_point() || t->is_bool() ||
+        t->is_enum()) {
+      result = true;
+    } else if (t->is_union() || t->is_exception()) {
+      // Union and exception constructors are not defaulted.
+      result = false;
+    } else if (t->has_annotation(
+                   {"cpp.virtual", "cpp2.virtual", "cpp.allocator"})) {
+      result = false;
+    } else {
+      return eligible::unknown;
+    }
+    cache_[t] = result;
+    return result ? eligible::yes : eligible::no;
+  };
+  auto result = check(type);
+  if (result != eligible::unknown) {
+    return result == eligible::yes;
   }
   if (const auto* s = dynamic_cast<const t_struct*>(type)) {
-    if (type->is_union() || type->is_exception()) {
-      // Union and exception constructors are not defaulted.
-      return false;
-    }
-    if (type->has_annotation(
-            {"cpp.virtual", "cpp2.virtual", "cpp.allocator"})) {
-      return false;
-    }
-    for (const t_field* field : s->fields()) {
-      if (is_explicit_ref(field)) {
+    result = eligible::yes;
+    for_each_transitive_field(s, [&](const t_field* field) {
+      result = check(field->get_type());
+      if (result == eligible::no) {
         return false;
-      }
-      if (!(*this)(field->get_type())) {
+      } else if (is_explicit_ref(field)) {
+        result = eligible::no;
         return false;
+      } else if (result == eligible::unknown) {
+        if (!field->get_type()->is_struct()) {
+          return false;
+        }
+        // Structs are eligible if all their fields are.
+        result = eligible::yes;
       }
-    }
-    return true;
+      return true;
+    });
+    return result == eligible::yes;
   }
   return false;
-}
-
-bool is_eligible_for_constexpr::operator()(const t_type* type) {
-  auto it = cache_.find(type);
-  if (it != cache_.end()) {
-    return it->second;
-  }
-  return cache_[type] = check(type);
 }
 
 bool is_stack_arguments(

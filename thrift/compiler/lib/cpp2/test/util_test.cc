@@ -19,6 +19,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -133,6 +134,10 @@ TEST_F(UtilTest, is_eligible_for_constexpr) {
   auto program = t_program("path/to/program.thrift");
   {
     auto s = t_struct(&program, "struct_name");
+    EXPECT_TRUE(is_eligible_for_constexpr(&s));
+  }
+  {
+    auto s = t_struct(&program, "struct_name");
     s.append(std::make_unique<t_field>(&i32, "field1", 1));
     EXPECT_TRUE(is_eligible_for_constexpr(&s));
   }
@@ -166,6 +171,62 @@ TEST_F(UtilTest, is_eligible_for_constexpr) {
   EXPECT_FALSE(is_eligible_for_constexpr(&u));
   auto e = t_exception(&program, "exception_name");
   EXPECT_FALSE(is_eligible_for_constexpr(&e));
+}
+
+TEST_F(UtilTest, for_each_transitive_field) {
+  auto program = t_program("path/to/program.thrift");
+  auto empty = t_struct(&program, "struct_name");
+  cpp2::for_each_transitive_field(&empty, [](const t_field*) {
+    ADD_FAILURE();
+    return true;
+  });
+  //            a
+  //           / \
+  //          b   c
+  //         / \
+  //        d   e
+  //             \
+  //              f
+  auto i32 = t_base_type::t_i32();
+  auto a = t_struct(&program, "a");
+  auto b = t_struct(&program, "b");
+  auto e = t_struct(&program, "e");
+  a.append(std::make_unique<t_field>(&b, "b", 1));
+  a.append(std::make_unique<t_field>(&i32, "c", 2));
+  b.append(std::make_unique<t_field>(&i32, "d", 1));
+  b.append(std::make_unique<t_field>(&e, "e", 2));
+  e.append(std::make_unique<t_field>(&i32, "f", 1));
+
+  auto fields = std::vector<std::string>();
+  cpp2::for_each_transitive_field(&a, [&](const t_field* f) {
+    fields.push_back(f->get_name());
+    return true;
+  });
+  EXPECT_THAT(fields, testing::ElementsAreArray({"b", "d", "e", "f", "c"}));
+
+  fields = std::vector<std::string>();
+  cpp2::for_each_transitive_field(&a, [&](const t_field* f) {
+    auto name = f->get_name();
+    fields.push_back(name);
+    return name != "e"; // Stop at e.
+  });
+  EXPECT_THAT(fields, testing::ElementsAreArray({"b", "d", "e"}));
+
+  auto depth = 1'000'000;
+  auto structs = std::vector<std::unique_ptr<t_struct>>();
+  structs.reserve(depth);
+  structs.push_back(std::make_unique<t_struct>(&program));
+  for (int i = 1; i < depth; ++i) {
+    structs.push_back(std::make_unique<t_struct>(&program));
+    structs[i - 1]->append(
+        std::make_unique<t_field>(structs[i].get(), "field", 1));
+  }
+  auto count = 0;
+  cpp2::for_each_transitive_field(structs.front().get(), [&](const t_field*) {
+    ++count;
+    return true;
+  });
+  EXPECT_EQ(count, depth - 1);
 }
 
 TEST_F(UtilTest, get_gen_type_class) {
