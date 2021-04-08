@@ -24,6 +24,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/lang/Bits.h>
 #include <folly/portability/GFlags.h>
+#include <folly/small_vector.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
@@ -48,45 +49,6 @@ static const int32_t VERSION_2 = 0x82020000;
 static const int8_t PROTOCOL_ID = int8_t(0x82);
 static const int8_t TYPE_MASK = int8_t(0xE0);
 static const int32_t TYPE_SHIFT_AMOUNT = 5;
-
-// Simple stack with an inline buffer for built-in types
-// Emulates the interface of std::stack
-template <typename T, size_t n>
-class SimpleStack {
- public:
-  SimpleStack() : top_(0) {}
-
-  void push(T v) {
-    if (LIKELY(top_ < n)) {
-      a_[top_++] = v;
-    } else {
-      heapStack_.push(v);
-      top_++;
-    }
-  }
-
-  T top() {
-    DCHECK(top_ > 0);
-    if (LIKELY(top_ <= n)) {
-      return a_[top_ - 1];
-    } else {
-      return heapStack_.top();
-    }
-  }
-
-  void pop() {
-    DCHECK(top_ > 0);
-    if (UNLIKELY(top_ > n)) {
-      heapStack_.pop();
-    }
-    --top_;
-  }
-
- private:
-  T a_[n];
-  size_t top_;
-  std::stack<int16_t, folly::fbvector<int16_t>> heapStack_;
-};
 
 } // namespace compact
 } // namespace detail
@@ -220,7 +182,7 @@ class CompactProtocolWriter {
     int16_t fieldId;
   } booleanField_;
 
-  apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
+  std::stack<int16_t, folly::small_vector<int16_t, 10>> lastField_;
   int16_t lastFieldId_{-1};
 
   inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
@@ -436,7 +398,7 @@ class CompactProtocolReader {
   int32_t container_limit_;
   ExternalBufferSharing sharing_;
 
-  apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
+  std::stack<int16_t, folly::small_vector<int16_t, 10>> lastField_;
   int16_t lastFieldId_{-1};
 
   struct {
