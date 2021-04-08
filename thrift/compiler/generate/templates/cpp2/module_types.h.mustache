@@ -89,6 +89,14 @@ class <%struct:name%> <%!
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   <%/struct:thrift_uri%>
+  <%#struct:exception?%>
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+         ::apache::thrift::ExceptionKind::<%struct:exception_kind%>;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+         ::apache::thrift::ExceptionSafety::<%struct:exception_safety%>;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+         ::apache::thrift::ExceptionBlame::<%struct:exception_blame%>;
+  <%/struct:exception?%>
 
  public:
   using __fbthrift_cpp2_type = <%struct:name%>;
