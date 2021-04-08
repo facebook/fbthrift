@@ -224,7 +224,9 @@ void setUserExceptionHeader(
 namespace util {
 
 void appendExceptionToHeader(
-    const folly::exception_wrapper& ew, Cpp2RequestContext& ctx) {
+    bool declared,
+    const folly::exception_wrapper& ew,
+    Cpp2RequestContext& ctx) {
   auto* ex = ew.get_exception();
   if (const auto* aex = dynamic_cast<const AppBaseError*>(ex)) {
     setUserExceptionHeader(
@@ -239,8 +241,10 @@ void appendExceptionToHeader(
   folly::StringPiece whatsp(what);
   const auto type = ew.class_name();
 
-  whatsp.removePrefix(type);
-  whatsp.removePrefix(": ");
+  if (declared) {
+    whatsp.removePrefix(type);
+    whatsp.removePrefix(": ");
+  }
 
   auto exName = type.toStdString();
   auto exWhat = whatsp.str();

@@ -946,9 +946,6 @@ class mstch_struct : public mstch_base {
             {"struct:thrift_uri", &mstch_struct::thrift_uri},
             {"struct:structured_annotations",
              &mstch_struct::structured_annotations},
-            {"struct:exception_kind", &mstch_struct::exception_kind},
-            {"struct:exception_safety", &mstch_struct::exception_safety},
-            {"struct:exception_blame", &mstch_struct::exception_blame},
         });
   }
   mstch::node name() { return strct_->get_name(); }
@@ -964,12 +961,6 @@ class mstch_struct : public mstch_base {
   mstch::node structured_annotations() {
     return mstch_base::structured_annotations(strct_);
   }
-
-  mstch::node exception_safety();
-
-  mstch::node exception_blame();
-
-  mstch::node exception_kind();
 
  protected:
   t_struct const* strct_;

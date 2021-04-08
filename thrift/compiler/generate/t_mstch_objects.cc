@@ -541,53 +541,6 @@ mstch::node mstch_struct::thrift_uri() {
   return strct_->get_annotation("thrift.uri");
 }
 
-// values are copied from
-// thrift/compiler/ast/t_exception.h
-static const std::vector<std::string> error_safety_map = {
-    "UNSPECIFIED",
-    "SAFE",
-};
-
-static const std::vector<std::string> error_blame_map = {
-    "UNSPECIFIED",
-    "SERVER",
-    "CLIENT",
-};
-
-static const std::vector<std::string> error_kind_map = {
-    "UNSPECIFIED",
-    "TRANSIENT",
-    "STATEFUL",
-    "PERMANENT",
-};
-
-mstch::node mstch_struct::exception_safety() {
-  if (!strct_->is_xception()) {
-    return std::string("");
-  }
-
-  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
-  return error_safety_map[static_cast<size_t>(t_ex_ptr->safety())];
-}
-
-mstch::node mstch_struct::exception_blame() {
-  if (!strct_->is_xception()) {
-    return std::string("");
-  }
-
-  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
-  return error_blame_map[static_cast<size_t>(t_ex_ptr->blame())];
-}
-
-mstch::node mstch_struct::exception_kind() {
-  if (!strct_->is_xception()) {
-    return std::string("");
-  }
-
-  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
-  return error_kind_map[static_cast<size_t>(t_ex_ptr->kind())];
-}
-
 mstch::node mstch_function::return_type() {
   return generators_->type_generator_->generate(
       function_->get_returntype(), generators_, cache_, pos_);

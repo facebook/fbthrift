@@ -4143,12 +4143,6 @@ class AnException final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
-         ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
-         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
-         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
   using __fbthrift_cpp2_type = AnException;
@@ -4725,12 +4719,6 @@ class AnotherException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
-         ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
-         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
-         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
   using __fbthrift_cpp2_type = AnotherException;
