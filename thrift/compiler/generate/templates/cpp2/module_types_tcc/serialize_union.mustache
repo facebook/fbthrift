@@ -29,13 +29,13 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%/field:optional?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
-      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
+      xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
 <%/type:resolves_to_base?%>
 <%^type:resolves_to_base?%>
 <%#field:cpp_ref?%>
       if (this->get_<%field:cpp_name%>()) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
       }
       else {
@@ -72,13 +72,13 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%/field:optional?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
-      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+      xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
 <%/type:resolves_to_base?%>
 <%^type:resolves_to_base?%>
 <%#field:cpp_ref?%>
       if (this->get_<%field:cpp_name%>()) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
       }
       else {
@@ -116,13 +116,13 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%/field:optional?%>
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
-      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::write(*prot_, <% > module_types_tcc/native_value%>);
+      xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
 <%/type:resolves_to_base?%>
 <%^type:resolves_to_base?%>
 <%#field:cpp_ref?%>
       if (this->get_<%field:cpp_name%>()) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::write(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
       }
       else {

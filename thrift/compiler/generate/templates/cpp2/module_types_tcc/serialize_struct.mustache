@@ -27,7 +27,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
@@ -65,7 +65,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
@@ -104,7 +104,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods<<% > common/type_class%>, <%type:cpp_native_type%>>::write(*prot_, <% > module_types_tcc/native_value%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
