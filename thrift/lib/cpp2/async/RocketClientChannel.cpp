@@ -57,7 +57,7 @@ const int64_t kRocketClientMaxVersion = 7;
 const int64_t kRocketClientMinVersion = 5;
 } // namespace
 
-THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, false);
+THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_client_max_version, kRocketClientMaxVersion);
 
 using namespace apache::thrift::transport;
