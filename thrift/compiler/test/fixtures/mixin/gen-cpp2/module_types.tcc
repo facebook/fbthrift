@@ -69,6 +69,7 @@ void Mixin1::readNoXfer(Protocol_* iprot) {
 _readField_field1:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field1, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -179,10 +180,13 @@ void Mixin2::readNoXfer(Protocol_* iprot) {
 _readField_m1:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::readWithContext(*iprot, this->m1, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m1 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -196,6 +200,7 @@ _readField_m1:
 _readField_field2:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field2, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -327,6 +332,7 @@ void Mixin3Base::readNoXfer(Protocol_* iprot) {
 _readField_field3:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field3, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field3 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -437,6 +443,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
 _readField_field4:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field4, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -452,10 +459,13 @@ _readField_field4:
 _readField_m2:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::readWithContext(*iprot, this->m2, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m2 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -469,10 +479,13 @@ _readField_m2:
 _readField_m3:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::readWithContext(*iprot, this->m3, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m3 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 

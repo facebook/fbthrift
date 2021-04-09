@@ -52,8 +52,24 @@ _readField_<%field:cpp_name%>:
 <%^field:lazy?%>
   {
 <%/field:lazy?%>
-    <% > module_types_tcc/deserialize_struct_field%>
+<%#type:resolves_to_container_or_struct?%>
+    _readState.beforeSubobject(iprot);
 
+<%/type:resolves_to_container_or_struct?%>
+    <% > module_types_tcc/deserialize_field%>
+
+<%#program:enforce_required?%><%#field:required?%>
+    isset_<%field:cpp_name%> = true;
+<%/field:required?%><%/program:enforce_required?%>
+<%^field:required?%><%^field:cpp_ref?%>
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.<%field:cpp_name%> = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+<%/field:cpp_ref?%><%/field:required?%>
+<%#type:resolves_to_container_or_struct?%>
+
+    _readState.afterSubobject(iprot);
+<%/type:resolves_to_container_or_struct?%>
   }
 
 <%^last?%>

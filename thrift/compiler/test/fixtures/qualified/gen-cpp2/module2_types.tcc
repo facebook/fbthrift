@@ -55,10 +55,13 @@ void Struct::readNoXfer(Protocol_* iprot) {
 _readField_first:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module0::Struct>::readWithContext(*iprot, this->first, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.first = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -72,10 +75,13 @@ _readField_first:
 _readField_second:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module1::Struct>::readWithContext(*iprot, this->second, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.second = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -199,10 +205,13 @@ void BigStruct::readNoXfer(Protocol_* iprot) {
 _readField_s:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module2::Struct>::readWithContext(*iprot, this->s, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.s = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -216,6 +225,7 @@ _readField_s:
 _readField_id:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->id, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.id = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

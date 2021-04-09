@@ -62,6 +62,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_myString:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->myString, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.myString = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -172,7 +173,8 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_myString();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->mutable_myString(), _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->value_.myString, _readState);
+          
         } else {
           _readState.skip(iprot);
         }
@@ -201,7 +203,7 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::myString:
     {
       xfer += prot_->serializedFieldSize("myString", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_myString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->value_.myString);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -218,7 +220,7 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::myString:
     {
       xfer += prot_->serializedFieldSize("myString", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_myString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->value_.myString);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -235,7 +237,7 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::myString:
     {
       xfer += prot_->writeFieldBegin("myString", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->get_myString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->value_.myString);
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -277,6 +279,7 @@ void MyException::readNoXfer(Protocol_* iprot) {
 _readField_myString:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->myString, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.myString = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

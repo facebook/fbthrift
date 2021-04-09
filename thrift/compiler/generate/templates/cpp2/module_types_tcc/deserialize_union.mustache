@@ -37,19 +37,10 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
           this->set_<%field:cpp_name%>();
 <%#type:resolves_to_container_or_struct?%>
           _readState.beforeSubobject(iprot);
+
 <%/type:resolves_to_container_or_struct?%>
-<%#field:cpp_ref?%>
-          auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
-<%#type:resolves_to_container?%>
-          this->mutable_<%field:cpp_name%>() = <%type:cpp_type%>();
-<%/type:resolves_to_container?%>
-<%/field:cpp_ref?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <%type:cpp_type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>, _readState);
-<%#field:cpp_ref?%>
-          this->mutable_<%field:cpp_name%>() = std::move(ptr);
-<%/field:cpp_ref?%>
+          <% > module_types_tcc/deserialize_field %>
+
 <%#type:resolves_to_container_or_struct?%>
           _readState.afterSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%>

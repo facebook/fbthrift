@@ -104,6 +104,7 @@ void structured_annotation_inline::readNoXfer(Protocol_* iprot) {
 _readField_count:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->count, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.count = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -119,6 +120,7 @@ _readField_count:
 _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -244,6 +246,7 @@ void structured_annotation_with_default::readNoXfer(Protocol_* iprot) {
 _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -354,6 +357,7 @@ void structured_annotation_forward::readNoXfer(Protocol_* iprot) {
 _readField_count:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->count, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.count = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -464,6 +468,7 @@ void structured_annotation_recursive::readNoXfer(Protocol_* iprot) {
 _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -479,10 +484,13 @@ _readField_name:
 _readField_recurse:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::readWithContext(*iprot, this->recurse, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.recurse = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -496,10 +504,13 @@ _readField_recurse:
 _readField_forward:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::readWithContext(*iprot, this->forward, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.forward = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -638,6 +649,7 @@ void structured_annotation_nested::readNoXfer(Protocol_* iprot) {
 _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -653,10 +665,13 @@ _readField_name:
 _readField_nest:
   {
     _readState.beforeSubobject(iprot);
+
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::readWithContext(*iprot, this->nest, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.nest = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
+
     _readState.afterSubobject(iprot);
   }
 
@@ -780,6 +795,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_annotated_field:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->annotated_field, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotated_field = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -795,6 +811,7 @@ _readField_annotated_field:
 _readField_annotated_type:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, this->annotated_type, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotated_type = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -810,6 +827,7 @@ _readField_annotated_type:
 _readField_annotated_recursive:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotated_recursive, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotated_recursive = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -825,6 +843,7 @@ _readField_annotated_recursive:
 _readField_annotated_nested:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->annotated_nested, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotated_nested = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -980,6 +999,7 @@ void MyException::readNoXfer(Protocol_* iprot) {
 _readField_context:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->context, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.context = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1090,7 +1110,8 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_first();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, this->mutable_first(), _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, this->value_.first, _readState);
+          
         } else {
           _readState.skip(iprot);
         }
@@ -1100,7 +1121,8 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64)) {
           this->set_second();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::readWithContext(*iprot, this->mutable_second(), _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::readWithContext(*iprot, this->value_.second, _readState);
+          
         } else {
           _readState.skip(iprot);
         }
@@ -1129,13 +1151,13 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->get_first());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->value_.first);
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->get_second());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->value_.second);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -1152,13 +1174,13 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->get_first());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->value_.first);
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->get_second());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->value_.second);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -1175,14 +1197,14 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->get_first());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->value_.first);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::write(*prot_, this->get_second());
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::write(*prot_, this->value_.second);
       xfer += prot_->writeFieldEnd();
       break;
     }

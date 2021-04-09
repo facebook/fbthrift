@@ -55,6 +55,7 @@ void A::readNoXfer(Protocol_* iprot) {
 _readField_useless_field:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->useless_field, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.useless_field = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

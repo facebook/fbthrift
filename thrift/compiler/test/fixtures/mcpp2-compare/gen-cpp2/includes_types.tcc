@@ -62,6 +62,7 @@ void AStruct::readNoXfer(Protocol_* iprot) {
 _readField_FieldA:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->FieldA, _readState);
+    
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.FieldA = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -176,9 +177,12 @@ void AStructB::readNoXfer(Protocol_* iprot) {
 _readField_FieldA:
   {
     _readState.beforeSubobject(iprot);
+
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::a::different::ns::AStruct>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::a::different::ns::AStruct>::readWithContext(*iprot, *ptr, _readState);
     this->FieldA = std::move(ptr);
+    
+
     _readState.afterSubobject(iprot);
   }
 
