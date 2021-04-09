@@ -69,6 +69,9 @@ pub mod types {
         pub opt_value: ::std::option::Option<::std::primitive::i64>,
         pub value: ::std::primitive::i64,
         pub req_value: ::std::primitive::i64,
+        pub opt_enum_value: ::std::option::Option<crate::types::MyEnum>,
+        pub enum_value: crate::types::MyEnum,
+        pub req_enum_value: crate::types::MyEnum,
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -142,6 +145,116 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRefAndAnnotCppNoexceptMoveCtor {
         pub def_field: crate::types::Empty,
+    }
+
+    #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    pub struct MyEnum(pub ::std::primitive::i32);
+
+    impl MyEnum {
+        pub const Zero: Self = MyEnum(0i32);
+        pub const One: Self = MyEnum(1i32);
+    }
+
+    impl ::fbthrift::ThriftEnum for MyEnum {
+        fn enumerate() -> &'static [(MyEnum, &'static str)] {
+            &[
+                (MyEnum::Zero, "Zero"),
+                (MyEnum::One, "One"),
+            ]
+        }
+
+        fn variants() -> &'static [&'static str] {
+            &[
+                "Zero",
+                "One",
+            ]
+        }
+
+        fn variant_values() -> &'static [MyEnum] {
+            &[
+                MyEnum::Zero,
+                MyEnum::One,
+            ]
+        }
+    }
+
+    impl ::std::default::Default for MyEnum {
+        fn default() -> Self {
+            MyEnum(::fbthrift::__UNKNOWN_ID)
+        }
+    }
+
+    impl<'a> ::std::convert::From<&'a MyEnum> for ::std::primitive::i32 {
+        #[inline]
+        fn from(x: &'a MyEnum) -> Self {
+            x.0
+        }
+    }
+
+    impl ::std::convert::From<MyEnum> for ::std::primitive::i32 {
+        #[inline]
+        fn from(x: MyEnum) -> Self {
+            x.0
+        }
+    }
+
+    impl ::std::convert::From<::std::primitive::i32> for MyEnum {
+        #[inline]
+        fn from(x: ::std::primitive::i32) -> Self {
+            Self(x)
+        }
+    }
+
+    impl ::std::fmt::Display for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("Zero", 0),
+                ("One", 1),
+            ];
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        }
+    }
+
+    impl ::std::fmt::Debug for MyEnum {
+        fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(fmt, "MyEnum::{}", self)
+        }
+    }
+
+    impl ::std::str::FromStr for MyEnum {
+        type Err = ::anyhow::Error;
+
+        fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("One", 1),
+                ("Zero", 0),
+            ];
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyEnum").map(MyEnum)
+        }
+    }
+
+    impl ::fbthrift::GetTType for MyEnum {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        #[inline]
+        fn write(&self, p: &mut P) {
+            p.write_i32(self.into())
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for MyEnum
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        #[inline]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::std::result::Result::Ok(MyEnum::from(p.read_i32()?))
+        }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -337,6 +450,9 @@ pub mod types {
                 opt_value: ::std::option::Option::None,
                 value: ::std::default::Default::default(),
                 req_value: ::std::default::Default::default(),
+                opt_enum_value: ::std::option::Option::None,
+                enum_value: ::std::default::Default::default(),
+                req_enum_value: ::std::default::Default::default(),
             }
         }
     }
@@ -365,6 +481,17 @@ pub mod types {
             p.write_field_begin("req_value", ::fbthrift::TType::I64, 3);
             ::fbthrift::Serialize::write(&self.req_value, p);
             p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.opt_enum_value {
+                p.write_field_begin("opt_enum_value", ::fbthrift::TType::I32, 4);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_begin("enum_value", ::fbthrift::TType::I32, 5);
+            ::fbthrift::Serialize::write(&self.enum_value, p);
+            p.write_field_end();
+            p.write_field_begin("req_enum_value", ::fbthrift::TType::I32, 6);
+            ::fbthrift::Serialize::write(&self.req_enum_value, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -376,13 +503,19 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("enum_value", ::fbthrift::TType::I32, 5),
+                ::fbthrift::Field::new("opt_enum_value", ::fbthrift::TType::I32, 4),
                 ::fbthrift::Field::new("opt_value", ::fbthrift::TType::I64, 1),
+                ::fbthrift::Field::new("req_enum_value", ::fbthrift::TType::I32, 6),
                 ::fbthrift::Field::new("req_value", ::fbthrift::TType::I64, 3),
                 ::fbthrift::Field::new("value", ::fbthrift::TType::I64, 2),
             ];
             let mut field_opt_value = ::std::option::Option::None;
             let mut field_value = ::std::option::Option::None;
             let mut field_req_value = ::std::option::Option::None;
+            let mut field_opt_enum_value = ::std::option::Option::None;
+            let mut field_enum_value = ::std::option::Option::None;
+            let mut field_req_enum_value = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -391,6 +524,9 @@ pub mod types {
                     (::fbthrift::TType::I64, 1) => field_opt_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I64, 2) => field_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I64, 3) => field_req_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 4) => field_opt_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 5) => field_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 6) => field_req_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -400,6 +536,9 @@ pub mod types {
                 opt_value: field_opt_value,
                 value: field_value.unwrap_or_default(),
                 req_value: field_req_value.unwrap_or_default(),
+                opt_enum_value: field_opt_enum_value,
+                enum_value: field_enum_value.unwrap_or_default(),
+                req_enum_value: field_req_enum_value.unwrap_or_default(),
             })
         }
     }

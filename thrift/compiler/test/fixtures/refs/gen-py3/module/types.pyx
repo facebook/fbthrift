@@ -58,6 +58,48 @@ import builtins as _builtins
 cimport module.types_reflection as _types_reflection
 
 
+cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyEnum_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyEnum_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class MyEnum(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyEnum_enum_data.get_by_name(name)
+
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum"
+
+
+__SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
+
+
 cdef __EnumData __TypedEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cTypedEnum](), TypedEnum)
 
 
@@ -184,12 +226,12 @@ cdef class MyUnion(thrift.py3.types.Union):
         if anInteger is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_anInteger(anInteger)
+            deref(c_inst).set_anInteger(cint32_t(deref((<cint32_t?>anInteger)._cpp_obj)))
             any_set = True
         if aString is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_aString(aString.encode('UTF-8'))
+            deref(c_inst).set_aString(string(deref((<str?>aString)._cpp_obj)))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -224,9 +266,15 @@ cdef class MyUnion(thrift.py3.types.Union):
         if type == 0:    # Empty
             self.value = None
         elif type == 1:
-            self.value = deref(self._cpp_obj).get_anInteger()
+            if not deref(self._cpp_obj).get_anInteger():
+                self.value = None
+            else:
+                self.value = cint32_t.create(__reference_shared_ptr(deref(deref(self._cpp_obj).get_anInteger()), self._cpp_obj))
         elif type == 2:
-            self.value = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
+            if not deref(self._cpp_obj).get_aString():
+                self.value = None
+            else:
+                self.value = str.create(__reference_shared_ptr(deref(deref(self._cpp_obj).get_aString()), self._cpp_obj))
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
@@ -300,9 +348,6 @@ cdef class MyField(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyField", {
-          "opt_value": deref(self._cpp_obj).opt_value_ref().has_value(),
-          "value": deref(self._cpp_obj).value_ref().has_value(),
-          "req_value": deref(self._cpp_obj).req_value_ref().has_value(),
         })
 
     @staticmethod
@@ -313,20 +358,57 @@ cdef class MyField(thrift.py3.types.Struct):
 
     @property
     def opt_value(self):
-        if not deref(self._cpp_obj).opt_value_ref().has_value():
-            return None
 
-        return deref(self._cpp_obj).opt_value_ref().value_unchecked()
+        if self.__fbthrift_cached_opt_value is None:
+            if not deref(self._cpp_obj).opt_value:
+                return None
+            self.__fbthrift_cached_opt_value = cint64_t.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_value), self._cpp_obj))
+        return self.__fbthrift_cached_opt_value
 
     @property
     def value(self):
 
-        return deref(self._cpp_obj).value_ref().value()
+        if self.__fbthrift_cached_value is None:
+            if not deref(self._cpp_obj).value:
+                return None
+            self.__fbthrift_cached_value = cint64_t.create(__reference_shared_ptr(deref(deref(self._cpp_obj).value), self._cpp_obj))
+        return self.__fbthrift_cached_value
 
     @property
     def req_value(self):
 
-        return deref(self._cpp_obj).req_value_ref().value()
+        if self.__fbthrift_cached_req_value is None:
+            if not deref(self._cpp_obj).req_value:
+                return None
+            self.__fbthrift_cached_req_value = cint64_t.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_value), self._cpp_obj))
+        return self.__fbthrift_cached_req_value
+
+    @property
+    def opt_enum_value(self):
+
+        if self.__fbthrift_cached_opt_enum_value is None:
+            if not deref(self._cpp_obj).opt_enum_value:
+                return None
+            self.__fbthrift_cached_opt_enum_value = MyEnum.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_enum_value), self._cpp_obj))
+        return self.__fbthrift_cached_opt_enum_value
+
+    @property
+    def enum_value(self):
+
+        if self.__fbthrift_cached_enum_value is None:
+            if not deref(self._cpp_obj).enum_value:
+                return None
+            self.__fbthrift_cached_enum_value = MyEnum.create(__reference_shared_ptr(deref(deref(self._cpp_obj).enum_value), self._cpp_obj))
+        return self.__fbthrift_cached_enum_value
+
+    @property
+    def req_enum_value(self):
+
+        if self.__fbthrift_cached_req_enum_value is None:
+            if not deref(self._cpp_obj).req_enum_value:
+                return None
+            self.__fbthrift_cached_req_enum_value = MyEnum.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_enum_value), self._cpp_obj))
+        return self.__fbthrift_cached_req_enum_value
 
 
     def __hash__(MyField self):
@@ -364,7 +446,7 @@ cdef class MyField(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyField](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 3
+        self._fbthrift_struct_size = 6
 
     cdef _fbthrift_iobuf.IOBuf _serialize(MyField self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -511,7 +593,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithUnion", {
-          "aDouble": deref(self._cpp_obj).aDouble_ref().has_value(),
           "f": deref(self._cpp_obj).f_ref().has_value(),
         })
 
@@ -533,7 +614,11 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @property
     def aDouble(self):
 
-        return deref(self._cpp_obj).aDouble_ref().value()
+        if self.__fbthrift_cached_aDouble is None:
+            if not deref(self._cpp_obj).aDouble:
+                return None
+            self.__fbthrift_cached_aDouble = double.create(__reference_shared_ptr(deref(deref(self._cpp_obj).aDouble), self._cpp_obj))
+        return self.__fbthrift_cached_aDouble
 
     @property
     def f(self):

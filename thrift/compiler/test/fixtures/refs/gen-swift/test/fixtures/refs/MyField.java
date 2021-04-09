@@ -30,11 +30,17 @@ public final class MyField {
     public MyField(
         @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL) final Long optValue,
         @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE) final long value,
-        @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED) final long reqValue
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED) final long reqValue,
+        @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyEnum optEnumValue,
+        @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE) final test.fixtures.refs.MyEnum enumValue,
+        @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyEnum reqEnumValue
     ) {
         this.optValue = optValue;
         this.value = value;
         this.reqValue = reqValue;
+        this.optEnumValue = optEnumValue;
+        this.enumValue = enumValue;
+        this.reqEnumValue = reqEnumValue;
     }
     
     @ThriftConstructor
@@ -42,6 +48,9 @@ public final class MyField {
       this.optValue = null;
       this.value = 0L;
       this.reqValue = 0L;
+      this.optEnumValue = null;
+      this.enumValue = test.fixtures.refs.MyEnum.fromInteger(0);
+      this.reqEnumValue = test.fixtures.refs.MyEnum.fromInteger(0);
     }
     
     public static class Builder {
@@ -49,6 +58,9 @@ public final class MyField {
         private Long optValue = null;
         private long value = 0L;
         private long reqValue = 0L;
+        private test.fixtures.refs.MyEnum optEnumValue = null;
+        private test.fixtures.refs.MyEnum enumValue = test.fixtures.refs.MyEnum.fromInteger(0);
+        private test.fixtures.refs.MyEnum reqEnumValue = test.fixtures.refs.MyEnum.fromInteger(0);
     
         @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
         public Builder setOptValue(Long optValue) {
@@ -74,11 +86,38 @@ public final class MyField {
     
         public long getReqValue() { return reqValue; }
     
+            @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL)
+        public Builder setOptEnumValue(test.fixtures.refs.MyEnum optEnumValue) {
+            this.optEnumValue = optEnumValue;
+            return this;
+        }
+    
+        public test.fixtures.refs.MyEnum getOptEnumValue() { return optEnumValue; }
+    
+            @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE)
+        public Builder setEnumValue(test.fixtures.refs.MyEnum enumValue) {
+            this.enumValue = enumValue;
+            return this;
+        }
+    
+        public test.fixtures.refs.MyEnum getEnumValue() { return enumValue; }
+    
+            @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED)
+        public Builder setReqEnumValue(test.fixtures.refs.MyEnum reqEnumValue) {
+            this.reqEnumValue = reqEnumValue;
+            return this;
+        }
+    
+        public test.fixtures.refs.MyEnum getReqEnumValue() { return reqEnumValue; }
+    
         public Builder() { }
         public Builder(MyField other) {
             this.optValue = other.optValue;
             this.value = other.value;
             this.reqValue = other.reqValue;
+            this.optEnumValue = other.optEnumValue;
+            this.enumValue = other.enumValue;
+            this.reqEnumValue = other.reqEnumValue;
         }
     
         @ThriftConstructor
@@ -86,7 +125,10 @@ public final class MyField {
             MyField result = new MyField (
                 this.optValue,
                 this.value,
-                this.reqValue
+                this.reqValue,
+                this.optEnumValue,
+                this.enumValue,
+                this.reqEnumValue
             );
             return result;
         }
@@ -104,6 +146,15 @@ public final class MyField {
         private final long reqValue;
     public static final int _REQ_VALUE = 3;
     private static final TField REQ_VALUE_FIELD_DESC = new TField("req_value", TType.I64, (short)3);
+        private final test.fixtures.refs.MyEnum optEnumValue;
+    public static final int _OPT_ENUM_VALUE = 4;
+    private static final TField OPT_ENUM_VALUE_FIELD_DESC = new TField("opt_enum_value", TType.I32, (short)4);
+        private final test.fixtures.refs.MyEnum enumValue;
+    public static final int _ENUM_VALUE = 5;
+    private static final TField ENUM_VALUE_FIELD_DESC = new TField("enum_value", TType.I32, (short)5);
+        private final test.fixtures.refs.MyEnum reqEnumValue;
+    public static final int _REQ_ENUM_VALUE = 6;
+    private static final TField REQ_ENUM_VALUE_FIELD_DESC = new TField("req_enum_value", TType.I32, (short)6);
     static {
       NAMES_TO_IDS.put("optValue", 1);
       FIELD_METADATA.put(1, OPT_VALUE_FIELD_DESC);
@@ -111,6 +162,12 @@ public final class MyField {
       FIELD_METADATA.put(2, VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("reqValue", 3);
       FIELD_METADATA.put(3, REQ_VALUE_FIELD_DESC);
+      NAMES_TO_IDS.put("optEnumValue", 4);
+      FIELD_METADATA.put(4, OPT_ENUM_VALUE_FIELD_DESC);
+      NAMES_TO_IDS.put("enumValue", 5);
+      FIELD_METADATA.put(5, ENUM_VALUE_FIELD_DESC);
+      NAMES_TO_IDS.put("reqEnumValue", 6);
+      FIELD_METADATA.put(6, REQ_ENUM_VALUE_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
@@ -124,12 +181,27 @@ public final class MyField {
     @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL)
+    public test.fixtures.refs.MyEnum getOptEnumValue() { return optEnumValue; }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE)
+    public test.fixtures.refs.MyEnum getEnumValue() { return enumValue; }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED)
+    public test.fixtures.refs.MyEnum getReqEnumValue() { return reqEnumValue; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("optValue", optValue);
         helper.add("value", value);
         helper.add("reqValue", reqValue);
+        helper.add("optEnumValue", optEnumValue);
+        helper.add("enumValue", enumValue);
+        helper.add("reqEnumValue", reqEnumValue);
         return helper.toString();
     }
     
@@ -148,6 +220,9 @@ public final class MyField {
             Objects.equals(optValue, other.optValue) &&
             Objects.equals(value, other.value) &&
             Objects.equals(reqValue, other.reqValue) &&
+            Objects.equals(optEnumValue, other.optEnumValue) &&
+            Objects.equals(enumValue, other.enumValue) &&
+            Objects.equals(reqEnumValue, other.reqEnumValue) &&
             true;
     }
     
@@ -156,7 +231,10 @@ public final class MyField {
         return Arrays.deepHashCode(new Object[] {
             optValue,
             value,
-            reqValue
+            reqValue,
+            optEnumValue,
+            enumValue,
+            reqEnumValue
         });
     }
     
@@ -193,6 +271,30 @@ public final class MyField {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _OPT_ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            test.fixtures.refs.MyEnum optEnumValue = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setOptEnumValue(optEnumValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            test.fixtures.refs.MyEnum enumValue = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setEnumValue(enumValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _REQ_ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            test.fixtures.refs.MyEnum reqEnumValue = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
+            builder.setReqEnumValue(reqEnumValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -215,6 +317,17 @@ public final class MyField {
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(REQ_VALUE_FIELD_DESC);
       oprot.writeI64(this.reqValue);
+      oprot.writeFieldEnd();
+      if (this.optEnumValue != null) {
+        oprot.writeFieldBegin(OPT_ENUM_VALUE_FIELD_DESC);
+        oprot.writeI32(this.optEnumValue == null ? 0 : this.optEnumValue.getValue());
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(ENUM_VALUE_FIELD_DESC);
+      oprot.writeI32(this.enumValue == null ? 0 : this.enumValue.getValue());
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
+      oprot.writeI32(this.reqEnumValue == null ? 0 : this.reqEnumValue.getValue());
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();

@@ -27,6 +27,9 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_value")] = __MyField_FieldsSetter._set_field_0
         __fbthrift_inst._setters[__cstring_view(<const char*>"value")] = __MyField_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"req_value")] = __MyField_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"opt_enum_value")] = __MyField_FieldsSetter._set_field_3
+        __fbthrift_inst._setters[__cstring_view(<const char*>"enum_value")] = __MyField_FieldsSetter._set_field_4
+        __fbthrift_inst._setters[__cstring_view(<const char*>"req_enum_value")] = __MyField_FieldsSetter._set_field_5
         return __fbthrift_inst
 
     cdef void set_field(__MyField_FieldsSetter self, const char* name, object value) except *:
@@ -44,7 +47,7 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, int):
             raise TypeError(f'opt_value is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
-        deref(self._struct_cpp_obj).opt_value_ref().assign(_fbthrift_value)
+        deref(self._struct_cpp_obj).opt_value = make_unique[cint64_t](deref((<cint64_t?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field value
@@ -54,7 +57,7 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, int):
             raise TypeError(f'value is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
-        deref(self._struct_cpp_obj).value_ref().assign(_fbthrift_value)
+        deref(self._struct_cpp_obj).value = make_unique[cint64_t](deref((<cint64_t?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field req_value
@@ -64,7 +67,34 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, int):
             raise TypeError(f'req_value is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
-        deref(self._struct_cpp_obj).req_value_ref().assign(_fbthrift_value)
+        deref(self._struct_cpp_obj).req_value = make_unique[cint64_t](deref((<cint64_t?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field opt_enum_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, _module_types.MyEnum):
+            raise TypeError(f'field opt_enum_value value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
+        deref(self._struct_cpp_obj).opt_enum_value = make_unique[_module_types.cMyEnum](deref((<_module_types.MyEnum?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_4(self, _fbthrift_value) except *:
+        # for field enum_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 4)
+            return
+        if not isinstance(_fbthrift_value, _module_types.MyEnum):
+            raise TypeError(f'field enum_value value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
+        deref(self._struct_cpp_obj).enum_value = make_unique[_module_types.cMyEnum](deref((<_module_types.MyEnum?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_5(self, _fbthrift_value) except *:
+        # for field req_enum_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 5)
+            return
+        if not isinstance(_fbthrift_value, _module_types.MyEnum):
+            raise TypeError(f'field req_enum_value value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
+        deref(self._struct_cpp_obj).req_enum_value = make_unique[_module_types.cMyEnum](deref((<_module_types.MyEnum?>_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -149,7 +179,7 @@ cdef class __StructWithUnion_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'aDouble is not a { float !r}.')
-        deref(self._struct_cpp_obj).aDouble_ref().assign(_fbthrift_value)
+        deref(self._struct_cpp_obj).aDouble = make_unique[double](deref((<double?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field f

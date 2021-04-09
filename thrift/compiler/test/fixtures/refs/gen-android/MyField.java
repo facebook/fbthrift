@@ -27,21 +27,48 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
   private static final TField OPT_VALUE_FIELD_DESC = new TField("opt_value", TType.I64, (short)1);
   private static final TField VALUE_FIELD_DESC = new TField("value", TType.I64, (short)2);
   private static final TField REQ_VALUE_FIELD_DESC = new TField("req_value", TType.I64, (short)3);
+  private static final TField OPT_ENUM_VALUE_FIELD_DESC = new TField("opt_enum_value", TType.I32, (short)4);
+  private static final TField ENUM_VALUE_FIELD_DESC = new TField("enum_value", TType.I32, (short)5);
+  private static final TField REQ_ENUM_VALUE_FIELD_DESC = new TField("req_enum_value", TType.I32, (short)6);
 
   public final Long opt_value;
   public final Long value;
   public final Long req_value;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public final MyEnum opt_enum_value;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public final MyEnum enum_value;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public final MyEnum req_enum_value;
   public static final int OPT_VALUE = 1;
   public static final int VALUE = 2;
   public static final int REQ_VALUE = 3;
+  public static final int OPT_ENUM_VALUE = 4;
+  public static final int ENUM_VALUE = 5;
+  public static final int REQ_ENUM_VALUE = 6;
 
   public MyField(
       Long opt_value,
       Long value,
-      Long req_value) {
+      Long req_value,
+      MyEnum opt_enum_value,
+      MyEnum enum_value,
+      MyEnum req_enum_value) {
     this.opt_value = opt_value;
     this.value = value;
     this.req_value = req_value;
+    this.opt_enum_value = opt_enum_value;
+    this.enum_value = enum_value;
+    this.req_enum_value = req_enum_value;
   }
 
   /**
@@ -62,6 +89,21 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
       this.req_value = TBaseHelper.deepCopy(other.req_value);
     } else {
       this.req_value = null;
+    }
+    if (other.isSetOpt_enum_value()) {
+      this.opt_enum_value = TBaseHelper.deepCopy(other.opt_enum_value);
+    } else {
+      this.opt_enum_value = null;
+    }
+    if (other.isSetEnum_value()) {
+      this.enum_value = TBaseHelper.deepCopy(other.enum_value);
+    } else {
+      this.enum_value = null;
+    }
+    if (other.isSetReq_enum_value()) {
+      this.req_enum_value = TBaseHelper.deepCopy(other.req_enum_value);
+    } else {
+      this.req_enum_value = null;
     }
   }
 
@@ -96,6 +138,45 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
     return this.req_value != null;
   }
 
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum getOpt_enum_value() {
+    return this.opt_enum_value;
+  }
+
+  // Returns true if field opt_enum_value is set (has been assigned a value) and false otherwise
+  public boolean isSetOpt_enum_value() {
+    return this.opt_enum_value != null;
+  }
+
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum getEnum_value() {
+    return this.enum_value;
+  }
+
+  // Returns true if field enum_value is set (has been assigned a value) and false otherwise
+  public boolean isSetEnum_value() {
+    return this.enum_value != null;
+  }
+
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum getReq_enum_value() {
+    return this.req_enum_value;
+  }
+
+  // Returns true if field req_enum_value is set (has been assigned a value) and false otherwise
+  public boolean isSetReq_enum_value() {
+    return this.req_enum_value != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -112,12 +193,18 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetReq_value(), that.isSetReq_value(), this.req_value, that.req_value)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_enum_value(), that.isSetOpt_enum_value(), this.opt_enum_value, that.opt_enum_value)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetEnum_value(), that.isSetEnum_value(), this.enum_value, that.enum_value)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetReq_enum_value(), that.isSetReq_enum_value(), this.req_enum_value, that.req_enum_value)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {opt_value, value, req_value});
+    return Arrays.deepHashCode(new Object[] {opt_value, value, req_value, opt_enum_value, enum_value, req_enum_value});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -129,6 +216,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
     Long tmp_opt_value = null;
     Long tmp_value = null;
     Long tmp_req_value = null;
+    MyEnum tmp_opt_enum_value = null;
+    MyEnum tmp_enum_value = null;
+    MyEnum tmp_req_enum_value = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -160,6 +250,27 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPT_ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            tmp_opt_enum_value = MyEnum.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            tmp_enum_value = MyEnum.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case REQ_ENUM_VALUE:
+          if (__field.type == TType.I32) {
+            tmp_req_enum_value = MyEnum.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -173,6 +284,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
       tmp_opt_value
       ,tmp_value
       ,tmp_req_value
+      ,tmp_opt_enum_value
+      ,tmp_enum_value
+      ,tmp_req_enum_value
     );
     _that.validate();
     return _that;
@@ -199,6 +313,23 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
       oprot.writeI64(this.req_value);
       oprot.writeFieldEnd();
     }
+    if (this.opt_enum_value != null) {
+      if (isSetOpt_enum_value()) {
+        oprot.writeFieldBegin(OPT_ENUM_VALUE_FIELD_DESC);
+        oprot.writeI32(this.opt_enum_value == null ? 0 : this.opt_enum_value.getValue());
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.enum_value != null) {
+      oprot.writeFieldBegin(ENUM_VALUE_FIELD_DESC);
+      oprot.writeI32(this.enum_value == null ? 0 : this.enum_value.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (this.req_enum_value != null) {
+      oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
+      oprot.writeI32(this.req_enum_value == null ? 0 : this.req_enum_value.getValue());
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -217,6 +348,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
     // check for required fields
     if (req_value == null) {
       throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'req_value' was not present! Struct: " + toString());
+    }
+    if (req_enum_value == null) {
+      throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'req_enum_value' was not present! Struct: " + toString());
     }
   }
 

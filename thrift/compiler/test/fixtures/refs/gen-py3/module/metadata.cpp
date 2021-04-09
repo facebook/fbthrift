@@ -13,6 +13,7 @@ namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftMetadata metadata;
   ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::detail::md::EnumMetadata<MyEnum>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<TypedEnum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyField>::gen(metadata);

@@ -18,6 +18,9 @@ struct aString;
 struct opt_value;
 struct value;
 struct req_value;
+struct opt_enum_value;
+struct enum_value;
+struct req_enum_value;
 struct opt_ref;
 struct ref;
 struct req_ref;
@@ -68,6 +71,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(value);
 #ifndef APACHE_THRIFT_ACCESSOR_req_value
 #define APACHE_THRIFT_ACCESSOR_req_value
 APACHE_THRIFT_DEFINE_ACCESSOR(req_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_enum_value
+#define APACHE_THRIFT_ACCESSOR_opt_enum_value
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_enum_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_enum_value
+#define APACHE_THRIFT_ACCESSOR_enum_value
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_enum_value
+#define APACHE_THRIFT_ACCESSOR_req_enum_value
+APACHE_THRIFT_DEFINE_ACCESSOR(req_enum_value);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_opt_ref
 #define APACHE_THRIFT_ACCESSOR_opt_ref
@@ -192,6 +207,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
 // BEGIN declare_enums
 namespace cpp2 {
 
+enum class MyEnum {
+  Zero = 0,
+  One = 1,
+};
+
+
+
+
 enum class TypedEnum : short {
   VAL1 = 0,
   VAL2 = 1,
@@ -203,11 +226,30 @@ enum class TypedEnum : short {
 } // cpp2
 
 namespace std {
+template<> struct hash<::cpp2::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::cpp2::MyEnum> {};
 template<> struct hash<::cpp2::TypedEnum> :
   ::apache::thrift::detail::enum_hash<::cpp2::TypedEnum> {};
 } // std
 
 namespace apache { namespace thrift {
+
+
+template <> struct TEnumDataStorage<::cpp2::MyEnum>;
+
+template <> struct TEnumTraits<::cpp2::MyEnum> {
+  using type = ::cpp2::MyEnum;
+
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::Zero; }
+  static constexpr type max() { return type::One; }
+};
 
 
 template <> struct TEnumDataStorage<::cpp2::TypedEnum>;
@@ -230,6 +272,12 @@ template <> struct TEnumTraits<::cpp2::TypedEnum> {
 }} // apache::thrift
 
 namespace cpp2 {
+
+using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum>;
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 
 using _TypedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<TypedEnum>;
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
@@ -303,12 +351,12 @@ class MyUnion final  {
     switch (rhs.type_) {
       case Type::anInteger:
       {
-        set_anInteger(std::move(rhs.value_.anInteger));
+        set_anInteger(std::move(*rhs.value_.anInteger));
         break;
       }
       case Type::aString:
       {
-        set_aString(std::move(rhs.value_.aString));
+        set_aString(std::move(*rhs.value_.aString));
         break;
       }
       default:
@@ -327,12 +375,12 @@ class MyUnion final  {
     switch (rhs.type_) {
       case Type::anInteger:
       {
-        set_anInteger(rhs.value_.anInteger);
+        set_anInteger(*rhs.value_.anInteger);
         break;
       }
       case Type::aString:
       {
-        set_aString(rhs.value_.aString);
+        set_aString(*rhs.value_.aString);
         break;
       }
       default:
@@ -350,12 +398,12 @@ class MyUnion final  {
     switch (rhs.type_) {
       case Type::anInteger:
       {
-        set_anInteger(std::move(rhs.value_.anInteger));
+        set_anInteger(std::move(*rhs.value_.anInteger));
         break;
       }
       case Type::aString:
       {
-        set_aString(std::move(rhs.value_.aString));
+        set_aString(std::move(*rhs.value_.aString));
         break;
       }
       default:
@@ -375,12 +423,12 @@ class MyUnion final  {
     switch (rhs.type_) {
       case Type::anInteger:
       {
-        set_anInteger(rhs.value_.anInteger);
+        set_anInteger(*rhs.value_.anInteger);
         break;
       }
       case Type::aString:
       {
-        set_aString(rhs.value_.aString);
+        set_aString(*rhs.value_.aString);
         break;
       }
       default:
@@ -397,8 +445,8 @@ class MyUnion final  {
     __clear();
   }
   union storage_type {
-    ::std::int32_t anInteger;
-    ::std::string aString;
+    ::std::unique_ptr<::std::int32_t> anInteger;
+    ::std::unique_ptr<::std::string> aString;
 
     storage_type() {}
     ~storage_type() {}
@@ -414,53 +462,53 @@ class MyUnion final  {
     return value_.anInteger;
   }
 
-  ::std::string& set_aString(::std::string const &t) {
+  ::std::unique_ptr<::std::string>& set_aString(::std::string const &t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(t);
+    ::new (std::addressof(value_.aString)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(t));
     return value_.aString;
   }
 
-  ::std::string& set_aString(::std::string&& t) {
+  ::std::unique_ptr<::std::string>& set_aString(::std::string&& t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.aString)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::move(t)));
     return value_.aString;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_aString(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::unique_ptr<::std::string>& set_aString(T&&... t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.aString)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
     return value_.aString;
   }
 
-  ::std::int32_t const& get_anInteger() const {
+  ::std::unique_ptr<::std::int32_t> const& get_anInteger() const {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  ::std::string const& get_aString() const {
+  ::std::unique_ptr<::std::string> const& get_aString() const {
     assert(type_ == Type::aString);
     return value_.aString;
   }
 
-  ::std::int32_t& mutable_anInteger() {
+  ::std::unique_ptr<::std::int32_t>& mutable_anInteger() {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  ::std::string& mutable_aString() {
+  ::std::unique_ptr<::std::string>& mutable_aString() {
     assert(type_ == Type::aString);
     return value_.aString;
   }
 
-  ::std::int32_t move_anInteger() {
+  ::std::unique_ptr<::std::int32_t> move_anInteger() {
     assert(type_ == Type::anInteger);
     return std::move(value_.anInteger);
   }
 
-  ::std::string move_aString() {
+  ::std::unique_ptr<::std::string> move_aString() {
     assert(type_ == Type::aString);
     return std::move(value_.aString);
   }
@@ -563,133 +611,105 @@ class MyField final  {
 
  public:
 
-  MyField() :
-      opt_value(0),
-      value(0),
-      req_value(0) {}
+  MyField();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg);
+  MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg);
 
-  MyField(MyField&&) = default;
-
-  MyField(const MyField&) = default;
+  MyField(MyField&&) noexcept;
+  MyField(const MyField& src);
 
 
   MyField& operator=(MyField&&) = default;
-
-  MyField& operator=(const MyField&) = default;
+  MyField& operator=(const MyField& src);
   void __clear();
- private:
-  ::std::int64_t opt_value;
- private:
-  ::std::int64_t value;
- public:
-  ::std::int64_t req_value;
+
+  ~MyField();
 
  public:
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-    bool opt_value;
-    bool value;
-  } __isset = {};
+  ::std::unique_ptr<::std::int64_t> opt_value;
+ public:
+  ::std::unique_ptr<::std::int64_t> value;
+ public:
+  ::std::unique_ptr<::std::int64_t> req_value;
+ public:
+  ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value;
+ public:
+  ::std::unique_ptr<::cpp2::MyEnum> enum_value;
+ public:
+  ::std::unique_ptr<::cpp2::MyEnum> req_enum_value;
+
+ public:
 
   bool operator==(const MyField&) const;
   bool operator<(const MyField&) const;
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T& opt_value_ref() & { return opt_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_value_ref() const& {
-    return {this->opt_value, __isset.opt_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T& opt_value_ref() const& { return opt_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_value_ref() const&& {
-    return {std::move(this->opt_value), __isset.opt_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T&& opt_value_ref() && { return std::move(opt_value); }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_value_ref() & {
-    return {this->opt_value, __isset.opt_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T&& opt_value_ref() const&& { return std::move(opt_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T& value_ref() & { return value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_value_ref() && {
-    return {std::move(this->opt_value), __isset.opt_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T& value_ref() const& { return value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> value_ref() const& {
-    return {this->value, __isset.value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T&& value_ref() && { return std::move(value); }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> value_ref() const&& {
-    return {std::move(this->value), __isset.value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T&& value_ref() const&& { return std::move(value); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T& req_value_ref() & { return req_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> value_ref() & {
-    return {this->value, __isset.value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T& req_value_ref() const& { return req_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_ref() && {
-    return {std::move(this->value), __isset.value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE T&& req_value_ref() && { return std::move(req_value); }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_value_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->req_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int64_t>>
+  FOLLY_ERASE const T&& req_value_ref() const&& { return std::move(req_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T& opt_enum_value_ref() & { return opt_enum_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_value_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_value)};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T& opt_enum_value_ref() const& { return opt_enum_value; }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_value_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->req_value};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T&& opt_enum_value_ref() && { return std::move(opt_enum_value); }
 
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_value_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_value)};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T&& opt_enum_value_ref() const&& { return std::move(opt_enum_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T& enum_value_ref() & { return enum_value; }
 
-  const ::std::int64_t* get_opt_value() const& {
-    return opt_value_ref() ? std::addressof(opt_value) : nullptr;
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T& enum_value_ref() const& { return enum_value; }
 
-  ::std::int64_t* get_opt_value() & {
-    return opt_value_ref() ? std::addressof(opt_value) : nullptr;
-  }
-  ::std::int64_t* get_opt_value() && = delete;
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T&& enum_value_ref() && { return std::move(enum_value); }
 
-  ::std::int64_t& set_opt_value(::std::int64_t opt_value_) {
-    opt_value = opt_value_;
-    __isset.opt_value = true;
-    return opt_value;
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T&& enum_value_ref() const&& { return std::move(enum_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T& req_enum_value_ref() & { return req_enum_value; }
 
-  ::std::int64_t get_value() const {
-    return value;
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T& req_enum_value_ref() const& { return req_enum_value; }
 
-  ::std::int64_t& set_value(::std::int64_t value_) {
-    value = value_;
-    __isset.value = true;
-    return value;
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE T&& req_enum_value_ref() && { return std::move(req_enum_value); }
 
-  ::std::int64_t get_req_value() const {
-    return req_value;
-  }
-
-  ::std::int64_t& set_req_value(::std::int64_t req_value_) {
-    req_value = req_value_;
-    return req_value;
-  }
+  template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
+  FOLLY_ERASE const T&& req_enum_value_ref() const&& { return std::move(req_enum_value); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -852,10 +872,10 @@ class StructWithUnion final  {
 
   StructWithUnion() :
       u(std::make_unique<::cpp2::MyUnion>()),
-      aDouble(0) {}
+      aDouble(std::make_unique<double>()) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg);
+  StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, ::std::unique_ptr<double> aDouble__arg, ::cpp2::MyField f__arg);
 
   StructWithUnion(StructWithUnion&&) noexcept;
   StructWithUnion(const StructWithUnion& src);
@@ -866,15 +886,14 @@ class StructWithUnion final  {
   void __clear();
  public:
   ::std::unique_ptr<::cpp2::MyUnion> u;
- private:
-  double aDouble;
+ public:
+  ::std::unique_ptr<double> aDouble;
  private:
   ::cpp2::MyField f;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool aDouble;
     bool f;
   } __isset = {};
 
@@ -891,26 +910,17 @@ class StructWithUnion final  {
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyUnion>>
   FOLLY_ERASE const T&& u_ref() const&& { return std::move(u); }
+  template <typename ..., typename T = ::std::unique_ptr<double>>
+  FOLLY_ERASE T& aDouble_ref() & { return aDouble; }
 
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aDouble_ref() const& {
-    return {this->aDouble, __isset.aDouble};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<double>>
+  FOLLY_ERASE const T& aDouble_ref() const& { return aDouble; }
 
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aDouble_ref() const&& {
-    return {std::move(this->aDouble), __isset.aDouble};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<double>>
+  FOLLY_ERASE T&& aDouble_ref() && { return std::move(aDouble); }
 
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> aDouble_ref() & {
-    return {this->aDouble, __isset.aDouble};
-  }
-
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aDouble_ref() && {
-    return {std::move(this->aDouble), __isset.aDouble};
-  }
+  template <typename ..., typename T = ::std::unique_ptr<double>>
+  FOLLY_ERASE const T&& aDouble_ref() const&& { return std::move(aDouble); }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
@@ -930,16 +940,6 @@ class StructWithUnion final  {
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
     return {std::move(this->f), __isset.f};
-  }
-
-  double get_aDouble() const {
-    return aDouble;
-  }
-
-  double& set_aDouble(double aDouble_) {
-    aDouble = aDouble_;
-    __isset.aDouble = true;
-    return aDouble;
   }
   const ::cpp2::MyField& get_f() const&;
   ::cpp2::MyField get_f() &&;

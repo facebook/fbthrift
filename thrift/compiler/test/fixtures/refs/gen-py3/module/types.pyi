@@ -19,6 +19,11 @@ import itertools
 __property__ = property
 
 
+class MyEnum(thrift.py3.types.Enum):
+    Zero: MyEnum = ...
+    One: MyEnum = ...
+
+
 class TypedEnum(thrift.py3.types.Enum):
     VAL1: TypedEnum = ...
     VAL2: TypedEnum = ...
@@ -26,13 +31,11 @@ class TypedEnum(thrift.py3.types.Enum):
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
-        anInteger: bool
-        aString: bool
         pass
 
-    anInteger: Final[int] = ...
+    anInteger: Final[_typing.Optional[int]] = ...
 
-    aString: Final[str] = ...
+    aString: Final[_typing.Optional[str]] = ...
 
     def __init__(
         self, *,
@@ -61,29 +64,38 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
 
 class MyField(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
-        opt_value: bool
-        value: bool
-        req_value: bool
         pass
 
     opt_value: Final[_typing.Optional[int]] = ...
 
-    value: Final[int] = ...
+    value: Final[_typing.Optional[int]] = ...
 
-    req_value: Final[int] = ...
+    req_value: Final[_typing.Optional[int]] = ...
+
+    opt_enum_value: Final[_typing.Optional[MyEnum]] = ...
+
+    enum_value: Final[_typing.Optional[MyEnum]] = ...
+
+    req_enum_value: Final[_typing.Optional[MyEnum]] = ...
 
     def __init__(
         self, *,
         opt_value: _typing.Optional[int]=None,
         value: _typing.Optional[int]=None,
-        req_value: _typing.Optional[int]=None
+        req_value: _typing.Optional[int]=None,
+        opt_enum_value: _typing.Optional[MyEnum]=None,
+        enum_value: _typing.Optional[MyEnum]=None,
+        req_enum_value: _typing.Optional[MyEnum]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         opt_value: _typing.Union[int, __NotSet, None]=NOTSET,
         value: _typing.Union[int, __NotSet, None]=NOTSET,
-        req_value: _typing.Union[int, __NotSet, None]=NOTSET
+        req_value: _typing.Union[int, __NotSet, None]=NOTSET,
+        opt_enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
+        enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
+        req_enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET
     ) -> MyField: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyField'], bytes]]: ...
@@ -130,13 +142,12 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
 class StructWithUnion(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
-        aDouble: bool
         f: bool
         pass
 
     u: Final[_typing.Optional['MyUnion']] = ...
 
-    aDouble: Final[float] = ...
+    aDouble: Final[_typing.Optional[float]] = ...
 
     f: Final['MyField'] = ...
 

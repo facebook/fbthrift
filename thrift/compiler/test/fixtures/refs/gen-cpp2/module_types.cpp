@@ -14,6 +14,39 @@
 
 namespace apache { namespace thrift {
 
+constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
+folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(TEnumDataStorage<::cpp2::MyEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(TEnumDataStorage<::cpp2::MyEnum>::names);
+
+char const* TEnumTraits<::cpp2::MyEnum>::findName(type value) {
+  using factory = ::cpp2::_MyEnum_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) {
+  using factory = ::cpp2::_MyEnum_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+}} // apache::thrift
+
+namespace cpp2 {
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _MyEnum_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = _MyEnum_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+
+} // cpp2
+
+namespace apache { namespace thrift {
+
 constexpr std::size_t const TEnumTraits<::cpp2::TypedEnum>::size;
 folly::Range<::cpp2::TypedEnum const*> const TEnumTraits<::cpp2::TypedEnum>::values = folly::range(TEnumDataStorage<::cpp2::TypedEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::TypedEnum>::names = folly::range(TEnumDataStorage<::cpp2::TypedEnum>::names);
@@ -111,9 +144,9 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::anInteger:
-      return value_.anInteger == rhs.value_.anInteger;
+      return *value_.anInteger == *rhs.value_.anInteger;
     case Type::aString:
-      return value_.aString == rhs.value_.aString;
+      return *value_.aString == *rhs.value_.aString;
     default:
       return true;
   }
@@ -178,38 +211,116 @@ void TccStructTraits<::cpp2::MyField>::translateFieldName(
 
 namespace cpp2 {
 
+MyField::MyField(const MyField& srcObj) {
+  if (srcObj.opt_value) opt_value.reset(new ::std::int64_t(*srcObj.opt_value));
+  if (srcObj.value) value.reset(new ::std::int64_t(*srcObj.value));
+  if (srcObj.req_value) req_value.reset(new ::std::int64_t(*srcObj.req_value));
+  if (srcObj.opt_enum_value) opt_enum_value.reset(new ::cpp2::MyEnum(*srcObj.opt_enum_value));
+  if (srcObj.enum_value) enum_value.reset(new ::cpp2::MyEnum(*srcObj.enum_value));
+  if (srcObj.req_enum_value) req_enum_value.reset(new ::cpp2::MyEnum(*srcObj.req_enum_value));
+}
+
+MyField& MyField::operator=(const MyField& src) {
+  MyField tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyField::MyField(apache::thrift::FragileConstructor, ::std::int64_t opt_value__arg, ::std::int64_t value__arg, ::std::int64_t req_value__arg) :
+MyField::MyField() :
+      opt_value(std::make_unique<::std::int64_t>()),
+      value(std::make_unique<::std::int64_t>()),
+      req_value(std::make_unique<::std::int64_t>()),
+      opt_enum_value(std::make_unique<::cpp2::MyEnum>()),
+      enum_value(std::make_unique<::cpp2::MyEnum>()),
+      req_enum_value(std::make_unique<::cpp2::MyEnum>()) {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+MyField::~MyField() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyField::MyField(MyField&& other) noexcept  :
+    opt_value(std::move(other.opt_value)),
+    value(std::move(other.value)),
+    req_value(std::move(other.req_value)),
+    opt_enum_value(std::move(other.opt_enum_value)),
+    enum_value(std::move(other.enum_value)),
+    req_enum_value(std::move(other.req_enum_value)) {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg) :
     opt_value(std::move(opt_value__arg)),
     value(std::move(value__arg)),
-    req_value(std::move(req_value__arg)) {
-  __isset.opt_value = true;
-  __isset.value = true;
-}
+    req_value(std::move(req_value__arg)),
+    opt_enum_value(std::move(opt_enum_value__arg)),
+    enum_value(std::move(enum_value__arg)),
+    req_enum_value(std::move(req_enum_value__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyField::__clear() {
   // clear all fields
   opt_value = 0;
   value = 0;
   req_value = 0;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  opt_enum_value =  ::cpp2::MyEnum::Zero;
+  enum_value =  ::cpp2::MyEnum::Zero;
+  req_enum_value =  ::cpp2::MyEnum::Zero;
 }
 
 bool MyField::operator==(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.opt_value_ref() != rhs.opt_value_ref()) {
+  if (!!lhs.opt_value != !!rhs.opt_value) {
     return false;
   }
-  if (!(lhs.value == rhs.value)) {
+  if (!!lhs.opt_value) {
+    if (lhs.opt_value != rhs.opt_value && !(*lhs.opt_value == *rhs.opt_value)) {
+      return false;
+    }
+  }
+  if (!!lhs.value != !!rhs.value) {
     return false;
   }
-  if (!(lhs.req_value == rhs.req_value)) {
+  if (!!lhs.value) {
+    if (lhs.value != rhs.value && !(*lhs.value == *rhs.value)) {
+      return false;
+    }
+  }
+  if (!!lhs.req_value != !!rhs.req_value) {
     return false;
+  }
+  if (!!lhs.req_value) {
+    if (lhs.req_value != rhs.req_value && !(*lhs.req_value == *rhs.req_value)) {
+      return false;
+    }
+  }
+  if (!!lhs.opt_enum_value != !!rhs.opt_enum_value) {
+    return false;
+  }
+  if (!!lhs.opt_enum_value) {
+    if (lhs.opt_enum_value != rhs.opt_enum_value && !(*lhs.opt_enum_value == *rhs.opt_enum_value)) {
+      return false;
+    }
+  }
+  if (!!lhs.enum_value != !!rhs.enum_value) {
+    return false;
+  }
+  if (!!lhs.enum_value) {
+    if (lhs.enum_value != rhs.enum_value && !(*lhs.enum_value == *rhs.enum_value)) {
+      return false;
+    }
+  }
+  if (!!lhs.req_enum_value != !!rhs.req_enum_value) {
+    return false;
+  }
+  if (!!lhs.req_enum_value) {
+    if (lhs.req_enum_value != rhs.req_enum_value && !(*lhs.req_enum_value == *rhs.req_enum_value)) {
+      return false;
+    }
   }
   return true;
 }
@@ -218,14 +329,53 @@ bool MyField::operator<(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.opt_value_ref() != rhs.opt_value_ref()) {
-    return lhs.opt_value_ref() < rhs.opt_value_ref();
+  if (!!lhs.opt_value != !!rhs.opt_value) {
+    return !!lhs.opt_value < !!rhs.opt_value;
   }
-  if (!(lhs.value == rhs.value)) {
-    return lhs.value < rhs.value;
+  if (!!lhs.opt_value) {
+    if (lhs.opt_value != rhs.opt_value && !(*lhs.opt_value == *rhs.opt_value)) {
+      return *lhs.opt_value < *rhs.opt_value;
+    }
   }
-  if (!(lhs.req_value == rhs.req_value)) {
-    return lhs.req_value < rhs.req_value;
+  if (!!lhs.value != !!rhs.value) {
+    return !!lhs.value < !!rhs.value;
+  }
+  if (!!lhs.value) {
+    if (lhs.value != rhs.value && !(*lhs.value == *rhs.value)) {
+      return *lhs.value < *rhs.value;
+    }
+  }
+  if (!!lhs.req_value != !!rhs.req_value) {
+    return !!lhs.req_value < !!rhs.req_value;
+  }
+  if (!!lhs.req_value) {
+    if (lhs.req_value != rhs.req_value && !(*lhs.req_value == *rhs.req_value)) {
+      return *lhs.req_value < *rhs.req_value;
+    }
+  }
+  if (!!lhs.opt_enum_value != !!rhs.opt_enum_value) {
+    return !!lhs.opt_enum_value < !!rhs.opt_enum_value;
+  }
+  if (!!lhs.opt_enum_value) {
+    if (lhs.opt_enum_value != rhs.opt_enum_value && !(*lhs.opt_enum_value == *rhs.opt_enum_value)) {
+      return *lhs.opt_enum_value < *rhs.opt_enum_value;
+    }
+  }
+  if (!!lhs.enum_value != !!rhs.enum_value) {
+    return !!lhs.enum_value < !!rhs.enum_value;
+  }
+  if (!!lhs.enum_value) {
+    if (lhs.enum_value != rhs.enum_value && !(*lhs.enum_value == *rhs.enum_value)) {
+      return *lhs.enum_value < *rhs.enum_value;
+    }
+  }
+  if (!!lhs.req_enum_value != !!rhs.req_enum_value) {
+    return !!lhs.req_enum_value < !!rhs.req_enum_value;
+  }
+  if (!!lhs.req_enum_value) {
+    if (lhs.req_enum_value != rhs.req_enum_value && !(*lhs.req_enum_value == *rhs.req_enum_value)) {
+      return *lhs.req_enum_value < *rhs.req_enum_value;
+    }
   }
   return false;
 }
@@ -233,12 +383,12 @@ bool MyField::operator<(const MyField& rhs) const {
 
 void swap(MyField& a, MyField& b) {
   using ::std::swap;
-  swap(a.opt_value_ref().value_unchecked(), b.opt_value_ref().value_unchecked());
-  swap(a.value_ref().value(), b.value_ref().value());
-  swap(a.req_value_ref().value(), b.req_value_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  swap(a.opt_value, b.opt_value);
+  swap(a.value, b.value);
+  swap(a.req_value, b.req_value);
+  swap(a.opt_enum_value, b.opt_enum_value);
+  swap(a.enum_value, b.enum_value);
+  swap(a.req_enum_value, b.req_enum_value);
 }
 
 template void MyField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -455,10 +605,7 @@ namespace cpp2 {
 
 StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
   if (srcObj.u) u.reset(new ::cpp2::MyUnion(*srcObj.u));
-  aDouble = srcObj.aDouble;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.aDouble = srcObj.__isset.aDouble;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  if (srcObj.aDouble) aDouble.reset(new double(*srcObj.aDouble));
   f = srcObj.f;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.f = srcObj.__isset.f;
@@ -481,11 +628,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, double aDouble__arg, ::cpp2::MyField f__arg) :
+StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, ::std::unique_ptr<double> aDouble__arg, ::cpp2::MyField f__arg) :
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
     f(std::move(f__arg)) {
-  __isset.aDouble = true;
   __isset.f = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -511,8 +657,13 @@ bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
       return false;
     }
   }
-  if (!(lhs.aDouble == rhs.aDouble)) {
+  if (!!lhs.aDouble != !!rhs.aDouble) {
     return false;
+  }
+  if (!!lhs.aDouble) {
+    if (lhs.aDouble != rhs.aDouble && !(*lhs.aDouble == *rhs.aDouble)) {
+      return false;
+    }
   }
   if (!(lhs.f == rhs.f)) {
     return false;
@@ -532,8 +683,13 @@ bool StructWithUnion::operator<(const StructWithUnion& rhs) const {
       return *lhs.u < *rhs.u;
     }
   }
-  if (!(lhs.aDouble == rhs.aDouble)) {
-    return lhs.aDouble < rhs.aDouble;
+  if (!!lhs.aDouble != !!rhs.aDouble) {
+    return !!lhs.aDouble < !!rhs.aDouble;
+  }
+  if (!!lhs.aDouble) {
+    if (lhs.aDouble != rhs.aDouble && !(*lhs.aDouble == *rhs.aDouble)) {
+      return *lhs.aDouble < *rhs.aDouble;
+    }
   }
   if (!(lhs.f == rhs.f)) {
     return lhs.f < rhs.f;
@@ -553,7 +709,7 @@ const ::cpp2::MyField& StructWithUnion::get_f() const& {
 void swap(StructWithUnion& a, StructWithUnion& b) {
   using ::std::swap;
   swap(a.u, b.u);
-  swap(a.aDouble_ref().value(), b.aDouble_ref().value());
+  swap(a.aDouble, b.aDouble);
   swap(a.f_ref().value(), b.f_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);

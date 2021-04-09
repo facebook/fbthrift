@@ -20,6 +20,17 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::cpp2::MyEnum>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
+
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::cpp2::TypedEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -45,13 +56,22 @@ void reset_field<::cpp2::MyField>(
     ::cpp2::MyField& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.opt_value_ref().copy_from(default_inst<::cpp2::MyField>().opt_value_ref());
+      obj.opt_value.reset();
       return;
     case 1:
-      obj.value_ref().copy_from(default_inst<::cpp2::MyField>().value_ref());
+      obj.value.reset();
       return;
     case 2:
-      obj.req_value_ref().copy_from(default_inst<::cpp2::MyField>().req_value_ref());
+      obj.req_value.reset();
+      return;
+    case 3:
+      obj.opt_enum_value.reset();
+      return;
+    case 4:
+      obj.enum_value.reset();
+      return;
+    case 5:
+      obj.req_enum_value.reset();
       return;
   }
 }
@@ -80,7 +100,7 @@ void reset_field<::cpp2::StructWithUnion>(
       obj.u.reset();
       return;
     case 1:
-      obj.aDouble_ref().copy_from(default_inst<::cpp2::StructWithUnion>().aDouble_ref());
+      obj.aDouble.reset();
       return;
     case 2:
       obj.f_ref().copy_from(default_inst<::cpp2::StructWithUnion>().f_ref());

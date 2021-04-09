@@ -39,6 +39,12 @@ struct VisitByThriftId<::cpp2::MyField> {
       return f(1, static_cast<T&&>(t).value_ref());
     case 3:
       return f(2, static_cast<T&&>(t).req_value_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).opt_enum_value_ref());
+    case 5:
+      return f(4, static_cast<T&&>(t).enum_value_ref());
+    case 6:
+      return f(5, static_cast<T&&>(t).req_enum_value_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::MyField");
     }

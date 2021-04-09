@@ -12,6 +12,15 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+  type::Zero,
+  type::One,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+  "Zero",
+  "One",
+}};
+
 const std::array<::cpp2::TypedEnum, 2> TEnumDataStorage<::cpp2::TypedEnum>::values = {{
   type::VAL1,
   type::VAL2,
@@ -43,20 +52,29 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnion>::fields
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyField>::fields_names = {{
+const std::array<folly::StringPiece, 6> TStructDataStorage<::cpp2::MyField>::fields_names = {{
   "opt_value",
   "value",
   "req_value",
+  "opt_enum_value",
+  "enum_value",
+  "req_enum_value",
 }};
-const std::array<int16_t, 3> TStructDataStorage<::cpp2::MyField>::fields_ids = {{
+const std::array<int16_t, 6> TStructDataStorage<::cpp2::MyField>::fields_ids = {{
   1,
   2,
   3,
+  4,
+  5,
+  6,
 }};
-const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::MyField>::fields_types = {{
+const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::MyField>::fields_types = {{
   TType::T_I64,
   TType::T_I64,
   TType::T_I64,
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_I32,
 }};
 
 const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{

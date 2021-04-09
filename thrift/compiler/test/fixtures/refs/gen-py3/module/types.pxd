@@ -50,11 +50,18 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyEnum "::cpp2::MyEnum":
+        pass
+
     cdef cppclass cTypedEnum "::cpp2::TypedEnum":
         pass
 
 
 
+
+
+cdef class MyEnum(thrift.py3.types.CompiledEnum):
+    pass
 
 
 cdef class TypedEnum(thrift.py3.types.CompiledEnum):
@@ -84,10 +91,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const cint32_t& get_anInteger() const
-        cint32_t& set_anInteger(const cint32_t&)
-        const string& get_aString() const
-        string& set_aString(const string&)
+        const unique_ptr[cint32_t]& get_anInteger() const
+        unique_ptr[cint32_t]& set_anInteger(const cint32_t&)
+        const unique_ptr[string]& get_aString() const
+        unique_ptr[string]& set_aString(const string&)
 
 
     cdef cppclass cMyField "::cpp2::MyField":
@@ -99,12 +106,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        __optional_field_ref[cint64_t] opt_value_ref()
-        __field_ref[cint64_t] value_ref()
-        __required_field_ref[cint64_t] req_value_ref()
-        cint64_t opt_value
-        cint64_t value
-        cint64_t req_value
+        unique_ptr[cint64_t] opt_value
+        unique_ptr[cint64_t] value
+        unique_ptr[cint64_t] req_value
+        unique_ptr[cMyEnum] opt_enum_value
+        unique_ptr[cMyEnum] enum_value
+        unique_ptr[cMyEnum] req_enum_value
 
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
@@ -130,10 +137,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithUnion&)
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
-        __field_ref[double] aDouble_ref()
         __field_ref[cMyField] f_ref()
         unique_ptr[cMyUnion] u
-        double aDouble
+        unique_ptr[double] aDouble
         cMyField f
 
 
@@ -287,6 +293,9 @@ cdef class MyUnion(thrift.py3.types.Union):
 cdef class MyField(thrift.py3.types.Struct):
     cdef shared_ptr[cMyField] _cpp_obj
     cdef _fbthrift_types_fields.__MyField_FieldsSetter _fields_setter
+    cdef object __fbthrift_cached_opt_enum_value
+    cdef object __fbthrift_cached_enum_value
+    cdef object __fbthrift_cached_req_enum_value
 
     @staticmethod
     cdef create(shared_ptr[cMyField])

@@ -18,6 +18,18 @@ using ThriftService = ::apache::thrift::metadata::ThriftService;
 using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
+void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums_ref()->emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name_ref() = "module.MyEnum";
+  using EnumTraits = TEnumTraits<::cpp2::MyEnum>;
+  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+  }
+}
 void EnumMetadata<::cpp2::TypedEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums_ref()->emplace("module.TypedEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
@@ -70,6 +82,9 @@ StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
     std::make_tuple(1, "opt_value", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
     std::make_tuple(2, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
     std::make_tuple(3, "req_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "opt_enum_value", true, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "enum_value", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(6, "req_enum_value", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyField_fields) {
     ::apache::thrift::metadata::ThriftField field;

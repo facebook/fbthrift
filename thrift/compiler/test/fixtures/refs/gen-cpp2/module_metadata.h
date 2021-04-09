@@ -16,6 +16,11 @@ namespace detail {
 namespace md {
 
 template <>
+class EnumMetadata<::cpp2::MyEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class EnumMetadata<::cpp2::TypedEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
