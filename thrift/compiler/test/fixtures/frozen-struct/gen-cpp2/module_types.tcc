@@ -94,15 +94,13 @@ _readField_strField:
 _readField_listField:
   {
     _readState.beforeSubobject(iprot);
-
     this->listField = ::std::vector<::std::int16_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::readWithContext(*iprot, this->listField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.listField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -115,15 +113,13 @@ _readField_listField:
 _readField_mapField:
   {
     _readState.beforeSubobject(iprot);
-
     this->mapField = ::std::map<::std::string, ::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::readWithContext(*iprot, this->mapField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.mapField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -136,14 +132,12 @@ _readField_mapField:
 _readField_inclAField:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::readWithContext(*iprot, this->inclAField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.inclAField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -156,14 +150,12 @@ _readField_inclAField:
 _readField_inclBField:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::readWithContext(*iprot, this->inclBField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.inclBField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

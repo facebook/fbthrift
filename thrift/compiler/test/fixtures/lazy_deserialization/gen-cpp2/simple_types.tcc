@@ -91,15 +91,13 @@ _readField_field3:
     __fbthrift_isDeserialized_.field3 = false;
   } else {
     _readState.beforeSubobject(iprot);
-
     this->field3 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field3 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -112,15 +110,13 @@ _readField_field3:
 _readField_field4:
   {
     _readState.beforeSubobject(iprot);
-
     this->field4 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field4, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

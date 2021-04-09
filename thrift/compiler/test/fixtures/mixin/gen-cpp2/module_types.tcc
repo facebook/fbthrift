@@ -180,14 +180,12 @@ void Mixin2::readNoXfer(Protocol_* iprot) {
 _readField_m1:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::readWithContext(*iprot, this->m1, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m1 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -459,14 +457,12 @@ _readField_field4:
 _readField_m2:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::readWithContext(*iprot, this->m2, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m2 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -479,14 +475,12 @@ _readField_m2:
 _readField_m3:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::readWithContext(*iprot, this->m3, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.m3 = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

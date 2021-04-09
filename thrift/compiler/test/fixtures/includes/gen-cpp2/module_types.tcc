@@ -48,14 +48,12 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_MyIncludedField:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Included>::readWithContext(*iprot, this->MyIncludedField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyIncludedField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -68,14 +66,12 @@ _readField_MyIncludedField:
 _readField_MyOtherIncludedField:
   {
     _readState.beforeSubobject(iprot);
-
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Included>::readWithContext(*iprot, this->MyOtherIncludedField, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyOtherIncludedField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

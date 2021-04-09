@@ -52,10 +52,6 @@ _readField_<%field:cpp_name%>:
 <%^field:lazy?%>
   {
 <%/field:lazy?%>
-<%#type:resolves_to_container_or_struct?%>
-    _readState.beforeSubobject(iprot);
-
-<%/type:resolves_to_container_or_struct?%>
     <% > module_types_tcc/deserialize_field%>
 
 <%#program:enforce_required?%><%#field:required?%>
@@ -66,10 +62,6 @@ _readField_<%field:cpp_name%>:
     this->__isset.<%field:cpp_name%> = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:cpp_ref?%><%/field:required?%>
-<%#type:resolves_to_container_or_struct?%>
-
-    _readState.afterSubobject(iprot);
-<%/type:resolves_to_container_or_struct?%>
   }
 
 <%^last?%>

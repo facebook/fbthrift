@@ -93,15 +93,13 @@ _readField_opt_fieldA:
 _readField_fieldB:
   {
     _readState.beforeSubobject(iprot);
-
     this->fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::readWithContext(*iprot, this->fieldB, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldB = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -114,12 +112,10 @@ _readField_fieldB:
 _readField_req_fieldB:
   {
     _readState.beforeSubobject(iprot);
-
     this->req_fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::readWithContext(*iprot, this->req_fieldB, _readState);
-    
-
     _readState.afterSubobject(iprot);
+    
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -132,15 +128,13 @@ _readField_req_fieldB:
 _readField_opt_fieldB:
   {
     _readState.beforeSubobject(iprot);
-
     this->opt_fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::readWithContext(*iprot, this->opt_fieldB, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.opt_fieldB = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -153,15 +147,13 @@ _readField_opt_fieldB:
 _readField_fieldC:
   {
     _readState.beforeSubobject(iprot);
-
     this->fieldC = ::std::set<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, this->fieldC, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldC = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -174,12 +166,10 @@ _readField_fieldC:
 _readField_req_fieldC:
   {
     _readState.beforeSubobject(iprot);
-
     this->req_fieldC = ::std::set<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, this->req_fieldC, _readState);
-    
-
     _readState.afterSubobject(iprot);
+    
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -192,15 +182,13 @@ _readField_req_fieldC:
 _readField_opt_fieldC:
   {
     _readState.beforeSubobject(iprot);
-
     this->opt_fieldC = ::std::set<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::readWithContext(*iprot, this->opt_fieldC, _readState);
+    _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.opt_fieldC = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

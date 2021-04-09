@@ -35,15 +35,8 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
           this->set_<%field:cpp_name%>();
-<%#type:resolves_to_container_or_struct?%>
-          _readState.beforeSubobject(iprot);
-
-<%/type:resolves_to_container_or_struct?%>
           <% > module_types_tcc/deserialize_field %>
 
-<%#type:resolves_to_container_or_struct?%>
-          _readState.afterSubobject(iprot);
-<%/type:resolves_to_container_or_struct?%>
         } else {
           _readState.skip(iprot);
         }
