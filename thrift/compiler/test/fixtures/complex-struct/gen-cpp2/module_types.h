@@ -852,7 +852,7 @@ class MyStructFloatFieldThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructFloatFieldThrowExp >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructFloatFieldThrowExp>;
   friend void swap(MyStructFloatFieldThrowExp& a, MyStructFloatFieldThrowExp& b);
 };
 
@@ -991,7 +991,7 @@ class MyStructMapFloatThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructMapFloatThrowExp >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructMapFloatThrowExp>;
   friend void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b);
 };
 
@@ -1059,7 +1059,7 @@ class MyDataItem final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+  friend class ::apache::thrift::Cpp2Ops<MyDataItem>;
   friend void swap(MyDataItem& a, MyDataItem& b);
 };
 
@@ -2045,7 +2045,7 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -2084,7 +2084,7 @@ class SimpleStruct final  {
 
   SimpleStruct() :
       age(60LL),
-      name(apache::thrift::StringTraits< std::string>::fromStringLiteral("Batman")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman")) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg);
@@ -2191,7 +2191,7 @@ class SimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SimpleStruct >;
+  friend class ::apache::thrift::Cpp2Ops<SimpleStruct>;
   friend void swap(SimpleStruct& a, SimpleStruct& b);
 };
 
@@ -2844,7 +2844,7 @@ class ComplexNestedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexNestedStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexNestedStruct>;
   friend void swap(ComplexNestedStruct& a, ComplexNestedStruct& b);
 };
 
@@ -3399,7 +3399,7 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -4201,7 +4201,7 @@ class defaultStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< defaultStruct >;
+  friend class ::apache::thrift::Cpp2Ops<defaultStruct>;
   friend void swap(defaultStruct& a, defaultStruct& b);
 };
 
@@ -4580,7 +4580,7 @@ class MyStructTypeDef final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructTypeDef >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructTypeDef>;
   friend void swap(MyStructTypeDef& a, MyStructTypeDef& b);
 };
 
@@ -5009,7 +5009,7 @@ class MyUnionFloatFieldThrowExp final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyUnionFloatFieldThrowExp >;
+  friend class ::apache::thrift::Cpp2Ops<MyUnionFloatFieldThrowExp>;
   friend void swap(MyUnionFloatFieldThrowExp& a, MyUnionFloatFieldThrowExp& b);
 };
 
@@ -5218,7 +5218,7 @@ class TypeRemapped final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< TypeRemapped >;
+  friend class ::apache::thrift::Cpp2Ops<TypeRemapped>;
   friend void swap(TypeRemapped& a, TypeRemapped& b);
 };
 
@@ -5290,7 +5290,7 @@ class emptyXcep final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< emptyXcep >;
+  friend class ::apache::thrift::Cpp2Ops<emptyXcep>;
   friend void swap(emptyXcep& a, emptyXcep& b);
 };
 
@@ -5432,7 +5432,7 @@ class reqXcep final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< reqXcep >;
+  friend class ::apache::thrift::Cpp2Ops<reqXcep>;
   friend void swap(reqXcep& a, reqXcep& b);
 };
 
@@ -5587,7 +5587,7 @@ class optXcep final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< optXcep >;
+  friend class ::apache::thrift::Cpp2Ops<optXcep>;
   friend void swap(optXcep& a, optXcep& b);
 };
 
@@ -5868,7 +5868,7 @@ class complexException final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< complexException >;
+  friend class ::apache::thrift::Cpp2Ops<complexException>;
   friend void swap(complexException& a, complexException& b);
 };
 

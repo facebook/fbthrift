@@ -642,7 +642,7 @@ class decorated_struct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< decorated_struct >;
+  friend class ::apache::thrift::Cpp2Ops<decorated_struct>;
   friend void swap(decorated_struct& a, decorated_struct& b);
 };
 
@@ -975,7 +975,7 @@ class ContainerStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ContainerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ContainerStruct>;
   friend void swap(ContainerStruct& a, ContainerStruct& b);
 };
 
@@ -1080,7 +1080,7 @@ class CppTypeStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< CppTypeStruct >;
+  friend class ::apache::thrift::Cpp2Ops<CppTypeStruct>;
   friend void swap(CppTypeStruct& a, CppTypeStruct& b);
 };
 
@@ -1190,7 +1190,7 @@ class VirtualStruct  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< VirtualStruct >;
+  friend class ::apache::thrift::Cpp2Ops<VirtualStruct>;
   friend void swap(VirtualStruct& a, VirtualStruct& b);
 };
 
@@ -1331,7 +1331,7 @@ class MyStructWithForwardRefEnum final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructWithForwardRefEnum >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructWithForwardRefEnum>;
   friend void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b);
 };
 
@@ -1472,7 +1472,7 @@ class TrivialNumeric final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< TrivialNumeric >;
+  friend class ::apache::thrift::Cpp2Ops<TrivialNumeric>;
   friend void swap(TrivialNumeric& a, TrivialNumeric& b);
 };
 
@@ -1612,7 +1612,7 @@ class TrivialNestedWithDefault final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< TrivialNestedWithDefault >;
+  friend class ::apache::thrift::Cpp2Ops<TrivialNestedWithDefault>;
   friend void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b);
 };
 
@@ -1755,7 +1755,7 @@ class ComplexString final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexString >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexString>;
   friend void swap(ComplexString& a, ComplexString& b);
 };
 
@@ -1793,8 +1793,8 @@ class ComplexNestedWithDefault final  {
  public:
 
   ComplexNestedWithDefault() :
-      z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      z(apache::thrift::StringTraits<std::string>::fromStringLiteral("4")),
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg);
@@ -1900,7 +1900,7 @@ class ComplexNestedWithDefault final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexNestedWithDefault >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexNestedWithDefault>;
   friend void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b);
 };
 
@@ -2130,7 +2130,7 @@ class MinPadding final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MinPadding >;
+  friend class ::apache::thrift::Cpp2Ops<MinPadding>;
   friend void swap(MinPadding& a, MinPadding& b);
 };
 
@@ -2195,7 +2195,7 @@ class MyDataItem final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+  friend class ::apache::thrift::Cpp2Ops<MyDataItem>;
   friend void swap(MyDataItem& a, MyDataItem& b);
 };
 
@@ -2403,7 +2403,7 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -2510,7 +2510,7 @@ class Renaming final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Renaming >;
+  friend class ::apache::thrift::Cpp2Ops<Renaming>;
   friend void swap(Renaming& a, Renaming& b);
 };
 
@@ -2653,7 +2653,7 @@ class AnnotatedTypes final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnnotatedTypes >;
+  friend class ::apache::thrift::Cpp2Ops<AnnotatedTypes>;
   friend void swap(AnnotatedTypes& a, AnnotatedTypes& b);
 };
 
@@ -2759,7 +2759,7 @@ class ForwardUsageStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ForwardUsageStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ForwardUsageStruct>;
   friend void swap(ForwardUsageStruct& a, ForwardUsageStruct& b);
 };
 
@@ -2876,7 +2876,7 @@ class ForwardUsageRoot final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ForwardUsageRoot >;
+  friend class ::apache::thrift::Cpp2Ops<ForwardUsageRoot>;
   friend void swap(ForwardUsageRoot& a, ForwardUsageRoot& b);
 };
 
@@ -2982,7 +2982,7 @@ class ForwardUsageByRef final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ForwardUsageByRef >;
+  friend class ::apache::thrift::Cpp2Ops<ForwardUsageByRef>;
   friend void swap(ForwardUsageByRef& a, ForwardUsageByRef& b);
 };
 
@@ -3050,7 +3050,7 @@ class NoexceptMoveEmpty final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveEmpty >;
+  friend class ::apache::thrift::Cpp2Ops<NoexceptMoveEmpty>;
   friend void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b);
 };
 
@@ -3157,7 +3157,7 @@ class NoexceptMoveSimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveSimpleStruct >;
+  friend class ::apache::thrift::Cpp2Ops<NoexceptMoveSimpleStruct>;
   friend void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b);
 };
 
@@ -3553,7 +3553,7 @@ class NoexceptMoveComplexStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveComplexStruct >;
+  friend class ::apache::thrift::Cpp2Ops<NoexceptMoveComplexStruct>;
   friend void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b);
 };
 
@@ -3828,7 +3828,7 @@ class NoExceptMoveUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NoExceptMoveUnion >;
+  friend class ::apache::thrift::Cpp2Ops<NoExceptMoveUnion>;
   friend void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b);
 };
 
@@ -4104,7 +4104,7 @@ class AllocatorAware final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AllocatorAware >;
+  friend class ::apache::thrift::Cpp2Ops<AllocatorAware>;
   friend void swap(AllocatorAware& a, AllocatorAware& b);
 };
 
@@ -4231,7 +4231,7 @@ class AllocatorAware2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AllocatorAware2 >;
+  friend class ::apache::thrift::Cpp2Ops<AllocatorAware2>;
   friend void swap(AllocatorAware2& a, AllocatorAware2& b);
 };
 
@@ -4406,7 +4406,7 @@ class TypedefStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< TypedefStruct >;
+  friend class ::apache::thrift::Cpp2Ops<TypedefStruct>;
   friend void swap(TypedefStruct& a, TypedefStruct& b);
 };
 

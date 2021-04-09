@@ -290,7 +290,7 @@ class <%struct:name%> <%!
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< <%struct:name%> >;
+  friend class ::apache::thrift::Cpp2Ops<<%struct:name%>>;
   friend void swap(<%struct:name%>& a, <%struct:name%>& b);
   <%#program:tablebased?%>
   <%^struct:union?%>

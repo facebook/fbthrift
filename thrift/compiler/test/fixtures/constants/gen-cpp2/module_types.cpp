@@ -158,7 +158,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Internship::__clear() {
   // clear all fields
   weeks = 0;
-  title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   employer =  ::cpp2::Company::FACEBOOK;
   compensation = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -352,7 +352,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
   a = 1234567;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>");
+  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -455,7 +455,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
   a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   c.__clear();
   d.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -598,7 +598,7 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   b = 0;
   c.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

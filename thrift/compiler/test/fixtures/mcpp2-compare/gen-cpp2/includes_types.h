@@ -191,7 +191,7 @@ class AStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AStruct>;
   friend void swap(AStruct& a, AStruct& b);
 };
 
@@ -275,7 +275,7 @@ class AStructB final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AStructB >;
+  friend class ::apache::thrift::Cpp2Ops<AStructB>;
   friend void swap(AStructB& a, AStructB& b);
 };
 

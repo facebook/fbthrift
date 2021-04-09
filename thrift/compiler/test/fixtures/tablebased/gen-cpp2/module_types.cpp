@@ -175,9 +175,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TrivialTypesStruct::__clear() {
   // clear all fields
   fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldC = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldD = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
+  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  fieldD = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   fieldE =  ::test::fixtures::tablebased::ExampleEnum::ZERO;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

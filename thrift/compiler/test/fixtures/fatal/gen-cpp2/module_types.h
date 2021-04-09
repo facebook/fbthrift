@@ -1425,7 +1425,7 @@ class union1 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< union1 >;
+  friend class ::apache::thrift::Cpp2Ops<union1>;
   friend void swap(union1& a, union1& b);
 };
 
@@ -1826,7 +1826,7 @@ class union2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< union2 >;
+  friend class ::apache::thrift::Cpp2Ops<union2>;
   friend void swap(union2& a, union2& b);
 };
 
@@ -2227,7 +2227,7 @@ class union3 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< union3 >;
+  friend class ::apache::thrift::Cpp2Ops<union3>;
   friend void swap(union3& a, union3& b);
 };
 
@@ -2372,7 +2372,7 @@ class structA final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structA >;
+  friend class ::apache::thrift::Cpp2Ops<structA>;
   friend void swap(structA& a, structA& b);
 };
 
@@ -2850,7 +2850,7 @@ class unionA final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< unionA >;
+  friend class ::apache::thrift::Cpp2Ops<unionA>;
   friend void swap(unionA& a, unionA& b);
 };
 
@@ -2991,7 +2991,7 @@ class structB final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structB >;
+  friend class ::apache::thrift::Cpp2Ops<structB>;
   friend void swap(structB& a, structB& b);
 };
 
@@ -4039,7 +4039,7 @@ class structC final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structC >;
+  friend class ::apache::thrift::Cpp2Ops<structC>;
   friend void swap(structC& a, structC& b);
 };
 
@@ -4315,7 +4315,7 @@ class struct1 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct1 >;
+  friend class ::apache::thrift::Cpp2Ops<struct1>;
   friend void swap(struct1& a, struct1& b);
 };
 
@@ -4625,7 +4625,7 @@ class struct2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct2 >;
+  friend class ::apache::thrift::Cpp2Ops<struct2>;
   friend void swap(struct2& a, struct2& b);
 };
 
@@ -5287,7 +5287,7 @@ class struct3 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct3 >;
+  friend class ::apache::thrift::Cpp2Ops<struct3>;
   friend void swap(struct3& a, struct3& b);
 };
 
@@ -5477,7 +5477,7 @@ class struct4 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct4 >;
+  friend class ::apache::thrift::Cpp2Ops<struct4>;
   friend void swap(struct4& a, struct4& b);
 };
 
@@ -5721,7 +5721,7 @@ class struct5 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct5 >;
+  friend class ::apache::thrift::Cpp2Ops<struct5>;
   friend void swap(struct5& a, struct5& b);
 };
 
@@ -5832,7 +5832,7 @@ class struct_binary final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct_binary >;
+  friend class ::apache::thrift::Cpp2Ops<struct_binary>;
   friend void swap(struct_binary& a, struct_binary& b);
 };
 
@@ -6003,7 +6003,7 @@ class dep_A_struct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< dep_A_struct >;
+  friend class ::apache::thrift::Cpp2Ops<dep_A_struct>;
   friend void swap(dep_A_struct& a, dep_A_struct& b);
 };
 
@@ -6174,7 +6174,7 @@ class dep_B_struct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< dep_B_struct >;
+  friend class ::apache::thrift::Cpp2Ops<dep_B_struct>;
   friend void swap(dep_B_struct& a, dep_B_struct& b);
 };
 
@@ -6281,7 +6281,7 @@ class annotated final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< annotated >;
+  friend class ::apache::thrift::Cpp2Ops<annotated>;
   friend void swap(annotated& a, annotated& b);
 };
 
@@ -8180,7 +8180,7 @@ class union_with_special_names final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< union_with_special_names >;
+  friend class ::apache::thrift::Cpp2Ops<union_with_special_names>;
   friend void swap(union_with_special_names& a, union_with_special_names& b);
 };
 
@@ -9205,7 +9205,7 @@ class struct_with_special_names final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct_with_special_names >;
+  friend class ::apache::thrift::Cpp2Ops<struct_with_special_names>;
   friend void swap(struct_with_special_names& a, struct_with_special_names& b);
 };
 
@@ -9452,7 +9452,7 @@ class struct_with_indirections final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< struct_with_indirections >;
+  friend class ::apache::thrift::Cpp2Ops<struct_with_indirections>;
   friend void swap(struct_with_indirections& a, struct_with_indirections& b);
 };
 

@@ -309,7 +309,7 @@ class SomeStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SomeStruct >;
+  friend class ::apache::thrift::Cpp2Ops<SomeStruct>;
   friend void swap(SomeStruct& a, SomeStruct& b);
 };
 

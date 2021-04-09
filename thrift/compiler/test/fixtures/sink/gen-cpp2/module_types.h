@@ -173,7 +173,7 @@ class InitialResponse final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< InitialResponse >;
+  friend class ::apache::thrift::Cpp2Ops<InitialResponse>;
   friend void swap(InitialResponse& a, InitialResponse& b);
 };
 
@@ -284,7 +284,7 @@ class FinalResponse final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FinalResponse >;
+  friend class ::apache::thrift::Cpp2Ops<FinalResponse>;
   friend void swap(FinalResponse& a, FinalResponse& b);
 };
 
@@ -395,7 +395,7 @@ class SinkPayload final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SinkPayload >;
+  friend class ::apache::thrift::Cpp2Ops<SinkPayload>;
   friend void swap(SinkPayload& a, SinkPayload& b);
 };
 
@@ -506,7 +506,7 @@ class CompatibleWithKeywordSink final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< CompatibleWithKeywordSink >;
+  friend class ::apache::thrift::Cpp2Ops<CompatibleWithKeywordSink>;
   friend void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b);
 };
 
@@ -621,7 +621,7 @@ class InitialException final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< InitialException >;
+  friend class ::apache::thrift::Cpp2Ops<InitialException>;
   friend void swap(InitialException& a, InitialException& b);
 };
 
@@ -736,7 +736,7 @@ class SinkException1 final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SinkException1 >;
+  friend class ::apache::thrift::Cpp2Ops<SinkException1>;
   friend void swap(SinkException1& a, SinkException1& b);
 };
 
@@ -847,7 +847,7 @@ class SinkException2 final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SinkException2 >;
+  friend class ::apache::thrift::Cpp2Ops<SinkException2>;
   friend void swap(SinkException2& a, SinkException2& b);
 };
 

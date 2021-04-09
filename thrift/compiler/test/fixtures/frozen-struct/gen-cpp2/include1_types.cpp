@@ -54,7 +54,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void IncludedA::__clear() {
   // clear all fields
   i32Field = 0;
-  strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -158,7 +158,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   myEnum =  ::cpp2::MyEnum::MyValue1;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

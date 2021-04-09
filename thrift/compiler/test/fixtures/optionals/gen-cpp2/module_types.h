@@ -379,7 +379,7 @@ class Color final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Color >;
+  friend class ::apache::thrift::Cpp2Ops<Color>;
   friend void swap(Color& a, Color& b);
 };
 
@@ -643,7 +643,7 @@ class Vehicle final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Vehicle >;
+  friend class ::apache::thrift::Cpp2Ops<Vehicle>;
   friend void swap(Vehicle& a, Vehicle& b);
 };
 
@@ -1076,7 +1076,7 @@ class Person final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Person >;
+  friend class ::apache::thrift::Cpp2Ops<Person>;
   friend void swap(Person& a, Person& b);
 };
 

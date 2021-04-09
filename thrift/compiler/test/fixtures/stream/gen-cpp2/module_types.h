@@ -93,7 +93,7 @@ class FooEx final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FooEx >;
+  friend class ::apache::thrift::Cpp2Ops<FooEx>;
   friend void swap(FooEx& a, FooEx& b);
 };
 

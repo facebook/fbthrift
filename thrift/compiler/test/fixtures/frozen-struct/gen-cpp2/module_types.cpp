@@ -107,7 +107,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ModuleA::__clear() {
   // clear all fields
   i32Field = 0;
-  strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   listField.clear();
   mapField.clear();
   inclAField.__clear();

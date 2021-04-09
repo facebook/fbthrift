@@ -52,9 +52,9 @@ containerStruct2::containerStruct2() :
   2,
   3,
   4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
+      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -116,10 +116,10 @@ void containerStruct2::__clear() {
   fieldC.clear();
   req_fieldC.clear();
   opt_fieldC.clear();
-  fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

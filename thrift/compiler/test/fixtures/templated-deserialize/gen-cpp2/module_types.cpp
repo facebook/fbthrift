@@ -247,13 +247,13 @@ containerStruct::containerStruct() :
   2,
   3,
   4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
       fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
+      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
+  {apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
   13}}}),
@@ -344,8 +344,8 @@ void containerStruct::__clear() {
   fieldA = 0;
   fieldB.clear();
   fieldC.clear();
-  fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();

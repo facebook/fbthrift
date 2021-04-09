@@ -127,7 +127,7 @@ class Banal final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Banal >;
+  friend class ::apache::thrift::Cpp2Ops<Banal>;
   friend void swap(Banal& a, Banal& b);
 };
 
@@ -243,7 +243,7 @@ class Fiery final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Fiery >;
+  friend class ::apache::thrift::Cpp2Ops<Fiery>;
   friend void swap(Fiery& a, Fiery& b);
 };
 
@@ -365,7 +365,7 @@ class Serious final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Serious >;
+  friend class ::apache::thrift::Cpp2Ops<Serious>;
   friend void swap(Serious& a, Serious& b);
 };
 
@@ -524,7 +524,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexFieldNames >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexFieldNames>;
   friend void swap(ComplexFieldNames& a, ComplexFieldNames& b);
 };
 
@@ -683,7 +683,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< CustomFieldNames >;
+  friend class ::apache::thrift::Cpp2Ops<CustomFieldNames>;
   friend void swap(CustomFieldNames& a, CustomFieldNames& b);
 };
 

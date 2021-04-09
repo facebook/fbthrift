@@ -173,7 +173,7 @@ class Mixin1 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Mixin1 >;
+  friend class ::apache::thrift::Cpp2Ops<Mixin1>;
   friend void swap(Mixin1& a, Mixin1& b);
 };
 
@@ -321,7 +321,7 @@ class Mixin2 final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Mixin2 >;
+  friend class ::apache::thrift::Cpp2Ops<Mixin2>;
   friend void swap(Mixin2& a, Mixin2& b);
 };
 
@@ -432,7 +432,7 @@ class Mixin3Base final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Mixin3Base >;
+  friend class ::apache::thrift::Cpp2Ops<Mixin3Base>;
   friend void swap(Mixin3Base& a, Mixin3Base& b);
 };
 
@@ -623,7 +623,7 @@ class Foo final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Foo >;
+  friend class ::apache::thrift::Cpp2Ops<Foo>;
   friend void swap(Foo& a, Foo& b);
 };
 

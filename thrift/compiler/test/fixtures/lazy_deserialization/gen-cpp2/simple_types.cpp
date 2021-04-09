@@ -86,8 +86,8 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> fi
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Foo::__clear() {
   // clear all fields
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  field2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   field3.clear();
   field4.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

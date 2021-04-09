@@ -398,10 +398,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyBoolField(0),
       MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
-  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
-  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
+      MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")},
+  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}}) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -447,11 +447,11 @@ void MyStruct::__clear() {
   // clear all fields
   MyBoolField = 0;
   MyIntField = 12LL;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
-  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   MyBinaryListField4.clear();
   MyMapEnumAndInt.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1212,8 +1212,8 @@ void AnException::__clear() {
   // clear all fields
   code = 0;
   req_code = 0;
-  message2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  req_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  message2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  req_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   exception_list.clear();
   exception_set.clear();
   exception_map.clear();
@@ -1547,7 +1547,7 @@ void AnotherException::__clear() {
   // clear all fields
   code = 0;
   req_code = 0;
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1653,9 +1653,9 @@ containerStruct::containerStruct() :
   2,
   3,
   4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
       fieldF(std::initializer_list<::std::vector<::std::int32_t>>{std::initializer_list<::std::int32_t>{1,
   3,
   5,
@@ -1667,11 +1667,11 @@ containerStruct::containerStruct() :
   10,
   12}}),
       fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
+      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
+  {apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
   13}}}),
@@ -1792,10 +1792,10 @@ void containerStruct::__clear() {
   fieldC.clear();
   req_fieldC.clear();
   opt_fieldC.clear();
-  fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();
@@ -1828,7 +1828,7 @@ void containerStruct::__clear() {
   fieldAC =  ::some::valid::ns::MyEnumB::AField;
   fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
   fieldAE.clear();
-  ::apache::thrift::apply_indirection(fieldSD) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
+  ::apache::thrift::apply_indirection(fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2788,9 +2788,9 @@ AnnotatedStruct::AnnotatedStruct() :
       req_ref_type_unique(std::make_unique<::std::vector<::std::string>>()),
       base_type(0),
       indirection_a(0),
-      iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
-      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {}
+      iobuf_type_val(apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value")),
+      iobuf_ptr_val(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
+      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2889,8 +2889,8 @@ void AnnotatedStruct::__clear() {
   set_type.clear();
   map_type.clear();
   map_struct_type.clear();
-  iobuf_type = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("");
-  iobuf_ptr = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
+  iobuf_type = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("");
+  iobuf_ptr = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   list_i32_template.clear();
   list_string_template.clear();
   set_template.clear();
@@ -2902,8 +2902,8 @@ void AnnotatedStruct::__clear() {
   ::apache::thrift::apply_indirection(indirection_a) = 0;
   indirection_b.clear();
   indirection_c.clear();
-  iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
-  iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
+  iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value");
+  iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
   struct_struct.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

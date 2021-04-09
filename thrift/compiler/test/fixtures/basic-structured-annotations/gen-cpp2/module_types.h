@@ -202,7 +202,7 @@ class structured_annotation_inline final  {
 
   structured_annotation_inline() :
       count(0),
-      name(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacaba")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg);
@@ -309,7 +309,7 @@ class structured_annotation_inline final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structured_annotation_inline >;
+  friend class ::apache::thrift::Cpp2Ops<structured_annotation_inline>;
   friend void swap(structured_annotation_inline& a, structured_annotation_inline& b);
 };
 
@@ -347,7 +347,7 @@ class structured_annotation_with_default final  {
  public:
 
   structured_annotation_with_default() :
-      name(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacabadabacaba")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba")) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg);
@@ -421,7 +421,7 @@ class structured_annotation_with_default final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structured_annotation_with_default >;
+  friend class ::apache::thrift::Cpp2Ops<structured_annotation_with_default>;
   friend void swap(structured_annotation_with_default& a, structured_annotation_with_default& b);
 };
 
@@ -528,7 +528,7 @@ class structured_annotation_forward final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structured_annotation_forward >;
+  friend class ::apache::thrift::Cpp2Ops<structured_annotation_forward>;
   friend void swap(structured_annotation_forward& a, structured_annotation_forward& b);
 };
 
@@ -703,7 +703,7 @@ class structured_annotation_recursive final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structured_annotation_recursive >;
+  friend class ::apache::thrift::Cpp2Ops<structured_annotation_recursive>;
   friend void swap(structured_annotation_recursive& a, structured_annotation_recursive& b);
 };
 
@@ -846,7 +846,7 @@ class structured_annotation_nested final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< structured_annotation_nested >;
+  friend class ::apache::thrift::Cpp2Ops<structured_annotation_nested>;
   friend void swap(structured_annotation_nested& a, structured_annotation_nested& b);
 };
 
@@ -1063,7 +1063,7 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -1178,7 +1178,7 @@ class MyException final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyException >;
+  friend class ::apache::thrift::Cpp2Ops<MyException>;
   friend void swap(MyException& a, MyException& b);
 };
 
@@ -1453,7 +1453,7 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 

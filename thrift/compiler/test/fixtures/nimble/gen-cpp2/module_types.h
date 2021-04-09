@@ -258,7 +258,7 @@ class BasicTypes final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< BasicTypes >;
+  friend class ::apache::thrift::Cpp2Ops<BasicTypes>;
   friend void swap(BasicTypes& a, BasicTypes& b);
 };
 

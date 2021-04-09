@@ -214,9 +214,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Vehicle::__clear() {
   // clear all fields
   color.__clear();
-  licensePlate = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  description = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   hasAC = false;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -390,9 +390,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Person::__clear() {
   // clear all fields
   id = 0;
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   age = 0;
-  address = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   favoriteColor.__clear();
   friends.clear();
   bestFriend = 0;

@@ -83,7 +83,7 @@ MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructNestedAnnotation::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -193,11 +193,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   majorVer = 0;
-  package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  annotation_with_quote = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  class_ = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  annotation_with_trailing_comma = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  empty_annotations = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -322,7 +322,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SecretStruct::__clear() {
   // clear all fields
   id = 0;
-  password = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

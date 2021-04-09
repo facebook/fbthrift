@@ -94,7 +94,7 @@ void MyStructFloatFieldThrowExp::__clear() {
   // clear all fields
   myLongField = 0;
   MyByteField = 0;
-  myStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   myFloatField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -206,7 +206,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SimpleStruct::__clear() {
   // clear all fields
   age = 60LL;
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("Batman");
+  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -848,7 +848,7 @@ reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void reqXcep::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   errorCode = 0;
 }
 

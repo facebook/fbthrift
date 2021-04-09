@@ -417,7 +417,7 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Val::__clear() {
   // clear all fields
-  strVal = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   intVal = 0;
   typedefValue.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

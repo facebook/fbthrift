@@ -182,7 +182,7 @@ decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void decorated_struct::__clear() {
   // clear all fields
-  field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -951,7 +951,7 @@ ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexString::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   b.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1056,7 +1056,7 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexNestedWithDefault::__clear() {
   // clear all fields
-  z = apache::thrift::StringTraits< std::string>::fromStringLiteral("4");
+  z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
   n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1351,7 +1351,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   majorVer = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1526,7 +1526,7 @@ AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AnnotatedTypes::__clear() {
   // clear all fields
-  binary_field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   list_field.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -2113,9 +2113,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyBoolField(0),
       MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
-  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
+      MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}}) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2161,11 +2161,11 @@ void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
   MyBoolField = 0;
   MyIntField = 12LL;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
-  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   MyBinaryListField4.clear();
   MyMapEnumAndInt.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2468,7 +2468,7 @@ void AllocatorAware::__clear() {
   aa_list.clear();
   aa_set.clear();
   aa_map.clear();
-  aa_string = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   not_a_container = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

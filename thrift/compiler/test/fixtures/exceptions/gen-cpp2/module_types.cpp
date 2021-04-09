@@ -116,7 +116,7 @@ Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Fiery::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
 
 bool Fiery::operator==(const Fiery& rhs) const {
@@ -196,7 +196,7 @@ Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Serious::__clear() {
   // clear all fields
-  sonnet = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -285,8 +285,8 @@ ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexFieldNames::__clear() {
   // clear all fields
-  error_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  internal_error_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -382,8 +382,8 @@ CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void CustomFieldNames::__clear() {
   // clear all fields
-  error_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  internal_error_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -228,7 +228,7 @@ class MyStructNestedAnnotation final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructNestedAnnotation >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructNestedAnnotation>;
   friend void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b);
 };
 
@@ -534,7 +534,7 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -679,7 +679,7 @@ class SecretStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SecretStruct >;
+  friend class ::apache::thrift::Cpp2Ops<SecretStruct>;
   friend void swap(SecretStruct& a, SecretStruct& b);
 };
 

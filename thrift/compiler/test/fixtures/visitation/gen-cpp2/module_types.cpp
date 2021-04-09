@@ -558,7 +558,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structA::__clear() {
   // clear all fields
   a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -984,7 +984,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structC::__clear() {
   // clear all fields
   a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   c = 0;
   d = 0;
   e =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -1649,7 +1649,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
   field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   field4.__clear();
@@ -1843,7 +1843,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
   fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
   fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   fieldE.__clear();
@@ -2098,7 +2098,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
   fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
   fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   fieldE.__clear();
@@ -2554,7 +2554,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct4::__clear() {
   // clear all fields
   field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   if (field3) field3->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2706,7 +2706,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct5::__clear() {
   // clear all fields
   field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   field3.__clear();
   field4.__clear();
@@ -2863,7 +2863,7 @@ struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string b
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_binary::__clear() {
   // clear all fields
-  bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3978,7 +3978,7 @@ void struct_with_indirections::__clear() {
   fake = 0;
   ::apache::thrift::apply_indirection(number) = 0;
   ::apache::thrift::apply_indirection(result) = 0;
-  ::apache::thrift::apply_indirection(phrase) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
+  ::apache::thrift::apply_indirection(phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

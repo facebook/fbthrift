@@ -1133,7 +1133,7 @@ class Empty final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Empty >;
+  friend class ::apache::thrift::Cpp2Ops<Empty>;
   friend void swap(Empty& a, Empty& b);
 };
 
@@ -1240,7 +1240,7 @@ class ASimpleStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ASimpleStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ASimpleStruct>;
   friend void swap(ASimpleStruct& a, ASimpleStruct& b);
 };
 
@@ -1347,7 +1347,7 @@ class ASimpleStructNoexcept final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ASimpleStructNoexcept >;
+  friend class ::apache::thrift::Cpp2Ops<ASimpleStructNoexcept>;
   friend void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
 };
 
@@ -1743,7 +1743,7 @@ class MyStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -2019,7 +2019,7 @@ class SimpleUnion  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SimpleUnion >;
+  friend class ::apache::thrift::Cpp2Ops<SimpleUnion>;
   friend void swap(SimpleUnion& a, SimpleUnion& b);
 };
 
@@ -4115,7 +4115,7 @@ class ComplexUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexUnion>;
   friend void swap(ComplexUnion& a, ComplexUnion& b);
 };
 
@@ -4691,7 +4691,7 @@ class AnException final : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnException >;
+  friend class ::apache::thrift::Cpp2Ops<AnException>;
   friend void swap(AnException& a, AnException& b);
 };
 
@@ -4875,7 +4875,7 @@ class AnotherException : public apache::thrift::TException {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnotherException >;
+  friend class ::apache::thrift::Cpp2Ops<AnotherException>;
   friend void swap(AnotherException& a, AnotherException& b);
 };
 
@@ -6465,7 +6465,7 @@ class containerStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< containerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<containerStruct>;
   friend void swap(containerStruct& a, containerStruct& b);
 };
 
@@ -6646,7 +6646,7 @@ class MyIncludedStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyIncludedStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyIncludedStruct>;
   friend void swap(MyIncludedStruct& a, MyIncludedStruct& b);
 };
 
@@ -7685,7 +7685,7 @@ class AnnotatedStruct  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnnotatedStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AnnotatedStruct>;
   friend void swap(AnnotatedStruct& a, AnnotatedStruct& b);
 };
 
@@ -7822,7 +7822,7 @@ class ComplexContainerStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexContainerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexContainerStruct>;
   friend void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
 };
 
@@ -7963,7 +7963,7 @@ class FloatStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FloatStruct >;
+  friend class ::apache::thrift::Cpp2Ops<FloatStruct>;
   friend void swap(FloatStruct& a, FloatStruct& b);
 };
 
@@ -8224,7 +8224,7 @@ class FloatUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FloatUnion >;
+  friend class ::apache::thrift::Cpp2Ops<FloatUnion>;
   friend void swap(FloatUnion& a, FloatUnion& b);
 };
 
@@ -8326,7 +8326,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AllRequiredNoExceptMoveCtrStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AllRequiredNoExceptMoveCtrStruct>;
   friend void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b);
 };
 
