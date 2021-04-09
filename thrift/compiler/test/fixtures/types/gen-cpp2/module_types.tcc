@@ -3375,7 +3375,7 @@ void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_string_field();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->value_.string_field, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, value_.string_field, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -3386,7 +3386,7 @@ void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i32_field();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->value_.i32_field, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.i32_field, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -3416,13 +3416,13 @@ uint32_t NoExceptMoveUnion::serializedSize(Protocol_ const* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->value_.string_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_field);
       break;
     }
     case NoExceptMoveUnion::Type::i32_field:
     {
       xfer += prot_->serializedFieldSize("i32_field", apache::thrift::protocol::T_I32, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i32_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i32_field);
       break;
     }
     case NoExceptMoveUnion::Type::__EMPTY__:;
@@ -3439,13 +3439,13 @@ uint32_t NoExceptMoveUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->value_.string_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_field);
       break;
     }
     case NoExceptMoveUnion::Type::i32_field:
     {
       xfer += prot_->serializedFieldSize("i32_field", apache::thrift::protocol::T_I32, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i32_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i32_field);
       break;
     }
     case NoExceptMoveUnion::Type::__EMPTY__:;
@@ -3462,14 +3462,14 @@ uint32_t NoExceptMoveUnion::write(Protocol_* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->writeFieldBegin("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->value_.string_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, value_.string_field);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case NoExceptMoveUnion::Type::i32_field:
     {
       xfer += prot_->writeFieldBegin("i32_field", apache::thrift::protocol::T_I32, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->value_.i32_field);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.i32_field);
       xfer += prot_->writeFieldEnd();
       break;
     }

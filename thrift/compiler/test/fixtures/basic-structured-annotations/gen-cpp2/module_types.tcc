@@ -1104,7 +1104,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_first();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, this->value_.first, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, value_.first, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1115,7 +1115,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64)) {
           this->set_second();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::readWithContext(*iprot, this->value_.second, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::readWithContext(*iprot, value_.second, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1145,13 +1145,13 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->value_.first);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, value_.first);
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->value_.second);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, value_.second);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -1168,13 +1168,13 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->value_.first);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, value_.first);
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, this->value_.second);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::serializedSize<false>(*prot_, value_.second);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -1191,14 +1191,14 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::first:
     {
       xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->value_.first);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, value_.first);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case MyUnion::Type::second:
     {
       xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_I64, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::write(*prot_, this->value_.second);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::write(*prot_, value_.second);
       xfer += prot_->writeFieldEnd();
       break;
     }

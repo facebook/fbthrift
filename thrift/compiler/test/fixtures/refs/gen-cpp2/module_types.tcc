@@ -148,7 +148,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
           this->set_anInteger();
           auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int32_t>>();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, *ptr, _readState);
-          this->value_.anInteger = std::move(ptr);
+          value_.anInteger = std::move(ptr);
           
         } else {
           _readState.skip(iprot);
@@ -161,7 +161,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
           this->set_aString();
           auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
-          this->value_.aString = std::move(ptr);
+          value_.aString = std::move(ptr);
           
         } else {
           _readState.skip(iprot);
@@ -191,13 +191,13 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->value_.anInteger);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->value_.aString);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -214,13 +214,13 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->value_.anInteger);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->value_.aString);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -237,14 +237,14 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->writeFieldBegin("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->value_.anInteger);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *value_.anInteger);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->writeFieldBegin("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->value_.aString);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *value_.aString);
       xfer += prot_->writeFieldEnd();
       break;
     }

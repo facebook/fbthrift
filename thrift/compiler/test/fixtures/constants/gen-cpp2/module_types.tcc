@@ -1178,7 +1178,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->value_.i, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.i, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1189,7 +1189,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_d();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->value_.d, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, value_.d, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1219,13 +1219,13 @@ uint32_t union1::serializedSize(Protocol_ const* prot_) const {
     case union1::Type::i:
     {
       xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case union1::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, value_.d);
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -1242,13 +1242,13 @@ uint32_t union1::serializedSizeZC(Protocol_ const* prot_) const {
     case union1::Type::i:
     {
       xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case union1::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, value_.d);
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -1265,14 +1265,14 @@ uint32_t union1::write(Protocol_* prot_) const {
     case union1::Type::i:
     {
       xfer += prot_->writeFieldBegin("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.i);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union1::Type::d:
     {
       xfer += prot_->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::write(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::write(*prot_, value_.d);
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -1314,7 +1314,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->value_.i, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.i, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1325,7 +1325,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_d();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->value_.d, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, value_.d, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1337,7 +1337,7 @@ void union2::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_s();
           _readState.beforeSubobject(iprot);
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::readWithContext(*iprot, this->value_.s, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::readWithContext(*iprot, value_.s, _readState);
           _readState.afterSubobject(iprot);
           
         } else {
@@ -1350,7 +1350,7 @@ void union2::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_u();
           _readState.beforeSubobject(iprot);
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::readWithContext(*iprot, this->value_.u, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::readWithContext(*iprot, value_.u, _readState);
           _readState.afterSubobject(iprot);
           
         } else {
@@ -1381,25 +1381,25 @@ uint32_t union2::serializedSize(Protocol_ const* prot_) const {
     case union2::Type::i:
     {
       xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case union2::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, value_.d);
       break;
     }
     case union2::Type::s:
     {
       xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::serializedSize<false>(*prot_, this->value_.s);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::serializedSize<false>(*prot_, value_.s);
       break;
     }
     case union2::Type::u:
     {
       xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 4);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::serializedSize<false>(*prot_, this->value_.u);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::serializedSize<false>(*prot_, value_.u);
       break;
     }
     case union2::Type::__EMPTY__:;
@@ -1416,25 +1416,25 @@ uint32_t union2::serializedSizeZC(Protocol_ const* prot_) const {
     case union2::Type::i:
     {
       xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case union2::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, value_.d);
       break;
     }
     case union2::Type::s:
     {
       xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::serializedSize<true>(*prot_, this->value_.s);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::serializedSize<true>(*prot_, value_.s);
       break;
     }
     case union2::Type::u:
     {
       xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 4);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::serializedSize<true>(*prot_, this->value_.u);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::serializedSize<true>(*prot_, value_.u);
       break;
     }
     case union2::Type::__EMPTY__:;
@@ -1451,28 +1451,28 @@ uint32_t union2::write(Protocol_* prot_) const {
     case union2::Type::i:
     {
       xfer += prot_->writeFieldBegin("i", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->value_.i);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.i);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union2::Type::d:
     {
       xfer += prot_->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::write(*prot_, this->value_.d);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::write(*prot_, value_.d);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union2::Type::s:
     {
       xfer += prot_->writeFieldBegin("s", apache::thrift::protocol::T_STRUCT, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::write(*prot_, this->value_.s);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::struct1>::write(*prot_, value_.s);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case union2::Type::u:
     {
       xfer += prot_->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 4);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::write(*prot_, this->value_.u);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::union1>::write(*prot_, value_.u);
       xfer += prot_->writeFieldEnd();
       break;
     }
