@@ -26,8 +26,8 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/detail/mustache/mstch.h>
+#include <thrift/compiler/generate/t_generator.h>
 
 namespace apache {
 namespace thrift {
