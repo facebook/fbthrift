@@ -429,9 +429,12 @@ void ThriftRocketServerHandler::handleRequestCommon(
       THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
   if (UNLIKELY(monitoringLogSampler.isSampled())) {
     if (LIKELY(connContext_.getInterfaceKind() != InterfaceKind::MONITORING)) {
-      if (UNLIKELY(isMonitoringMethodName(request->getMethodName()))) {
+      auto& methodName = request->getMethodName();
+      if (UNLIKELY(isMonitoringMethodName(methodName))) {
         THRIFT_CONNECTION_EVENT(monitoring_over_user)
-            .logSampled(connContext_, monitoringLogSampler);
+            .logSampled(connContext_, monitoringLogSampler, [&] {
+              return folly::dynamic::object("method_name", methodName);
+            });
       }
     }
   }
