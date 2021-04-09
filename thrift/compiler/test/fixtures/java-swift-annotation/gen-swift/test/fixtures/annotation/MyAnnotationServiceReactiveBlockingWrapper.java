@@ -6,42 +6,4 @@
  */
 
 package test.fixtures.annotation;
-
-import java.util.*;
-
-public class MyAnnotationServiceReactiveBlockingWrapper 
-  implements MyAnnotationService {
-  private final MyAnnotationService.Reactive _delegate;
-
-  public MyAnnotationServiceReactiveBlockingWrapper(MyAnnotationService.Reactive _delegate) {
-    
-    this._delegate = _delegate;
-  }
-
-  public MyAnnotationServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
-    this(new MyAnnotationServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
-  }
-
-  @java.lang.Override
-  public void close() {
-    _delegate.dispose();
-  }
-
-  @java.lang.Override
-  public void ping() throws org.apache.thrift.TException {
-      _delegate.ping().block();
-  }
-
-  @java.lang.Override
-  public void ping(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.ping().block();
-  }
-
-  @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> pingWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.pingWrapper(rpcOptions).block();
-  }
-
-}
+// Generation of this class is disabled using (java.swift.disable_reactive)
