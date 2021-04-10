@@ -101,7 +101,13 @@ class ServerSinkBridge : public TwoWayBridge<
       folly::EventBase& evb,
       SinkClientCallback* callback);
 
-  folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator();
+  // TODO(T88629984): These are implemented as static functions because
+  // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
+  // once everything using thrift sink is past clang-9.
+  static folly::coro::Task<void> startImpl(ServerSinkBridge& self);
+
+  static folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator(
+      ServerSinkBridge& self);
 
   void processClientMessages();
 

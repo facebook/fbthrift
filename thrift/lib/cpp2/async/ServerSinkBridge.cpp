@@ -80,24 +80,29 @@ void ServerSinkBridge::resetClientCallback(SinkClientCallback& clientCallback) {
 }
 
 // start should be called on threadmanager's thread
-folly::coro::Task<void> ServerSinkBridge::start() {
+folly::coro::Task<void> ServerSinkBridge::startImpl(ServerSinkBridge& self) {
   SCOPE_EXIT {
-    if (consumer_.interaction) {
-      evb_->add([interaction = consumer_.interaction, evb = evb_] {
-        interaction->__fbthrift_releaseRef(*evb);
-      });
+    if (self.consumer_.interaction) {
+      self.evb_->add(
+          [interaction = self.consumer_.interaction, evb = self.evb_] {
+            interaction->__fbthrift_releaseRef(*evb);
+          });
     }
   };
 
-  serverPush(consumer_.bufferSize);
+  self.serverPush(self.consumer_.bufferSize);
   folly::Try<StreamPayload> finalResponse =
-      co_await consumer_.consumer(makeGenerator());
+      co_await self.consumer_.consumer(makeGenerator(self));
 
-  if (clientException_) {
+  if (self.clientException_) {
     co_return;
   }
 
-  serverPush(std::move(finalResponse));
+  self.serverPush(std::move(finalResponse));
+}
+
+folly::coro::Task<void> ServerSinkBridge::start() {
+  return startImpl(*this);
 }
 
 // TwoWayBridge consumer
@@ -107,18 +112,18 @@ void ServerSinkBridge::consume() {
 }
 
 folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&>
-ServerSinkBridge::makeGenerator() {
+ServerSinkBridge::makeGenerator(ServerSinkBridge& self) {
   uint64_t counter = 0;
   while (true) {
     CoroConsumer consumer;
-    if (serverWait(&consumer)) {
+    if (self.serverWait(&consumer)) {
       folly::CancellationCallback cb{
           co_await folly::coro::co_current_cancellation_token,
-          [&]() { serverClose(); }};
+          [&]() { self.serverClose(); }};
       co_await consumer.wait();
     }
     co_await folly::coro::co_safe_point;
-    for (auto messages = serverGetMessages(); !messages.empty();
+    for (auto messages = self.serverGetMessages(); !messages.empty();
          messages.pop()) {
       auto& message = messages.front();
       folly::Try<StreamPayload> ele;
@@ -134,15 +139,15 @@ ServerSinkBridge::makeGenerator() {
       }
 
       if (ele.hasException()) {
-        clientException_ = true;
+        self.clientException_ = true;
         co_yield std::move(ele);
         co_return;
       }
 
       co_yield std::move(ele);
       counter++;
-      if (counter > consumer_.bufferSize / 2) {
-        serverPush(counter);
+      if (counter > self.consumer_.bufferSize / 2) {
+        self.serverPush(counter);
         counter = 0;
       }
     }
