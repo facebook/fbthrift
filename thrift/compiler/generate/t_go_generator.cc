@@ -975,7 +975,7 @@ void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
   }
   // Generate New* function
   if (true_type->is_struct() || true_type->is_xception()) {
-    const t_program* program = tbasetype->get_program();
+    const t_program* program = tbasetype->program();
     // only declare a return with a pointer if the concrete type isn't
     // already a pointer
     const bool needsptr = !(base_type.at(0) == '*');
