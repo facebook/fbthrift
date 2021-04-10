@@ -24,24 +24,24 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%/field:optional?%>
 <% > module_types_tcc/terse_if%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:cpp_ref?%>
+<%^field:must_write_cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:cpp_ref?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
+<%/field:must_write_cpp_ref?%>
+<%#field:must_write_cpp_ref?%>
+  if (<% > module_types_tcc/field_member%>) {
+    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
 <%#type:resolves_to_container_or_enum?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
+  } else {
+    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
+    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedStructSize("<%type:name%>");
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSizeStop();
+  } else {
+    xfer += prot_->serializedStructSize("<%type:name%>");
+    xfer += prot_->serializedSizeStop();
 <%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%/field:cpp_ref?%>
+  }
+<%/field:must_write_cpp_ref?%>
 <%#field:optional?%>
   }
 <%/field:optional?%>
@@ -63,24 +63,24 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%/field:optional?%>
 <% > module_types_tcc/terse_if%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:cpp_ref?%>
+<%^field:must_write_cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:cpp_ref?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+<%/field:must_write_cpp_ref?%>
+<%#field:must_write_cpp_ref?%>
+  if (<% > module_types_tcc/field_member%>) {
+    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
 <%#type:resolves_to_container_or_enum?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
+  } else {
+    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
+    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedStructSize("<%type:name%>");
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->serializedSizeStop();
+  } else {
+    xfer += prot_->serializedStructSize("<%type:name%>");
+    xfer += prot_->serializedSizeStop();
 <%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%/field:cpp_ref?%>
+  }
+<%/field:must_write_cpp_ref?%>
 <%#field:optional?%>
   }
 <%/field:optional?%>
@@ -103,25 +103,25 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%/field:optional?%>
 <% > module_types_tcc/terse_if%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:cpp_ref?%>
+<%^field:must_write_cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:cpp_ref?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
+<%/field:must_write_cpp_ref?%>
+<%#field:must_write_cpp_ref?%>
+  if (<% > module_types_tcc/field_member%>) {
+    xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
 <%#type:resolves_to_container_or_enum?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->write<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->write<% > module_types_tcc/struct_field_type%>End();
+  } else {
+    xfer += prot_->write<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
+    xfer += prot_->write<% > module_types_tcc/struct_field_type%>End();
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  } else {
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->writeStructBegin("<%type:name%>");
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->writeStructEnd();
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>    xfer += prot_->writeFieldStop();
+  } else {
+    xfer += prot_->writeStructBegin("<%type:name%>");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
 <%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%/field:cpp_ref?%>
+  }
+<%/field:must_write_cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldEnd();
 <%#field:optional?%>
   }

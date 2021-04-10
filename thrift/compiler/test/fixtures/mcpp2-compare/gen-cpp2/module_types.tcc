@@ -4774,12 +4774,7 @@ uint32_t MyIncludedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<false>(*prot_, this->MyIncludedStruct);
   if (this->ARefField) {
     xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->ARefField) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<false>(*prot_, *this->ARefField);
-    } else {
-      xfer += prot_->serializedStructSize("AStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<false>(*prot_, *this->ARefField);
   }
   xfer += prot_->serializedFieldSize("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<false>(*prot_, this->ARequiredField);
@@ -4799,12 +4794,7 @@ uint32_t MyIncludedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<true>(*prot_, this->MyIncludedStruct);
   if (this->ARefField) {
     xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->ARefField) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<true>(*prot_, *this->ARefField);
-    } else {
-      xfer += prot_->serializedStructSize("AStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<true>(*prot_, *this->ARefField);
   }
   xfer += prot_->serializedFieldSize("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::serializedSize<true>(*prot_, this->ARequiredField);
@@ -4826,13 +4816,7 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->ARefField) {
     xfer += prot_->writeFieldBegin("ARefField", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->ARefField) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::write(*prot_, *this->ARefField);
-    } else {
-      xfer += prot_->writeStructBegin("AStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::AStruct>::write(*prot_, *this->ARefField);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
@@ -5934,31 +5918,16 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, this->no_annotation);
   if (this->cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->cpp_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->cpp_unique_ref);
   }
   if (this->cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->cpp2_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->cpp2_unique_ref);
   }
   if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->serializedFieldSize("container_with_ref", apache::thrift::protocol::T_MAP, 4);
-    if (this->container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->container_with_ref);
-    } else {
-      xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->serializedSizeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->container_with_ref);
   }
   xfer += prot_->serializedFieldSize("req_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 5);
   if (this->req_cpp_unique_ref) {
@@ -5983,39 +5952,19 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->opt_cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("opt_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 8);
-    if (this->opt_cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_cpp_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_cpp_unique_ref);
   }
   if (this->opt_cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("opt_cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 9);
-    if (this->opt_cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_cpp2_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_cpp2_unique_ref);
   }
   if (this->opt_container_with_ref) {
     xfer += prot_->serializedFieldSize("opt_container_with_ref", apache::thrift::protocol::T_SET, 10);
-    if (this->opt_container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_container_with_ref);
-    } else {
-      xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->serializedSizeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_container_with_ref);
   }
   if (this->ref_type_unique) {
     xfer += prot_->serializedFieldSize("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
-    if (this->ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->ref_type_unique);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->ref_type_unique);
   }
   xfer += prot_->serializedFieldSize("ref_type_shared", apache::thrift::protocol::T_STRUCT, 12);
   if (this->ref_type_shared) {
@@ -6027,12 +5976,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->serializedFieldSize("ref_type_const", apache::thrift::protocol::T_MAP, 13);
-    if (this->ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->ref_type_const);
-    } else {
-      xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->serializedSizeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->ref_type_const);
   }
   xfer += prot_->serializedFieldSize("req_ref_type_shared", apache::thrift::protocol::T_STRUCT, 14);
   if (this->req_ref_type_shared) {
@@ -6057,30 +6001,15 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->opt_ref_type_const) {
     xfer += prot_->serializedFieldSize("opt_ref_type_const", apache::thrift::protocol::T_STRUCT, 17);
-    if (this->opt_ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_ref_type_const);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_ref_type_const);
   }
   if (this->opt_ref_type_unique) {
     xfer += prot_->serializedFieldSize("opt_ref_type_unique", apache::thrift::protocol::T_STRUCT, 18);
-    if (this->opt_ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_ref_type_unique);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<false>(*prot_, *this->opt_ref_type_unique);
   }
   if (this->opt_ref_type_shared) {
     xfer += prot_->serializedFieldSize("opt_ref_type_shared", apache::thrift::protocol::T_SET, 19);
-    if (this->opt_ref_type_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_ref_type_shared);
-    } else {
-      xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->serializedSizeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_ref_type_shared);
   }
   if (this->base_type != 0) {
     xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
@@ -6176,31 +6105,16 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, this->no_annotation);
   if (this->cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->cpp_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->cpp_unique_ref);
   }
   if (this->cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->cpp2_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->cpp2_unique_ref);
   }
   if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->serializedFieldSize("container_with_ref", apache::thrift::protocol::T_MAP, 4);
-    if (this->container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->container_with_ref);
-    } else {
-      xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->serializedSizeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->container_with_ref);
   }
   xfer += prot_->serializedFieldSize("req_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 5);
   if (this->req_cpp_unique_ref) {
@@ -6225,39 +6139,19 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->opt_cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("opt_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 8);
-    if (this->opt_cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_cpp_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_cpp_unique_ref);
   }
   if (this->opt_cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("opt_cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 9);
-    if (this->opt_cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_cpp2_unique_ref);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_cpp2_unique_ref);
   }
   if (this->opt_container_with_ref) {
     xfer += prot_->serializedFieldSize("opt_container_with_ref", apache::thrift::protocol::T_SET, 10);
-    if (this->opt_container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_container_with_ref);
-    } else {
-      xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->serializedSizeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_container_with_ref);
   }
   if (this->ref_type_unique) {
     xfer += prot_->serializedFieldSize("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
-    if (this->ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->ref_type_unique);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->ref_type_unique);
   }
   xfer += prot_->serializedFieldSize("ref_type_shared", apache::thrift::protocol::T_STRUCT, 12);
   if (this->ref_type_shared) {
@@ -6269,12 +6163,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->serializedFieldSize("ref_type_const", apache::thrift::protocol::T_MAP, 13);
-    if (this->ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->ref_type_const);
-    } else {
-      xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->serializedSizeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::serializedSize<false>(*prot_, *this->ref_type_const);
   }
   xfer += prot_->serializedFieldSize("req_ref_type_shared", apache::thrift::protocol::T_STRUCT, 14);
   if (this->req_ref_type_shared) {
@@ -6299,30 +6188,15 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->opt_ref_type_const) {
     xfer += prot_->serializedFieldSize("opt_ref_type_const", apache::thrift::protocol::T_STRUCT, 17);
-    if (this->opt_ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_ref_type_const);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_ref_type_const);
   }
   if (this->opt_ref_type_unique) {
     xfer += prot_->serializedFieldSize("opt_ref_type_unique", apache::thrift::protocol::T_STRUCT, 18);
-    if (this->opt_ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_ref_type_unique);
-    } else {
-      xfer += prot_->serializedStructSize("containerStruct");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::serializedSize<true>(*prot_, *this->opt_ref_type_unique);
   }
   if (this->opt_ref_type_shared) {
     xfer += prot_->serializedFieldSize("opt_ref_type_shared", apache::thrift::protocol::T_SET, 19);
-    if (this->opt_ref_type_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_ref_type_shared);
-    } else {
-      xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->serializedSizeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::serializedSize<false>(*prot_, *this->opt_ref_type_shared);
   }
   if (this->base_type != 0) {
     xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
@@ -6419,35 +6293,18 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->cpp_unique_ref) {
     xfer += prot_->writeFieldBegin("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->cpp_unique_ref);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->cpp_unique_ref);
     xfer += prot_->writeFieldEnd();
   }
   if (this->cpp2_unique_ref) {
     xfer += prot_->writeFieldBegin("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
-    if (this->cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->cpp2_unique_ref);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->cpp2_unique_ref);
     xfer += prot_->writeFieldEnd();
   }
   if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->writeFieldBegin("container_with_ref", apache::thrift::protocol::T_MAP, 4);
-    if (this->container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::write(*prot_, *this->container_with_ref);
-    } else {
-      xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->writeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::write(*prot_, *this->container_with_ref);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("req_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 5);
@@ -6478,45 +6335,22 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->opt_cpp_unique_ref) {
     xfer += prot_->writeFieldBegin("opt_cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 8);
-    if (this->opt_cpp_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_cpp_unique_ref);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_cpp_unique_ref);
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_cpp2_unique_ref) {
     xfer += prot_->writeFieldBegin("opt_cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 9);
-    if (this->opt_cpp2_unique_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_cpp2_unique_ref);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_cpp2_unique_ref);
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_container_with_ref) {
     xfer += prot_->writeFieldBegin("opt_container_with_ref", apache::thrift::protocol::T_SET, 10);
-    if (this->opt_container_with_ref) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->opt_container_with_ref);
-    } else {
-      xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->writeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->opt_container_with_ref);
     xfer += prot_->writeFieldEnd();
   }
   if (this->ref_type_unique) {
     xfer += prot_->writeFieldBegin("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
-    if (this->ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->ref_type_unique);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->ref_type_unique);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("ref_type_shared", apache::thrift::protocol::T_STRUCT, 12);
@@ -6531,12 +6365,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->writeFieldBegin("ref_type_const", apache::thrift::protocol::T_MAP, 13);
-    if (this->ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::write(*prot_, *this->ref_type_const);
-    } else {
-      xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_LIST, 0);
-      xfer += prot_->writeMapEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::int32_t, ::std::vector<::std::string>>>::write(*prot_, *this->ref_type_const);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("req_ref_type_shared", apache::thrift::protocol::T_STRUCT, 14);
@@ -6567,34 +6396,17 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->opt_ref_type_const) {
     xfer += prot_->writeFieldBegin("opt_ref_type_const", apache::thrift::protocol::T_STRUCT, 17);
-    if (this->opt_ref_type_const) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_ref_type_const);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_ref_type_const);
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_ref_type_unique) {
     xfer += prot_->writeFieldBegin("opt_ref_type_unique", apache::thrift::protocol::T_STRUCT, 18);
-    if (this->opt_ref_type_unique) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_ref_type_unique);
-    } else {
-      xfer += prot_->writeStructBegin("containerStruct");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::containerStruct>::write(*prot_, *this->opt_ref_type_unique);
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_ref_type_shared) {
     xfer += prot_->writeFieldBegin("opt_ref_type_shared", apache::thrift::protocol::T_SET, 19);
-    if (this->opt_ref_type_shared) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->opt_ref_type_shared);
-    } else {
-      xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += prot_->writeSetEnd();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->opt_ref_type_shared);
     xfer += prot_->writeFieldEnd();
   }
   if (this->base_type != 0) {

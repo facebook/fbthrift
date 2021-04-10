@@ -2607,12 +2607,7 @@ uint32_t ForwardUsageRoot::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->serializedFieldSize("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<false>(*prot_, *this->ForwardUsageByRef);
-    } else {
-      xfer += prot_->serializedStructSize("ForwardUsageByRef");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<false>(*prot_, *this->ForwardUsageByRef);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2628,12 +2623,7 @@ uint32_t ForwardUsageRoot::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->serializedFieldSize("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<true>(*prot_, *this->ForwardUsageByRef);
-    } else {
-      xfer += prot_->serializedStructSize("ForwardUsageByRef");
-      xfer += prot_->serializedSizeStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<true>(*prot_, *this->ForwardUsageByRef);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2650,13 +2640,7 @@ uint32_t ForwardUsageRoot::write(Protocol_* prot_) const {
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->writeFieldBegin("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
-    if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::write(*prot_, *this->ForwardUsageByRef);
-    } else {
-      xfer += prot_->writeStructBegin("ForwardUsageByRef");
-      xfer += prot_->writeStructEnd();
-      xfer += prot_->writeFieldStop();
-    }
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageByRef>::write(*prot_, *this->ForwardUsageByRef);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
