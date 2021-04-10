@@ -18,7 +18,6 @@
 
 #include <atomic>
 #include <functional>
-#include <mutex>
 #include <type_traits>
 
 #include <folly/Optional.h>
