@@ -2115,7 +2115,8 @@ TEST(ThriftServer, SSLRequiredLoopbackUsesSSL) {
   auto sslSock = TAsyncSSLSocket::newSocket(ctx, &base);
   sslSock->connect(nullptr /* connect callback */, loopback);
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(sslSock));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(sslSock)));
 
   std::string response;
   client.sync_sendResponse(response, 64);
@@ -2149,7 +2150,8 @@ TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
     auto sslSock = TAsyncSSLSocket::newSocket(ctx, &base);
     sslSock->connect(nullptr /* connect callback */, *sst.getAddress());
 
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(sslSock));
+    TestServiceAsyncClient client(
+        HeaderClientChannel::newChannel(std::move(sslSock)));
 
     std::string response;
     client.sync_sendResponse(response, 64);
