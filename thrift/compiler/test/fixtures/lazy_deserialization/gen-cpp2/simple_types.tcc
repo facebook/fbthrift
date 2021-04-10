@@ -243,8 +243,6 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   if (this->field1) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->field1);
   }
-  else {
-  }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
@@ -263,8 +261,6 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->field1) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->field1);
   }
-  else {
-  }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
@@ -282,8 +278,6 @@ uint32_t Foo::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 1);
   if (this->field1) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->field1);
-  }
-  else {
   }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_STRING, 2);

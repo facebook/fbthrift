@@ -3769,8 +3769,7 @@ uint32_t struct4::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 6);
   if (this->field3) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::test_cpp2::cpp_reflection::structA>::serializedSize<false>(*prot_, *this->field3);
-  }
-  else {
+  } else {
     xfer += prot_->serializedStructSize("structA");
     xfer += prot_->serializedSizeStop();
   }
@@ -3793,8 +3792,7 @@ uint32_t struct4::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 6);
   if (this->field3) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::test_cpp2::cpp_reflection::structA>::serializedSize<true>(*prot_, *this->field3);
-  }
-  else {
+  } else {
     xfer += prot_->serializedStructSize("structA");
     xfer += prot_->serializedSizeStop();
   }
@@ -3820,8 +3818,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRUCT, 6);
   if (this->field3) {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::test_cpp2::cpp_reflection::structA>::write(*prot_, *this->field3);
-  }
-  else {
+  } else {
     xfer += prot_->writeStructBegin("structA");
     xfer += prot_->writeStructEnd();
     xfer += prot_->writeFieldStop();
