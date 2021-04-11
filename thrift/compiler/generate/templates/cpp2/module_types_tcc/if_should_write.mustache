@@ -14,5 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  // TODO(afuller): Merge with other impls and move to a shared location.
-%><%^struct:union?%>this-><%/struct:union?%><%#struct:union?%>value_.<%/struct:union?%><%field:cpp_name%>
+  // Note: terse_writes is mutually exclusive with optional.
+%>
+<%#field:optional?%>
+  if (<% > module_types_tcc/optional_has_value%>) {
+<%/field:optional?%><%#field:terse_writes?%>
+  if (<% > module_types_tcc/terse_has_value %>) {
+<%/field:terse_writes?%>

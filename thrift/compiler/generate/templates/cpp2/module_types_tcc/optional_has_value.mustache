@@ -14,5 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  // TODO(afuller): Merge with other impls and move to a shared location.
-%><%^struct:union?%>this-><%/struct:union?%><%#struct:union?%>value_.<%/struct:union?%><%field:cpp_name%>
+  // If an optional field is set.
+%><%#field:cpp_ref?%><%!
+// For references, check if the field is not null.
+%><% > module_types_tcc/field_member%><%!
+%><%/field:cpp_ref?%><%!
+%><%^field:cpp_ref?%><%!
+// For other values go through the field_ref interface.
+%>this-><%field:cpp_name%>_ref().has_value()<%!
+%><%/field:cpp_ref?%><%!
+%>

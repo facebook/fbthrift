@@ -21,7 +21,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-    if (this-><%field:cpp_name%>_ref().has_value()) {
+    if (<% > module_types_tcc/field_has_value%>) {
 <%/field:optional?%>
 <%^field:optional?%>
     case <%struct:name%>::Type::<%field:cpp_name%>:
@@ -64,7 +64,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-    if (this-><%field:cpp_name%>_ref().has_value()) {
+    if (<% > module_types_tcc/field_has_value%>) {
 <%/field:optional?%>
 <%^field:optional?%>
     case <%struct:name%>::Type::<%field:cpp_name%>:
@@ -108,7 +108,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
 <%#field:optional?%>
-    if (this-><%field:cpp_name%>_ref().has_value()) {
+    if (<% > module_types_tcc/field_has_value%>) {
 <%/field:optional?%>
 <%^field:optional?%>
     case <%struct:name%>::Type::<%field:cpp_name%>:

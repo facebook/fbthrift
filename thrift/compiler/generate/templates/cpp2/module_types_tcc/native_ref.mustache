@@ -14,5 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  // TODO(afuller): Merge with other impls and move to a shared location.
-%><%^struct:union?%>this-><%/struct:union?%><%#struct:union?%>value_.<%/struct:union?%><%field:cpp_name%>
+  // A reference to the native value.
+  //
+  // Unlike 'native_value', this takes into account indirection and
+  // wraps dereferenced pointers in ().
+%><%#type:cpp_indirection?%><%!
+%>::apache::thrift::apply_indirection(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><% >  module_types_tcc/field_member%>)<%!
+%><%/type:cpp_indirection?%><%!
+%><%^type:cpp_indirection?%><%!
+%><%#field:cpp_ref?%>(*<% >  module_types_tcc/field_member%>)<%/field:cpp_ref?%><%!
+%><%^field:cpp_ref?%><% >  module_types_tcc/field_member%><%/field:cpp_ref?%><%!
+%><%/type:cpp_indirection?%><%!
+%>
