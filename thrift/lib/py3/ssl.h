@@ -74,8 +74,7 @@ class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
         return chan;
       }
       auto chan = configureClientChannel(
-          apache::thrift::HeaderClientChannel::newChannel(
-              std::shared_ptr<folly::AsyncSocket>{std::move(socket_)}),
+          apache::thrift::HeaderClientChannel::newChannel(std::move(socket_)),
           client_t_,
           proto_);
       if (client_t_ == THRIFT_HTTP_CLIENT_TYPE) {

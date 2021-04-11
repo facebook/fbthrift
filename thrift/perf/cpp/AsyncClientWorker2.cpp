@@ -152,7 +152,7 @@ class LoadCallback : public RequestCallback {
 LoadTestClientPtr AsyncClientWorker2::createConnection() {
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
       getConfig();
-  std::shared_ptr<folly::AsyncSocket> socket;
+  folly::AsyncSocket::UniquePtr socket;
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
     if (session_) {
@@ -176,7 +176,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   std::unique_ptr<
       apache::thrift::HeaderClientChannel,
       folly::DelayedDestruction::Destructor>
-      channel(HeaderClientChannel::newChannel(socket));
+      channel(HeaderClientChannel::newChannel(std::move(socket)));
   channel->setTimeout(kTimeout);
   // For testing equality, make sure to use binary
   if (!config->useHeaderProtocol()) {

@@ -488,14 +488,16 @@ template <typename ChannelT>
 class SocketPairTest {
  public:
   SocketPairTest() : eventBase_(), socketPair_() {
-    socket0_ = AsyncSocket::newSocket(
+    auto socket0 = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket0());
+    socket0_ = socket0.get();
 
-    socket1_ = AsyncSocket::newSocket(
+    auto socket1 = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket1());
+    socket1_ = socket1.get();
 
-    channel0_ = ChannelT::newChannel(socket0_);
-    channel1_ = ChannelT::newChannel(socket1_);
+    channel0_ = ChannelT::newChannel(std::move(socket0));
+    channel1_ = ChannelT::newChannel(std::move(socket1));
   }
   virtual ~SocketPairTest() {}
 
@@ -518,8 +520,8 @@ class SocketPairTest {
  protected:
   EventBase eventBase_;
   SocketPair socketPair_;
-  std::shared_ptr<AsyncSocket> socket0_;
-  std::shared_ptr<AsyncSocket> socket1_;
+  AsyncSocket* socket0_;
+  AsyncSocket* socket1_;
   std::shared_ptr<ChannelT> channel0_;
   std::shared_ptr<ChannelT> channel1_;
 };
@@ -592,7 +594,7 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
       milliseconds delayMS = milliseconds(0))
       : multiMessageSenderReceiver_(
             &this->eventBase_,
-            this->socket0_.get(),
+            this->socket0_,
             multiMessage,
             NeedsFrame<ChannelT>::value(),
             writeTimes,
@@ -823,7 +825,7 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
         start_(false),
         timeout_(timeout),
         msg_(msgLen, NeedsFrame<ChannelT>::value()),
-        sender_(&this->eventBase_, this->socket0_.get(), &msg_, schedule) {}
+        sender_(&this->eventBase_, this->socket0_, &msg_, schedule) {}
 
   void preLoop() override {
     if (timeout_ > milliseconds(0)) {
@@ -1118,8 +1120,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
 
     // Close the other socket after 25ms
     this->eventBase_.tryRunAfterDelay(
-        std::bind(&AsyncSocket::close, this->socket1_.get()),
-        closeTimeout_.count());
+        std::bind(&AsyncSocket::close, this->socket1_), closeTimeout_.count());
 
     start_.reset();
   }

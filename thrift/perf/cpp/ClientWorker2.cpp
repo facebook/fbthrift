@@ -34,7 +34,7 @@ const int kTimeout = 60000;
 
 std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
-  std::shared_ptr<folly::AsyncSocket> socket;
+  folly::AsyncSocket::UniquePtr socket;
   std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>
       channel;
   if (config->useSSL()) {
@@ -64,7 +64,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
         ebm_.getEventBase(), *config->getAddress());
   }
   std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
-      headerChannel(HeaderClientChannel::newChannel(socket));
+      headerChannel(HeaderClientChannel::newChannel(std::move(socket)));
   // Always use binary in loadtesting to get apples to apples comparison
   headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   if (config->zlib()) {
