@@ -324,7 +324,9 @@ TEST_F(RocketNetworkTest, ServerShutdown) {
     ASSERT_NE(nullptr, tex);
     EXPECT_EQ(
         TTransportException::TTransportExceptionType::NOT_OPEN, tex->getType());
-    EXPECT_EQ("Server shutdown", std::string(tex->what()));
+    EXPECT_EQ(
+        "Server shutdown [CONNECTION_DRAIN_COMPLETE]",
+        std::string(tex->what()));
   });
 }
 

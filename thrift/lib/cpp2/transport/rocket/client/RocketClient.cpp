@@ -118,7 +118,8 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
-    handleErrorCode(errorFrame.errorCode());
+    handleError(RocketException(
+        errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
     return;
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
@@ -162,11 +163,9 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
             serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
         if (drainCode &&
             *drainCode == DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT) {
-          handleErrorCode(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
+          handleError(RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT));
         } else {
-          close(transport::TTransportException(
-              apache::thrift::transport::TTransportException::NOT_OPEN,
-              "Server shutdown"));
+          handleError(RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
         }
         return;
       }
@@ -410,32 +409,46 @@ StreamChannelStatus RocketClient::handleExtFrame(
   return StreamChannelStatus::ContractViolation;
 }
 
-void RocketClient::handleErrorCode(ErrorCode errorCode) {
-  switch (errorCode) {
+void RocketClient::handleError(RocketException&& rex) {
+  auto enrichMsg = [](const char* msg, RocketException& rex) {
+    if (auto errorData = rex.moveErrorData()) {
+      return fmt::format(
+          "{}: {} [{}]",
+          msg,
+          folly::StringPiece(errorData->coalesce()),
+          toString(rex.getErrorCode()));
+    }
+    return fmt::format("{} [{}]", msg, toString(rex.getErrorCode()));
+  };
+  folly::exception_wrapper ew;
+  switch (rex.getErrorCode()) {
+    case ErrorCode::INVALID_SETUP: {
+      ew = transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          enrichMsg("Connection setup failed", rex));
+      break;
+    }
     case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
-      auto drainEx = transport::TTransportException(
-          apache::thrift::transport::TTransportException::NOT_OPEN,
-          "Server shutdown");
-      if (state_ == ConnectionState::ERROR) {
-        error_ = std::move(drainEx);
-      } else {
-        close(std::move(drainEx));
-      }
+      ew = transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          enrichMsg("Server shutdown", rex));
       break;
     }
     case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
-      auto ex = RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT);
-      if (state_ == ConnectionState::ERROR) {
-        error_ = std::move(ex);
-      } else {
-        close(std::move(ex));
-      }
+      ew = std::move(rex);
       break;
     }
-    default:
+    default: {
       close(transport::TTransportException(
-          apache::thrift::transport::TTransportException::END_OF_FILE,
-          "Unhandled error frame on control stream."));
+          transport::TTransportException::END_OF_FILE,
+          enrichMsg("Unhandled error frame on control stream", rex)));
+      return;
+    }
+  }
+  if (state_ == ConnectionState::ERROR) {
+    error_ = std::move(ew);
+  } else {
+    close(std::move(ew));
   }
 }
 
