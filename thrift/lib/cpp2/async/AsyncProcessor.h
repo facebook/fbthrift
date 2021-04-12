@@ -16,13 +16,14 @@
 
 #pragma once
 
-#include <folly/Portability.h>
-
 #include <folly/ExceptionWrapper.h>
+#include <folly/Portability.h>
 #include <folly/String.h>
+#include <folly/Unit.h>
 #include <folly/container/F14Map.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/TProcessor.h>
 #include <thrift/lib/cpp/Thrift.h>
@@ -308,7 +309,16 @@ class RequestParams {
   folly::EventBase* eventBase_;
 };
 
-class ServerInterface : public virtual AsyncProcessorFactory {
+class ServiceHandler {
+ public:
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() = 0;
+
+  virtual ~ServiceHandler() = default;
+};
+
+class ServerInterface : public virtual AsyncProcessorFactory,
+                        public ServiceHandler {
  public:
   ServerInterface() = default;
   ServerInterface(const ServerInterface&) = delete;
@@ -378,6 +388,13 @@ class ServerInterface : public virtual AsyncProcessorFactory {
   concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
       Cpp2RequestContext* ctx) {
     return getRequestExecutionScope(ctx, concurrency::NORMAL);
+  }
+
+  folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
+    return folly::makeSemiFuture();
+  }
+  folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
+    return folly::makeSemiFuture();
   }
 
  private:
