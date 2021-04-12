@@ -51,6 +51,7 @@ add_library(
   compiler_base
 
   common.cc
+  filesystem.cc
   parse/parsing_driver.cc
   platform.cc
   util.cc

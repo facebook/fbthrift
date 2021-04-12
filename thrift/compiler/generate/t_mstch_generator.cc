@@ -26,6 +26,7 @@
 #include <thrift/compiler/detail/mustache/mstch.h>
 
 #include <thrift/compiler/common.h>
+#include <thrift/compiler/filesystem.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/templates.h>
 
@@ -464,9 +465,15 @@ const std::string& t_mstch_generator::get_template(
 
 void t_mstch_generator::write_output(
     const boost::filesystem::path& path, const std::string& data) {
-  auto abs_path = boost::filesystem::path{get_out_dir()} / path;
+  auto base_path = boost::filesystem::path{get_out_dir()};
+  auto abs_path = make_abs_path(base_path, path);
   boost::filesystem::create_directories(abs_path.parent_path());
   std::ofstream ofs{abs_path.string()};
+  if (!ofs) {
+    std::ostringstream err;
+    err << "Couldn't open \"" << abs_path.string() << "\" for writing.";
+    throw std::runtime_error{err.str()};
+  }
   ofs << data;
   if (!is_last_char(data, '\n')) {
     // Terminate with newline.
