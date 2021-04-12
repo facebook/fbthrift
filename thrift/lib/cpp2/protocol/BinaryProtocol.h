@@ -260,63 +260,7 @@ class BinaryProtocolReader {
   inline uint32_t readFromPositionAndAppend(
       Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser);
 
-  struct StructReadState {
-    int16_t fieldId;
-    apache::thrift::protocol::TType fieldType;
-
-    constexpr static bool kAcceptsContext = false;
-
-    void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
-
-    void readStructEnd(BinaryProtocolReader* /*iprot*/) {}
-
-    void readFieldBegin(BinaryProtocolReader* iprot) {
-      iprot->readFieldBeginWithState(*this);
-    }
-
-    FOLLY_NOINLINE void readFieldBeginNoInline(BinaryProtocolReader* iprot) {
-      iprot->readFieldBeginWithState(*this);
-    }
-
-    void readFieldEnd(BinaryProtocolReader* /*iprot*/) {}
-
-    FOLLY_ALWAYS_INLINE bool advanceToNextField(
-        BinaryProtocolReader* iprot,
-        int32_t /*currFieldId*/,
-        int32_t nextFieldId,
-        TType nextFieldType) {
-      return iprot->advanceToNextField(nextFieldId, nextFieldType, *this);
-    }
-
-    /*
-     * This is used in generated deserialization code only. When deserializing
-     * fields in "non-advanceToNextField" case, we delegate the type check to
-     * each protocol since some protocol (such as NimbleProtocol) may not encode
-     * type information.
-     */
-    FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-        BinaryProtocolReader* /*iprot*/, TType expectedFieldType) {
-      return fieldType == expectedFieldType;
-    }
-
-    inline void skip(BinaryProtocolReader* iprot) { iprot->skip(fieldType); }
-
-    std::string& fieldName() {
-      throw std::logic_error("BinaryProtocol doesn't support field names");
-    }
-
-    void afterAdvanceFailure(BinaryProtocolReader* /*iprot*/) {}
-
-    void beforeSubobject(BinaryProtocolReader* /* iprot */) {}
-    void afterSubobject(BinaryProtocolReader* /* iprot */) {}
-
-    bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
-
-    template <typename StructTraits>
-    void fillFieldTraitsFromName() {
-      throw std::logic_error("BinaryProtocol doesn't support field names");
-    }
-  };
+  struct StructReadState;
 
  protected:
   template <typename StrType>
@@ -352,6 +296,64 @@ class BinaryProtocolReader {
 
  private:
   inline bool readBoolSafe();
+};
+
+struct BinaryProtocolReader::StructReadState {
+  int16_t fieldId;
+  apache::thrift::protocol::TType fieldType;
+
+  constexpr static bool kAcceptsContext = false;
+
+  void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
+
+  void readStructEnd(BinaryProtocolReader* /*iprot*/) {}
+
+  void readFieldBegin(BinaryProtocolReader* iprot) {
+    iprot->readFieldBeginWithState(*this);
+  }
+
+  FOLLY_NOINLINE void readFieldBeginNoInline(BinaryProtocolReader* iprot) {
+    iprot->readFieldBeginWithState(*this);
+  }
+
+  void readFieldEnd(BinaryProtocolReader* /*iprot*/) {}
+
+  FOLLY_ALWAYS_INLINE bool advanceToNextField(
+      BinaryProtocolReader* iprot,
+      int32_t /*currFieldId*/,
+      int32_t nextFieldId,
+      TType nextFieldType) {
+    return iprot->advanceToNextField(nextFieldId, nextFieldType, *this);
+  }
+
+  /*
+   * This is used in generated deserialization code only. When deserializing
+   * fields in "non-advanceToNextField" case, we delegate the type check to
+   * each protocol since some protocol (such as NimbleProtocol) may not encode
+   * type information.
+   */
+  FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
+      BinaryProtocolReader* /*iprot*/, TType expectedFieldType) {
+    return fieldType == expectedFieldType;
+  }
+
+  inline void skip(BinaryProtocolReader* iprot) { iprot->skip(fieldType); }
+
+  std::string& fieldName() {
+    throw std::logic_error("BinaryProtocol doesn't support field names");
+  }
+
+  void afterAdvanceFailure(BinaryProtocolReader* /*iprot*/) {}
+
+  void beforeSubobject(BinaryProtocolReader* /* iprot */) {}
+  void afterSubobject(BinaryProtocolReader* /* iprot */) {}
+
+  bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
+
+  template <typename StructTraits>
+  void fillFieldTraitsFromName() {
+    throw std::logic_error("BinaryProtocol doesn't support field names");
+  }
 };
 
 namespace detail {

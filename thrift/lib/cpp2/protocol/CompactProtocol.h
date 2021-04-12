@@ -297,67 +297,7 @@ class CompactProtocolReader {
     return 0;
   }
 
-  struct StructReadState {
-    int16_t fieldId;
-    apache::thrift::protocol::TType fieldType;
-    // bool boolValue;
-
-    constexpr static bool kAcceptsContext = false;
-
-    void readStructBegin(CompactProtocolReader* iprot) {
-      iprot->readStructBeginWithState(*this);
-    }
-
-    void readStructEnd(CompactProtocolReader* /*iprot*/) {}
-
-    void readFieldBegin(CompactProtocolReader* iprot) {
-      iprot->readFieldBeginWithState(*this);
-    }
-
-    FOLLY_NOINLINE void readFieldBeginNoInline(CompactProtocolReader* iprot) {
-      iprot->readFieldBeginWithState(*this);
-    }
-
-    void readFieldEnd(CompactProtocolReader* /*iprot*/) {}
-
-    FOLLY_ALWAYS_INLINE bool advanceToNextField(
-        CompactProtocolReader* iprot,
-        int32_t currFieldId,
-        int32_t nextFieldId,
-        TType nextFieldType) {
-      return iprot->advanceToNextField(
-          currFieldId, nextFieldId, nextFieldType, *this);
-    }
-
-    void afterAdvanceFailure(CompactProtocolReader* /*iprot*/) {}
-
-    void beforeSubobject(CompactProtocolReader* /* iprot */) {}
-    void afterSubobject(CompactProtocolReader* /* iprot */) {}
-
-    bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
-
-    /*
-     * This is used in generated deserialization code only. When deserializing
-     * fields in "non-advanceToNextField" case, we delegate the type check to
-     * each protocol since some protocol (such as NimbleProtocol) may not encode
-     * type information.
-     */
-    FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-        CompactProtocolReader* /*iprot*/, TType expectedFieldType) {
-      return fieldType == expectedFieldType;
-    }
-
-    inline void skip(CompactProtocolReader* iprot) { iprot->skip(fieldType); }
-
-    std::string& fieldName() {
-      throw std::logic_error("CompactProtocol doesn't support field names");
-    }
-
-    template <typename StructTraits>
-    void fillFieldTraitsFromName() {
-      throw std::logic_error("CompactProtocol doesn't support field names");
-    }
-  };
+  struct StructReadState;
 
  protected:
   /**
@@ -409,6 +349,68 @@ class CompactProtocolReader {
   template <typename T>
   friend class ProtocolReaderWithRefill;
   friend class CompactProtocolReaderWithRefill;
+};
+
+struct CompactProtocolReader::StructReadState {
+  int16_t fieldId;
+  apache::thrift::protocol::TType fieldType;
+  // bool boolValue;
+
+  constexpr static bool kAcceptsContext = false;
+
+  void readStructBegin(CompactProtocolReader* iprot) {
+    iprot->readStructBeginWithState(*this);
+  }
+
+  void readStructEnd(CompactProtocolReader* /*iprot*/) {}
+
+  void readFieldBegin(CompactProtocolReader* iprot) {
+    iprot->readFieldBeginWithState(*this);
+  }
+
+  FOLLY_NOINLINE void readFieldBeginNoInline(CompactProtocolReader* iprot) {
+    iprot->readFieldBeginWithState(*this);
+  }
+
+  void readFieldEnd(CompactProtocolReader* /*iprot*/) {}
+
+  FOLLY_ALWAYS_INLINE bool advanceToNextField(
+      CompactProtocolReader* iprot,
+      int32_t currFieldId,
+      int32_t nextFieldId,
+      TType nextFieldType) {
+    return iprot->advanceToNextField(
+        currFieldId, nextFieldId, nextFieldType, *this);
+  }
+
+  void afterAdvanceFailure(CompactProtocolReader* /*iprot*/) {}
+
+  void beforeSubobject(CompactProtocolReader* /* iprot */) {}
+  void afterSubobject(CompactProtocolReader* /* iprot */) {}
+
+  bool atStop() { return fieldType == apache::thrift::protocol::T_STOP; }
+
+  /*
+   * This is used in generated deserialization code only. When deserializing
+   * fields in "non-advanceToNextField" case, we delegate the type check to
+   * each protocol since some protocol (such as NimbleProtocol) may not encode
+   * type information.
+   */
+  FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
+      CompactProtocolReader* /*iprot*/, TType expectedFieldType) {
+    return fieldType == expectedFieldType;
+  }
+
+  inline void skip(CompactProtocolReader* iprot) { iprot->skip(fieldType); }
+
+  std::string& fieldName() {
+    throw std::logic_error("CompactProtocol doesn't support field names");
+  }
+
+  template <typename StructTraits>
+  void fillFieldTraitsFromName() {
+    throw std::logic_error("CompactProtocol doesn't support field names");
+  }
 };
 
 namespace detail {
