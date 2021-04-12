@@ -53,6 +53,9 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
   folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
   void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_query{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_has_arg_docs{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyServiceSvNull : public MyServiceSvIf {

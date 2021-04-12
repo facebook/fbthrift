@@ -20,22 +20,64 @@ void NestedContainersSvIf::mapList(std::unique_ptr<::std::map<::std::int32_t, ::
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_mapList.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return apache::thrift::detail::si::semifuture([&] {
     return mapList(std::move(p_foo));
   });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo) {
-  using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto scope = getRequestContext()->getRequestExecutionScope();
-  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_mapList.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapList(std::move(p_foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_mapList(std::move(p_foo));
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_mapList.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_mapList.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_mapList(std::move(p_foo));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_mapList(std::move(p_foo)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        mapList(std::move(p_foo));
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_mapList(std::move(p_foo));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
 }
 
 void NestedContainersSvIf::mapSet(std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> /*foo*/) {
@@ -43,22 +85,64 @@ void NestedContainersSvIf::mapSet(std::unique_ptr<::std::map<::std::int32_t, ::s
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_mapSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return apache::thrift::detail::si::semifuture([&] {
     return mapSet(std::move(p_foo));
   });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> p_foo) {
-  using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto scope = getRequestContext()->getRequestExecutionScope();
-  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_mapSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapSet(std::move(p_foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> p_foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_mapSet(std::move(p_foo));
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_mapSet.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_mapSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_mapSet(std::move(p_foo));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_mapSet(std::move(p_foo)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        mapSet(std::move(p_foo));
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_mapSet(std::move(p_foo));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
 }
 
 void NestedContainersSvIf::listMap(std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> /*foo*/) {
@@ -66,22 +150,64 @@ void NestedContainersSvIf::listMap(std::unique_ptr<::std::vector<::std::map<::st
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_listMap.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return apache::thrift::detail::si::semifuture([&] {
     return listMap(std::move(p_foo));
   });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> p_foo) {
-  using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto scope = getRequestContext()->getRequestExecutionScope();
-  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_listMap.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listMap(std::move(p_foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> p_foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_listMap(std::move(p_foo));
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_listMap.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_listMap.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_listMap(std::move(p_foo));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_listMap(std::move(p_foo)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        listMap(std::move(p_foo));
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_listMap(std::move(p_foo));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
 }
 
 void NestedContainersSvIf::listSet(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> /*foo*/) {
@@ -89,22 +215,64 @@ void NestedContainersSvIf::listSet(std::unique_ptr<::std::vector<::std::set<::st
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_listSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return apache::thrift::detail::si::semifuture([&] {
     return listSet(std::move(p_foo));
   });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_foo) {
-  using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto scope = getRequestContext()->getRequestExecutionScope();
-  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_listSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listSet(std::move(p_foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_listSet(std::move(p_foo));
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_listSet.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_listSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_listSet(std::move(p_foo));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_listSet(std::move(p_foo)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        listSet(std::move(p_foo));
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_listSet(std::move(p_foo));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
 }
 
 void NestedContainersSvIf::turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> /*foo*/) {
@@ -112,22 +280,64 @@ void NestedContainersSvIf::turtles(std::unique_ptr<::std::vector<::std::vector<:
 }
 
 folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_turtles.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return apache::thrift::detail::si::semifuture([&] {
     return turtles(std::move(p_foo));
   });
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo) {
-  using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto scope = getRequestContext()->getRequestExecutionScope();
-  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_turtles.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_turtles(std::move(p_foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_turtles(std::move(p_foo));
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_turtles.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_turtles.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_turtles(std::move(p_foo));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_turtles(std::move(p_foo)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        turtles(std::move(p_foo));
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_turtles(std::move(p_foo));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
 }
 
 void NestedContainersSvNull::mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/) {

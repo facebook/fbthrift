@@ -45,6 +45,8 @@ class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
   folly::Future<folly::Unit> future_do_mid() override;
   folly::SemiFuture<folly::Unit> semifuture_do_mid() override;
   void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_mid{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyNodeSvNull : public MyNodeSvIf, virtual public ::cpp2::MyRootSvIf {

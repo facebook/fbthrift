@@ -65,6 +65,11 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
   folly::Future<std::unique_ptr<::std::string>> future_get500() override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get500() override;
   void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_doBland{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_doRaise{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get200{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get500{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class RaiserSvNull : public RaiserSvIf {

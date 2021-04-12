@@ -45,6 +45,8 @@ class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual publi
   folly::Future<folly::Unit> future_pang() override;
   folly::SemiFuture<folly::Unit> semifuture_pang() override;
   void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_pang{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public ::cpp2::MyServicePrioParentSvIf {

@@ -82,6 +82,13 @@ class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::Serv
   folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodBothThrow() override;
   void async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
   void async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodAndReponse{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodSinkThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodFinalThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodBothThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class SinkServiceSvNull : public SinkServiceSvIf {

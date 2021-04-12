@@ -51,6 +51,9 @@ class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public 
   folly::Future<::std::string> future_getDataByKey1(const ::std::string& p_key) override;
   folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& p_key) override;
   void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataByKey0{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataByKey1{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class DbMixedStackArgumentsSvNull : public DbMixedStackArgumentsSvIf {

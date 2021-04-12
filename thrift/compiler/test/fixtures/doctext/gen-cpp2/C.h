@@ -44,6 +44,8 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
   folly::Future<folly::Unit> future_f() override;
   folly::SemiFuture<folly::Unit> semifuture_f() override;
   void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_f{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class CSvNull : public CSvIf {

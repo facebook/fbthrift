@@ -39,6 +39,7 @@ class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::Se
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 
 
+ private:
 };
 
 class EmptyServiceSvNull : public EmptyServiceSvIf {

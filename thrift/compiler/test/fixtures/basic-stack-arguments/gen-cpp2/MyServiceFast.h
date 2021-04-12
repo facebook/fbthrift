@@ -45,6 +45,7 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
   void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t p_id) override;
   void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, const ::std::string& p_data) override;
   void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, const ::std::string& p_data) override;
+ private:
 };
 
 class MyServiceFastSvNull : public MyServiceFastSvIf {

@@ -45,6 +45,8 @@ class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public ::cpp2::MyNodeSvIf {
   folly::Future<folly::Unit> future_do_leaf() override;
   folly::SemiFuture<folly::Unit> semifuture_do_leaf() override;
   void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_leaf{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyLeafSvNull : public MyLeafSvIf, virtual public ::cpp2::MyNodeSvIf {

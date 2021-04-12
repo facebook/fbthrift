@@ -92,6 +92,14 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::va
   folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) override;
   folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) override;
   void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_simple_function{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function2{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function3{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_oneway_void_ret{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_oneway_void_ret_i32_i32_i32_i32_i32_param{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_oneway_void_ret_struct_param{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_oneway_void_ret_listunion_param{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public ::some::valid::ns::ParamServiceSvIf {

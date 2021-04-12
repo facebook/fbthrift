@@ -51,6 +51,9 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
   folly::Future<folly::Unit> future_pong() override;
   folly::SemiFuture<folly::Unit> semifuture_pong() override;
   void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_pong{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyServicePrioParentSvNull : public MyServicePrioParentSvIf {

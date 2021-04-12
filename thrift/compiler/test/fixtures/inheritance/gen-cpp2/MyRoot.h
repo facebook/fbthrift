@@ -44,6 +44,8 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
   folly::Future<folly::Unit> future_do_root() override;
   folly::SemiFuture<folly::Unit> semifuture_do_root() override;
   void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+ private:
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_root{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyRootSvNull : public MyRootSvIf {
