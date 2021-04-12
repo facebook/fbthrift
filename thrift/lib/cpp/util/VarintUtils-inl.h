@@ -130,42 +130,9 @@ T readVarint(CursorT& c) {
 
 namespace detail {
 
-template <typename T>
-class has_ensure_and_append {
-  template <typename U>
-  static char f(decltype(&U::ensure), decltype(&U::append));
-  template <typename U>
-  static long f(...);
-
- public:
-  enum { value = sizeof(f<T>(nullptr, nullptr)) == sizeof(char) };
-};
-
-// Slow path if cursor class does not have ensure() and append() (e.g. RWCursor)
+// Cursor class must have ensure() and append() (e.g. QueueAppender)
 template <class Cursor, class T>
-typename std::enable_if<!has_ensure_and_append<Cursor>::value, uint8_t>::type
-writeVarintSlow(Cursor& c, T value) {
-  uint8_t sz = 0;
-  while (true) {
-    if ((value & ~0x7F) == 0) {
-      c.template write<uint8_t>((int8_t)value);
-      sz++;
-      break;
-    } else {
-      c.template write<uint8_t>((int8_t)((value & 0x7F) | 0x80));
-      sz++;
-      typedef typename std::make_unsigned<T>::type un_type;
-      value = (un_type)value >> 7;
-    }
-  }
-
-  return sz;
-}
-
-// Slow path if cursor class has ensure() and append() (e.g. QueueAppender)
-template <class Cursor, class T>
-typename std::enable_if<has_ensure_and_append<Cursor>::value, uint8_t>::type
-writeVarintSlow(Cursor& c, T value) {
+uint8_t writeVarintSlow(Cursor& c, T value) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
   typedef typename std::make_unsigned<T>::type un_type;
   un_type unval = static_cast<un_type>(value);
