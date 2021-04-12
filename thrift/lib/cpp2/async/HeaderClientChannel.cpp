@@ -49,16 +49,14 @@ namespace thrift {
 
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
-HeaderClientChannel::HeaderClientChannel(
-    const std::shared_ptr<folly::AsyncTransport>& transport)
+HeaderClientChannel::HeaderClientChannel(ReleasableAsyncTransportPtr transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport, make_unique<ClientFramingHandler>(*this)))) {}
+          std::move(transport), make_unique<ClientFramingHandler>(*this)))) {}
 
 HeaderClientChannel::HeaderClientChannel(
-    WithRocketUpgrade rocketUpgrade,
-    const std::shared_ptr<folly::AsyncTransport>& transport)
+    WithRocketUpgrade rocketUpgrade, ReleasableAsyncTransportPtr transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport, make_unique<ClientFramingHandler>(*this)))) {
+          std::move(transport), make_unique<ClientFramingHandler>(*this)))) {
   upgradeToRocket_ = rocketUpgrade.enabled;
   if (!rocketUpgrade.enabled) {
     upgradeState_ = RocketUpgradeState::NO_UPGRADE;

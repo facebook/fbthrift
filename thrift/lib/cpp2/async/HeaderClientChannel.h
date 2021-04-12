@@ -16,12 +16,12 @@
 
 #ifndef THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_
 #define THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_ 1
-
 #include <deque>
 #include <limits>
 #include <memory>
 #include <unordered_map>
 
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
@@ -56,8 +56,22 @@ class HeaderClientChannel : public ClientChannel,
   ~HeaderClientChannel() override {}
 
  public:
+  using ReleasableAsyncTransportPtr = std::unique_ptr<
+      folly::AsyncTransport,
+      folly::AsyncSocket::ReleasableDestructor>;
+
+  explicit HeaderClientChannel(ReleasableAsyncTransportPtr transport);
+
+  template <typename Transport>
   explicit HeaderClientChannel(
-      const std::shared_ptr<folly::AsyncTransport>& transport);
+      std::unique_ptr<Transport, folly::AsyncTransport::Destructor> transport)
+      : HeaderClientChannel(ReleasableAsyncTransportPtr(transport.release())) {}
+  template <typename Transport>
+  explicit HeaderClientChannel(
+      std::unique_ptr<Transport, folly::AsyncSocket::ReleasableDestructor>
+          transport)
+      : HeaderClientChannel(ReleasableAsyncTransportPtr(std::move(transport))) {
+  }
 
   struct WithRocketUpgrade {
     bool enabled{true};
@@ -69,8 +83,20 @@ class HeaderClientChannel : public ClientChannel,
   };
 
   HeaderClientChannel(
+      WithRocketUpgrade rocketUpgrade, ReleasableAsyncTransportPtr transport);
+  template <typename Transport>
+  explicit HeaderClientChannel(
       WithRocketUpgrade rocketUpgrade,
-      const std::shared_ptr<folly::AsyncTransport>& transport);
+      std::unique_ptr<Transport, folly::AsyncTransport::Destructor> transport)
+      : HeaderClientChannel(
+            rocketUpgrade, ReleasableAsyncTransportPtr(transport.release())) {}
+  template <typename Transport>
+  explicit HeaderClientChannel(
+      WithRocketUpgrade rocketUpgrade,
+      std::unique_ptr<Transport, folly::AsyncSocket::ReleasableDestructor>
+          transport)
+      : HeaderClientChannel(
+            rocketUpgrade, ReleasableAsyncTransportPtr(std::move(transport))) {}
 
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
@@ -78,15 +104,16 @@ class HeaderClientChannel : public ClientChannel,
       unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
           Ptr;
 
-  static Ptr newChannel(
-      const std::shared_ptr<folly::AsyncTransport>& transport) {
-    return Ptr(new HeaderClientChannel(transport));
+  template <typename TransportPtr>
+  static Ptr newChannel(TransportPtr transport) {
+    return Ptr(new HeaderClientChannel(std::move(transport)));
   }
 
+  template <typename TransportPtr>
   static Ptr newChannel(
-      WithRocketUpgrade rocketUpgrade,
-      const std::shared_ptr<folly::AsyncTransport>& transport) {
-    return Ptr(new HeaderClientChannel(std::move(rocketUpgrade), transport));
+      WithRocketUpgrade rocketUpgrade, TransportPtr transport) {
+    return Ptr(new HeaderClientChannel(
+        std::move(rocketUpgrade), std::move(transport)));
   }
 
   virtual void sendMessage(
@@ -118,17 +145,15 @@ class HeaderClientChannel : public ClientChannel,
     cpp2Channel_->setTransport(nullptr);
     cpp2Channel_->closeNow();
     assert(transportShared.use_count() == 1);
-    auto uPtr =
-        std::get_deleter<apache::thrift::transport::detail::ReleaseDeleter<
-            folly::AsyncTransport,
-            folly::DelayedDestruction::Destructor>>(transportShared)
-            ->stealPtr();
-    return uPtr;
+    auto deleter = std::get_deleter<folly::AsyncSocket::ReleasableDestructor>(
+        transportShared);
+    deleter->release();
+    return folly::AsyncTransport::UniquePtr(transportShared.get());
   }
 
   /**
-   * Sets the optional RequestSetupMetadata for transport upgrade from header to
-   * rocket. If this is provided, then the upgrade mechanism will call
+   * Sets the optional RequestSetupMetadata for transport upgrade from header
+   * to rocket. If this is provided, then the upgrade mechanism will call
    * `RocketClientChannel::newChannelWithMetadata` instead of
    * `RocketClientChannel::newChannel`.
    * NOTE: This is for transport upgrade from header to rocket for non-TLS
@@ -341,9 +366,9 @@ class HeaderClientChannel : public ClientChannel,
         rocketChannel_;
   }
 
-  // A class to hold the necessary data for a header request (SerializedRequest,
-  // THeader, RpcOptions, callback, etc.) so that the request can be queued and
-  // sent at a later point.
+  // A class to hold the necessary data for a header request
+  // (SerializedRequest, THeader, RpcOptions, callback, etc.) so that the
+  // request can be queued and sent at a later point.
   class HeaderRequestContext {
    public:
     HeaderRequestContext(
@@ -373,10 +398,10 @@ class HeaderClientChannel : public ClientChannel,
    * upgrade from header to rocket is in progress.
    *
    * If transport upgrade for raw client is enabled, this HeaderClientChannel
-   * tries to upgrade the transport from header to rocket upon first request by
-   * sending a special request (upgradeToRocket). If upgrade succeeds, all
-   * requests on the channel (including the ones that come in while upgrade was
-   * in progress) should be sent using rocket transport.
+   * tries to upgrade the transport from header to rocket upon first request
+   * by sending a special request (upgradeToRocket). If upgrade succeeds, all
+   * requests on the channel (including the ones that come in while upgrade
+   * was in progress) should be sent using rocket transport.
    */
   std::deque<HeaderRequestContext> pendingRequests_;
 

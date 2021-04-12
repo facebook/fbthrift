@@ -152,14 +152,15 @@ class TestFramingHandler : public FramingHandler {
 
 template <typename Channel>
 unique_ptr<Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransport>& transport) {
-  return Channel::newChannel(transport);
+    folly::AsyncTransport::UniquePtr transport) {
+  return Channel::newChannel(std::move(transport));
 }
 
 template <>
 unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransport>& transport) {
-  return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
+    folly::AsyncTransport::UniquePtr transport) {
+  return Cpp2Channel::newChannel(
+      std::move(transport), make_unique<TestFramingHandler>());
 }
 
 template <typename Channel1, typename Channel2>
@@ -172,25 +173,28 @@ class SocketPairTest {
   SocketPairTest(Config config = Config()) : eventBase_() {
     folly::SocketPair socketPair;
 
+    folly::AsyncSocket::UniquePtr socket0, socket1;
     if (config.ssl) {
       auto clientCtx = std::make_shared<folly::SSLContext>();
       auto serverCtx = std::make_shared<folly::SSLContext>();
       getctx(clientCtx, serverCtx);
-      socket0_ = TAsyncSSLSocket::newSocket(
+      socket0 = TAsyncSSLSocket::newSocket(
           clientCtx, &eventBase_, socketPair.extractNetworkSocket0(), false);
-      socket1_ = TAsyncSSLSocket::newSocket(
+      socket1 = TAsyncSSLSocket::newSocket(
           serverCtx, &eventBase_, socketPair.extractNetworkSocket1(), true);
-      dynamic_cast<folly::AsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
-      dynamic_cast<folly::AsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket0.get())->sslConn(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket1.get())->sslAccept(nullptr);
     } else {
-      socket0_ = folly::AsyncSocket::newSocket(
+      socket0 = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket0());
-      socket1_ = folly::AsyncSocket::newSocket(
+      socket1 = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket1());
     }
+    socket0_ = socket0.get();
+    socket1_ = socket1.get();
 
-    channel0_ = createChannel<Channel1>(socket0_);
-    channel1_ = createChannel<Channel2>(socket1_);
+    channel0_ = createChannel<Channel1>(std::move(socket0));
+    channel1_ = createChannel<Channel2>(std::move(socket1));
   }
   virtual ~SocketPairTest() {}
 
@@ -215,9 +219,9 @@ class SocketPairTest {
 
   int getFd1() { return socket1_->getNetworkSocket().toFd(); }
 
-  shared_ptr<folly::AsyncSocket> getSocket0() { return socket0_; }
+  folly::AsyncSocket* getSocket0() { return socket0_; }
 
-  shared_ptr<folly::AsyncSocket> getSocket1() { return socket1_; }
+  folly::AsyncSocket* getSocket1() { return socket1_; }
 
   void runWithTimeout(uint32_t timeoutMS = 6000) {
     preLoop();
@@ -230,8 +234,8 @@ class SocketPairTest {
 
  protected:
   folly::EventBase eventBase_;
-  shared_ptr<folly::AsyncSocket> socket0_;
-  shared_ptr<folly::AsyncSocket> socket1_;
+  folly::AsyncSocket* socket0_;
+  folly::AsyncSocket* socket1_;
   unique_ptr<Channel1, folly::DelayedDestruction::Destructor> channel0_;
   unique_ptr<Channel2, folly::DelayedDestruction::Destructor> channel1_;
 };
@@ -396,7 +400,7 @@ class MessageCloseTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
         &sendCallback_, makeTestBuf(1024 * 1024), header_.get());
     // Close the other socket after delay
     this->eventBase_.runInLoop(
-        std::bind(&folly::AsyncSocket::close, this->socket1_.get()));
+        std::bind(&folly::AsyncSocket::close, this->socket1_));
     channel1_->setReceiveCallback(this);
   }
 
@@ -1183,9 +1187,9 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
 };
 
 TEST(Channel, DestroyInEOF) {
-  auto t = new DestroyAsyncTransport;
-  std::shared_ptr<folly::AsyncTransport> transport(t);
-  auto channel = createChannel<Cpp2Channel>(transport);
+  auto t = new DestroyAsyncTransport();
+  auto transport = folly::AsyncTransport::UniquePtr(t);
+  auto channel = createChannel<Cpp2Channel>(std::move(transport));
   DestroyRecvCallback drc(std::move(channel));
   t->invokeEOF();
 }

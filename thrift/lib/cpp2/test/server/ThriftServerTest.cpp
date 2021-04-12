@@ -130,9 +130,9 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 
   {
     folly::EventBase base;
-    std::shared_ptr<folly::AsyncSocket> socket(
-        folly::AsyncSocket::newSocket(&base, *st.getAddress()));
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+    auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
+    TestServiceAsyncClient client(
+        HeaderClientChannel::newChannel(std::move(socket)));
 
     client.sync_noResponse(10000);
   } // client out of scope
@@ -201,8 +201,7 @@ TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
   auto sslCtx = std::make_shared<folly::SSLContext>();
-  std::shared_ptr<folly::AsyncSocket> socket(
-      TAsyncSSLSocket::newSocket(sslCtx, &base));
+  auto socket = TAsyncSSLSocket::newSocket(sslCtx, &base);
   TestConnCallback cb;
   socket->connect(&cb, *sst.getAddress());
   base.loop();
@@ -247,9 +246,9 @@ TEST(ThriftServer, DefaultCompressionTest) {
   folly::EventBase base;
 
   // no compression if client does not compress/send preference
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
   client.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
 
@@ -269,10 +268,10 @@ TEST(ThriftServer, HeaderTest) {
   auto serv = factory.create();
   ScopedServerThread sst(serv);
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   RpcOptions options;
   // Set it as a header directly so the client channel won't set a
@@ -1328,11 +1327,10 @@ TEST(ThriftServer, ClientTimeoutTest) {
   folly::EventBase base;
 
   auto getClient = [&base, &sst]() {
-    std::shared_ptr<folly::AsyncSocket> socket(
-        folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+    auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
     return std::make_shared<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(socket));
+        HeaderClientChannel::newChannel(std::move(socket)));
   };
 
   int cbCtor = 0;
@@ -1430,10 +1428,10 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   apache::thrift::util::ScopedServerThread st(server);
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
   client.sync_sendResponse(response, 200);
@@ -1459,14 +1457,14 @@ TEST(ThriftServer, BadSendTest) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
+  auto socketPtr = socket.get();
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   client.sendResponse(std::unique_ptr<RequestCallback>(new Callback), 64);
 
-  socket->shutdownWriteNow();
+  socketPtr->shutdownWriteNow();
   base.loop();
 
   std::string response;
@@ -1488,11 +1486,12 @@ TEST(ThriftServer, ResetStateTest) {
   // the assertion failure was a lost race, which doesn't happen
   // reliably.
   for (int i = 0; i < 1000; ++i) {
-    std::shared_ptr<folly::AsyncSocket> socket(
-        folly::AsyncSocket::newSocket(&base, ssock->getAddresses()[0]));
+    auto socket =
+        folly::AsyncSocket::newSocket(&base, ssock->getAddresses()[0]);
 
     // Create a client.
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+    TestServiceAsyncClient client(
+        HeaderClientChannel::newChannel(std::move(socket)));
 
     std::string response;
     // This will fail, because there's no server.
@@ -1563,10 +1562,10 @@ TEST(ThriftServer, FailureInjection) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   auto server = std::dynamic_pointer_cast<ThriftServer>(sst.getServer().lock());
   CHECK(server);
@@ -1627,10 +1626,10 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   apache::thrift::util::ScopedServerThread st(server);
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
   client.sync_sendResponse(response, 200);
@@ -1660,8 +1659,7 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
   folly::EventBase base;
   ReadCallbackTest cb;
 
-  std::shared_ptr<folly::AsyncSocket> socket2(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket2 = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
   socket2->setReadCB(&cb);
 
   base.tryRunAfterDelay(
@@ -1697,10 +1695,10 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
 
   folly::EventBase base;
 
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly ::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
 
@@ -1715,11 +1713,11 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   server->getServeEventBase()->runInEventBaseThreadAndWait(
       [=]() { iothreadpool->setNumThreads(30); });
 
-  std::shared_ptr<folly::AsyncSocket> socket2(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket2 = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
   // Can't reuse client since the channel has gone bad
-  TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
+  TestServiceAsyncClient client2(
+      HeaderClientChannel::newChannel(std::move(socket2)));
 
   client2.sync_sendResponse(response, 64);
 }
@@ -1805,9 +1803,9 @@ TEST(ThriftServer, MultiPort) {
   folly::EventBase base;
 
   auto testFn = [&](folly::SocketAddress& address) {
-    std::shared_ptr<folly::AsyncSocket> socket(
-        folly::AsyncSocket::newSocket(&base, address));
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+    auto socket = folly::AsyncSocket::newSocket(&base, address);
+    TestServiceAsyncClient client(
+        HeaderClientChannel::newChannel(std::move(socket)));
     std::string response;
     client.sync_sendResponse(response, 42);
     EXPECT_EQ(response, "test42");
@@ -1974,9 +1972,9 @@ TEST(ThriftServer, SSLRequiredRejectsPlaintext) {
   ScopedServerThread sst(std::move(server));
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
   EXPECT_THROW(client.sync_sendResponse(response, 64);, TTransportException);
@@ -2088,9 +2086,9 @@ TEST(ThriftServer, SSLRequiredAllowsLocalPlaintext) {
   // ensure that the address is loopback
   auto port = sst.getAddress()->getPort();
   folly::SocketAddress loopback("::1", port);
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, loopback));
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  auto socket = folly::AsyncSocket::newSocket(&base, loopback);
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
   client.sync_sendResponse(response, 64);
@@ -2134,9 +2132,9 @@ TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
   folly::EventBase base;
   {
     SCOPED_TRACE("Plaintext");
-    std::shared_ptr<folly::AsyncSocket> socket(
-        folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+    auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
+    TestServiceAsyncClient client(
+        HeaderClientChannel::newChannel(std::move(socket)));
 
     std::string response;
     client.sync_sendResponse(response, 64);
@@ -2177,9 +2175,9 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
   ScopedServerThread st(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *st.getAddress()));
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   for (bool clientOnly : {false, true}) {
     for (bool shouldTimeOut : {true, false}) {
