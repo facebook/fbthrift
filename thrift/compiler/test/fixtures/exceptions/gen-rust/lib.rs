@@ -881,7 +881,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -939,7 +939,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1006,7 +1006,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1064,7 +1064,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);

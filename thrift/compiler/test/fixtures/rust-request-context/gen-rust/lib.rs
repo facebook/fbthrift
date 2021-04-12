@@ -1422,7 +1422,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1480,7 +1480,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1542,7 +1542,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1604,7 +1604,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1670,7 +1670,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1736,7 +1736,7 @@ pub mod client {
                 },
             ));
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
@@ -1800,7 +1800,7 @@ pub mod client {
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(&SERVICE_NAME, &METHOD_NAME, request)
+                .call_stream(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|(_initial_response, stream)| ::futures::future::ready({
                     let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(
@@ -1860,7 +1860,7 @@ pub mod client {
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(&SERVICE_NAME, &METHOD_NAME, request)
+                .call_stream(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|(_initial_response, stream)| ::futures::future::ready({
                     let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(
@@ -1923,7 +1923,7 @@ pub mod client {
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(&SERVICE_NAME, &METHOD_NAME, request)
+                .call_stream(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|(initial_response, stream)| ::futures::future::ready({
                     let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.map(

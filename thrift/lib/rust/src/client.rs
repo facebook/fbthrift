@@ -33,15 +33,15 @@ pub trait ClientFactory {
 pub trait Transport: Framing + Send + 'static {
     fn call(
         &self,
-        service_name: &const_cstr::ConstCStr,
-        fn_name: &const_cstr::ConstCStr,
+        service_name: const_cstr::ConstCStr,
+        fn_name: const_cstr::ConstCStr,
         req: FramingEncodedFinal<Self>,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
 
     fn call_stream(
         &self,
-        _service_name: &const_cstr::ConstCStr,
-        _fn_name: &const_cstr::ConstCStr,
+        _service_name: const_cstr::ConstCStr,
+        _fn_name: const_cstr::ConstCStr,
         _req: FramingEncodedFinal<Self>,
     ) -> Pin<
         Box<

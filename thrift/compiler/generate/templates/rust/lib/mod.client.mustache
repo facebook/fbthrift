@@ -146,7 +146,7 @@
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(&SERVICE_NAME, &METHOD_NAME, request)
+                .call_stream(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|({{^function:stream_has_first_response?}}_{{/function:stream_has_first_response?}}initial_response, stream)| ::futures::future::ready({
                     let new_stream: {{#function:return_type}}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError>> + ::std::marker::Send + 'static >>{{/function:return_type}} = ::std::boxed::Box::pin(stream.map(
@@ -223,7 +223,7 @@
                 .boxed()
             {{/function:returns_streams?}}{{^function:returns_streams?}}
             self.transport()
-                .call(&SERVICE_NAME, &METHOD_NAME, request)
+                .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| ::futures::future::ready({
                     let de = P::deserializer(reply);
