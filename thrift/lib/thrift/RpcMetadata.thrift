@@ -182,9 +182,8 @@ struct PayloadAppServerExceptionMetadata {
 union PayloadExceptionMetadata {
   1: PayloadDeclaredExceptionMetadata declaredException;
   2: PayloadProxyExceptionMetadata proxyException;
-  // Deprecated
-  // replaced by PayloadProxyExceptionMetadata + ProxiedPayloadMetadata
-  3: PayloadProxiedExceptionMetadata proxiedException;
+  // Replaced by PayloadProxyExceptionMetadata + ProxiedPayloadMetadata
+  3: PayloadProxiedExceptionMetadata DEPRECATED_proxiedException;
   4: PayloadAppClientExceptionMetadata appClientException;
   5: PayloadAppServerExceptionMetadata appServerException;
 }

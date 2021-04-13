@@ -226,7 +226,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                 : nullptr) {
           exceptionMetadataBase.name_utf8_ref() = "ProxiedException";
           PayloadExceptionMetadata exceptionMetadata;
-          exceptionMetadata.set_proxiedException(
+          exceptionMetadata.set_DEPRECATED_proxiedException(
               PayloadProxiedExceptionMetadata());
           exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
 

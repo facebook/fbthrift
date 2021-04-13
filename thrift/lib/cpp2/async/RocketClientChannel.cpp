@@ -242,7 +242,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                       TApplicationException(exceptionWhatRef.value_or("")))
                       .buffer;
               break;
-            case PayloadExceptionMetadata::proxiedException:
+            case PayloadExceptionMetadata::DEPRECATED_proxiedException:
               (*otherMetadataRef)["servicerouter:sr_error"] =
                   protocol::base64Encode(payload->coalesce());
               payload =
