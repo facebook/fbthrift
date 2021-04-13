@@ -17,9 +17,9 @@ folly::Future<std::unordered_map<int32_t,std::string>>
 SomeServiceClientWrapper::bounce_map(
     apache::thrift::RpcOptions& rpcOptions,
     std::unordered_map<int32_t,std::string> arg_m) {
+  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::unordered_map<int32_t,std::string>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::unordered_map<int32_t,std::string>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_bounce_map, channel_);
   client->bounce_map(
@@ -34,9 +34,9 @@ folly::Future<std::map<std::string,int64_t>>
 SomeServiceClientWrapper::binary_keyed_map(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<int64_t> arg_r) {
+  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::map<std::string,int64_t>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_binary_keyed_map, channel_);
   client->binary_keyed_map(

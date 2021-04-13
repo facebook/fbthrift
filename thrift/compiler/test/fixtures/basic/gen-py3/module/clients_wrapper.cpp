@@ -13,9 +13,9 @@ namespace cpp2 {
 folly::Future<folly::Unit>
 MyServiceClientWrapper::ping(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_ping, channel_);
   client->ping(
@@ -28,9 +28,9 @@ MyServiceClientWrapper::ping(
 folly::Future<std::string>
 MyServiceClientWrapper::getRandomData(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_getRandomData, channel_);
   client->getRandomData(
@@ -44,9 +44,9 @@ folly::Future<folly::Unit>
 MyServiceClientWrapper::sink(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_sink) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_sink, channel_);
   client->sink(
@@ -62,9 +62,9 @@ MyServiceClientWrapper::putDataById(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_id,
     std::string arg_data) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_putDataById, channel_);
   client->putDataById(
@@ -80,9 +80,9 @@ folly::Future<bool>
 MyServiceClientWrapper::hasDataById(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_id) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_hasDataById, channel_);
   client->hasDataById(
@@ -97,9 +97,9 @@ folly::Future<std::string>
 MyServiceClientWrapper::getDataById(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_id) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_getDataById, channel_);
   client->getDataById(
@@ -114,9 +114,9 @@ folly::Future<folly::Unit>
 MyServiceClientWrapper::deleteDataById(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_id) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_deleteDataById, channel_);
   client->deleteDataById(
@@ -132,9 +132,9 @@ MyServiceClientWrapper::lobDataById(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_id,
     std::string arg_data) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::apache::thrift::OneWayFutureCallback>(
     std::move(_promise), channel_);
   client->lobDataById(
@@ -150,9 +150,9 @@ folly::Future<std::string>
 DbMixedStackArgumentsClientWrapper::getDataByKey0(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_key) {
+  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_getDataByKey0, channel_);
   client->getDataByKey0(
@@ -167,9 +167,9 @@ folly::Future<std::string>
 DbMixedStackArgumentsClientWrapper::getDataByKey1(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_key) {
+  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_getDataByKey1, channel_);
   client->getDataByKey1(

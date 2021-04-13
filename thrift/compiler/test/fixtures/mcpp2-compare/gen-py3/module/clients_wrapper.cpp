@@ -15,9 +15,9 @@ namespace ns {
 folly::Future<folly::Unit>
 ReturnServiceClientWrapper::noReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_noReturn, channel_);
   client->noReturn(
@@ -30,9 +30,9 @@ ReturnServiceClientWrapper::noReturn(
 folly::Future<bool>
 ReturnServiceClientWrapper::boolReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_boolReturn, channel_);
   client->boolReturn(
@@ -45,9 +45,9 @@ ReturnServiceClientWrapper::boolReturn(
 folly::Future<int16_t>
 ReturnServiceClientWrapper::i16Return(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i16Return, channel_);
   client->i16Return(
@@ -60,9 +60,9 @@ ReturnServiceClientWrapper::i16Return(
 folly::Future<int32_t>
 ReturnServiceClientWrapper::i32Return(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i32Return, channel_);
   client->i32Return(
@@ -75,9 +75,9 @@ ReturnServiceClientWrapper::i32Return(
 folly::Future<int64_t>
 ReturnServiceClientWrapper::i64Return(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i64Return, channel_);
   client->i64Return(
@@ -90,9 +90,9 @@ ReturnServiceClientWrapper::i64Return(
 folly::Future<float>
 ReturnServiceClientWrapper::floatReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<float> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<float>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_floatReturn, channel_);
   client->floatReturn(
@@ -105,9 +105,9 @@ ReturnServiceClientWrapper::floatReturn(
 folly::Future<double>
 ReturnServiceClientWrapper::doubleReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<double> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_doubleReturn, channel_);
   client->doubleReturn(
@@ -120,9 +120,9 @@ ReturnServiceClientWrapper::doubleReturn(
 folly::Future<std::string>
 ReturnServiceClientWrapper::stringReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_stringReturn, channel_);
   client->stringReturn(
@@ -135,9 +135,9 @@ ReturnServiceClientWrapper::stringReturn(
 folly::Future<std::string>
 ReturnServiceClientWrapper::binaryReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_binaryReturn, channel_);
   client->binaryReturn(
@@ -150,9 +150,9 @@ ReturnServiceClientWrapper::binaryReturn(
 folly::Future<std::map<std::string,int64_t>>
 ReturnServiceClientWrapper::mapReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::map<std::string,int64_t>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_mapReturn, channel_);
   client->mapReturn(
@@ -165,9 +165,9 @@ ReturnServiceClientWrapper::mapReturn(
 folly::Future<int32_t>
 ReturnServiceClientWrapper::simpleTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_simpleTypedefReturn, channel_);
   client->simpleTypedefReturn(
@@ -180,9 +180,9 @@ ReturnServiceClientWrapper::simpleTypedefReturn(
 folly::Future<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>
 ReturnServiceClientWrapper::complexTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_complexTypedefReturn, channel_);
   client->complexTypedefReturn(
@@ -195,9 +195,9 @@ ReturnServiceClientWrapper::complexTypedefReturn(
 folly::Future<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>
 ReturnServiceClientWrapper::list_mostComplexTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_list_mostComplexTypedefReturn, channel_);
   client->list_mostComplexTypedefReturn(
@@ -210,9 +210,9 @@ ReturnServiceClientWrapper::list_mostComplexTypedefReturn(
 folly::Future<::some::valid::ns::MyEnumA>
 ReturnServiceClientWrapper::enumReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::MyEnumA> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_enumReturn, channel_);
   client->enumReturn(
@@ -225,9 +225,9 @@ ReturnServiceClientWrapper::enumReturn(
 folly::Future<std::vector<::some::valid::ns::MyEnumA>>
 ReturnServiceClientWrapper::list_EnumReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<::some::valid::ns::MyEnumA>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::MyEnumA>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_list_EnumReturn, channel_);
   client->list_EnumReturn(
@@ -240,9 +240,9 @@ ReturnServiceClientWrapper::list_EnumReturn(
 folly::Future<::some::valid::ns::MyStruct>
 ReturnServiceClientWrapper::structReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::MyStruct> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyStruct>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_structReturn, channel_);
   client->structReturn(
@@ -255,9 +255,9 @@ ReturnServiceClientWrapper::structReturn(
 folly::Future<std::set<::some::valid::ns::MyStruct>>
 ReturnServiceClientWrapper::set_StructReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::set<::some::valid::ns::MyStruct>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<::some::valid::ns::MyStruct>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_set_StructReturn, channel_);
   client->set_StructReturn(
@@ -270,9 +270,9 @@ ReturnServiceClientWrapper::set_StructReturn(
 folly::Future<::some::valid::ns::ComplexUnion>
 ReturnServiceClientWrapper::unionReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::ComplexUnion> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::ComplexUnion>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_unionReturn, channel_);
   client->unionReturn(
@@ -285,9 +285,9 @@ ReturnServiceClientWrapper::unionReturn(
 folly::Future<std::vector<::some::valid::ns::ComplexUnion>>
 ReturnServiceClientWrapper::list_UnionReturn(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<::some::valid::ns::ComplexUnion>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::ComplexUnion>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_list_UnionReturn, channel_);
   client->list_UnionReturn(
@@ -301,9 +301,9 @@ folly::Future<folly::IOBuf>
 ReturnServiceClientWrapper::readDataEb(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_size) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::IOBuf> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::IOBuf>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_readDataEb, channel_);
   client->readDataEb(
@@ -318,9 +318,9 @@ folly::Future<std::unique_ptr<folly::IOBuf>>
 ReturnServiceClientWrapper::readData(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_size) {
+  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::unique_ptr<folly::IOBuf>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::unique_ptr<folly::IOBuf>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_readData, channel_);
   client->readData(
@@ -335,9 +335,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int16_t arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_i16_param, channel_);
   client->void_ret_i16_param(
@@ -353,9 +353,9 @@ ParamServiceClientWrapper::void_ret_byte_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int8_t arg_param1,
     int16_t arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_byte_i16_param, channel_);
   client->void_ret_byte_i16_param(
@@ -371,9 +371,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_param, channel_);
   client->void_ret_map_param(
@@ -389,9 +389,9 @@ ParamServiceClientWrapper::void_ret_map_setlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1,
     std::set<std::vector<std::string>> arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_setlist_param, channel_);
   client->void_ret_map_setlist_param(
@@ -407,9 +407,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_map_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_typedef_param, channel_);
   client->void_ret_map_typedef_param(
@@ -424,9 +424,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_enum_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::MyEnumA arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_enum_param, channel_);
   client->void_ret_enum_param(
@@ -441,9 +441,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_struct_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::MyStruct arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_struct_param, channel_);
   client->void_ret_struct_param(
@@ -458,9 +458,9 @@ folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_listunion_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<::some::valid::ns::ComplexUnion> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_listunion_param, channel_);
   client->void_ret_listunion_param(
@@ -476,9 +476,9 @@ ParamServiceClientWrapper::bool_ret_i32_i64_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1,
     int64_t arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_i32_i64_param, channel_);
   client->bool_ret_i32_i64_param(
@@ -494,9 +494,9 @@ folly::Future<bool>
 ParamServiceClientWrapper::bool_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_map_param, channel_);
   client->bool_ret_map_param(
@@ -511,9 +511,9 @@ folly::Future<bool>
 ParamServiceClientWrapper::bool_ret_union_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::ComplexUnion arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_union_param, channel_);
   client->bool_ret_union_param(
@@ -529,9 +529,9 @@ ParamServiceClientWrapper::i64_ret_float_double_param(
     apache::thrift::RpcOptions& rpcOptions,
     float arg_param1,
     double arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_float_double_param, channel_);
   client->i64_ret_float_double_param(
@@ -548,9 +548,9 @@ ParamServiceClientWrapper::i64_ret_string_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1,
     std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_string_typedef_param, channel_);
   client->i64_ret_string_typedef_param(
@@ -570,9 +570,9 @@ ParamServiceClientWrapper::i64_ret_i32_i32_i32_i32_i32_param(
     int32_t arg_param3,
     int32_t arg_param4,
     int32_t arg_param5) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param, channel_);
   client->i64_ret_i32_i32_i32_i32_i32_param(
@@ -591,9 +591,9 @@ folly::Future<double>
 ParamServiceClientWrapper::double_ret_setstruct_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::set<::some::valid::ns::MyStruct> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<double> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_double_ret_setstruct_param, channel_);
   client->double_ret_setstruct_param(
@@ -608,9 +608,9 @@ folly::Future<std::string>
 ParamServiceClientWrapper::string_ret_string_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_string_ret_string_param, channel_);
   client->string_ret_string_param(
@@ -625,9 +625,9 @@ folly::Future<std::string>
 ParamServiceClientWrapper::binary_ret_binary_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_binary_ret_binary_param, channel_);
   client->binary_ret_binary_param(
@@ -642,9 +642,9 @@ folly::Future<std::map<std::string,int64_t>>
 ParamServiceClientWrapper::map_ret_bool_param(
     apache::thrift::RpcOptions& rpcOptions,
     bool arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::map<std::string,int64_t>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_map_ret_bool_param, channel_);
   client->map_ret_bool_param(
@@ -660,9 +660,9 @@ ParamServiceClientWrapper::list_ret_map_setlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<int32_t,std::vector<std::string>> arg_param1,
     std::vector<std::string> arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<bool>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<bool>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_list_ret_map_setlist_param, channel_);
   client->list_ret_map_setlist_param(
@@ -678,9 +678,9 @@ folly::Future<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::
 ParamServiceClientWrapper::mapsetlistmapliststring_ret_listlistlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<std::vector<std::vector<std::vector<int32_t>>>> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param, channel_);
   client->mapsetlistmapliststring_ret_listlistlist_param(
@@ -695,9 +695,9 @@ folly::Future<int32_t>
 ParamServiceClientWrapper::typedef_ret_i32_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_typedef_ret_i32_param, channel_);
   client->typedef_ret_i32_param(
@@ -712,9 +712,9 @@ folly::Future<std::vector<int32_t>>
 ParamServiceClientWrapper::listtypedef_ret_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<int32_t>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<int32_t>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_listtypedef_ret_typedef_param, channel_);
   client->listtypedef_ret_typedef_param(
@@ -729,9 +729,9 @@ folly::Future<::some::valid::ns::MyEnumA>
 ParamServiceClientWrapper::enum_ret_double_param(
     apache::thrift::RpcOptions& rpcOptions,
     double arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::MyEnumA> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_enum_ret_double_param, channel_);
   client->enum_ret_double_param(
@@ -747,9 +747,9 @@ ParamServiceClientWrapper::enum_ret_double_enum_param(
     apache::thrift::RpcOptions& rpcOptions,
     double arg_param1,
     ::some::valid::ns::MyEnumA arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::MyEnumA> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_enum_ret_double_enum_param, channel_);
   client->enum_ret_double_enum_param(
@@ -765,9 +765,9 @@ folly::Future<std::vector<::some::valid::ns::MyEnumA>>
 ParamServiceClientWrapper::listenum_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<::some::valid::ns::MyEnumA>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::MyEnumA>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_listenum_ret_map_param, channel_);
   client->listenum_ret_map_param(
@@ -782,9 +782,9 @@ folly::Future<::some::valid::ns::MyStruct>
 ParamServiceClientWrapper::struct_ret_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int16_t arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::MyStruct> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyStruct>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_struct_ret_i16_param, channel_);
   client->struct_ret_i16_param(
@@ -799,9 +799,9 @@ folly::Future<std::set<::some::valid::ns::MyStruct>>
 ParamServiceClientWrapper::setstruct_ret_set_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::set<std::string> arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::set<::some::valid::ns::MyStruct>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<::some::valid::ns::MyStruct>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_setstruct_ret_set_param, channel_);
   client->setstruct_ret_set_param(
@@ -817,9 +817,9 @@ ParamServiceClientWrapper::union_ret_i32_i32_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1,
     int32_t arg_param2) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<::some::valid::ns::ComplexUnion> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::ComplexUnion>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_union_ret_i32_i32_param, channel_);
   client->union_ret_i32_i32_param(
@@ -835,9 +835,9 @@ folly::Future<std::vector<::some::valid::ns::ComplexUnion>>
 ParamServiceClientWrapper::listunion_string_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
+  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   folly::Promise<std::vector<::some::valid::ns::ComplexUnion>> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::ComplexUnion>>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_listunion_string_param, channel_);
   client->listunion_string_param(

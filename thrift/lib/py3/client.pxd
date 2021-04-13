@@ -24,6 +24,7 @@ from folly cimport (
 from libc.stdint cimport uint16_t, uint32_t, int64_t
 from libcpp.memory cimport unique_ptr, shared_ptr
 from libcpp.string cimport string
+from libcpp.utility cimport move
 from libcpp.typeinfo cimport type_info
 from libcpp.map cimport map
 from libcpp.vector cimport vector
@@ -71,10 +72,6 @@ cdef extern from "thrift/lib/py3/client.h" namespace "::thrift::py3":
     cdef void destroyInEventBaseThread(cRequestChannel_ptr)
     cdef unique_ptr[cClientWrapper] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef cRequestChannel_ptr move(cRequestChannel_ptr)
-    cdef string move_string "std::move"(string)
-
 cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "::thrift::py3":
     cdef cppclass cClientWrapper "::thrift::py3::ClientWrapper":
         void setPersistentHeader(const string& key, const string& value)
@@ -108,6 +105,10 @@ cdef class Client:
 
 cdef void requestchannel_callback(
         cFollyTry[cRequestChannel_ptr]&& result,
+        PyObject* userData)
+
+cdef void interactions_callback(
+        cFollyTry[unique_ptr[cClientWrapper]]&& result,
         PyObject* userData)
 
 cpdef object get_proxy_factory()

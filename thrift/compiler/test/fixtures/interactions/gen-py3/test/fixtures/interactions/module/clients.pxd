@@ -10,3 +10,12 @@ cimport thrift.py3.client
 cdef class MyService(thrift.py3.client.Client):
     pass
 
+cdef class MyService_MyInteraction(thrift.py3.client.Client):
+    pass
+
+cdef class MyService_MyInteractionFast(thrift.py3.client.Client):
+    pass
+
+cdef class MyService_SerialInteraction(thrift.py3.client.Client):
+    pass
+

@@ -38,6 +38,7 @@ from libcpp.vector cimport vector
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
+from thrift.py3.client cimport cClientWrapper
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:has_stream?}}
@@ -61,6 +62,15 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
     }}{{service:name}}AsyncClient":
       pass
 
+{{#service:interactions}}
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:parent_service_name}}.h"{{!
+    }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
+  cdef cppclass c{{service:parent_service_name}}AsyncClient_{{service:name}} {{!
+    }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
+    }}{{service:parent_service_name}}AsyncClient::{{service:name}}":
+      pass
+
+{{/service:interactions}}
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[c{{service:name}}ClientWrapper] move(unique_ptr[c{{service:name}}ClientWrapper])
 
@@ -91,6 +101,33 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:supportedFunctions}}
     {{!
+      If this is an empty service definition that extends another service with no interactions
+      Then we need to put pass, otherwise cython will complain about the
+      empty cppclass body
+    }}
+    {{^service:supportedFunctions}}
+    {{^service:interactions}}
+    {{#service:extends?}}
+    pass
+    {{/service:extends?}}
+    {{/service:interactions}}
+    {{/service:supportedFunctions}}
+    {{#service:interactions}}
+    cFollyFuture[unique_ptr[cClientWrapper]]& create{{service:name}}()
+    {{/service:interactions}}
+
+  {{#service:interactions}}
+  cdef cppclass c{{service:parent_service_name}}ClientWrapper_{{service:name}}InteractionWrapper "{{!
+  }}::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:parent_service_name}}ClientWrapper{{!
+  }}::{{service:name}}InteractionWrapper"(cClientWrapper):
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    {{#service:supportedFunctions}}
+    cFollyFuture[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
+      {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
+    {{/service:supportedFunctions}}
+    {{!
       If this is an empty service definition that extends another service
       Then we need to put pass, otherwise cython will complain about the
       empty cppclass body
@@ -101,4 +138,5 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:extends?}}
     {{/service:supportedFunctions}}
 
+  {{/service:interactions}}
 {{/program:services}}

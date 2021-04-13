@@ -22,12 +22,25 @@ from libcpp.vector cimport vector
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
+from thrift.py3.client cimport cClientWrapper
 
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
+      pass
+
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+  cdef cppclass cMyServiceAsyncClient_MyInteraction "::cpp2::MyServiceAsyncClient::MyInteraction":
+      pass
+
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+  cdef cppclass cMyServiceAsyncClient_MyInteractionFast "::cpp2::MyServiceAsyncClient::MyInteractionFast":
+      pass
+
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+  cdef cppclass cMyServiceAsyncClient_SerialInteraction "::cpp2::MyServiceAsyncClient::SerialInteraction":
       pass
 
 cdef extern from "<utility>" namespace "std":
@@ -43,4 +56,29 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[cFollyUnit] foo(cRpcOptions, )
+    cFollyFuture[unique_ptr[cClientWrapper]]& createMyInteraction()
+    cFollyFuture[unique_ptr[cClientWrapper]]& createMyInteractionFast()
+    cFollyFuture[unique_ptr[cClientWrapper]]& createSerialInteraction()
+
+  cdef cppclass cMyServiceClientWrapper_MyInteractionInteractionWrapper "::cpp2::MyServiceClientWrapper::MyInteractionInteractionWrapper"(cClientWrapper):
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cint32_t] frobnicate(cRpcOptions, )
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
+
+  cdef cppclass cMyServiceClientWrapper_MyInteractionFastInteractionWrapper "::cpp2::MyServiceClientWrapper::MyInteractionFastInteractionWrapper"(cClientWrapper):
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cint32_t] frobnicate(cRpcOptions, )
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[cClientBufferedStream[cbool]] truthify(cRpcOptions, )
+
+  cdef cppclass cMyServiceClientWrapper_SerialInteractionInteractionWrapper "::cpp2::MyServiceClientWrapper::SerialInteractionInteractionWrapper"(cClientWrapper):
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cFollyUnit] frobnicate(cRpcOptions, )
 

@@ -25,3 +25,59 @@ class MyService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
+    def createMyInteraction(self) -> MyService_MyInteraction: ...
+    def createMyInteractionFast(self) -> MyService_MyInteractionFast: ...
+    def createSerialInteraction(self) -> MyService_SerialInteraction: ...
+
+_MyService_MyInteraction = _typing.TypeVar('_MyService_MyInteraction', bound='MyService_MyInteraction')
+
+
+class MyService_MyInteraction(thrift.py3.client.Client):
+
+    async def frobnicate(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> int: ...
+
+    async def ping(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+
+    async def truthify(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__: ...
+
+
+_MyService_MyInteractionFast = _typing.TypeVar('_MyService_MyInteractionFast', bound='MyService_MyInteractionFast')
+
+
+class MyService_MyInteractionFast(thrift.py3.client.Client):
+
+    async def frobnicate(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> int: ...
+
+    async def ping(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+
+    async def truthify(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__: ...
+
+
+_MyService_SerialInteraction = _typing.TypeVar('_MyService_SerialInteraction', bound='MyService_SerialInteraction')
+
+
+class MyService_SerialInteraction(thrift.py3.client.Client):
+
+    async def frobnicate(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+

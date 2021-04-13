@@ -13,9 +13,9 @@ namespace cpp2 {
 folly::Future<folly::Unit>
 RaiserClientWrapper::doBland(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_doBland, channel_);
   client->doBland(
@@ -28,9 +28,9 @@ RaiserClientWrapper::doBland(
 folly::Future<folly::Unit>
 RaiserClientWrapper::doRaise(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_doRaise, channel_);
   client->doRaise(
@@ -43,9 +43,9 @@ RaiserClientWrapper::doRaise(
 folly::Future<std::string>
 RaiserClientWrapper::get200(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_get200, channel_);
   client->get200(
@@ -58,9 +58,9 @@ RaiserClientWrapper::get200(
 folly::Future<std::string>
 RaiserClientWrapper::get500(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_get500, channel_);
   client->get500(

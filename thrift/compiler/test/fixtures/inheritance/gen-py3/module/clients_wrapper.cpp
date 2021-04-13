@@ -13,9 +13,9 @@ namespace cpp2 {
 folly::Future<folly::Unit>
 MyRootClientWrapper::do_root(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyRootAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyRootAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_do_root, channel_);
   client->do_root(
@@ -28,9 +28,9 @@ MyRootClientWrapper::do_root(
 folly::Future<folly::Unit>
 MyNodeClientWrapper::do_mid(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyNodeAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyNodeAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_do_mid, channel_);
   client->do_mid(
@@ -43,9 +43,9 @@ MyNodeClientWrapper::do_mid(
 folly::Future<folly::Unit>
 MyLeafClientWrapper::do_leaf(
     apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyLeafAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyLeafAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_do_leaf, channel_);
   client->do_leaf(

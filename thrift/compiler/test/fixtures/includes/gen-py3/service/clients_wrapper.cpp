@@ -15,9 +15,9 @@ MyServiceClientWrapper::query(
     apache::thrift::RpcOptions& rpcOptions,
     ::cpp2::MyStruct arg_s,
     ::cpp2::Included arg_i) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_query, channel_);
   client->query(
@@ -34,9 +34,9 @@ MyServiceClientWrapper::has_arg_docs(
     apache::thrift::RpcOptions& rpcOptions,
     ::cpp2::MyStruct arg_s,
     ::cpp2::Included arg_i) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_has_arg_docs, channel_);
   client->has_arg_docs(

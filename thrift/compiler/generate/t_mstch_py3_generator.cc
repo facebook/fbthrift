@@ -698,6 +698,8 @@ class mstch_py3_service : public mstch_service {
             {"service:py3Namespaces", &mstch_py3_service::py3Namespaces},
             {"service:programName", &mstch_py3_service::programName},
             {"service:includePrefix", &mstch_py3_service::includePrefix},
+            {"service:parent_service_name",
+             &mstch_py3_service::parent_service_name},
             {"service:supportedFunctions",
              &mstch_py3_service::get_supported_functions},
         });
@@ -718,6 +720,10 @@ class mstch_py3_service : public mstch_service {
   mstch::node programName() { return service_->program()->name(); }
 
   mstch::node includePrefix() { return service_->program()->include_prefix(); }
+
+  mstch::node parent_service_name() {
+    return cache_->parsed_options_.at("parent_service_name");
+  }
 
   mstch::node get_supported_functions() {
     std::vector<t_function*> funcs;
