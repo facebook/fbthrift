@@ -977,10 +977,10 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
   }
 }
 
-folly::Optional<std::string> THeader::clientId() const {
+const folly::Optional<std::string>& THeader::clientId() const {
   return clientId_;
 }
-folly::Optional<std::string> THeader::serviceTraceMeta() const {
+const folly::Optional<std::string>& THeader::serviceTraceMeta() const {
   return serviceTraceMeta_;
 }
 
