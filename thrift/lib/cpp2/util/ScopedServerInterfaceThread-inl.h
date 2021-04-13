@@ -114,6 +114,8 @@ class FaultInjectionChannel : public RequestChannel {
   RequestChannel::Ptr client_;
   ScopedServerInterfaceThread::FaultInjectionFunc injectFault_;
 };
+
+void validateServiceName(AsyncProcessorFactory& apf, const char* serviceName);
 } // namespace detail
 
 template <class AsyncClientT>
@@ -150,9 +152,11 @@ template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
-  return std::make_unique<AsyncClientT>(
+  auto client = std::make_unique<AsyncClientT>(
       ScopedServerInterfaceThread::makeTestClientChannel(
-          std::move(apf), std::move(injectFault)));
+          apf, std::move(injectFault)));
+  apache::thrift::detail::validateServiceName(*apf, client->getServiceName());
+  return client;
 }
 
 } // namespace thrift

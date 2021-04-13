@@ -31,3 +31,6 @@ service SimpleService {
     1: binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") request,
   );
 }
+
+service OtherService {
+}

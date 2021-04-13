@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/util/gen-cpp2/OtherService.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/SimpleService.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
@@ -297,6 +298,12 @@ TEST(ScopedServerInterfaceThread, makeTestClient) {
   auto cli = makeTestClient<SimpleServiceAsyncClient>(
       make_shared<SimpleServiceImpl>());
   EXPECT_EQ(6, cli->sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, makeTestClientMismatch) {
+  EXPECT_DEATH(
+      makeTestClient<SimpleServiceAsyncClient>(make_shared<OtherServiceSvIf>()),
+      "Client and handler type mismatch");
 }
 
 template <typename ChannelT, typename ServiceT>

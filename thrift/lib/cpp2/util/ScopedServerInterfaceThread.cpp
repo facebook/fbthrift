@@ -124,5 +124,15 @@ ScopedServerInterfaceThread::makeTestClientChannel(
   auto* channel = runner->channel.get();
   return folly::to_shared_ptr_aliasing(std::move(runner), channel);
 }
+
+namespace detail {
+void validateServiceName(AsyncProcessorFactory& apf, const char* serviceName) {
+  auto processor = apf.getProcessor();
+  if (auto* ptr = dynamic_cast<GeneratedAsyncProcessor*>(processor.get())) {
+    CHECK_STREQ(ptr->getServiceName(), serviceName)
+        << "Client and handler type mismatch";
+  }
+}
+} // namespace detail
 } // namespace thrift
 } // namespace apache
