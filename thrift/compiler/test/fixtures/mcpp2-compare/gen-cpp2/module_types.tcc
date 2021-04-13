@@ -1559,10 +1559,9 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     case ComplexUnion::Type::ref_field:
     {
       xfer += prot_->serializedFieldSize("ref_field", apache::thrift::protocol::T_STRUCT, 24);
-      if (this->get_ref_field()) {
+      if (value_.ref_field) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::serializedSize<false>(*prot_, *value_.ref_field);
-      }
-      else {
+      } else {
         xfer += prot_->serializedStructSize("MyStruct");
         xfer += prot_->serializedSizeStop();
       }
@@ -1571,10 +1570,9 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     case ComplexUnion::Type::ref_field2:
     {
       xfer += prot_->serializedFieldSize("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
-      if (this->get_ref_field2()) {
+      if (value_.ref_field2) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::serializedSize<false>(*prot_, *value_.ref_field2);
-      }
-      else {
+      } else {
         xfer += prot_->serializedStructSize("MyStruct");
         xfer += prot_->serializedSizeStop();
       }
@@ -1744,10 +1742,9 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ComplexUnion::Type::ref_field:
     {
       xfer += prot_->serializedFieldSize("ref_field", apache::thrift::protocol::T_STRUCT, 24);
-      if (this->get_ref_field()) {
+      if (value_.ref_field) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::serializedSize<true>(*prot_, *value_.ref_field);
-      }
-      else {
+      } else {
         xfer += prot_->serializedStructSize("MyStruct");
         xfer += prot_->serializedSizeStop();
       }
@@ -1756,10 +1753,9 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ComplexUnion::Type::ref_field2:
     {
       xfer += prot_->serializedFieldSize("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
-      if (this->get_ref_field2()) {
+      if (value_.ref_field2) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::serializedSize<true>(*prot_, *value_.ref_field2);
-      }
-      else {
+      } else {
         xfer += prot_->serializedStructSize("MyStruct");
         xfer += prot_->serializedSizeStop();
       }
@@ -1953,10 +1949,9 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     case ComplexUnion::Type::ref_field:
     {
       xfer += prot_->writeFieldBegin("ref_field", apache::thrift::protocol::T_STRUCT, 24);
-      if (this->get_ref_field()) {
+      if (value_.ref_field) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::write(*prot_, *value_.ref_field);
-      }
-      else {
+      } else {
         xfer += prot_->writeStructBegin("MyStruct");
         xfer += prot_->writeStructEnd();
         xfer += prot_->writeFieldStop();
@@ -1967,10 +1962,9 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     case ComplexUnion::Type::ref_field2:
     {
       xfer += prot_->writeFieldBegin("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
-      if (this->get_ref_field2()) {
+      if (value_.ref_field2) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::valid::ns::MyStruct>::write(*prot_, *value_.ref_field2);
-      }
-      else {
+      } else {
         xfer += prot_->writeStructBegin("MyStruct");
         xfer += prot_->writeStructEnd();
         xfer += prot_->writeFieldStop();

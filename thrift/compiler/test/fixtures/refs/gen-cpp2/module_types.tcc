@@ -191,13 +191,17 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
+      if (value_.anInteger) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
+      }
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
+      if (value_.aString) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
+      }
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -214,13 +218,17 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
+      if (value_.anInteger) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *value_.anInteger);
+      }
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
+      if (value_.aString) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *value_.aString);
+      }
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -237,14 +245,18 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->writeFieldBegin("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *value_.anInteger);
+      if (value_.anInteger) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *value_.anInteger);
+      }
       xfer += prot_->writeFieldEnd();
       break;
     }
     case MyUnion::Type::aString:
     {
       xfer += prot_->writeFieldBegin("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *value_.aString);
+      if (value_.aString) {
+        xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *value_.aString);
+      }
       xfer += prot_->writeFieldEnd();
       break;
     }
