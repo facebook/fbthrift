@@ -208,6 +208,7 @@ add_dependencies(
   thriftcpp2
   rpcmetadata
   thriftmetadata
+  RocketUpgrade-cpp2-target
 )
 target_link_libraries(
   thriftcpp2
