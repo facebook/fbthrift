@@ -44,6 +44,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
@@ -787,9 +788,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           reqDebugLog_(collectRequestDebugLog(stub)) {
       auto requestPayload = rocket::unpack<RequestPayload>(stub.clonePayload());
       payload_ = std::move(*requestPayload->payload);
-      if (requestPayload->metadata.otherMetadata_ref()) {
+      auto& metadata = requestPayload->metadata;
+      if (metadata.otherMetadata_ref()) {
         headers_ = std::move(*requestPayload->metadata.otherMetadata_ref());
       }
+      clientId_ = metadata.clientId_ref().to_optional();
+      serviceTraceMeta_ = metadata.serviceTraceMeta_ref().to_optional();
       auto req = stub.getRequest();
       DCHECK(
           req != nullptr || finishedTimestamp_.time_since_epoch().count() != 0);
@@ -827,6 +831,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
     const std::vector<std::string>& getDebugLog() const { return reqDebugLog_; }
 
+    const auto& clientId() const { return clientId_; }
+    auto& clientId() { return clientId_; }
+
+    const auto& serviceTraceMeta() const { return serviceTraceMeta_; }
+    auto& serviceTraceMeta() { return serviceTraceMeta_; }
+
    private:
     const std::string methodName_;
     const std::chrono::steady_clock::time_point creationTimestamp_;
@@ -834,6 +844,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     const protocol::PROTOCOL_TYPES protoId_;
     folly::IOBuf payload_;
     std::map<std::string, std::string> headers_;
+    std::optional<std::string> clientId_;
+    std::optional<std::string> serviceTraceMeta_;
     folly::SocketAddress peerAddress_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;

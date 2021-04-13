@@ -398,7 +398,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   }
 
   auto preprocessResult =
-      serverConfigs_->preprocess({headers, name, connContext_});
+      serverConfigs_->preprocess({headers, name, connContext_, request.get()});
   if (UNLIKELY(preprocessResult.has_value())) {
     preprocessResult->apply_visitor(
         apache::thrift::detail::VisitorHelper()

@@ -37,16 +37,7 @@ class Cpp2ConnContext;
 
 namespace server {
 
-struct PreprocessParams {
-  PreprocessParams(
-      const transport::THeader::StringToStringMap& headersIn,
-      const std::string& methodIn,
-      const Cpp2ConnContext& connContextIn)
-      : headers(headersIn), method(methodIn), connContext(connContextIn) {}
-  const transport::THeader::StringToStringMap& headers;
-  const std::string& method;
-  const Cpp2ConnContext& connContext;
-};
+struct PreprocessParams;
 
 /**
  * This class provides a set of abstract functions that the ThriftProcessor can
