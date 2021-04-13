@@ -92,10 +92,10 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileCo
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructFloatFieldThrowExp::__clear() {
   // clear all fields
-  myLongField = 0;
-  MyByteField = 0;
-  myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myFloatField = 0;
+  this->myLongField = 0;
+  this->MyByteField = 0;
+  this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myFloatField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -205,8 +205,8 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t ag
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SimpleStruct::__clear() {
   // clear all fields
-  age = 60LL;
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
+  this->age = 60LL;
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -422,24 +422,24 @@ ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::s
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexNestedStruct::__clear() {
   // clear all fields
-  setOfSetOfInt.clear();
-  listofListOfListOfListOfEnum.clear();
-  listOfListOfMyStruct.clear();
-  setOfListOfListOfLong.clear();
-  setOfSetOfsetOfLong.clear();
-  mapStructListOfListOfLong.clear();
-  mKeyStructValInt.clear();
-  listOfMapKeyIntValInt.clear();
-  listOfMapKeyStrValList.clear();
-  mapKeySetValLong.clear();
-  mapKeyListValLong.clear();
-  mapKeyMapValMap.clear();
-  mapKeySetValMap.clear();
-  NestedMaps.clear();
-  mapKeyIntValList.clear();
-  mapKeyIntValSet.clear();
-  mapKeySetValInt.clear();
-  mapKeyListValSet.clear();
+  this->setOfSetOfInt.clear();
+  this->listofListOfListOfListOfEnum.clear();
+  this->listOfListOfMyStruct.clear();
+  this->setOfListOfListOfLong.clear();
+  this->setOfSetOfsetOfLong.clear();
+  this->mapStructListOfListOfLong.clear();
+  this->mKeyStructValInt.clear();
+  this->listOfMapKeyIntValInt.clear();
+  this->listOfMapKeyStrValList.clear();
+  this->mapKeySetValLong.clear();
+  this->mapKeyListValLong.clear();
+  this->mapKeyMapValMap.clear();
+  this->mapKeySetValMap.clear();
+  this->NestedMaps.clear();
+  this->mapKeyIntValList.clear();
+  this->mapKeyIntValSet.clear();
+  this->mapKeySetValInt.clear();
+  this->mapKeyListValSet.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -848,8 +848,8 @@ reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void reqXcep::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  errorCode = 0;
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->errorCode = 0;
 }
 
 bool reqXcep::operator==(const reqXcep& rhs) const {

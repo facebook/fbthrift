@@ -77,7 +77,7 @@ AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg)
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AStruct::__clear() {
   // clear all fields
-  FieldA = 0;
+  this->FieldA = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -165,7 +165,7 @@ AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AStructB::__clear() {
   // clear all fields
-  if (FieldA) FieldA.reset(new typename decltype(FieldA)::element_type());
+  if (this->FieldA) this->FieldA.reset(new typename decltype(this->FieldA)::element_type());
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {

@@ -77,7 +77,7 @@ A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void A::__clear() {
   // clear all fields
-  useless_field = 0;
+  this->useless_field = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

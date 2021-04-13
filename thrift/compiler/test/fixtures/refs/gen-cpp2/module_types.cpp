@@ -262,12 +262,12 @@ MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::in
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyField::__clear() {
   // clear all fields
-  opt_value = 0;
-  value = 0;
-  req_value = 0;
-  opt_enum_value =  ::cpp2::MyEnum::Zero;
-  enum_value =  ::cpp2::MyEnum::Zero;
-  req_enum_value =  ::cpp2::MyEnum::Zero;
+  this->opt_value = 0;
+  this->value = 0;
+  this->req_value = 0;
+  this->opt_enum_value =  ::cpp2::MyEnum::Zero;
+  this->enum_value =  ::cpp2::MyEnum::Zero;
+  this->req_enum_value =  ::cpp2::MyEnum::Zero;
 }
 
 bool MyField::operator==(const MyField& rhs) const {
@@ -456,9 +456,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2:
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  opt_ref.reset();
-  if (ref) ref->__clear();
-  if (req_ref) req_ref->__clear();
+  this->opt_ref.reset();
+  if (this->ref) this->ref->__clear();
+  if (this->req_ref) this->req_ref->__clear();
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -637,9 +637,9 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithUnion::__clear() {
   // clear all fields
-  if (u) u->__clear();
-  aDouble = 0;
-  f.__clear();
+  if (this->u) this->u->__clear();
+  this->aDouble = 0;
+  this->f.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -791,7 +791,7 @@ RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vect
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void RecursiveStruct::__clear() {
   // clear all fields
-  mes.clear();
+  this->mes.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -921,12 +921,12 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithContainers::__clear() {
   // clear all fields
-  list_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
-  set_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::set<::std::int32_t>>>();
-  map_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>();
-  list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
-  set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::set<::std::int32_t>>>();
-  list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::vector<::std::int32_t>>>();
+  this->list_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
+  this->set_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::set<::std::int32_t>>>();
+  this->map_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::int32_t>>>();
+  this->list_ref_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
+  this->set_ref_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::set<::std::int32_t>>>();
+  this->list_ref_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::vector<::std::int32_t>>>();
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -1103,9 +1103,9 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithSharedConst::__clear() {
   // clear all fields
-  opt_shared_const.reset();
-  if (shared_const) shared_const.reset(new typename decltype(shared_const)::element_type());
-  if (req_shared_const) req_shared_const.reset(new typename decltype(req_shared_const)::element_type());
+  this->opt_shared_const.reset();
+  if (this->shared_const) this->shared_const.reset(new typename decltype(this->shared_const)::element_type());
+  if (this->req_shared_const) this->req_shared_const.reset(new typename decltype(this->req_shared_const)::element_type());
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {

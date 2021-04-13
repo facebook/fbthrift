@@ -145,33 +145,33 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myEnum =  ::cpp2::MyEnum::MyValue1;
-  MyBoolField = 0;
-  MyByteField = 0;
-  MyShortField = 0;
-  MyLongField = 0;
-  MyDoubleField = 0;
-  lDouble.clear();
-  lShort.clear();
-  lInteger.clear();
-  lLong.clear();
-  lString.clear();
-  lBool.clear();
-  lByte.clear();
-  mShortString.clear();
-  mIntegerString.clear();
-  mStringMyStruct.clear();
-  mStringBool.clear();
-  mIntegerInteger.clear();
-  mIntegerBool.clear();
-  sShort.clear();
-  sMyStruct.clear();
-  sLong.clear();
-  sString.clear();
-  sByte.clear();
-  mListList.clear();
+  this->MyIntField = 0;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myEnum =  ::cpp2::MyEnum::MyValue1;
+  this->MyBoolField = 0;
+  this->MyByteField = 0;
+  this->MyShortField = 0;
+  this->MyLongField = 0;
+  this->MyDoubleField = 0;
+  this->lDouble.clear();
+  this->lShort.clear();
+  this->lInteger.clear();
+  this->lLong.clear();
+  this->lString.clear();
+  this->lBool.clear();
+  this->lByte.clear();
+  this->mShortString.clear();
+  this->mIntegerString.clear();
+  this->mStringMyStruct.clear();
+  this->mStringBool.clear();
+  this->mIntegerInteger.clear();
+  this->mIntegerBool.clear();
+  this->sShort.clear();
+  this->sMyStruct.clear();
+  this->sLong.clear();
+  this->sString.clear();
+  this->sByte.clear();
+  this->mListList.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -651,15 +651,15 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructTypeDef::__clear() {
   // clear all fields
-  myLongField = 0;
-  myLongTypeDef = 0;
-  myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myStringTypedef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myMapField.clear();
-  myMapTypedef.clear();
-  myListField.clear();
-  myListTypedef.clear();
-  myMapListOfTypeDef.clear();
+  this->myLongField = 0;
+  this->myLongTypeDef = 0;
+  this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myStringTypedef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myMapField.clear();
+  this->myMapTypedef.clear();
+  this->myListField.clear();
+  this->myListTypedef.clear();
+  this->myMapListOfTypeDef.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1080,12 +1080,12 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void complexException::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  listStrings.clear();
-  errorEnum =  ::cpp2::MyEnum::MyValue1;
-  unionError.__clear();
-  structError.__clear();
-  lsMap.clear();
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->listStrings.clear();
+  this->errorEnum =  ::cpp2::MyEnum::MyValue1;
+  this->unionError.__clear();
+  this->structError.__clear();
+  this->lsMap.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

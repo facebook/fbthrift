@@ -157,10 +157,10 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Internship::__clear() {
   // clear all fields
-  weeks = 0;
-  title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  employer =  ::cpp2::Company::FACEBOOK;
-  compensation = 0;
+  this->weeks = 0;
+  this->title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->employer =  ::cpp2::Company::FACEBOOK;
+  this->compensation = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -260,8 +260,8 @@ Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std:
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Range::__clear() {
   // clear all fields
-  min = 0;
-  max = 0;
+  this->min = 0;
+  this->max = 0;
 }
 
 bool Range::operator==(const Range& rhs) const {
@@ -351,8 +351,8 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
-  a = 1234567;
-  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
+  this->a = 1234567;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -454,10 +454,10 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  c.__clear();
-  d.clear();
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->c.__clear();
+  this->d.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -598,9 +598,9 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  b = 0;
-  c.__clear();
+  this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->b = 0;
+  this->c.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -726,9 +726,9 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, doub
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct4::__clear() {
   // clear all fields
-  a = 0;
-  b = 0;
-  c = 0;
+  this->a = 0;
+  this->b = 0;
+  this->c = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -92,10 +92,10 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SomeStruct::__clear() {
   // clear all fields
-  reasonable =  ::cpp2::Metasyntactic::FOO;
-  fine =  ::cpp2::Metasyntactic::BAR;
-  questionable = static_cast< ::cpp2::Metasyntactic>(-1);
-  tags.clear();
+  this->reasonable =  ::cpp2::Metasyntactic::FOO;
+  this->fine =  ::cpp2::Metasyntactic::BAR;
+  this->questionable = static_cast< ::cpp2::Metasyntactic>(-1);
+  this->tags.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

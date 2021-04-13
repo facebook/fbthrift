@@ -46,8 +46,8 @@ Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Included::__clear() {
   // clear all fields
-  MyIntField = 0LL;
-  MyTransitiveField.__clear();
+  this->MyIntField = 0LL;
+  this->MyTransitiveField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -75,7 +75,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__a
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -272,7 +272,7 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string myStr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyException::__clear() {
   // clear all fields
-  myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -53,8 +53,8 @@ Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Struct::__clear() {
   // clear all fields
-  first.__clear();
-  second.__clear();
+  this->first.__clear();
+  this->second.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -190,8 +190,8 @@ BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__ar
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void BigStruct::__clear() {
   // clear all fields
-  s.__clear();
-  id = 0;
+  this->s.__clear();
+  this->id = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

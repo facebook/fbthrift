@@ -50,7 +50,7 @@ InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::stri
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void InitialResponse::__clear() {
   // clear all fields
-  content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -136,7 +136,7 @@ FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string c
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void FinalResponse::__clear() {
   // clear all fields
-  content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -222,7 +222,7 @@ SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string conte
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkPayload::__clear() {
   // clear all fields
-  content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -308,7 +308,7 @@ CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileCons
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void CompatibleWithKeywordSink::__clear() {
   // clear all fields
-  sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -394,7 +394,7 @@ InitialException::InitialException(apache::thrift::FragileConstructor, ::std::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void InitialException::__clear() {
   // clear all fields
-  reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -480,7 +480,7 @@ SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkException1::__clear() {
   // clear all fields
-  reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -566,7 +566,7 @@ SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SinkException2::__clear() {
   // clear all fields
-  reason = 0;
+  this->reason = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

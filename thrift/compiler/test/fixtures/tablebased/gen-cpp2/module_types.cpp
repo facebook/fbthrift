@@ -174,11 +174,11 @@ TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TrivialTypesStruct::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldD = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-  fieldE =  ::test::fixtures::tablebased::ExampleEnum::ZERO;
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldD = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
+  this->fieldE =  ::test::fixtures::tablebased::ExampleEnum::ZERO;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -369,14 +369,14 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ContainerStruct::__clear() {
   // clear all fields
-  fieldA.clear();
-  fieldB.clear();
-  fieldC.clear();
-  fieldD.clear();
-  fieldE.clear();
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
+  this->fieldA.clear();
+  this->fieldB.clear();
+  this->fieldC.clear();
+  this->fieldD.clear();
+  this->fieldE.clear();
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

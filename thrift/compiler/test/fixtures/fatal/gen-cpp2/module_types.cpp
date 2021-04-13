@@ -557,8 +557,8 @@ structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structA::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -790,8 +790,8 @@ structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg)
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structB::__clear() {
   // clear all fields
-  c = 0;
-  d = 0;
+  this->c = 0;
+  this->d = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -983,36 +983,36 @@ structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structC::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  c = 0;
-  d = 0;
-  e =  ::test_cpp2::cpp_reflection::enum1::field0;
-  f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  g.__clear();
-  h.__clear();
-  i.__clear();
-  j.clear();
-  j1.clear();
-  j2.clear();
-  j3.clear();
-  k.clear();
-  k1.clear();
-  k2.clear();
-  k3.clear();
-  l.clear();
-  l1.clear();
-  l2.clear();
-  l3.clear();
-  m1.clear();
-  m2.clear();
-  m3.clear();
-  n1.clear();
-  n2.clear();
-  n3.clear();
-  o1.clear();
-  o2.clear();
-  o3.clear();
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->c = 0;
+  this->d = 0;
+  this->e =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->g.__clear();
+  this->h.__clear();
+  this->i.__clear();
+  this->j.clear();
+  this->j1.clear();
+  this->j2.clear();
+  this->j3.clear();
+  this->k.clear();
+  this->k1.clear();
+  this->k2.clear();
+  this->k3.clear();
+  this->l.clear();
+  this->l1.clear();
+  this->l2.clear();
+  this->l3.clear();
+  this->m1.clear();
+  this->m2.clear();
+  this->m3.clear();
+  this->n1.clear();
+  this->n2.clear();
+  this->n3.clear();
+  this->o1.clear();
+  this->o2.clear();
+  this->o3.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1648,12 +1648,12 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct1::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  field4.__clear();
-  field5.__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->field4.__clear();
+  this->field5.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1842,13 +1842,13 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct2::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  fieldE.__clear();
-  fieldF.__clear();
-  fieldG.__clear();
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldE.__clear();
+  this->fieldF.__clear();
+  this->fieldG.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2097,24 +2097,24 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  fieldE.__clear();
-  fieldF.__clear();
-  fieldG.__clear();
-  fieldH.__clear();
-  fieldI.clear();
-  fieldJ.clear();
-  fieldK.clear();
-  fieldL.clear();
-  fieldM.clear();
-  fieldN.clear();
-  fieldO.clear();
-  fieldP.clear();
-  fieldQ.clear();
-  fieldR.clear();
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldE.__clear();
+  this->fieldF.__clear();
+  this->fieldG.__clear();
+  this->fieldH.__clear();
+  this->fieldI.clear();
+  this->fieldJ.clear();
+  this->fieldK.clear();
+  this->fieldL.clear();
+  this->fieldM.clear();
+  this->fieldN.clear();
+  this->fieldO.clear();
+  this->fieldP.clear();
+  this->fieldQ.clear();
+  this->fieldR.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2553,10 +2553,10 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct4::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  if (field3) field3->__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  if (this->field3) this->field3->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2705,11 +2705,11 @@ struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct5::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  field3.__clear();
-  field4.__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field3.__clear();
+  this->field4.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2863,7 +2863,7 @@ struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string b
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_binary::__clear() {
   // clear all fields
-  bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2947,9 +2947,9 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_A_struct::__clear() {
   // clear all fields
-  b.__clear();
-  c.__clear();
-  i_a = 0;
+  this->b.__clear();
+  this->c.__clear();
+  this->i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3087,9 +3087,9 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_B_struct::__clear() {
   // clear all fields
-  b.__clear();
-  c.__clear();
-  i_a = 0;
+  this->b.__clear();
+  this->c.__clear();
+  this->i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3223,7 +3223,7 @@ annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void annotated::__clear() {
   // clear all fields
-  a = 0;
+  this->a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3649,34 +3649,34 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_with_special_names::__clear() {
   // clear all fields
-  get = 0;
-  getter = 0;
-  lists = 0;
-  maps = 0;
-  name = 0;
-  name_to_value = 0;
-  names = 0;
-  prefix_tree = 0;
-  sets = 0;
-  setter = 0;
-  str = 0;
-  strings = 0;
-  type = 0;
-  value = 0;
-  value_to_name = 0;
-  values = 0;
-  id = 0;
-  ids = 0;
-  descriptor = 0;
-  descriptors = 0;
-  key = 0;
-  keys = 0;
-  annotation = 0;
-  annotations = 0;
-  member = 0;
-  members = 0;
-  field = 0;
-  fields = 0;
+  this->get = 0;
+  this->getter = 0;
+  this->lists = 0;
+  this->maps = 0;
+  this->name = 0;
+  this->name_to_value = 0;
+  this->names = 0;
+  this->prefix_tree = 0;
+  this->sets = 0;
+  this->setter = 0;
+  this->str = 0;
+  this->strings = 0;
+  this->type = 0;
+  this->value = 0;
+  this->value_to_name = 0;
+  this->values = 0;
+  this->id = 0;
+  this->ids = 0;
+  this->descriptor = 0;
+  this->descriptors = 0;
+  this->key = 0;
+  this->keys = 0;
+  this->annotation = 0;
+  this->annotations = 0;
+  this->member = 0;
+  this->members = 0;
+  this->field = 0;
+  this->fields = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3974,11 +3974,11 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct_with_indirections::__clear() {
   // clear all fields
-  real = 0;
-  fake = 0;
-  ::apache::thrift::apply_indirection(number) = 0;
-  ::apache::thrift::apply_indirection(result) = 0;
-  ::apache::thrift::apply_indirection(phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
+  this->real = 0;
+  this->fake = 0;
+  ::apache::thrift::apply_indirection(this->number) = 0;
+  ::apache::thrift::apply_indirection(this->result) = 0;
+  ::apache::thrift::apply_indirection(this->phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

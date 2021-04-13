@@ -107,19 +107,19 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void containerStruct2::__clear() {
   // clear all fields
-  fieldA = 0;
-  req_fieldA = 0;
-  opt_fieldA = 0;
-  fieldB.clear();
-  req_fieldB.clear();
-  opt_fieldB.clear();
-  fieldC.clear();
-  req_fieldC.clear();
-  opt_fieldC.clear();
-  fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->fieldA = 0;
+  this->req_fieldA = 0;
+  this->opt_fieldA = 0;
+  this->fieldB.clear();
+  this->req_fieldB.clear();
+  this->opt_fieldB.clear();
+  this->fieldC.clear();
+  this->req_fieldC.clear();
+  this->opt_fieldC.clear();
+  this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

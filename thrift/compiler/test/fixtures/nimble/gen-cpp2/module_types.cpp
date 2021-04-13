@@ -49,10 +49,10 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void BasicTypes::__clear() {
   // clear all fields
-  first = 0;
-  second = 0;
-  third = 0;
-  isTrue = 0;
+  this->first = 0;
+  this->second = 0;
+  this->third = 0;
+  this->isTrue = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -53,8 +53,8 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
-  myLongField = 0;
-  mapListOfFloats.clear();
+  this->myLongField = 0;
+  this->mapListOfFloats.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -264,28 +264,28 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void defaultStruct::__clear() {
   // clear all fields
-  myLongDFset = 10LL;
-  myLongDF = 0;
-  portDFset = 3456;
-  portNum = 0;
-  myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
-  myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myByteDFSet = static_cast<int8_t>(17);
-  myByte = 0;
-  myDoubleDFset = 99.7678;
-  myDoubleDFZero = 0;
-  myDouble = 0;
-  field3.clear();
-  myList.clear();
-  mySet.clear();
-  simpleStruct.__clear();
-  listStructDFset.clear();
-  myUnion.__clear();
-  listUnionDFset.clear();
-  mapNestlistStructDfSet.clear();
-  mapJavaTypeDFset.clear();
-  emptyMap.clear();
-  enumMapDFset.clear();
+  this->myLongDFset = 10LL;
+  this->myLongDF = 0;
+  this->portDFset = 3456;
+  this->portNum = 0;
+  this->myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
+  this->myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myByteDFSet = static_cast<int8_t>(17);
+  this->myByte = 0;
+  this->myDoubleDFset = 99.7678;
+  this->myDoubleDFZero = 0;
+  this->myDouble = 0;
+  this->field3.clear();
+  this->myList.clear();
+  this->mySet.clear();
+  this->simpleStruct.__clear();
+  this->listStructDFset.clear();
+  this->myUnion.__clear();
+  this->listUnionDFset.clear();
+  this->mapNestlistStructDfSet.clear();
+  this->mapJavaTypeDFset.clear();
+  this->emptyMap.clear();
+  this->enumMapDFset.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -837,10 +837,10 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TypeRemapped::__clear() {
   // clear all fields
-  lsMap.clear();
-  ioMap.clear();
-  BigInteger = 0;
-  binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->lsMap.clear();
+  this->ioMap.clear();
+  this->BigInteger = 0;
+  this->binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -966,8 +966,8 @@ optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void optXcep::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  errorCode = 0;
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->errorCode = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

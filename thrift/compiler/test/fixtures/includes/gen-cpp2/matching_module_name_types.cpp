@@ -44,7 +44,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::O
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  OtherStructField.__clear();
+  this->OtherStructField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

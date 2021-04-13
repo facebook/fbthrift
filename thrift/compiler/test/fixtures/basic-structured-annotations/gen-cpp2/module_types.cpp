@@ -86,8 +86,8 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structured_annotation_inline::__clear() {
   // clear all fields
-  count = 0;
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
+  this->count = 0;
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -180,7 +180,7 @@ structured_annotation_with_default::structured_annotation_with_default(apache::t
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structured_annotation_with_default::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -260,7 +260,7 @@ structured_annotation_forward::structured_annotation_forward(apache::thrift::Fra
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structured_annotation_forward::__clear() {
   // clear all fields
-  count = 0;
+  this->count = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -352,9 +352,9 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structured_annotation_recursive::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  recurse.__clear();
-  forward.__clear();
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->recurse.__clear();
+  this->forward.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -497,8 +497,8 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void structured_annotation_nested::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  nest.__clear();
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->nest.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -620,10 +620,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  annotated_field = 0;
-  annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  annotated_nested = 0;
+  this->annotated_field = 0;
+  this->annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotated_nested = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -730,7 +730,7 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string conte
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyException::__clear() {
   // clear all fields
-  context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

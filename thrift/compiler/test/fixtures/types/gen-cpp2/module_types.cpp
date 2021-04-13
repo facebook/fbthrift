@@ -182,7 +182,7 @@ decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void decorated_struct::__clear() {
   // clear all fields
-  field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -296,14 +296,14 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ContainerStruct::__clear() {
   // clear all fields
-  fieldA.clear();
-  fieldB.clear();
-  fieldC.clear();
-  fieldD.clear();
-  fieldE.clear();
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
+  this->fieldA.clear();
+  this->fieldB.clear();
+  this->fieldC.clear();
+  this->fieldD.clear();
+  this->fieldE.clear();
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -471,7 +471,7 @@ CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void CppTypeStruct::__clear() {
   // clear all fields
-  fieldA.clear();
+  this->fieldA.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -565,7 +565,7 @@ VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void VirtualStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
+  this->MyIntField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -654,8 +654,8 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileCo
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructWithForwardRefEnum::__clear() {
   // clear all fields
-  a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
-  b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  this->a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  this->b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -744,8 +744,8 @@ TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TrivialNumeric::__clear() {
   // clear all fields
-  a = 0;
-  b = 0;
+  this->a = 0;
+  this->b = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -834,8 +834,8 @@ TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TrivialNestedWithDefault::__clear() {
   // clear all fields
-  z = 4;
-  n.__clear();
+  this->z = 4;
+  this->n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -951,8 +951,8 @@ ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexString::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  b.clear();
+  this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->b.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1056,8 +1056,8 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexNestedWithDefault::__clear() {
   // clear all fields
-  z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
-  n.__clear();
+  this->z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
+  this->n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1176,11 +1176,11 @@ MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MinPadding::__clear() {
   // clear all fields
-  small = 0;
-  big = 0;
-  medium = 0;
-  biggish = 0;
-  tiny = 0;
+  this->small = 0;
+  this->big = 0;
+  this->medium = 0;
+  this->biggish = 0;
+  this->tiny = 0;
 }
 
 bool MinPadding::operator==(const MinPadding& rhs) const {
@@ -1350,9 +1350,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  majorVer = 0;
+  this->MyIntField = 0;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->majorVer = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1437,7 +1437,7 @@ Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Renaming::__clear() {
   // clear all fields
-  bar = 0;
+  this->bar = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1526,8 +1526,8 @@ AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AnnotatedTypes::__clear() {
   // clear all fields
-  binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  list_field.clear();
+  this->binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->list_field.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1615,7 +1615,7 @@ ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apa
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageStruct::__clear() {
   // clear all fields
-  foo.__clear();
+  this->foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1737,8 +1737,8 @@ ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache:
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageRoot::__clear() {
   // clear all fields
-  ForwardUsageStruct.__clear();
-  ForwardUsageByRef.reset();
+  this->ForwardUsageStruct.__clear();
+  this->ForwardUsageByRef.reset();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1873,7 +1873,7 @@ ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apach
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageByRef::__clear() {
   // clear all fields
-  foo.__clear();
+  this->foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2038,7 +2038,7 @@ NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void NoexceptMoveSimpleStruct::__clear() {
   // clear all fields
-  boolField = 0;
+  this->boolField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2159,15 +2159,15 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
-  MyBoolField = 0;
-  MyIntField = 12LL;
-  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
-  MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  MyBinaryListField4.clear();
-  MyMapEnumAndInt.clear();
+  this->MyBoolField = 0;
+  this->MyIntField = 12LL;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryListField4.clear();
+  this->MyMapEnumAndInt.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2465,11 +2465,11 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AllocatorAware::__clear() {
   // clear all fields
-  aa_list.clear();
-  aa_set.clear();
-  aa_map.clear();
-  aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  not_a_container = 0;
+  this->aa_list.clear();
+  this->aa_set.clear();
+  this->aa_map.clear();
+  this->aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->not_a_container = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2607,7 +2607,7 @@ AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int3
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AllocatorAware2::__clear() {
   // clear all fields
-  not_a_container = 0;
+  this->not_a_container = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2699,9 +2699,9 @@ TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TypedefStruct::__clear() {
   // clear all fields
-  i32_field = 0;
-  IntTypedef_field = 0;
-  UintTypedef_field = 0;
+  this->i32_field = 0;
+  this->IntTypedef_field = 0;
+  this->UintTypedef_field = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

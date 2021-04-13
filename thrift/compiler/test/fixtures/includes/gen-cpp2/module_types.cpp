@@ -56,9 +56,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyInclud
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  MyIncludedField.__clear();
-  MyOtherIncludedField.__clear();
-  MyIncludedInt = 42LL;
+  this->MyIncludedField.__clear();
+  this->MyOtherIncludedField.__clear();
+  this->MyIncludedInt = 42LL;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

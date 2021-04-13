@@ -83,7 +83,7 @@ MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStructNestedAnnotation::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -192,12 +192,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  majorVer = 0;
-  package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->majorVer = 0;
+  this->package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -321,8 +321,8 @@ SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SecretStruct::__clear() {
   // clear all fields
-  id = 0;
-  password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->id = 0;
+  this->password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -79,8 +79,8 @@ SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void SmallStruct::__clear() {
   // clear all fields
-  small_A = 0;
-  small_B = 0;
+  this->small_A = 0;
+  this->small_B = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -341,28 +341,28 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void containerStruct::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB.clear();
-  fieldC.clear();
-  fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
-  fieldI = true;
-  fieldJ.clear();
-  fieldK.clear();
-  fieldL.clear();
-  fieldM.clear();
-  fieldN.clear();
-  fieldO.clear();
-  fieldP.clear();
-  fieldQ = static_cast< ::cpp2::MyEnumA>(0);
-  fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
-  if (fieldS) fieldS->__clear();
-  if (fieldT) fieldT->__clear();
-  if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
-  if (fieldX) fieldX->__clear();
+  this->fieldA = 0;
+  this->fieldB.clear();
+  this->fieldC.clear();
+  this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
+  this->fieldI = true;
+  this->fieldJ.clear();
+  this->fieldK.clear();
+  this->fieldL.clear();
+  this->fieldM.clear();
+  this->fieldN.clear();
+  this->fieldO.clear();
+  this->fieldP.clear();
+  this->fieldQ = static_cast< ::cpp2::MyEnumA>(0);
+  this->fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
+  if (this->fieldS) this->fieldS->__clear();
+  if (this->fieldT) this->fieldT->__clear();
+  if (this->fieldU) this->fieldU.reset(new typename decltype(this->fieldU)::element_type());
+  if (this->fieldX) this->fieldX->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

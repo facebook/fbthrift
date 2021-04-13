@@ -145,8 +145,8 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstr
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  myEnum = static_cast< ::test::fixtures::enumstrict::MyEnum>(0);
-  myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
+  this->myEnum = static_cast< ::test::fixtures::enumstrict::MyEnum>(0);
+  this->myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -178,12 +178,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  myEnum =  ::cpp2::MyEnum::MyValue1;
-  oneway = 0;
-  readonly = 0;
-  idempotent = 0;
+  this->MyIntField = 0;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myEnum =  ::cpp2::MyEnum::MyValue1;
+  this->oneway = 0;
+  this->readonly = 0;
+  this->idempotent = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

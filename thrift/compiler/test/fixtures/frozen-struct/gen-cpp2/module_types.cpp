@@ -106,12 +106,12 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ModuleA::__clear() {
   // clear all fields
-  i32Field = 0;
-  strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  listField.clear();
-  mapField.clear();
-  inclAField.__clear();
-  inclBField.__clear();
+  this->i32Field = 0;
+  this->strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->listField.clear();
+  this->mapField.clear();
+  this->inclAField.__clear();
+  this->inclBField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -284,8 +284,8 @@ ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ModuleB::__clear() {
   // clear all fields
-  i32Field = 0;
-  inclEnumB = static_cast< ::some::ns::EnumB>(0);
+  this->i32Field = 0;
+  this->inclEnumB = static_cast< ::some::ns::EnumB>(0);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -83,10 +83,10 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Color::__clear() {
   // clear all fields
-  red = 0;
-  green = 0;
-  blue = 0;
-  alpha = 0;
+  this->red = 0;
+  this->green = 0;
+  this->blue = 0;
+  this->alpha = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -213,11 +213,11 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, :
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Vehicle::__clear() {
   // clear all fields
-  color.__clear();
-  licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  hasAC = false;
+  this->color.__clear();
+  this->licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->hasAC = false;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -389,16 +389,16 @@ Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::s
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Person::__clear() {
   // clear all fields
-  id = 0;
-  name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  age = 0;
-  address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  favoriteColor.__clear();
-  friends.clear();
-  bestFriend = 0;
-  petNames.clear();
-  afraidOfAnimal = static_cast< ::cpp2::Animal>(0);
-  vehicles.clear();
+  this->id = 0;
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->age = 0;
+  this->address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->favoriteColor.__clear();
+  this->friends.clear();
+  this->bestFriend = 0;
+  this->petNames.clear();
+  this->afraidOfAnimal = static_cast< ::cpp2::Animal>(0);
+  this->vehicles.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
