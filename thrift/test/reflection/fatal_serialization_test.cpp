@@ -502,15 +502,11 @@ struct SimpleJsonTest : public ::testing::Test {
   }
 };
 
-TEST_F(SimpleJsonTest, throws_on_unset_required_value) {
+TEST_F(SimpleJsonTest, doesnt_throws_on_unset_required_value) {
   set_input("{}");
-  try {
-    struct2 a;
-    serializer_read(a, reader);
-    ADD_FAILURE() << "didn't throw!";
-  } catch (TProtocolException& e) {
-    EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
-  }
+  struct2 a;
+  serializer_read(a, reader);
+  EXPECT_EQ("", *a.req_string_ref());
 }
 
 // wrap in quotes
@@ -550,7 +546,7 @@ TEST_F(SimpleJsonTest, sets_def_members) {
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("default", *a.def_string_ref());
 }
-TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
+TEST_F(SimpleJsonTest, doesnt_throws_on_missing_required_ref) {
   // clang-format off
   set_input("{"
     KV("opt_nested", "{"
@@ -564,12 +560,8 @@ TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
 
   struct3 a;
 
-  try {
-    serializer_read(a, reader);
-    ADD_FAILURE() << "didn't throw!";
-  } catch (TProtocolException& e) {
-    EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
-  }
+  serializer_read(a, reader);
+  EXPECT_EQ(0, *a.req_nested_ref()->f1_ref());
 }
 TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
   // clang-format off
