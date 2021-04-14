@@ -1,0 +1,114 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "module",
+  "typedefs" : {
+    "SetWithAdapter" : {
+      "lineno" : 21,
+      "type_enum" : "SET",
+      "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
+    },
+    "ListWithElemAdapter" : {
+      "lineno" : 26,
+      "type_enum" : "LIST",
+      "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
+    }
+  },
+  "structs" : {
+    "Foo" : {
+      "lineno" : 34,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "intField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true
+        },
+        "optionalIntField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : false
+        },
+        "intFieldWithDefault" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : 13
+        },
+        "setField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : true
+        },
+        "optionalSetField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : false
+        },
+        "mapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : true
+        },
+        "optionalMapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : false
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "Bar" : {
+      "lineno" : 78,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "structField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Foo",
+          "required" : true
+        },
+        "optionalStructField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Foo",
+          "required" : false
+        },
+        "structListField" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "Foo"} ,
+          "required" : true
+        },
+        "optionalStructListField" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "Foo"} ,
+          "required" : false
+        }
+      },
+      "annotation_last_lineno" : -1
+    }
+  },
+  "services" : {
+    "Service" : {
+      "lineno" : 105,
+      "functions" : {
+        "Service.func" : {
+          "return_type" : {
+            "type_enum" : "I32",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRUCT",
+              "spec_args" : "Foo"
+            }
+          ],
+          "throws" : []
+        }
+      }
+    }
+  }
+}

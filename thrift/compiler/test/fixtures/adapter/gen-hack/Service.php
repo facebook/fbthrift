@@ -281,7 +281,7 @@ class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceA
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Service_func_args implements \IThriftStruct {
+class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -306,6 +306,10 @@ class Service_func_args implements \IThriftStruct {
     ?'arg2' => ?Foo,
   );
 
+  const type TShape = shape(
+    'arg1' => \Adapter2::THackType,
+    ?'arg2' => ?Foo::TShape,
+  );
   const int STRUCTURAL_ID = 9020910946086583191;
   public \Adapter2::THackType $arg1;
   public ?Foo $arg2;
@@ -336,6 +340,37 @@ class Service_func_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['arg1'],
+      Shapes::idx($shape, 'arg2') === null ? null : (Foo::__fromShape($shape['arg2'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'arg1' => $this->arg1,
+      'arg2' => $this->arg2?->__toShape(),
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'arg1') !== null) {
+      $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
+    }    
+    if (idx($parsed, 'arg2') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg2']);
+      $_tmp1 = Foo::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->arg2 = $_tmp1;
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -388,6 +423,23 @@ class Service_func_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['success'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->success = (int)$_tmp0;
+      }
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
