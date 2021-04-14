@@ -71,8 +71,6 @@ class HeaderClientChannel : public ClientChannel,
       WithRocketUpgrade rocketUpgrade,
       folly::AsyncTransport::UniquePtr transport);
 
-  explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
-
   typedef std::
       unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
           Ptr;
@@ -270,6 +268,8 @@ class HeaderClientChannel : public ClientChannel,
   void setConnectionAgentName(std::string_view name);
 
  protected:
+  explicit HeaderClientChannel(std::shared_ptr<Cpp2Channel> cpp2Channel);
+
   bool clientSupportHeader() override;
 
  private:

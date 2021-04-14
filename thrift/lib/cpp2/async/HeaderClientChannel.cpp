@@ -93,7 +93,7 @@ HeaderClientChannel::HeaderClientChannel(
 }
 
 HeaderClientChannel::HeaderClientChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel)
+    std::shared_ptr<Cpp2Channel> cpp2Channel)
     : sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
