@@ -16,8 +16,14 @@
 
   // Note: terse_writes is mutually exclusive with optional.
 %>
+<%#struct:union?%>
+    case <%struct:name%>::Type::<%field:cpp_name%>:
+    {
+<%/struct:union?%>
+<%^struct:union?%>
 <%#field:optional?%>
   if (<% > module_types_tcc/optional_has_value%>) {
 <%/field:optional?%><%#field:terse_writes?%>
   if (<% > module_types_tcc/terse_has_value %>) {
 <%/field:terse_writes?%>
+<%/struct:union?%>

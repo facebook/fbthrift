@@ -20,8 +20,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
-    case <%struct:name%>::Type::<%field:cpp_name%>:
-    {
+<% > module_types_tcc/if_should_write%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%^field:cpp_ref?%>
       xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
@@ -29,8 +28,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>
 <% > module_types_tcc/serialize_ref_size%>
 <%/field:cpp_ref?%>
-      break;
-    }
+<% > module_types_tcc/if_should_write_end%>
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;
   }
@@ -44,8 +42,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
-    case <%struct:name%>::Type::<%field:cpp_name%>:
-    {
+<% > module_types_tcc/if_should_write%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%^field:cpp_ref?%>
       xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
@@ -53,8 +50,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>
 <% > module_types_tcc/serialize_ref_size_zc%>
 <%/field:cpp_ref?%>
-      break;
-    }
+<% > module_types_tcc/if_should_write_end%>
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;
   }
@@ -69,8 +65,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
-    case <%struct:name%>::Type::<%field:cpp_name%>:
-    {
+<% > module_types_tcc/if_should_write%>
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%^field:cpp_ref?%>
       xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
@@ -79,8 +74,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <% > module_types_tcc/serialize_ref%>
 <%/field:cpp_ref?%>
       xfer += prot_->writeFieldEnd();
-      break;
-    }
+<% > module_types_tcc/if_should_write_end%>
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;
   }
