@@ -56,22 +56,7 @@ class HeaderClientChannel : public ClientChannel,
   ~HeaderClientChannel() override {}
 
  public:
-  using ReleasableAsyncTransportPtr = std::unique_ptr<
-      folly::AsyncTransport,
-      folly::AsyncSocket::ReleasableDestructor>;
-
-  explicit HeaderClientChannel(ReleasableAsyncTransportPtr transport);
-
-  template <typename Transport>
-  explicit HeaderClientChannel(
-      std::unique_ptr<Transport, folly::AsyncTransport::Destructor> transport)
-      : HeaderClientChannel(ReleasableAsyncTransportPtr(transport.release())) {}
-  template <typename Transport>
-  explicit HeaderClientChannel(
-      std::unique_ptr<Transport, folly::AsyncSocket::ReleasableDestructor>
-          transport)
-      : HeaderClientChannel(ReleasableAsyncTransportPtr(std::move(transport))) {
-  }
+  explicit HeaderClientChannel(folly::AsyncTransport::UniquePtr transport);
 
   struct WithRocketUpgrade {
     bool enabled{true};
@@ -83,20 +68,8 @@ class HeaderClientChannel : public ClientChannel,
   };
 
   HeaderClientChannel(
-      WithRocketUpgrade rocketUpgrade, ReleasableAsyncTransportPtr transport);
-  template <typename Transport>
-  explicit HeaderClientChannel(
       WithRocketUpgrade rocketUpgrade,
-      std::unique_ptr<Transport, folly::AsyncTransport::Destructor> transport)
-      : HeaderClientChannel(
-            rocketUpgrade, ReleasableAsyncTransportPtr(transport.release())) {}
-  template <typename Transport>
-  explicit HeaderClientChannel(
-      WithRocketUpgrade rocketUpgrade,
-      std::unique_ptr<Transport, folly::AsyncSocket::ReleasableDestructor>
-          transport)
-      : HeaderClientChannel(
-            rocketUpgrade, ReleasableAsyncTransportPtr(std::move(transport))) {}
+      folly::AsyncTransport::UniquePtr transport);
 
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
@@ -104,14 +77,13 @@ class HeaderClientChannel : public ClientChannel,
       unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
           Ptr;
 
-  template <typename TransportPtr>
-  static Ptr newChannel(TransportPtr transport) {
+  static Ptr newChannel(folly::AsyncTransport::UniquePtr transport) {
     return Ptr(new HeaderClientChannel(std::move(transport)));
   }
 
-  template <typename TransportPtr>
   static Ptr newChannel(
-      WithRocketUpgrade rocketUpgrade, TransportPtr transport) {
+      WithRocketUpgrade rocketUpgrade,
+      folly::AsyncTransport::UniquePtr transport) {
     return Ptr(new HeaderClientChannel(
         std::move(rocketUpgrade), std::move(transport)));
   }
@@ -140,16 +112,7 @@ class HeaderClientChannel : public ClientChannel,
    * NOTE: This is for transport upgrade from header to rocket for non-TLS
    * services.
    */
-  folly::AsyncTransport::UniquePtr stealTransport() {
-    auto transportShared = cpp2Channel_->getTransportShared();
-    cpp2Channel_->setTransport(nullptr);
-    cpp2Channel_->closeNow();
-    assert(transportShared.use_count() == 1);
-    auto deleter = std::get_deleter<folly::AsyncSocket::ReleasableDestructor>(
-        transportShared);
-    deleter->release();
-    return folly::AsyncTransport::UniquePtr(transportShared.get());
-  }
+  folly::AsyncTransport::UniquePtr stealTransport();
 
   /**
    * Sets the optional RequestSetupMetadata for transport upgrade from header

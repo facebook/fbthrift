@@ -46,21 +46,50 @@ using Us = std::chrono::microseconds;
 
 namespace apache {
 namespace thrift {
+namespace {
+class ReleasableDestructor : public folly::DelayedDestruction::Destructor {
+ public:
+  void operator()(folly::DelayedDestruction* dd) const {
+    if (!released_) {
+      dd->destroy();
+    }
+  }
+
+  /**
+   * Release the object managed by smart pointers. This is used when the
+   * object ownership is transferred to another smart pointer or manually
+   * managed by the caller. The original object must be properly deleted at
+   * the end of its life cycle to avoid resource leaks.
+   */
+  void release() { released_ = true; }
+
+ private:
+  bool released_{false};
+};
+
+std::unique_ptr<folly::AsyncTransport, ReleasableDestructor> toReleasable(
+    folly::AsyncTransport::UniquePtr transport) {
+  return std::unique_ptr<folly::AsyncTransport, ReleasableDestructor>(
+      transport.release());
+}
+} // namespace
 
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
-HeaderClientChannel::HeaderClientChannel(ReleasableAsyncTransportPtr transport)
+HeaderClientChannel::HeaderClientChannel(
+    folly::AsyncTransport::UniquePtr transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          std::move(transport), make_unique<ClientFramingHandler>(*this)))) {}
+          toReleasable(std::move(transport)),
+          make_unique<ClientFramingHandler>(*this)))) {
+  upgradeToRocket_ = THRIFT_FLAG(raw_client_rocket_upgrade_enabled);
+}
 
 HeaderClientChannel::HeaderClientChannel(
-    WithRocketUpgrade rocketUpgrade, ReleasableAsyncTransportPtr transport)
+    WithRocketUpgrade rocketUpgrade, folly::AsyncTransport::UniquePtr transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          std::move(transport), make_unique<ClientFramingHandler>(*this)))) {
+          toReleasable(std::move(transport)),
+          make_unique<ClientFramingHandler>(*this)))) {
   upgradeToRocket_ = rocketUpgrade.enabled;
-  if (!rocketUpgrade.enabled) {
-    upgradeState_ = RocketUpgradeState::NO_UPGRADE;
-  }
 }
 
 HeaderClientChannel::HeaderClientChannel(
@@ -71,7 +100,7 @@ HeaderClientChannel::HeaderClientChannel(
       keepRegisteredForClose_(true),
       cpp2Channel_(cpp2Channel),
       protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL),
-      upgradeToRocket_(THRIFT_FLAG(raw_client_rocket_upgrade_enabled)),
+      upgradeToRocket_(false),
       upgradeState_(RocketUpgradeState::INIT) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
@@ -159,8 +188,7 @@ class HeaderClientChannel::RocketUpgradeCallback
       auto transportShared =
           headerClientChannel_->cpp2Channel_->getTransportShared();
 
-      auto deleter = std::get_deleter<folly::AsyncSocket::ReleasableDestructor>(
-          transportShared);
+      auto deleter = std::get_deleter<ReleasableDestructor>(transportShared);
       if (!deleter) {
         LOG(DFATAL) << "Rocket upgrade cannot complete. "
                     << "Underlying socket not using the special deleter.";
@@ -616,6 +644,16 @@ void HeaderClientChannel::setBaseReceivedCallback() {
   } else {
     cpp2Channel_->setReceiveCallback(nullptr);
   }
+}
+
+folly::AsyncTransport::UniquePtr HeaderClientChannel::stealTransport() {
+  auto transportShared = cpp2Channel_->getTransportShared();
+  cpp2Channel_->setTransport(nullptr);
+  cpp2Channel_->closeNow();
+  assert(transportShared.use_count() == 1);
+  auto deleter = std::get_deleter<ReleasableDestructor>(transportShared);
+  deleter->release();
+  return folly::AsyncTransport::UniquePtr(transportShared.get());
 }
 
 } // namespace thrift

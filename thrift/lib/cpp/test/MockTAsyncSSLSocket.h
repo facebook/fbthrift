@@ -27,7 +27,7 @@ namespace test {
 
 class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
  public:
-  using UniquePtr = std::unique_ptr<MockTAsyncSSLSocket, ReleasableDestructor>;
+  using UniquePtr = std::unique_ptr<MockTAsyncSSLSocket, Destructor>;
 
   MockTAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext> ctx, folly::EventBase* base)

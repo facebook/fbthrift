@@ -29,7 +29,7 @@ namespace async {
 // Converts exceptions to thrift's TTransportException type.
 class TAsyncSSLSocket : public folly::AsyncSSLSocket {
  public:
-  typedef std::unique_ptr<TAsyncSSLSocket, ReleasableDestructor> UniquePtr;
+  typedef std::unique_ptr<TAsyncSSLSocket, Destructor> UniquePtr;
 
   explicit TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx, folly::EventBase* evb)
