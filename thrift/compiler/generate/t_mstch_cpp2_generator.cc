@@ -562,8 +562,7 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::cpp_deprecated_accessor_type},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
-            {"field:must_write_cpp_ref?",
-             &mstch_cpp2_field::must_write_cpp_ref},
+            {"field:non_opt_cpp_ref?", &mstch_cpp2_field::non_opt_cpp_ref},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
             {"field:cpp_ref_unique_either?",
@@ -601,10 +600,9 @@ class mstch_cpp2_field : public mstch_field {
     return context_->resolver().get_storage_type_name(field_);
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
-  mstch::node must_write_cpp_ref() {
-    // If must write the reference.
+  mstch::node non_opt_cpp_ref() {
     return cpp2::is_explicit_ref(field_) &&
-        !(field_->get_req() == t_field::e_req::optional || has_terse_writes());
+        field_->get_req() != t_field::e_req::optional;
   }
   mstch::node lazy() { return field_is_lazy(field_); }
   mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
@@ -645,7 +643,7 @@ class mstch_cpp2_field : public mstch_field {
               field_->get_next()->get_type(), generators_, cache_, pos_)
         : mstch::node("");
   }
-  bool has_terse_writes() {
+  mstch::node terse_writes() {
     // Add terse writes for unqualified fields when comparison is cheap:
     // (e.g. i32/i64, empty strings/list/map)
     auto t = field_->get_type()->get_true_type();
@@ -655,8 +653,6 @@ class mstch_cpp2_field : public mstch_field {
         (is_cpp_ref_unique_either(field_) ||
          (!t->is_struct() && !t->is_xception()));
   }
-
-  mstch::node terse_writes() { return has_terse_writes(); }
   mstch::node zero_copy_arg() {
     switch (field_->get_type()->get_type_value()) {
       case t_type::type::t_binary:

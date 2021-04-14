@@ -18,17 +18,9 @@
 uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<% > module_types_tcc/if_should_write%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:must_write_cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<false>(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:must_write_cpp_ref?%>
-<%#field:must_write_cpp_ref?%>
-<% > module_types_tcc/serialize_ref_size%>
-<%/field:must_write_cpp_ref?%>
-<% > module_types_tcc/if_should_write_end%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field_size%>
+<%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -37,17 +29,9 @@ template <class Protocol_>
 uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<% > module_types_tcc/if_should_write%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:must_write_cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:must_write_cpp_ref?%>
-<%#field:must_write_cpp_ref?%>
-<% > module_types_tcc/serialize_ref_size_zc%>
-<%/field:must_write_cpp_ref?%>
-<% > module_types_tcc/if_should_write_end%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field_size_zc%>
+<%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -57,18 +41,9 @@ template <class Protocol_>
 uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<% > module_types_tcc/if_should_write%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%^field:must_write_cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += <% > module_types_tcc/protocol_methods%>::write(*prot_, <% > module_types_tcc/native_value%>);
-<%/field:must_write_cpp_ref?%>
-<%#field:must_write_cpp_ref?%>
-<% > module_types_tcc/serialize_ref%>
-<%/field:must_write_cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldEnd();
-<% > module_types_tcc/if_should_write_end%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field%>
+<%/struct:fields%>
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
