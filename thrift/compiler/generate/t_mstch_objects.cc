@@ -541,6 +541,60 @@ mstch::node mstch_struct::thrift_uri() {
   return strct_->get_annotation("thrift.uri");
 }
 
+mstch::node mstch_struct::exception_safety() {
+  if (!strct_->is_xception()) {
+    return std::string("");
+  }
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->safety();
+
+  switch (s) {
+    case t_error_safety::safe:
+      return std::string("SAFE");
+    default:
+      return std::string("UNSPECIFIED");
+  }
+}
+
+mstch::node mstch_struct::exception_blame() {
+  if (!strct_->is_xception()) {
+    return std::string("");
+  }
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->blame();
+
+  switch (s) {
+    case t_error_blame::server:
+      return std::string("SERVER");
+    case t_error_blame::client:
+      return std::string("CLIENT");
+    default:
+      return std::string("UNSPECIFIED");
+  }
+}
+
+mstch::node mstch_struct::exception_kind() {
+  if (!strct_->is_xception()) {
+    return std::string("");
+  }
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->kind();
+
+  switch (s) {
+    case t_error_kind::transient:
+      return std::string("TRANSIENT");
+    case t_error_kind::stateful:
+      return std::string("STATEFUL");
+    case t_error_kind::permanent:
+      return std::string("PERMANENT");
+    default:
+      return std::string("UNSPECIFIED");
+  }
+}
+
 mstch::node mstch_function::return_type() {
   return generators_->type_generator_->generate(
       function_->get_returntype(), generators_, cache_, pos_);

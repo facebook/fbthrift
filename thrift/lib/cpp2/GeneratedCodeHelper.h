@@ -26,6 +26,7 @@
 #include <folly/Utility.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
@@ -38,6 +39,7 @@
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
 #if FOLLY_HAS_COROUTINES
@@ -1297,13 +1299,88 @@ void async_tm_coro(
 } // namespace detail
 
 namespace util {
+
+namespace detail {
+
+constexpr ErrorKind fromExceptionKind(ExceptionKind kind) {
+  switch (kind) {
+    case ExceptionKind::TRANSIENT:
+      return ErrorKind::TRANSIENT;
+
+    case ExceptionKind::STATEFUL:
+      return ErrorKind::STATEFUL;
+
+    case ExceptionKind::PERMANENT:
+      return ErrorKind::PERMANENT;
+
+    default:
+      return ErrorKind::UNSPECIFIED;
+  }
+}
+
+constexpr ErrorBlame fromExceptionBlame(ExceptionBlame blame) {
+  switch (blame) {
+    case ExceptionBlame::SERVER:
+      return ErrorBlame::SERVER;
+
+    case ExceptionBlame::CLIENT:
+      return ErrorBlame::CLIENT;
+
+    default:
+      return ErrorBlame::UNSPECIFIED;
+  }
+}
+
+constexpr ErrorSafety fromExceptionSafety(ExceptionSafety safety) {
+  switch (safety) {
+    case ExceptionSafety::SAFE:
+      return ErrorSafety::SAFE;
+
+    default:
+      return ErrorSafety::UNSPECIFIED;
+  }
+}
+
+template <typename T>
+std::string serializeExceptionMeta() {
+  ErrorClassification errorClassification;
+
+  constexpr auto errorKind = apache::thrift::detail::st::struct_private_access::
+      __fbthrift_cpp2_gen_exception_kind<T>();
+  errorClassification.kind_ref() = fromExceptionKind(errorKind);
+  constexpr auto errorBlame = apache::thrift::detail::st::
+      struct_private_access::__fbthrift_cpp2_gen_exception_blame<T>();
+  errorClassification.blame_ref() = fromExceptionBlame(errorBlame);
+  constexpr auto errorSafety = apache::thrift::detail::st::
+      struct_private_access::__fbthrift_cpp2_gen_exception_safety<T>();
+  errorClassification.safety_ref() = fromExceptionSafety(errorSafety);
+
+  auto serialized = apache::thrift::CompactSerializer::serialize<std::string>(
+      errorClassification);
+
+  return protocol::base64Encode(folly::StringPiece(serialized));
+}
+
+} // namespace detail
+
 inline constexpr size_t kMaxUexwSize = 1024;
 inline constexpr std::string_view kHeaderUex = "uex";
 inline constexpr std::string_view kHeaderUexw = "uexw";
 inline constexpr std::string_view kHeaderEx = "ex";
+inline constexpr std::string_view kHeaderExMeta = "exm";
 
 void appendExceptionToHeader(
-    bool declared, const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
+    const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
+
+template <typename T>
+void appendErrorClassificationToHeader(Cpp2RequestContext& ctx) {
+  auto header = ctx.getHeader();
+  if (!header) {
+    return;
+  }
+  auto exMeta = detail::serializeExceptionMeta<T>();
+  header->setHeader(std::string(util::kHeaderExMeta), std::move(exMeta));
+}
 
 TApplicationException toTApplicationException(
     const folly::exception_wrapper& ew);

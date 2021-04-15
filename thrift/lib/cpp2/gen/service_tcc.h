@@ -81,8 +81,7 @@ void process_handle_exn_deserialization(
     });
     return;
   }
-
-  ::apache::thrift::util::appendExceptionToHeader(false, ew, *ctx);
+  ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto buf = process_serialize_xform_app_exn<Prot>(
       ::apache::thrift::util::toTApplicationException(ew), ctx, method);
   eb->runInEventBaseThread(
@@ -112,7 +111,7 @@ void process_throw_wrapped_handler_error(
   LOG(ERROR) << ew << " in function " << method;
   stack->userExceptionWrapped(false, ew);
   stack->handlerErrorWrapped(ew);
-  apache::thrift::util::appendExceptionToHeader(false, ew, *ctx);
+  ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto xp = ew.get_exception<TApplicationException>();
   auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);

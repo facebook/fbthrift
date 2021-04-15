@@ -62,6 +62,26 @@ enum CompressionAlgorithm {
   ZSTD = 2,
 }
 
+// re-definition of the same enums from
+// thrift/compiler/ast/t_exception.h
+enum ErrorKind {
+  UNSPECIFIED = 0,
+  TRANSIENT = 1,
+  STATEFUL = 2,
+  PERMANENT = 3,
+}
+
+enum ErrorBlame {
+  UNSPECIFIED = 0,
+  SERVER = 1,
+  CLIENT = 2,
+}
+
+enum ErrorSafety {
+  UNSPECIFIED = 0,
+  SAFE = 1,
+}
+
 struct ZlibCompressionCodecConfig {
 }
 
@@ -161,10 +181,17 @@ struct RequestRpcMetadata {
   19: optional string serviceTraceMeta;
 }
 
+struct ErrorClassification {
+  1: optional ErrorKind kind;
+  2: optional ErrorBlame blame;
+  3: optional ErrorSafety safety;
+}
+
 struct PayloadResponseMetadata {
 }
 
 struct PayloadDeclaredExceptionMetadata {
+  1: optional ErrorClassification errorClassification;
 }
 
 struct PayloadProxyExceptionMetadata {
