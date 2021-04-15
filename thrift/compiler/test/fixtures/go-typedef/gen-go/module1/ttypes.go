@@ -820,7 +820,7 @@ type Pair struct {
 func NewPair() *Pair {
   return &Pair{
     Automobile: NewAutomobile(),
-    Car: NewAutomobile(),
+    Car: NewCar(),
   }
 }
 

@@ -1323,10 +1323,11 @@ void t_go_generator::generate_go_struct_initializer(
   for (vector<t_field*>::const_iterator m_iter = members.begin();
        m_iter != members.end();
        ++m_iter) {
-    const t_type* ttype = (*m_iter)->get_type()->get_true_type();
+    const t_type* ttype = (*m_iter)->get_type();
+    const t_type* ttruetype = ttype->get_true_type();
     bool pointer_field = is_pointer_field(*m_iter);
-    bool struct_field = ttype->is_struct() &&
-        !(dynamic_cast<const t_struct*>(ttype)->is_union());
+    bool struct_field = ttruetype->is_struct() &&
+        !(dynamic_cast<const t_struct*>(ttruetype)->is_union());
     string publicized_name;
     string module;
     if (auto&& program = ttype->program()) {
