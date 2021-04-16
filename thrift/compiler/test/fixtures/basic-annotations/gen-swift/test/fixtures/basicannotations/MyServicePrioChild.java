@@ -52,6 +52,7 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
     interface Reactive extends reactor.core.Disposable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
+        @ThriftMethod(value = "pang")
         reactor.core.publisher.Mono<Void> pang();
 
         default reactor.core.publisher.Mono<Void> pang(RpcOptions rpcOptions) {

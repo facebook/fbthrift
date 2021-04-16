@@ -52,6 +52,7 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
 
     @com.facebook.swift.service.ThriftService("MyLeaf")
     interface Reactive extends reactor.core.Disposable, test.fixtures.inheritance.MyNode.Reactive {
+        @ThriftMethod(value = "do_leaf")
         reactor.core.publisher.Mono<Void> doLeaf();
 
         default reactor.core.publisher.Mono<Void> doLeaf(RpcOptions rpcOptions) {

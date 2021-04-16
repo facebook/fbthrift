@@ -52,6 +52,7 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
 
     @com.facebook.swift.service.ThriftService("MyNode")
     interface Reactive extends reactor.core.Disposable, test.fixtures.inheritance.MyRoot.Reactive {
+        @ThriftMethod(value = "do_mid")
         reactor.core.publisher.Mono<Void> doMid();
 
         default reactor.core.publisher.Mono<Void> doMid(RpcOptions rpcOptions) {

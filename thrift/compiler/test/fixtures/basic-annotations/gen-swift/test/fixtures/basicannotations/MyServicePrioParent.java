@@ -78,6 +78,7 @@ public interface MyServicePrioParent extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyServicePrioParent")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "ping")
         reactor.core.publisher.Mono<Void> ping();
 
         default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
@@ -88,6 +89,7 @@ public interface MyServicePrioParent extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "pong")
         reactor.core.publisher.Mono<Void> pong();
 
         default reactor.core.publisher.Mono<Void> pong(RpcOptions rpcOptions) {

@@ -112,6 +112,11 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     interface Reactive extends reactor.core.Disposable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
         {{#service:supportedFunctions}}
+        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
+                  exception = { {{/first?}}
+                      @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                  }{{/last?}}{{/function:exceptions}})
         reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
         default reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {

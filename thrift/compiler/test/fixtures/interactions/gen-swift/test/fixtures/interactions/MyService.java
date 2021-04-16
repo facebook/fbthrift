@@ -96,6 +96,7 @@ public interface MyService extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "foo")
         reactor.core.publisher.Mono<Void> foo();
 
         default reactor.core.publisher.Mono<Void> foo(RpcOptions rpcOptions) {

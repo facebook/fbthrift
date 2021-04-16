@@ -52,6 +52,7 @@ public interface MyRoot extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyRoot")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "do_root")
         reactor.core.publisher.Mono<Void> doRoot();
 
         default reactor.core.publisher.Mono<Void> doRoot(RpcOptions rpcOptions) {

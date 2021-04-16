@@ -284,6 +284,7 @@ public interface MyService extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "ping")
         reactor.core.publisher.Mono<Void> ping();
 
         default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
@@ -294,6 +295,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "getRandomData")
         reactor.core.publisher.Mono<String> getRandomData();
 
         default reactor.core.publisher.Mono<String> getRandomData(RpcOptions rpcOptions) {
@@ -304,6 +306,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "sink")
         reactor.core.publisher.Mono<Void> sink(final long sink);
 
         default reactor.core.publisher.Mono<Void> sink(final long sink, RpcOptions rpcOptions) {
@@ -314,6 +317,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "putDataById")
         reactor.core.publisher.Mono<Void> putDataById(final long id, final String data);
 
         default reactor.core.publisher.Mono<Void> putDataById(final long id, final String data, RpcOptions rpcOptions) {
@@ -324,6 +328,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "hasDataById")
         reactor.core.publisher.Mono<Boolean> hasDataById(final long id);
 
         default reactor.core.publisher.Mono<Boolean> hasDataById(final long id, RpcOptions rpcOptions) {
@@ -334,6 +339,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "getDataById")
         reactor.core.publisher.Mono<String> getDataById(final long id);
 
         default reactor.core.publisher.Mono<String> getDataById(final long id, RpcOptions rpcOptions) {
@@ -344,6 +350,7 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "deleteDataById")
         reactor.core.publisher.Mono<Void> deleteDataById(final long id);
 
         default reactor.core.publisher.Mono<Void> deleteDataById(final long id, RpcOptions rpcOptions) {
@@ -354,6 +361,8 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "lobDataById",
+                  oneway = true)
         reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data);
 
         default reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data, RpcOptions rpcOptions) {

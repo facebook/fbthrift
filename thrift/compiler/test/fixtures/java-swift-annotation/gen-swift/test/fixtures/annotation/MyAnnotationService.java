@@ -52,6 +52,7 @@ public interface MyAnnotationService extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyAnnotationService")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "ping")
         reactor.core.publisher.Mono<Void> ping();
 
         default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {

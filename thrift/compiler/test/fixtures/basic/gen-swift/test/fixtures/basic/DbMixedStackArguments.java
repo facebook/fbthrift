@@ -90,6 +90,7 @@ public interface DbMixedStackArguments extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("DbMixedStackArguments")
     interface Reactive extends reactor.core.Disposable {
+        @ThriftMethod(value = "getDataByKey0")
         reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key);
 
         default reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key, RpcOptions rpcOptions) {
@@ -100,6 +101,7 @@ public interface DbMixedStackArguments extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "getDataByKey1")
         reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key);
 
         default reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key, RpcOptions rpcOptions) {
