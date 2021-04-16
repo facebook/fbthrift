@@ -1674,11 +1674,23 @@ void t_py_generator::generate_py_struct_definition(
         << indent() << "  padding = ' ' * 4" << endl;
     for (auto const& member : members) {
       auto key = rename_reserved_keywords(member->get_name());
-      out << indent() << "  if self." << key << " is not None:" << endl;
+      auto has_double_underscore = key.find("__") == 0;
+      if (has_double_underscore) {
+        out << indent() << "  if getattr(self, \"" << key
+            << "\", None) is not None:" << endl;
+      } else {
+        out << indent() << "  if self." << key << " is not None:" << endl;
+      }
+
       indent_up();
-      out << indent() << "  value = pprint.pformat(self." << key
-          << ", indent=0)" << endl
-          << indent() << "  value = padding.join(value.splitlines(True))"
+      if (has_double_underscore) {
+        out << indent() << "  value = pprint.pformat(getattr(self, \"" << key
+            << "\", None), indent=0)" << endl;
+      } else {
+        out << indent() << "  value = pprint.pformat(self." << key
+            << ", indent=0)" << endl;
+      }
+      out << indent() << "  value = padding.join(value.splitlines(True))"
           << endl
           << indent() << "  L.append('    " << key << "=%s' % (value))" << endl;
       indent_down();

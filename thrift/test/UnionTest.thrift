@@ -73,3 +73,8 @@ const list<StructWithUnionAndOther> NESTED = [
   {"string_field": "hello"},
   {"test_union": {"other_i32_field": 4}},
 ];
+
+struct StructWithDoubleUnderscoreField {
+  1: i32 __field;
+  2: i32 field;
+}

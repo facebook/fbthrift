@@ -2660,8 +2660,8 @@ class StructWithDoubleUnderscores:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    if self.__field is not None:
-      value = pprint.pformat(self.__field, indent=0)
+    if getattr(self, "__field", None) is not None:
+      value = pprint.pformat(getattr(self, "__field", None), indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    __field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
