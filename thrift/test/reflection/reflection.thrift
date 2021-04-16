@@ -418,6 +418,20 @@ struct hasRefUnique {
   10: optional unionA anOptionalUnion (cpp2.ref_type = "unique");
 }
 
+struct hasRefUniqueSimple {
+  // same as above, but no cpp.template annotations
+  1: structA aStruct (cpp2.ref_type = "unique");
+  2: list<string> aList (cpp2.ref_type = "unique");
+  3: set<string> aSet (cpp2.ref_type = "unique");
+  4: map<string, string> aMap (cpp2.ref_type = "unique");
+  5: unionA aUnion (cpp2.ref_type = "unique");
+  6: optional structA anOptionalStruct (cpp2.ref_type = "unique");
+  7: optional list<string> anOptionalList (cpp2.ref_type = "unique");
+  8: optional set<string> anOptionalSet (cpp2.ref_type = "unique");
+  9: optional map<string, string> anOptionalMap (cpp2.ref_type = "unique");
+  10: optional unionA anOptionalUnion (cpp2.ref_type = "unique");
+}
+
 union variantHasRefUnique {
   1: structA aStruct (cpp2.ref_type = "unique");
   2: i32 anInt;
@@ -448,6 +462,20 @@ struct hasRefShared {
   10: optional unionA anOptionalUnion (cpp2.ref_type = "shared");
 }
 
+struct hasRefSharedSimple {
+  // same as above, but no cpp.template annotations
+  1: structA aStruct (cpp2.ref_type = "shared");
+  2: list<string> aList (cpp2.ref_type = "shared");
+  3: set<string> aSet (cpp2.ref_type = "shared");
+  4: map<string, string> aMap (cpp2.ref_type = "shared");
+  5: unionA aUnion (cpp2.ref_type = "shared");
+  6: optional structA anOptionalStruct (cpp2.ref_type = "shared");
+  7: optional list<string> anOptionalList (cpp2.ref_type = "shared");
+  8: optional set<string> anOptionalSet (cpp2.ref_type = "shared");
+  9: optional map<string, string> anOptionalMap (cpp2.ref_type = "shared");
+  10: optional unionA anOptionalUnion (cpp2.ref_type = "shared");
+}
+
 struct hasRefSharedConst {
   1: structA aStruct (cpp2.ref_type = "shared_const");
   2: list<string> (cpp.template = "std::deque") aList (
@@ -470,6 +498,22 @@ struct hasRefSharedConst {
   9: optional map<string, string> (
     cpp.template = "std::unordered_map",
   ) anOptionalMap (cpp2.ref_type = "shared_const");
+  10: optional unionA anOptionalUnion (cpp2.ref_type = "shared_const");
+}
+
+struct hasRefSharedConstSimple {
+  // same as above, but no cpp.template annotations
+  1: structA aStruct (cpp2.ref_type = "shared_const");
+  2: list<string> aList (cpp2.ref_type = "shared_const");
+  3: set<string> aSet (cpp2.ref_type = "shared_const");
+  4: map<string, string> aMap (cpp2.ref_type = "shared_const");
+  5: unionA aUnion (cpp2.ref_type = "shared_const");
+  6: optional structA anOptionalStruct (cpp2.ref_type = "shared_const");
+  7: optional list<string> anOptionalList (cpp2.ref_type = "shared_const");
+  8: optional set<string> anOptionalSet (cpp2.ref_type = "shared_const");
+  9: optional map<string, string> anOptionalMap (
+    cpp2.ref_type = "shared_const",
+  );
   10: optional unionA anOptionalUnion (cpp2.ref_type = "shared_const");
 }
 

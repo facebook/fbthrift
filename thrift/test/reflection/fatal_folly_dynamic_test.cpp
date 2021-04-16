@@ -433,6 +433,146 @@ TEST(fatal_folly_dynamic, to_from_dynamic_binary) {
   EXPECT_EQ("123abc", *obj.bi_ref());
 }
 
+namespace {
+struct UniqueHelper {
+  template <typename T, typename... Args>
+  static std::unique_ptr<T> build(Args&&... args) {
+    return std::make_unique<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T> build(Args&&... args) {
+    return std::make_shared<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedConstHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T const> build(Args&&... args) {
+    return std::make_shared<T const>(std::forward<Args>(args)...);
+  }
+};
+} // namespace
+
+template <typename Structure, typename Helper>
+void ref_test() {
+  using namespace test_cpp2::cpp_reflection;
+  using namespace std::string_literals;
+  std::initializer_list<std::string> hello = {"Hello"s};
+  std::map<std::string, std::string> helloWorld{{"Hello"s, "World"s}};
+
+  Structure v;
+  auto const rawJson = folly::stripLeftMargin(R"({
+    "aStruct": {
+      "a": 0,
+      "b": ""
+    },
+    "aList": [
+      "Hello"
+    ],
+    "aSet": [
+      "Hello"
+    ],
+    "aMap": {
+      "Hello": "World"
+    },
+    "aUnion": {},
+    "anOptionalStruct": null,
+    "anOptionalList": null,
+    "anOptionalSet": null,
+    "anOptionalMap": null,
+    "anOptionalUnion": null
+  })");
+  v.aStruct = Helper::template build<structA>();
+  v.aList = Helper::template build<std::vector<std::string>>(hello);
+  v.aSet = Helper::template build<std::set<std::string>>(hello);
+  v.aMap =
+      Helper::template build<std::map<std::string, std::string>>(helloWorld);
+  v.aUnion = Helper::template build<unionA>();
+  v.anOptionalStruct = nullptr;
+  v.anOptionalList = nullptr;
+  v.anOptionalSet = nullptr;
+  v.anOptionalMap = nullptr;
+  v.anOptionalUnion = nullptr;
+  auto const json = folly::parseJson(rawJson);
+  test_to_from(v, json);
+
+  v.anOptionalStruct = Helper::template build<structA>();
+  v.anOptionalList = Helper::template build<std::vector<std::string>>(hello);
+  v.anOptionalSet = Helper::template build<std::set<std::string>>(hello);
+  v.anOptionalMap =
+      Helper::template build<std::map<std::string, std::string>>(helloWorld);
+  v.anOptionalUnion = Helper::template build<unionA>();
+  const auto rawJson2 = R"(
+    {
+      "aStruct": {
+        "a": 0,
+        "b": ""
+      },
+      "aList": [
+        "Hello"
+      ],
+      "aSet": [
+        "Hello"
+      ],
+      "aMap": {
+        "Hello": "World"
+      },
+      "aUnion": {},
+      "anOptionalStruct": {
+        "a": 0,
+        "b": ""
+      },
+      "anOptionalList": [
+        "Hello"
+      ],
+      "anOptionalSet": [
+        "Hello"
+      ],
+      "anOptionalMap": {
+        "Hello": "World"
+      },
+      "anOptionalUnion": {}
+    })";
+  auto const json2 = folly::parseJson(rawJson2);
+  test_to_from(v, json2);
+}
+
+TEST(fatal_pretty_print, to_from_struct_ref_unique) {
+  ref_test<test_cpp2::cpp_reflection::hasRefUniqueSimple, UniqueHelper>();
+}
+
+TEST(fatal_pretty_print, to_from_struct_ref_shared) {
+  ref_test<test_cpp2::cpp_reflection::hasRefSharedSimple, SharedHelper>();
+}
+
+TEST(fatal_pretty_print, to_from_struct_ref_shared_const) {
+  ref_test<
+      test_cpp2::cpp_reflection::hasRefSharedConstSimple,
+      SharedConstHelper>();
+}
+
+TEST(fatal_folly_dynamic, to_from_variant_ref_unique) {
+  test_cpp2::cpp_reflection::variantHasRefUnique pod;
+
+  test_cpp2::cpp_reflection::structA inner;
+  inner.a_ref() = 109;
+  inner.b_ref() = "testing yo";
+  pod.set_aStruct(inner);
+
+  auto const rawJson = folly::stripLeftMargin(R"({
+    "aStruct": {
+      "a": 109,
+      "b": "testing yo"
+    }
+  })");
+
+  auto const json = folly::parseJson(rawJson);
+  test_to_from(pod, json);
+}
+
 } // namespace thrift
 } // namespace apache
 
