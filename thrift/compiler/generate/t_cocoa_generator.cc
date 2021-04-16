@@ -2267,7 +2267,7 @@ void t_cocoa_generator::generate_deserialize_container(
   // Declare variables, read header
   if (ttype->is_map()) {
     indent(out)
-        << "[inProtocol readMapBeginReturningKeyType: NULL value_type: NULL size: &"
+        << "[inProtocol readMapBeginReturningKeyType: NULL valueType: NULL size: &"
         << size << "];" << std::endl;
     indent(out) << "NSMutableDictionary * " << fieldName
                 << " = [[NSMutableDictionary alloc] initWithCapacity: " << size
@@ -2531,7 +2531,7 @@ void t_cocoa_generator::generate_serialize_container(
   if (ttype->is_map()) {
     indent(out) << "[outProtocol writeMapBeginWithKeyType: "
                 << type_to_enum(((t_map*)ttype)->get_key_type())
-                << " value_type: "
+                << " valueType: "
                 << type_to_enum(((t_map*)ttype)->get_val_type())
                 << " size: (int)[" << fieldName << " count]];" << std::endl;
   } else if (ttype->is_set()) {
