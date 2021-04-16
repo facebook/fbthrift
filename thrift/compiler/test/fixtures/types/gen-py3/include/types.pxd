@@ -60,18 +60,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_unordered_map() except +
         std_unordered_map(std_unordered_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 

@@ -40,6 +40,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         {{type:cythonCustomType}}() except +
         {{type:cythonCustomType}}({{type:cythonCustomType}}&) except +
@@ -48,9 +52,13 @@ cdef extern from * nogil:
         void push_back({{#type:list_elem_type}}{{> types/CythonCppType}}{{/type:list_elem_type}}&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -73,6 +81,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         {{type:cythonCustomType}}() except +
         {{type:cythonCustomType}}({{type:cythonCustomType}}&) except +
@@ -81,9 +93,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const {{#type:set_elem_type}}{{> types/CythonCppType}}{{/type:set_elem_type}}&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -107,18 +123,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         {{type:cythonCustomType}}() except +
         {{type:cythonCustomType}}({{type:cythonCustomType}}&) except +
 
         {{#type:value_type}}{{> types/CythonCppType}}{{/type:value_type}}& operator[]({{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}}&)
         iterator find(const {{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}}&)
+        const_iterator const_find "find"(const {{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}}&)
         size_type count(const {{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}}&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 

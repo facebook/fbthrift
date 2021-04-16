@@ -62,6 +62,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_list() except +
         std_list(std_list&) except +
@@ -70,9 +74,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -91,6 +99,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_deque() except +
         std_deque(std_deque&) except +
@@ -99,9 +111,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -120,6 +136,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_set() except +
         folly_sorted_vector_set(folly_sorted_vector_set&) except +
@@ -128,9 +148,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const T&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -150,18 +174,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_map() except +
         folly_sorted_vector_map(folly_sorted_vector_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -188,6 +221,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_small_vector_int64_t_8() except +
         folly_small_vector_int64_t_8(folly_small_vector_int64_t_8&) except +
@@ -196,9 +233,13 @@ cdef extern from * nogil:
         void push_back(cint64_t&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -217,6 +258,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_set_std_string() except +
         folly_sorted_vector_set_std_string(folly_sorted_vector_set_std_string&) except +
@@ -225,9 +270,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const string&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -247,18 +296,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         FakeMap() except +
         FakeMap(FakeMap&) except +
 
         double& operator[](cint64_t&)
         iterator find(const cint64_t&)
+        const_iterator const_find "find"(const cint64_t&)
         size_type count(const cint64_t&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -278,18 +336,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_unordered_map_std_string_containerStruct() except +
         std_unordered_map_std_string_containerStruct(std_unordered_map_std_string_containerStruct&) except +
 
         ccontainerStruct& operator[](string&)
         iterator find(const string&)
+        const_iterator const_find "find"(const string&)
         size_type count(const string&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
