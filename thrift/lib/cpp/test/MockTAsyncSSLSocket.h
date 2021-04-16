@@ -38,7 +38,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
     return MockTAsyncSSLSocket::UniquePtr(new MockTAsyncSSLSocket(ctx, base));
   }
 
-  GMOCK_METHOD5_(
+  GMOCK_METHOD6_(
       ,
       noexcept,
       ,
@@ -48,9 +48,10 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           const folly::SocketAddress&,
           int,
           const folly::SocketOptionMap&,
-          const folly::SocketAddress&));
+          const folly::SocketAddress&,
+          const std::string&));
 
-  GMOCK_METHOD6_(
+  GMOCK_METHOD7_(
       ,
       noexcept,
       ,
@@ -61,15 +62,17 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           std::chrono::milliseconds,
           std::chrono::milliseconds,
           const folly::SocketOptionMap&,
-          const folly::SocketAddress&));
+          const folly::SocketAddress&,
+          const std::string&));
 
   void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       int timeout = 0,
       const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
-      const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
-    connectInternal(callback, addr, timeout, options, bindAddr);
+      const folly::SocketAddress& bindAddr = anyAddress(),
+      const std::string& ifName = "") noexcept override {
+    connectInternal(callback, addr, timeout, options, bindAddr, ifName);
   }
 
   void connect(
@@ -78,9 +81,16 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
       std::chrono::milliseconds connectTimeout,
       std::chrono::milliseconds totalConnectTimeout,
       const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
-      const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
+      const folly::SocketAddress& bindAddr = anyAddress(),
+      const std::string& ifName = "") noexcept override {
     connectInternalWithTimeouts(
-        callback, addr, connectTimeout, totalConnectTimeout, options, bindAddr);
+        callback,
+        addr,
+        connectTimeout,
+        totalConnectTimeout,
+        options,
+        bindAddr,
+        ifName);
   }
 
   MOCK_CONST_METHOD1(getLocalAddress, void(folly::SocketAddress*));
