@@ -953,3 +953,31 @@ cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).UintTypedef_field_ref().assign(_fbthrift_value)
 
+
+@__cython.auto_pickle(False)
+cdef class __StructWithDoubleUnderscores_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __StructWithDoubleUnderscores_FieldsSetter create(_module_types.cStructWithDoubleUnderscores* struct_cpp_obj):
+        cdef __StructWithDoubleUnderscores_FieldsSetter __fbthrift_inst = __StructWithDoubleUnderscores_FieldsSetter.__new__(__StructWithDoubleUnderscores_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"__field")] = __StructWithDoubleUnderscores_FieldsSetter._set_field_0
+        return __fbthrift_inst
+
+    cdef void set_field(__StructWithDoubleUnderscores_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __StructWithDoubleUnderscores_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field __field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithDoubleUnderscores](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'__field is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).__field_ref().assign(_fbthrift_value)
+

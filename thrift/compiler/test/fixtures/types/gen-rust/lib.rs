@@ -171,6 +171,11 @@ pub mod types {
         pub UintTypedef_field: crate::types::UintTypedef,
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct StructWithDoubleUnderscores {
+        pub __field: ::std::primitive::i32,
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct has_bitwise_ops(pub ::std::primitive::i32);
 
@@ -2302,6 +2307,62 @@ pub mod types {
                 i32_field: field_i32_field.unwrap_or_default(),
                 IntTypedef_field: field_IntTypedef_field.unwrap_or_default(),
                 UintTypedef_field: field_UintTypedef_field.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::StructWithDoubleUnderscores {
+        fn default() -> Self {
+            Self {
+                __field: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::StructWithDoubleUnderscores {}
+    unsafe impl ::std::marker::Sync for self::StructWithDoubleUnderscores {}
+
+    impl ::fbthrift::GetTType for self::StructWithDoubleUnderscores {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::StructWithDoubleUnderscores
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("StructWithDoubleUnderscores");
+            p.write_field_begin("__field", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.__field, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::StructWithDoubleUnderscores
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("__field", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field___field = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field___field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                __field: field___field.unwrap_or_default(),
             })
         }
     }

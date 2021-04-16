@@ -2762,3 +2762,83 @@ template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::CompactProto
 
 
 }}}} // apache::thrift::fixtures::types
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg) :
+    __field(std::move(__field__arg)) {
+  __isset.__field = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void StructWithDoubleUnderscores::__clear() {
+  // clear all fields
+  this->__field = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool StructWithDoubleUnderscores::operator==(const StructWithDoubleUnderscores& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.__field == rhs.__field)) {
+    return false;
+  }
+  return true;
+}
+
+bool StructWithDoubleUnderscores::operator<(const StructWithDoubleUnderscores& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.__field == rhs.__field)) {
+    return lhs.__field < rhs.__field;
+  }
+  return false;
+}
+
+
+void swap(StructWithDoubleUnderscores& a, StructWithDoubleUnderscores& b) {
+  using ::std::swap;
+  swap(a.__field_ref().value(), b.__field_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+}}}} // apache::thrift::fixtures::types

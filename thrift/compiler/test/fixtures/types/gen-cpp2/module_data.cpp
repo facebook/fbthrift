@@ -407,5 +407,15 @@ const std::array<protocol::TType, 3> TStructDataStorage<::apache::thrift::fixtur
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::fields_names = {{
+  "__field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::fields_types = {{
+  TType::T_I32,
+}};
+
 } // namespace thrift
 } // namespace apache

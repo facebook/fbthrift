@@ -392,6 +392,19 @@ struct VisitByThriftId<::apache::thrift::fixtures::types::TypedefStruct> {
     }
   }
 };
+
+template <>
+struct VisitByThriftId<::apache::thrift::fixtures::types::StructWithDoubleUnderscores> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).__field_ref());
+    default:
+      throwInvalidThriftId(id, "::apache::thrift::fixtures::types::StructWithDoubleUnderscores");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

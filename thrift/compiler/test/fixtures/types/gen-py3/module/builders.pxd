@@ -147,3 +147,7 @@ cdef class TypedefStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint UintTypedef_field
 
 
+cdef class StructWithDoubleUnderscores_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint __field
+
+

@@ -1027,6 +1027,31 @@ cdef __StructSpec get_reflection__TypedefStruct():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__StructWithDoubleUnderscores():
+    cdef _module_types.StructWithDoubleUnderscores defaults = _module_types.StructWithDoubleUnderscores.create(
+        constant_shared_ptr[_module_types.cStructWithDoubleUnderscores](
+            default_inst[_module_types.cStructWithDoubleUnderscores]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="StructWithDoubleUnderscores",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="__field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     return __MapSpec.create(
         key=int,

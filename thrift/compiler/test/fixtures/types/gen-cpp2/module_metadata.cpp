@@ -653,6 +653,30 @@ StructMetadata<::apache::thrift::fixtures::types::TypedefStruct>::gen(ThriftMeta
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.StructWithDoubleUnderscores", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithDoubleUnderscores = res.first->second;
+  module_StructWithDoubleUnderscores.name_ref() = "module.StructWithDoubleUnderscores";
+  module_StructWithDoubleUnderscores.is_union_ref() = false;
+  static const EncodedThriftField
+  module_StructWithDoubleUnderscores_fields[] = {
+    std::make_tuple(1, "__field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_StructWithDoubleUnderscores_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
+    module_StructWithDoubleUnderscores.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
 void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;

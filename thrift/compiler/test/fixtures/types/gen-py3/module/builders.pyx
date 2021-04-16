@@ -184,3 +184,9 @@ cdef class TypedefStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "IntTypedef_field", self.IntTypedef_field
         yield "UintTypedef_field", self.UintTypedef_field
 
+cdef class StructWithDoubleUnderscores_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.StructWithDoubleUnderscores
+
+    def __iter__(self):
+        yield "__field", self.__field
+

@@ -163,6 +163,11 @@ class StructMetadata<::apache::thrift::fixtures::types::TypedefStruct> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::apache::thrift::fixtures::types::StructWithDoubleUnderscores> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);

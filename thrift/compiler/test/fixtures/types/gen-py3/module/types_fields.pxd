@@ -329,3 +329,14 @@ cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
 
+
+ctypedef void (*__StructWithDoubleUnderscores_FieldsSetterFunc)(__StructWithDoubleUnderscores_FieldsSetter, object) except *
+
+cdef class __StructWithDoubleUnderscores_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cStructWithDoubleUnderscores* _struct_cpp_obj
+    cdef cumap[__cstring_view, __StructWithDoubleUnderscores_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __StructWithDoubleUnderscores_FieldsSetter create(_module_types.cStructWithDoubleUnderscores* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+

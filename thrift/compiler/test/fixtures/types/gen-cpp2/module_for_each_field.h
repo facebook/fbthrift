@@ -238,6 +238,14 @@ struct ForEachField<::apache::thrift::fixtures::types::TypedefStruct> {
     f(2, static_cast<T&&>(t).UintTypedef_field_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::apache::thrift::fixtures::types::StructWithDoubleUnderscores> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).__field_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -692,6 +692,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         cint32_t UintTypedef_field
 
 
+    cdef cppclass cStructWithDoubleUnderscores "::apache::thrift::fixtures::types::StructWithDoubleUnderscores":
+        cStructWithDoubleUnderscores() except +
+        cStructWithDoubleUnderscores(const cStructWithDoubleUnderscores&) except +
+        bint operator==(cStructWithDoubleUnderscores&)
+        bint operator!=(cStructWithDoubleUnderscores&)
+        bint operator<(cStructWithDoubleUnderscores&)
+        bint operator>(cStructWithDoubleUnderscores&)
+        bint operator<=(cStructWithDoubleUnderscores&)
+        bint operator>=(cStructWithDoubleUnderscores&)
+        __field_ref[cint32_t] __field_ref()
+        cint32_t __field
+
+
 
 
 cdef class decorated_struct(thrift.py3.types.Struct):
@@ -945,6 +958,15 @@ cdef class TypedefStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cTypedefStruct])
+
+
+
+cdef class StructWithDoubleUnderscores(thrift.py3.types.Struct):
+    cdef shared_ptr[cStructWithDoubleUnderscores] _cpp_obj
+    cdef _fbthrift_types_fields.__StructWithDoubleUnderscores_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithDoubleUnderscores])
 
 
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):

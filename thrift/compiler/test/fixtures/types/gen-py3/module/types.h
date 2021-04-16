@@ -403,6 +403,16 @@ void reset_field<::apache::thrift::fixtures::types::TypedefStruct>(
 }
 
 template<>
+void reset_field<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>(
+    ::apache::thrift::fixtures::types::StructWithDoubleUnderscores& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.__field_ref().copy_from(default_inst<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>().__field_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::fixtures::types::decorated_struct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -635,6 +645,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::fixtures::types::TypedefStruct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

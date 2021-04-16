@@ -72,6 +72,7 @@ struct not_a_container;
 struct i32_field;
 struct IntTypedef_field;
 struct UintTypedef_field;
+struct __field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_field
@@ -306,6 +307,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(IntTypedef_field);
 #define APACHE_THRIFT_ACCESSOR_UintTypedef_field
 APACHE_THRIFT_DEFINE_ACCESSOR(UintTypedef_field);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR___field
+#define APACHE_THRIFT_ACCESSOR___field
+APACHE_THRIFT_DEFINE_ACCESSOR(__field);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -521,6 +526,7 @@ class NoExceptMoveUnion;
 class AllocatorAware;
 class AllocatorAware2;
 class TypedefStruct;
+class StructWithDoubleUnderscores;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -4412,6 +4418,113 @@ class TypedefStruct final  {
 
 template <class Protocol_>
 uint32_t TypedefStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
+class StructWithDoubleUnderscores final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+ public:
+  using __fbthrift_cpp2_type = StructWithDoubleUnderscores;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  StructWithDoubleUnderscores() :
+      __field(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg);
+
+  StructWithDoubleUnderscores(StructWithDoubleUnderscores&&) = default;
+
+  StructWithDoubleUnderscores(const StructWithDoubleUnderscores&) = default;
+
+
+  StructWithDoubleUnderscores& operator=(StructWithDoubleUnderscores&&) = default;
+
+  StructWithDoubleUnderscores& operator=(const StructWithDoubleUnderscores&) = default;
+  void __clear();
+ private:
+  ::std::int32_t __field;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool __field;
+  } __isset = {};
+
+  bool operator==(const StructWithDoubleUnderscores&) const;
+  bool operator<(const StructWithDoubleUnderscores&) const;
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> __field_ref() const& {
+    return {this->__field, __isset.__field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> __field_ref() const&& {
+    return {std::move(this->__field), __isset.__field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> __field_ref() & {
+    return {this->__field, __isset.__field};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> __field_ref() && {
+    return {std::move(this->__field), __isset.__field};
+  }
+
+  ::std::int32_t get___field() const {
+    return __field;
+  }
+
+  ::std::int32_t& set___field(::std::int32_t __field_) {
+    __field = __field_;
+    __isset.__field = true;
+    return __field;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<StructWithDoubleUnderscores>;
+  friend void swap(StructWithDoubleUnderscores& a, StructWithDoubleUnderscores& b);
+};
+
+template <class Protocol_>
+uint32_t StructWithDoubleUnderscores::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

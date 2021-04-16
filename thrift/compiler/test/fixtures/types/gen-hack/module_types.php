@@ -2734,3 +2734,76 @@ class TypedefStruct implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * StructWithDoubleUnderscores
+ */
+class StructWithDoubleUnderscores implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => '__field',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    '__field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'__field' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 8209484534723602012;
+  /**
+   * Original thrift field:-
+   * 1: i32 __field
+   */
+  public int $__field;
+
+  public function __construct(?int $__field = null  )[] {
+    $this->__field = $__field ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, '__field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'StructWithDoubleUnderscores';
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, '__field') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['__field'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->__field = (int)$_tmp0;
+      }
+    }    
+  }
+
+}
+

@@ -195,3 +195,7 @@ struct TypedefStruct {
   2: IntTypedef IntTypedef_field;
   3: UintTypedef UintTypedef_field;
 }
+
+struct StructWithDoubleUnderscores {
+  1: i32 __field;
+}
