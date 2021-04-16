@@ -197,6 +197,8 @@ namespace si {
 
 namespace {
 
+constexpr size_t kMaxUexwSize = 1024;
+
 void setUserExceptionHeader(
     Cpp2RequestContext& ctx,
     std::string exType,
@@ -208,15 +210,14 @@ void setUserExceptionHeader(
   }
 
   if (setClientCode) {
-    header->setHeader(std::string(util::kHeaderEx), kAppClientErrorCode);
+    header->setHeader(std::string(detail::kHeaderEx), kAppClientErrorCode);
   }
 
-  header->setHeader(std::string(util::kHeaderUex), std::move(exType));
+  header->setHeader(std::string(detail::kHeaderUex), std::move(exType));
   header->setHeader(
-      std::string(util::kHeaderUexw),
-      exReason.size() > util::kMaxUexwSize
-          ? exReason.substr(0, util::kMaxUexwSize)
-          : std::move(exReason));
+      std::string(detail::kHeaderUexw),
+      exReason.size() > kMaxUexwSize ? exReason.substr(0, kMaxUexwSize)
+                                     : std::move(exReason));
 }
 
 } // namespace

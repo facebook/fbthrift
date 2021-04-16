@@ -29,6 +29,11 @@ class RpcOptions;
 
 namespace detail {
 
+inline constexpr std::string_view kHeaderUex = "uex";
+inline constexpr std::string_view kHeaderUexw = "uexw";
+inline constexpr std::string_view kHeaderEx = "ex";
+inline constexpr std::string_view kHeaderExMeta = "exm";
+
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
@@ -44,6 +49,9 @@ void fillTHeaderFromResponseRpcMetadata(
 
 void fillResponseRpcMetadataFromTHeader(
     transport::THeader& header, ResponseRpcMetadata& responseMetadata);
+
+std::string serializeErrorClassification(ErrorClassification ec);
+ErrorClassification deserializeErrorClassification(std::string_view str);
 
 } // namespace detail
 } // namespace thrift

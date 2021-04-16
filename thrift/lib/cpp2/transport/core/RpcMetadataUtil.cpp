@@ -23,13 +23,13 @@
 
 #include <folly/Conv.h>
 
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-namespace apache {
-namespace thrift {
-namespace detail {
+namespace apache::thrift::detail {
 
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
@@ -155,6 +155,16 @@ void fillResponseRpcMetadataFromTHeader(
   }
   responseMetadata.otherMetadata_ref() = std::move(otherMetadata);
 }
-} // namespace detail
-} // namespace thrift
-} // namespace apache
+
+std::string serializeErrorClassification(ErrorClassification ec) {
+  auto serialized =
+      apache::thrift::CompactSerializer::serialize<std::string>(ec);
+  return protocol::base64Encode(folly::StringPiece(serialized));
+}
+
+ErrorClassification deserializeErrorClassification(std::string_view str) {
+  auto buf = protocol::base64Decode(str);
+  return CompactSerializer::deserialize<ErrorClassification>(buf.get());
+}
+
+} // namespace apache::thrift::detail

@@ -1355,19 +1355,11 @@ std::string serializeExceptionMeta() {
       struct_private_access::__fbthrift_cpp2_gen_exception_safety<T>();
   errorClassification.safety_ref() = fromExceptionSafety(errorSafety);
 
-  auto serialized = apache::thrift::CompactSerializer::serialize<std::string>(
+  return apache::thrift::detail::serializeErrorClassification(
       errorClassification);
-
-  return protocol::base64Encode(folly::StringPiece(serialized));
 }
 
 } // namespace detail
-
-inline constexpr size_t kMaxUexwSize = 1024;
-inline constexpr std::string_view kHeaderUex = "uex";
-inline constexpr std::string_view kHeaderUexw = "uexw";
-inline constexpr std::string_view kHeaderEx = "ex";
-inline constexpr std::string_view kHeaderExMeta = "exm";
 
 void appendExceptionToHeader(
     const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
@@ -1379,7 +1371,8 @@ void appendErrorClassificationToHeader(Cpp2RequestContext& ctx) {
     return;
   }
   auto exMeta = detail::serializeExceptionMeta<T>();
-  header->setHeader(std::string(util::kHeaderExMeta), std::move(exMeta));
+  header->setHeader(
+      std::string(apache::thrift::detail::kHeaderExMeta), std::move(exMeta));
 }
 
 TApplicationException toTApplicationException(

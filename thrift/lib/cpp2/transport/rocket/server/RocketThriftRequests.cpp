@@ -33,6 +33,7 @@
 #endif
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -170,22 +171,39 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           preprocessProxiedExceptionHeaders(metadata, version);
 
           PayloadExceptionMetadataBase exceptionMetadataBase;
-
+          PayloadDeclaredExceptionMetadata declaredExceptionMetadata;
           if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
-            if (auto uexPtr = folly::get_ptr(*otherMetadataRef, "uex")) {
+            // defined in sync with
+            // thrift/lib/cpp2/transport/core/RpcMetadataUtil.h
+
+            // Setting user exception name and content
+            static const auto uex =
+                std::string(apache::thrift::detail::kHeaderUex);
+            if (auto uexPtr = folly::get_ptr(*otherMetadataRef, uex)) {
               exceptionMetadataBase.name_utf8_ref() = *uexPtr;
-              otherMetadataRef->erase("uex");
+              otherMetadataRef->erase(uex);
             }
-            if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, "uexw")) {
+            static const auto uexw =
+                std::string(apache::thrift::detail::kHeaderUexw);
+            if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, uexw)) {
               exceptionMetadataBase.what_utf8_ref() = *uexwPtr;
-              otherMetadataRef->erase("uexw");
+              otherMetadataRef->erase(uexw);
+            }
+
+            // Setting user declared exception classification
+            static const auto exMeta =
+                std::string(apache::thrift::detail::kHeaderExMeta);
+            if (auto metaPtr = folly::get_ptr(*otherMetadataRef, exMeta)) {
+              ErrorClassification errorClassification =
+                  apache::thrift::detail::deserializeErrorClassification(
+                      *metaPtr);
+              declaredExceptionMetadata.errorClassification_ref() =
+                  std::move(errorClassification);
             }
           }
-
           PayloadExceptionMetadata exceptionMetadata;
           exceptionMetadata.set_declaredException(
-              PayloadDeclaredExceptionMetadata());
-
+              std::move(declaredExceptionMetadata));
           exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
           payloadMetadata.set_exceptionMetadata(
               std::move(exceptionMetadataBase));
