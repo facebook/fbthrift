@@ -110,7 +110,12 @@ void BaseTypedAnySerializer<T, Derived>::decode(
     folly::io::Cursor& cursor,
     any_ref value) const {
   checkType(typeInfo, typeid(T));
-  value.assign_value(derived().decode(cursor));
+  if (auto* obj = any_cast_exact<T>(&value)) {
+    derived().decode(cursor, *obj);
+  } else {
+    auto& any = any_cast_exact<std::any&>(value);
+    derived().decode(cursor, any.emplace<T>());
+  }
 }
 
 } // namespace apache::thrift::conformance

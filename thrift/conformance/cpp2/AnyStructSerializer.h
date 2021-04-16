@@ -37,7 +37,7 @@ class BaseAnyStructSerializer
   void encode(const T& value, folly::io::QueueAppender&& appender) const;
 
   using Base::decode;
-  T decode(folly::io::Cursor& cursor) const;
+  void decode(folly::io::Cursor& cursor, T& value) const;
 };
 
 // A standard protocol serializer for any thrift struct.
@@ -71,14 +71,12 @@ void BaseAnyStructSerializer<T, Reader, Writer>::encode(
 }
 
 template <typename T, typename Reader, typename Writer>
-T BaseAnyStructSerializer<T, Reader, Writer>::decode(
-    folly::io::Cursor& cursor) const {
-  T value;
+void BaseAnyStructSerializer<T, Reader, Writer>::decode(
+    folly::io::Cursor& cursor, T& value) const {
   Reader reader;
   reader.setInput(cursor);
   value.read(&reader);
   cursor = reader.getCursor();
-  return value;
 }
 
 } // namespace apache::thrift::conformance

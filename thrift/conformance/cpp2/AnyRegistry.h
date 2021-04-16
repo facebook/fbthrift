@@ -63,6 +63,11 @@ class AnyRegistry {
 
   // Load a value from an Any using the registered serializers.
   //
+  // Unless out refers to an empty std::any, the value is deserialized directly
+  // into the referenced object, and the standard deserialization semantics will
+  // hold. For example, set fields won't be cleared if not present in the
+  // serialized value.
+  //
   // Throws std::out_of_range if no matching serializer has been registered.
   // Throws std::bad_any_cast if value cannot be stored in out.
   void load(const Any& value, any_ref out) const;

@@ -103,9 +103,9 @@ class Number1Serializer
   }
 
   using Base::decode;
-  int decode(folly::io::Cursor& cursor) const {
+  void decode(folly::io::Cursor& cursor, int& value) const {
     cursor.readFixedString(10);
-    return 1;
+    value = 1;
   }
 };
 
@@ -127,8 +127,8 @@ class FollyToStringSerializer
     appender.push(reinterpret_cast<const uint8_t*>(data.data()), data.size());
   }
   using Base::decode;
-  T decode(folly::io::Cursor& cursor) const {
-    return folly::to<T>(cursor.readFixedString(cursor.totalLength()));
+  void decode(folly::io::Cursor& cursor, T& value) const {
+    value = folly::to<T>(cursor.readFixedString(cursor.totalLength()));
   }
 };
 

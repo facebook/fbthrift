@@ -214,7 +214,7 @@ T* any_cast(const any_ref* operand) noexcept;
 template <typename T>
 T any_cast(const any_ref& operand);
 
-// Implemenation.
+// Implementation.
 
 template <typename T>
 bool any_ref::try_assign_value(T&& value) noexcept {
