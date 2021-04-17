@@ -33,7 +33,7 @@ using conformance::AnyRegistry;
 using conformance::StandardProtocol;
 
 template <typename T>
-class SerializtionRoundTripTest : public testing::Test {
+class SerializationRoundTripTest : public testing::Test {
  private:
   std::mt19937 rng_;
 
@@ -64,34 +64,34 @@ class SerializtionRoundTripTest : public testing::Test {
   }
 };
 
-TYPED_TEST_CASE_P(SerializtionRoundTripTest);
+TYPED_TEST_CASE_P(SerializationRoundTripTest);
 
-TYPED_TEST_P(SerializtionRoundTripTest, Compact) {
+TYPED_TEST_P(SerializationRoundTripTest, Compact) {
   this->template testSerializer<CompactSerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Binary) {
+TYPED_TEST_P(SerializationRoundTripTest, Binary) {
   this->template testSerializer<BinarySerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, SimpleJson) {
+TYPED_TEST_P(SerializationRoundTripTest, SimpleJson) {
   this->template testSerializer<SimpleJSONSerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Compact_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, Compact_Any) {
   this->template testAny<StandardProtocol::Compact>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Binary_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, Binary_Any) {
   this->template testAny<StandardProtocol::Binary>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, SimpleJson_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, SimpleJson_Any) {
   this->template testAny<StandardProtocol::SimpleJson>();
 }
 
 REGISTER_TYPED_TEST_CASE_P(
-    SerializtionRoundTripTest,
+    SerializationRoundTripTest,
     Compact,
     Binary,
     SimpleJson,
@@ -99,7 +99,7 @@ REGISTER_TYPED_TEST_CASE_P(
     Binary_Any,
     SimpleJson_Any);
 
-THRIFT_INST_TESTSET_ALL(SerializtionRoundTripTest);
+THRIFT_INST_TESTSET_ALL(SerializationRoundTripTest);
 
 } // namespace
 } // namespace apache::thrift::test
