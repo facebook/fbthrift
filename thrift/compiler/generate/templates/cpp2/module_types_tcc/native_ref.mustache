@@ -19,10 +19,10 @@
   // Unlike 'native_value', this takes into account indirection and
   // wraps dereferenced pointers in ().
 %><%#type:cpp_indirection?%><%!
-%>::apache::thrift::apply_indirection(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><% >  module_types_tcc/field_member%>)<%!
+%>::apache::thrift::apply_indirection(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><% > field/member%>)<%!
 %><%/type:cpp_indirection?%><%!
 %><%^type:cpp_indirection?%><%!
-%><%#field:cpp_ref?%>(*<% >  module_types_tcc/field_member%>)<%/field:cpp_ref?%><%!
-%><%^field:cpp_ref?%><% >  module_types_tcc/field_member%><%/field:cpp_ref?%><%!
+%><%#field:cpp_ref?%>(*<% > field/member%>)<%/field:cpp_ref?%><%!
+%><%^field:cpp_ref?%><% > field/member%><%/field:cpp_ref?%><%!
 %><%/type:cpp_indirection?%><%!
 %>

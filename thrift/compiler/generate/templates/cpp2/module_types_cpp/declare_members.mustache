@@ -36,52 +36,52 @@ void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
-  <% > types/apply_indirection_pre%><% > module_types_tcc/field_member%><% > types/apply_indirection_post%> = <% > module_types_tcc/field_default%>;
+  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <% > field/default%>;
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>
-  <% > module_types_tcc/field_member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
+  <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:optional?%>
 <%#field:optional?%>
-  <% > module_types_tcc/field_member%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-  <% > module_types_tcc/field_member%>.clear();
+  <% > field/member%>.clear();
 <%/field:cpp_ref?%>
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  <% > module_types_tcc/field_member%>.__clear();
+  <% > field/member%>.__clear();
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
-  if (<% > module_types_tcc/field_member%>) <% > module_types_tcc/field_member%>->__clear();
+  if (<% > field/member%>) <% > field/member%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
-  <% > module_types_tcc/field_member%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
-  if (<% > module_types_tcc/field_member%>) <% > module_types_tcc/field_member%>->__clear();
+  if (<% > field/member%>) <% > field/member%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
-  <% > module_types_tcc/field_member%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
 <%^field:optional?%>
 <%^field:cpp_ref_shared_or_shared_const?%>
-  if (<% > module_types_tcc/field_member%>) <% > module_types_tcc/field_member%>.reset(new typename decltype(<% > module_types_tcc/field_member%>)::element_type());
+  if (<% > field/member%>) <% > field/member%>.reset(new typename decltype(<% > field/member%>)::element_type());
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%#field:cpp_ref_shared_or_shared_const?%>
-  if (<% > module_types_tcc/field_member%>) <% > module_types_tcc/field_member%> = std::make_shared<<%type:cpp_type%>>();
+  if (<% > field/member%>) <% > field/member%> = std::make_shared<<%type:cpp_type%>>();
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%/field:optional?%>
 <%#field:optional?%>
-  <% > module_types_tcc/field_member%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>
