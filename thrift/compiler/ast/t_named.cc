@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_named.h>
+
 #include <thrift/compiler/ast/t_const.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-const std::string t_annotated::kEmptyString{};
-
 // NOTE: Must be defined here for t_const's destructor's defintion.
-t_annotated::~t_annotated() = default;
+t_named::~t_named() = default;
 
-const std::string* t_annotated::get_annotation_or_null(alias_span name) const {
-  for (const auto& alias : name) {
-    auto itr = annotations_.find(alias);
-    if (itr != annotations_.end()) {
-      return &itr->second;
-    }
-  }
-  return nullptr;
-}
-
-void t_annotated::add_structured_annotation(std::unique_ptr<t_const> annot) {
+void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
   structured_annotations_raw_.emplace_back(annot.get());
   structured_annotations_.emplace_back(std::move(annot));
 }

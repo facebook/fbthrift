@@ -546,7 +546,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[FAILURE:foo.thrift:6] Duplicate structured "
-            "annotation `struct foo.Foo` in the `struct foo.Annotated`.\n",
+            "annotation `struct foo.Foo` on `struct foo.Annotated`.\n",
         )
 
     def test_structured_annotations_type_resolved(self):
@@ -614,12 +614,16 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_reserved_field_id(self):
-        reserved_id = int.from_bytes([int('10111111', 2), 255], byteorder='big', signed=True)
+        reserved_id = int.from_bytes(
+            [int("10111111", 2), 255], byteorder="big", signed=True
+        )
         id_count = -reserved_id
         lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
-        expected_error = [f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"] + [
+        expected_error = [
+            f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"
+        ] + [
             f"[WARNING:foo.thrift:{i+3}] No field key specified for field_{i}, "
             "resulting protocol may have conflicts or not be backwards compatible!"
             for i in range(id_count)

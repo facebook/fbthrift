@@ -28,6 +28,7 @@
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_paramlist.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -215,9 +216,9 @@ TEST_F(UtilTest, for_each_transitive_field) {
   auto depth = 1'000'000;
   auto structs = std::vector<std::unique_ptr<t_struct>>();
   structs.reserve(depth);
-  structs.push_back(std::make_unique<t_struct>(&program));
+  structs.push_back(std::make_unique<t_paramlist>(&program));
   for (int i = 1; i < depth; ++i) {
-    structs.push_back(std::make_unique<t_struct>(&program));
+    structs.push_back(std::make_unique<t_paramlist>(&program));
     structs[i - 1]->append(
         std::make_unique<t_field>(structs[i].get(), "field", 1));
   }

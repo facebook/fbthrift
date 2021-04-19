@@ -81,7 +81,7 @@ class t_json_generator : public t_concat_generator {
   void print_structured_annotations(
       const std::vector<const t_const*>& annotations);
   void print_node_annotations(
-      const t_annotated& node, bool add_heading_comma, bool add_trailing_comma);
+      const t_named& node, bool add_heading_comma, bool add_trailing_comma);
 
   /**
    * True if we should generate annotations in json representation.
@@ -460,7 +460,7 @@ void t_json_generator::print_structured_annotations(
 }
 
 void t_json_generator::print_node_annotations(
-    const t_annotated& node, bool add_heading_comma, bool add_trailing_comma) {
+    const t_named& node, bool add_heading_comma, bool add_trailing_comma) {
   if (annotate_) {
     if (add_heading_comma &&
         (!node.annotations().empty() ||

@@ -27,9 +27,9 @@
 
 #include <boost/optional.hpp>
 
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_scope.h>
@@ -389,27 +389,26 @@ class parsing_driver {
 
   // Configures the node and set the starting line number.
   void finish_node(
-      t_annotated* node,
+      t_node* node,
       LineType lineType,
-      std::unique_ptr<t_annotations> annotations,
-      std::unique_ptr<t_struct_annotations> struct_annotations);
+      std::unique_ptr<t_annotations> annotations);
   void finish_node(
       t_named* node,
       LineType lineType,
-      std::string name,
       std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
   void finish_node(
       t_struct* node,
       LineType lineType,
-      std::string name,
       std::unique_ptr<t_field_list> fields,
       std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
 
   // Populate the annotation on the given node.
   static void set_annotations(
-      t_annotated* node,
+      t_node* node, std::unique_ptr<t_annotations> annotations);
+  static void set_annotations(
+      t_named* node,
       std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
 

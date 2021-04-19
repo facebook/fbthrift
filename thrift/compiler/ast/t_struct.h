@@ -39,10 +39,11 @@ class t_program;
  * are also used to implement exception and union types.
  *
  */
+// TODO(afuller): Split out a t_structured base class and have union,
+// exception, paramlist, etc. inheriting from that instead of t_struct
+// directly.
 class t_struct : public t_type {
  public:
-  explicit t_struct(t_program* program) : t_type(program) {}
-
   t_struct(t_program* program, const std::string& name)
       : t_type(program, name) {}
 
@@ -80,11 +81,19 @@ class t_struct : public t_type {
 
   type get_type_value() const override { return type::t_struct; }
 
+  // Creates an empty struct to hold exceptions.
+  // TODO(afuller): Make this its own node.
+  static std::unique_ptr<t_struct> new_throws() {
+    return std::unique_ptr<t_struct>(new t_struct(nullptr));
+  }
+
  protected:
   std::vector<std::unique_ptr<t_field>> fields_;
   std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
   std::map<std::string, const t_field*> fields_by_name_;
+
+  explicit t_struct(t_program* program) : t_type(program) {}
 
   ////
   // Everyting below here is for backwards compatiblity, and will be removed.

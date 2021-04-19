@@ -216,7 +216,7 @@ class struct_names_uniqueness_validator : virtual public validator {
   bool visit(t_program* s) override;
 };
 
-class base_annotation_validator : virtual public validator {
+class structured_annotation_validator : virtual public validator {
  public:
   using validator::visit;
 
@@ -224,18 +224,21 @@ class base_annotation_validator : virtual public validator {
   bool visit(t_enum* tenum) override;
   bool visit(t_struct* tstruct) override;
   bool visit(t_field* tfield) override;
+  bool visit(t_const* tconst) override;
 
  protected:
   virtual void validate_annotations(
-      const t_annotated* tannotated, const std::string& tannotated_name) = 0;
+      const t_named* tnamed,
+      // TODO(afuller): Move get_full_name() to t_named and remove this
+      // argument.
+      const std::string& full_name) = 0;
 };
 
-class structured_annotations_uniqueness_validator
-    : virtual public base_annotation_validator {
+class structured_annotation_uniqueness_validator
+    : virtual public structured_annotation_validator {
  protected:
   void validate_annotations(
-      const t_annotated* tannotated,
-      const std::string& tannotated_name) override;
+      const t_named* tnamed, const std::string& full_name) override;
 };
 
 class interactions_validator : virtual public validator {

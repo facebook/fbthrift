@@ -24,9 +24,9 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_set.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
@@ -46,7 +46,7 @@ const std::string& value_or_empty(const std::string* value) {
   return value ? *value : empty_instance<std::string>();
 }
 
-const std::string* find_ref_type_annot(const t_annotated* node) {
+const std::string* find_ref_type_annot(const t_node* node) {
   return node->get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 

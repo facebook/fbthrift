@@ -16,15 +16,21 @@
 
 #pragma once
 
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_struct.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
+class t_program;
+
 class t_paramlist : public t_struct {
  public:
-  using t_struct::t_struct;
+  // Param lists are unnamed.
+  // TODO(afuller): The program should always be null, because this is an
+  // 'unnamed' t_type (or more accurately, not a type at all).
+  explicit t_paramlist(t_program* program) : t_struct(program) {}
 
   bool is_paramlist() const override { return true; }
 

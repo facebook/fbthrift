@@ -42,7 +42,7 @@ void t_paramlist::set_stream_field(std::unique_ptr<t_field> stream_field) {
 }
 
 t_paramlist* t_paramlist::clone_DO_NOT_USE() const {
-  auto clone = std::make_unique<t_paramlist>(program_, name_);
+  auto clone = std::make_unique<t_paramlist>(program_);
   auto itr = fields_.begin();
   std::unique_ptr<t_field> stream_field;
   if (has_stream_field_) {

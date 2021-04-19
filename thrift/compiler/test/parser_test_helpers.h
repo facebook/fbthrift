@@ -36,7 +36,7 @@ template <typename T>
 std::unique_ptr<t_function> create_fake_function(
     std::string name, t_program* program = nullptr) {
   using signature = func_signature<T>;
-  std::unique_ptr<t_paramlist> args(new t_paramlist(program, "args"));
+  std::unique_ptr<t_paramlist> args(new t_paramlist(program));
 
   std::size_t index = 0;
   for (auto& arg : signature::args_types()) {

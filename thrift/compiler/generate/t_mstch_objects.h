@@ -358,11 +358,11 @@ class mstch_base : public mstch::object {
         pos_ == ELEMENT_POSITION::FIRST_AND_LAST;
   }
 
-  mstch::node annotations(t_annotated const* annotated) {
+  mstch::node annotations(t_named const* annotated) {
     return generate_annotations(annotated->annotations());
   }
 
-  mstch::node structured_annotations(t_annotated const* annotated) {
+  mstch::node structured_annotations(t_named const* annotated) {
     return generate_elements(
         annotated->structured_annotations(),
         generators_->structured_annotation_generator_.get());

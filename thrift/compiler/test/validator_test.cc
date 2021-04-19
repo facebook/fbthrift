@@ -305,7 +305,7 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   func->set_is_interaction_constructor();
   service->add_function(std::move(func));
 
-  auto args = std::make_unique<t_paramlist>(&program, "args");
+  auto args = std::make_unique<t_paramlist>(&program);
   auto type = std::make_unique<t_base_type>(t_base_type::t_i32());
   args->append(std::make_unique<t_field>(type.get(), "arg"));
   func = std::make_unique<t_function>(

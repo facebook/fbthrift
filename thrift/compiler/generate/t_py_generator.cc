@@ -277,7 +277,7 @@ class t_py_generator : public t_concat_generator {
   std::string render_ttype_declarations(const char* delimiter);
 
   std::string get_priority(
-      const t_annotated* obj, std::string const& def = "NORMAL");
+      const t_named* obj, std::string const& def = "NORMAL");
   const std::vector<t_function*>& get_functions(const t_service* tservice);
 
  private:
@@ -3524,7 +3524,7 @@ string t_py_generator::type_to_spec_args(const t_type* ttype) {
  * Gets the priority annotation of an object (service / function)
  */
 std::string t_py_generator::get_priority(
-    const t_annotated* obj, std::string const& def) {
+    const t_named* obj, std::string const& def) {
   if (obj) {
     return obj->get_annotation("priority", &def);
   }

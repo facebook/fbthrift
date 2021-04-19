@@ -35,7 +35,8 @@ add_library(
   compiler_ast
 
   ast/t_base_type.cc
-  ast/t_annotated.cc
+  ast/t_named.cc
+  ast/t_node.cc
   ast/t_paramlist.cc
   ast/t_program.cc
   ast/t_scope.cc

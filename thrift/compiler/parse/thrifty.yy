@@ -38,7 +38,6 @@
 #include <boost/optional.hpp>
 
 #include <thrift/compiler/ast/base_types.h>
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/parsing_driver.h>
@@ -553,7 +552,8 @@ Enum:
   "{" EnumDefList "}" TypeAnnotations
     {
       driver.debug("Enum => StructuredAnnotations tok_enum Identifier { EnumDefList } TypeAnnotations");
-      driver.finish_node($7, LineType::Enum, $4, own($9), own($1));
+      $7->set_name(std::move($4));
+      driver.finish_node($7, LineType::Enum, own($9), own($1));
       $$ = $7;
       y_enum_name = nullptr;
     }
@@ -836,8 +836,8 @@ Struct:
     {
       driver.debug("Struct => StructuredAnnotations tok_struct Identifier "
         "{ FieldList } TypeAnnotations");
-      $$ = new t_struct(driver.program);
-      driver.finish_node($$, LineType::Struct, $4, own($6), own($8), own($1));
+      $$ = new t_struct(driver.program, std::move($4));
+      driver.finish_node($$, LineType::Struct, own($6), own($8), own($1));
       y_field_val = -1;
     }
 
@@ -850,8 +850,8 @@ Union:
     {
       driver.debug("Union => StructuredAnnotations tok_union Identifier "
         "{ FieldList } TypeAnnotations");
-      $$ = new t_union(driver.program);
-      driver.finish_node($$, LineType::Union, $4, own($6), own($8), own($1));
+      $$ = new t_union(driver.program, std::move($4));
+      driver.finish_node($$, LineType::Union, own($6), own($8), own($1));
       y_field_val = -1;
     }
 
@@ -865,11 +865,11 @@ Xception:
     {
       driver.debug("Xception => StructuredAnnotations tok_xception "
         "Identifier { FieldList } TypeAnnotations");
-      $$ = new t_exception(driver.program);
+      $$ = new t_exception(driver.program, std::move($7));
       $$->set_safety($2);
       $$->set_kind($3);
       $$->set_blame($4);
-      driver.finish_node($$, LineType::Xception, $7, own($9), own($11), own($1));
+      driver.finish_node($$, LineType::Xception, own($9), own($11), own($1));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -966,7 +966,8 @@ Service:
         "FunctionAnnotations");
       $$ = $8;
       $$->set_extends($5);
-      driver.finish_node($$, LineType::Service, $4, own($11), own($1));
+      $$->set_name(std::move($4));
+      driver.finish_node($$, LineType::Service, own($11), own($1));
     }
 
 FlagArgs:
@@ -1009,8 +1010,9 @@ Interaction:
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = $6;
+      $$->set_name(std::move($3));
       $$->set_is_interaction();
-      driver.finish_node($$, LineType::Service, $3, own($9), nullptr);
+      driver.finish_node($$, LineType::Service, own($9), nullptr);
 
       for (auto* func : $$->get_functions()) {
         func->set_is_interaction_member();

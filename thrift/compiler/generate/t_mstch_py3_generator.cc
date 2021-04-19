@@ -1230,7 +1230,7 @@ class enum_member_union_field_names_validator : virtual public validator {
   }
 
  private:
-  void validate(const t_annotated* node, const std::string& name) {
+  void validate(const t_named* node, const std::string& name) {
     const auto& pyname = node->get_annotation("py3.name", &name);
     if (pyname == "name" || pyname == "value") {
       std::ostringstream ss;

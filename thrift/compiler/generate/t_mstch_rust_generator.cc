@@ -209,7 +209,7 @@ std::string get_import_name(
 
 enum class FieldKind { Box, Arc, Inline };
 
-FieldKind field_kind(const t_annotated& node) {
+FieldKind field_kind(const t_named& node) {
   if (node.has_annotation("rust.arc")) {
     return FieldKind::Arc;
   }

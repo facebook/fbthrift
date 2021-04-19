@@ -83,15 +83,15 @@ class t_function : public t_named {
     }
 
     if (!exceptions_) {
-      exceptions_ = std::make_unique<t_struct>(nullptr);
+      exceptions_ = t_struct::new_throws();
     }
 
     if (!stream_exceptions_) {
-      stream_exceptions_ = std::make_unique<t_struct>(nullptr);
+      stream_exceptions_ = t_struct::new_throws();
     }
 
-    sink_exceptions_ = std::make_unique<t_struct>(nullptr);
-    sink_final_response_exceptions_ = std::make_unique<t_struct>(nullptr);
+    sink_exceptions_ = t_struct::new_throws();
+    sink_final_response_exceptions_ = t_struct::new_throws();
 
     if (!stream_exceptions_->get_members().empty()) {
       if (return_type_.type() == nullptr ||
@@ -116,14 +116,14 @@ class t_function : public t_named {
             return_type->get_final_response_exceptions())),
         qualifier_(t_function_qualifier::none) {
     if (!exceptions_) {
-      exceptions_ = std::make_unique<t_struct>(nullptr);
+      exceptions_ = t_struct::new_throws();
     }
-    stream_exceptions_ = std::make_unique<t_struct>(nullptr);
+    stream_exceptions_ = t_struct::new_throws();
     if (!sink_exceptions_) {
-      sink_exceptions_ = std::make_unique<t_struct>(nullptr);
+      sink_exceptions_ = t_struct::new_throws();
     }
     if (!sink_final_response_exceptions_) {
-      sink_final_response_exceptions_ = std::make_unique<t_struct>(nullptr);
+      sink_final_response_exceptions_ = t_struct::new_throws();
     }
   }
 

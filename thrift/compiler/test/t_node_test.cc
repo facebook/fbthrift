@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_node.h>
 
 #include <array>
 #include <memory>
@@ -33,7 +33,7 @@ std::vector<std::string> capture_span(alias_span span) {
   return std::vector<std::string>(span.begin(), span.end());
 }
 
-TEST(TAnnotatedTest, AliasSpan) {
+TEST(TNodeTest, AliasSpan) {
   // Fails to work with string literal directly
   // Uncomment next line to produce expectd compile time error
   // EXPECT_THAT(capture_span("hi"), ::testing::ElementsAre("hi"));

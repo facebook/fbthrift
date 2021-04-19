@@ -21,11 +21,13 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_node.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class t_const;
 
 /**
  * class t_named
@@ -33,22 +35,28 @@ namespace compiler {
  * Base class for any named AST node.
  * Anything that is named, can be annotated.
  */
-class t_named : public t_annotated {
+class t_named : public t_node {
  public:
-  /**
-   * t_type setters
-   */
   void set_name(const std::string& name) { name_ = name; }
   const std::string& get_name() const { return name_; }
+
+  const std::vector<const t_const*>& structured_annotations() const {
+    return structured_annotations_raw_;
+  }
+  void add_structured_annotation(std::unique_ptr<t_const> annot);
 
  protected:
   // t_named is abstract.
   t_named() = default;
-
   explicit t_named(std::string name) : name_(std::move(name)) {}
+  ~t_named();
 
   // TODO(afuller): make private.
   std::string name_;
+
+ private:
+  std::vector<std::shared_ptr<const t_const>> structured_annotations_;
+  std::vector<const t_const*> structured_annotations_raw_;
 };
 
 } // namespace compiler
