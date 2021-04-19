@@ -55,9 +55,6 @@ enum class reference_type {
 class type_resolver {
  public:
   type_resolver() = default;
-  // TODO(afuller): Support adapter in code gen and remove constructor.
-  explicit type_resolver(bool enable_adapters)
-      : enable_adapters_(enable_adapters) {}
 
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type* node) {
@@ -93,7 +90,6 @@ class type_resolver {
   template <typename... A>
   using type_gen_fn = std::string (type_resolver::*)(A...);
 
-  bool enable_adapters_ = false;
   std::unordered_map<const t_program*, std::string> namespace_cache_;
   std::unordered_map<const t_type*, std::string> type_cache_;
   std::unordered_map<const t_type*, std::string> native_type_cache_;

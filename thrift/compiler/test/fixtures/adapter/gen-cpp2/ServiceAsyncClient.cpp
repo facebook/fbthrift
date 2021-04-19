@@ -10,15 +10,15 @@
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::Foo*>> Service_func_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> Service_func_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::Foo*>> Service_func_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>*>> Service_func_presult;
 
 template <typename Protocol_>
-void ServiceAsyncClient::funcT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+void ServiceAsyncClient::funcT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   Service_func_pargs args;
-  args.get<0>().value = const_cast<::std::string*>(&p_arg1);
+  args.get<0>().value = const_cast<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>*>(&p_arg1);
   args.get<1>().value = const_cast<::cpp2::Foo*>(&p_arg2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -29,12 +29,12 @@ void ServiceAsyncClient::funcT(Protocol_* prot, apache::thrift::RpcOptions rpcOp
 
 
 
-void ServiceAsyncClient::func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+void ServiceAsyncClient::func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   ::apache::thrift::RpcOptions rpcOptions;
   func(rpcOptions, std::move(callback), p_arg1, p_arg2);
 }
 
-void ServiceAsyncClient::func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+void ServiceAsyncClient::func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   auto ctx = funcCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -44,7 +44,7 @@ void ServiceAsyncClient::func(apache::thrift::RpcOptions& rpcOptions, std::uniqu
   funcImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_arg1, p_arg2);
 }
 
-void ServiceAsyncClient::funcImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+void ServiceAsyncClient::funcImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -74,12 +74,12 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> ServiceAsync
       "Service.func");
 }
 
-::std::int32_t ServiceAsyncClient::sync_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> ServiceAsyncClient::sync_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_func(rpcOptions, p_arg1, p_arg2);
 }
 
-::std::int32_t ServiceAsyncClient::sync_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> ServiceAsyncClient::sync_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -105,53 +105,53 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> ServiceAsync
 }
 
 
-folly::Future<::std::int32_t> ServiceAsyncClient::future_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> ServiceAsyncClient::future_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_func(rpcOptions, p_arg1, p_arg2);
 }
 
-folly::SemiFuture<::std::int32_t> ServiceAsyncClient::semifuture_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> ServiceAsyncClient::semifuture_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_func(rpcOptions, p_arg1, p_arg2);
 }
 
-folly::Future<::std::int32_t> ServiceAsyncClient::future_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
-  folly::Promise<::std::int32_t> promise;
+folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> ServiceAsyncClient::future_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
+  folly::Promise<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> promise;
   auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_func, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>>(std::move(promise), recv_wrapped_func, channel_);
   func(rpcOptions, std::move(callback), p_arg1, p_arg2);
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> ServiceAsyncClient::semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> ServiceAsyncClient::semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_func, channel_);
   auto callback = std::move(callbackAndFuture.first);
   func(rpcOptions, std::move(callback), p_arg1, p_arg2);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAsyncClient::header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
-  folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+folly::Future<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAsyncClient::header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
+  folly::Promise<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_func, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>>(std::move(promise), recv_wrapped_func, channel_);
   func(rpcOptions, std::move(callback), p_arg1, p_arg2);
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAsyncClient::header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+folly::SemiFuture<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAsyncClient::header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_func, channel_);
   auto callback = std::move(callbackAndFuture.first);
   func(rpcOptions, std::move(callback), p_arg1, p_arg2);
   return std::move(callbackAndFuture.second);
 }
 
-void ServiceAsyncClient::func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+void ServiceAsyncClient::func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
   func(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_arg1, p_arg2);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper ServiceAsyncClient::recv_wrapped_func(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ServiceAsyncClient::recv_wrapped_func(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -181,8 +181,8 @@ folly::exception_wrapper ServiceAsyncClient::recv_wrapped_func(::std::int32_t& _
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t ServiceAsyncClient::recv_func(::apache::thrift::ClientReceiveState& state) {
-  ::std::int32_t _return;
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> ServiceAsyncClient::recv_func(::apache::thrift::ClientReceiveState& state) {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> _return;
   auto ew = recv_wrapped_func(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -190,11 +190,11 @@ folly::exception_wrapper ServiceAsyncClient::recv_wrapped_func(::std::int32_t& _
   return _return;
 }
 
-::std::int32_t ServiceAsyncClient::recv_instance_func(::apache::thrift::ClientReceiveState& state) {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> ServiceAsyncClient::recv_instance_func(::apache::thrift::ClientReceiveState& state) {
   return recv_func(state);
 }
 
-folly::exception_wrapper ServiceAsyncClient::recv_instance_wrapped_func(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ServiceAsyncClient::recv_instance_wrapped_func(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_func(_return, state);
 }
 

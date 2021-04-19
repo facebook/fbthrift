@@ -22,12 +22,27 @@ _readState.beforeSubobject(iprot);
 <%#field:cpp_ref?%>
 auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
-<%#type:resolves_to_container?%>
+<%#type:cpp_adapter%>
+<%type:cpp_native_type%> native_value<%#type:resolves_to_container?%><%#type:cpp_use_allocator?%>(this->get_allocator())<%/type:cpp_use_allocator?%><%/type:resolves_to_container?%>;
+<%/type:cpp_adapter%>
+<%^field:cpp_ref?%><%#type:resolves_to_container?%>
 <% > module_types_tcc/field_member%> = <%type:cpp_type%>(<%#type:cpp_use_allocator?%>this->get_allocator()<%/type:cpp_use_allocator?%>);
-<%/type:resolves_to_container?%>
-<%/field:cpp_ref?%>
-<% > module_types_tcc/protocol_methods%>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%><% > module_types_tcc/field_member%><%/field:cpp_ref?%>, _readState);
+<%/type:resolves_to_container?%><%/field:cpp_ref?%>
+<% > module_types_tcc/protocol_methods%>::readWithContext(*iprot, <%!
+%><%#type:cpp_adapter%><%!
+  %>native_value<%!
+%><%/type:cpp_adapter%><%!
+%><%^type:cpp_adapter%><%!
+  %><%#field:cpp_ref?%><%!
+    %>*ptr<%!
+  %><%/field:cpp_ref?%><%!
+  %><%^field:cpp_ref?%><%!
+    %><% > module_types_tcc/field_member%><%!
+  %><%/field:cpp_ref?%><%!
+  %><%/type:cpp_adapter%>, _readState);
+<%#type:cpp_adapter%>
+::apache::thrift::adapt_detail::fromThrift<<%type:cpp_adapter%>>(<%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%><% > module_types_tcc/field_member%><%/field:cpp_ref?%>, ::std::move(native_value));
+<%/type:cpp_adapter%>
 <%#field:cpp_ref?%>
 <% > module_types_tcc/field_member%> = std::move(ptr);
 <%/field:cpp_ref?%>

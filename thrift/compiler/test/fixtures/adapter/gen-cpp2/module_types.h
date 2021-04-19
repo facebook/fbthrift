@@ -85,8 +85,8 @@ class Bar;
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
-typedef ::std::set<::std::string> SetWithAdapter;
-typedef ::std::vector<::std::string> ListWithElemAdapter;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>> SetWithAdapter;
+typedef ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>> ListWithElemAdapter;
 
 } // cpp2
 // END typedefs
@@ -122,7 +122,7 @@ class Foo final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::std::int32_t intField__arg, ::std::int32_t optionalIntField__arg, ::std::int32_t intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::std::map<::std::string, ::cpp2::ListWithElemAdapter> mapField__arg, ::std::map<::std::string, ::cpp2::ListWithElemAdapter> optionalMapField__arg);
+  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg);
 
   Foo(Foo&&) noexcept;
 
@@ -137,19 +137,19 @@ class Foo final  {
   ~Foo();
 
  private:
-  ::std::int32_t intField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField;
  private:
-  ::std::int32_t optionalIntField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField;
  private:
-  ::std::int32_t intFieldWithDefault;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault;
  private:
   ::cpp2::SetWithAdapter setField;
  private:
   ::cpp2::SetWithAdapter optionalSetField;
  private:
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter> mapField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField;
  private:
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter> optionalMapField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -166,62 +166,62 @@ class Foo final  {
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> intField_ref() const& {
     return {this->intField, __isset.intField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intField_ref() const&& {
     return {std::move(this->intField), __isset.intField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> intField_ref() & {
     return {this->intField, __isset.intField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intField_ref() && {
     return {std::move(this->intField), __isset.intField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalIntField_ref() const& {
     return {this->optionalIntField, __isset.optionalIntField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalIntField_ref() const&& {
     return {std::move(this->optionalIntField), __isset.optionalIntField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> optionalIntField_ref() & {
     return {this->optionalIntField, __isset.optionalIntField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalIntField_ref() && {
     return {std::move(this->optionalIntField), __isset.optionalIntField};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> intFieldWithDefault_ref() const& {
     return {this->intFieldWithDefault, __isset.intFieldWithDefault};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intFieldWithDefault_ref() const&& {
     return {std::move(this->intFieldWithDefault), __isset.intFieldWithDefault};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> intFieldWithDefault_ref() & {
     return {this->intFieldWithDefault, __isset.intFieldWithDefault};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intFieldWithDefault_ref() && {
     return {std::move(this->intFieldWithDefault), __isset.intFieldWithDefault};
   }
@@ -266,76 +266,76 @@ class Foo final  {
     return {std::move(this->optionalSetField), __isset.optionalSetField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> mapField_ref() const& {
     return {this->mapField, __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> mapField_ref() const&& {
     return {std::move(this->mapField), __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> mapField_ref() & {
     return {this->mapField, __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField_ref() && {
     return {std::move(this->mapField), __isset.mapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalMapField_ref() const& {
     return {this->optionalMapField, __isset.optionalMapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalMapField_ref() const&& {
     return {std::move(this->optionalMapField), __isset.optionalMapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> optionalMapField_ref() & {
     return {this->optionalMapField, __isset.optionalMapField};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalMapField_ref() && {
     return {std::move(this->optionalMapField), __isset.optionalMapField};
   }
 
-  ::std::int32_t get_intField() const {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> get_intField() const {
     return intField;
   }
 
-  ::std::int32_t& set_intField(::std::int32_t intField_) {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField_) {
     intField = intField_;
     __isset.intField = true;
     return intField;
   }
 
-  const ::std::int32_t* get_optionalIntField() const& {
+  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() const& {
     return optionalIntField_ref() ? std::addressof(optionalIntField) : nullptr;
   }
 
-  ::std::int32_t* get_optionalIntField() & {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() & {
     return optionalIntField_ref() ? std::addressof(optionalIntField) : nullptr;
   }
-  ::std::int32_t* get_optionalIntField() && = delete;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() && = delete;
 
-  ::std::int32_t& set_optionalIntField(::std::int32_t optionalIntField_) {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_optionalIntField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField_) {
     optionalIntField = optionalIntField_;
     __isset.optionalIntField = true;
     return optionalIntField;
   }
 
-  ::std::int32_t get_intFieldWithDefault() const {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> get_intFieldWithDefault() const {
     return intFieldWithDefault;
   }
 
-  ::std::int32_t& set_intFieldWithDefault(::std::int32_t intFieldWithDefault_) {
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intFieldWithDefault(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault_) {
     intFieldWithDefault = intFieldWithDefault_;
     __isset.intFieldWithDefault = true;
     return intFieldWithDefault;
@@ -359,21 +359,21 @@ class Foo final  {
     __isset.optionalSetField = true;
     return optionalSetField;
   }
-  const ::std::map<::std::string, ::cpp2::ListWithElemAdapter>& get_mapField() const&;
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter> get_mapField() &&;
+  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& get_mapField() const&;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> get_mapField() &&;
 
-  template <typename T_Foo_mapField_struct_setter = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter>& set_mapField(T_Foo_mapField_struct_setter&& mapField_) {
+  template <typename T_Foo_mapField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_mapField(T_Foo_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_Foo_mapField_struct_setter>(mapField_);
     __isset.mapField = true;
     return mapField;
   }
-  const ::std::map<::std::string, ::cpp2::ListWithElemAdapter>* get_optionalMapField() const&;
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter>* get_optionalMapField() &;
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter>* get_optionalMapField() && = delete;
+  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() const&;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() &;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() && = delete;
 
-  template <typename T_Foo_optionalMapField_struct_setter = ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>
-  ::std::map<::std::string, ::cpp2::ListWithElemAdapter>& set_optionalMapField(T_Foo_optionalMapField_struct_setter&& optionalMapField_) {
+  template <typename T_Foo_optionalMapField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_optionalMapField(T_Foo_optionalMapField_struct_setter&& optionalMapField_) {
     optionalMapField = std::forward<T_Foo_optionalMapField_struct_setter>(optionalMapField_);
     __isset.optionalMapField = true;
     return optionalMapField;
@@ -432,7 +432,7 @@ class Bar final  {
   Bar() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Bar(apache::thrift::FragileConstructor, ::cpp2::Foo structField__arg, ::cpp2::Foo optionalStructField__arg, ::std::vector<::cpp2::Foo> structListField__arg, ::std::vector<::cpp2::Foo> optionalStructListField__arg);
+  Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> optionalStructListField__arg);
 
   Bar(Bar&&) noexcept;
 
@@ -444,13 +444,13 @@ class Bar final  {
   Bar& operator=(const Bar&) = default;
   void __clear();
  private:
-  ::cpp2::Foo structField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField;
  private:
-  ::cpp2::Foo optionalStructField;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField;
  private:
-  ::std::vector<::cpp2::Foo> structListField;
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> structListField;
  private:
-  ::std::vector<::cpp2::Foo> optionalStructListField;
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> optionalStructListField;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -464,119 +464,119 @@ class Bar final  {
   bool operator==(const Bar&) const;
   bool operator<(const Bar&) const;
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structField_ref() const& {
     return {this->structField, __isset.structField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structField_ref() const&& {
     return {std::move(this->structField), __isset.structField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structField_ref() & {
     return {this->structField, __isset.structField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structField_ref() && {
     return {std::move(this->structField), __isset.structField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalStructField_ref() const& {
     return {this->optionalStructField, __isset.optionalStructField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalStructField_ref() const&& {
     return {std::move(this->optionalStructField), __isset.optionalStructField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> optionalStructField_ref() & {
     return {this->optionalStructField, __isset.optionalStructField};
   }
 
-  template <typename..., typename T = ::cpp2::Foo>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructField_ref() && {
     return {std::move(this->optionalStructField), __isset.optionalStructField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> structListField_ref() const& {
     return {this->structListField, __isset.structListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structListField_ref() const&& {
     return {std::move(this->structListField), __isset.structListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> structListField_ref() & {
     return {this->structListField, __isset.structListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structListField_ref() && {
     return {std::move(this->structListField), __isset.structListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalStructListField_ref() const& {
     return {this->optionalStructListField, __isset.optionalStructListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalStructListField_ref() const&& {
     return {std::move(this->optionalStructListField), __isset.optionalStructListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> optionalStructListField_ref() & {
     return {this->optionalStructListField, __isset.optionalStructListField};
   }
 
-  template <typename..., typename T = ::std::vector<::cpp2::Foo>>
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructListField_ref() && {
     return {std::move(this->optionalStructListField), __isset.optionalStructListField};
   }
-  const ::cpp2::Foo& get_structField() const&;
-  ::cpp2::Foo get_structField() &&;
+  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& get_structField() const&;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> get_structField() &&;
 
-  template <typename T_Bar_structField_struct_setter = ::cpp2::Foo>
-  ::cpp2::Foo& set_structField(T_Bar_structField_struct_setter&& structField_) {
+  template <typename T_Bar_structField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& set_structField(T_Bar_structField_struct_setter&& structField_) {
     structField = std::forward<T_Bar_structField_struct_setter>(structField_);
     __isset.structField = true;
     return structField;
   }
-  const ::cpp2::Foo* get_optionalStructField() const&;
-  ::cpp2::Foo* get_optionalStructField() &;
-  ::cpp2::Foo* get_optionalStructField() && = delete;
+  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() const&;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() &;
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() && = delete;
 
-  template <typename T_Bar_optionalStructField_struct_setter = ::cpp2::Foo>
-  ::cpp2::Foo& set_optionalStructField(T_Bar_optionalStructField_struct_setter&& optionalStructField_) {
+  template <typename T_Bar_optionalStructField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& set_optionalStructField(T_Bar_optionalStructField_struct_setter&& optionalStructField_) {
     optionalStructField = std::forward<T_Bar_optionalStructField_struct_setter>(optionalStructField_);
     __isset.optionalStructField = true;
     return optionalStructField;
   }
-  const ::std::vector<::cpp2::Foo>& get_structListField() const&;
-  ::std::vector<::cpp2::Foo> get_structListField() &&;
+  const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& get_structListField() const&;
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> get_structListField() &&;
 
-  template <typename T_Bar_structListField_struct_setter = ::std::vector<::cpp2::Foo>>
-  ::std::vector<::cpp2::Foo>& set_structListField(T_Bar_structListField_struct_setter&& structListField_) {
+  template <typename T_Bar_structListField_struct_setter = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_structListField(T_Bar_structListField_struct_setter&& structListField_) {
     structListField = std::forward<T_Bar_structListField_struct_setter>(structListField_);
     __isset.structListField = true;
     return structListField;
   }
-  const ::std::vector<::cpp2::Foo>* get_optionalStructListField() const&;
-  ::std::vector<::cpp2::Foo>* get_optionalStructListField() &;
-  ::std::vector<::cpp2::Foo>* get_optionalStructListField() && = delete;
+  const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* get_optionalStructListField() const&;
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* get_optionalStructListField() &;
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* get_optionalStructListField() && = delete;
 
-  template <typename T_Bar_optionalStructListField_struct_setter = ::std::vector<::cpp2::Foo>>
-  ::std::vector<::cpp2::Foo>& set_optionalStructListField(T_Bar_optionalStructListField_struct_setter&& optionalStructListField_) {
+  template <typename T_Bar_optionalStructListField_struct_setter = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_optionalStructListField(T_Bar_optionalStructListField_struct_setter&& optionalStructListField_) {
     optionalStructListField = std::forward<T_Bar_optionalStructListField_struct_setter>(optionalStructListField_);
     __isset.optionalStructListField = true;
     return optionalStructListField;

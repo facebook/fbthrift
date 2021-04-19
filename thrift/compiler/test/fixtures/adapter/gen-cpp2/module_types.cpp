@@ -37,9 +37,9 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
-      intField(0),
-      optionalIntField(0),
-      intFieldWithDefault(13) {}
+      intField(my::Adapter1::fromThrift(0)),
+      optionalIntField(my::Adapter1::fromThrift(0)),
+      intFieldWithDefault(my::Adapter1::fromThrift(13)) {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -59,7 +59,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t intField__arg, ::std::int32_t optionalIntField__arg, ::std::int32_t intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::std::map<::std::string, ::cpp2::ListWithElemAdapter> mapField__arg, ::std::map<::std::string, ::cpp2::ListWithElemAdapter> optionalMapField__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg) :
     intField(std::move(intField__arg)),
     optionalIntField(std::move(optionalIntField__arg)),
     intFieldWithDefault(std::move(intFieldWithDefault__arg)),
@@ -78,9 +78,9 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t intField__arg, ::std
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Foo::__clear() {
   // clear all fields
-  this->intField = 0;
-  this->optionalIntField = 0;
-  this->intFieldWithDefault = 13;
+  this->intField = my::Adapter1::fromThrift(0);
+  this->optionalIntField = my::Adapter1::fromThrift(0);
+  this->intFieldWithDefault = my::Adapter1::fromThrift(13);
   this->setField.clear();
   this->optionalSetField.clear();
   this->mapField.clear();
@@ -162,19 +162,19 @@ const ::cpp2::SetWithAdapter* Foo::get_optionalSetField() const& {
   return optionalSetField_ref().has_value() ? std::addressof(optionalSetField) : nullptr;
 }
 
-const ::std::map<::std::string, ::cpp2::ListWithElemAdapter>& Foo::get_mapField() const& {
+const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& Foo::get_mapField() const& {
   return mapField;
 }
 
-::std::map<::std::string, ::cpp2::ListWithElemAdapter> Foo::get_mapField() && {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> Foo::get_mapField() && {
   return std::move(mapField);
 }
 
-const ::std::map<::std::string, ::cpp2::ListWithElemAdapter>* Foo::get_optionalMapField() const& {
+const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* Foo::get_optionalMapField() const& {
   return optionalMapField_ref().has_value() ? std::addressof(optionalMapField) : nullptr;
 }
 
-::std::map<::std::string, ::cpp2::ListWithElemAdapter>* Foo::get_optionalMapField() & {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* Foo::get_optionalMapField() & {
   return optionalMapField_ref().has_value() ? std::addressof(optionalMapField) : nullptr;
 }
 
@@ -240,7 +240,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Bar::Bar(apache::thrift::FragileConstructor, ::cpp2::Foo structField__arg, ::cpp2::Foo optionalStructField__arg, ::std::vector<::cpp2::Foo> structListField__arg, ::std::vector<::cpp2::Foo> optionalStructListField__arg) :
+Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> optionalStructListField__arg) :
     structField(std::move(structField__arg)),
     optionalStructField(std::move(optionalStructField__arg)),
     structListField(std::move(structListField__arg)),
@@ -300,35 +300,35 @@ bool Bar::operator<(const Bar& rhs) const {
   return false;
 }
 
-const ::cpp2::Foo& Bar::get_structField() const& {
+const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& Bar::get_structField() const& {
   return structField;
 }
 
-::cpp2::Foo Bar::get_structField() && {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> Bar::get_structField() && {
   return std::move(structField);
 }
 
-const ::cpp2::Foo* Bar::get_optionalStructField() const& {
+const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* Bar::get_optionalStructField() const& {
   return optionalStructField_ref().has_value() ? std::addressof(optionalStructField) : nullptr;
 }
 
-::cpp2::Foo* Bar::get_optionalStructField() & {
+::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* Bar::get_optionalStructField() & {
   return optionalStructField_ref().has_value() ? std::addressof(optionalStructField) : nullptr;
 }
 
-const ::std::vector<::cpp2::Foo>& Bar::get_structListField() const& {
+const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& Bar::get_structListField() const& {
   return structListField;
 }
 
-::std::vector<::cpp2::Foo> Bar::get_structListField() && {
+::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> Bar::get_structListField() && {
   return std::move(structListField);
 }
 
-const ::std::vector<::cpp2::Foo>* Bar::get_optionalStructListField() const& {
+const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* Bar::get_optionalStructListField() const& {
   return optionalStructListField_ref().has_value() ? std::addressof(optionalStructListField) : nullptr;
 }
 
-::std::vector<::cpp2::Foo>* Bar::get_optionalStructListField() & {
+::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* Bar::get_optionalStructListField() & {
   return optionalStructListField_ref().has_value() ? std::addressof(optionalStructListField) : nullptr;
 }
 
@@ -357,26 +357,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Bar,
         ::apache::thrift::type_class::structure,
-        ::cpp2::Foo>,
+        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Bar,
         ::apache::thrift::type_class::structure,
-        ::cpp2::Foo>,
+        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Bar,
         ::apache::thrift::type_class::structure,
-        ::cpp2::Foo>,
+        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Bar,
         ::apache::thrift::type_class::structure,
-        ::cpp2::Foo>,
+        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
     "inconsistent use of nimble option");
 
 } // cpp2

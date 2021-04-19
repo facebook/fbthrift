@@ -183,7 +183,7 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 
 std::string type_resolver::gen_type(const t_type* node) {
   std::string type = gen_type_impl(node, &type_resolver::get_type_name);
-  if (const auto* adapter = find_adapter(node); enable_adapters_ && adapter) {
+  if (const auto* adapter = find_adapter(node)) {
     return gen_adapted_type(*adapter, std::move(type));
   }
   return type;

@@ -59,7 +59,7 @@ class enum_value_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class enum_generator {
@@ -70,7 +70,7 @@ class enum_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class const_value_generator {
@@ -105,7 +105,7 @@ class type_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class field_generator {
@@ -153,7 +153,7 @@ class struct_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class function_generator {
@@ -165,7 +165,7 @@ class function_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class service_generator {
@@ -177,7 +177,7 @@ class service_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 
   std::shared_ptr<mstch_base> generate_cached(
       t_program const* program,
@@ -205,7 +205,7 @@ class typedef_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class const_generator {
@@ -232,7 +232,7 @@ class program_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 
   std::shared_ptr<mstch_base> generate_cached(
       t_program const* program,

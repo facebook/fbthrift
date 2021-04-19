@@ -27,34 +27,34 @@ class ServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-  virtual void func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual void func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual void func(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual void func(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
  protected:
-  void funcImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  void funcImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
  public:
 
-  virtual ::std::int32_t sync_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual ::std::int32_t sync_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> sync_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> sync_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
 
-  virtual folly::Future<::std::int32_t> future_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual folly::SemiFuture<::std::int32_t> semifuture_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual folly::Future<::std::int32_t> future_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual folly::SemiFuture<::std::int32_t> semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
-  virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> future_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> semifuture_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> future_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::Future<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual folly::SemiFuture<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<::std::int32_t> co_func(const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+  folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
     return co_func<false>(nullptr, p_arg1, p_arg2);
   }
   template <int = 0>
-  folly::coro::Task<::std::int32_t> co_func(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+  folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
     return co_func<true>(&rpcOptions, p_arg1, p_arg2);
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::std::int32_t> co_func(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2) {
+  folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(apache::thrift::RpcOptions* rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -87,7 +87,7 @@ class ServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
       }
     };
-    ::std::int32_t _return;
+    ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> _return;
     if (auto ew = recv_wrapped_func(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -96,17 +96,17 @@ class ServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  virtual void func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
 
 
-  static folly::exception_wrapper recv_wrapped_func(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static ::std::int32_t recv_func(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_func(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> recv_func(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual ::std::int32_t recv_instance_func(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_func(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> recv_instance_func(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_func(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void funcT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_arg1, const ::cpp2::Foo& p_arg2);
+  void funcT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::cpp2::Foo& p_arg2);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> funcCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

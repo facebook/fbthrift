@@ -255,7 +255,7 @@ class TypeResolverTest : public ::testing::Test {
   }
 
  protected:
-  cpp2::type_resolver resolver_{/*enable_adapters=*/true};
+  cpp2::type_resolver resolver_;
   t_program program_;
   t_scope scope_;
 };

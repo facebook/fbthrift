@@ -16,9 +16,12 @@
 
 #include <thrift/test/AdapterTest.h>
 
-#include <gtest/gtest.h>
+#include <chrono>
 
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/Adapt.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/adapter_types.h>
 
 namespace apache::thrift::test {
@@ -37,10 +40,16 @@ TEST(AdaptTest, AdaptedT) {
 }
 
 TEST(AdaptTest, CodeGen) {
-  AdaptTestStruct data;
-  // TODO(afuller): Support adapter in code gen.
-  // AssertSameType<decltype(*data.delay_ref()), std::chrono::milliseconds&>();
-  AssertSameType<decltype(*data.delay_ref()), int64_t&>();
+  AdaptTestStruct obj1;
+  AssertSameType<decltype(*obj1.delay_ref()), std::chrono::milliseconds&>();
+  EXPECT_EQ(obj1.delay_ref(), std::chrono::milliseconds(0));
+  obj1.delay_ref() = std::chrono::milliseconds(7);
+  EXPECT_EQ(obj1.delay_ref(), std::chrono::milliseconds(7));
+
+  auto data = CompactSerializer::serialize<std::string>(obj1);
+  AdaptTestStruct obj2;
+  CompactSerializer::deserialize(data, obj2);
+  EXPECT_EQ(obj1, obj2);
 }
 
 } // namespace

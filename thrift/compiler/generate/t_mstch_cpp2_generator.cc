@@ -492,7 +492,12 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node cpp_native_type() {
     return context_->resolver().get_native_type_name(type_);
   }
-  mstch::node cpp_adapter() { return cpp2::type_resolver::find_adapter(type_); }
+  mstch::node cpp_adapter() {
+    if (const auto& adapter = cpp2::type_resolver::find_adapter(type_)) {
+      return *adapter;
+    }
+    return {};
+  }
   mstch::node resolved_cpp_type() { return cpp2::get_type(resolved_type_); }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string_or_binary();

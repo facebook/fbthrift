@@ -18,10 +18,19 @@
 
 #include <utility>
 
-namespace apache::thrift::adapt_detail {
+namespace apache {
+namespace thrift {
+namespace adapt_detail {
+
+template <typename Adapter, typename AdaptedType, typename NativeType>
+void fromThrift(AdaptedType& adapted, NativeType&& native) {
+  adapted = Adapter::fromThrift(std::forward<NativeType>(native));
+}
 
 // The type returned by the adapter for the given thrift type.
 template <typename Adapter, typename ThriftType>
 using adapted_t = decltype(Adapter::fromThrift(std::declval<ThriftType&&>()));
 
-} // namespace apache::thrift::adapt_detail
+} // namespace adapt_detail
+} // namespace thrift
+} // namespace apache

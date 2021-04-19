@@ -21,6 +21,7 @@
 #include <memory>
 #include <type_traits>
 
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>

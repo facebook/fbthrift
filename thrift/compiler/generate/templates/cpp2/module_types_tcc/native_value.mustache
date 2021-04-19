@@ -14,5 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-  // TODO(afuller): Support adapters.
-%><%#field:cpp_ref?%>*<%/field:cpp_ref?%><% > module_types_tcc/field_member%>
+%><%#type:cpp_adapter%><%type:cpp_adapter%>::toThrift(<%/type:cpp_adapter%><%#field:cpp_ref?%>*<%/field:cpp_ref?%><% > module_types_tcc/field_member%><%#type:cpp_adapter%>)<%/type:cpp_adapter%>
