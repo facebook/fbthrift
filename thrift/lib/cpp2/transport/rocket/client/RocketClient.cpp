@@ -1287,8 +1287,6 @@ void RocketClient::terminateInteraction(int64_t id) {
        this,
        guard = std::move(guard),
        ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
-        FB_LOG_EVERY_MS(WARNING, 1000)
-            << "terminateInteraction failed, closing now: " << ex.what();
         close(std::move(ex));
       };
 
