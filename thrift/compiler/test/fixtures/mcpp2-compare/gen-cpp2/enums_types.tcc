@@ -135,8 +135,10 @@ template <class Protocol_>
 uint32_t SomeStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SomeStruct");
-  xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
+  {
+    xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -145,8 +147,10 @@ template <class Protocol_>
 uint32_t SomeStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SomeStruct");
-  xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
+  {
+    xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -155,9 +159,11 @@ template <class Protocol_>
 uint32_t SomeStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SomeStruct");
-  xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->fieldA);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->fieldA);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

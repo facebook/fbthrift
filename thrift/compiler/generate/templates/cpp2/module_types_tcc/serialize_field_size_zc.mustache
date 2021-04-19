@@ -17,24 +17,24 @@
 %>
 <%#field:type%>
 <% > module_types_tcc/if_should_write%>
-<%#struct:union?%>    <%/struct:union?%><%^struct:union?%><%#field:terse_writes?%>  <%/field:terse_writes?%><%#field:optional?%>  <%/field:optional?%><%/struct:union?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<%#struct:union?%>  <%/struct:union?%>    xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%^field:non_opt_cpp_ref?%>
-<%#struct:union?%>    <%/struct:union?%><%^struct:union?%><%#field:terse_writes?%>  <%/field:terse_writes?%><%#field:optional?%>  <%/field:optional?%><%/struct:union?%>  xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+<%#struct:union?%>  <%/struct:union?%>    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
 <%/field:non_opt_cpp_ref?%>
 <%#field:non_opt_cpp_ref?%>
-<%#struct:union?%>    <%/struct:union?%>  if (<% > module_types_tcc/field_member%>) {
-<%#struct:union?%>    <%/struct:union?%>    xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
-<%#type:resolves_to_container_or_enum?%>
-<%#struct:union?%>    <%/struct:union?%>  } else {
-<%#struct:union?%>    <%/struct:union?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#struct:union?%>    <%/struct:union?%>    xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
-<%/type:resolves_to_container_or_enum?%>
+<%#struct:union?%>  <%/struct:union?%>    if (<% > module_types_tcc/field_member%>) {
+<%#struct:union?%>  <%/struct:union?%>      xfer += <% > module_types_tcc/protocol_methods%>::serializedSize<<%field:zero_copy_arg%>>(*prot_, <% > module_types_tcc/native_value%>);
+<%#type:resolves_to_container_or_enum?%>  
+<%#struct:union?%>  <%/struct:union?%>    } else {
+<%#struct:union?%>  <%/struct:union?%>      xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
+<%#struct:union?%>  <%/struct:union?%>      xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
+<%/type:resolves_to_container_or_enum?%>  
 <%#type:struct?%>
-<%#struct:union?%>    <%/struct:union?%>  } else {
-<%#struct:union?%>    <%/struct:union?%>    xfer += prot_->serializedStructSize("<%type:name%>");
-<%#struct:union?%>    <%/struct:union?%>    xfer += prot_->serializedSizeStop();
+<%#struct:union?%>  <%/struct:union?%>    } else {
+<%#struct:union?%>  <%/struct:union?%>      xfer += prot_->serializedStructSize("<%type:name%>");
+<%#struct:union?%>  <%/struct:union?%>      xfer += prot_->serializedSizeStop();
 <%/type:struct?%>
-<%#struct:union?%>    <%/struct:union?%>  }
+<%#struct:union?%>  <%/struct:union?%>    }
 <%/field:non_opt_cpp_ref?%>
 <% > module_types_tcc/if_should_write_end%>
 <%/field:type%>

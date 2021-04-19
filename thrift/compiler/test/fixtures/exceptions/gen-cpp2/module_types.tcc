@@ -204,8 +204,10 @@ template <class Protocol_>
 uint32_t Fiery::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
+  {
+    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -214,8 +216,10 @@ template <class Protocol_>
 uint32_t Fiery::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
+  {
+    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -224,9 +228,11 @@ template <class Protocol_>
 uint32_t Fiery::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Fiery");
-  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->message);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->message);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -456,10 +462,14 @@ template <class Protocol_>
 uint32_t ComplexFieldNames::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexFieldNames");
-  xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
-  xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  {
+    xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
+  }
+  {
+    xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -468,10 +478,14 @@ template <class Protocol_>
 uint32_t ComplexFieldNames::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexFieldNames");
-  xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
-  xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  {
+    xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
+  }
+  {
+    xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -480,12 +494,16 @@ template <class Protocol_>
 uint32_t ComplexFieldNames::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ComplexFieldNames");
-  xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -598,10 +616,14 @@ template <class Protocol_>
 uint32_t CustomFieldNames::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CustomFieldNames");
-  xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
-  xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  {
+    xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
+  }
+  {
+    xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -610,10 +632,14 @@ template <class Protocol_>
 uint32_t CustomFieldNames::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CustomFieldNames");
-  xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
-  xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  {
+    xfer += prot_->serializedFieldSize("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->error_message);
+  }
+  {
+    xfer += prot_->serializedFieldSize("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->internal_error_message);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -622,12 +648,16 @@ template <class Protocol_>
 uint32_t CustomFieldNames::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("CustomFieldNames");
-  xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

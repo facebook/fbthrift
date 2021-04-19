@@ -121,8 +121,10 @@ template <class Protocol_>
 uint32_t MyStructNestedAnnotation::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructNestedAnnotation");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -131,8 +133,10 @@ template <class Protocol_>
 uint32_t MyStructNestedAnnotation::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructNestedAnnotation");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -141,9 +145,11 @@ template <class Protocol_>
 uint32_t MyStructNestedAnnotation::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructNestedAnnotation");
-  xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -352,18 +358,30 @@ template <class Protocol_>
 uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
-  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->majorVer);
-  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->package);
-  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_quote);
-  xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->class_);
-  xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_trailing_comma);
-  xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->empty_annotations);
+  {
+    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->majorVer);
+  }
+  {
+    xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->package);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_quote);
+  }
+  {
+    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->class_);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_trailing_comma);
+  }
+  {
+    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->empty_annotations);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -372,18 +390,30 @@ template <class Protocol_>
 uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
-  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->majorVer);
-  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->package);
-  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_quote);
-  xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->class_);
-  xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_trailing_comma);
-  xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->empty_annotations);
+  {
+    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->majorVer);
+  }
+  {
+    xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->package);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_quote);
+  }
+  {
+    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->class_);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotation_with_trailing_comma);
+  }
+  {
+    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->empty_annotations);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -392,24 +422,36 @@ template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
-  xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->majorVer);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("package", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->package);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotation_with_quote);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("class_", apache::thrift::protocol::T_STRING, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->class_);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotation_with_trailing_comma);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("empty_annotations", apache::thrift::protocol::T_STRING, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->empty_annotations);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->majorVer);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("package", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->package);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotation_with_quote);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("class_", apache::thrift::protocol::T_STRING, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->class_);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotation_with_trailing_comma);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("empty_annotations", apache::thrift::protocol::T_STRING, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->empty_annotations);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -522,10 +564,14 @@ template <class Protocol_>
 uint32_t SecretStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SecretStruct");
-  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->id);
-  xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->password);
+  {
+    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->id);
+  }
+  {
+    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->password);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -534,10 +580,14 @@ template <class Protocol_>
 uint32_t SecretStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SecretStruct");
-  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->id);
-  xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->password);
+  {
+    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->id);
+  }
+  {
+    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->password);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -546,12 +596,16 @@ template <class Protocol_>
 uint32_t SecretStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SecretStruct");
-  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->id);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("password", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->password);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->id);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("password", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->password);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

@@ -180,10 +180,14 @@ template <class Protocol_>
 uint32_t structured_annotation_inline::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_inline");
-  xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  }
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -192,10 +196,14 @@ template <class Protocol_>
 uint32_t structured_annotation_inline::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_inline");
-  xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  }
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -204,12 +212,16 @@ template <class Protocol_>
 uint32_t structured_annotation_inline::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_inline");
-  xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -298,8 +310,10 @@ template <class Protocol_>
 uint32_t structured_annotation_with_default::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_with_default");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -308,8 +322,10 @@ template <class Protocol_>
 uint32_t structured_annotation_with_default::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_with_default");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -318,9 +334,11 @@ template <class Protocol_>
 uint32_t structured_annotation_with_default::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_with_default");
-  xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -409,8 +427,10 @@ template <class Protocol_>
 uint32_t structured_annotation_forward::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_forward");
-  xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  {
+    xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -419,8 +439,10 @@ template <class Protocol_>
 uint32_t structured_annotation_forward::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_forward");
-  xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  {
+    xfer += prot_->serializedFieldSize("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->count);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -429,9 +451,11 @@ template <class Protocol_>
 uint32_t structured_annotation_forward::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_forward");
-  xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -572,12 +596,18 @@ template <class Protocol_>
 uint32_t structured_annotation_recursive::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_recursive");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
-  xfer += prot_->serializedFieldSize("recurse", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::serializedSize<false>(*prot_, this->recurse);
-  xfer += prot_->serializedFieldSize("forward", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::serializedSize<false>(*prot_, this->forward);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
+  {
+    xfer += prot_->serializedFieldSize("recurse", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::serializedSize<false>(*prot_, this->recurse);
+  }
+  {
+    xfer += prot_->serializedFieldSize("forward", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::serializedSize<false>(*prot_, this->forward);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -586,12 +616,18 @@ template <class Protocol_>
 uint32_t structured_annotation_recursive::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_recursive");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
-  xfer += prot_->serializedFieldSize("recurse", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::serializedSize<true>(*prot_, this->recurse);
-  xfer += prot_->serializedFieldSize("forward", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::serializedSize<true>(*prot_, this->forward);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
+  {
+    xfer += prot_->serializedFieldSize("recurse", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::serializedSize<true>(*prot_, this->recurse);
+  }
+  {
+    xfer += prot_->serializedFieldSize("forward", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::serializedSize<true>(*prot_, this->forward);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -600,15 +636,21 @@ template <class Protocol_>
 uint32_t structured_annotation_recursive::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_recursive");
-  xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("recurse", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::write(*prot_, this->recurse);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("forward", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::write(*prot_, this->forward);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("recurse", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::write(*prot_, this->recurse);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("forward", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::write(*prot_, this->forward);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -723,10 +765,14 @@ template <class Protocol_>
 uint32_t structured_annotation_nested::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_nested");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
-  xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::serializedSize<false>(*prot_, this->nest);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
+  {
+    xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::serializedSize<false>(*prot_, this->nest);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -735,10 +781,14 @@ template <class Protocol_>
 uint32_t structured_annotation_nested::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_nested");
-  xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
-  xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::serializedSize<true>(*prot_, this->nest);
+  {
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->name);
+  }
+  {
+    xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::serializedSize<true>(*prot_, this->nest);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -747,12 +797,16 @@ template <class Protocol_>
 uint32_t structured_annotation_nested::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_nested");
-  xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("nest", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::write(*prot_, this->nest);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("nest", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::write(*prot_, this->nest);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -913,14 +967,22 @@ template <class Protocol_>
 uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
-  xfer += prot_->serializedFieldSize("annotated_field", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_field);
-  xfer += prot_->serializedFieldSize("annotated_type", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->annotated_type);
-  xfer += prot_->serializedFieldSize("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotated_recursive);
-  xfer += prot_->serializedFieldSize("annotated_nested", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_nested);
+  {
+    xfer += prot_->serializedFieldSize("annotated_field", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_type", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->annotated_type);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotated_recursive);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_nested", apache::thrift::protocol::T_I64, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_nested);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -929,14 +991,22 @@ template <class Protocol_>
 uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
-  xfer += prot_->serializedFieldSize("annotated_field", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_field);
-  xfer += prot_->serializedFieldSize("annotated_type", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->annotated_type);
-  xfer += prot_->serializedFieldSize("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotated_recursive);
-  xfer += prot_->serializedFieldSize("annotated_nested", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_nested);
+  {
+    xfer += prot_->serializedFieldSize("annotated_field", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_type", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::serializedSize<false>(*prot_, this->annotated_type);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->annotated_recursive);
+  }
+  {
+    xfer += prot_->serializedFieldSize("annotated_nested", apache::thrift::protocol::T_I64, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->annotated_nested);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -945,18 +1015,26 @@ template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
-  xfer += prot_->writeFieldBegin("annotated_field", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_field);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotated_type", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->annotated_type);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotated_recursive);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotated_nested", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_nested);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("annotated_field", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("annotated_type", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->annotated_type);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotated_recursive);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("annotated_nested", apache::thrift::protocol::T_I64, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_nested);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -1045,8 +1123,10 @@ template <class Protocol_>
 uint32_t MyException::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyException");
-  xfer += prot_->serializedFieldSize("context", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->context);
+  {
+    xfer += prot_->serializedFieldSize("context", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->context);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1055,8 +1135,10 @@ template <class Protocol_>
 uint32_t MyException::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyException");
-  xfer += prot_->serializedFieldSize("context", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->context);
+  {
+    xfer += prot_->serializedFieldSize("context", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->context);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1065,9 +1147,11 @@ template <class Protocol_>
 uint32_t MyException::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyException");
-  xfer += prot_->writeFieldBegin("context", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->context);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("context", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->context);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

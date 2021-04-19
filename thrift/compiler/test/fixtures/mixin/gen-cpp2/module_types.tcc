@@ -121,8 +121,10 @@ template <class Protocol_>
 uint32_t Mixin1::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin1");
-  xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  {
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -131,8 +133,10 @@ template <class Protocol_>
 uint32_t Mixin1::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin1");
-  xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  {
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field1);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -141,9 +145,11 @@ template <class Protocol_>
 uint32_t Mixin1::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Mixin1");
-  xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field1);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field1);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -258,8 +264,10 @@ template <class Protocol_>
 uint32_t Mixin2::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin2");
-  xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::serializedSize<false>(*prot_, this->m1);
+  {
+    xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::serializedSize<false>(*prot_, this->m1);
+  }
   if (this->field2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
@@ -272,8 +280,10 @@ template <class Protocol_>
 uint32_t Mixin2::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin2");
-  xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::serializedSize<true>(*prot_, this->m1);
+  {
+    xfer += prot_->serializedFieldSize("m1", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::serializedSize<true>(*prot_, this->m1);
+  }
   if (this->field2_ref().has_value()) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field2);
@@ -286,9 +296,11 @@ template <class Protocol_>
 uint32_t Mixin2::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Mixin2");
-  xfer += prot_->writeFieldBegin("m1", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::write(*prot_, this->m1);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("m1", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin1>::write(*prot_, this->m1);
+    xfer += prot_->writeFieldEnd();
+  }
   if (this->field2_ref().has_value()) {
     xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field2);
@@ -382,8 +394,10 @@ template <class Protocol_>
 uint32_t Mixin3Base::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin3Base");
-  xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
+  {
+    xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -392,8 +406,10 @@ template <class Protocol_>
 uint32_t Mixin3Base::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Mixin3Base");
-  xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
+  {
+    xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field3);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -402,9 +418,11 @@ template <class Protocol_>
 uint32_t Mixin3Base::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Mixin3Base");
-  xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field3);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field3);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -545,12 +563,18 @@ template <class Protocol_>
 uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field4);
-  xfer += prot_->serializedFieldSize("m2", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::serializedSize<false>(*prot_, this->m2);
-  xfer += prot_->serializedFieldSize("m3", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::serializedSize<false>(*prot_, this->m3);
+  {
+    xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field4);
+  }
+  {
+    xfer += prot_->serializedFieldSize("m2", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::serializedSize<false>(*prot_, this->m2);
+  }
+  {
+    xfer += prot_->serializedFieldSize("m3", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::serializedSize<false>(*prot_, this->m3);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -559,12 +583,18 @@ template <class Protocol_>
 uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field4);
-  xfer += prot_->serializedFieldSize("m2", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::serializedSize<true>(*prot_, this->m2);
-  xfer += prot_->serializedFieldSize("m3", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::serializedSize<true>(*prot_, this->m3);
+  {
+    xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->field4);
+  }
+  {
+    xfer += prot_->serializedFieldSize("m2", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::serializedSize<true>(*prot_, this->m2);
+  }
+  {
+    xfer += prot_->serializedFieldSize("m3", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::serializedSize<true>(*prot_, this->m3);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -573,15 +603,21 @@ template <class Protocol_>
 uint32_t Foo::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Foo");
-  xfer += prot_->writeFieldBegin("field4", apache::thrift::protocol::T_STRING, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field4);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("m2", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::write(*prot_, this->m2);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("m3", apache::thrift::protocol::T_STRUCT, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::write(*prot_, this->m3);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("field4", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->field4);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("m2", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin2>::write(*prot_, this->m2);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("m3", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Mixin3>::write(*prot_, this->m3);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

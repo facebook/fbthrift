@@ -244,18 +244,30 @@ template <class Protocol_>
 uint32_t ModuleA::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleA");
-  xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
-  xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
-  xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::serializedSize<false>(*prot_, this->listField);
-  xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::serializedSize<false>(*prot_, this->mapField);
-  xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::serializedSize<false>(*prot_, this->inclAField);
-  xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::serializedSize<false>(*prot_, this->inclBField);
+  {
+    xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::serializedSize<false>(*prot_, this->listField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::serializedSize<false>(*prot_, this->mapField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::serializedSize<false>(*prot_, this->inclAField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::serializedSize<false>(*prot_, this->inclBField);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -264,18 +276,30 @@ template <class Protocol_>
 uint32_t ModuleA::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleA");
-  xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
-  xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
-  xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::serializedSize<false>(*prot_, this->listField);
-  xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::serializedSize<false>(*prot_, this->mapField);
-  xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::serializedSize<true>(*prot_, this->inclAField);
-  xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::serializedSize<true>(*prot_, this->inclBField);
+  {
+    xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->strField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::serializedSize<false>(*prot_, this->listField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::serializedSize<false>(*prot_, this->mapField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::serializedSize<true>(*prot_, this->inclAField);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::serializedSize<true>(*prot_, this->inclBField);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -284,24 +308,36 @@ template <class Protocol_>
 uint32_t ModuleA::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ModuleA");
-  xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->i32Field);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("strField", apache::thrift::protocol::T_STRING, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->strField);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::write(*prot_, this->listField);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::write(*prot_, this->mapField);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("inclAField", apache::thrift::protocol::T_STRUCT, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::write(*prot_, this->inclAField);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("inclBField", apache::thrift::protocol::T_STRUCT, 6);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::write(*prot_, this->inclBField);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->i32Field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("strField", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->strField);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("listField", apache::thrift::protocol::T_LIST, 3);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int16_t>>::write(*prot_, this->listField);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("mapField", apache::thrift::protocol::T_MAP, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, ::std::int32_t>>::write(*prot_, this->mapField);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("inclAField", apache::thrift::protocol::T_STRUCT, 5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedA>::write(*prot_, this->inclAField);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("inclBField", apache::thrift::protocol::T_STRUCT, 6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::some::ns::IncludedB>::write(*prot_, this->inclBField);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -414,10 +450,14 @@ template <class Protocol_>
 uint32_t ModuleB::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleB");
-  xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
-  xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
+  {
+    xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -426,10 +466,14 @@ template <class Protocol_>
 uint32_t ModuleB::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleB");
-  xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
-  xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
+  {
+    xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->i32Field);
+  }
+  {
+    xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -438,12 +482,16 @@ template <class Protocol_>
 uint32_t ModuleB::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ModuleB");
-  xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->i32Field);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("inclEnumB", apache::thrift::protocol::T_I32, 2);
-  xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::write(*prot_, this->inclEnumB);
-  xfer += prot_->writeFieldEnd();
+  {
+    xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->i32Field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    xfer += prot_->writeFieldBegin("inclEnumB", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::some::ns::EnumB>::write(*prot_, this->inclEnumB);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
