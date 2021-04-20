@@ -18,6 +18,7 @@
 
 #include <chrono>
 
+#include <folly/Optional.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/util/ManagedStringView.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -52,6 +53,10 @@ void fillResponseRpcMetadataFromTHeader(
 
 std::string serializeErrorClassification(ErrorClassification ec);
 ErrorClassification deserializeErrorClassification(std::string_view str);
+
+folly::Optional<std::string> errorKindToString(ErrorKind);
+folly::Optional<std::string> errorBlameToString(ErrorBlame);
+folly::Optional<std::string> errorSafetyToString(ErrorSafety);
 
 } // namespace detail
 } // namespace thrift

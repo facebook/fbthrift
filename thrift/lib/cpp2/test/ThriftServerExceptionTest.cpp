@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/test/gen-cpp2/Bug.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 #include <fmt/core.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/portability/GTest.h>
 
 using namespace std;
@@ -125,6 +127,19 @@ class RaiserHandler : public RaiserSvIf {
   Function<void(unique_ptr<HandlerCallbackBase>)> go_;
 };
 
+class BugServiceHandler : public BugSvIf {
+ public:
+  BugServiceHandler() {}
+
+  folly::coro::Task<void> co_fun1() override { throw Start(); }
+
+  folly::coro::Task<void> co_fun2() override { throw FirstBlood(); }
+
+  folly::coro::Task<void> co_fun3() override { throw DoubleKill(); }
+
+  folly::coro::Task<void> co_fun4() override { throw TripleKill(); }
+};
+
 } // namespace
 
 class ThriftServerExceptionTest : public testing::Test {
@@ -169,6 +184,58 @@ class ThriftServerExceptionTest : public testing::Test {
     return wrap.with_exception(std::forward<F>(f));
   }
 };
+
+TEST_F(ThriftServerExceptionTest, dummy_test) {
+  auto handler = make_shared<BugServiceHandler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  apache::thrift::RpcOptions rpcOptions;
+  auto client = runner.newClient<BugAsyncClient>();
+
+  try {
+    folly::coro::blockingWait(client->co_fun1(rpcOptions));
+  } catch (...) {
+  }
+  auto reader = rpcOptions.getReadHeaders();
+  auto errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::UNSPECIFIED);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::UNSPECIFIED);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::UNSPECIFIED);
+
+  try {
+    folly::coro::blockingWait(client->co_fun2(rpcOptions));
+  } catch (...) {
+  }
+  reader = rpcOptions.getReadHeaders();
+  errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::UNSPECIFIED);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::UNSPECIFIED);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+
+  try {
+    folly::coro::blockingWait(client->co_fun3(rpcOptions));
+  } catch (...) {
+  }
+  reader = rpcOptions.getReadHeaders();
+  errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::STATEFUL);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::CLIENT);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::UNSPECIFIED);
+
+  try {
+    folly::coro::blockingWait(client->co_fun4(rpcOptions));
+  } catch (...) {
+  }
+  reader = rpcOptions.getReadHeaders();
+  errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::PERMANENT);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::CLIENT);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+}
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
   Function<exception_ptr()> go = [&] { return to_eptr(make_lulz()); };

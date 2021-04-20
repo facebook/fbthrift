@@ -224,6 +224,14 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                 (*otherMetadataRef)[isProxiedResponse ? "puexw" : "uexw"] =
                     *exceptionWhatRef;
               }
+              if (auto dExClass = exceptionMetadataRef->declaredException_ref()
+                                      ->errorClassification_ref()) {
+                auto metaStr =
+                    apache::thrift::detail::serializeErrorClassification(
+                        *dExClass);
+                (*otherMetadataRef)[std::string(detail::kHeaderExMeta)] =
+                    std::move(metaStr);
+              }
               payload = LegacySerializedResponse(
                             protocolId,
                             methodName,
