@@ -292,9 +292,9 @@ std::string type_resolver::gen_sink_type(
 }
 
 std::string type_resolver::gen_adapted_type(
-    const std::string& adapter, const std::string& native_type) {
+    const std::string& adapter, const std::string& standard_type) {
   return gen_template_type(
-      "::apache::thrift::adapt_detail::adapted_t", {adapter, native_type});
+      "::apache::thrift::adapt_detail::adapted_t", {adapter, standard_type});
 }
 
 std::string type_resolver::gen_template_type(

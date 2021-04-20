@@ -247,8 +247,8 @@ class TypeResolverTest : public ::testing::Test {
     return resolver_.get_type_name(node);
   }
 
-  const std::string& get_native_type_name(const t_type* node) {
-    return resolver_.get_native_type_name(node);
+  const std::string& get_standard_type_name(const t_type* node) {
+    return resolver_.get_standard_type_name(node);
   }
 
   const std::string& get_storage_type_name(const t_field* node) {
@@ -277,18 +277,18 @@ TEST_F(TypeResolverTest, BaseTypes) {
 TEST_F(TypeResolverTest, BaseTypes_Adapter) {
   t_base_type dbl(t_base_type::t_double());
   dbl.set_annotation("cpp.adapter", "DblAdapter");
-  // The native type is the default, double.
-  EXPECT_EQ(get_native_type_name(&dbl), "double");
+  // The standard type is the default, double.
+  EXPECT_EQ(get_standard_type_name(&dbl), "double");
   // The c++ type is adapted.
   EXPECT_EQ(
       get_type_name(&dbl),
       "::apache::thrift::adapt_detail::adapted_t<DblAdapter, double>");
 
-  // cpp.type overrides the 'default' native type.
+  // cpp.type overrides the 'default' standard type.
   t_base_type ui64(t_base_type::t_i64());
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
-  EXPECT_EQ(get_native_type_name(&ui64), "uint64_t");
+  EXPECT_EQ(get_standard_type_name(&ui64), "uint64_t");
   EXPECT_EQ(
       get_type_name(&ui64),
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
@@ -328,7 +328,7 @@ TEST_F(TypeResolverTest, Containers_Adapter) {
   t_map tmap(&t_base_type::t_i16(), &ui64);
   tmap.set_annotation("cpp.adapter", "MapAdapter");
   EXPECT_EQ(
-      get_native_type_name(&tmap), "::std::map<::std::int16_t, uint64_t>");
+      get_standard_type_name(&tmap), "::std::map<::std::int16_t, uint64_t>");
   EXPECT_EQ(
       get_type_name(&tmap),
       "::apache::thrift::adapt_detail::adapted_t<"
@@ -339,19 +339,19 @@ TEST_F(TypeResolverTest, Containers_Adapter) {
   t_set tset(&ui64);
   tset.set_annotation("cpp.adapter", "SetAdapter");
   tset.set_annotation("cpp.template", "std::unordered_set");
-  // The template argument is respected for both native and adapted types.
-  EXPECT_EQ(get_native_type_name(&tset), "std::unordered_set<uint64_t>");
+  // The template argument is respected for both standard and adapted types.
+  EXPECT_EQ(get_standard_type_name(&tset), "std::unordered_set<uint64_t>");
   EXPECT_EQ(
       get_type_name(&tset),
       "::apache::thrift::adapt_detail::adapted_t<"
       "SetAdapter, "
       "std::unordered_set<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
 
-  // cpp.type on the container overrides the 'default' native type.
+  // cpp.type on the container overrides the 'default' standard type.
   t_list tlist(&ui64);
   tlist.set_annotation("cpp.adapter", "ListAdapter");
   tlist.set_annotation("cpp.type", "MyList");
-  EXPECT_EQ(get_native_type_name(&tlist), "MyList");
+  EXPECT_EQ(get_standard_type_name(&tlist), "MyList");
   EXPECT_EQ(
       get_type_name(&tlist),
       "::apache::thrift::adapt_detail::adapted_t<ListAdapter, MyList>");
@@ -379,7 +379,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   // Type defs can refer to adatped types.
   t_typedef ttypedef1(&program_, &ui64, "MyHash", &scope_);
   // It does not affect the type name.
-  EXPECT_EQ(get_native_type_name(&ttypedef1), "::path::to::MyHash");
+  EXPECT_EQ(get_standard_type_name(&ttypedef1), "::path::to::MyHash");
   EXPECT_EQ(get_type_name(&ttypedef1), "::path::to::MyHash");
   // It is the refered to type that has the adapter.
   EXPECT_EQ(
@@ -389,7 +389,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   // Type defs can also be adapted.
   t_typedef ttypedef2(ttypedef1);
   ttypedef2.set_annotation("cpp.adapter", "TypeDefAdapter");
-  EXPECT_EQ(get_native_type_name(&ttypedef2), "::path::to::MyHash");
+  EXPECT_EQ(get_standard_type_name(&ttypedef2), "::path::to::MyHash");
   EXPECT_EQ(
       get_type_name(&ttypedef2),
       "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
@@ -433,7 +433,8 @@ TEST_F(TypeResolverTest, StreamingRes) {
 
   t_stream_response res1(&ui64);
   EXPECT_EQ(
-      get_native_type_name(&res1), "::apache::thrift::ServerStream<uint64_t>");
+      get_standard_type_name(&res1),
+      "::apache::thrift::ServerStream<uint64_t>");
   EXPECT_EQ(
       get_type_name(&res1),
       "::apache::thrift::ServerStream<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
@@ -441,7 +442,7 @@ TEST_F(TypeResolverTest, StreamingRes) {
   t_stream_response res2(&ui64);
   res2.set_first_response_type(&ui64);
   EXPECT_EQ(
-      get_native_type_name(&res2),
+      get_standard_type_name(&res2),
       "::apache::thrift::ResponseAndServerStream<uint64_t, uint64_t>");
   EXPECT_EQ(
       get_type_name(&res2),
@@ -457,7 +458,7 @@ TEST_F(TypeResolverTest, StreamingSink) {
 
   t_sink req1(&ui64, nullptr, &ui64, nullptr);
   EXPECT_EQ(
-      get_native_type_name(&req1),
+      get_standard_type_name(&req1),
       "::apache::thrift::SinkConsumer<uint64_t, uint64_t>");
   EXPECT_EQ(
       get_type_name(&req1),
@@ -468,7 +469,7 @@ TEST_F(TypeResolverTest, StreamingSink) {
   t_sink req2(&ui64, nullptr, &ui64, nullptr);
   req2.set_first_response(&ui64);
   EXPECT_EQ(
-      get_native_type_name(&req2),
+      get_standard_type_name(&req2),
       "::apache::thrift::ResponseAndSinkConsumer<uint64_t, uint64_t, uint64_t>");
   EXPECT_EQ(
       get_type_name(&req2),
@@ -552,17 +553,18 @@ TEST_F(TypeResolverTest, Typedef_cpptemplate) {
 
   EXPECT_EQ(get_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
   EXPECT_EQ(
-      get_native_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+      get_standard_type_name(&imap),
+      "::std::map<::std::int32_t, ::std::string>");
 
   // The 'cpp.template' annotations is applied to the typedef; however, the type
   // resolver only looks for it on container types.
   // TODO(afuller): Consider making the template annotation propagate through
   // the typedef.
   EXPECT_EQ(get_type_name(&iumap), "::path::to::iumap");
-  EXPECT_EQ(get_native_type_name(&iumap), "::path::to::iumap");
+  EXPECT_EQ(get_standard_type_name(&iumap), "::path::to::iumap");
 
   EXPECT_EQ(get_type_name(&tiumap), "::path::to::tiumap");
-  EXPECT_EQ(get_native_type_name(&tiumap), "::path::to::tiumap");
+  EXPECT_EQ(get_standard_type_name(&tiumap), "::path::to::tiumap");
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptype) {
@@ -574,7 +576,8 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
 
   EXPECT_EQ(get_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
   EXPECT_EQ(
-      get_native_type_name(&imap), "::std::map<::std::int32_t, ::std::string>");
+      get_standard_type_name(&imap),
+      "::std::map<::std::int32_t, ::std::string>");
 
   // The 'cpp.type' annotation is respected on the typedef.
   // TODO(afuller): It seems like this annotation is applied incorrectly and the
@@ -585,11 +588,11 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
       get_type_name(&iumap),
       "std::unorderd_map<::std::int32_t, ::std::string>");
   EXPECT_EQ(
-      get_native_type_name(&iumap),
+      get_standard_type_name(&iumap),
       "std::unorderd_map<::std::int32_t, ::std::string>");
 
   EXPECT_EQ(get_type_name(&tiumap), "::path::to::tiumap");
-  EXPECT_EQ(get_native_type_name(&tiumap), "::path::to::tiumap");
+  EXPECT_EQ(get_standard_type_name(&tiumap), "::path::to::tiumap");
 }
 
 } // namespace

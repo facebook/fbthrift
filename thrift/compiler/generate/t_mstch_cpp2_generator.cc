@@ -401,7 +401,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:transitively_refers_to_struct?",
              &mstch_cpp2_type::transitively_refers_to_struct},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
-            {"type:cpp_native_type", &mstch_cpp2_type::cpp_native_type},
+            {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
@@ -489,8 +489,8 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_type() { return context_->resolver().get_type_name(type_); }
-  mstch::node cpp_native_type() {
-    return context_->resolver().get_native_type_name(type_);
+  mstch::node cpp_standard_type() {
+    return context_->resolver().get_standard_type_name(type_);
   }
   mstch::node cpp_adapter() {
     if (const auto& adapter = cpp2::type_resolver::find_adapter(type_)) {

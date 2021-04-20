@@ -23,14 +23,14 @@
 // Must not be empty.
 // TODO(afuller): Prefix these with ` && ` when field:cpp_ref? and add tests to ensure they work.
 %><%#type:resolves_to_container?%><%!
-%>!<% >  module_types_tcc/native_ref %>.empty()<%!
+%>!<% >  module_types_tcc/field_ref %>.empty()<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:string_or_binary?%><%!
-%>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/native_ref %>)<%!
+%>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!
 %><%/type:string_or_binary?%><%!
 
 // For all other cases, must not equal the default.
 %><%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:string_or_binary?%><%!
-%><% >  module_types_tcc/native_ref %> != <% > field/default%><%!
+%><% >  module_types_tcc/field_ref %> != <% > field/default%><%!
 %><%/type:string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%><%!
 %>

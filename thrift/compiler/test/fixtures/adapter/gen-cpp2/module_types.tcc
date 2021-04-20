@@ -54,9 +54,9 @@ void Foo::readNoXfer(Protocol_* iprot) {
   }
 _readField_intField:
   {
-    ::std::int32_t native_value;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intField, ::std::move(native_value));
+    ::std::int32_t tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intField, ::std::move(tvalue));
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.intField = true;
@@ -72,9 +72,9 @@ _readField_intField:
   }
 _readField_optionalIntField:
   {
-    ::std::int32_t native_value;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalIntField, ::std::move(native_value));
+    ::std::int32_t tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalIntField, ::std::move(tvalue));
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.optionalIntField = true;
@@ -90,9 +90,9 @@ _readField_optionalIntField:
   }
 _readField_intFieldWithDefault:
   {
-    ::std::int32_t native_value;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intFieldWithDefault, ::std::move(native_value));
+    ::std::int32_t tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intFieldWithDefault, ::std::move(tvalue));
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.intFieldWithDefault = true;
@@ -147,10 +147,10 @@ _readField_optionalSetField:
 _readField_mapField:
   {
     _readState.beforeSubobject(iprot);
-    ::std::map<::std::string, ::cpp2::ListWithElemAdapter> native_value;
+    ::std::map<::std::string, ::cpp2::ListWithElemAdapter> tvalue;
     this->mapField = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>();
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->mapField, ::std::move(native_value));
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->mapField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -168,10 +168,10 @@ _readField_mapField:
 _readField_optionalMapField:
   {
     _readState.beforeSubobject(iprot);
-    ::std::map<::std::string, ::cpp2::ListWithElemAdapter> native_value;
+    ::std::map<::std::string, ::cpp2::ListWithElemAdapter> tvalue;
     this->optionalMapField = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>();
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->optionalMapField, ::std::move(native_value));
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->optionalMapField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -416,9 +416,9 @@ void Bar::readNoXfer(Protocol_* iprot) {
 _readField_structField:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::Foo native_value;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Foo>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->structField, ::std::move(native_value));
+    ::cpp2::Foo tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Foo>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->structField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -436,9 +436,9 @@ _readField_structField:
 _readField_optionalStructField:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::Foo native_value;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Foo>::readWithContext(*iprot, native_value, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalStructField, ::std::move(native_value));
+    ::cpp2::Foo tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Foo>::readWithContext(*iprot, tvalue, _readState);
+    ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalStructField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

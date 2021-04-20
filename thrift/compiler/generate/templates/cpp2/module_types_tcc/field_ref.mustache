@@ -13,11 +13,10 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
+%><%!
+  A reference to the field's value.
 
-  // A reference to the native value.
-  //
-  // Unlike 'native_value', this takes into account indirection and
-  // wraps dereferenced pointers in ().
+  Takes into account indirection and wraps dereferenced pointers in ().
 %><%#type:cpp_indirection?%><%!
 %>::apache::thrift::apply_indirection(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><% > field/member%>)<%!
 %><%/type:cpp_indirection?%><%!

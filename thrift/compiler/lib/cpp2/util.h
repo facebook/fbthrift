@@ -62,9 +62,9 @@ class type_resolver {
   }
 
   // Returns the c++ type that the runtime knows how to handle.
-  const std::string& get_native_type_name(const t_type* node) {
+  const std::string& get_standard_type_name(const t_type* node) {
     return get_or_gen(
-        native_type_cache_, node, &type_resolver::gen_native_type);
+        standard_type_cache_, node, &type_resolver::gen_standard_type);
   }
 
   // Returns the c++ type that should be used to store the field's value.
@@ -92,7 +92,7 @@ class type_resolver {
 
   std::unordered_map<const t_program*, std::string> namespace_cache_;
   std::unordered_map<const t_type*, std::string> type_cache_;
-  std::unordered_map<const t_type*, std::string> native_type_cache_;
+  std::unordered_map<const t_type*, std::string> standard_type_cache_;
   // TODO(afuller): Use a custom key type with a std::unordered_map (std::pair
   // does not have an std::hash specialization).
   std::map<std::pair<const t_type*, reference_type>, std::string>
@@ -106,8 +106,8 @@ class type_resolver {
 
   // Generatating functions.
   std::string gen_type(const t_type* node);
-  std::string gen_native_type(const t_type* node) {
-    return gen_type_impl(node, &type_resolver::get_native_type_name);
+  std::string gen_standard_type(const t_type* node) {
+    return gen_type_impl(node, &type_resolver::get_standard_type_name);
   }
   std::string gen_storage_type(
       const std::pair<const t_type*, reference_type>& ref_type);
@@ -122,7 +122,7 @@ class type_resolver {
   static std::string gen_template_type(
       std::string template_name, std::initializer_list<std::string> args);
   static std::string gen_adapted_type(
-      const std::string& adapter, const std::string& native_type);
+      const std::string& adapter, const std::string& standard_type);
   static std::string gen_namespaced_name(const t_type* node);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {
