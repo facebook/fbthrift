@@ -54,13 +54,16 @@ folly::EventBase& PooledRequestChannel::getEvb(const RpcOptions& options) {
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
-  folly::call_once(protocolIdInitFlag_, [&] {
-    auto& evb = getEvb({});
-    evb.runImmediatelyOrRunInEventBaseThreadAndWait(
-        [&] { protocolId_ = impl(evb).getProtocolId(); });
+  if (auto value = protocolId_.load(std::memory_order_relaxed)) {
+    return value;
+  }
+
+  auto& evb = getEvb({});
+  evb.runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+    protocolId_.store(impl(evb).getProtocolId(), std::memory_order_relaxed);
   });
 
-  return protocolId_;
+  return protocolId_.load(std::memory_order_relaxed);
 }
 
 template <typename SendFunc>

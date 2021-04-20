@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <future>
+#include <atomic>
 
 #include <folly/executors/IOExecutor.h>
 #include <folly/io/async/EventBaseLocal.h>
@@ -129,8 +129,7 @@ class PooledRequestChannel : public RequestChannel {
 
   std::shared_ptr<folly::EventBaseLocal<ImplPtr>> impl_;
 
-  folly::once_flag protocolIdInitFlag_;
-  uint16_t protocolId_;
+  std::atomic<uint16_t> protocolId_{0};
 };
 } // namespace thrift
 } // namespace apache
