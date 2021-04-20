@@ -81,7 +81,7 @@ class ServerStream {
       "conditions in production code.")]] //
   ClientBufferedStream<T>
   toClientStreamUnsafeDoNotUse(
-      folly::EventBase* evb = folly::getEventBase(),
+      folly::EventBase* evb = folly::getUnsafeMutableGlobalEventBase(),
       int32_t bufferSize = 100) &&;
 
   apache::thrift::detail::ServerStreamFactory operator()(
