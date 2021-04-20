@@ -99,8 +99,14 @@ uint32_t BinaryProtocolWriter::writeSetEnd() {
 }
 
 uint32_t BinaryProtocolWriter::writeBool(bool value) {
-  uint8_t tmp = value ? 1 : 0;
-  out_.write(tmp);
+  // Store in a volatile variable to prevent the compiler from optimizing the
+  // check away. Without the check we may produce undeserializable data.
+  volatile uint8_t volatileByte = value;
+  uint8_t byte = volatileByte;
+  if (byte != 0 && byte != 1) {
+    folly::throw_exception<std::invalid_argument>("invalid bool value");
+  }
+  out_.write(byte);
   return sizeof(value);
 }
 

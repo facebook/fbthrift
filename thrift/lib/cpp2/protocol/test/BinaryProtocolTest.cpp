@@ -39,4 +39,22 @@ TEST_F(BinaryProtocolTest, readInvalidBool) {
   EXPECT_THROW(inprot.readBool(value), TProtocolException);
 }
 
+#if !__has_feature(undefined_behavior_sanitizer)
+TEST_F(BinaryProtocolTest, writeInvalidBool) {
+  auto w = BinaryProtocolWriter();
+  auto q = folly::IOBufQueue();
+  w.setOutput(&q);
+  bool value = *reinterpret_cast<const volatile bool*>("\x42");
+  // writeBool should either throw or write a valid bool.
+  try {
+    w.writeBool(value);
+  } catch (const std::invalid_argument&) {
+    return;
+  }
+  auto s = std::string();
+  q.appendToString(s);
+  EXPECT_EQ(s, std::string(1, '\0'));
+}
+#endif
+
 } // namespace
