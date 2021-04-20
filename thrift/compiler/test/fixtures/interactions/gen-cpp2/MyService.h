@@ -105,9 +105,9 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
  private:
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_frobnicate{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
-  virtual std::unique_ptr<MyInteractionIf> createMyInteraction();
-  virtual std::unique_ptr<MyInteractionFastIf> createMyInteractionFast();
-  virtual std::unique_ptr<SerialInteractionIf> createSerialInteraction();
+  virtual std::unique_ptr<MyInteractionIf> createMyInteraction() = 0;
+  virtual std::unique_ptr<MyInteractionFastIf> createMyInteractionFast() = 0;
+  virtual std::unique_ptr<SerialInteractionIf> createSerialInteraction() = 0;
   virtual void foo();
   folly::Future<folly::Unit> future_foo() override;
   folly::SemiFuture<folly::Unit> semifuture_foo() override;

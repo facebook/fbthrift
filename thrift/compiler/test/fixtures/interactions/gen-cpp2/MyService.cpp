@@ -15,18 +15,6 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 }
 
 
-std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteraction() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
-}
-
-std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceSvIf::createMyInteractionFast() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteractionFast");
-}
-
-std::unique_ptr<MyServiceSvIf::SerialInteractionIf> MyServiceSvIf::createSerialInteraction() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("createSerialInteraction");
-}
-
 void MyServiceSvIf::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
 }

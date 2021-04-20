@@ -58,7 +58,11 @@ class {{service:name}}Wrapper : {{!
                 }}{{#function:stack_arguments?}}{{> types/CppStackArgType}}{{/function:stack_arguments?}}{{!
             }}{{/field:type}} {{field:py_name}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
-{{/service:supportedFunctions}}};
+{{/service:supportedFunctions}}
+{{#service:interactions}}
+    std::unique_ptr<{{service:name}}If> create{{service:name}}() override;
+{{/service:interactions}}
+};
 
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc);
 {{^last?}}

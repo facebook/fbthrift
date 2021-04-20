@@ -63,6 +63,12 @@ struct SemiCalculatorHandler : CalculatorSvIf {
   std::unique_ptr<AdditionIf> createAddition() override {
     return std::make_unique<SemiAdditionHandler>();
   }
+  std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+    std::terminate();
+  }
+  std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+    std::terminate();
+  }
 
   folly::SemiFuture<int32_t> semifuture_addPrimitive(
       int32_t a, int32_t b) override {
@@ -177,6 +183,12 @@ TEST(InteractionTest, QueueTimeout) {
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<SemiAdditionHandler>();
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{std::make_shared<SlowCalculatorHandler>()};
@@ -218,6 +230,12 @@ struct CalculatorHandler : CalculatorSvIf {
 
   std::unique_ptr<AdditionIf> createAddition() override {
     return std::make_unique<AdditionHandler>();
+  }
+  std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+    std::terminate();
+  }
+  std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+    std::terminate();
   }
 
   folly::SemiFuture<int32_t> semifuture_addPrimitive(
@@ -315,6 +333,12 @@ TEST(InteractionCodegenTest, Error) {
     std::unique_ptr<AdditionIf> createAddition() override {
       throw std::runtime_error("Plus key is broken");
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
   ScopedServerInterfaceThread runner{
       std::make_shared<BrokenCalculatorHandler>()};
@@ -355,6 +379,12 @@ TEST(InteractionCodegenTest, MethodException) {
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<AdditionHandler>();
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{
@@ -379,6 +409,12 @@ TEST(InteractionCodegenTest, SlowConstructor) {
     std::unique_ptr<AdditionIf> createAddition() override {
       b.wait();
       return std::make_unique<AdditionHandler>();
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::Baton<> b;
@@ -423,6 +459,12 @@ TEST(InteractionCodegenTest, FastTermination) {
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<SlowAdditionHandler>(baton, destroyed);
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
 
     folly::coro::Baton baton, destroyed;
   };
@@ -462,6 +504,12 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteraction) {
 
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<SlowAdditionHandler>(baton, destroyed);
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::coro::Baton baton, destroyed;
@@ -506,6 +554,12 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
       folly::coro::blockingWait(baton);
       return std::make_unique<SlowAdditionHandler>(baton, destroyed, executed);
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
 
     folly::coro::Baton baton, destroyed;
     bool executed = false;
@@ -538,6 +592,12 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
         b2.wait();
       }
       return std::make_unique<AdditionHandler>();
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::Baton<> b1, b2;
@@ -573,6 +633,12 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
     std::unique_ptr<AdditionIf> createAddition() override {
       b.wait();
       throw std::runtime_error("Custom exception");
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::Baton<> b;
@@ -622,6 +688,10 @@ TEST(InteractionCodegenTest, SerialInteraction) {
       folly::coro::blockingWait(baton1);
       return std::make_unique<SerialAdditionHandler>(baton2, baton3);
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
 
     folly::coro::Baton baton1, baton2, baton3;
   };
@@ -820,6 +890,10 @@ TEST(InteractionCodegenTest, BasicEB) {
     std::unique_ptr<AdditionFastIf> createAdditionFast() override {
       return std::make_unique<AdditionHandler>();
     }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{
@@ -842,6 +916,10 @@ TEST(InteractionCodegenTest, ErrorEB) {
   struct ExceptionCalculatorHandler : CalculatorSvIf {
     std::unique_ptr<AdditionFastIf> createAdditionFast() override {
       throw std::runtime_error("Unimplemented");
+    }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
   };
 

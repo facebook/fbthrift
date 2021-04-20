@@ -21,6 +21,9 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
   public:
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+    std::unique_ptr<MyInteractionIf> createMyInteraction() override;
+    std::unique_ptr<MyInteractionFastIf> createMyInteractionFast() override;
+    std::unique_ptr<SerialInteractionIf> createSerialInteraction() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);

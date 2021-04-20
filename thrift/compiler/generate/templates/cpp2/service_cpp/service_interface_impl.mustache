@@ -225,10 +225,4 @@ void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(st
 <%/function:oneway?%>
 <%/function:eb%>
 <%/function:starts_interaction?%>
-<%#function:starts_interaction?%><%!Starts interaction codegen%>
-
-std::unique_ptr<<%service:name%>SvIf::<%type:name%>If> <%service:name%>SvIf::<%function:cpp_name%>() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
-}
-<%/function:starts_interaction?%>
 <%/function:return_type%><%/service:functions%>
