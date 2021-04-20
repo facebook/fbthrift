@@ -22,29 +22,23 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-/**
- * Get ThriftMetadata of given thrift structure. If no_metadata option is
- * enabled, return empty data.
- *
- * @tparam T thrift structure
- * @param idx field index
- *
- * @return ThriftField (https://git.io/JJQpY)
- */
-template <class T>
-const auto& get_field_metadata(size_t idx) {
-  static const folly::Indestructible<metadata::ThriftField> empty;
-  const auto& fields = *get_struct_metadata<T>().fields_ref();
-  return idx < fields.size() ? fields[idx] : *empty;
+inline const auto& empty_thrift_field() {
+  static const folly::Indestructible<metadata::ThriftField> t;
+  return *t;
 }
 
 template <class T, class F>
 struct MetadataForwarder {
   F f;
 
+  const metadata::ThriftStruct& meta =
+      get_struct_metadata<folly::remove_cvref_t<T>>();
+
+  const bool kHasMetadata = !meta.fields_ref()->empty();
+
   template <class... Args>
   FOLLY_ERASE void operator()(size_t idx, Args&&... args) {
-    f(get_field_metadata<folly::remove_cvref_t<T>>(idx),
+    f(kHasMetadata ? meta.fields_ref()[idx] : empty_thrift_field(),
       std::forward<Args>(args)...);
   }
 };
