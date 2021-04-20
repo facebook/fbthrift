@@ -220,7 +220,7 @@ mstch::map t_mstch_generator::dump(const t_enum_value& val) {
 }
 
 mstch::map t_mstch_generator::dump(const t_service& service) {
-  t_service* extends = service.get_extends();
+  const t_service* extends = service.get_extends();
   mstch::map result{
       {"name", service.get_name()},
       {"annotations", dump_elems(service.annotations())},

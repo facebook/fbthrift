@@ -38,7 +38,7 @@ class t_service : public t_type {
 
   bool is_service() const override { return true; }
 
-  void set_extends(t_service* extends) { extends_ = extends; }
+  void set_extends(const t_service* extends) { extends_ = extends; }
 
   void add_function(std::unique_ptr<t_function> func) {
     functions_raw_.push_back(func.get());
@@ -49,7 +49,7 @@ class t_service : public t_type {
     return functions_raw_;
   }
 
-  t_service* get_extends() const { return extends_; }
+  const t_service* get_extends() const { return extends_; }
 
   type get_type_value() const override { return type::t_service; }
 
@@ -70,7 +70,7 @@ class t_service : public t_type {
 
   std::vector<t_function*> functions_raw_;
 
-  t_service* extends_;
+  const t_service* extends_;
 
   bool is_interaction_{false};
   bool is_serial_interaction_{false};

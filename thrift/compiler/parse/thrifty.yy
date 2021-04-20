@@ -223,7 +223,7 @@ class t_container_type;
 /**
  * Grammar nodes
  *
- * Memory managment rules:
+ * Memory management rules:
  * - mutable pointers in the process of being build, and
  * need to be owned when complete.
  * - t_refs are already owned.
@@ -297,7 +297,7 @@ class t_container_type;
 
 %type<t_struct*>             Throws
 %type<t_struct*>             MaybeThrows
-%type<t_service*>            Extends
+%type<t_ref<t_service>>      Extends
 %type<t_function_qualifier>  FunctionQualifier
 
 %type<t_doc>                 CaptureDocText
@@ -692,7 +692,7 @@ ConstValue:
 | Identifier
     {
       driver.debug("ConstValue => Identifier");
-      t_const* constant = driver.scope_cache->get_constant($1);
+      const t_const* constant = driver.scope_cache->get_constant($1);
       driver.validate_not_ambiguous_enum($1);
       if (constant == nullptr) {
         auto name_with_program_name = driver.program->name() + "." + $1;

@@ -40,29 +40,31 @@ class t_scope {
  public:
   t_scope() {}
 
-  void add_type(std::string name, t_type* type) { types_[name] = type; }
+  void add_type(std::string name, const t_type* type) { types_[name] = type; }
 
-  t_type* get_type(std::string name) { return types_[name]; }
+  const t_type* get_type(std::string name) { return types_[name]; }
 
-  void add_service(std::string name, t_service* service) {
+  void add_service(std::string name, const t_service* service) {
     services_[name] = service;
   }
 
-  t_service* get_service(std::string name) { return services_[name]; }
+  const t_service* get_service(std::string name) { return services_[name]; }
 
-  void add_interaction(std::string name, t_service* interaction) {
+  void add_interaction(std::string name, const t_service* interaction) {
     interactions_[name] = interaction;
   }
 
-  t_service* get_interaction(std::string name) { return interactions_[name]; }
+  const t_service* get_interaction(std::string name) {
+    return interactions_[name];
+  }
 
-  void add_constant(std::string name, t_const* constant);
+  void add_constant(std::string name, const t_const* constant);
 
   std::vector<std::string> split_string_by_periods(std::string str);
 
   std::string join_strings_by_commas(std::set<std::string> strs);
 
-  t_const* get_constant(std::string name) { return constants_[name]; }
+  const t_const* get_constant(std::string name) { return constants_[name]; }
 
   bool is_ambiguous_enum_value(std::string enum_value_name) {
     return redefined_enum_values_.find(enum_value_name) !=
@@ -72,7 +74,7 @@ class t_scope {
   std::string get_fully_qualified_enum_value_names(std::string name);
 
   void print() {
-    std::map<std::string, t_type*>::iterator iter;
+    std::map<std::string, const t_type*>::iterator iter;
     for (iter = types_.begin(); iter != types_.end(); ++iter) {
       printf(
           "%s => %s\n", iter->first.c_str(), iter->second->get_name().c_str());
@@ -81,16 +83,16 @@ class t_scope {
 
  private:
   // Map of names to types
-  std::map<std::string, t_type*> types_;
+  std::map<std::string, const t_type*> types_;
 
   // Map of names to constants
-  std::map<std::string, t_const*> constants_;
+  std::map<std::string, const t_const*> constants_;
 
   // Map of names to services
-  std::map<std::string, t_service*> services_;
+  std::map<std::string, const t_service*> services_;
 
   // Map of names to interactions
-  std::map<std::string, t_service*> interactions_;
+  std::map<std::string, const t_service*> interactions_;
 
   // Set of enum_values that are redefined and are ambiguous
   // if referred to without the enum name
