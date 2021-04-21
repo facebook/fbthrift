@@ -86,7 +86,7 @@ class MyStruct final  {
   MyStruct(const MyStruct&) = default;
 
 
-  MyStruct& operator=(MyStruct&&) = default;
+  MyStruct& operator=(MyStruct&&) noexcept;
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
@@ -195,7 +195,7 @@ class MyUnion final  {
   MyUnion()
       : type_(Type::__EMPTY__) {}
 
-  MyUnion(MyUnion&& rhs)
+  MyUnion(MyUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -232,7 +232,7 @@ class MyUnion final  {
     }
   }
 
-  MyUnion& operator=(MyUnion&& rhs) {
+  MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -392,11 +392,11 @@ class MyException final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -417,7 +417,7 @@ class MyException final : public apache::thrift::TException {
   MyException(const MyException&) = default;
 
 
-  MyException& operator=(MyException&&) = default;
+  MyException& operator=(MyException&&) noexcept;
 
   MyException& operator=(const MyException&) = default;
   void __clear();

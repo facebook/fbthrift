@@ -427,7 +427,7 @@ class Vehicle final  {
   Vehicle(const Vehicle&) = default;
 
 
-  Vehicle& operator=(Vehicle&&) = default;
+  Vehicle& operator=(Vehicle&&) noexcept;
 
   Vehicle& operator=(const Vehicle&) = default;
   void __clear();
@@ -691,7 +691,7 @@ class Person final  {
   Person(const Person&) = default;
 
 
-  Person& operator=(Person&&) = default;
+  Person& operator=(Person&&) noexcept;
 
   Person& operator=(const Person&) = default;
   void __clear();

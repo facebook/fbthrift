@@ -70,6 +70,15 @@ Foo::Foo(Foo&& other) noexcept  :
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
     __isset(other.__isset) {}
+
+Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    this->field4 = std::move(other.field4);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

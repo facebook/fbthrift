@@ -318,7 +318,7 @@ class Internship final  {
   Internship(const Internship&) = default;
 
 
-  Internship& operator=(Internship&&) = default;
+  Internship& operator=(Internship&&) noexcept;
 
   Internship& operator=(const Internship&) = default;
   void __clear();
@@ -672,7 +672,7 @@ class struct1 final  {
   struct1(const struct1&) = default;
 
 
-  struct1& operator=(struct1&&) = default;
+  struct1& operator=(struct1&&) noexcept;
 
   struct1& operator=(const struct1&) = default;
   void __clear();
@@ -817,7 +817,7 @@ class struct2 final  {
   struct2(const struct2&) = default;
 
 
-  struct2& operator=(struct2&&) = default;
+  struct2& operator=(struct2&&) noexcept;
 
   struct2& operator=(const struct2&) = default;
   void __clear();
@@ -1026,7 +1026,7 @@ class struct3 final  {
   struct3(const struct3&) = default;
 
 
-  struct3& operator=(struct3&&) = default;
+  struct3& operator=(struct3&&) noexcept;
 
   struct3& operator=(const struct3&) = default;
   void __clear();
@@ -1205,7 +1205,7 @@ class struct4 final  {
   struct4(const struct4&) = default;
 
 
-  struct4& operator=(struct4&&) = default;
+  struct4& operator=(struct4&&) noexcept;
 
   struct4& operator=(const struct4&) = default;
   void __clear();
@@ -1385,7 +1385,7 @@ class union1 final  {
   union1()
       : type_(Type::__EMPTY__) {}
 
-  union1(union1&& rhs)
+  union1(union1&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1432,7 +1432,7 @@ class union1 final  {
     }
   }
 
-  union1& operator=(union1&& rhs) {
+  union1& operator=(union1&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1648,7 +1648,7 @@ class union2 final  {
   union2()
       : type_(Type::__EMPTY__) {}
 
-  union2(union2&& rhs)
+  union2(union2&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1715,7 +1715,7 @@ class union2 final  {
     }
   }
 
-  union2& operator=(union2&& rhs) {
+  union2& operator=(union2&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

@@ -1071,7 +1071,7 @@ class union1 final  {
   union1()
       : type_(Type::__EMPTY__) {}
 
-  union1(union1&& rhs)
+  union1(union1&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1138,7 +1138,7 @@ class union1 final  {
     }
   }
 
-  union1& operator=(union1&& rhs) {
+  union1& operator=(union1&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1472,7 +1472,7 @@ class union2 final  {
   union2()
       : type_(Type::__EMPTY__) {}
 
-  union2(union2&& rhs)
+  union2(union2&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1539,7 +1539,7 @@ class union2 final  {
     }
   }
 
-  union2& operator=(union2&& rhs) {
+  union2& operator=(union2&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1873,7 +1873,7 @@ class union3 final  {
   union3()
       : type_(Type::__EMPTY__) {}
 
-  union3(union3&& rhs)
+  union3(union3&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1940,7 +1940,7 @@ class union3 final  {
     }
   }
 
-  union3& operator=(union3&& rhs) {
+  union3& operator=(union3&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -2275,7 +2275,7 @@ class structA final  {
   structA(const structA&) = default;
 
 
-  structA& operator=(structA&&) = default;
+  structA& operator=(structA&&) noexcept;
 
   structA& operator=(const structA&) = default;
   void __clear();
@@ -2420,7 +2420,7 @@ class unionA final  {
   unionA()
       : type_(Type::__EMPTY__) {}
 
-  unionA(unionA&& rhs)
+  unionA(unionA&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2497,7 +2497,7 @@ class unionA final  {
     }
   }
 
-  unionA& operator=(unionA&& rhs) {
+  unionA& operator=(unionA&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -3039,7 +3039,7 @@ class structC final  {
   structC(const structC&) = default;
 
 
-  structC& operator=(structC&&) = default;
+  structC& operator=(structC&&) noexcept;
 
   structC& operator=(const structC&) = default;
   void __clear();
@@ -4087,7 +4087,7 @@ class struct1 final  {
   struct1(const struct1&) = default;
 
 
-  struct1& operator=(struct1&&) = default;
+  struct1& operator=(struct1&&) noexcept;
 
   struct1& operator=(const struct1&) = default;
   void __clear();
@@ -4363,7 +4363,7 @@ class struct2 final  {
   struct2(const struct2&) = default;
 
 
-  struct2& operator=(struct2&&) = default;
+  struct2& operator=(struct2&&) noexcept;
 
   struct2& operator=(const struct2&) = default;
   void __clear();
@@ -4673,7 +4673,7 @@ class struct3 final  {
   struct3(const struct3&) = default;
 
 
-  struct3& operator=(struct3&&) = default;
+  struct3& operator=(struct3&&) noexcept;
 
   struct3& operator=(const struct3&) = default;
   void __clear();
@@ -5336,7 +5336,7 @@ class struct4 final  {
   struct4(const struct4& src);
 
 
-  struct4& operator=(struct4&&) = default;
+  struct4& operator=(struct4&&) noexcept;
   struct4& operator=(const struct4& src);
   void __clear();
  public:
@@ -5525,7 +5525,7 @@ class struct5 final  {
   struct5(const struct5&) = default;
 
 
-  struct5& operator=(struct5&&) = default;
+  struct5& operator=(struct5&&) noexcept;
 
   struct5& operator=(const struct5&) = default;
   void __clear();
@@ -5768,7 +5768,7 @@ class struct_binary final  {
   struct_binary(const struct_binary&) = default;
 
 
-  struct_binary& operator=(struct_binary&&) = default;
+  struct_binary& operator=(struct_binary&&) noexcept;
 
   struct_binary& operator=(const struct_binary&) = default;
   void __clear();
@@ -6352,7 +6352,7 @@ class union_with_special_names final  {
   union_with_special_names()
       : type_(Type::__EMPTY__) {}
 
-  union_with_special_names(union_with_special_names&& rhs)
+  union_with_special_names(union_with_special_names&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -6659,7 +6659,7 @@ class union_with_special_names final  {
     }
   }
 
-  union_with_special_names& operator=(union_with_special_names&& rhs) {
+  union_with_special_names& operator=(union_with_special_names&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -9253,7 +9253,7 @@ class struct_with_indirections final  {
   struct_with_indirections(const struct_with_indirections&) = default;
 
 
-  struct_with_indirections& operator=(struct_with_indirections&&) = default;
+  struct_with_indirections& operator=(struct_with_indirections&&) noexcept;
 
   struct_with_indirections& operator=(const struct_with_indirections&) = default;
   void __clear();

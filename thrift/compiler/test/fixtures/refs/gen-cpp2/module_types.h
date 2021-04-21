@@ -344,7 +344,7 @@ class MyUnion final  {
   MyUnion()
       : type_(Type::__EMPTY__) {}
 
-  MyUnion(MyUnion&& rhs)
+  MyUnion(MyUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -391,7 +391,7 @@ class MyUnion final  {
     }
   }
 
-  MyUnion& operator=(MyUnion&& rhs) {
+  MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -621,7 +621,7 @@ class MyField final  {
   MyField(const MyField& src);
 
 
-  MyField& operator=(MyField&&) = default;
+  MyField& operator=(MyField&&) noexcept;
   MyField& operator=(const MyField& src);
   void __clear();
 
@@ -772,7 +772,7 @@ class MyStruct final  {
   MyStruct(const MyStruct& src);
 
 
-  MyStruct& operator=(MyStruct&&) = default;
+  MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
   void __clear();
  public:
@@ -881,7 +881,7 @@ class StructWithUnion final  {
   StructWithUnion(const StructWithUnion& src);
 
 
-  StructWithUnion& operator=(StructWithUnion&&) = default;
+  StructWithUnion& operator=(StructWithUnion&&) noexcept;
   StructWithUnion& operator=(const StructWithUnion& src);
   void __clear();
  public:
@@ -1011,7 +1011,7 @@ class RecursiveStruct final  {
   RecursiveStruct(const RecursiveStruct&) = default;
 
 
-  RecursiveStruct& operator=(RecursiveStruct&&) = default;
+  RecursiveStruct& operator=(RecursiveStruct&&) noexcept;
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
   void __clear();
@@ -1117,7 +1117,7 @@ class StructWithContainers final  {
   StructWithContainers(const StructWithContainers& src);
 
 
-  StructWithContainers& operator=(StructWithContainers&&) = default;
+  StructWithContainers& operator=(StructWithContainers&&) noexcept;
   StructWithContainers& operator=(const StructWithContainers& src);
   void __clear();
 
@@ -1269,7 +1269,7 @@ class StructWithSharedConst final  {
   StructWithSharedConst(const StructWithSharedConst&) = default;
 
 
-  StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
+  StructWithSharedConst& operator=(StructWithSharedConst&&) noexcept;
 
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
   void __clear();
@@ -1447,7 +1447,7 @@ class StructWithRef final  {
   StructWithRef(const StructWithRef& src);
 
 
-  StructWithRef& operator=(StructWithRef&&) = default;
+  StructWithRef& operator=(StructWithRef&&) noexcept;
   StructWithRef& operator=(const StructWithRef& src);
   void __clear();
  public:
@@ -1556,7 +1556,7 @@ class StructWithRefTypeUnique final  {
   StructWithRefTypeUnique(const StructWithRefTypeUnique& src);
 
 
-  StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
+  StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) noexcept;
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
   void __clear();
  public:
@@ -1666,7 +1666,7 @@ class StructWithRefTypeShared final  {
   StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
 
 
-  StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) = default;
+  StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) noexcept;
 
   StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
   void __clear();
@@ -1777,7 +1777,7 @@ class StructWithRefTypeSharedConst final  {
   StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
 
 
-  StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) = default;
+  StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) noexcept;
 
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
   void __clear();
@@ -1886,7 +1886,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
   StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
 
 
-  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) = default;
+  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) noexcept;
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
   void __clear();
  public:

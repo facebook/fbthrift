@@ -140,6 +140,15 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyDataField(std::move(other.MyDataField)),
     myEnum(std::move(other.myEnum)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyDataField = std::move(other.MyDataField);
+    this->myEnum = std::move(other.myEnum);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

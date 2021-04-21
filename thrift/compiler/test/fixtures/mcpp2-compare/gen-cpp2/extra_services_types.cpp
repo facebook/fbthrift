@@ -76,6 +76,24 @@ containerStruct2::containerStruct2(containerStruct2&& other) noexcept  :
     req_fieldE(std::move(other.req_fieldE)),
     opt_fieldE(std::move(other.opt_fieldE)),
     __isset(other.__isset) {}
+
+containerStruct2& containerStruct2::operator=(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->req_fieldA = std::move(other.req_fieldA);
+    this->opt_fieldA = std::move(other.opt_fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->req_fieldB = std::move(other.req_fieldB);
+    this->opt_fieldB = std::move(other.opt_fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->req_fieldC = std::move(other.req_fieldC);
+    this->opt_fieldC = std::move(other.opt_fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->req_fieldE = std::move(other.req_fieldE);
+    this->opt_fieldE = std::move(other.opt_fieldE);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

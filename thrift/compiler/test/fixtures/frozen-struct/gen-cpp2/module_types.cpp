@@ -85,6 +85,17 @@ ModuleA::ModuleA(ModuleA&& other) noexcept  :
     inclAField(std::move(other.inclAField)),
     inclBField(std::move(other.inclBField)),
     __isset(other.__isset) {}
+
+ModuleA& ModuleA::operator=(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept {
+    this->i32Field = std::move(other.i32Field);
+    this->strField = std::move(other.strField);
+    this->listField = std::move(other.listField);
+    this->mapField = std::move(other.mapField);
+    this->inclAField = std::move(other.inclAField);
+    this->inclBField = std::move(other.inclBField);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

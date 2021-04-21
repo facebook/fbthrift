@@ -194,6 +194,16 @@ Vehicle::Vehicle(Vehicle&& other) noexcept  :
     name(std::move(other.name)),
     hasAC(std::move(other.hasAC)),
     __isset(other.__isset) {}
+
+Vehicle& Vehicle::operator=(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept {
+    this->color = std::move(other.color);
+    this->licensePlate = std::move(other.licensePlate);
+    this->description = std::move(other.description);
+    this->name = std::move(other.name);
+    this->hasAC = std::move(other.hasAC);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -360,6 +370,21 @@ Person::Person(Person&& other) noexcept  :
     afraidOfAnimal(std::move(other.afraidOfAnimal)),
     vehicles(std::move(other.vehicles)),
     __isset(other.__isset) {}
+
+Person& Person::operator=(FOLLY_MAYBE_UNUSED Person&& other) noexcept {
+    this->id = std::move(other.id);
+    this->name = std::move(other.name);
+    this->age = std::move(other.age);
+    this->address = std::move(other.address);
+    this->favoriteColor = std::move(other.favoriteColor);
+    this->friends = std::move(other.friends);
+    this->bestFriend = std::move(other.bestFriend);
+    this->petNames = std::move(other.petNames);
+    this->afraidOfAnimal = std::move(other.afraidOfAnimal);
+    this->vehicles = std::move(other.vehicles);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

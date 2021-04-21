@@ -419,6 +419,20 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyStringField2 = std::move(other.MyStringField2);
+    this->MyBinaryField = std::move(other.MyBinaryField);
+    this->MyBinaryField2 = std::move(other.MyBinaryField2);
+    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->MyBinaryListField4 = std::move(other.MyBinaryListField4);
+    this->MyMapEnumAndInt = std::move(other.MyMapEnumAndInt);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1174,6 +1188,26 @@ AnException::AnException(AnException&& other) noexcept  :
     union_typedef(std::move(other.union_typedef)),
     a_union_typedef_list(std::move(other.a_union_typedef_list)),
     __isset(other.__isset) {}
+
+AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noexcept {
+    this->code = std::move(other.code);
+    this->req_code = std::move(other.req_code);
+    this->message2 = std::move(other.message2);
+    this->req_message = std::move(other.req_message);
+    this->exception_list = std::move(other.exception_list);
+    this->exception_set = std::move(other.exception_set);
+    this->exception_map = std::move(other.exception_map);
+    this->req_exception_map = std::move(other.req_exception_map);
+    this->enum_field = std::move(other.enum_field);
+    this->enum_container = std::move(other.enum_container);
+    this->a_struct = std::move(other.a_struct);
+    this->a_set_struct = std::move(other.a_set_struct);
+    this->a_union_list = std::move(other.a_union_list);
+    this->union_typedef = std::move(other.union_typedef);
+    this->a_union_typedef_list = std::move(other.a_union_typedef_list);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1531,6 +1565,14 @@ AnotherException::AnotherException(AnotherException&& other) noexcept  :
     req_code(std::move(other.req_code)),
     message(std::move(other.message)),
     __isset(other.__isset) {}
+
+AnotherException& AnotherException::operator=(FOLLY_MAYBE_UNUSED AnotherException&& other) noexcept {
+    this->code = std::move(other.code);
+    this->req_code = std::move(other.req_code);
+    this->message = std::move(other.message);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2596,6 +2638,15 @@ MyIncludedStruct::MyIncludedStruct(MyIncludedStruct&& other) noexcept  :
     ARefField(std::move(other.ARefField)),
     ARequiredField(std::move(other.ARequiredField)),
     __isset(other.__isset) {}
+
+MyIncludedStruct& MyIncludedStruct::operator=(FOLLY_MAYBE_UNUSED MyIncludedStruct&& other) noexcept {
+    this->MyIncludedInt = std::move(other.MyIncludedInt);
+    this->MyIncludedStruct = std::move(other.MyIncludedStruct);
+    this->ARefField = std::move(other.ARefField);
+    this->ARequiredField = std::move(other.ARequiredField);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -3528,6 +3579,13 @@ ComplexContainerStruct::ComplexContainerStruct(ComplexContainerStruct&& other) n
     map_of_iobufs(std::move(other.map_of_iobufs)),
     map_of_iobuf_ptrs(std::move(other.map_of_iobuf_ptrs)),
     __isset(other.__isset) {}
+
+ComplexContainerStruct& ComplexContainerStruct::operator=(FOLLY_MAYBE_UNUSED ComplexContainerStruct&& other) noexcept {
+    this->map_of_iobufs = std::move(other.map_of_iobufs);
+    this->map_of_iobuf_ptrs = std::move(other.map_of_iobuf_ptrs);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

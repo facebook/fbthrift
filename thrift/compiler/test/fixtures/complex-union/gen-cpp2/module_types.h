@@ -175,7 +175,7 @@ class ComplexUnion final  {
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs)
+  ComplexUnion(ComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -262,7 +262,7 @@ class ComplexUnion final  {
     }
   }
 
-  ComplexUnion& operator=(ComplexUnion&& rhs) {
+  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -754,7 +754,7 @@ class ListUnion final  {
   ListUnion()
       : type_(Type::__EMPTY__) {}
 
-  ListUnion(ListUnion&& rhs)
+  ListUnion(ListUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -801,7 +801,7 @@ class ListUnion final  {
     }
   }
 
-  ListUnion& operator=(ListUnion&& rhs) {
+  ListUnion& operator=(ListUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1043,7 +1043,7 @@ class DataUnion final  {
   DataUnion()
       : type_(Type::__EMPTY__) {}
 
-  DataUnion(DataUnion&& rhs)
+  DataUnion(DataUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1090,7 +1090,7 @@ class DataUnion final  {
     }
   }
 
-  DataUnion& operator=(DataUnion&& rhs) {
+  DataUnion& operator=(DataUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1335,7 +1335,7 @@ class Val final  {
   Val(const Val&) = default;
 
 
-  Val& operator=(Val&&) = default;
+  Val& operator=(Val&&) noexcept;
 
   Val& operator=(const Val&) = default;
   void __clear();
@@ -1509,7 +1509,7 @@ class ValUnion final  {
   ValUnion()
       : type_(Type::__EMPTY__) {}
 
-  ValUnion(ValUnion&& rhs)
+  ValUnion(ValUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1556,7 +1556,7 @@ class ValUnion final  {
     }
   }
 
-  ValUnion& operator=(ValUnion&& rhs) {
+  ValUnion& operator=(ValUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1798,7 +1798,7 @@ class VirtualComplexUnion  {
   VirtualComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  VirtualComplexUnion(VirtualComplexUnion&& rhs)
+  VirtualComplexUnion(VirtualComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1845,7 +1845,7 @@ class VirtualComplexUnion  {
     }
   }
 
-  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) {
+  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -2190,7 +2190,7 @@ class NonCopyableUnion final  {
   NonCopyableUnion()
       : type_(Type::__EMPTY__) {}
 
-  NonCopyableUnion(NonCopyableUnion&& rhs)
+  NonCopyableUnion(NonCopyableUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2209,7 +2209,7 @@ class NonCopyableUnion final  {
     rhs.__clear();
   }
 
-  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) {
+  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

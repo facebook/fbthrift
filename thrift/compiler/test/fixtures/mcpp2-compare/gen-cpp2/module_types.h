@@ -1395,7 +1395,7 @@ class MyStruct final  {
   MyStruct(const MyStruct&) = default;
 
 
-  MyStruct& operator=(MyStruct&&) = default;
+  MyStruct& operator=(MyStruct&&) noexcept;
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
@@ -1788,7 +1788,7 @@ class SimpleUnion  {
   SimpleUnion()
       : type_(Type::__EMPTY__) {}
 
-  SimpleUnion(SimpleUnion&& rhs)
+  SimpleUnion(SimpleUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1835,7 +1835,7 @@ class SimpleUnion  {
     }
   }
 
-  SimpleUnion& operator=(SimpleUnion&& rhs) {
+  SimpleUnion& operator=(SimpleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -2089,7 +2089,7 @@ class ComplexUnion final  {
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs)
+  ComplexUnion(ComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2386,7 +2386,7 @@ class ComplexUnion final  {
     }
   }
 
-  ComplexUnion& operator=(ComplexUnion&& rhs) {
+  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -4143,11 +4143,11 @@ class AnException final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -4175,7 +4175,7 @@ class AnException final : public apache::thrift::TException {
   AnException(const AnException&) = default;
 
 
-  AnException& operator=(AnException&&) = default;
+  AnException& operator=(AnException&&) noexcept;
 
   AnException& operator=(const AnException&) = default;
   void __clear();
@@ -4725,11 +4725,11 @@ class AnotherException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -4752,7 +4752,7 @@ class AnotherException : public apache::thrift::TException {
   AnotherException(const AnotherException&) = default;
 
 
-  AnotherException& operator=(AnotherException&&) = default;
+  AnotherException& operator=(AnotherException&&) noexcept;
 
   AnotherException& operator=(const AnotherException&) = default;
   void __clear();
@@ -6525,7 +6525,7 @@ class MyIncludedStruct final  {
   MyIncludedStruct(const MyIncludedStruct& src);
 
 
-  MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
+  MyIncludedStruct& operator=(MyIncludedStruct&&) noexcept;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
   void __clear();
  private:
@@ -7744,7 +7744,7 @@ class ComplexContainerStruct final  {
   ComplexContainerStruct(const ComplexContainerStruct&) = default;
 
 
-  ComplexContainerStruct& operator=(ComplexContainerStruct&&) = default;
+  ComplexContainerStruct& operator=(ComplexContainerStruct&&) noexcept;
 
   ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
   void __clear();
@@ -8020,7 +8020,7 @@ class FloatUnion final  {
   FloatUnion()
       : type_(Type::__EMPTY__) {}
 
-  FloatUnion(FloatUnion&& rhs)
+  FloatUnion(FloatUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -8067,7 +8067,7 @@ class FloatUnion final  {
     }
   }
 
-  FloatUnion& operator=(FloatUnion&& rhs) {
+  FloatUnion& operator=(FloatUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

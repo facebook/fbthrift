@@ -584,7 +584,7 @@ class decorated_struct final  {
   decorated_struct(const decorated_struct&) = default;
 
 
-  decorated_struct& operator=(decorated_struct&&) = default;
+  decorated_struct& operator=(decorated_struct&&) noexcept;
 
   decorated_struct& operator=(const decorated_struct&) = default;
   void __clear();
@@ -696,7 +696,7 @@ class ContainerStruct final  {
   ContainerStruct(const ContainerStruct&) = default;
 
 
-  ContainerStruct& operator=(ContainerStruct&&) = default;
+  ContainerStruct& operator=(ContainerStruct&&) noexcept;
 
   ContainerStruct& operator=(const ContainerStruct&) = default;
   void __clear();
@@ -1028,7 +1028,7 @@ class CppTypeStruct final  {
   CppTypeStruct(const CppTypeStruct&) = default;
 
 
-  CppTypeStruct& operator=(CppTypeStruct&&) = default;
+  CppTypeStruct& operator=(CppTypeStruct&&) noexcept;
 
   CppTypeStruct& operator=(const CppTypeStruct&) = default;
   void __clear();
@@ -1134,7 +1134,7 @@ class VirtualStruct  {
   VirtualStruct(const VirtualStruct&) = default;
 
 
-  VirtualStruct& operator=(VirtualStruct&&) = default;
+  VirtualStruct& operator=(VirtualStruct&&) noexcept;
 
   VirtualStruct& operator=(const VirtualStruct&) = default;
   void __clear();
@@ -1245,7 +1245,7 @@ class MyStructWithForwardRefEnum final  {
   MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 
 
-  MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) = default;
+  MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) noexcept;
 
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum&) = default;
   void __clear();
@@ -1665,7 +1665,7 @@ class ComplexString final  {
   ComplexString(const ComplexString&) = default;
 
 
-  ComplexString& operator=(ComplexString&&) = default;
+  ComplexString& operator=(ComplexString&&) noexcept;
 
   ComplexString& operator=(const ComplexString&) = default;
   void __clear();
@@ -1810,7 +1810,7 @@ class ComplexNestedWithDefault final  {
   ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
 
 
-  ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) = default;
+  ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) noexcept;
 
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
   void __clear();
@@ -1958,7 +1958,7 @@ class MinPadding final  {
   MinPadding(const MinPadding&) = default;
 
 
-  MinPadding& operator=(MinPadding&&) = default;
+  MinPadding& operator=(MinPadding&&) noexcept;
 
   MinPadding& operator=(const MinPadding&) = default;
   void __clear();
@@ -2250,7 +2250,7 @@ class MyStruct final  {
   MyStruct(const MyStruct&) = default;
 
 
-  MyStruct& operator=(MyStruct&&) = default;
+  MyStruct& operator=(MyStruct&&) noexcept;
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
@@ -2563,7 +2563,7 @@ class AnnotatedTypes final  {
   AnnotatedTypes(const AnnotatedTypes&) = default;
 
 
-  AnnotatedTypes& operator=(AnnotatedTypes&&) = default;
+  AnnotatedTypes& operator=(AnnotatedTypes&&) noexcept;
 
   AnnotatedTypes& operator=(const AnnotatedTypes&) = default;
   void __clear();
@@ -2706,7 +2706,7 @@ class ForwardUsageStruct final  {
   ForwardUsageStruct(const ForwardUsageStruct&) = default;
 
 
-  ForwardUsageStruct& operator=(ForwardUsageStruct&&) = default;
+  ForwardUsageStruct& operator=(ForwardUsageStruct&&) noexcept;
 
   ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
   void __clear();
@@ -2811,7 +2811,7 @@ class ForwardUsageRoot final  {
   ForwardUsageRoot(const ForwardUsageRoot& src);
 
 
-  ForwardUsageRoot& operator=(ForwardUsageRoot&&) = default;
+  ForwardUsageRoot& operator=(ForwardUsageRoot&&) noexcept;
   ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
   void __clear();
  private:
@@ -2929,7 +2929,7 @@ class ForwardUsageByRef final  {
   ForwardUsageByRef(const ForwardUsageByRef&) = default;
 
 
-  ForwardUsageByRef& operator=(ForwardUsageByRef&&) = default;
+  ForwardUsageByRef& operator=(ForwardUsageByRef&&) noexcept;
 
   ForwardUsageByRef& operator=(const ForwardUsageByRef&) = default;
   void __clear();
@@ -3035,7 +3035,7 @@ class NoexceptMoveEmpty final  {
   NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
 
 
-  NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) noexcept = default;
+  NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) = default;
 
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
   void __clear();
@@ -3104,7 +3104,7 @@ class NoexceptMoveSimpleStruct final  {
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
 
 
-  NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) noexcept = default;
+  NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) = default;
 
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
   void __clear();
@@ -3211,7 +3211,7 @@ class NoexceptMoveComplexStruct final  {
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
 
 
-  NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept = default;
+  NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept;
 
   NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct&) = default;
   void __clear();
@@ -3914,7 +3914,7 @@ class AllocatorAware final  {
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
 
-  AllocatorAware& operator=(AllocatorAware&&) = default;
+  AllocatorAware& operator=(AllocatorAware&&) noexcept;
 
   AllocatorAware& operator=(const AllocatorAware&) = default;
   void __clear();
@@ -4178,7 +4178,7 @@ class AllocatorAware2 final  {
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
 
-  AllocatorAware2& operator=(AllocatorAware2&&) = default;
+  AllocatorAware2& operator=(AllocatorAware2&&) noexcept;
 
   AllocatorAware2& operator=(const AllocatorAware2&) = default;
   void __clear();
@@ -4287,7 +4287,7 @@ class TypedefStruct final  {
   TypedefStruct(const TypedefStruct&) = default;
 
 
-  TypedefStruct& operator=(TypedefStruct&&) = default;
+  TypedefStruct& operator=(TypedefStruct&&) noexcept;
 
   TypedefStruct& operator=(const TypedefStruct&) = default;
   void __clear();

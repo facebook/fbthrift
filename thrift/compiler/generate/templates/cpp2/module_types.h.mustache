@@ -90,11 +90,11 @@ class <%struct:name%> <%!
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   <%/struct:thrift_uri%>
   <%#struct:exception?%>
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::<%struct:exception_kind%>;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::<%struct:exception_safety%>;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::<%struct:exception_blame%>;
   <%/struct:exception?%>
 
@@ -220,12 +220,12 @@ class <%struct:name%> <%!
 <% > module_types_h/alloc_extended_ctors%>
 <%/struct:cpp_allocator%>
 
-<%#struct:cpp_noexcept_move%>
-  <%struct:name%>& operator=(<%struct:name%>&&) noexcept = default;
-<%/struct:cpp_noexcept_move%>
-<%^struct:cpp_noexcept_move%>
+<%#struct:is_eligible_for_constexpr?%>
   <%struct:name%>& operator=(<%struct:name%>&&) = default;
-<%/struct:cpp_noexcept_move%>
+<%/struct:is_eligible_for_constexpr?%>
+<%^struct:is_eligible_for_constexpr?%>
+  <%struct:name%>& operator=(<%struct:name%>&&) noexcept;
+<%/struct:is_eligible_for_constexpr?%>
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
 

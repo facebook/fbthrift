@@ -87,7 +87,7 @@ class Foo final  {
   Foo(const Foo& src);
 
 
-  Foo& operator=(Foo&&) = default;
+  Foo& operator=(Foo&&) noexcept;
   Foo& operator=(const Foo& src);
   void __clear();
  private:

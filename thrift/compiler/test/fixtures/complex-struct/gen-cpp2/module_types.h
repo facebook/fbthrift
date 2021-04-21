@@ -689,7 +689,7 @@ class MyStructFloatFieldThrowExp final  {
   MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
 
 
-  MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) = default;
+  MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) noexcept;
 
   MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp&) = default;
   void __clear();
@@ -900,7 +900,7 @@ class MyStructMapFloatThrowExp final  {
   MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
 
 
-  MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) = default;
+  MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) noexcept;
 
   MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp&) = default;
   void __clear();
@@ -1107,7 +1107,7 @@ class MyStruct final  {
   MyStruct(const MyStruct&) = default;
 
 
-  MyStruct& operator=(MyStruct&&) = default;
+  MyStruct& operator=(MyStruct&&) noexcept;
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
@@ -2094,7 +2094,7 @@ class SimpleStruct final  {
   SimpleStruct(const SimpleStruct&) = default;
 
 
-  SimpleStruct& operator=(SimpleStruct&&) = default;
+  SimpleStruct& operator=(SimpleStruct&&) noexcept;
 
   SimpleStruct& operator=(const SimpleStruct&) = default;
   void __clear();
@@ -2239,7 +2239,7 @@ class ComplexNestedStruct final  {
   ComplexNestedStruct(const ComplexNestedStruct&) = default;
 
 
-  ComplexNestedStruct& operator=(ComplexNestedStruct&&) = default;
+  ComplexNestedStruct& operator=(ComplexNestedStruct&&) noexcept;
 
   ComplexNestedStruct& operator=(const ComplexNestedStruct&) = default;
   void __clear();
@@ -2893,7 +2893,7 @@ class MyUnion final  {
   MyUnion()
       : type_(Type::__EMPTY__) {}
 
-  MyUnion(MyUnion&& rhs)
+  MyUnion(MyUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2980,7 +2980,7 @@ class MyUnion final  {
     }
   }
 
-  MyUnion& operator=(MyUnion&& rhs) {
+  MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -3447,7 +3447,7 @@ class defaultStruct final  {
   defaultStruct(const defaultStruct&) = default;
 
 
-  defaultStruct& operator=(defaultStruct&&) = default;
+  defaultStruct& operator=(defaultStruct&&) noexcept;
 
   defaultStruct& operator=(const defaultStruct&) = default;
   void __clear();
@@ -4249,7 +4249,7 @@ class MyStructTypeDef final  {
   MyStructTypeDef(const MyStructTypeDef&) = default;
 
 
-  MyStructTypeDef& operator=(MyStructTypeDef&&) = default;
+  MyStructTypeDef& operator=(MyStructTypeDef&&) noexcept;
 
   MyStructTypeDef& operator=(const MyStructTypeDef&) = default;
   void __clear();
@@ -4627,7 +4627,7 @@ class MyUnionFloatFieldThrowExp final  {
   MyUnionFloatFieldThrowExp()
       : type_(Type::__EMPTY__) {}
 
-  MyUnionFloatFieldThrowExp(MyUnionFloatFieldThrowExp&& rhs)
+  MyUnionFloatFieldThrowExp(MyUnionFloatFieldThrowExp&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -4694,7 +4694,7 @@ class MyUnionFloatFieldThrowExp final  {
     }
   }
 
-  MyUnionFloatFieldThrowExp& operator=(MyUnionFloatFieldThrowExp&& rhs) {
+  MyUnionFloatFieldThrowExp& operator=(MyUnionFloatFieldThrowExp&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -5057,7 +5057,7 @@ class TypeRemapped final  {
   TypeRemapped(const TypeRemapped&) = default;
 
 
-  TypeRemapped& operator=(TypeRemapped&&) = default;
+  TypeRemapped& operator=(TypeRemapped&&) noexcept;
 
   TypeRemapped& operator=(const TypeRemapped&) = default;
   void __clear();
@@ -5246,11 +5246,11 @@ class emptyXcep final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -5271,7 +5271,7 @@ class emptyXcep final : public apache::thrift::TException {
   emptyXcep(const emptyXcep&) = default;
 
 
-  emptyXcep& operator=(emptyXcep&&) = default;
+  emptyXcep& operator=(emptyXcep&&) noexcept;
 
   emptyXcep& operator=(const emptyXcep&) = default;
   void __clear();
@@ -5324,11 +5324,11 @@ class reqXcep final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -5350,7 +5350,7 @@ class reqXcep final : public apache::thrift::TException {
   reqXcep(const reqXcep&) = default;
 
 
-  reqXcep& operator=(reqXcep&&) = default;
+  reqXcep& operator=(reqXcep&&) noexcept;
 
   reqXcep& operator=(const reqXcep&) = default;
   void __clear();
@@ -5472,11 +5472,11 @@ class optXcep final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -5498,7 +5498,7 @@ class optXcep final : public apache::thrift::TException {
   optXcep(const optXcep&) = default;
 
 
-  optXcep& operator=(optXcep&&) = default;
+  optXcep& operator=(optXcep&&) noexcept;
 
   optXcep& operator=(const optXcep&) = default;
   void __clear();
@@ -5633,11 +5633,11 @@ class complexException final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -5659,7 +5659,7 @@ class complexException final : public apache::thrift::TException {
   complexException(const complexException&) = default;
 
 
-  complexException& operator=(complexException&&) = default;
+  complexException& operator=(complexException&&) noexcept;
 
   complexException& operator=(const complexException&) = default;
   void __clear();

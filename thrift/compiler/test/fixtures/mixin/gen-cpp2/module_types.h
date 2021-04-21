@@ -109,7 +109,7 @@ class Mixin1 final  {
   Mixin1(const Mixin1&) = default;
 
 
-  Mixin1& operator=(Mixin1&&) = default;
+  Mixin1& operator=(Mixin1&&) noexcept;
 
   Mixin1& operator=(const Mixin1&) = default;
   void __clear();
@@ -220,7 +220,7 @@ class Mixin2 final  {
   Mixin2(const Mixin2&) = default;
 
 
-  Mixin2& operator=(Mixin2&&) = default;
+  Mixin2& operator=(Mixin2&&) noexcept;
 
   Mixin2& operator=(const Mixin2&) = default;
   void __clear();
@@ -368,7 +368,7 @@ class Mixin3Base final  {
   Mixin3Base(const Mixin3Base&) = default;
 
 
-  Mixin3Base& operator=(Mixin3Base&&) = default;
+  Mixin3Base& operator=(Mixin3Base&&) noexcept;
 
   Mixin3Base& operator=(const Mixin3Base&) = default;
   void __clear();
@@ -479,7 +479,7 @@ class Foo final  {
   Foo(const Foo&) = default;
 
 
-  Foo& operator=(Foo&&) = default;
+  Foo& operator=(Foo&&) noexcept;
 
   Foo& operator=(const Foo&) = default;
   void __clear();

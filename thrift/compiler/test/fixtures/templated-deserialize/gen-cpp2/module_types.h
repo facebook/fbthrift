@@ -384,7 +384,7 @@ class containerStruct final  {
   containerStruct(const containerStruct& src);
 
 
-  containerStruct& operator=(containerStruct&&) = default;
+  containerStruct& operator=(containerStruct&&) noexcept;
   containerStruct& operator=(const containerStruct& src);
   void __clear();
 

@@ -544,6 +544,13 @@ structA::structA(structA&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
     __isset(other.__isset) {}
+
+structA& structA::operator=(FOLLY_MAYBE_UNUSED structA&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -914,6 +921,41 @@ structC::structC(structC&& other) noexcept  :
     o2(std::move(other.o2)),
     o3(std::move(other.o3)),
     __isset(other.__isset) {}
+
+structC& structC::operator=(FOLLY_MAYBE_UNUSED structC&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    this->d = std::move(other.d);
+    this->e = std::move(other.e);
+    this->f = std::move(other.f);
+    this->g = std::move(other.g);
+    this->h = std::move(other.h);
+    this->i = std::move(other.i);
+    this->j = std::move(other.j);
+    this->j1 = std::move(other.j1);
+    this->j2 = std::move(other.j2);
+    this->j3 = std::move(other.j3);
+    this->k = std::move(other.k);
+    this->k1 = std::move(other.k1);
+    this->k2 = std::move(other.k2);
+    this->k3 = std::move(other.k3);
+    this->l = std::move(other.l);
+    this->l1 = std::move(other.l1);
+    this->l2 = std::move(other.l2);
+    this->l3 = std::move(other.l3);
+    this->m1 = std::move(other.m1);
+    this->m2 = std::move(other.m2);
+    this->m3 = std::move(other.m3);
+    this->n1 = std::move(other.n1);
+    this->n2 = std::move(other.n2);
+    this->n3 = std::move(other.n3);
+    this->o1 = std::move(other.o1);
+    this->o2 = std::move(other.o2);
+    this->o3 = std::move(other.o3);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1629,6 +1671,17 @@ struct1::struct1(struct1&& other) noexcept  :
     field4(std::move(other.field4)),
     field5(std::move(other.field5)),
     __isset(other.__isset) {}
+
+struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    this->field4 = std::move(other.field4);
+    this->field5 = std::move(other.field5);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1819,6 +1872,18 @@ struct2::struct2(struct2&& other) noexcept  :
     fieldF(std::move(other.fieldF)),
     fieldG(std::move(other.fieldG)),
     __isset(other.__isset) {}
+
+struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2052,6 +2117,29 @@ struct3::struct3(struct3&& other) noexcept  :
     fieldQ(std::move(other.fieldQ)),
     fieldR(std::move(other.fieldR)),
     __isset(other.__isset) {}
+
+struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    this->fieldI = std::move(other.fieldI);
+    this->fieldJ = std::move(other.fieldJ);
+    this->fieldK = std::move(other.fieldK);
+    this->fieldL = std::move(other.fieldL);
+    this->fieldM = std::move(other.fieldM);
+    this->fieldN = std::move(other.fieldN);
+    this->fieldO = std::move(other.fieldO);
+    this->fieldP = std::move(other.fieldP);
+    this->fieldQ = std::move(other.fieldQ);
+    this->fieldR = std::move(other.fieldR);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2538,6 +2626,15 @@ struct4::struct4(struct4&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     __isset(other.__isset) {}
+
+struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2687,6 +2784,16 @@ struct5::struct5(struct5&& other) noexcept  :
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
     __isset(other.__isset) {}
+
+struct5& struct5::operator=(FOLLY_MAYBE_UNUSED struct5&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    this->field4 = std::move(other.field4);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2852,6 +2959,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(struct_binary&& other) noexcept  :
     bi(std::move(other.bi)),
     __isset(other.__isset) {}
+
+struct_binary& struct_binary::operator=(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept {
+    this->bi = std::move(other.bi);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -3955,6 +4068,16 @@ struct_with_indirections::struct_with_indirections(struct_with_indirections&& ot
     result(std::move(other.result)),
     phrase(std::move(other.phrase)),
     __isset(other.__isset) {}
+
+struct_with_indirections& struct_with_indirections::operator=(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept {
+    this->real = std::move(other.real);
+    this->fake = std::move(other.fake);
+    this->number = std::move(other.number);
+    this->result = std::move(other.result);
+    this->phrase = std::move(other.phrase);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

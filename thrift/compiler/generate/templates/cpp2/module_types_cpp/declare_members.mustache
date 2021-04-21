@@ -25,8 +25,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:is_large?%>
 <%^struct:is_eligible_for_constexpr?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-<%struct:name%>::<% > module_types_cpp/move_ctor%><%!
-%>THRIFT_IGNORE_ISSET_USE_WARNING_END
+<%struct:name%>::<% > module_types_cpp/move_ctor%>
+<%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
+<%#struct:fields_in_layout_order%>
+    this-><%field:cpp_name%> = std::move(other.<%field:cpp_name%>);
+<%/struct:fields_in_layout_order%>
+<%#struct:isset_fields?%>
+    __isset = other.__isset;
+<%/struct:isset_fields?%>
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%/struct:is_eligible_for_constexpr?%>
 

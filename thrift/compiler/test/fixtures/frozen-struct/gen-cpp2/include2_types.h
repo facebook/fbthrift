@@ -79,7 +79,7 @@ class IncludedB final  {
   IncludedB(const IncludedB&) = default;
 
 
-  IncludedB& operator=(IncludedB&&) = default;
+  IncludedB& operator=(IncludedB&&) noexcept;
 
   IncludedB& operator=(const IncludedB&) = default;
   void __clear();

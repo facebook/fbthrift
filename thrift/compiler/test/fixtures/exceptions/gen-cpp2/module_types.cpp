@@ -36,7 +36,11 @@ void TccStructTraits<::cpp2::Banal>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Banal::Banal(Banal&& other) noexcept { (void)other; }THRIFT_IGNORE_ISSET_USE_WARNING_END
+Banal::Banal(Banal&& other) noexcept { (void)other; }
+Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -107,6 +111,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
     message(std::move(other.message)) {}
 
+
+Fiery& Fiery::operator=(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept {
+    this->message = std::move(other.message);
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -185,6 +194,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
     sonnet(std::move(other.sonnet)),
     __isset(other.__isset) {}
+
+Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
+    this->sonnet = std::move(other.sonnet);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -272,6 +287,13 @@ ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
     __isset(other.__isset) {}
+
+ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept {
+    this->error_message = std::move(other.error_message);
+    this->internal_error_message = std::move(other.internal_error_message);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -369,6 +391,13 @@ CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
     __isset(other.__isset) {}
+
+CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept {
+    this->error_message = std::move(other.error_message);
+    this->internal_error_message = std::move(other.internal_error_message);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

@@ -40,6 +40,13 @@ Struct::Struct(Struct&& other) noexcept  :
     first(std::move(other.first)),
     second(std::move(other.second)),
     __isset(other.__isset) {}
+
+Struct& Struct::operator=(FOLLY_MAYBE_UNUSED Struct&& other) noexcept {
+    this->first = std::move(other.first);
+    this->second = std::move(other.second);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -177,6 +184,13 @@ BigStruct::BigStruct(BigStruct&& other) noexcept  :
     s(std::move(other.s)),
     id(std::move(other.id)),
     __isset(other.__isset) {}
+
+BigStruct& BigStruct::operator=(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept {
+    this->s = std::move(other.s);
+    this->id = std::move(other.id);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

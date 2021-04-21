@@ -80,6 +80,39 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     sByte(std::move(other.sByte)),
     mListList(std::move(other.mListList)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyDataField = std::move(other.MyDataField);
+    this->myEnum = std::move(other.myEnum);
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyByteField = std::move(other.MyByteField);
+    this->MyShortField = std::move(other.MyShortField);
+    this->MyLongField = std::move(other.MyLongField);
+    this->MyDoubleField = std::move(other.MyDoubleField);
+    this->lDouble = std::move(other.lDouble);
+    this->lShort = std::move(other.lShort);
+    this->lInteger = std::move(other.lInteger);
+    this->lLong = std::move(other.lLong);
+    this->lString = std::move(other.lString);
+    this->lBool = std::move(other.lBool);
+    this->lByte = std::move(other.lByte);
+    this->mShortString = std::move(other.mShortString);
+    this->mIntegerString = std::move(other.mIntegerString);
+    this->mStringMyStruct = std::move(other.mStringMyStruct);
+    this->mStringBool = std::move(other.mStringBool);
+    this->mIntegerInteger = std::move(other.mIntegerInteger);
+    this->mIntegerBool = std::move(other.mIntegerBool);
+    this->sShort = std::move(other.sShort);
+    this->sMyStruct = std::move(other.sMyStruct);
+    this->sLong = std::move(other.sLong);
+    this->sString = std::move(other.sString);
+    this->sByte = std::move(other.sByte);
+    this->mListList = std::move(other.mListList);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -624,6 +657,20 @@ MyStructTypeDef::MyStructTypeDef(MyStructTypeDef&& other) noexcept  :
     myListTypedef(std::move(other.myListTypedef)),
     myMapListOfTypeDef(std::move(other.myMapListOfTypeDef)),
     __isset(other.__isset) {}
+
+MyStructTypeDef& MyStructTypeDef::operator=(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->myLongTypeDef = std::move(other.myLongTypeDef);
+    this->myStringField = std::move(other.myStringField);
+    this->myStringTypedef = std::move(other.myStringTypedef);
+    this->myMapField = std::move(other.myMapField);
+    this->myMapTypedef = std::move(other.myMapTypedef);
+    this->myListField = std::move(other.myListField);
+    this->myListTypedef = std::move(other.myListTypedef);
+    this->myMapListOfTypeDef = std::move(other.myMapListOfTypeDef);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -975,7 +1022,11 @@ void TccStructTraits<::cpp2::emptyXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }THRIFT_IGNORE_ISSET_USE_WARNING_END
+emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
+emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1059,6 +1110,17 @@ complexException::complexException(complexException&& other) noexcept  :
     structError(std::move(other.structError)),
     lsMap(std::move(other.lsMap)),
     __isset(other.__isset) {}
+
+complexException& complexException::operator=(FOLLY_MAYBE_UNUSED complexException&& other) noexcept {
+    this->message = std::move(other.message);
+    this->listStrings = std::move(other.listStrings);
+    this->errorEnum = std::move(other.errorEnum);
+    this->unionError = std::move(other.unionError);
+    this->structError = std::move(other.structError);
+    this->lsMap = std::move(other.lsMap);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

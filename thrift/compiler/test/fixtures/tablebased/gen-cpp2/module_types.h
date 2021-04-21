@@ -196,7 +196,7 @@ class TrivialTypesStruct final  {
   TrivialTypesStruct(const TrivialTypesStruct& src);
 
 
-  TrivialTypesStruct& operator=(TrivialTypesStruct&&) = default;
+  TrivialTypesStruct& operator=(TrivialTypesStruct&&) noexcept;
   TrivialTypesStruct& operator=(const TrivialTypesStruct& src);
   void __clear();
 
@@ -462,7 +462,7 @@ class ContainerStruct final  {
   ContainerStruct(const ContainerStruct&) = default;
 
 
-  ContainerStruct& operator=(ContainerStruct&&) = default;
+  ContainerStruct& operator=(ContainerStruct&&) noexcept;
 
   ContainerStruct& operator=(const ContainerStruct&) = default;
   void __clear();
@@ -794,7 +794,7 @@ class ExampleUnion final  {
   ExampleUnion()
       : type_(Type::__EMPTY__) {}
 
-  ExampleUnion(ExampleUnion&& rhs)
+  ExampleUnion(ExampleUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -841,7 +841,7 @@ class ExampleUnion final  {
     }
   }
 
-  ExampleUnion& operator=(ExampleUnion&& rhs) {
+  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

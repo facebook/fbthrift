@@ -75,6 +75,15 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowEx
     myStringField(std::move(other.myStringField)),
     myFloatField(std::move(other.myFloatField)),
     __isset(other.__isset) {}
+
+MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->MyByteField = std::move(other.MyByteField);
+    this->myStringField = std::move(other.myStringField);
+    this->myFloatField = std::move(other.myFloatField);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -192,6 +201,13 @@ SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     age(std::move(other.age)),
     name(std::move(other.name)),
     __isset(other.__isset) {}
+
+SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
+    this->age = std::move(other.age);
+    this->name = std::move(other.name);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -377,6 +393,29 @@ ComplexNestedStruct::ComplexNestedStruct(ComplexNestedStruct&& other) noexcept  
     mapKeySetValInt(std::move(other.mapKeySetValInt)),
     mapKeyListValSet(std::move(other.mapKeyListValSet)),
     __isset(other.__isset) {}
+
+ComplexNestedStruct& ComplexNestedStruct::operator=(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept {
+    this->setOfSetOfInt = std::move(other.setOfSetOfInt);
+    this->listofListOfListOfListOfEnum = std::move(other.listofListOfListOfListOfEnum);
+    this->listOfListOfMyStruct = std::move(other.listOfListOfMyStruct);
+    this->setOfListOfListOfLong = std::move(other.setOfListOfListOfLong);
+    this->setOfSetOfsetOfLong = std::move(other.setOfSetOfsetOfLong);
+    this->mapStructListOfListOfLong = std::move(other.mapStructListOfListOfLong);
+    this->mKeyStructValInt = std::move(other.mKeyStructValInt);
+    this->listOfMapKeyIntValInt = std::move(other.listOfMapKeyIntValInt);
+    this->listOfMapKeyStrValList = std::move(other.listOfMapKeyStrValList);
+    this->mapKeySetValLong = std::move(other.mapKeySetValLong);
+    this->mapKeyListValLong = std::move(other.mapKeyListValLong);
+    this->mapKeyMapValMap = std::move(other.mapKeyMapValMap);
+    this->mapKeySetValMap = std::move(other.mapKeySetValMap);
+    this->NestedMaps = std::move(other.NestedMaps);
+    this->mapKeyIntValList = std::move(other.mapKeyIntValList);
+    this->mapKeyIntValSet = std::move(other.mapKeyIntValSet);
+    this->mapKeySetValInt = std::move(other.mapKeySetValInt);
+    this->mapKeyListValSet = std::move(other.mapKeyListValSet);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -838,6 +877,12 @@ reqXcep::reqXcep(reqXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)) {}
 
+
+reqXcep& reqXcep::operator=(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept {
+    this->message = std::move(other.message);
+    this->errorCode = std::move(other.errorCode);
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

@@ -176,8 +176,10 @@ inline bool is_ref(const t_field* f) {
 
 /**
  * Determines if the operations on the C++ representation of type can be
- * constexpr and, in particular, if the move constructor can be defined as
+ * constexpr and, in particular, if the move constructor and assignment
+ * operator can be defined as
  *   constexpr T(T&&) = default;
+ *   constexpr T& operator=(T&&) = default;
  */
 class is_eligible_for_constexpr {
  public:

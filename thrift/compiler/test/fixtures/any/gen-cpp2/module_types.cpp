@@ -64,6 +64,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     myString(std::move(other.myString)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->myString = std::move(other.myString);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -261,6 +267,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     myString(std::move(other.myString)),
     __isset(other.__isset) {}
+
+MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noexcept {
+    this->myString = std::move(other.myString);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

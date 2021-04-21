@@ -83,11 +83,11 @@ class Banal final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::PERMANENT;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::SAFE;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::CLIENT;
 
  public:
@@ -108,7 +108,7 @@ class Banal final : public apache::thrift::TException {
   Banal(const Banal&) = default;
 
 
-  Banal& operator=(Banal&&) = default;
+  Banal& operator=(Banal&&) noexcept;
 
   Banal& operator=(const Banal&) = default;
   void __clear();
@@ -161,11 +161,11 @@ class Fiery final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::TRANSIENT;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::SERVER;
 
  public:
@@ -192,7 +192,7 @@ class Fiery final : public apache::thrift::TException {
   Fiery(const Fiery&) = default;
 
 
-  Fiery& operator=(Fiery&&) = default;
+  Fiery& operator=(Fiery&&) noexcept;
 
   Fiery& operator=(const Fiery&) = default;
   void __clear();
@@ -283,11 +283,11 @@ class Serious final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::STATEFUL;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::SAFE;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -314,7 +314,7 @@ class Serious final : public apache::thrift::TException {
   Serious(const Serious&) = default;
 
 
-  Serious& operator=(Serious&&) = default;
+  Serious& operator=(Serious&&) noexcept;
 
   Serious& operator=(const Serious&) = default;
   void __clear();
@@ -411,11 +411,11 @@ class ComplexFieldNames final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::CLIENT;
 
  public:
@@ -442,7 +442,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   ComplexFieldNames(const ComplexFieldNames&) = default;
 
 
-  ComplexFieldNames& operator=(ComplexFieldNames&&) = default;
+  ComplexFieldNames& operator=(ComplexFieldNames&&) noexcept;
 
   ComplexFieldNames& operator=(const ComplexFieldNames&) = default;
   void __clear();
@@ -576,11 +576,11 @@ class CustomFieldNames final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -607,7 +607,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   CustomFieldNames(const CustomFieldNames&) = default;
 
 
-  CustomFieldNames& operator=(CustomFieldNames&&) = default;
+  CustomFieldNames& operator=(CustomFieldNames&&) noexcept;
 
   CustomFieldNames& operator=(const CustomFieldNames&) = default;
   void __clear();

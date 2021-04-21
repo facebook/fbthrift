@@ -239,7 +239,7 @@ class AStructB final  {
   AStructB(const AStructB&) = default;
 
 
-  AStructB& operator=(AStructB&&) = default;
+  AStructB& operator=(AStructB&&) noexcept;
 
   AStructB& operator=(const AStructB&) = default;
   void __clear();

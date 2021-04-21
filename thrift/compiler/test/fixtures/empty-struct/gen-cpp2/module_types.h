@@ -133,7 +133,7 @@ class Nada final  {
   Nada()
       : type_(Type::__EMPTY__) {}
 
-  Nada(Nada&& rhs)
+  Nada(Nada&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -160,7 +160,7 @@ class Nada final  {
     }
   }
 
-  Nada& operator=(Nada&& rhs) {
+  Nada& operator=(Nada&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

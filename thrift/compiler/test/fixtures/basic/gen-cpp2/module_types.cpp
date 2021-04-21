@@ -155,6 +155,18 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     readonly(std::move(other.readonly)),
     idempotent(std::move(other.idempotent)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyDataField = std::move(other.MyDataField);
+    this->myEnum = std::move(other.myEnum);
+    this->oneway = std::move(other.oneway);
+    this->readonly = std::move(other.readonly);
+    this->idempotent = std::move(other.idempotent);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

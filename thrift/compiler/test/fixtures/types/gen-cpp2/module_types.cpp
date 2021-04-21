@@ -171,6 +171,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(decorated_struct&& other) noexcept  :
     field(std::move(other.field)),
     __isset(other.__isset) {}
+
+decorated_struct& decorated_struct::operator=(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept {
+    this->field = std::move(other.field);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -271,6 +277,19 @@ ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
     fieldG(std::move(other.fieldG)),
     fieldH(std::move(other.fieldH)),
     __isset(other.__isset) {}
+
+ContainerStruct& ContainerStruct::operator=(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -460,6 +479,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(CppTypeStruct&& other) noexcept  :
     fieldA(std::move(other.fieldA)),
     __isset(other.__isset) {}
+
+CppTypeStruct& CppTypeStruct::operator=(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -554,6 +579,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 VirtualStruct::VirtualStruct(VirtualStruct&& other) noexcept  :
     MyIntField(std::move(other.MyIntField)),
     __isset(other.__isset) {}
+
+VirtualStruct& VirtualStruct::operator=(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -641,6 +672,13 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(MyStructWithForwardRefEnu
     a(std::move(other.a)),
     b(std::move(other.b)),
     __isset(other.__isset) {}
+
+MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -938,6 +976,13 @@ ComplexString::ComplexString(ComplexString&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
     __isset(other.__isset) {}
+
+ComplexString& ComplexString::operator=(FOLLY_MAYBE_UNUSED ComplexString&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1043,6 +1088,13 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(ComplexNestedWithDefault&& ot
     z(std::move(other.z)),
     n(std::move(other.n)),
     __isset(other.__isset) {}
+
+ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault&& other) noexcept {
+    this->z = std::move(other.z);
+    this->n = std::move(other.n);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1163,6 +1215,15 @@ MinPadding::MinPadding(MinPadding&& other) noexcept  :
     small(std::move(other.small)),
     tiny(std::move(other.tiny)) {}
 
+
+MinPadding& MinPadding::operator=(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept {
+    this->big = std::move(other.big);
+    this->biggish = std::move(other.biggish);
+    this->medium = std::move(other.medium);
+    this->small = std::move(other.small);
+    this->tiny = std::move(other.tiny);
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1333,6 +1394,15 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     majorVer(std::move(other.majorVer)),
     data(std::move(other.data)),
     __isset(other.__isset) {}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->majorVer = std::move(other.majorVer);
+    this->data = std::move(other.data);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1513,6 +1583,13 @@ AnnotatedTypes::AnnotatedTypes(AnnotatedTypes&& other) noexcept  :
     binary_field(std::move(other.binary_field)),
     list_field(std::move(other.list_field)),
     __isset(other.__isset) {}
+
+AnnotatedTypes& AnnotatedTypes::operator=(FOLLY_MAYBE_UNUSED AnnotatedTypes&& other) noexcept {
+    this->binary_field = std::move(other.binary_field);
+    this->list_field = std::move(other.list_field);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1604,6 +1681,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageStruct::ForwardUsageStruct(ForwardUsageStruct&& other) noexcept  :
     foo(std::move(other.foo)),
     __isset(other.__isset) {}
+
+ForwardUsageStruct& ForwardUsageStruct::operator=(FOLLY_MAYBE_UNUSED ForwardUsageStruct&& other) noexcept {
+    this->foo = std::move(other.foo);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1725,6 +1808,13 @@ ForwardUsageRoot::ForwardUsageRoot(ForwardUsageRoot&& other) noexcept  :
     ForwardUsageStruct(std::move(other.ForwardUsageStruct)),
     ForwardUsageByRef(std::move(other.ForwardUsageByRef)),
     __isset(other.__isset) {}
+
+ForwardUsageRoot& ForwardUsageRoot::operator=(FOLLY_MAYBE_UNUSED ForwardUsageRoot&& other) noexcept {
+    this->ForwardUsageStruct = std::move(other.ForwardUsageStruct);
+    this->ForwardUsageByRef = std::move(other.ForwardUsageByRef);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -1862,6 +1952,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageByRef::ForwardUsageByRef(ForwardUsageByRef&& other) noexcept  :
     foo(std::move(other.foo)),
     __isset(other.__isset) {}
+
+ForwardUsageByRef& ForwardUsageByRef::operator=(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept {
+    this->foo = std::move(other.foo);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2133,6 +2229,20 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
+
+NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct&& other) noexcept {
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyStringField2 = std::move(other.MyStringField2);
+    this->MyBinaryField = std::move(other.MyBinaryField);
+    this->MyBinaryField2 = std::move(other.MyBinaryField2);
+    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->MyBinaryListField4 = std::move(other.MyBinaryListField4);
+    this->MyMapEnumAndInt = std::move(other.MyMapEnumAndInt);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2446,6 +2556,16 @@ AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
     aa_string(std::move(other.aa_string)),
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
+
+AllocatorAware& AllocatorAware::operator=(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept {
+    this->aa_list = std::move(other.aa_list);
+    this->aa_set = std::move(other.aa_set);
+    this->aa_map = std::move(other.aa_map);
+    this->aa_string = std::move(other.aa_string);
+    this->not_a_container = std::move(other.not_a_container);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2596,6 +2716,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
+
+AllocatorAware2& AllocatorAware2::operator=(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept {
+    this->not_a_container = std::move(other.not_a_container);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -2684,6 +2810,14 @@ TypedefStruct::TypedefStruct(TypedefStruct&& other) noexcept  :
     IntTypedef_field(std::move(other.IntTypedef_field)),
     UintTypedef_field(std::move(other.UintTypedef_field)),
     __isset(other.__isset) {}
+
+TypedefStruct& TypedefStruct::operator=(FOLLY_MAYBE_UNUSED TypedefStruct&& other) noexcept {
+    this->i32_field = std::move(other.i32_field);
+    this->IntTypedef_field = std::move(other.IntTypedef_field);
+    this->UintTypedef_field = std::move(other.UintTypedef_field);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

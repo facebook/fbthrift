@@ -293,6 +293,33 @@ containerStruct::containerStruct(containerStruct&& other) noexcept  :
     fieldU(std::move(other.fieldU)),
     fieldX(std::move(other.fieldX)),
     __isset(other.__isset) {}
+
+containerStruct& containerStruct::operator=(FOLLY_MAYBE_UNUSED containerStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    this->fieldI = std::move(other.fieldI);
+    this->fieldJ = std::move(other.fieldJ);
+    this->fieldK = std::move(other.fieldK);
+    this->fieldL = std::move(other.fieldL);
+    this->fieldM = std::move(other.fieldM);
+    this->fieldN = std::move(other.fieldN);
+    this->fieldO = std::move(other.fieldO);
+    this->fieldP = std::move(other.fieldP);
+    this->fieldQ = std::move(other.fieldQ);
+    this->fieldR = std::move(other.fieldR);
+    this->fieldS = std::move(other.fieldS);
+    this->fieldT = std::move(other.fieldT);
+    this->fieldU = std::move(other.fieldU);
+    this->fieldX = std::move(other.fieldX);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

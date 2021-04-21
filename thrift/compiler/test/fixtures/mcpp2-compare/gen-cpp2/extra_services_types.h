@@ -135,7 +135,7 @@ class containerStruct2 final  {
   containerStruct2(const containerStruct2&) = default;
 
 
-  containerStruct2& operator=(containerStruct2&&) = default;
+  containerStruct2& operator=(containerStruct2&&) noexcept;
 
   containerStruct2& operator=(const containerStruct2&) = default;
   void __clear();

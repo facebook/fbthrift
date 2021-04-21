@@ -109,7 +109,7 @@ class InitialResponse final  {
   InitialResponse(const InitialResponse&) = default;
 
 
-  InitialResponse& operator=(InitialResponse&&) = default;
+  InitialResponse& operator=(InitialResponse&&) noexcept;
 
   InitialResponse& operator=(const InitialResponse&) = default;
   void __clear();
@@ -220,7 +220,7 @@ class FinalResponse final  {
   FinalResponse(const FinalResponse&) = default;
 
 
-  FinalResponse& operator=(FinalResponse&&) = default;
+  FinalResponse& operator=(FinalResponse&&) noexcept;
 
   FinalResponse& operator=(const FinalResponse&) = default;
   void __clear();
@@ -331,7 +331,7 @@ class SinkPayload final  {
   SinkPayload(const SinkPayload&) = default;
 
 
-  SinkPayload& operator=(SinkPayload&&) = default;
+  SinkPayload& operator=(SinkPayload&&) noexcept;
 
   SinkPayload& operator=(const SinkPayload&) = default;
   void __clear();
@@ -442,7 +442,7 @@ class CompatibleWithKeywordSink final  {
   CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 
 
-  CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) = default;
+  CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) noexcept;
 
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
   void __clear();
@@ -534,11 +534,11 @@ class InitialException final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -559,7 +559,7 @@ class InitialException final : public apache::thrift::TException {
   InitialException(const InitialException&) = default;
 
 
-  InitialException& operator=(InitialException&&) = default;
+  InitialException& operator=(InitialException&&) noexcept;
 
   InitialException& operator=(const InitialException&) = default;
   void __clear();
@@ -655,11 +655,11 @@ class SinkException1 final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -680,7 +680,7 @@ class SinkException1 final : public apache::thrift::TException {
   SinkException1(const SinkException1&) = default;
 
 
-  SinkException1& operator=(SinkException1&&) = default;
+  SinkException1& operator=(SinkException1&&) noexcept;
 
   SinkException1& operator=(const SinkException1&) = default;
   void __clear();
@@ -776,11 +776,11 @@ class SinkException2 final : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind = 
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety = 
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
          ::apache::thrift::ExceptionSafety::UNSPECIFIED;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame = 
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
          ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
@@ -802,7 +802,7 @@ class SinkException2 final : public apache::thrift::TException {
   SinkException2(const SinkException2&) = default;
 
 
-  SinkException2& operator=(SinkException2&&) = default;
+  SinkException2& operator=(SinkException2&&) noexcept;
 
   SinkException2& operator=(const SinkException2&) = default;
   void __clear();

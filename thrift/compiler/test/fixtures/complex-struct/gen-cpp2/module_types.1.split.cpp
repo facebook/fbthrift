@@ -40,6 +40,13 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& ot
     myLongField(std::move(other.myLongField)),
     mapListOfFloats(std::move(other.mapListOfFloats)),
     __isset(other.__isset) {}
+
+MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->mapListOfFloats = std::move(other.mapListOfFloats);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -211,6 +218,33 @@ defaultStruct::defaultStruct(defaultStruct&& other) noexcept  :
     emptyMap(std::move(other.emptyMap)),
     enumMapDFset(std::move(other.enumMapDFset)),
     __isset(other.__isset) {}
+
+defaultStruct& defaultStruct::operator=(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept {
+    this->myLongDFset = std::move(other.myLongDFset);
+    this->myLongDF = std::move(other.myLongDF);
+    this->portDFset = std::move(other.portDFset);
+    this->portNum = std::move(other.portNum);
+    this->myBinaryDFset = std::move(other.myBinaryDFset);
+    this->myBinary = std::move(other.myBinary);
+    this->myByteDFSet = std::move(other.myByteDFSet);
+    this->myByte = std::move(other.myByte);
+    this->myDoubleDFset = std::move(other.myDoubleDFset);
+    this->myDoubleDFZero = std::move(other.myDoubleDFZero);
+    this->myDouble = std::move(other.myDouble);
+    this->field3 = std::move(other.field3);
+    this->myList = std::move(other.myList);
+    this->mySet = std::move(other.mySet);
+    this->simpleStruct = std::move(other.simpleStruct);
+    this->listStructDFset = std::move(other.listStructDFset);
+    this->myUnion = std::move(other.myUnion);
+    this->listUnionDFset = std::move(other.listUnionDFset);
+    this->mapNestlistStructDfSet = std::move(other.mapNestlistStructDfSet);
+    this->mapJavaTypeDFset = std::move(other.mapJavaTypeDFset);
+    this->emptyMap = std::move(other.emptyMap);
+    this->enumMapDFset = std::move(other.enumMapDFset);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -820,6 +854,15 @@ TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
     BigInteger(std::move(other.BigInteger)),
     binaryTestBuffer(std::move(other.binaryTestBuffer)),
     __isset(other.__isset) {}
+
+TypeRemapped& TypeRemapped::operator=(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept {
+    this->lsMap = std::move(other.lsMap);
+    this->ioMap = std::move(other.ioMap);
+    this->BigInteger = std::move(other.BigInteger);
+    this->binaryTestBuffer = std::move(other.binaryTestBuffer);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
@@ -953,6 +996,13 @@ optXcep::optXcep(optXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)),
     __isset(other.__isset) {}
+
+optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
+    this->message = std::move(other.message);
+    this->errorCode = std::move(other.errorCode);
+    __isset = other.__isset;
+    return *this;
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 

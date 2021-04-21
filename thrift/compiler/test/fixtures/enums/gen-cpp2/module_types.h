@@ -141,7 +141,7 @@ class SomeStruct final  {
   SomeStruct(const SomeStruct&) = default;
 
 
-  SomeStruct& operator=(SomeStruct&&) = default;
+  SomeStruct& operator=(SomeStruct&&) noexcept;
 
   SomeStruct& operator=(const SomeStruct&) = default;
   void __clear();
