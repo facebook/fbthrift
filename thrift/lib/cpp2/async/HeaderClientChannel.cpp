@@ -516,7 +516,6 @@ void HeaderClientChannel::sendRequestResponse(
 std::unique_ptr<folly::IOBuf>
 HeaderClientChannel::ClientFramingHandler::addFrame(
     unique_ptr<IOBuf> buf, THeader* header) {
-  channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
   return header->addHeader(
       std::move(buf), channel_.getPersistentWriteHeaders());

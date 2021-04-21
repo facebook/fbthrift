@@ -21,12 +21,6 @@
 namespace apache {
 namespace thrift {
 
-void HeaderChannelTrait::updateClientType(CLIENT_TYPE ct) {
-  if (prevClientType_ != ct) {
-    prevClientType_ = ct;
-  }
-}
-
 void HeaderChannelTrait::setClientType(CLIENT_TYPE ct) {
   checkSupportedClient(ct);
   clientType_ = ct;

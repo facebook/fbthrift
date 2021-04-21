@@ -71,8 +71,6 @@ void HeaderServerChannel::destroy() {
 // Header framing
 unique_ptr<IOBuf> HeaderServerChannel::ServerFramingHandler::addFrame(
     unique_ptr<IOBuf> buf, THeader* header) {
-  channel_.updateClientType(header->getClientType());
-
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
