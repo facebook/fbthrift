@@ -157,13 +157,7 @@ if (BUILD_SHARED_LIBS)
 endif()
 
 install(
-  TARGETS
-    thrift1
-    compiler_ast
-    compiler_base
-    compiler_lib
-    mustache_lib
-    compiler_generators
+  TARGETS thrift1 compiler_ast compiler_base compiler_lib mustache_lib
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
