@@ -633,19 +633,6 @@ void RocketClientChannel::setFlushList(FlushList* flushList) {
   }
 }
 
-void RocketClientChannel::setNegotiatedCompressionAlgorithm(
-    CompressionAlgorithm compressionAlgo) {
-  if (rclient_) {
-    rclient_->setNegotiatedCompressionAlgorithm(compressionAlgo);
-  }
-}
-
-void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
-  if (rclient_) {
-    rclient_->setAutoCompressSizeLimit(size);
-  }
-}
-
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
     folly::AsyncTransport::UniquePtr socket) {
   return RocketClientChannel::Ptr(

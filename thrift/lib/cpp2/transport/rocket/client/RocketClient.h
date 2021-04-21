@@ -211,14 +211,6 @@ class RocketClient : public folly::DelayedDestruction,
     }
   }
 
-  // RocketClient needs to know the negotiated compression algorithm in order to
-  // send compressed requests (e.g. sink)
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
-
-  void setAutoCompressSizeLimit(int32_t size) { autoCompressSizeLimit_ = size; }
-
   void addInteraction() { ++interactions_; }
   void terminateInteraction(int64_t id);
 
@@ -242,8 +234,6 @@ class RocketClient : public folly::DelayedDestruction,
   StreamId nextStreamId_{1};
   bool hitMaxStreamId_{false};
   std::unique_ptr<SetupFrame> setupFrame_;
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
-  int32_t autoCompressSizeLimit_{0};
   FlushList* flushList_{nullptr};
   enum class ConnectionState : uint8_t {
     CONNECTED,

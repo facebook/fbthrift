@@ -128,10 +128,6 @@ class RocketClientChannel final : public ClientChannel {
 
   void setFlushList(FlushList* flushList);
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo);
-
-  void setAutoCompressSizeLimit(int32_t size);
-
   // must be called from evb thread
   void terminateInteraction(InteractionId id) override;
 
