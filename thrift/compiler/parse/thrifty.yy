@@ -66,15 +66,7 @@ namespace {
  */
 int y_field_val = -1;
 
-/**
- * This global variable is used for automatic numbering of enum values.
- * y_enum_val is the last value assigned; the next auto-assigned value will be
- * y_enum_val+1, and then it continues working upwards.  Explicitly specified
- * enum values reset y_enum_val to that value.
- */
-int32_t y_enum_val = -1;
 int g_arglist = 0;
-const char* y_enum_name = nullptr;
 
 // Assume ownership of a pointer.
 template <typename T>
@@ -544,18 +536,20 @@ Enum:
     {
       driver.start_node(LineType::Enum);
     }
-  Identifier
-    {
-      assert(!y_enum_name);
-      y_enum_name = $4.c_str();
-    }
-  "{" EnumDefList "}" TypeAnnotations
+  Identifier "{" EnumDefList "}" TypeAnnotations
     {
       driver.debug("Enum => StructuredAnnotations tok_enum Identifier { EnumDefList } TypeAnnotations");
-      $7->set_name(std::move($4));
-      driver.finish_node($7, LineType::Enum, own($9), own($1));
-      $$ = $7;
-      y_enum_name = nullptr;
+      std::string type_prefix = $4 + ".";
+      $6->set_name(std::move($4));
+      for (const auto* value : $6->enum_values()) {
+          // TODO(afuller): Remove ability to access unscoped enum values.
+          driver.scope_cache->add_constant(
+              driver.program->name() + "." + value->get_name(), value);
+          driver.scope_cache->add_constant(
+              driver.program->name() + "." + type_prefix + value->get_name(), value);
+      }
+      driver.finish_node($6, LineType::Enum, own($8), own($1));
+      $$ = $6;
     }
 
 EnumDefList:
@@ -563,34 +557,12 @@ EnumDefList:
     {
       driver.debug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
-
-      if (driver.mode == parsing_mode::PROGRAM) {
-        auto const_val = std::make_unique<t_const_value>($2->get_value());
-
-        const_val->set_is_enum();
-        const_val->set_enum($$);
-        const_val->set_enum_value($2);
-
-        auto tconst = std::make_unique<t_const>(
-            driver.program, &t_base_type::t_i32(), $2->get_name(), std::move(const_val));
-
-        assert(y_enum_name != nullptr);
-        std::string type_prefix = std::string(y_enum_name) + ".";
-        driver.scope_cache->add_constant(
-            driver.program->name() + "." + $2->get_name(), tconst.get());
-        driver.scope_cache->add_constant(
-            driver.program->name() + "." + type_prefix + $2->get_name(), tconst.get());
-
-        $$->append(own($2), std::move(tconst));
-      } else {
-        driver.delete_at_the_end($2);
-      }
+      $$->append(own($2));
     }
 |
     {
       driver.debug("EnumDefList -> ");
       $$ = new t_enum(driver.program);
-      y_enum_val = -1;
     }
 
 EnumDef:
@@ -620,22 +592,17 @@ EnumValue:
         // truncated i32 value that thrift has always been using anyway.
         driver.failure("64-bit value supplied for enum %s will be truncated.", $1.c_str());
       }
-      y_enum_val = $3;
       $$ = new t_enum_value;
       $$->set_name($1);
-      $$->set_value(y_enum_val);
+      $$->set_value($3);
       $$->set_lineno(driver.scanner->get_lineno());
     }
 |
   Identifier
     {
       driver.debug("EnumValue -> Identifier");
-      if (y_enum_val == INT32_MAX) {
-        driver.failure("enum value overflow at enum %s", $1.c_str());
-      }
       $$ = new t_enum_value;
       $$->set_name($1);
-      $$->set_implicit_value(++y_enum_val);
       $$->set_lineno(driver.scanner->get_lineno());
     }
 
