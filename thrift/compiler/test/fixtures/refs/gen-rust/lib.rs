@@ -8,49 +8,41 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod consts {
-    lazy_static::lazy_static! {
-        pub static ref kStructWithRef: crate::types::StructWithRef = crate::types::StructWithRef {
+      pub static kStructWithRef: ::once_cell::sync::Lazy<crate::types::StructWithRef> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRef {
             def_field: crate::types::Empty {
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
             }),
             req_field: crate::types::Empty {
             },
-        };
-    }
+        });
 
-    lazy_static::lazy_static! {
-        pub static ref kStructWithRefTypeUnique: crate::types::StructWithRefTypeUnique = crate::types::StructWithRefTypeUnique {
+      pub static kStructWithRefTypeUnique: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeUnique> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeUnique {
             def_field: crate::types::Empty {
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
             }),
             req_field: crate::types::Empty {
             },
-        };
-    }
+        });
 
-    lazy_static::lazy_static! {
-        pub static ref kStructWithRefTypeShared: crate::types::StructWithRefTypeShared = crate::types::StructWithRefTypeShared {
+      pub static kStructWithRefTypeShared: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeShared> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeShared {
             def_field: crate::types::Empty {
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
             }),
             req_field: crate::types::Empty {
             },
-        };
-    }
+        });
 
-    lazy_static::lazy_static! {
-        pub static ref kStructWithRefTypeSharedConst: crate::types::StructWithRefTypeSharedConst = crate::types::StructWithRefTypeSharedConst {
+      pub static kStructWithRefTypeSharedConst: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeSharedConst> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeSharedConst {
             def_field: crate::types::Empty {
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
             }),
             req_field: crate::types::Empty {
             },
-        };
-    }
+        });
 }
 
 pub mod types {

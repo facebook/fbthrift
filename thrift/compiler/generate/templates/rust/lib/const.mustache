@@ -26,12 +26,10 @@
     }};
 {{/constant:lazy?}}
 {{#constant:lazy?}}
-    lazy_static::lazy_static! {
-        pub static ref {{constant:name}}{{!
-        }}: {{!
-        }}{{>lib/type}}{{!
-        }} = {{>lib/value}};
-    }
+      pub static {{constant:name}}{{!
+      }}: ::once_cell::sync::Lazy<{{!
+      }}{{>lib/type}}{{!
+      }}> = ::once_cell::sync::Lazy::new(|| {{>lib/value}});
 {{/constant:lazy?}}
 {{/constant:type}}
 {{/constant:rust}}
