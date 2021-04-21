@@ -319,8 +319,11 @@ TEST_F(RocketNetworkTest, ServerShutdown) {
 
     server.reset();
 
-    auto tew = client.getRawClient().getLastError();
-    auto tex = tew.get_exception<transport::TTransportException>();
+    auto tew =
+        folly::via(&client.getEventBase(), [&] {
+          return std::make_optional(client.getRawClient().getLastError());
+        }).get();
+    auto tex = tew->get_exception<transport::TTransportException>();
     ASSERT_NE(nullptr, tex);
     EXPECT_EQ(
         TTransportException::TTransportExceptionType::NOT_OPEN, tex->getType());

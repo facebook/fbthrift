@@ -55,6 +55,7 @@ class DuplexClientInterface : public DuplexClientSvIf {
       int32_t currentIndex) override {
     // The order we see the values for currentIndex is not defined, but we do
     // expect to see each possible value once.
+    std::lock_guard<std::mutex> g(m_);
     EXPECT_FALSE(indexesSeen_[currentIndex - firstIndex_]);
     indexesSeen_[currentIndex - firstIndex_] = true;
     EventBase* eb = callback->getEventBase();
@@ -69,6 +70,7 @@ class DuplexClientInterface : public DuplexClientSvIf {
  private:
   int32_t firstIndex_;
   std::vector<bool> indexesSeen_;
+  std::mutex m_;
   bool& success_;
 };
 
