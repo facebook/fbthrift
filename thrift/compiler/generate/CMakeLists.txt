@@ -12,16 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_executable(
-  compiler_generate_build_templates
-
-  build_templates.cc
-)
-target_link_libraries(
-  compiler_generate_build_templates
-
-  ${Boost_LIBRARIES}
-)
+add_executable(compiler_generate_build_templates build_templates.cc)
+target_link_libraries(compiler_generate_build_templates ${Boost_LIBRARIES})
 
 file(
   GLOB_RECURSE
@@ -42,9 +34,17 @@ add_custom_command(
   VERBATIM
 )
 
-add_library(
-  compiler_generate_templates
-  OBJECT
+file(GLOB GENERATOR_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cc)
+list(REMOVE_ITEM GENERATOR_FILES build_templates.cc)
 
-  ${CMAKE_CURRENT_BINARY_DIR}/templates.cc
+add_library(compiler_generators STATIC ${GENERATOR_FILES}
+            ${CMAKE_CURRENT_BINARY_DIR}/templates.cc)
+target_link_libraries(
+  compiler_generators
+  compiler_ast
+  compiler_base
+  compiler_lib
+  mustache_lib
+  ${Boost_LIBRARIES}
+  ${OPENSSL_LIBRARIES}
 )

@@ -112,34 +112,14 @@ target_link_libraries(mustache_lib ${Boost_LIBRARIES})
 
 add_subdirectory(generate)
 
-# build compiler/generate
-aux_source_directory(./generate GENERATOR_FILES)
-list(REMOVE_ITEM GENERATOR_FILES ./generate/build_templates.cc)
-add_library(
-  compiler_generators
-
-  ${GENERATOR_FILES}
-  $<TARGET_OBJECTS:compiler_generate_templates>
-  validator/validator.cc
-)
-target_link_libraries(
-  compiler_generators
-
-  compiler_ast
-  compiler_base
-  compiler_lib
-  mustache_lib
-  ${Boost_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
-)
-# Force compiler_generators linking (compiler will optimize it out otherwise)
-if(MSVC)
+# Force compiler_generators linking (compiler will optimize it out otherwise).
+if (MSVC)
   set(GENERATE_LINKED compiler_generators) #MSVC WHOLEARCHIVE is set after exe
-elseif(APPLE)
+elseif (APPLE)
   set(GENERATE_LINKED -Wl,-force_load compiler_generators)
-else()
+else ()
   set(GENERATE_LINKED -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
-endif(MSVC)
+endif ()
 
 # Create the thrift compiler binary
 add_executable(
@@ -149,6 +129,7 @@ add_executable(
   compiler.cc
   mutator/mutator.cc
   validator/diagnostic.cc
+  validator/validator.cc
   ast/visitor.cc
 )
 target_link_libraries(
