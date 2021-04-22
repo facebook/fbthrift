@@ -6,5 +6,6 @@
 #
 import typing as __T
 
+import my
 from module.ttypes import *
 

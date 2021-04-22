@@ -21,7 +21,7 @@ from thrift.protocol import (
     TJSONProtocol,
     TSimpleJSONProtocol,
 )
-from thrift.protocol import fastproto  # noqa: F401
+from thrift.protocol import fastproto  # type: ignore # noqa: F401
 from thrift.util import Serializer
 
 from .adapter.ttypes import Foo, FooWithoutAdapters
@@ -39,7 +39,7 @@ PROTOCOLS = [
 
 
 class AdapterTest(unittest.TestCase):
-    def test_roundtrip(self):
+    def test_roundtrip(self) -> None:
         INPUTS = {
             "empty": (Foo(), FooWithoutAdapters()),
             "default_values": (

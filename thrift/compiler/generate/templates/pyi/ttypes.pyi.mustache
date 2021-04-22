@@ -30,11 +30,9 @@ from thrift.protocol.TProtocol import TProtocolBase
 
 __property__ = property  # sometimes `property` is used as a field name
 
-{{#program:includeNamespaces}}
-{{#hasTypes?}}
-import {{#includeNamespace}}{{value}}.{{/includeNamespace}}ttypes
-{{/hasTypes?}}
-{{/program:includeNamespaces}}
+{{#program:importModules}}
+import {{.}}
+{{/program:importModules}}
 
 UTF8STRINGS: bool
 {{#program:enums}}

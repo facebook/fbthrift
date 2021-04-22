@@ -28,11 +28,9 @@ import asyncio
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
-{{#program:includeNamespaces}}
-{{#hasTypes?}}
-import {{#includeNamespace}}{{value}}.{{/includeNamespace}}ttypes
-{{/hasTypes?}}
-{{/program:includeNamespaces}}
+{{#program:importModules}}
+import {{.}}
+{{/program:importModules}}
 from {{#program:pyNamespaces}}{{value}}.{{/program:pyNamespaces}}ttypes import *
 {{#service}}
 {{#service:extends}}

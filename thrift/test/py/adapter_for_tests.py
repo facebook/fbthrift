@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Dict
 
 from .adapter_bar.ttypes import Bar
 
 
 class AdapterTestStructToDict:
+    Type = Dict[str, int]
+
     @staticmethod
     def from_thrift(thrift_value):
         return {k: v for k, v in thrift_value.__dict__.items() if v is not None}
