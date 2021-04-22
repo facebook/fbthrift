@@ -39,8 +39,6 @@ class THeaderTransport extends TFramedTransport
 
   // Transforms
   const int ZLIB_TRANSFORM = 0x01;
-  const int HMAC_TRANSFORM = 0x02;
-  const int SNAPPY_TRANSFORM = 0x03;
 
   // Infos
   const int INFO_KEYVALUE = 0x01;
@@ -355,15 +353,8 @@ class THeaderTransport extends TFramedTransport
       $transId = $this->readVarint($data, $index);
       switch ($transId) {
         case self::ZLIB_TRANSFORM:
-        case self::SNAPPY_TRANSFORM:
           $this->readTrans_[] = $transId;
           break;
-
-        case self::HMAC_TRANSFORM:
-          throw new TApplicationException(
-            'Hmac transform no longer supported',
-            TApplicationException::INVALID_TRANSFORM,
-          );
 
         default:
           throw new TApplicationException(
@@ -409,10 +400,6 @@ class THeaderTransport extends TFramedTransport
           $data = gzcompress($data);
           break;
 
-        case self::SNAPPY_TRANSFORM:
-          $data = sncompress($data);
-          break;
-
         default:
           throw new TTransportException(
             'Unknown transform during send',
@@ -431,10 +418,6 @@ class THeaderTransport extends TFramedTransport
       switch ($trans) {
         case self::ZLIB_TRANSFORM:
           $data = gzuncompress($data);
-          break;
-
-        case self::SNAPPY_TRANSFORM:
-          $data = snuncompress($data);
           break;
 
         default:

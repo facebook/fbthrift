@@ -557,20 +557,9 @@ unique_ptr<IOBuf> THeader::untransform(
       case ZLIB_TRANSFORM:
         buf = decompressCodec(*buf, CodecType::ZLIB);
         break;
-      case SNAPPY_TRANSFORM:
-        if (THRIFT_HAVE_LIBSNAPPY > 0) {
-          assert(folly::io::hasCodec(CodecType::SNAPPY));
-          buf = decompressCodec(*buf, CodecType::SNAPPY);
-        }
-        break;
       case ZSTD_TRANSFORM:
         buf = decompressCodec(*buf, CodecType::ZSTD);
         break;
-      case QLZ_TRANSFORM:
-        throw TApplicationException(
-            TApplicationException::MISSING_RESULT,
-            "QuickLZ is not supported anymore due to a"
-            " critical flaw in the library");
       default:
         throw TApplicationException(
             TApplicationException::MISSING_RESULT,
@@ -613,14 +602,6 @@ unique_ptr<IOBuf> THeader::transform(
         }
         buf = compressCodec(*buf, CodecType::ZLIB);
         break;
-      case SNAPPY_TRANSFORM:
-        if (THRIFT_HAVE_LIBSNAPPY <= 0 || dataSize < minCompressBytes) {
-          it = writeTrans.erase(it);
-          continue;
-        }
-        assert(folly::io::hasCodec(CodecType::SNAPPY));
-        buf = compressCodec(*buf, CodecType::SNAPPY);
-        break;
       case ZSTD_TRANSFORM:
         if (dataSize < minCompressBytes) {
           it = writeTrans.erase(it);
@@ -628,11 +609,6 @@ unique_ptr<IOBuf> THeader::transform(
         }
         buf = compressCodec(*buf, CodecType::ZSTD, 1);
         break;
-      case QLZ_TRANSFORM:
-        throw TTransportException(
-            TTransportException::CORRUPTED_DATA,
-            "QuickLZ is not supported anymore due to a"
-            " critical flaw in the library");
       default:
         throw TTransportException(
             TTransportException::CORRUPTED_DATA,

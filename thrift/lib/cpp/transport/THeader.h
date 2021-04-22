@@ -286,9 +286,9 @@ class THeader {
   enum TRANSFORMS {
     NONE = 0x00,
     ZLIB_TRANSFORM = 0x01,
-    HMAC_TRANSFORM = 0x02, // Deprecated and no longer supported
-    SNAPPY_TRANSFORM = 0x03,
-    QLZ_TRANSFORM = 0x04, // Deprecated and no longer supported
+    // HMAC_TRANSFORM = 0x02, Deprecated and no longer supported
+    // SNAPPY_TRANSFORM = 0x03, Deprecated and no longer supported
+    // QLZ_TRANSFORM = 0x04, Deprecated and no longer supported
     ZSTD_TRANSFORM = 0x05,
 
     // DO NOT USE. Sentinel value for enum count. Always keep as last value.

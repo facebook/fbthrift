@@ -255,10 +255,10 @@ TEST(ThriftServer, DefaultCompressionTest) {
   // Ensure that client transforms take precedence
   auto channel =
       boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
-  channel->setTransform(apache::thrift::transport::THeader::SNAPPY_TRANSFORM);
+  channel->setTransform(apache::thrift::transport::THeader::ZSTD_TRANSFORM);
   client.sendResponse(
       std::make_unique<Callback>(
-          true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM),
+          true, apache::thrift::transport::THeader::ZSTD_TRANSFORM),
       64);
   base.loop();
 }

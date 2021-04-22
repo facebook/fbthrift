@@ -119,10 +119,6 @@ BENCHMARK(BM_Zlib, iters) {
   testMessage(0x01, iters, true);
 }
 
-BENCHMARK(BM_Snappy, iters) {
-  testMessage(3, iters, true);
-}
-
 BENCHMARK(BM_Zstd, iters) {
   testMessage(5, iters, true);
 }
@@ -141,10 +137,6 @@ BENCHMARK(BM_ZlibHard, iters) {
   testMessage(0x01, iters, false);
 }
 
-BENCHMARK(BM_SnappyHard, iters) {
-  testMessage(3, iters, false);
-}
-
 BENCHMARK(BM_ZstdHard, iters) {
   testMessage(5, iters, false);
 }
@@ -155,10 +147,6 @@ TEST(chained, none) {
 
 TEST(chained, zlib) {
   testChainedCompression(1, 1000);
-}
-
-TEST(chained, snappy) {
-  testChainedCompression(3, 1000);
 }
 
 TEST(chained, zstd) {

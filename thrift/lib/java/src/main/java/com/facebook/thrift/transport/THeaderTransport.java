@@ -49,9 +49,7 @@ public class THeaderTransport extends TFramedTransport {
 
   // Transforms
   public enum Transforms {
-    ZLIB_TRANSFORM(0x01),
-    HMAC_TRANSFORM(0x02), // Deprecated and no longer supported
-    SNAPPY_TRANSFORM(0x03); // Deprecated and no longer supported
+    ZLIB_TRANSFORM(0x01);
 
     private int value;
 
@@ -405,10 +403,6 @@ public class THeaderTransport extends TFramedTransport {
       int transId = readVarint32Buf(frame);
       if (transId == Transforms.ZLIB_TRANSFORM.getValue()) {
         readTransforms.add(transId);
-      } else if (transId == Transforms.SNAPPY_TRANSFORM.getValue()) {
-        throw new THeaderException("Snappy transform no longer supported");
-      } else if (transId == Transforms.HMAC_TRANSFORM.getValue()) {
-        throw new THeaderException("Hmac transform no longer supported");
       } else {
         throw new THeaderException("Unknown transform during recv");
       }

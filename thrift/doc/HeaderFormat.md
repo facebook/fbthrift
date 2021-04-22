@@ -79,8 +79,7 @@ Header will be padded out to next 4-byte boundary with `0x00`.
                           data.
 
     HMAC_TRANSFORM 0x02 - Deprecated and no longer supported.
-    SNAPPY_TRANSFORM  0x03  - No data for this.  Use snappy to (de)compress the
-                          data.
+    SNAPPY_TRANSFORM  0x03  - Deprecated and no longer supported.
 
 
 ###Info IDs:
@@ -88,4 +87,3 @@ Header will be padded out to next 4-byte boundary with `0x00`.
     INFO_KEYVALUE 0x01 - varint32 number of headers.
                        - key/value pairs of varstrings (varint16 length plus
                          no-trailing-null string).
-
