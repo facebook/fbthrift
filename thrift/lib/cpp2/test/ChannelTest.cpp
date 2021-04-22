@@ -624,7 +624,6 @@ class InOrderTest
 
   void preLoop() override {
     TestRequestCallback::reset();
-    channel0_->setFlags(0); // turn off out of order
     channel1_->setCallback(this);
     RpcOptions options;
     channel0_->sendRequestResponse(
