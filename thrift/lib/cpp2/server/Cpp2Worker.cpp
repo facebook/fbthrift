@@ -143,12 +143,6 @@ void Cpp2Worker::handleHeader(
       std::move(thriftTransport), addr, shared_from_this(), nullptr);
   Acceptor::addConnection(connection.get());
   connection->addConnection(connection);
-  // set compression algorithm to be used on this connection
-  auto compression = fizzPeeker_.getNegotiatedParameters().compression;
-  if (compression != CompressionAlgorithm::NONE) {
-    connection->setNegotiatedCompressionAlgorithm(compression);
-  }
-
   connection->start();
 
   VLOG(4) << "Cpp2Worker: created connection for socket " << fd;

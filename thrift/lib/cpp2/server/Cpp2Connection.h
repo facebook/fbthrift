@@ -98,10 +98,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   void dumpConnectionState(uint8_t /* loglevel */) override {}
   void addConnection(std::shared_ptr<Cpp2Connection> conn) { this_ = conn; }
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
-
   typedef apache::thrift::ThriftPresult<true>
       RocketUpgrade_upgradeToRocket_presult;
   template <class ProtocolWriter>
@@ -127,7 +123,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
   std::shared_ptr<folly::AsyncTransport> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 
   /**
    * Wrap the request in our own request.  This is done for 2 reasons:

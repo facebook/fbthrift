@@ -146,13 +146,6 @@ void RocketRoutingHandler::handleConnection(
       server->getWriteBatchingSize(),
       std::move(memLimitParams));
   onConnection(*connection);
-  // set negotiated compression algorithm on this connection
-  auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
-                         ->getNegotiatedParameters()
-                         .compression;
-  if (compression != CompressionAlgorithm::NONE) {
-    connection->setNegotiatedCompressionAlgorithm(compression);
-  }
   connectionManager->addConnection(connection);
 
   if (auto* observer = server->getObserver()) {

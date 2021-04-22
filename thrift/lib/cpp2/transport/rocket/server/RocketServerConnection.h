@@ -132,10 +132,6 @@ class RocketServerConnection final
 
   size_t getNumStreams() const { return streams_.size(); }
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
-
   void sendPayload(
       StreamId streamId,
       Payload&& payload,
@@ -274,8 +270,6 @@ class RocketServerConnection final
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
   size_t inflightSinkFinalResponses_{0};
-
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 
   enum class ConnectionState : uint8_t {
     ALIVE,
