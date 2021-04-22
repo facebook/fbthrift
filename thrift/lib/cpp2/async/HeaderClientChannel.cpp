@@ -305,6 +305,7 @@ void HeaderClientChannel::sendRequestNoResponse(
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  preprocessHeader(header.get());
   // For raw thrift client only: before sending first request, check if we need
   // to upgrade transport to rocket
   switch (upgradeState_.load(std::memory_order_relaxed)) {
@@ -348,7 +349,7 @@ void HeaderClientChannel::sendRequestNoResponse(
                    std::move(serializedRequest))
                    .buffer;
 
-    setRequestHeaderOptions(header.get());
+    setRequestHeaderOptions(header.get(), buf->computeChainDataLength());
     addRpcOptionHeaders(header.get(), rpcOptions);
     attachMetadataOnce(header.get());
 
@@ -375,11 +376,28 @@ void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
   }
 }
 
-void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
+void HeaderClientChannel::setRequestHeaderOptions(
+    THeader* header, ssize_t payloadSize) {
   header->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
   header->setClientType(getClientType());
   header->forceClientType(getForceClientType());
-  header->setTransforms(getWriteTransforms());
+  if (auto compressionConfig = header->getDesiredCompressionConfig()) {
+    if (auto codecRef = compressionConfig->codecConfig_ref()) {
+      if (payloadSize >
+          compressionConfig->compressionSizeLimit_ref().value_or(0)) {
+        switch (codecRef->getType()) {
+          case CodecConfig::zlibConfig:
+            header->setTransform(THeader::ZLIB_TRANSFORM);
+            break;
+          case CodecConfig::zstdConfig:
+            header->setTransform(THeader::ZSTD_TRANSFORM);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
   if (getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
     header->setHttpClientParser(httpClientParser_);
   }
@@ -423,6 +441,7 @@ void HeaderClientChannel::sendRequestResponse(
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
+  preprocessHeader(header.get());
   // Raw header client might go through a transport upgrade process.
   // upgradeState_ ensures that the requests that are coming during upgrade can
   // be properly handled
@@ -492,7 +511,7 @@ void HeaderClientChannel::sendRequestResponse(
     auto twcb = new TwowayCallback<HeaderClientChannel>(
         this, sendSeqId_, std::move(cb), &getEventBase()->timer(), timeout);
 
-    setRequestHeaderOptions(header.get());
+    setRequestHeaderOptions(header.get(), buf->computeChainDataLength());
     addRpcOptionHeaders(header.get(), rpcOptions);
     attachMetadataOnce(header.get());
 
@@ -653,6 +672,29 @@ folly::AsyncTransport::UniquePtr HeaderClientChannel::stealTransport() {
   auto deleter = std::get_deleter<ReleasableDestructor>(transportShared);
   deleter->release();
   return folly::AsyncTransport::UniquePtr(transportShared.get());
+}
+
+void HeaderClientChannel::setTransform(uint16_t transId) {
+  switch (transId) {
+    case THeader::ZLIB_TRANSFORM:
+      compressionConfig_ = CompressionConfig();
+      compressionConfig_->codecConfig_ref().ensure().set_zlibConfig();
+      break;
+    case THeader::ZSTD_TRANSFORM:
+      compressionConfig_ = CompressionConfig();
+      compressionConfig_->codecConfig_ref().ensure().set_zstdConfig();
+      break;
+    default:
+      throw TApplicationException(
+          fmt::format("Unknown transform: {}", transId));
+  }
+}
+
+void HeaderClientChannel::preprocessHeader(
+    apache::thrift::transport::THeader* header) {
+  if (compressionConfig_ && !header->getDesiredCompressionConfig()) {
+    header->setDesiredCompressionConfig(*compressionConfig_);
+  }
 }
 
 } // namespace thrift

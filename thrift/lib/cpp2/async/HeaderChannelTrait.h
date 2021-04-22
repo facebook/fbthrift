@@ -47,31 +47,12 @@ class HeaderChannelTrait {
   uint16_t getFlags() const { return flags_; }
   void setFlags(uint16_t flags) { flags_ = flags; }
 
-  void setTransform(uint16_t transId) {
-    for (auto& trans : writeTrans_) {
-      if (trans == transId) {
-        return;
-      }
-    }
-    writeTrans_.push_back(transId);
-  }
-
-  void setWriteTransforms(const std::vector<uint16_t>& trans) {
-    writeTrans_ = trans;
-  }
-
-  const std::vector<uint16_t>& getWriteTransforms() const {
-    return writeTrans_;
-  }
-
  private:
   uint16_t flags_;
 
   CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
   bool forceClientType_{false};
   std::bitset<CLIENT_TYPES_LEN> supported_clients;
-
-  std::vector<uint16_t> writeTrans_;
 };
 } // namespace thrift
 } // namespace apache
