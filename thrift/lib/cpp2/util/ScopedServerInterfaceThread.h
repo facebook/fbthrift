@@ -105,7 +105,8 @@ class ScopedServerInterfaceThread {
   RequestChannel::Ptr newChannel(
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = makeRocketOrHeaderChannel,
-      std::weak_ptr<folly::IOExecutor> executor = folly::getIOExecutor()) const;
+      std::weak_ptr<folly::IOExecutor> executor =
+          folly::getUnsafeMutableGlobalIOExecutor()) const;
 
   static RequestChannel::Ptr makeRocketOrHeaderChannel(
       folly::AsyncSocket::UniquePtr socket) {
