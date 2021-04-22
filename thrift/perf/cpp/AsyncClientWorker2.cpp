@@ -183,7 +183,9 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     channel->setClientType(THRIFT_FRAMED_DEPRECATED);
   }
   if (config->zlib()) {
-    channel->setTransform(THeader::ZLIB_TRANSFORM);
+    apache::thrift::CompressionConfig compressionConfig;
+    compressionConfig.codecConfig_ref().ensure().set_zlibConfig();
+    channel->setDesiredCompressionConfig(compressionConfig);
   }
 
   return std::make_shared<LoadTestAsyncClient>(std::move(channel));

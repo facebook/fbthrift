@@ -271,8 +271,6 @@ class HeaderClientChannel : public ClientChannel,
     compressionConfig_ = compressionConfig;
   }
 
-  void setTransform(uint16_t transId);
-
  protected:
   explicit HeaderClientChannel(std::shared_ptr<Cpp2Channel> cpp2Channel);
 

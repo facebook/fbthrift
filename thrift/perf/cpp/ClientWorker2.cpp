@@ -68,7 +68,9 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   // Always use binary in loadtesting to get apples to apples comparison
   headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   if (config->zlib()) {
-    headerChannel->setTransform(THeader::ZLIB_TRANSFORM);
+    apache::thrift::CompressionConfig compressionConfig;
+    compressionConfig.codecConfig_ref().ensure().set_zlibConfig();
+    headerChannel->setDesiredCompressionConfig(compressionConfig);
   }
   if (!config->useHeaderProtocol()) {
     headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);

@@ -674,22 +674,6 @@ folly::AsyncTransport::UniquePtr HeaderClientChannel::stealTransport() {
   return folly::AsyncTransport::UniquePtr(transportShared.get());
 }
 
-void HeaderClientChannel::setTransform(uint16_t transId) {
-  switch (transId) {
-    case THeader::ZLIB_TRANSFORM:
-      compressionConfig_ = CompressionConfig();
-      compressionConfig_->codecConfig_ref().ensure().set_zlibConfig();
-      break;
-    case THeader::ZSTD_TRANSFORM:
-      compressionConfig_ = CompressionConfig();
-      compressionConfig_->codecConfig_ref().ensure().set_zstdConfig();
-      break;
-    default:
-      throw TApplicationException(
-          fmt::format("Unknown transform: {}", transId));
-  }
-}
-
 void HeaderClientChannel::preprocessHeader(
     apache::thrift::transport::THeader* header) {
   if (compressionConfig_ && !header->getDesiredCompressionConfig()) {

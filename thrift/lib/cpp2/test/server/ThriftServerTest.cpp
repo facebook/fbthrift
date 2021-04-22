@@ -255,7 +255,9 @@ TEST(ThriftServer, DefaultCompressionTest) {
   // Ensure that client transforms take precedence
   auto channel =
       boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
-  channel->setTransform(apache::thrift::transport::THeader::ZSTD_TRANSFORM);
+  apache::thrift::CompressionConfig compressionConfig;
+  compressionConfig.codecConfig_ref().ensure().set_zstdConfig();
+  channel->setDesiredCompressionConfig(compressionConfig);
   client.sendResponse(
       std::make_unique<Callback>(
           true, apache::thrift::transport::THeader::ZSTD_TRANSFORM),
@@ -590,8 +592,9 @@ class HeaderOrRocketTest : public testing::Test {
           evb, [&](auto socket) mutable {
             auto channel = HeaderClientChannel::newChannel(std::move(socket));
             if (compression == Compression::Enabled) {
-              channel->setTransform(
-                  apache::thrift::transport::THeader::ZSTD_TRANSFORM);
+              apache::thrift::CompressionConfig compressionConfig;
+              compressionConfig.codecConfig_ref().ensure().set_zstdConfig();
+              channel->setDesiredCompressionConfig(compressionConfig);
             }
             return channel;
           });
