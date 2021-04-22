@@ -443,6 +443,12 @@ class PythonAsyncProcessorFactory : public AsyncProcessorFactory {
     return std::make_unique<PythonAsyncProcessor>(adapter_);
   }
 
+  // TODO(T89004867): Call onStartServing() and onStopServing() hooks for
+  // non-C++ thrift servers
+  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+    return {};
+  }
+
  private:
   std::shared_ptr<object> adapter_;
 };

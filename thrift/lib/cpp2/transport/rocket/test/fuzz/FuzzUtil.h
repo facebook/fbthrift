@@ -105,6 +105,10 @@ class FakeProcessorFactory final
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<FakeProcessor>();
   }
+
+  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+    return {};
+  }
 };
 
 void testServerOneInput(const uint8_t* Data, size_t Size) {

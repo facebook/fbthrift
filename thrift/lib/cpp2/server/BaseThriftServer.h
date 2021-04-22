@@ -77,9 +77,14 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
   explicit ThriftServerAsyncProcessorFactory(std::shared_ptr<T> t) {
     svIf_ = t;
   }
+
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::unique_ptr<apache::thrift::AsyncProcessor>(
         new typename T::ProcessorType(svIf_.get()));
+  }
+
+  std::vector<ServiceHandler*> getServiceHandlers() override {
+    return {svIf_.get()};
   }
 
  private:

@@ -271,9 +271,12 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
 };
 
+class ServiceHandler;
+
 class AsyncProcessorFactory {
  public:
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
+  virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
   virtual ~AsyncProcessorFactory() = default;
 };
 
@@ -396,6 +399,8 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
     return folly::makeSemiFuture();
   }
+
+  std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
 
  private:
   class BlockingThreadManager : public folly::Executor {

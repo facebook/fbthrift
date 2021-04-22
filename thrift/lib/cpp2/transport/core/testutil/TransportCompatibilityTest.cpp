@@ -1261,6 +1261,10 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
           underlyingFac_->getProcessor());
     }
 
+    std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+      return underlyingFac_->getServiceHandlers();
+    }
+
    private:
     std::shared_ptr<ThriftServerAsyncProcessorFactory<
         testutil::testservice::TestServiceMock>>
