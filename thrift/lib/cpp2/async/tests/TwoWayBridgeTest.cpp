@@ -78,6 +78,14 @@ TEST(AtomicQueueTest, Basic) {
     EXPECT_TRUE(q.empty());
   }
 
+  EXPECT_TRUE(atomicQueue.wait(&consumer));
+  EXPECT_EQ(atomicQueue.cancelCallback(), &consumer);
+
+  EXPECT_TRUE(atomicQueue.wait(&consumer));
+  EXPECT_EQ(atomicQueue.cancelCallback(), &consumer);
+
+  EXPECT_EQ(atomicQueue.cancelCallback(), nullptr);
+
   producerThread.join();
 }
 

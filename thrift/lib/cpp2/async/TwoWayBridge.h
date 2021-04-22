@@ -263,6 +263,27 @@ class AtomicQueue {
     };
   }
 
+  Consumer* cancelCallback() {
+    auto storage = storage_.load(std::memory_order_acquire);
+    while (true) {
+      auto type = static_cast<Type>(storage & kTypeMask);
+      auto ptr = storage & kPointerMask;
+      switch (type) {
+        case Type::CONSUMER:
+          if (storage_.compare_exchange_weak(
+                  storage,
+                  static_cast<intptr_t>(Type::EMPTY),
+                  std::memory_order_relaxed,
+                  std::memory_order_relaxed)) {
+            return reinterpret_cast<Consumer*>(ptr);
+          }
+          break;
+        default:
+          return nullptr;
+      }
+    }
+  }
+
  private:
   enum class Type : intptr_t { EMPTY = 0, CONSUMER = 1, TAIL = 2, CLOSED = 3 };
 
@@ -426,6 +447,8 @@ class TwoWayBridge {
     return clientQueue_.wait(consumer);
   }
 
+  ClientConsumer* cancelClientWait() { return clientQueue_.cancelCallback(); }
+
   ClientQueue clientGetMessages() { return clientQueue_.getMessages(); }
 
   void clientClose() { clientQueue_.close(); }
@@ -441,6 +464,8 @@ class TwoWayBridge {
   bool serverWait(ServerConsumer* consumer) {
     return serverQueue_.wait(consumer);
   }
+
+  ServerConsumer* cancelServerWait() { return serverQueue_.cancelCallback(); }
 
   ServerQueue serverGetMessages() { return serverQueue_.getMessages(); }
 
