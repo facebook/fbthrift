@@ -450,6 +450,8 @@ class mstch_rust_service : public mstch_service {
         this,
         {
             {"service:rustFunctions", &mstch_rust_service::rust_functions},
+            {"service:rust_exceptions",
+             &mstch_rust_service::rust_all_exceptions},
             {"service:package", &mstch_rust_service::rust_package},
             {"service:snake", &mstch_rust_service::rust_snake},
             {"service:requestContext?",
@@ -493,6 +495,8 @@ class mstch_rust_service : public mstch_service {
     }
     return extended_services;
   }
+
+  mstch::node rust_all_exceptions();
 
  private:
   std::unordered_multiset<std::string> function_upcamel_names_;
@@ -661,12 +665,16 @@ class mstch_rust_type : public mstch_type {
         this,
         {
             {"type:rust_name", &mstch_rust_type::rust_name},
+            {"type:rust_name_snake", &mstch_rust_type::rust_name_snake},
             {"type:package", &mstch_rust_type::rust_package},
             {"type:rust", &mstch_rust_type::rust_type},
             {"type:nonstandard?", &mstch_rust_type::rust_nonstandard},
         });
   }
   mstch::node rust_name() { return mangle_type(type_->get_name()); }
+  mstch::node rust_name_snake() {
+    return snakecase(mangle_type(type_->get_name()));
+  }
   mstch::node rust_package() {
     return get_import_name(type_->program(), options_);
   }
@@ -1409,6 +1417,44 @@ class type_rust_generator : public type_generator {
  private:
   const rust_codegen_options& options_;
 };
+
+mstch::node mstch_rust_service::rust_all_exceptions() {
+  std::map<const t_type*, std::vector<const t_function*>> function_map;
+  std::map<const t_type*, std::vector<const t_field*>> field_map;
+  for (const auto* fun : service_->get_functions()) {
+    for (const auto* fld : fun->get_xceptions()->fields()) {
+      function_map[fld->get_type()].push_back(fun);
+      field_map[fld->get_type()].push_back(fld);
+    }
+  }
+
+  mstch::array output;
+  for (const auto& funcs : function_map) {
+    mstch::map data;
+    type_rust_generator gen(options_);
+    data["rust_exception:type"] = gen.generate(
+        funcs.first, generators_, cache_, ELEMENT_POSITION::NONE, 0);
+
+    function_rust_generator function_generator;
+
+    auto functions = generate_elements(
+        funcs.second, &function_generator, function_upcamel_names_);
+    auto fields = generate_fields(field_map[funcs.first]);
+
+    mstch::array function_data;
+    for (size_t i = 0; i < fields.size(); i++) {
+      mstch::map inner;
+      inner["rust_exception_function:function"] = std::move(functions[i]);
+      inner["rust_exception_function:field"] = std::move(fields[i]);
+      function_data.push_back(std::move(inner));
+    }
+
+    data["rust_exception:functions"] = std::move(function_data);
+    output.push_back(data);
+  }
+
+  return output;
+}
 
 class const_rust_generator : public const_generator {
  public:

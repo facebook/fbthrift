@@ -19,6 +19,27 @@
     {{#program:services}}
     pub mod {{service:snake}} {
 
+        {{#service:rust_exceptions}}
+        pub trait As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}}{
+            fn as_{{#rust_exception:type}}{{type:rust_name_snake}}{{/rust_exception:type}}(&self) -> Option<&{{#rust_exception:type}}{{>lib/type}}{{/rust_exception:type}}>;
+        }
+
+        impl As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}} for ::anyhow::Error {
+            fn as_{{#rust_exception:type}}{{type:rust_name_snake}}{{/rust_exception:type}}(&self) -> Option<&{{#rust_exception:type}}{{>lib/type}}{{/rust_exception:type}}> {
+                for cause in self.chain() {
+                {{#rust_exception:functions}}
+                {{#rust_exception_function:function}}
+                    if let Some({{function:upcamel}}Error::{{#rust_exception_function:field}}{{field:rust_name}}{{/rust_exception_function:field}}(e)) = cause.downcast_ref::<{{function:upcamel}}Error>() {
+                        return Some(e);
+                    }
+                {{/rust_exception_function:function}}
+                {{/rust_exception:functions}}
+                }
+                None
+            }
+        }
+
+        {{/service:rust_exceptions}}
         {{#service:rustFunctions}}
         {{#function:exceptions?}}
         #[derive(Debug, ::thiserror::Error)]
@@ -37,6 +58,15 @@
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Error {
             fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}Error::{{field:rust_name}}(e)
+            }
+        }
+
+        impl As{{#field:type}}{{type:rust_name}}{{/field:type}} for {{function:upcamel}}Error {
+            fn as_{{#field:type}}{{type:rust_name_snake}}{{/field:type}}(&self) -> Option<&{{#field:type}}{{>lib/type}}{{/field:type}}> {
+                match self {
+                    {{function:upcamel}}Error::{{field:rust_name}}(inner) => Some(inner),
+                    _ => None,
+                }
             }
         }
 

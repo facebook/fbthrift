@@ -79,3 +79,11 @@ struct Containers {
   1: map<string, string> m;
   2: list<string> l;
 }
+
+exception TestException {
+  1: string message;
+}
+
+service TestService {
+  void method1(1: string req) throws (1: TestException ex);
+}

@@ -1956,6 +1956,60 @@ pub mod mock {
 pub mod errors {
     pub mod raiser {
 
+        pub trait AsBanal{
+            fn as_banal(&self) -> Option<&crate::types::Banal>;
+        }
+
+        impl AsBanal for ::anyhow::Error {
+            fn as_banal(&self) -> Option<&crate::types::Banal> {
+                for cause in self.chain() {
+                    if let Some(DoRaiseError::b(e)) = cause.downcast_ref::<DoRaiseError>() {
+                        return Some(e);
+                    }
+                    if let Some(Get500Error::b(e)) = cause.downcast_ref::<Get500Error>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
+        pub trait AsFiery{
+            fn as_fiery(&self) -> Option<&crate::types::Fiery>;
+        }
+
+        impl AsFiery for ::anyhow::Error {
+            fn as_fiery(&self) -> Option<&crate::types::Fiery> {
+                for cause in self.chain() {
+                    if let Some(DoRaiseError::f(e)) = cause.downcast_ref::<DoRaiseError>() {
+                        return Some(e);
+                    }
+                    if let Some(Get500Error::f(e)) = cause.downcast_ref::<Get500Error>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
+        pub trait AsSerious{
+            fn as_serious(&self) -> Option<&crate::types::Serious>;
+        }
+
+        impl AsSerious for ::anyhow::Error {
+            fn as_serious(&self) -> Option<&crate::types::Serious> {
+                for cause in self.chain() {
+                    if let Some(DoRaiseError::s(e)) = cause.downcast_ref::<DoRaiseError>() {
+                        return Some(e);
+                    }
+                    if let Some(Get500Error::s(e)) = cause.downcast_ref::<Get500Error>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
         pub type DoBlandError = ::fbthrift::NonthrowingFunctionError;
 
         #[derive(Debug, ::thiserror::Error)]
@@ -1978,15 +2032,42 @@ pub mod errors {
             }
         }
 
+        impl AsBanal for DoRaiseError {
+            fn as_banal(&self) -> Option<&crate::types::Banal> {
+                match self {
+                    DoRaiseError::b(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
         impl ::std::convert::From<crate::types::Fiery> for DoRaiseError {
             fn from(e: crate::types::Fiery) -> Self {
                 DoRaiseError::f(e)
             }
         }
 
+        impl AsFiery for DoRaiseError {
+            fn as_fiery(&self) -> Option<&crate::types::Fiery> {
+                match self {
+                    DoRaiseError::f(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
         impl ::std::convert::From<crate::types::Serious> for DoRaiseError {
             fn from(e: crate::types::Serious) -> Self {
                 DoRaiseError::s(e)
+            }
+        }
+
+        impl AsSerious for DoRaiseError {
+            fn as_serious(&self) -> Option<&crate::types::Serious> {
+                match self {
+                    DoRaiseError::s(inner) => Some(inner),
+                    _ => None,
+                }
             }
         }
 
@@ -2024,15 +2105,42 @@ pub mod errors {
             }
         }
 
+        impl AsFiery for Get500Error {
+            fn as_fiery(&self) -> Option<&crate::types::Fiery> {
+                match self {
+                    Get500Error::f(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
         impl ::std::convert::From<crate::types::Banal> for Get500Error {
             fn from(e: crate::types::Banal) -> Self {
                 Get500Error::b(e)
             }
         }
 
+        impl AsBanal for Get500Error {
+            fn as_banal(&self) -> Option<&crate::types::Banal> {
+                match self {
+                    Get500Error::b(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
         impl ::std::convert::From<crate::types::Serious> for Get500Error {
             fn from(e: crate::types::Serious) -> Self {
                 Get500Error::s(e)
+            }
+        }
+
+        impl AsSerious for Get500Error {
+            fn as_serious(&self) -> Option<&crate::types::Serious> {
+                match self {
+                    Get500Error::s(inner) => Some(inner),
+                    _ => None,
+                }
             }
         }
 
