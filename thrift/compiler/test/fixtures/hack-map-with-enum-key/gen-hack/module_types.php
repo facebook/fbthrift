@@ -123,8 +123,8 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   public function __toShape()[]: self::TShape {
     return shape(
-      'e' => ThriftUtil::toDArray($this->e),
-      's' => ThriftUtil::toDArray(Dict\fill_keys($this->s->toValuesArray(), true)),
+      'e' => ThriftUtil::toDArray($this->e, static::class),
+      's' => ThriftUtil::toDArray(Dict\fill_keys($this->s->toValuesArray(), true), static::class),
     );
   }
 }

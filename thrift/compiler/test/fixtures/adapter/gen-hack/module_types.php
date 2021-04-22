@@ -217,9 +217,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'intField' => $this->intField,
       'optionalIntField' => $this->optionalIntField,
       'intFieldWithDefault' => $this->intFieldWithDefault,
-      'setField' => ThriftUtil::toDArray(Dict\fill_keys($this->setField->toValuesArray(), true)),
+      'setField' => ThriftUtil::toDArray(Dict\fill_keys($this->setField->toValuesArray(), true), static::class),
       'optionalSetField' => $this->optionalSetField
-        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true)),
+        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true), static::class),
       'mapField' => $this->mapField->map(
         ($_val0) ==> vec($_val0),
       )

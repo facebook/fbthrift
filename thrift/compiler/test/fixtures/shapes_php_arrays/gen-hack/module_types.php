@@ -253,22 +253,22 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_list_of_strings' => $this->map_of_list_of_strings->map(
         ($_val0) ==> varray($_val0),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'map_of_set_of_strings' => $this->map_of_set_of_strings->map(
         ($_val0) ==> darray($_val0),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'map_of_strings_to_map_of_string_ints' => $this->map_of_strings_to_map_of_string_ints->map(
-        ($_val0) ==> ThriftUtil::toDArray($_val0),
+        ($_val0) ==> ThriftUtil::toDArray($_val0, static::class),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'optional_map_of_map_of_sets' => $this->optional_map_of_map_of_sets?->map(
         ($_val0) ==> $_val0->map(
           ($_val1) ==> darray($_val1),
         )
-          |> ThriftUtil::toDArray($$),
+          |> ThriftUtil::toDArray($$, static::class),
       )
-        |> $$ === null ? null : ThriftUtil::toDArray($$),
+        |> $$ === null ? null : ThriftUtil::toDArray($$, static::class),
     );
   }
 }

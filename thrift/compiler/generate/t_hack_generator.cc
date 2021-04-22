@@ -510,14 +510,17 @@ class t_hack_generator : public t_oop_generator {
    * - If we're operating on a list, we'll want to use varray / vec over
    *   darray / dict
    */
-  std::string generate_to_array_method(const t_type* t) {
+  std::string generate_to_array_method(
+      const t_type* t, const std::string& array) {
     if (!t->is_container()) {
       throw std::logic_error("not a container");
     }
     if (array_migration_) {
-      return t->is_list() ? "varray" : "ThriftUtil::toDArray";
+      return t->is_list()
+          ? "varray(" + array + ")"
+          : "ThriftUtil::toDArray(" + array + ", static::class)";
     } else {
-      return t->is_list() ? "vec" : "dict";
+      return t->is_list() ? "vec(" + array + ")" : "dict(" + array + ")";
     }
   }
 
@@ -2023,7 +2026,8 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     if (arraysets_ || no_use_hack_collections_) {
       out << "darray($" << tmp << "),\n";
     } else {
-      out << "ThriftUtil::toDArray(Dict\\fill_keys($" << tmp << ", true)),\n";
+      out << "ThriftUtil::toDArray(Dict\\fill_keys($" << tmp
+          << ", true), static::class),\n";
     }
   } else if (t->is_map() || t->is_list()) {
     const t_type* val_type;
@@ -2035,7 +2039,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     val_type = val_type->get_true_type();
 
     if (!val_type->is_container() && !val_type->is_struct()) {
-      out << generate_to_array_method(t) << "($" << tmp << "),\n";
+      out << generate_to_array_method(t, "$" + tmp) << ",\n";
       return;
     }
 
@@ -2045,7 +2049,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     indent_down();
     indent(out) << ")\n";
     indent_up();
-    indent(out) << "|> " << generate_to_array_method(t) << "($$),\n";
+    indent(out) << "|> " << generate_to_array_method(t, "$$") << ",\n";
     indent_down();
   }
 }
@@ -2444,11 +2448,11 @@ void t_hack_generator::generate_php_struct_shape_methods(
             val << std::endl;
             indent_up();
             indent(val) << "|> " << (nullable ? "$$ === null ? null : " : "")
-                        << generate_to_array_method(t) << "($$),\n";
+                        << generate_to_array_method(t, "$$") << ",\n";
             indent_down();
           } else {
-            val << generate_to_array_method(t) << "($this->"
-                << field->get_name() << "),\n";
+            val << generate_to_array_method(t, "$this->" + field->get_name())
+                << ",\n";
           }
         }
       } else if (arraysets_ || arrays_ || no_use_hack_collections_) {
@@ -2465,7 +2469,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
         } else {
           val << "$this->" << field->get_name();
         }
-        val << "->toValuesArray(), true)),\n";
+        val << "->toValuesArray(), true), static::class),\n";
         if (nullable) {
           indent_down();
         }
