@@ -15,6 +15,8 @@ pub mod types {
 
     pub type ListWithElemAdapter = ::std::vec::Vec<::std::string::String>;
 
+    pub type StructWithAdapter = crate::types::Bar;
+
     #[derive(Clone, Debug, PartialEq)]
     pub struct Foo {
         pub intField: ::std::primitive::i32,
@@ -33,6 +35,7 @@ pub mod types {
         pub structListField: ::std::vec::Vec<crate::types::Foo>,
         pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::Foo>>,
     }
+
 
 
 

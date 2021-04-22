@@ -87,6 +87,7 @@ class Bar;
 namespace cpp2 {
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>> SetWithAdapter;
 typedef ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>> ListWithElemAdapter;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
 
 } // cpp2
 // END typedefs

@@ -178,3 +178,4 @@ class List__Foo(_typing.Sequence['Foo'], _typing.Hashable):
 
 SetWithAdapter = Set__string
 ListWithElemAdapter = List__string
+StructWithAdapter = Bar

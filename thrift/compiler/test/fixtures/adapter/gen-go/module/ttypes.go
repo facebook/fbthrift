@@ -29,6 +29,12 @@ type ListWithElemAdapter = []string
 
 func ListWithElemAdapterPtr(v ListWithElemAdapter) *ListWithElemAdapter { return &v }
 
+type StructWithAdapter = *Bar
+
+func StructWithAdapterPtr(v StructWithAdapter) *StructWithAdapter { return &v }
+
+func NewStructWithAdapter() StructWithAdapter { return NewBar() }
+
 // Attributes:
 //  - IntField
 //  - OptionalIntField

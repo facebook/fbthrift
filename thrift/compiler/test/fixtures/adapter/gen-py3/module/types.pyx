@@ -651,3 +651,4 @@ Sequence.register(List__Foo)
 
 SetWithAdapter = Set__string
 ListWithElemAdapter = List__string
+StructWithAdapter = Bar

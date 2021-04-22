@@ -11,6 +11,11 @@
       "lineno" : 26,
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
+    },
+    "StructWithAdapter" : {
+      "lineno" : 105,
+      "type_enum" : "TYPEDEF",
+      "spec_args" : "Bar"
     }
   },
   "structs" : {
@@ -89,7 +94,7 @@
   },
   "services" : {
     "Service" : {
-      "lineno" : 105,
+      "lineno" : 111,
       "functions" : {
         "Service.func" : {
           "return_type" : {

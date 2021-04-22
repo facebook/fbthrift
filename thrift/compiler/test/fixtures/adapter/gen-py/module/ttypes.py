@@ -33,7 +33,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Bar', 'SetWithAdapter', 'ListWithElemAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Bar', 'SetWithAdapter', 'ListWithElemAdapter', 'StructWithAdapter']
 
 class Foo:
   """
@@ -525,6 +525,7 @@ class Bar:
 
 SetWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
+StructWithAdapter = Bar
 all_structs.append(Foo)
 Foo.thrift_spec = (
   None, # 0

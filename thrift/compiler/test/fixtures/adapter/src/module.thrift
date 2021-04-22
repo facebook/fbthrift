@@ -102,6 +102,12 @@ struct Bar {
   > optionalStructListField;
 }
 
+typedef Bar (
+  hack.adapter = '\Adapter2',
+  cpp.adapter = 'my::Adapter2',
+  py.adapter = 'my.Adapter2',
+) StructWithAdapter
+
 service Service {
   i32 (
     hack.adapter = '\Adapter1',
