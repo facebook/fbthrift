@@ -554,7 +554,9 @@ void Cpp2Connection::requestReceived(
   if (monitoringLogSampler.isSampled()) {
     if (isMonitoringMethodName(methodName)) {
       THRIFT_CONNECTION_EVENT(monitoring_over_header)
-          .logSampled(context_, monitoringLogSampler);
+          .logSampled(context_, monitoringLogSampler, [&] {
+            return folly::dynamic::object("method_name", methodName);
+          });
     }
   }
 
