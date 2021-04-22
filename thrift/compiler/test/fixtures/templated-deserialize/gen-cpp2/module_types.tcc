@@ -170,13 +170,16 @@ template <class Protocol_>
 uint32_t SmallStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SmallStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("small_A", apache::thrift::protocol::T_BOOL, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BOOL, 1, 0>(*prot_, "small_A", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->small_A);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("small_B", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, 1>(*prot_, "small_B", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->small_B);
     xfer += prot_->writeFieldEnd();
   }
@@ -1055,93 +1058,112 @@ template <class Protocol_>
 uint32_t containerStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("containerStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_BOOL, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BOOL, 1, 0>(*prot_, "fieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->fieldA);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldB", apache::thrift::protocol::T_MAP, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 2, 1>(*prot_, "fieldB", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::write(*prot_, this->fieldB);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldC", apache::thrift::protocol::T_SET, 3);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 3, 2>(*prot_, "fieldC", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, this->fieldC);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_STRING, 4);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 4, 3>(*prot_, "fieldD", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldD);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_STRING, 5);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 5, 4>(*prot_, "fieldE", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->fieldE);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldF", apache::thrift::protocol::T_LIST, 6);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 6, 5>(*prot_, "fieldF", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>, ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>::write(*prot_, this->fieldF);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldG", apache::thrift::protocol::T_MAP, 7);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 7, 6>(*prot_, "fieldG", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>::write(*prot_, this->fieldG);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldH", apache::thrift::protocol::T_LIST, 8);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 8, 7>(*prot_, "fieldH", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, ::std::vector<::std::set<::std::int32_t>>>::write(*prot_, this->fieldH);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldI", apache::thrift::protocol::T_BOOL, 9);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BOOL, 9, 8>(*prot_, "fieldI", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->fieldI);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldJ", apache::thrift::protocol::T_MAP, 10);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 10, 9>(*prot_, "fieldJ", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::std::map<::std::string, ::std::vector<::std::int32_t>>>::write(*prot_, this->fieldJ);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldK", apache::thrift::protocol::T_LIST, 11);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 11, 10>(*prot_, "fieldK", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>::write(*prot_, this->fieldK);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldL", apache::thrift::protocol::T_SET, 12);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 12, 11>(*prot_, "fieldL", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>, ::std::set<::std::set<::std::set<bool>>>>::write(*prot_, this->fieldL);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldM", apache::thrift::protocol::T_MAP, 13);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 13, 12>(*prot_, "fieldM", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>::write(*prot_, this->fieldM);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldN", apache::thrift::protocol::T_LIST, 14);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 14, 13>(*prot_, "fieldN", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector<::cpp2::IndirectionA>>::write(*prot_, this->fieldN);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldO", apache::thrift::protocol::T_LIST, 15);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 15, 14>(*prot_, "fieldO", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector<::cpp2::IndirectionB>>::write(*prot_, this->fieldO);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldP", apache::thrift::protocol::T_LIST, 16);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 16, 15>(*prot_, "fieldP", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector<::cpp2::IndirectionC>>::write(*prot_, this->fieldP);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldQ", apache::thrift::protocol::T_I32, 17);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 17, 16>(*prot_, "fieldQ", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnumA>::write(*prot_, this->fieldQ);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldR", apache::thrift::protocol::T_MAP, 18);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 18, 17>(*prot_, "fieldR", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->fieldR) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::write(*prot_, *this->fieldR);
     } else {
@@ -1151,7 +1173,8 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldS", apache::thrift::protocol::T_STRUCT, 19);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 19, 18>(*prot_, "fieldS", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->fieldS) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::SmallStruct>::write(*prot_, *this->fieldS);
     } else {
@@ -1162,7 +1185,8 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldT", apache::thrift::protocol::T_STRUCT, 20);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 20, 19>(*prot_, "fieldT", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->fieldT) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::SmallStruct>::write(*prot_, *this->fieldT);
     } else {
@@ -1173,7 +1197,8 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldU", apache::thrift::protocol::T_STRUCT, 21);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 21, 20>(*prot_, "fieldU", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->fieldU) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::SmallStruct>::write(*prot_, *this->fieldU);
     } else {
@@ -1184,7 +1209,8 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fieldX", apache::thrift::protocol::T_STRUCT, 23);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 23, 21>(*prot_, "fieldX", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->fieldX) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::SmallStruct>::write(*prot_, *this->fieldX);
     } else {

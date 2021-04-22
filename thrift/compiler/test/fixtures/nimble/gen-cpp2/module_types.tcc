@@ -217,23 +217,32 @@ template <class Protocol_>
 uint32_t BasicTypes::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("BasicTypes");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "first", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->first);
     xfer += prot_->writeFieldEnd();
   }
   if (this->second_ref().has_value()) {
-    xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, 1>(*prot_, "second", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->second);
     xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   if (this->third_ref().has_value()) {
-    xfer += prot_->writeFieldBegin("third", apache::thrift::protocol::T_I64, 3);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 3, 2>(*prot_, "third", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->third);
     xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   {
-    xfer += prot_->writeFieldBegin("isTrue", apache::thrift::protocol::T_BOOL, 4);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BOOL, 4, 3>(*prot_, "isTrue", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->isTrue);
     xfer += prot_->writeFieldEnd();
   }

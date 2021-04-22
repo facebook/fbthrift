@@ -66,6 +66,24 @@ auto make_mutable_smart_ptr() {
   return make_mutable_smart_ptr(folly::tag_t<T>());
 }
 
+// We introduced new version of writeFieldBegin that accepts previous id as
+// parameter. We need adapter until we taught this API to all protocols
+template <TType type, int16_t id, int16_t prevId, class ProtocolWriter>
+FOLLY_ERASE auto writeFieldBegin(
+    ProtocolWriter& prot, const char* name, bool previousFieldHasValue)
+    -> decltype(prot.writeFieldBegin(name, type, id, prevId)) {
+  if (previousFieldHasValue) {
+    return prot.writeFieldBegin(name, type, id, prevId);
+  } else {
+    return prot.writeFieldBegin(name, type, id);
+  }
+}
+
+template <TType type, int16_t id, int16_t /* prevId */, class ProtocolWriter>
+FOLLY_ERASE auto writeFieldBegin(ProtocolWriter& prot, const char* name, ...) {
+  return prot.writeFieldBegin(name, type, id);
+}
+
 } // namespace detail
 
 } // namespace thrift

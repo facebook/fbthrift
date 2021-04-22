@@ -127,7 +127,9 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
     const char* /*name*/,
     const TType fieldType,
     const int16_t fieldId,
-    int8_t typeOverride) {
+    int8_t typeOverride,
+    int16_t previousId) {
+  DCHECK_EQ(previousId, lastFieldId_);
   uint32_t wsize = 0;
 
   // if there's a type override, use that.
@@ -137,9 +139,9 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
            : typeOverride);
 
   // check if we can use delta encoding for the field id
-  if (fieldId > lastFieldId_ && fieldId - lastFieldId_ <= 15) {
+  if (fieldId > previousId && fieldId - previousId <= 15) {
     // write them together
-    wsize += writeByte((fieldId - lastFieldId_) << 4 | typeToWrite);
+    wsize += writeByte((fieldId - previousId) << 4 | typeToWrite);
   } else {
     // write them separate
     wsize += writeByte(typeToWrite);
@@ -151,13 +153,13 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
 }
 
 uint32_t CompactProtocolWriter::writeFieldBegin(
-    const char* name, TType fieldType, int16_t fieldId) {
+    const char* name, TType fieldType, int16_t fieldId, int16_t previousId) {
   if (fieldType == TType::T_BOOL) {
     booleanField_.name = name;
     booleanField_.fieldType = fieldType;
     booleanField_.fieldId = fieldId;
   } else {
-    return writeFieldBeginInternal(name, fieldType, fieldId, -1);
+    return writeFieldBeginInternal(name, fieldType, fieldId, -1, previousId);
   }
   return 0;
 }
@@ -229,7 +231,8 @@ uint32_t CompactProtocolWriter::writeBool(bool value) {
         booleanField_.fieldType,
         booleanField_.fieldId,
         value ? apache::thrift::detail::compact::CT_BOOLEAN_TRUE
-              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE);
+              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE,
+        lastFieldId_);
     booleanField_.name = NULL;
   } else {
     // we're not part of a field, so just write the value

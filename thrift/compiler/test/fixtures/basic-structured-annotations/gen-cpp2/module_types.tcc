@@ -212,13 +212,16 @@ template <class Protocol_>
 uint32_t structured_annotation_inline::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_inline");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, 0>(*prot_, "count", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, 1>(*prot_, "name", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
     xfer += prot_->writeFieldEnd();
   }
@@ -334,8 +337,10 @@ template <class Protocol_>
 uint32_t structured_annotation_with_default::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_with_default");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "name", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
     xfer += prot_->writeFieldEnd();
   }
@@ -451,8 +456,10 @@ template <class Protocol_>
 uint32_t structured_annotation_forward::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_forward");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("count", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, 0>(*prot_, "count", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->count);
     xfer += prot_->writeFieldEnd();
   }
@@ -636,18 +643,22 @@ template <class Protocol_>
 uint32_t structured_annotation_recursive::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_recursive");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "name", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("recurse", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "recurse", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::write(*prot_, this->recurse);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("forward", apache::thrift::protocol::T_STRUCT, 3);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "forward", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::write(*prot_, this->forward);
     xfer += prot_->writeFieldEnd();
   }
@@ -797,13 +808,16 @@ template <class Protocol_>
 uint32_t structured_annotation_nested::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_nested");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "name", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->name);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("nest", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "nest", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::write(*prot_, this->nest);
     xfer += prot_->writeFieldEnd();
   }
@@ -1015,23 +1029,28 @@ template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("annotated_field", apache::thrift::protocol::T_I64, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, 0>(*prot_, "annotated_field", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_field);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("annotated_type", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, 1>(*prot_, "annotated_type", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, this->annotated_type);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("annotated_recursive", apache::thrift::protocol::T_STRING, 3);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 3, 2>(*prot_, "annotated_recursive", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->annotated_recursive);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("annotated_nested", apache::thrift::protocol::T_I64, 4);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 4, 3>(*prot_, "annotated_nested", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->annotated_nested);
     xfer += prot_->writeFieldEnd();
   }
@@ -1147,8 +1166,10 @@ template <class Protocol_>
 uint32_t MyException::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyException");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("context", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "context", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->context);
     xfer += prot_->writeFieldEnd();
   }
@@ -1274,14 +1295,14 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
   switch(this->getType()) {
     case MyUnion::Type::first:
     {
-      xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_STRING, 1);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "first", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::write(*prot_, value_.first);
       xfer += prot_->writeFieldEnd();
       break;
     }
     case MyUnion::Type::second:
     {
-      xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_I64, 2);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 2, 1>(*prot_, "second", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::annotated_inline_i64>::write(*prot_, value_.second);
       xfer += prot_->writeFieldEnd();
       break;

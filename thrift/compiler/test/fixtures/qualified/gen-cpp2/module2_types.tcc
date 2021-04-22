@@ -167,13 +167,16 @@ template <class Protocol_>
 uint32_t Struct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Struct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("first", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "first", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module0::Struct>::write(*prot_, this->first);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("second", apache::thrift::protocol::T_STRUCT, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "second", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module1::Struct>::write(*prot_, this->second);
     xfer += prot_->writeFieldEnd();
   }
@@ -323,13 +326,16 @@ template <class Protocol_>
 uint32_t BigStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("BigStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("s", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "s", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::module2::Struct>::write(*prot_, this->s);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, 1>(*prot_, "id", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->id);
     xfer += prot_->writeFieldEnd();
   }

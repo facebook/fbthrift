@@ -124,8 +124,10 @@ template <class Protocol_>
 uint32_t ReflectionStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ReflectionStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "fieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->fieldA);
     xfer += prot_->writeFieldEnd();
   }

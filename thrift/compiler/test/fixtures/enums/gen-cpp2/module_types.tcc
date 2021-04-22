@@ -230,23 +230,28 @@ template <class Protocol_>
 uint32_t SomeStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("SomeStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("reasonable", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "reasonable", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->reasonable);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("fine", apache::thrift::protocol::T_I32, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, 1>(*prot_, "fine", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->fine);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("questionable", apache::thrift::protocol::T_I32, 3);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 3, 2>(*prot_, "questionable", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::write(*prot_, this->questionable);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("tags", apache::thrift::protocol::T_SET, 4);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 4, 3>(*prot_, "tags", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, this->tags);
     xfer += prot_->writeFieldEnd();
   }

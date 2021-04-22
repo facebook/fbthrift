@@ -138,8 +138,10 @@ template <class Protocol_>
 uint32_t AStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("AStruct");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("FieldA", apache::thrift::protocol::T_I32, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "FieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->FieldA);
     xfer += prot_->writeFieldEnd();
   }
@@ -270,8 +272,10 @@ template <class Protocol_>
 uint32_t AStructB::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("AStructB");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("FieldA", apache::thrift::protocol::T_STRUCT, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "FieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
     if (this->FieldA) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::a::different::ns::AStruct>::write(*prot_, *this->FieldA);
     } else {

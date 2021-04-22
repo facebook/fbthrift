@@ -566,6 +566,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_deprecated_accessor_type",
              &mstch_cpp2_field::cpp_deprecated_accessor_type},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
+            {"field:prev_field_key", &mstch_cpp2_field::prev_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
             {"field:non_opt_cpp_ref?", &mstch_cpp2_field::non_opt_cpp_ref},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
@@ -638,6 +639,9 @@ class mstch_cpp2_field : public mstch_field {
       }
     }
     return mstch::node();
+  }
+  mstch::node prev_field_key() {
+    return std::to_string(field_->get_prev()->get_key());
   }
   mstch::node next_field_key() {
     return std::to_string(field_->get_next()->get_key());

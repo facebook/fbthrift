@@ -228,8 +228,10 @@ template <class Protocol_>
 uint32_t Fiery::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Fiery");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "message", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->message);
     xfer += prot_->writeFieldEnd();
   }
@@ -345,10 +347,14 @@ template <class Protocol_>
 uint32_t Serious::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Serious");
+  bool previousFieldHasValue = true;
   if (this->sonnet_ref().has_value()) {
-    xfer += prot_->writeFieldBegin("sonnet", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "sonnet", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->sonnet);
     xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -494,13 +500,16 @@ template <class Protocol_>
 uint32_t ComplexFieldNames::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ComplexFieldNames");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "error_message", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, 1>(*prot_, "internal_error_message", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
     xfer += prot_->writeFieldEnd();
   }
@@ -648,13 +657,16 @@ template <class Protocol_>
 uint32_t CustomFieldNames::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("CustomFieldNames");
+  bool previousFieldHasValue = true;
   {
-    xfer += prot_->writeFieldBegin("error_message", apache::thrift::protocol::T_STRING, 1);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, 0>(*prot_, "error_message", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->error_message);
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += prot_->writeFieldBegin("internal_error_message", apache::thrift::protocol::T_STRING, 2);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, 1>(*prot_, "internal_error_message", previousFieldHasValue);
+    previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->internal_error_message);
     xfer += prot_->writeFieldEnd();
   }

@@ -73,7 +73,10 @@ class t_field : public t_named {
 
   void set_req(e_req req) { req_ = req; }
 
-  void set_next(const t_field* field) { next_ = field; }
+  void set_next(t_field* field) {
+    next_ = field;
+    field->prev_ = this;
+  }
 
   /**
    * t_field getters
@@ -83,6 +86,7 @@ class t_field : public t_named {
   int32_t get_key() const { return key_; }
 
   const t_field* get_next() const { return next_; }
+  const t_field* get_prev() const { return prev_; }
 
   e_req get_req() const { return req_; }
 
@@ -109,6 +113,7 @@ class t_field : public t_named {
   int32_t key_;
   std::unique_ptr<t_const_value> value_;
   const t_field* next_ = nullptr;
+  const t_field* prev_ = nullptr;
 
   e_req req_{e_req::opt_in_req_out};
 

@@ -98,7 +98,11 @@ class CompactProtocolWriter {
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
   inline uint32_t writeFieldBegin(
-      const char* name, TType fieldType, int16_t fieldId);
+      const char* name, TType fieldType, int16_t fieldId) {
+    return writeFieldBegin(name, fieldType, fieldId, lastFieldId_);
+  }
+  FOLLY_ALWAYS_INLINE uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId, int16_t previousId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
   inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
@@ -191,7 +195,8 @@ class CompactProtocolWriter {
       const char* name,
       const TType fieldType,
       const int16_t fieldId,
-      int8_t typeOverride);
+      int8_t typeOverride,
+      int16_t previousId);
 };
 
 class CompactProtocolReader {
