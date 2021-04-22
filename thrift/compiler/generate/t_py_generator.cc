@@ -16,6 +16,7 @@
 
 #include <stdlib.h>
 #include <sys/types.h>
+#include <stdexcept>
 
 #include <algorithm>
 #include <cassert>
@@ -29,6 +30,8 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/base_types.h>
+#include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/lib/py3/util.h>
@@ -38,6 +41,17 @@ using namespace std;
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+namespace {
+
+const std::string* get_py_adapter(const t_type* type) {
+  if (!type->get_true_type()->is_struct()) {
+    return nullptr;
+  }
+  return t_typedef::get_first_annotation_or_null(type, {"py.adapter"});
+}
+
+} // namespace
 
 /**
  * Python code generator.
@@ -826,6 +840,27 @@ string t_py_generator::render_includes() {
   if (includes.size() > 0) {
     result += "\n";
   }
+
+  set<string> modules;
+  for (const auto* strct : program_->structs()) {
+    for (const auto* t : collect_types(strct)) {
+      if (const auto* adapter = get_py_adapter(t)) {
+        modules.emplace(adapter->substr(0, adapter->find_last_of('.')));
+      }
+    }
+  }
+  for (const auto* type : program_->typedefs()) {
+    if (const auto* adapter = get_py_adapter(type)) {
+      modules.emplace(adapter->substr(0, adapter->find_last_of('.')));
+    }
+  }
+  for (const auto& module : modules) {
+    result += "import " + module + "\n";
+  }
+  if (modules.size() > 0) {
+    result += "\n";
+  }
+
   return result;
 }
 
@@ -941,7 +976,10 @@ void t_py_generator::generate_typedef(const t_typedef* ttypedef) {
   // hand, base types are implicit, so it is not as helpful to support
   // creating aliases to their Python analogs.  That said, if you need it,
   // add an `else if` below.
-  if (type->is_typedef() || type->is_enum() || type->is_struct() ||
+  if (const auto* adapter = get_py_adapter(type)) {
+    f_types_ << varname << " = " << *adapter << ".Type" << endl;
+  } else if (
+      type->is_typedef() || type->is_enum() || type->is_struct() ||
       type->is_xception()) {
     f_types_ << varname << " = " << type_name(type) << endl;
   } else {
@@ -2936,12 +2974,15 @@ void t_py_generator::generate_deserialize_field(
       out << "readI32()";
     }
     out << endl;
-
   } else {
     printf(
         "DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n",
         tfield->get_name().c_str(),
         type->get_name().c_str());
+  }
+  if (const auto* adapter = get_py_adapter(tfield->get_type())) {
+    indent(out) << name << " = " << *adapter << ".from_thrift(" << name << ")"
+                << endl;
   }
 }
 
@@ -3100,18 +3141,18 @@ void t_py_generator::generate_serialize_field(
         "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
         tfield->get_name());
   }
-
+  string name = prefix + rename_reserved_keywords(tfield->get_name());
+  if (const auto* adapter = get_py_adapter(tfield->get_type())) {
+    string real_name = std::move(name);
+    name = tmp("adpt");
+    indent(out) << name << " = " << *adapter << ".to_thrift(" << real_name
+                << ")" << endl;
+  }
   if (type->is_struct() || type->is_xception()) {
-    generate_serialize_struct(
-        out,
-        (t_struct*)type,
-        prefix + rename_reserved_keywords(tfield->get_name()));
+    generate_serialize_struct(out, (t_struct*)type, name);
   } else if (type->is_container()) {
-    generate_serialize_container(
-        out, type, prefix + rename_reserved_keywords(tfield->get_name()));
+    generate_serialize_container(out, type, name);
   } else if (type->is_base_type() || type->is_enum()) {
-    string name = prefix + rename_reserved_keywords(tfield->get_name());
-
     indent(out) << "oprot.";
 
     if (type->is_base_type()) {

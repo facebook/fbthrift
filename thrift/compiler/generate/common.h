@@ -17,7 +17,11 @@
 #pragma once
 
 #include <string>
+#include <unordered_set>
 #include <vector>
+
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -32,6 +36,12 @@ std::vector<std::string> split_namespace(const std::string& s);
  * strip comments and newlines off cpp annotation text
  */
 void strip_cpp_comments_and_newlines(std::string& s);
+
+/**
+ * return all types used in the struct, including types container elements,
+ * but not including fields of nested structs
+ */
+std::unordered_set<const t_type*> collect_types(const t_struct* strct);
 
 } // namespace compiler
 } // namespace thrift

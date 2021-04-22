@@ -17,6 +17,8 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
+import my
+
 
 from .ttypes import UTF8STRINGS, Foo, Bar, SetWithAdapter, ListWithElemAdapter, StructWithAdapter
 

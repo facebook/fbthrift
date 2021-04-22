@@ -18,6 +18,8 @@ if sys.version_info[0] >= 3:
   long = int
 
 from .ttypes import UTF8STRINGS, Foo, Bar, SetWithAdapter, ListWithElemAdapter, StructWithAdapter
+import my
+
 from thrift.Thrift import TProcessor
 import pprint
 import warnings

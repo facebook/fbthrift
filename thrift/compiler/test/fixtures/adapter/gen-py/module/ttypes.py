@@ -17,6 +17,8 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
+import my
+
 
 import pprint
 import warnings
@@ -378,12 +380,14 @@ class Bar:
         if ftype == TType.STRUCT:
           self.structField = Foo()
           self.structField.read(iprot)
+          self.structField = my.Adapter1.from_thrift(self.structField)
         else:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.STRUCT:
           self.optionalStructField = Foo()
           self.optionalStructField.read(iprot)
+          self.optionalStructField = my.Adapter1.from_thrift(self.optionalStructField)
         else:
           iprot.skip(ftype)
       elif fid == 3:
@@ -394,11 +398,13 @@ class Bar:
             for _i84 in six.moves.range(_size80):
               _elem85 = Foo()
               _elem85.read(iprot)
+              _elem85 = my.Adapter1.from_thrift(_elem85)
               self.structListField.append(_elem85)
           else: 
             while iprot.peekList():
               _elem86 = Foo()
               _elem86.read(iprot)
+              _elem86 = my.Adapter1.from_thrift(_elem86)
               self.structListField.append(_elem86)
           iprot.readListEnd()
         else:
@@ -411,11 +417,13 @@ class Bar:
             for _i91 in six.moves.range(_size87):
               _elem92 = Foo()
               _elem92.read(iprot)
+              _elem92 = my.Adapter1.from_thrift(_elem92)
               self.optionalStructListField.append(_elem92)
           else: 
             while iprot.peekList():
               _elem93 = Foo()
               _elem93.read(iprot)
+              _elem93 = my.Adapter1.from_thrift(_elem93)
               self.optionalStructListField.append(_elem93)
           iprot.readListEnd()
         else:
@@ -435,24 +443,28 @@ class Bar:
     oprot.writeStructBegin('Bar')
     if self.structField != None:
       oprot.writeFieldBegin('structField', TType.STRUCT, 1)
-      self.structField.write(oprot)
+      adpt94 = my.Adapter1.to_thrift(self.structField)
+      adpt94.write(oprot)
       oprot.writeFieldEnd()
     if self.optionalStructField != None:
       oprot.writeFieldBegin('optionalStructField', TType.STRUCT, 2)
-      self.optionalStructField.write(oprot)
+      adpt95 = my.Adapter1.to_thrift(self.optionalStructField)
+      adpt95.write(oprot)
       oprot.writeFieldEnd()
     if self.structListField != None:
       oprot.writeFieldBegin('structListField', TType.LIST, 3)
       oprot.writeListBegin(TType.STRUCT, len(self.structListField))
-      for iter94 in self.structListField:
-        iter94.write(oprot)
+      for iter96 in self.structListField:
+        adpt97 = my.Adapter1.to_thrift(iter96)
+        adpt97.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.optionalStructListField != None:
       oprot.writeFieldBegin('optionalStructListField', TType.LIST, 4)
       oprot.writeListBegin(TType.STRUCT, len(self.optionalStructListField))
-      for iter95 in self.optionalStructListField:
-        iter95.write(oprot)
+      for iter98 in self.optionalStructListField:
+        adpt99 = my.Adapter1.to_thrift(iter98)
+        adpt99.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -478,16 +490,16 @@ class Bar:
       self.optionalStructField.readFromJson(json_obj['optionalStructField'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'structListField' in json_obj and json_obj['structListField'] is not None:
       self.structListField = []
-      for _tmp_e96 in json_obj['structListField']:
-        _struct97 = Foo()
-        _struct97.readFromJson(_tmp_e96, is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-        self.structListField.append(_struct97)
+      for _tmp_e100 in json_obj['structListField']:
+        _struct101 = Foo()
+        _struct101.readFromJson(_tmp_e100, is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+        self.structListField.append(_struct101)
     if 'optionalStructListField' in json_obj and json_obj['optionalStructListField'] is not None:
       self.optionalStructListField = []
-      for _tmp_e98 in json_obj['optionalStructListField']:
-        _struct99 = Foo()
-        _struct99.readFromJson(_tmp_e98, is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-        self.optionalStructListField.append(_struct99)
+      for _tmp_e102 in json_obj['optionalStructListField']:
+        _struct103 = Foo()
+        _struct103.readFromJson(_tmp_e102, is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+        self.optionalStructListField.append(_struct103)
 
   def __repr__(self):
     L = []
@@ -525,7 +537,7 @@ class Bar:
 
 SetWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
-StructWithAdapter = Bar
+StructWithAdapter = my.Adapter2.Type
 all_structs.append(Foo)
 Foo.thrift_spec = (
   None, # 0

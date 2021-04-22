@@ -28,6 +28,7 @@
 
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
 namespace apache {
@@ -394,17 +395,8 @@ class t_hack_generator : public t_oop_generator {
     return tenum->has_annotation("bitmask");
   }
 
-  // Recursively traverse any typdefs and return the first found adapter name.
   const std::string* get_hack_adapter(const t_type* type) {
-    while (true) {
-      if (const auto* adapter = type->get_annotation_or_null("hack.adapter")) {
-        return adapter;
-      } else if (const auto* ttypedef = dynamic_cast<const t_typedef*>(type)) {
-        type = ttypedef->get_type();
-      } else {
-        return nullptr;
-      }
-    }
+    return t_typedef::get_first_annotation_or_null(type, {"hack.adapter"});
   }
 
   std::string hack_namespace(const t_program* p) {
@@ -2653,30 +2645,12 @@ void t_hack_generator::generate_adapter_type_checks(
     std::ofstream& out, const t_struct* tstruct) {
   // Adapter name -> original type of the field that the adapter is for.
   std::set<std::pair<std::string, std::string>> adapter_types_;
-
-  std::function<void(const t_type*)> collect_adapters_recursively =
-      [&](const t_type* t) {
-        // Check the adapter before resolving typedefs.
-        if (const auto* adapter = get_hack_adapter(t)) {
-          adapter_types_.emplace(
-              *adapter,
-              type_to_typehint(
-                  t, false, false, false, /* ignore_adapter */ true));
-        }
-
-        t = t->get_true_type();
-        if (const auto* tmap = dynamic_cast<const t_map*>(t)) {
-          collect_adapters_recursively(tmap->get_key_type());
-          collect_adapters_recursively(tmap->get_val_type());
-        } else if (const auto* tlist = dynamic_cast<const t_list*>(t)) {
-          collect_adapters_recursively(tlist->get_elem_type());
-        } else if (const auto* tset = dynamic_cast<const t_set*>(t)) {
-          collect_adapters_recursively(tset->get_elem_type());
-        }
-      };
-
-  for (const auto* field : tstruct->fields()) {
-    collect_adapters_recursively(field->get_type());
+  for (const auto* t : collect_types(tstruct)) {
+    if (const auto* adapter = get_hack_adapter(t)) {
+      adapter_types_.emplace(
+          *adapter,
+          type_to_typehint(t, false, false, false, /* ignore_adapter */ true));
+    }
   }
 
   if (adapter_types_.empty()) {
