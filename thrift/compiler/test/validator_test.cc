@@ -23,6 +23,7 @@
 
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_union.h>
@@ -271,8 +272,7 @@ TEST_F(ValidatorTest, DuplicatedStructNames) {
 TEST_F(ValidatorTest, NestedInteractions) {
   t_program program("/path/to/file.thrift");
 
-  auto interaction = std::make_unique<t_service>(&program);
-  interaction->set_is_interaction();
+  auto interaction = std::make_unique<t_interaction>(&program, "foo");
   auto func =
       std::make_unique<t_function>(interaction.get(), "frobnicate", nullptr);
   func->set_lineno(42);
@@ -289,10 +289,7 @@ TEST_F(ValidatorTest, NestedInteractions) {
 TEST_F(ValidatorTest, DuplicateInteractions) {
   t_program program("/path/to/file.thrift");
 
-  auto interaction = std::make_unique<t_service>(&program);
-  interaction->set_is_interaction();
-  interaction->set_name("Clyde");
-
+  auto interaction = std::make_unique<t_interaction>(&program, "Clyde");
   auto service = create_fake_service("foo");
   auto func =
       std::make_unique<t_function>(service.get(), "frobnicate", nullptr);

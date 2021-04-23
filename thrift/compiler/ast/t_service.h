@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef T_SERVICE_H
-#define T_SERVICE_H
+#pragma once
 
-#include <algorithm>
+#include <memory>
+#include <string>
 #include <vector>
 
 #include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -30,54 +31,49 @@ class t_program;
 
 /**
  * A service consists of a set of functions.
- *
  */
 class t_service : public t_type {
  public:
-  explicit t_service(t_program* program) : t_type(program), extends_(nullptr) {}
+  explicit t_service(t_program* program, std::string name)
+      : t_type(program, std::move(name)) {}
 
-  bool is_service() const override { return true; }
-
+  const t_service* extends() const { return extends_; }
   void set_extends(const t_service* extends) { extends_ = extends; }
 
-  void add_function(std::unique_ptr<t_function> func) {
-    functions_raw_.push_back(func.get());
-    functions_.push_back(std::move(func));
-  }
-
-  const std::vector<t_function*>& get_functions() const {
+  const std::vector<const t_function*>& functions() const {
     return functions_raw_;
   }
-
-  const t_service* get_extends() const { return extends_; }
+  void set_functions(std::vector<std::unique_ptr<t_function>> functions);
+  void add_function(std::unique_ptr<t_function> func);
 
   type get_type_value() const override { return type::t_service; }
+  bool is_service() const override { return true; }
 
   std::string get_full_name() const override {
     return make_full_name("service");
   }
 
-  bool is_interaction() const { return is_interaction_; }
-
-  void set_is_interaction() { is_interaction_ = true; }
-
-  bool is_serial_interaction() const { return is_serial_interaction_; }
-
-  void set_is_serial_interaction() { is_serial_interaction_ = true; }
-
  private:
   std::vector<std::unique_ptr<t_function>> functions_;
+  std::vector<const t_function*> functions_raw_;
 
-  std::vector<t_function*> functions_raw_;
+  const t_service* extends_ = nullptr;
 
-  const t_service* extends_;
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+  std::vector<t_function*> old_functions_raw_;
 
-  bool is_interaction_{false};
-  bool is_serial_interaction_{false};
+ public:
+  const std::vector<t_function*>& get_functions() const {
+    return old_functions_raw_;
+  }
+
+  const t_service* get_extends() const { return extends_; }
+
+  bool is_interaction() const;
+  bool is_serial_interaction() const;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

@@ -27,6 +27,7 @@
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_include.h>
+#include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_node.h>
@@ -70,53 +71,57 @@ class t_program : public t_node {
    * Set program elements
    */
   void add_typedef(std::unique_ptr<t_typedef> td) {
+    assert(td != nullptr);
     typedefs_.push_back(td.get());
     nodes_.push_back(std::move(td));
   }
   void add_enum(std::unique_ptr<t_enum> te) {
+    assert(te != nullptr);
     enums_.push_back(te.get());
     nodes_.push_back(std::move(te));
   }
   void add_const(std::unique_ptr<t_const> tc) {
+    assert(tc != nullptr);
     consts_.push_back(tc.get());
     nodes_.push_back(std::move(tc));
   }
   void add_struct(std::unique_ptr<t_struct> ts) {
+    assert(ts != nullptr);
     objects_.push_back(ts.get());
     structs_.push_back(ts.get());
     nodes_.push_back(std::move(ts));
   }
-  // TODO: remove "xception" function once everything changed to "exception"
-  void add_xception(std::unique_ptr<t_exception> tx) {
-    objects_.push_back(tx.get());
-    exceptions_.push_back(tx.get());
-    nodes_.push_back(std::move(tx));
-  }
   void add_exception(std::unique_ptr<t_exception> tx) {
+    assert(tx != nullptr);
     objects_.push_back(tx.get());
     exceptions_.push_back(tx.get());
     nodes_.push_back(std::move(tx));
   }
   void add_service(std::unique_ptr<t_service> ts) {
+    assert(ts != nullptr);
     services_.push_back(ts.get());
     nodes_.push_back(std::move(ts));
   }
-  void add_interaction(std::unique_ptr<t_service> ti) {
+  void add_interaction(std::unique_ptr<t_interaction> ti) {
+    assert(ti != nullptr);
     interactions_.push_back(ti.get());
     nodes_.push_back(std::move(ti));
   }
 
   void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
+    assert(ptd != nullptr);
     assert(!ptd->is_defined());
     placeholder_typedefs_.push_back(ptd.get());
     nodes_.push_back(std::move(ptd));
   }
 
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
+    assert(td != nullptr);
     nodes_.push_back(std::move(td));
   }
 
   void add_unnamed_type(std::unique_ptr<t_type> ut) {
+    assert(ut != nullptr);
     nodes_.push_back(std::move(ut));
   }
 
@@ -127,15 +132,15 @@ class t_program : public t_node {
   const std::vector<t_enum*>& enums() const { return enums_; }
   const std::vector<t_const*>& consts() const { return consts_; }
   const std::vector<t_struct*>& structs() const { return structs_; }
-  // TODO: remove "xception" function once everything changed to "exception"
-  const std::vector<t_exception*>& xceptions() const { return exceptions_; }
   const std::vector<t_exception*>& exceptions() const { return exceptions_; }
   const std::vector<t_struct*>& objects() const { return objects_; }
   const std::vector<t_service*>& services() const { return services_; }
   const std::vector<t_typedef*>& placeholder_typedefs() const {
     return placeholder_typedefs_;
   }
-  const std::vector<t_service*>& interactions() const { return interactions_; }
+  const std::vector<t_interaction*>& interactions() const {
+    return interactions_;
+  }
 
   /**
    * t_program setters
@@ -245,7 +250,7 @@ class t_program : public t_node {
   std::vector<t_exception*> exceptions_;
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
-  std::vector<t_service*> interactions_;
+  std::vector<t_interaction*> interactions_;
   std::vector<t_typedef*> placeholder_typedefs_;
   std::vector<t_struct*> objects_; // structs_ + exceptions_
 
@@ -255,6 +260,14 @@ class t_program : public t_node {
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
   std::unique_ptr<t_scope> scope_{new t_scope{}};
+
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
+  void add_xception(std::unique_ptr<t_exception> tx) {
+    add_exception(std::move(tx));
+  }
+  const std::vector<t_exception*>& xceptions() const { return exceptions(); }
 };
 
 } // namespace compiler

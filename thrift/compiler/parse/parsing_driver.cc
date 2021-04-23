@@ -410,8 +410,7 @@ void parsing_driver::clear_doctext() {
   doctext = boost::none;
 }
 
-boost::optional<std::string> parsing_driver::clean_up_doctext(
-    std::string docstring) {
+t_doc parsing_driver::clean_up_doctext(std::string docstring) {
   // Convert to C++ string, and remove Windows's carriage returns.
   docstring.erase(
       remove(docstring.begin(), docstring.end(), '\r'), docstring.end());
@@ -760,7 +759,7 @@ const t_type* parsing_driver::add_placeholder_typedef(
 }
 
 t_ref<t_const> parsing_driver::add_decl(
-    std::unique_ptr<t_const>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_const>&& node, t_doc doc) {
   t_ref<t_const> result(node.get());
   if (should_add_node(node, std::move(doc))) {
     validate_const_type(node.get());
@@ -770,24 +769,29 @@ t_ref<t_const> parsing_driver::add_decl(
   return result;
 }
 
-t_ref<t_service> parsing_driver::add_decl(
-    std::unique_ptr<t_service>&& node, boost::optional<std::string> doc) {
-  t_ref<t_service> result(node.get());
+t_ref<t_interaction> parsing_driver::add_decl(
+    std::unique_ptr<t_interaction>&& node, t_doc doc) {
+  t_ref<t_interaction> result(node.get());
   if (should_add_node(node, std::move(doc))) {
-    // TODO(afuller): Make interactions their own type.
-    if (node->is_interaction()) {
-      scope_cache->add_interaction(scoped_name(*node), node.get());
-      program->add_interaction(std::move(node));
-    } else {
-      scope_cache->add_service(scoped_name(*node), node.get());
-      program->add_service(std::move(node));
-    }
+    scope_cache->add_interaction(scoped_name(*node), node.get());
+    program->add_interaction(std::move(node));
+  }
+  return result;
+}
+
+t_ref<t_service> parsing_driver::add_decl(
+    std::unique_ptr<t_service>&& node, t_doc doc) {
+  t_ref<t_service> result(node.get());
+  assert(!node->is_interaction());
+  if (should_add_node(node, std::move(doc))) {
+    scope_cache->add_service(scoped_name(*node), node.get());
+    program->add_service(std::move(node));
   }
   return result;
 }
 
 t_ref<t_typedef> parsing_driver::add_decl(
-    std::unique_ptr<t_typedef>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_typedef>&& node, t_doc doc) {
   t_ref<t_typedef> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_typedef(std::move(node));
@@ -796,7 +800,7 @@ t_ref<t_typedef> parsing_driver::add_decl(
 }
 
 t_ref<t_struct> parsing_driver::add_decl(
-    std::unique_ptr<t_struct>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_struct>&& node, t_doc doc) {
   t_ref<t_struct> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_struct(std::move(node));
@@ -805,7 +809,7 @@ t_ref<t_struct> parsing_driver::add_decl(
 }
 
 t_ref<t_union> parsing_driver::add_decl(
-    std::unique_ptr<t_union>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_union>&& node, t_doc doc) {
   t_ref<t_union> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_struct(std::move(node));
@@ -814,7 +818,7 @@ t_ref<t_union> parsing_driver::add_decl(
 }
 
 t_ref<t_exception> parsing_driver::add_decl(
-    std::unique_ptr<t_exception>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_exception>&& node, t_doc doc) {
   t_ref<t_exception> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_xception(std::move(node));
@@ -823,7 +827,7 @@ t_ref<t_exception> parsing_driver::add_decl(
 }
 
 t_ref<t_enum> parsing_driver::add_decl(
-    std::unique_ptr<t_enum>&& node, boost::optional<std::string> doc) {
+    std::unique_ptr<t_enum>&& node, t_doc doc) {
   t_ref<t_enum> result(node.get());
   if (should_add_type(node, std::move(doc))) {
     program->add_enum(std::move(node));

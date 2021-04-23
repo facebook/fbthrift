@@ -22,6 +22,7 @@
 
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -50,11 +51,11 @@ class t_scope {
 
   const t_service* get_service(std::string name) { return services_[name]; }
 
-  void add_interaction(std::string name, const t_service* interaction) {
+  void add_interaction(std::string name, const t_interaction* interaction) {
     interactions_[name] = interaction;
   }
 
-  const t_service* get_interaction(std::string name) {
+  const t_interaction* get_interaction(std::string name) {
     return interactions_[name];
   }
 
@@ -92,7 +93,7 @@ class t_scope {
   std::map<std::string, const t_service*> services_;
 
   // Map of names to interactions
-  std::map<std::string, const t_service*> interactions_;
+  std::map<std::string, const t_interaction*> interactions_;
 
   // Set of enum_values that are redefined and are ambiguous
   // if referred to without the enum name

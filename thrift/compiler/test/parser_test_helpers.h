@@ -53,9 +53,7 @@ std::unique_ptr<t_function> create_fake_function(
  */
 std::unique_ptr<t_service> create_fake_service(
     std::string name, t_program* program = nullptr) {
-  std::unique_ptr<t_service> service(new t_service(program));
-  service->set_name(std::move(name));
-  return service;
+  return std::make_unique<t_service>(program, std::move(name));
 }
 
 /**

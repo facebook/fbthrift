@@ -42,6 +42,7 @@
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/ast/t_container.h>
+
 /**
  * Note macro expansion because this is different between OSS and internal
  * build, sigh.
@@ -99,6 +100,7 @@ namespace compiler {
 
 using t_typethrowspair = std::pair<t_type_ref*, t_throws*>;
 class t_container_type;
+using t_function_list = std::vector<std::unique_ptr<t_function>>;
 
 } // namespace compiler
 } // namespace thrift
@@ -277,11 +279,11 @@ class t_container_type;
 %type<t_exception*>          Xception
 
 %type<t_service*>            Service
-%type<t_service*>            Interaction
+%type<t_interaction*>        Interaction
 
 %type<t_function*>           Function
 %type<t_type_ref*>           FunctionType
-%type<t_service*>            FunctionList
+%type<t_function_list*>      FunctionList
 
 %type<t_paramlist*>          ParamList
 %type<t_paramlist*>          EmptyParamList
@@ -931,9 +933,9 @@ Service:
       driver.debug("Service => StructuredAnnotations tok_service "
         "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
         "FunctionAnnotations");
-      $$ = $8;
+      $$ = new t_service(driver.program, std::move($4));
+      $$->set_functions(consume($8));
       $$->set_extends($5);
-      $$->set_name(std::move($4));
       driver.finish_node($$, LineType::Service, own($11), own($1));
     }
 
@@ -971,15 +973,14 @@ Interaction:
   // TODO(afuller): Allow structured annotations.
   tok_interaction
     {
-      driver.start_node(LineType::Service);
+      driver.start_node(LineType::Interaction);
     }
   Identifier "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
-      $$ = $6;
-      $$->set_name(std::move($3));
-      $$->set_is_interaction();
-      driver.finish_node($$, LineType::Service, own($9), nullptr);
+      $$ = new t_interaction(driver.program, std::move($3));
+      $$->set_functions(consume($6));
+      driver.finish_node($$, LineType::Interaction, own($9), nullptr);
 
       for (auto* func : $$->get_functions()) {
         func->set_is_interaction_member();
@@ -995,8 +996,6 @@ Interaction:
         for (auto* func : $$->get_functions()) {
           func->set_annotation("thread", "eb");
         }
-      } else if ($$->has_annotation("serial")) {
-        $$->set_is_serial_interaction();
       }
     }
 
@@ -1004,13 +1003,13 @@ FunctionList:
   FunctionList Function
     {
       driver.debug("FunctionList -> FunctionList Function");
+      $1->emplace_back(own($2));
       $$ = $1;
-      $1->add_function(own($2));
     }
 |
     {
       driver.debug("FunctionList -> ");
-      $$ = new t_service(driver.program);
+      $$ = new t_function_list;
     }
 
 Function:

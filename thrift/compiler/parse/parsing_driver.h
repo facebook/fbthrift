@@ -28,6 +28,7 @@
 #include <boost/optional.hpp>
 
 #include <thrift/compiler/ast/t_exception.h>
+#include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
@@ -68,6 +69,7 @@ enum class LineType {
   Const,
   Struct,
   Service,
+  Interaction,
   Function,
   Field,
   Xception,
@@ -432,6 +434,8 @@ class parsing_driver {
 
   // Adds a declaration to the program.
   t_ref<t_const> add_decl(std::unique_ptr<t_const>&& node, t_doc doc);
+  t_ref<t_interaction> add_decl(
+      std::unique_ptr<t_interaction>&& node, t_doc doc);
   t_ref<t_service> add_decl(std::unique_ptr<t_service>&& node, t_doc doc);
   t_ref<t_typedef> add_decl(std::unique_ptr<t_typedef>&& node, t_doc doc);
   t_ref<t_struct> add_decl(std::unique_ptr<t_struct>&& node, t_doc doc);
