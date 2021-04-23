@@ -2630,8 +2630,7 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
           std::make_unique<t_paramlist>(program_),
-          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()),
-          nullptr /* client exceptions */);
+          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()));
       // Open the recv function
       indent(f_service_) << "public " << function_signature(&recv_function)
                          << endl;

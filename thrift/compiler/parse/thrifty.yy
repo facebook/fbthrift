@@ -97,7 +97,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-using t_typestructpair = std::pair<t_type_ref*, t_struct*>;
+using t_typethrowspair = std::pair<t_type_ref*, t_throws*>;
 class t_container_type;
 
 } // namespace compiler
@@ -249,7 +249,7 @@ class t_container_type;
 %type<t_sink*>               ResponseAndSinkReturnType
 %type<t_stream_response*>    StreamReturnType
 %type<t_sink*>               SinkReturnType
-%type<t_typestructpair>      SinkFieldType
+%type<t_typethrowspair>      SinkFieldType
 %type<t_const_value*>        FieldValue
 %type<t_field_list*>         FieldList
 
@@ -287,8 +287,8 @@ class t_container_type;
 %type<t_paramlist*>          EmptyParamList
 %type<t_field*>              Param
 
-%type<t_struct*>             Throws
-%type<t_struct*>             MaybeThrows
+%type<t_throws*>             Throws
+%type<t_throws*>             MaybeThrows
 %type<t_ref<t_service>>      Extends
 %type<t_function_qualifier>  FunctionQualifier
 
@@ -1022,7 +1022,7 @@ Function:
       $7->set_name(std::string($5) + "_args");
       auto rettype = own($4);
       auto* paramlist = $7;
-      t_struct* streamthrows = nullptr;
+      t_throws* streamthrows = nullptr;
       if (const auto* tstream_resp = dynamic_cast<const t_stream_response*>(rettype->type())) {
         streamthrows = tstream_resp->get_throws_struct();
       }

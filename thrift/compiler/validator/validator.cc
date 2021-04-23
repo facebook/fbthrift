@@ -224,13 +224,13 @@ void enum_values_set_validator::validate(t_enum const* const tenum) {
 
 bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
   auto check_func = [=](t_function const* func) {
-    if (!validate_throws(func->get_xceptions())) {
+    if (!validate_throws(func->exceptions())) {
       add_error(
           func->get_lineno(),
           "Non-exception type in throws list for method `" + func->get_name() +
               "`.");
     }
-    if (!validate_throws(func->get_stream_xceptions())) {
+    if (!validate_throws(func->stream_exceptions())) {
       add_error(
           func->get_lineno(),
           "Non-exception type in stream throws list for method `" +
@@ -249,13 +249,13 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
 /**
  * Check that all the elements of a throws block are actually exceptions.
  */
-/* static */ bool exception_list_is_all_exceptions_validator::validate_throws(
-    t_struct* throws) {
+bool exception_list_is_all_exceptions_validator::validate_throws(
+    const t_throws* throws) {
   if (throws == nullptr) {
     return true;
   }
   for (const auto* ex : throws->fields()) {
-    if (!ex->get_type()->get_true_type()->is_xception()) {
+    if (!ex->get_type()->get_true_type()->is_exception()) {
       return false;
     }
   }

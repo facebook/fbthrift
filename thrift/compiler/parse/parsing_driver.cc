@@ -17,6 +17,7 @@
 #include <thrift/compiler/parse/parsing_driver.h>
 
 #include <cstdarg>
+#include <memory>
 
 #include <boost/filesystem.hpp>
 
@@ -616,9 +617,9 @@ std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
   return result;
 }
 
-std::unique_ptr<t_struct> parsing_driver::new_throws(
+std::unique_ptr<t_throws> parsing_driver::new_throws(
     std::unique_ptr<t_field_list> exceptions) {
-  auto result = t_struct::new_throws();
+  auto result = std::make_unique<t_throws>();
   if (exceptions != nullptr) {
     append_fields(*result, std::move(*exceptions));
   }

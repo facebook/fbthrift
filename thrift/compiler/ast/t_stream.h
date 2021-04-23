@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_throws.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -29,10 +29,13 @@ namespace compiler {
 
 class t_stream_response : public t_type {
  public:
-  explicit t_stream_response(t_type_ref elem_type, t_struct* throws = nullptr)
+  explicit t_stream_response(t_type_ref elem_type, t_throws* throws = nullptr)
       : elem_type_(std::move(elem_type)), throws_(throws) {}
 
-  const t_type* get_elem_type() const { return elem_type_.type(); }
+  const t_type_ref* elem_type() const { return &elem_type_; }
+  const t_throws* throws() const {
+    return throws_ == nullptr ? t_throws::no_exceptions() : throws_;
+  }
 
   void set_first_response_type(
       std::unique_ptr<t_type_ref> first_response_type) {
@@ -40,11 +43,8 @@ class t_stream_response : public t_type {
   }
 
   bool has_first_response() const { return first_response_type_ != nullptr; }
-
-  const t_type* get_first_response_type() const {
-    // TODO(afuller): Fix call sites that don't check has_first_response().
-    // assert(first_response_type_ != nullptr);
-    return has_first_response() ? first_response_type_->type() : nullptr;
+  const t_type_ref* first_response_type() const {
+    return first_response_type_.get();
   }
 
   bool is_streamresponse() const override { return true; }
@@ -59,12 +59,9 @@ class t_stream_response : public t_type {
 
   type get_type_value() const override { return type::t_stream; }
 
-  t_struct* get_throws_struct() const { return throws_; }
-  bool has_throws_struct() const { return (bool)throws_; }
-
  private:
   t_type_ref elem_type_;
-  t_struct* throws_;
+  t_throws* throws_;
   std::unique_ptr<t_type_ref> first_response_type_;
 
  public:
@@ -72,12 +69,18 @@ class t_stream_response : public t_type {
   // backwards compatibility.
 
   explicit t_stream_response(
-      const t_type* elem_type, t_struct* throws = nullptr)
+      const t_type* elem_type, t_throws* throws = nullptr)
       : t_stream_response(t_type_ref(elem_type), throws) {}
 
   void set_first_response_type(const t_type* first_response_type) {
-    first_response_type_ = std::make_unique<t_type_ref>(first_response_type);
+    set_first_response_type(std::make_unique<t_type_ref>(first_response_type));
   }
+  const t_type* get_elem_type() const { return elem_type()->type(); }
+  const t_type* get_first_response_type() const {
+    return has_first_response() ? first_response_type()->type() : nullptr;
+  }
+  t_throws* get_throws_struct() const { return throws_; }
+  bool has_throws_struct() const { return (bool)throws_; }
 };
 
 } // namespace compiler

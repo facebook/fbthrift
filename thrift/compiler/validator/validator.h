@@ -171,7 +171,7 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   /**
    * Check members of a throws block
    */
-  static bool validate_throws(t_struct* throws);
+  static bool validate_throws(const t_throws* throws);
 };
 
 class union_no_qualified_fields_validator : virtual public validator {

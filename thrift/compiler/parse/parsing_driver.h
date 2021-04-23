@@ -415,7 +415,7 @@ class parsing_driver {
   std::unique_ptr<t_const> new_struct_annotation(
       std::unique_ptr<t_const_value> const_struct);
 
-  std::unique_ptr<t_struct> new_throws(
+  std::unique_ptr<t_throws> new_throws(
       std::unique_ptr<t_field_list> exceptions = nullptr);
 
   // Creates a reference to a known type.

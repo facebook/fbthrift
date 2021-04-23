@@ -81,12 +81,6 @@ class t_struct : public t_type {
 
   type get_type_value() const override { return type::t_struct; }
 
-  // Creates an empty struct to hold exceptions.
-  // TODO(afuller): Make this its own node.
-  static std::unique_ptr<t_struct> new_throws() {
-    return std::unique_ptr<t_struct>(new t_struct(nullptr));
-  }
-
  protected:
   std::vector<std::unique_ptr<t_field>> fields_;
   std::vector<const t_field*> fields_ordinal_order_;
@@ -94,6 +88,7 @@ class t_struct : public t_type {
   std::map<std::string, const t_field*> fields_by_name_;
 
   explicit t_struct(t_program* program) : t_type(program) {}
+  explicit t_struct() : t_type(nullptr) {}
 
   ////
   // Everyting below here is for backwards compatiblity, and will be removed.

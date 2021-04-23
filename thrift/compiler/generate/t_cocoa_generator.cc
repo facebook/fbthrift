@@ -1885,8 +1885,7 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
           function->get_returntype(),
           std::string("recv_") + function->get_name(),
           std::make_unique<t_paramlist>(program_),
-          t_struct::clone_DO_NOT_USE(function->get_xceptions()),
-          nullptr);
+          t_struct::clone_DO_NOT_USE(function->get_xceptions()));
       // Open function
       indent(out) << "- " << function_signature(&recv_function) << std::endl;
       scope_up(out);
