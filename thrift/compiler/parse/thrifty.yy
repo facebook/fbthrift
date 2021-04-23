@@ -1020,32 +1020,13 @@ Function:
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
-      auto rettype = own($4);
-      auto* paramlist = $7;
-      t_throws* streamthrows = nullptr;
-      if (const auto* tstream_resp = dynamic_cast<const t_stream_response*>(rettype->type())) {
-        streamthrows = tstream_resp->get_throws_struct();
-      }
-      t_function* func;
-      if (const auto* tsink = dynamic_cast<const t_sink*>(rettype->type())) {
-        // TODO(afuller): Remove special case for sink.
-        func = new t_function(
-          tsink,
-          $5,
-          own(paramlist),
-          own($9)
-        );
-      } else {
-        func = new t_function(
-          std::move(*rettype),
-          $5,
-          own(paramlist),
-          own($9),
-          own(streamthrows),
-          $3
-        );
-      }
-      $$ = func;
+      $$ = new t_function(
+        consume($4),
+        $5,
+        own($7),
+        own($9),
+        $3
+      );
       driver.set_annotations($$, own($10), own($2));
       if ($1) {
         $$->set_doc(std::string{*$1});
@@ -1309,7 +1290,7 @@ StreamReturnType:
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
-    $$ = new t_stream_response(consume($3), $4);
+    $$ = new t_stream_response(consume($3), own($4));
   }
 
 ResponseAndSinkReturnType:
@@ -1330,8 +1311,8 @@ SinkReturnType:
     {
       driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
       $$ = new t_sink(
-        consume($3.first), $3.second,
-        consume($5.first), $5.second);
+        consume($3.first), own($3.second),
+        consume($5.first), own($5.second));
     }
 SinkFieldType:
   FieldType

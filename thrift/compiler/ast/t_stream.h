@@ -29,13 +29,12 @@ namespace compiler {
 
 class t_stream_response : public t_type {
  public:
-  explicit t_stream_response(t_type_ref elem_type, t_throws* throws = nullptr)
-      : elem_type_(std::move(elem_type)), throws_(throws) {}
+  explicit t_stream_response(
+      t_type_ref elem_type, std::unique_ptr<t_throws> throws = nullptr)
+      : elem_type_(std::move(elem_type)), throws_(std::move(throws)) {}
 
   const t_type_ref* elem_type() const { return &elem_type_; }
-  const t_throws* throws() const {
-    return throws_ == nullptr ? t_throws::no_exceptions() : throws_;
-  }
+  const t_throws* throws() const { return t_throws::get_or_empty(throws_); }
 
   void set_first_response_type(
       std::unique_ptr<t_type_ref> first_response_type) {
@@ -61,7 +60,7 @@ class t_stream_response : public t_type {
 
  private:
   t_type_ref elem_type_;
-  t_throws* throws_;
+  std::unique_ptr<t_throws> throws_;
   std::unique_ptr<t_type_ref> first_response_type_;
 
  public:
@@ -69,8 +68,8 @@ class t_stream_response : public t_type {
   // backwards compatibility.
 
   explicit t_stream_response(
-      const t_type* elem_type, t_throws* throws = nullptr)
-      : t_stream_response(t_type_ref(elem_type), throws) {}
+      const t_type* elem_type, std::unique_ptr<t_throws> throws = nullptr)
+      : t_stream_response(t_type_ref(elem_type), std::move(throws)) {}
 
   void set_first_response_type(const t_type* first_response_type) {
     set_first_response_type(std::make_unique<t_type_ref>(first_response_type));
@@ -79,8 +78,8 @@ class t_stream_response : public t_type {
   const t_type* get_first_response_type() const {
     return has_first_response() ? first_response_type()->type() : nullptr;
   }
-  t_throws* get_throws_struct() const { return throws_; }
-  bool has_throws_struct() const { return (bool)throws_; }
+  t_throws* get_throws_struct() const { return throws_.get(); }
+  bool has_throws_struct() const { return throws_ == nullptr; }
 };
 
 } // namespace compiler

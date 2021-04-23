@@ -24,6 +24,9 @@ namespace compiler {
 
 class t_program;
 
+/**
+ * The exceptions thrown by a t_function, t_sink, etc.
+ */
 class t_throws : public t_struct {
  public:
   t_throws() = default;
@@ -31,6 +34,11 @@ class t_throws : public t_struct {
   static const t_throws* no_exceptions() {
     static const auto* kEmpty = new t_throws;
     return kEmpty;
+  }
+
+  // A helper that returns `no_exceptions` if value is null.
+  static const t_throws* get_or_empty(const std::unique_ptr<t_throws>& value) {
+    return value == nullptr ? no_exceptions() : value.get();
   }
 
  private:
