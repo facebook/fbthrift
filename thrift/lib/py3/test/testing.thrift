@@ -144,6 +144,18 @@ struct easy {
   4: Integers an_int;
 } (anno1 = "foo", bar)
 
+struct Nested3 {
+  1: easy c;
+}
+
+struct Nested2 {
+  1: Nested3 b;
+}
+
+struct Nested1 {
+  1: Nested2 a;
+}
+
 struct Optionals {
   1: optional list<string> values;
 }

@@ -21,6 +21,9 @@ from testing.types import (
     File,
     Integers,
     Kind,
+    Nested1,
+    Nested2,
+    Nested3,
     NonCopyable,
     Optionals,
     Reserved,
@@ -225,6 +228,45 @@ class StructTests(unittest.TestCase):
                 ("changes", "bar"),
             ],
         )
+
+    def test_update_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        n = Struct.update_nested_field(n, {"a.b.c": easy(val=128)})
+        self.assertEqual(n.a.b.c.val, 128)
+
+    def test_update_multiple_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        n = Struct.update_nested_field(
+            n,
+            {
+                "a.b.c.name": "bar",
+                "a.b.c.val": 256,
+            },
+        )
+        self.assertEqual(n.a.b.c.name, "bar")
+        self.assertEqual(n.a.b.c.val, 256)
+
+    def test_update_invalid_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"e": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"a.b.e": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"a.e.f": 0})
+
+    def test_update_conflicting_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        with self.assertRaises(ValueError):
+            n = Struct.update_nested_field(
+                n,
+                {
+                    "a.b.c": easy(val=128),
+                    "a.b.c.val": 256,
+                },
+            )
 
 
 class NumericalConversionsTests(unittest.TestCase):

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import defaultdict
 from collections.abc import Iterable, Mapping, Set as pySet
 import enum
 import itertools
@@ -70,6 +71,48 @@ cdef class StructMeta(type):
     @staticmethod
     def isset(Object struct):
         return struct._fbthrift_isset()
+
+    @staticmethod
+    def update_nested_field(Struct obj, path_to_values):
+        # There is some optimzation opportunity here for cases like this:
+        # { "a.b.c": foo, "a.b.d": var }
+        try:
+            obj = _fbthrift_struct_update_nested_field(
+                obj,
+                [(p.split("."), v) for p, v in path_to_values.items()]
+            )
+            return obj
+        except (AttributeError, TypeError) as e:
+            # Unify different exception types to ValueError
+            raise ValueError(e)
+
+
+cdef Struct _fbthrift_struct_update_nested_field(Struct obj, list path_and_vals):
+    field_to_nested_path_and_vals = defaultdict(list)
+    cdef dict field_to_vals = {}
+    for path, val in path_and_vals:
+        field = path[0]
+        if len(path) > 1:
+            field_to_nested_path_and_vals[field].append((path[1:], val))
+        else:
+            field_to_vals[field] = val
+
+    cdef dict updatedict = {}
+    for field, val in field_to_vals.items():
+        if field in field_to_nested_path_and_vals:
+            conflicts = [
+                ".".join([field] + p)
+                for p, _ in field_to_nested_path_and_vals[field]
+            ] + [field]
+            raise ValueError("Conflicting overrides: {}".format(conflicts))
+        updatedict[field] = val
+
+    for field, nested_path_and_vals in field_to_nested_path_and_vals.items():
+        updatedict[field] = _fbthrift_struct_update_nested_field(
+            getattr(obj, field),
+            nested_path_and_vals)
+
+    return obj(**updatedict)
 
 
 class _IsSet:
