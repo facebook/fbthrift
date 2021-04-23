@@ -3523,6 +3523,7 @@ string t_py_generator::type_to_enum(const t_type* type) {
 
 /** See the comment inside generate_py_struct_definition for what this is. */
 string t_py_generator::type_to_spec_args(const t_type* ttype) {
+  const auto* adapter = get_py_adapter(ttype); // Do this before get_true_type.
   ttype = ttype->get_true_type();
 
   if (ttype->is_base_type()) {
@@ -3536,8 +3537,12 @@ string t_py_generator::type_to_spec_args(const t_type* ttype) {
   } else if (ttype->is_enum()) {
     return type_name(ttype);
   } else if (ttype->is_struct()) {
-    return "[" + type_name(ttype) + ", " + type_name(ttype) + ".thrift_spec, " +
-        (((t_struct*)ttype)->is_union() ? "True]" : "False]");
+    string ret = "[" + type_name(ttype) + ", " + type_name(ttype) +
+        ".thrift_spec, " + (((t_struct*)ttype)->is_union() ? "True" : "False");
+    if (adapter) {
+      ret += ", " + *adapter;
+    }
+    return ret + "]";
   } else if (ttype->is_xception()) {
     return "[" + type_name(ttype) + ", " + type_name(ttype) +
         ".thrift_spec, False]";

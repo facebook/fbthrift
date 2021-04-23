@@ -582,10 +582,10 @@ Foo.__setstate__ = Foo__setstate__
 all_structs.append(Bar)
 Bar.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'structField', [Foo, Foo.thrift_spec, False], None, 2, ), # 1
-  (2, TType.STRUCT, 'optionalStructField', [Foo, Foo.thrift_spec, False], None, 1, ), # 2
-  (3, TType.LIST, 'structListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False]), None, 2, ), # 3
-  (4, TType.LIST, 'optionalStructListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False]), None, 1, ), # 4
+  (1, TType.STRUCT, 'structField', [Foo, Foo.thrift_spec, False, my.Adapter1], None, 2, ), # 1
+  (2, TType.STRUCT, 'optionalStructField', [Foo, Foo.thrift_spec, False, my.Adapter1], None, 1, ), # 2
+  (3, TType.LIST, 'structListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False, my.Adapter1]), None, 2, ), # 3
+  (4, TType.LIST, 'optionalStructListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False, my.Adapter1]), None, 1, ), # 4
 )
 
 Bar.thrift_struct_annotations = {

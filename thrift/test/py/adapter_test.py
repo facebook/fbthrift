@@ -30,9 +30,9 @@ from .adapter_bar.ttypes import Bar
 
 PROTOCOLS = [
     TBinaryProtocol.TBinaryProtocolFactory(),
-    # TBinaryProtocol.TBinaryProtocolAcceleratedFactory(),
+    TBinaryProtocol.TBinaryProtocolAcceleratedFactory(),
     TCompactProtocol.TCompactProtocolFactory(),
-    # TCompactProtocol.TCompactProtocolAcceleratedFactory(),
+    TCompactProtocol.TCompactProtocolAcceleratedFactory(),
     TJSONProtocol.TJSONProtocolFactory(),
     TSimpleJSONProtocol.TSimpleJSONProtocolFactory(),
 ]

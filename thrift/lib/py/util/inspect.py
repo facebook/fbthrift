@@ -241,7 +241,7 @@ def get_type_name(thrift_type: TType, extra_type_spec: Any) -> str:
     elif thrift_type == TType.FLOAT:
         return "float"
     elif thrift_type == TType.STRUCT:
-        python_type, type_spec, is_union = extra_type_spec
+        python_type, type_spec, is_union, *_ = extra_type_spec
         return f"{python_type.__module__}.{python_type.__qualname__}"
     elif thrift_type == TType.MAP:
         (
