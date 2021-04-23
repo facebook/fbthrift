@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/ServerChannel.h>
 
@@ -42,7 +41,6 @@ constexpr folly::StringPiece kClientLoggingHeader("client_logging_enabled");
  * manages requests / responses via seqId.
  */
 class HeaderServerChannel : public ServerChannel,
-                            public HeaderChannelTrait,
                             public MessageChannel::RecvCallback,
                             virtual public folly::DelayedDestruction {
  protected:

@@ -553,7 +553,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   if (!buf) {
     return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
   }
-  channel_.checkSupportedClient(header->getClientType());
+  HeaderChannelTrait::checkSupportedClient(header->getClientType());
   return make_tuple(std::move(buf), 0, std::move(header));
 }
 

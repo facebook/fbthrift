@@ -29,21 +29,14 @@ namespace thrift {
  */
 class HeaderChannelTrait {
  public:
-  HeaderChannelTrait();
-  virtual ~HeaderChannelTrait() {}
-
-  // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
-  // will be used.
-  void setSupportedClients(std::bitset<CLIENT_TYPES_LEN> const* clients);
-  bool isSupportedClient(CLIENT_TYPE ct);
-  void checkSupportedClient(CLIENT_TYPE ct);
+  static bool isSupportedClient(CLIENT_TYPE ct);
+  static void checkSupportedClient(CLIENT_TYPE ct);
 
   void setClientType(CLIENT_TYPE ct);
   CLIENT_TYPE getClientType() { return clientType_; }
 
  private:
   CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
-  std::bitset<CLIENT_TYPES_LEN> supported_clients;
 };
 } // namespace thrift
 } // namespace apache

@@ -22,6 +22,7 @@
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using folly::IOBuf;
@@ -106,9 +107,9 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   CLIENT_TYPE ct = header->getClientType();
-  if (!channel_.isSupportedClient(ct)) {
+  if (!HeaderChannelTrait::isSupportedClient(ct)) {
     LOG(ERROR) << "Server rejecting unsupported client type " << ct;
-    channel_.checkSupportedClient(ct);
+    HeaderChannelTrait::checkSupportedClient(ct);
   }
 
   // Check if protocol used in the buffer is consistent with the protocol
