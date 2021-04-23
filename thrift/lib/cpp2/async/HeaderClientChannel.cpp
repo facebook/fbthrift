@@ -380,7 +380,7 @@ void HeaderClientChannel::setRequestHeaderOptions(
     THeader* header, ssize_t payloadSize) {
   header->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
   header->setClientType(getClientType());
-  header->forceClientType(getForceClientType());
+  header->forceClientType(true);
   if (auto compressionConfig = header->getDesiredCompressionConfig()) {
     if (auto codecRef = compressionConfig->codecConfig_ref()) {
       if (payloadSize >

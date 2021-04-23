@@ -66,7 +66,6 @@ HeaderChannel_ptr configureClientChannel(
   chan->setProtocolId(proto);
   if (client != THRIFT_HEADER_CLIENT_TYPE) {
     chan->setClientType(client);
-    chan->forceClientType(true);
   }
 
   if (client == THRIFT_FRAMED_DEPRECATED) {

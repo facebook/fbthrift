@@ -39,14 +39,10 @@ class HeaderChannelTrait {
   void checkSupportedClient(CLIENT_TYPE ct);
 
   void setClientType(CLIENT_TYPE ct);
-  // Force using specified client type when using legacy client types
-  void forceClientType(bool enable) { forceClientType_ = enable; }
-  bool getForceClientType() { return forceClientType_; }
   CLIENT_TYPE getClientType() { return clientType_; }
 
  private:
   CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
-  bool forceClientType_{false};
   std::bitset<CLIENT_TYPES_LEN> supported_clients;
 };
 } // namespace thrift
