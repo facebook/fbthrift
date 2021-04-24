@@ -504,7 +504,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   Tile* getTile() { return tile_; }
 
-  const std::string* clientId() {
+  const std::string* clientId() const {
     if (auto header = getHeader(); header && header->clientId()) {
       return &*header->clientId();
     }
