@@ -34,11 +34,11 @@ class t_program;
  */
 class t_service : public t_type {
  public:
-  explicit t_service(t_program* program, std::string name)
-      : t_type(program, std::move(name)) {}
+  explicit t_service(
+      t_program* program, std::string name, const t_service* extends = nullptr)
+      : t_type(program, std::move(name)), extends_(extends) {}
 
   const t_service* extends() const { return extends_; }
-  void set_extends(const t_service* extends) { extends_ = extends; }
 
   const std::vector<const t_function*>& functions() const {
     return functions_raw_;
@@ -69,6 +69,7 @@ class t_service : public t_type {
   }
 
   const t_service* get_extends() const { return extends_; }
+  void set_extends(const t_service* extends) { extends_ = extends; }
 
   bool is_interaction() const;
   bool is_serial_interaction() const;

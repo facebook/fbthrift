@@ -566,7 +566,7 @@
   "type" : "enum",
   "name" : "Numberz"
 },
-            "lineno" : 145
+            "lineno" : 142
           },
           "testTypedef" : {
             "name" : "testTypedef",

@@ -38,7 +38,7 @@ class t_const;
 class t_named : public t_node {
  public:
   void set_name(const std::string& name) { name_ = name; }
-  const std::string& get_name() const { return name_; }
+  const std::string& name() const { return name_; }
 
   const std::vector<const t_const*>& structured_annotations() const {
     return structured_annotations_raw_;
@@ -57,6 +57,11 @@ class t_named : public t_node {
  private:
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
   std::vector<const t_const*> structured_annotations_raw_;
+
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
+  const std::string& get_name() const { return name_; }
 };
 
 } // namespace compiler

@@ -3,17 +3,17 @@
   "thrift_module" : "module",
   "typedefs" : {
     "SetWithAdapter" : {
-      "lineno" : 21,
+      "lineno" : 25,
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "ListWithElemAdapter" : {
-      "lineno" : 26,
+      "lineno" : 32,
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "StructWithAdapter" : {
-      "lineno" : 105,
+      "lineno" : 109,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Bar"
     }

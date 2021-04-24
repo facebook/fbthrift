@@ -161,7 +161,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
 "struct"             { return apache::thrift::compiler::yy::parser::make_tok_struct();               }
 "union"              { return apache::thrift::compiler::yy::parser::make_tok_union();                }
-"exception"          { return apache::thrift::compiler::yy::parser::make_tok_xception();             }
+"exception"          { return apache::thrift::compiler::yy::parser::make_tok_exception();            }
 "extends"            { return apache::thrift::compiler::yy::parser::make_tok_extends();              }
 "throws"             { return apache::thrift::compiler::yy::parser::make_tok_throws();               }
 "service"            { return apache::thrift::compiler::yy::parser::make_tok_service();              }

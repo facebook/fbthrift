@@ -24,6 +24,7 @@
 #include <string>
 #include <system_error>
 #include <unordered_set>
+#include <vector>
 
 #include <boost/optional.hpp>
 
@@ -63,6 +64,7 @@ enum class diagnostic_level {
 
 // Define an enum class for all types that have lineno embedded.
 enum class LineType {
+  Unspecified = 0,
   Typedef,
   Enum,
   EnumValue,
@@ -72,7 +74,7 @@ enum class LineType {
   Interaction,
   Function,
   Field,
-  Xception,
+  Exception,
   Union,
 };
 
@@ -85,6 +87,11 @@ struct t_annotations {
   int last_lineno;
 };
 using t_doc = boost::optional<std::string>;
+struct t_def_attrs {
+  t_doc doc;
+  std::unique_ptr<t_struct_annotations> struct_annotations;
+};
+using t_function_list = std::vector<std::unique_ptr<t_function>>;
 
 // A const pointer to an AST node.
 //
@@ -195,7 +202,7 @@ struct parsing_params {
   /**
    * Which experimental features should be allowed.
    *
-   * 'all' can be used to enable all experimental featuers.
+   * 'all' can be used to enable all experimental features.
    */
   std::unordered_set<std::string> allow_experimental_features;
 
@@ -397,22 +404,24 @@ class parsing_driver {
   void finish_node(
       t_named* node,
       LineType lineType,
-      std::unique_ptr<t_annotations> annotations,
-      std::unique_ptr<t_struct_annotations> struct_annotations);
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_annotations> annotations);
   void finish_node(
       t_struct* node,
       LineType lineType,
+      std::unique_ptr<t_def_attrs> attrs,
       std::unique_ptr<t_field_list> fields,
-      std::unique_ptr<t_annotations> annotations,
-      std::unique_ptr<t_struct_annotations> struct_annotations);
+      std::unique_ptr<t_annotations> annotations);
+  void finish_node(
+      t_service* node,
+      LineType lineType,
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_function_list> functions,
+      std::unique_ptr<t_annotations> annotations);
 
   // Populate the annotation on the given node.
   static void set_annotations(
       t_node* node, std::unique_ptr<t_annotations> annotations);
-  static void set_annotations(
-      t_named* node,
-      std::unique_ptr<t_annotations> annotations,
-      std::unique_ptr<t_struct_annotations> struct_annotations);
 
   std::unique_ptr<t_const> new_struct_annotation(
       std::unique_ptr<t_const_value> const_struct);
@@ -432,16 +441,15 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations,
       bool is_const = false);
 
-  // Adds a declaration to the program.
-  t_ref<t_const> add_decl(std::unique_ptr<t_const>&& node, t_doc doc);
-  t_ref<t_interaction> add_decl(
-      std::unique_ptr<t_interaction>&& node, t_doc doc);
-  t_ref<t_service> add_decl(std::unique_ptr<t_service>&& node, t_doc doc);
-  t_ref<t_typedef> add_decl(std::unique_ptr<t_typedef>&& node, t_doc doc);
-  t_ref<t_struct> add_decl(std::unique_ptr<t_struct>&& node, t_doc doc);
-  t_ref<t_union> add_decl(std::unique_ptr<t_union>&& node, t_doc doc);
-  t_ref<t_exception> add_decl(std::unique_ptr<t_exception>&& node, t_doc doc);
-  t_ref<t_enum> add_decl(std::unique_ptr<t_enum>&& node, t_doc doc);
+  // Adds a definition to the program.
+  t_ref<t_const> add_def(std::unique_ptr<t_const> node);
+  t_ref<t_interaction> add_def(std::unique_ptr<t_interaction> node);
+  t_ref<t_service> add_def(std::unique_ptr<t_service> node);
+  t_ref<t_typedef> add_def(std::unique_ptr<t_typedef> node);
+  t_ref<t_struct> add_def(std::unique_ptr<t_struct> node);
+  t_ref<t_union> add_def(std::unique_ptr<t_union> node);
+  t_ref<t_exception> add_def(std::unique_ptr<t_exception> node);
+  t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
 
  private:
   class deleter {
@@ -485,6 +493,12 @@ class parsing_driver {
   std::stack<std::pair<LineType, int>> lineno_stack_;
   std::vector<diagnostic_message> diagnostic_messages_;
 
+  // Populate the attributes on the given node.
+  static void set_attributes(
+      t_named* node,
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_annotations> annotations);
+
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
@@ -495,14 +509,11 @@ class parsing_driver {
 
   void append_fields(t_struct& tstruct, t_field_list&& fields);
 
-  // Sets the doc and returns true if the node should be
+  // Returns true if the node should be
   // added to the program. Otherwise, the driver itself
   // takes ownership of node.
   template <typename T>
-  bool should_add_node(std::unique_ptr<T>& node, t_doc&& doc) {
-    if (doc) {
-      node->set_doc(std::move(*doc));
-    }
+  bool should_add_node(std::unique_ptr<T>& node) {
     if (mode != parsing_mode::PROGRAM) {
       delete_at_the_end(node.release());
       return false;
@@ -510,12 +521,12 @@ class parsing_driver {
     return true;
   }
 
-  // Sets the doc and updates the scope cache and returns true
+  // Updates the scope cache and returns true
   // if the node should be added to the program. Otherwise,
   // the driver itself takes ownership of node.
   template <typename T>
-  bool should_add_type(std::unique_ptr<T>& node, t_doc&& doc) {
-    if (should_add_node(node, std::move(doc))) {
+  bool should_add_type(std::unique_ptr<T>& node) {
+    if (should_add_node(node)) {
       scope_cache->add_type(scoped_name(*node), node.get());
       return true;
     }
@@ -545,6 +556,9 @@ class parsing_driver {
 
   std::string scoped_name(const t_named& node) {
     return program->name() + "." + node.get_name();
+  }
+  std::string scoped_name(const t_named& owner, const t_named& node) {
+    return program->name() + "." + owner.get_name() + "." + node.get_name();
   }
 
   template <typename... Arg>

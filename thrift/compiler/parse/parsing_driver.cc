@@ -552,16 +552,21 @@ void parsing_driver::set_annotations(
   }
 }
 
-void parsing_driver::set_annotations(
+void parsing_driver::set_attributes(
     t_named* node,
-    std::unique_ptr<t_annotations> annotations,
-    std::unique_ptr<t_struct_annotations> struct_annotations) {
-  set_annotations(node, std::move(annotations));
-  if (struct_annotations != nullptr) {
-    for (auto& an : *struct_annotations) {
-      node->add_structured_annotation(std::move(an));
+    std::unique_ptr<t_def_attrs> attrs,
+    std::unique_ptr<t_annotations> annotations) {
+  if (attrs != nullptr) {
+    if (attrs->doc) {
+      node->set_doc(std::move(*attrs->doc));
+    }
+    if (attrs->struct_annotations != nullptr) {
+      for (auto& an : *attrs->struct_annotations) {
+        node->add_structured_annotation(std::move(an));
+      }
     }
   }
+  set_annotations(node, std::move(annotations));
 }
 
 void parsing_driver::start_node(LineType lineType) {
@@ -584,24 +589,36 @@ void parsing_driver::finish_node(
   node->set_lineno(pop_node(lineType));
   set_annotations(node, std::move(annotations));
 }
+
 void parsing_driver::finish_node(
     t_named* node,
     LineType lineType,
-    std::unique_ptr<t_annotations> annotations,
-    std::unique_ptr<t_struct_annotations> struct_annotations) {
+    std::unique_ptr<t_def_attrs> attrs,
+    std::unique_ptr<t_annotations> annotations) {
   node->set_lineno(pop_node(lineType));
-  set_annotations(node, std::move(annotations), std::move(struct_annotations));
+  set_attributes(node, std::move(attrs), std::move(annotations));
 }
 
 void parsing_driver::finish_node(
     t_struct* node,
     LineType lineType,
+    std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_field_list> fields,
-    std::unique_ptr<t_annotations> annotations,
-    std::unique_ptr<t_struct_annotations> struct_annotations) {
+    std::unique_ptr<t_annotations> annotations) {
   append_fields(*node, std::move(*fields));
-  finish_node(
-      node, lineType, std::move(annotations), std::move(struct_annotations));
+  finish_node(node, lineType, std::move(attrs), std::move(annotations));
+}
+
+void parsing_driver::finish_node(
+    t_service* node,
+    LineType lineType,
+    std::unique_ptr<t_def_attrs> attrs,
+    std::unique_ptr<t_function_list> functions,
+    std::unique_ptr<t_annotations> annotations) {
+  if (functions != nullptr) {
+    node->set_functions(std::move(*functions));
+  }
+  finish_node(node, lineType, std::move(attrs), std::move(annotations));
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
@@ -669,7 +686,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
     std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
   const t_type* type = node.get();
-  set_annotations(node.get(), std::move(annotations), nullptr);
+  set_annotations(node.get(), std::move(annotations));
   if (mode == parsing_mode::INCLUDES) {
     delete_at_the_end(node.release());
   } else {
@@ -731,7 +748,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 const t_type* parsing_driver::add_unnamed_type(
     std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations), nullptr);
+  set_annotations(node.get(), std::move(annotations));
   if (mode == parsing_mode::INCLUDES) {
     delete_at_the_end(node.release());
   } else {
@@ -744,7 +761,7 @@ const t_type* parsing_driver::add_unnamed_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations), nullptr);
+  set_annotations(node.get(), std::move(annotations));
   program->add_unnamed_typedef(std::move(node));
   return result;
 }
@@ -753,83 +770,83 @@ const t_type* parsing_driver::add_placeholder_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations), nullptr);
+  set_annotations(node.get(), std::move(annotations));
   program->add_placeholder_typedef(std::move(node));
   return result;
 }
 
-t_ref<t_const> parsing_driver::add_decl(
-    std::unique_ptr<t_const>&& node, t_doc doc) {
+t_ref<t_const> parsing_driver::add_def(std::unique_ptr<t_const> node) {
   t_ref<t_const> result(node.get());
-  if (should_add_node(node, std::move(doc))) {
+  if (should_add_node(node)) {
     validate_const_type(node.get());
     scope_cache->add_constant(scoped_name(*node), node.get());
     program->add_const(std::move(node));
   }
   return result;
 }
-
-t_ref<t_interaction> parsing_driver::add_decl(
-    std::unique_ptr<t_interaction>&& node, t_doc doc) {
+t_ref<t_interaction> parsing_driver::add_def(
+    std::unique_ptr<t_interaction> node) {
   t_ref<t_interaction> result(node.get());
-  if (should_add_node(node, std::move(doc))) {
+  if (should_add_node(node)) {
     scope_cache->add_interaction(scoped_name(*node), node.get());
     program->add_interaction(std::move(node));
   }
   return result;
 }
 
-t_ref<t_service> parsing_driver::add_decl(
-    std::unique_ptr<t_service>&& node, t_doc doc) {
+t_ref<t_service> parsing_driver::add_def(std::unique_ptr<t_service> node) {
   t_ref<t_service> result(node.get());
   assert(!node->is_interaction());
-  if (should_add_node(node, std::move(doc))) {
+  if (should_add_node(node)) {
     scope_cache->add_service(scoped_name(*node), node.get());
     program->add_service(std::move(node));
   }
   return result;
 }
 
-t_ref<t_typedef> parsing_driver::add_decl(
-    std::unique_ptr<t_typedef>&& node, t_doc doc) {
+t_ref<t_typedef> parsing_driver::add_def(std::unique_ptr<t_typedef> node) {
   t_ref<t_typedef> result(node.get());
-  if (should_add_type(node, std::move(doc))) {
+  if (should_add_type(node)) {
     program->add_typedef(std::move(node));
   }
   return result;
 }
 
-t_ref<t_struct> parsing_driver::add_decl(
-    std::unique_ptr<t_struct>&& node, t_doc doc) {
+t_ref<t_struct> parsing_driver::add_def(std::unique_ptr<t_struct> node) {
   t_ref<t_struct> result(node.get());
-  if (should_add_type(node, std::move(doc))) {
+  if (should_add_type(node)) {
     program->add_struct(std::move(node));
   }
   return result;
 }
 
-t_ref<t_union> parsing_driver::add_decl(
-    std::unique_ptr<t_union>&& node, t_doc doc) {
+t_ref<t_union> parsing_driver::add_def(std::unique_ptr<t_union> node) {
   t_ref<t_union> result(node.get());
-  if (should_add_type(node, std::move(doc))) {
+  if (should_add_type(node)) {
     program->add_struct(std::move(node));
   }
   return result;
 }
 
-t_ref<t_exception> parsing_driver::add_decl(
-    std::unique_ptr<t_exception>&& node, t_doc doc) {
+t_ref<t_exception> parsing_driver::add_def(std::unique_ptr<t_exception> node) {
   t_ref<t_exception> result(node.get());
-  if (should_add_type(node, std::move(doc))) {
+  if (should_add_type(node)) {
     program->add_xception(std::move(node));
   }
   return result;
 }
 
-t_ref<t_enum> parsing_driver::add_decl(
-    std::unique_ptr<t_enum>&& node, t_doc doc) {
+t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
   t_ref<t_enum> result(node.get());
-  if (should_add_type(node, std::move(doc))) {
+
+  if (should_add_type(node)) {
+    // Register enum value names in scope.
+    std::string type_prefix = ".";
+    for (const auto* value : node->enum_values()) {
+      // TODO(afuller): Remove ability to access unscoped enum values.
+      scope_cache->add_constant(scoped_name(*value), value);
+      scope_cache->add_constant(scoped_name(*node, *value), value);
+    }
     program->add_enum(std::move(node));
   }
   return result;
