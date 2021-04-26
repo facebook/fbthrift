@@ -616,7 +616,7 @@ cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor():
         name="StructWithRefAndAnnotCppNoexceptMoveCtor",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(

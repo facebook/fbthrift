@@ -44,7 +44,7 @@ struct BasicRefsShared {
 
 struct BasicRefsAnnotCppNoexceptMoveCtor {
   1: HasInt def_field (cpp.ref);
-} (cpp.noexcept_move_ctor)
+}
 
 typedef Basic (
   cpp.type = "WrappedTypeField<Basic>",

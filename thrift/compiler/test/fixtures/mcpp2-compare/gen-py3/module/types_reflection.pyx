@@ -34,7 +34,7 @@ cdef __StructSpec get_reflection__Empty():
         name="Empty",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     return spec
 cdef __StructSpec get_reflection__ASimpleStruct():
@@ -72,7 +72,7 @@ cdef __StructSpec get_reflection__ASimpleStructNoexcept():
         name="ASimpleStructNoexcept",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -97,7 +97,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -1450,7 +1450,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         name="AnnotatedStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noexcept_move_ctor""": """1""",            """cpp2.noncopyable""": """1""",        },
+            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noncopyable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -2049,7 +2049,7 @@ cdef __StructSpec get_reflection__AllRequiredNoExceptMoveCtrStruct():
         name="AllRequiredNoExceptMoveCtrStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
