@@ -130,10 +130,6 @@ class HeaderClientChannel : public ClientChannel,
             std::move(rocketRequestSetupMetadata));
   }
 
-  void setReadBufferSize(uint32_t readBufferSize) {
-    cpp2Channel_->setReadBufferSize(readBufferSize);
-  }
-
   // Client interface from RequestChannel
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
