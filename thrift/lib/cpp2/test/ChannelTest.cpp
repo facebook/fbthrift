@@ -1197,24 +1197,3 @@ class NullCloseCallback : public CloseCallback {
  public:
   void channelClosed() override {}
 };
-
-TEST(Channel, SetKeepRegisteredForClose) {
-  int lfd = socket(PF_INET, SOCK_STREAM, 0);
-  int rc = listen(lfd, 10);
-  CHECK(rc == 0);
-  struct sockaddr_in addr;
-  socklen_t addrlen = sizeof(addr);
-  rc = getsockname(lfd, (struct sockaddr*)&addr, &addrlen);
-
-  folly::EventBase base;
-  auto transport = folly::AsyncSocket::newSocket(
-      &base, "127.0.0.1", folly::Endian::big(addr.sin_port));
-  auto channel = createChannel<HeaderClientChannel>(std::move(transport));
-  NullCloseCallback ncc;
-  channel->setCloseCallback(&ncc);
-  channel->setKeepRegisteredForClose(false);
-
-  EXPECT_TRUE(base.loop());
-
-  close(lfd);
-}

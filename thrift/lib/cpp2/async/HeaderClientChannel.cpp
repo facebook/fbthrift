@@ -97,7 +97,6 @@ HeaderClientChannel::HeaderClientChannel(
     : sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
-      keepRegisteredForClose_(true),
       cpp2Channel_(cpp2Channel),
       protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL),
       upgradeToRocket_(false),
@@ -643,21 +642,8 @@ void HeaderClientChannel::eraseCallback(
   setBaseReceivedCallback(); // was this the last callback?
 }
 
-bool HeaderClientChannel::expireCallback(uint32_t seqId) {
-  VLOG(4) << "Expiring callback with sequence id " << seqId;
-  CHECK(getEventBase()->isInEventBaseThread());
-  auto it = recvCallbacks_.find(seqId);
-  if (it != recvCallbacks_.end()) {
-    it->second->expire();
-    return true;
-  }
-
-  return false;
-}
-
 void HeaderClientChannel::setBaseReceivedCallback() {
-  if (recvCallbacks_.size() != 0 ||
-      (closeCallback_ && keepRegisteredForClose_)) {
+  if (recvCallbacks_.size() != 0 || closeCallback_) {
     cpp2Channel_->setReceiveCallback(this);
   } else {
     cpp2Channel_->setReceiveCallback(nullptr);
