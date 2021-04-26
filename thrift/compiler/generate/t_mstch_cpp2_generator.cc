@@ -750,6 +750,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
+            {"struct:indexing?", &mstch_cpp2_struct::indexing},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
             {"struct:fatal_annotations?",
              &mstch_cpp2_struct::has_fatal_annotations},
@@ -866,6 +867,7 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return false;
   }
+  mstch::node indexing() { return has_lazy_fields(); }
   mstch::node has_isset_fields() {
     for (const auto* field : strct_->fields()) {
       if (field_has_isset(field)) {

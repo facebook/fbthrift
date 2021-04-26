@@ -128,7 +128,8 @@ uint32_t Foo::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("Foo");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "bar", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "bar", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->bar);
     xfer += prot_->writeFieldEnd();

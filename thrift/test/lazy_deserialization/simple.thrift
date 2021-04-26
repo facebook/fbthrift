@@ -40,3 +40,20 @@ struct LazyCppRef {
     cpp.experimental.lazy,
   );
 }
+
+// Same as Foo, except adding index field explicitly
+// Since we can't use negative as index field, we will change id
+// in serialized data manually
+struct IndexedFoo {
+  100: double serialized_data_size;
+
+  1: list<double> field1;
+  2: list<i32> field2;
+  3: list<double> field3;
+  4: list<i32> field4;
+
+  101: map<i16, i64> field_id_to_size;
+}
+
+const i32 kSizeId = 100;
+const i32 kIndexId = 101;

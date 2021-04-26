@@ -120,6 +120,7 @@ class EncodeValueRecorder {
  public:
   explicit EncodeValueRecorder(EncodeValue* output) : output_(*output) {}
   constexpr static bool kSortKeys() { return false; }
+  constexpr static bool kHasIndexSupport() { return false; }
 
   uint32_t writeStructBegin(const char* name) {
     next().writeStructBegin_ref().ensure().name_ref() = name;

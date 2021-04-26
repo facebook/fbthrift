@@ -17,10 +17,14 @@
 %>
 <%#field:type%>
 <% > module_types_tcc/if_should_write%>
-<%#struct:union?%>  <%/struct:union?%>    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>, <%#first?%>0<%/first?%><%^first?%><%field:prev_field_key%><%/first?%>>(*prot_, "<%field:name%>", <%^struct:union?%>previousFieldHasValue<%/struct:union?%><%#struct:union?%>false<%/struct:union?%>);
+<%#struct:union?%>  <%/struct:union?%>    constexpr int16_t kPrevFieldId = <%#first?%><%#struct:indexing?%>::apache::thrift::detail::kSizeField.id<%/struct:indexing?%><%^struct:indexing?%>0<%/struct:indexing?%><%/first?%><%^first?%><%field:prev_field_key%><%/first?%>;
+<%#struct:union?%>  <%/struct:union?%>    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>, kPrevFieldId>(*prot_, "<%field:name%>", <%^struct:union?%>previousFieldHasValue<%/struct:union?%><%#struct:union?%>false<%/struct:union?%>);
 <%^struct:union?%>
 <%#struct:union?%>  <%/struct:union?%>    previousFieldHasValue = true;
 <%/struct:union?%>
+<%#struct:indexing?%>
+<%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldStart();
+<%/struct:indexing?%>
 <%^field:non_opt_cpp_ref?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += <% > module_types_tcc/pm%>::write(*prot_, <% > module_types_tcc/pm_value%>);
 <%/field:non_opt_cpp_ref?%>
@@ -40,6 +44,9 @@
 <%/type:struct?%>
 <%#struct:union?%>  <%/struct:union?%>    }
 <%/field:non_opt_cpp_ref?%>
+<%#struct:indexing?%>
+<%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldEnd(<% > common/type_class%>{}, <% > module_types_tcc/pm_value%>, <%field:key%>);
+<%/struct:indexing?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += prot_->writeFieldEnd();
 <%#struct:union?%>
 <% > module_types_tcc/if_should_write_end%>

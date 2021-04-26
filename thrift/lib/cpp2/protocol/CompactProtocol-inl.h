@@ -324,6 +324,13 @@ uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
   return result + static_cast<uint32_t>(size);
 }
 
+void CompactProtocolWriter::rewriteDouble(double dub, int64_t offset) {
+  auto cursor = RWCursor(out_);
+  cursor.advanceToEnd();
+  cursor -= offset;
+  cursor.writeBE(folly::bit_cast<uint64_t>(dub));
+}
+
 /**
  * Functions that return the serialized size
  */

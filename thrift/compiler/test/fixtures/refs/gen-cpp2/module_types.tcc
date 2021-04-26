@@ -244,7 +244,8 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
   switch(this->getType()) {
     case MyUnion::Type::anInteger:
     {
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, 0>(*prot_, "anInteger", false);
+      constexpr int16_t kPrevFieldId = 0;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "anInteger", false);
       if (value_.anInteger) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *value_.anInteger);
       }
@@ -253,7 +254,8 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     }
     case MyUnion::Type::aString:
     {
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, 1>(*prot_, "aString", false);
+      constexpr int16_t kPrevFieldId = 1;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "aString", false);
       if (value_.aString) {
         xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *value_.aString);
       }
@@ -558,7 +560,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("MyField");
   bool previousFieldHasValue = true;
   if (this->opt_value) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, 0>(*prot_, "opt_value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, kPrevFieldId>(*prot_, "opt_value", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, *this->opt_value);
     xfer += prot_->writeFieldEnd();
@@ -566,7 +569,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 2, 1>(*prot_, "value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 2, kPrevFieldId>(*prot_, "value", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->value) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, *this->value);
@@ -574,7 +578,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 3, 2>(*prot_, "req_value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 3, kPrevFieldId>(*prot_, "req_value", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_value) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, *this->req_value);
@@ -582,7 +587,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_enum_value) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 4, 3>(*prot_, "opt_enum_value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 3;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 4, kPrevFieldId>(*prot_, "opt_enum_value", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::write(*prot_, *this->opt_enum_value);
     xfer += prot_->writeFieldEnd();
@@ -590,7 +596,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 5, 4>(*prot_, "enum_value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 4;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 5, kPrevFieldId>(*prot_, "enum_value", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->enum_value) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::write(*prot_, *this->enum_value);
@@ -601,7 +608,8 @@ uint32_t MyField::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 6, 5>(*prot_, "req_enum_value", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 5;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 6, kPrevFieldId>(*prot_, "req_enum_value", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_enum_value) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::write(*prot_, *this->req_enum_value);
@@ -812,7 +820,8 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("MyStruct");
   bool previousFieldHasValue = true;
   if (this->opt_ref) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "opt_ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "opt_ref", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->opt_ref);
     xfer += prot_->writeFieldEnd();
@@ -820,7 +829,8 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "ref", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->ref) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->ref);
@@ -832,7 +842,8 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_ref", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_ref) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->req_ref);
@@ -1037,7 +1048,8 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithUnion");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "u", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "u", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->u) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::MyUnion>::write(*prot_, *this->u);
@@ -1049,7 +1061,8 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_DOUBLE, 2, 1>(*prot_, "aDouble", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_DOUBLE, 2, kPrevFieldId>(*prot_, "aDouble", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->aDouble) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::write(*prot_, *this->aDouble);
@@ -1057,7 +1070,8 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "f", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "f", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, this->f);
     xfer += prot_->writeFieldEnd();
@@ -1179,7 +1193,8 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("RecursiveStruct");
   bool previousFieldHasValue = true;
   if (this->mes_ref().has_value()) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, 0>(*prot_, "mes", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "mes", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>>::write(*prot_, this->mes);
     xfer += prot_->writeFieldEnd();
@@ -1526,7 +1541,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithContainers");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, 0>(*prot_, "list_ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "list_ref", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->list_ref) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->list_ref);
@@ -1537,7 +1553,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 2, 1>(*prot_, "set_ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 2, kPrevFieldId>(*prot_, "set_ref", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->set_ref) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->set_ref);
@@ -1548,7 +1565,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 3, 2>(*prot_, "map_ref", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 3, kPrevFieldId>(*prot_, "map_ref", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->map_ref) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<::std::int32_t, ::std::int32_t>>::write(*prot_, *this->map_ref);
@@ -1559,7 +1577,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, 3>(*prot_, "list_ref_unique", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 3;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "list_ref_unique", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->list_ref_unique) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->list_ref_unique);
@@ -1570,7 +1589,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 5, 4>(*prot_, "set_ref_shared", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 4;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 5, kPrevFieldId>(*prot_, "set_ref_shared", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->set_ref_shared) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, *this->set_ref_shared);
@@ -1581,7 +1601,8 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 6, 5>(*prot_, "list_ref_shared_const", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 5;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 6, kPrevFieldId>(*prot_, "list_ref_shared_const", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->list_ref_shared_const) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->list_ref_shared_const);
@@ -1792,7 +1813,8 @@ uint32_t StructWithSharedConst::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithSharedConst");
   bool previousFieldHasValue = true;
   if (this->opt_shared_const) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "opt_shared_const", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "opt_shared_const", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->opt_shared_const);
     xfer += prot_->writeFieldEnd();
@@ -1800,7 +1822,8 @@ uint32_t StructWithSharedConst::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "shared_const", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "shared_const", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->shared_const) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->shared_const);
@@ -1812,7 +1835,8 @@ uint32_t StructWithSharedConst::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_shared_const", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_shared_const", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_shared_const) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyField>::write(*prot_, *this->req_shared_const);
@@ -2103,7 +2127,8 @@ uint32_t StructWithRef::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithRef");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "def_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->def_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->def_field);
@@ -2115,7 +2140,8 @@ uint32_t StructWithRef::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_field) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "opt_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "opt_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->opt_field);
     xfer += prot_->writeFieldEnd();
@@ -2123,7 +2149,8 @@ uint32_t StructWithRef::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->req_field);
@@ -2335,7 +2362,8 @@ uint32_t StructWithRefTypeUnique::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithRefTypeUnique");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "def_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->def_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->def_field);
@@ -2347,7 +2375,8 @@ uint32_t StructWithRefTypeUnique::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_field) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "opt_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "opt_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->opt_field);
     xfer += prot_->writeFieldEnd();
@@ -2355,7 +2384,8 @@ uint32_t StructWithRefTypeUnique::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->req_field);
@@ -2567,7 +2597,8 @@ uint32_t StructWithRefTypeShared::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithRefTypeShared");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "def_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->def_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->def_field);
@@ -2579,7 +2610,8 @@ uint32_t StructWithRefTypeShared::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_field) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "opt_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "opt_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->opt_field);
     xfer += prot_->writeFieldEnd();
@@ -2587,7 +2619,8 @@ uint32_t StructWithRefTypeShared::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->req_field);
@@ -2799,7 +2832,8 @@ uint32_t StructWithRefTypeSharedConst::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithRefTypeSharedConst");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "def_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->def_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->def_field);
@@ -2811,7 +2845,8 @@ uint32_t StructWithRefTypeSharedConst::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   if (this->opt_field) {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, 1>(*prot_, "opt_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 2, kPrevFieldId>(*prot_, "opt_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->opt_field);
     xfer += prot_->writeFieldEnd();
@@ -2819,7 +2854,8 @@ uint32_t StructWithRefTypeSharedConst::write(Protocol_* prot_) const {
     previousFieldHasValue = false;
   }
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, 2>(*prot_, "req_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 2;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "req_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->req_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->req_field);
@@ -2955,7 +2991,8 @@ uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write(Protocol_* prot_) const
   xfer += prot_->writeStructBegin("StructWithRefAndAnnotCppNoexceptMoveCtor");
   bool previousFieldHasValue = true;
   {
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, 0>(*prot_, "def_field", previousFieldHasValue);
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->def_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::Empty>::write(*prot_, *this->def_field);

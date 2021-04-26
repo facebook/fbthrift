@@ -41,12 +41,18 @@ template <class Protocol_>
 uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("<%struct:name%>");
+<%#struct:indexing?%>
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+<%/struct:indexing?%>
 <%#struct:fields?%>
   bool previousFieldHasValue = true;
 <%/struct:fields?%>
 <%#struct:fields%>
 <% > module_types_tcc/serialize_field%>
 <%/struct:fields%>
+<%#struct:indexing?%>
+  indexWriter.finalize();
+<%/struct:indexing?%>
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

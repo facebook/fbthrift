@@ -169,6 +169,8 @@ class CompactProtocolWriter {
       std::unique_ptr<IOBuf> const& /*v*/) const;
   inline uint32_t serializedSizeZCBinary(IOBuf const& /*v*/) const;
 
+  inline void rewriteDouble(double dub, int64_t offset);
+
  protected:
   /**
    * Cursor to write the data out to. Must support some of the interface of
