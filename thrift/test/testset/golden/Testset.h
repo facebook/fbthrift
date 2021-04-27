@@ -31,51 +31,6 @@ template <typename T, typename Ms>
 struct union_ByFieldType;
 
 template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<>> {
-  using type = struct_bool;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<>> {
-  using type = struct_byte;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<>> {
-  using type = struct_i16;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<>> {
-  using type = struct_i32;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<>> {
-  using type = struct_i64;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<>> {
-  using type = struct_float;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<>> {
-  using type = struct_double;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<>> {
-  using type = struct_binary;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<>> {
-  using type = struct_string;
-};
-
-template <>
 struct struct_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<>> {
   using type = struct_list_bool;
 };
@@ -238,51 +193,6 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 template <>
 struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::i64_t>>, mod_set<>> {
   using type = struct_map_i64_set_i64;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_bool_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_byte_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_i16_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_i32_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_i64_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_float_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_double_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_binary_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference>> {
-  using type = struct_string_cpp_ref;
 };
 
 template <>
@@ -451,48 +361,48 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_bool;
+struct struct_ByFieldType<conformance::type::bool_t, mod_set<>> {
+  using type = struct_bool;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_byte;
+struct struct_ByFieldType<conformance::type::byte_t, mod_set<>> {
+  using type = struct_byte;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_i16;
+struct struct_ByFieldType<conformance::type::i16_t, mod_set<>> {
+  using type = struct_i16;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_i32;
+struct struct_ByFieldType<conformance::type::i32_t, mod_set<>> {
+  using type = struct_i32;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_i64;
+struct struct_ByFieldType<conformance::type::i64_t, mod_set<>> {
+  using type = struct_i64;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_float;
+struct struct_ByFieldType<conformance::type::float_t, mod_set<>> {
+  using type = struct_float;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_double;
+struct struct_ByFieldType<conformance::type::double_t, mod_set<>> {
+  using type = struct_double;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_binary;
+struct struct_ByFieldType<conformance::type::binary_t, mod_set<>> {
+  using type = struct_binary;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Optional>> {
-  using type = struct_optional_string;
+struct struct_ByFieldType<conformance::type::string_t, mod_set<>> {
+  using type = struct_string;
 };
 
 template <>
@@ -661,51 +571,6 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_bool_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_byte_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_i16_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_i32_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_i64_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_float_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_double_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_binary_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = struct_optional_string_cpp_ref;
-};
-
-template <>
 struct struct_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
   using type = struct_optional_list_bool_cpp_ref;
 };
@@ -871,48 +736,48 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_bool;
+struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_bool;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_byte;
+struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_byte;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_i16;
+struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_i16;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_i32;
+struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_i32;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_i64;
+struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_i64;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_float;
+struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_float;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_double;
+struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_double;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_binary;
+struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_binary;
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Required>> {
-  using type = struct_required_string;
+struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Optional>> {
+  using type = struct_optional_string;
 };
 
 template <>
@@ -1081,51 +946,6 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 };
 
 template <>
-struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_bool_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_byte_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_i16_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_i32_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_i64_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_float_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_double_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_binary_cpp_ref;
-};
-
-template <>
-struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = struct_required_string_cpp_ref;
-};
-
-template <>
 struct struct_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
   using type = struct_required_list_bool_cpp_ref;
 };
@@ -1291,48 +1111,48 @@ struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, confo
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<>> {
-  using type = exception_bool;
+struct struct_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_bool;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<>> {
-  using type = exception_byte;
+struct struct_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_byte;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<>> {
-  using type = exception_i16;
+struct struct_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_i16;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<>> {
-  using type = exception_i32;
+struct struct_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_i32;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<>> {
-  using type = exception_i64;
+struct struct_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_i64;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<>> {
-  using type = exception_float;
+struct struct_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_float;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<>> {
-  using type = exception_double;
+struct struct_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_double;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<>> {
-  using type = exception_binary;
+struct struct_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_binary;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<>> {
-  using type = exception_string;
+struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Required>> {
+  using type = struct_required_string;
 };
 
 template <>
@@ -1501,51 +1321,6 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_bool_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_byte_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_i16_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_i32_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_i64_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_float_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_double_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_binary_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference>> {
-  using type = exception_string_cpp_ref;
-};
-
-template <>
 struct exception_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference>> {
   using type = exception_list_bool_cpp_ref;
 };
@@ -1711,48 +1486,48 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_bool;
+struct exception_ByFieldType<conformance::type::bool_t, mod_set<>> {
+  using type = exception_bool;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_byte;
+struct exception_ByFieldType<conformance::type::byte_t, mod_set<>> {
+  using type = exception_byte;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_i16;
+struct exception_ByFieldType<conformance::type::i16_t, mod_set<>> {
+  using type = exception_i16;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_i32;
+struct exception_ByFieldType<conformance::type::i32_t, mod_set<>> {
+  using type = exception_i32;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_i64;
+struct exception_ByFieldType<conformance::type::i64_t, mod_set<>> {
+  using type = exception_i64;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_float;
+struct exception_ByFieldType<conformance::type::float_t, mod_set<>> {
+  using type = exception_float;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_double;
+struct exception_ByFieldType<conformance::type::double_t, mod_set<>> {
+  using type = exception_double;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_binary;
+struct exception_ByFieldType<conformance::type::binary_t, mod_set<>> {
+  using type = exception_binary;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Optional>> {
-  using type = exception_optional_string;
+struct exception_ByFieldType<conformance::type::string_t, mod_set<>> {
+  using type = exception_string;
 };
 
 template <>
@@ -1921,51 +1696,6 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_bool_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_byte_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_i16_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_i32_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_i64_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_float_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_double_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_binary_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
-  using type = exception_optional_string_cpp_ref;
-};
-
-template <>
 struct exception_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
   using type = exception_optional_list_bool_cpp_ref;
 };
@@ -2131,48 +1861,48 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_bool;
+struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_bool;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_byte;
+struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_byte;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_i16;
+struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_i16;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_i32;
+struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_i32;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_i64;
+struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_i64;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_float;
+struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_float;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_double;
+struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_double;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_binary;
+struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_binary;
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Required>> {
-  using type = exception_required_string;
+struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Optional>> {
+  using type = exception_optional_string;
 };
 
 template <>
@@ -2341,51 +2071,6 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_bool_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_byte_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_i16_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_i32_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_i64_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_float_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_double_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_binary_cpp_ref;
-};
-
-template <>
-struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
-  using type = exception_required_string_cpp_ref;
-};
-
-template <>
 struct exception_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference, FieldModifier::Required>> {
   using type = exception_required_list_bool_cpp_ref;
 };
@@ -2551,48 +2236,48 @@ struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, co
 };
 
 template <>
-struct union_ByFieldType<conformance::type::bool_t, mod_set<>> {
-  using type = union_bool;
+struct exception_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_bool;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::byte_t, mod_set<>> {
-  using type = union_byte;
+struct exception_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_byte;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::i16_t, mod_set<>> {
-  using type = union_i16;
+struct exception_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_i16;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::i32_t, mod_set<>> {
-  using type = union_i32;
+struct exception_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_i32;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::i64_t, mod_set<>> {
-  using type = union_i64;
+struct exception_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_i64;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::float_t, mod_set<>> {
-  using type = union_float;
+struct exception_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_float;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::double_t, mod_set<>> {
-  using type = union_double;
+struct exception_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_double;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::binary_t, mod_set<>> {
-  using type = union_binary;
+struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_binary;
 };
 
 template <>
-struct union_ByFieldType<conformance::type::string_t, mod_set<>> {
-  using type = union_string;
+struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Required>> {
+  using type = exception_required_string;
 };
 
 template <>
@@ -2761,51 +2446,6 @@ struct union_ByFieldType<conformance::type::map<conformance::type::i64_t, confor
 };
 
 template <>
-struct union_ByFieldType<conformance::type::bool_t, mod_set<FieldModifier::Reference>> {
-  using type = union_bool_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::byte_t, mod_set<FieldModifier::Reference>> {
-  using type = union_byte_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::i16_t, mod_set<FieldModifier::Reference>> {
-  using type = union_i16_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::i32_t, mod_set<FieldModifier::Reference>> {
-  using type = union_i32_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::i64_t, mod_set<FieldModifier::Reference>> {
-  using type = union_i64_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::float_t, mod_set<FieldModifier::Reference>> {
-  using type = union_float_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::double_t, mod_set<FieldModifier::Reference>> {
-  using type = union_double_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier::Reference>> {
-  using type = union_binary_cpp_ref;
-};
-
-template <>
-struct union_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Reference>> {
-  using type = union_string_cpp_ref;
-};
-
-template <>
 struct union_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Reference>> {
   using type = union_list_bool_cpp_ref;
 };
@@ -2968,6 +2608,51 @@ struct union_ByFieldType<conformance::type::map<conformance::type::i64_t, confor
 template <>
 struct union_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::i64_t>>, mod_set<FieldModifier::Reference>> {
   using type = union_map_i64_set_i64_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::bool_t, mod_set<>> {
+  using type = union_bool;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::byte_t, mod_set<>> {
+  using type = union_byte;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::i16_t, mod_set<>> {
+  using type = union_i16;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::i32_t, mod_set<>> {
+  using type = union_i32;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::i64_t, mod_set<>> {
+  using type = union_i64;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::float_t, mod_set<>> {
+  using type = union_float;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::double_t, mod_set<>> {
+  using type = union_double;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::binary_t, mod_set<>> {
+  using type = union_binary;
+};
+
+template <>
+struct union_ByFieldType<conformance::type::string_t, mod_set<>> {
+  using type = union_string;
 };
 
 

@@ -116,7 +116,6 @@ void addReflectionBenchmarks() {
   add_benchmark<testset::struct_string>();
   add_benchmark<testset::struct_optional_string>();
   add_benchmark<testset::struct_required_string>();
-  add_benchmark<testset::struct_optional_string_cpp_ref>();
   add_benchmark<testset::union_string>();
 }
 

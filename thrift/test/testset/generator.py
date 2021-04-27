@@ -155,7 +155,7 @@ REQUIRED_TRANSFORM: Dict[Target, str] = {
 
 CPP_REF_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}_cpp_ref",
-    Target.THRIFT: "{} (cpp.ref = 'true')",
+    Target.THRIFT: "{}|cpp.ref",
     Target.CPP2: "{}|FieldModifier::Reference",
 }
 
@@ -211,7 +211,7 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(CPP_REF_TRANSFORM, target, values)
 
 
-def gen_union_fields(target: Target) -> Dict[str, str]:
+def gen_container_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in unions."""
     prims = gen_primatives(target, PRIMITIVE_TYPES)
     keys = gen_primatives(target, KEY_TYPES)
@@ -222,8 +222,13 @@ def gen_union_fields(target: Target) -> Dict[str, str]:
 
     maps_to_sets = gen_maps(target, keys, sets)
 
-    ret = {**prims, **lists, **sets, **maps, **maps_to_sets}
+    return {**lists, **sets, **maps, **maps_to_sets}
+
+
+def gen_union_fields(target: Target) -> Dict[str, str]:
+    ret = gen_container_fields(target)
     ret.update(gen_cpp_ref(target, ret))
+    ret.update(gen_primatives(target, PRIMITIVE_TYPES))
     return ret
 
 
@@ -238,17 +243,24 @@ def gen_thrift_def(
     transform: Dict[Target, str], name: str, field_types: List[str]
 ) -> str:
     """Generate thrift struct from types
-    >>> print(gen_thrift_def(STRUCT_TRANSFORM, "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
+    >>> print(gen_thrift_def(STRUCT_TRANSFORM, "Foo", ["i64", "optional string", "set<i32>|cpp.ref"]))
     struct Foo {
       1: i64 field_1;
       2: optional string field_2;
-      3: set<i32> (cpp.ref = 'true') field_3;
+      3: set<i32> field_3 (cpp.ref);
     } (thrift.uri="facebook.com/thrift/test/testset/Foo")
     """
     decl = transform[Target.THRIFT].format(name)
     lines = [f"{decl} {{"]
     for idx, field_type in enumerate(field_types):
-        lines.append("  {0}: {1} field_{0};".format(idx + 1, field_type))
+        annotations = ""
+        if "|" in field_type:
+            v = field_type.split("|")
+            field_type = v[0]
+            annotations = " (" + ", ".join(v[1:]) + ")"
+        lines.append(
+            "  {0}: {1} field_{0}{2};".format(idx + 1, field_type, annotations)
+        )
     lines.append(f'}} (thrift.uri="facebook.com/thrift/test/testset/{name}")')
     return "\n".join(lines)
 

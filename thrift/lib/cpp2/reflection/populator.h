@@ -426,7 +426,8 @@ struct populator_methods<type_class::structure, Struct> {
     }
   };
 
-  struct member_populator {
+  class member_populator {
+   public:
     template <typename Member, std::size_t Index, typename Rng>
     void operator()(
         fatal::indexed<Member, Index>,
@@ -436,8 +437,8 @@ struct populator_methods<type_class::structure, Struct> {
       using methods =
           populator_methods<typename Member::type_class, typename Member::type>;
 
-      auto& got = typename Member::getter{}(out);
-      using member_type = folly::remove_cvref_t<decltype(got)>;
+      auto&& got = typename Member::field_ref_getter{}(out);
+      using member_type = folly::remove_cvref_t<decltype(*got)>;
 
       // Popualate optional fields with `optional_field_prob` probability.
       auto const skip = //
@@ -451,8 +452,22 @@ struct populator_methods<type_class::structure, Struct> {
                << fatal::z_data<typename Member::name>();
 
       Member::mark_set(out, true);
+      ensure_cpp_ref(got);
+      field_populator<Member, member_type, methods>::populate(rng, opts, *got);
+    }
 
-      field_populator<Member, member_type, methods>::populate(rng, opts, got);
+   private:
+    template <class T>
+    static void ensure_cpp_ref(T&&) {}
+
+    template <class T>
+    static void ensure_cpp_ref(std::unique_ptr<T>& v) {
+      v = std::make_unique<T>();
+    }
+
+    template <class T>
+    static void ensure_cpp_ref(std::shared_ptr<T>& v) {
+      v = std::make_shared<T>();
     }
   };
 
