@@ -30,6 +30,18 @@ struct module_constants {
     return BAR_;
   }
 
+  static constexpr ::std::int32_t const BIFF_ = 0;
+
+  static constexpr ::std::int32_t BIFF() {
+    return BIFF_;
+  }
+
+  static constexpr ::std::int32_t const SHOUTY_ = 11;
+
+  static constexpr ::std::int32_t SHOUTY() {
+    return SHOUTY_;
+  }
+
 };
 
 } // cpp2

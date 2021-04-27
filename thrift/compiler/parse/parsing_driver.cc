@@ -444,24 +444,34 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
   lines.front().erase(0, pos);
 
   // If every nonblank line after the first has the same number of spaces/tabs,
-  // then a star, remove them.
-  bool have_prefix = true;
-  bool found_prefix = false;
+  // then a comment prefix, remove them.
+  enum Prefix {
+    None = 0,
+    Star = 1, // length of '*'
+    Slashes = 3, // length of '///'
+  };
+  Prefix found_prefix = None;
   std::string::size_type prefix_len = 0;
   std::vector<std::string>::iterator l_iter;
+
+  // Start searching for prefixes from second line, since lexer already removed
+  // initial prefix/suffix.
   for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
     if (l_iter->empty()) {
       continue;
     }
 
     pos = l_iter->find_first_not_of(" \t");
-    if (!found_prefix) {
+    if (found_prefix == None) {
       if (pos != std::string::npos) {
         if (l_iter->at(pos) == '*') {
-          found_prefix = true;
+          found_prefix = Star;
+          prefix_len = pos;
+        } else if (l_iter->compare(pos, 3, "///") == 0) {
+          found_prefix = Slashes;
           prefix_len = pos;
         } else {
-          have_prefix = false;
+          found_prefix = None;
           break;
         }
       } else {
@@ -469,22 +479,24 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
         l_iter->clear();
       }
     } else if (
-        l_iter->size() > pos && l_iter->at(pos) == '*' && pos == prefix_len) {
-      // Business as usual.
+        l_iter->size() > pos && pos == prefix_len &&
+        ((found_prefix == Star && l_iter->at(pos) == '*') ||
+         (found_prefix == Slashes && l_iter->compare(pos, 3, "///") == 0))) {
+      // Business as usual
     } else if (pos == std::string::npos) {
       // Whitespace-only line.  Let's truncate it for them.
       l_iter->clear();
     } else {
       // The pattern has been broken.
-      have_prefix = false;
+      found_prefix = None;
       break;
     }
   }
 
   // If our prefix survived, delete it from every line.
-  if (have_prefix) {
-    // Get the star too.
-    prefix_len++;
+  if (found_prefix != None) {
+    // Get the prefix too.
+    prefix_len += found_prefix;
     for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
       l_iter->erase(0, prefix_len);
     }
@@ -503,7 +515,7 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
     }
   }
 
-  // If our prefix survived, delete it from every line.
+  // If our whitespace prefix survived, delete it from every line.
   if (prefix_len != std::string::npos) {
     for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
       l_iter->erase(0, prefix_len);

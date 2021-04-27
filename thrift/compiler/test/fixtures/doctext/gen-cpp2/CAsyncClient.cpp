@@ -17,6 +17,8 @@ typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::cpp2::number*>>
     > C_numbers_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>*>> C_thing_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::Bang>> C_thing_presult;
 
 template <typename Protocol_>
 void CAsyncClient::fT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -39,6 +41,21 @@ void CAsyncClient::numbersT(Protocol_* prot, apache::thrift::RpcOptions rpcOptio
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "numbers";
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+  ctx->reqContext.setRequestHeader(nullptr);
+}
+
+template <typename Protocol_>
+void CAsyncClient::thingT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+
+  std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
+  C_thing_pargs args;
+  args.get<0>().value = &p_a;
+  args.get<1>().value = const_cast<::std::string*>(&p_b);
+  args.get<2>().value = const_cast<::std::set<::std::int32_t>*>(&p_c);
+  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
+  auto writer = [&](Protocol_* p) { args.write(p); };
+  static constexpr std::string_view methodName = "thing";
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -361,6 +378,173 @@ apache::thrift::ClientBufferedStream<::cpp2::number> CAsyncClient::recv_instance
 
 folly::exception_wrapper CAsyncClient::recv_instance_wrapped_numbers(apache::thrift::ClientBufferedStream<::cpp2::number>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_numbers(_return, state);
+}
+
+void CAsyncClient::thing(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  thing(rpcOptions, std::move(callback), p_a, p_b, p_c);
+}
+
+void CAsyncClient::thing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  auto ctx = thingCtx(&rpcOptions);
+  apache::thrift::RequestCallback::Context callbackContext;
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  thingImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_a, p_b, p_c);
+}
+
+void CAsyncClient::thingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      thingT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_a, p_b, p_c);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      thingT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_a, p_b, p_c);
+      break;
+    }
+    default:
+    {
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
+    }
+  }
+}
+
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> CAsyncClient::thingCtx(apache::thrift::RpcOptions* rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
+      handlers_,
+      getServiceName(),
+      "C.thing");
+}
+
+void CAsyncClient::sync_thing(::std::string& _return, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_thing(rpcOptions, _return, p_a, p_b, p_c);
+}
+
+void CAsyncClient::sync_thing(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = thingCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  thingImpl(rpcOptions, ctx, std::move(wrappedCallback), p_a, p_b, p_c);
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      recv_thing(_return, returnState);
+  });
+}
+
+
+folly::Future<::std::string> CAsyncClient::future_thing(::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_thing(rpcOptions, p_a, p_b, p_c);
+}
+
+folly::SemiFuture<::std::string> CAsyncClient::semifuture_thing(::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_thing(rpcOptions, p_a, p_b, p_c);
+}
+
+folly::Future<::std::string> CAsyncClient::future_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  folly::Promise<::std::string> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_thing, channel_);
+  thing(rpcOptions, std::move(callback), p_a, p_b, p_c);
+  return future;
+}
+
+folly::SemiFuture<::std::string> CAsyncClient::semifuture_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_thing, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  thing(rpcOptions, std::move(callback), p_a, p_b, p_c);
+  return std::move(callbackAndFuture.second);
+}
+
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> CAsyncClient::header_future_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_thing, channel_);
+  thing(rpcOptions, std::move(callback), p_a, p_b, p_c);
+  return future;
+}
+
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> CAsyncClient::header_semifuture_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_thing, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  thing(rpcOptions, std::move(callback), p_a, p_b, p_c);
+  return std::move(callbackAndFuture.second);
+}
+
+void CAsyncClient::thing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+  thing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_a, p_b, p_c);
+}
+
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
+folly::exception_wrapper CAsyncClient::recv_wrapped_thing(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  if (state.isException()) {
+    return std::move(state.exception());
+  }
+  if (!state.buf()) {
+    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
+  }
+
+  using result = C_thing_presult;
+  constexpr auto const fname = "thing";
+  switch (state.protocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state, _return);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state, _return);
+    }
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
+}
+
+void CAsyncClient::recv_thing(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_thing(_return, state);
+  if (ew) {
+    ew.throw_exception();
+  }
+}
+
+void CAsyncClient::recv_instance_thing(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_thing(_return, state);
+}
+
+folly::exception_wrapper CAsyncClient::recv_instance_wrapped_thing(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_thing(_return, state);
 }
 
 

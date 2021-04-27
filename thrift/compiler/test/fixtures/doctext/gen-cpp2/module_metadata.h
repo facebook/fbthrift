@@ -50,6 +50,7 @@ class ServiceMetadata<::cpp2::CSvIf> {
  private:
   static void gen_f(ThriftMetadata& metadata, ThriftService& context);
   static void gen_numbers(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_thing(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

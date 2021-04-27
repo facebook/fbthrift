@@ -16,4 +16,8 @@ constexpr char const * const module_constants::FOO_;
 
 constexpr ::std::int32_t const module_constants::BAR_;
 
+constexpr ::std::int32_t const module_constants::BIFF_;
+
+constexpr ::std::int32_t const module_constants::SHOUTY_;
+
 } // cpp2

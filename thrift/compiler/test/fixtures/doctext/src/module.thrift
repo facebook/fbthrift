@@ -17,8 +17,19 @@
 /** Constant foo */
 const string FOO = "foo";
 
-/** Constant bar */
+/// Multi-
+/// line
+/// slash comment
 const i32 BAR = 123;
+
+/// BIFF has your mail
+const i32 BIFF = 0;
+
+// Banners are not doc comments
+//////////////////////////////////////////
+///////////// SHOUTY /////////////////////
+//////////////////////////////////////////
+const i32 SHOUTY = 11;
 
 /** Cool new name for string */
 typedef string lanyard
@@ -67,4 +78,8 @@ service C {
 
   /** Streaming function */
   stream<number> numbers();
+
+  // test empty doc comment
+  ///
+  string thing(1: i32 a, 2: string b, 3: set<i32> c) throws (1: Bang bang);
 }

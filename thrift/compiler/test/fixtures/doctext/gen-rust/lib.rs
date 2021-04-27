@@ -13,8 +13,13 @@ pub mod consts {
     #[doc = "Constant foo"]
     pub const FOO: &::std::primitive::str = "foo";
 
-    #[doc = "Constant bar"]
+    #[doc = "Multi-\nline\nslash comment"]
     pub const BAR: ::std::primitive::i32 = 123;
+
+    #[doc = "BIFF has your mail"]
+    pub const BIFF: ::std::primitive::i32 = 0;
+
+    pub const SHOUTY: ::std::primitive::i32 = 11;
 }
 
 /// Thrift type definitions for `module`.
@@ -557,6 +562,118 @@ pub mod services {
             }
         }
 
+
+        #[derive(Clone, Debug)]
+        pub enum ThingExn {
+            Success(::std::string::String),
+            bang(crate::types::Bang),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<crate::types::Bang> for ThingExn {
+            fn from(exn: crate::types::Bang) -> Self {
+                ThingExn::bang(exn)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for ThingExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                ThingExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for ThingExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for ThingExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Thing");
+                match self {
+                    ThingExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::String,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    ThingExn::bang(inner) => {
+                        p.write_field_begin(
+                            "bang",
+                            ::fbthrift::TType::Struct,
+                            1,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    ThingExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for ThingExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::String, 0),
+                    ::fbthrift::Field::new("bang", ::fbthrift::TType::Struct, 1),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::String, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(ThingExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((::fbthrift::TType::Struct, 1), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(ThingExn::bang(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "ThingExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "ThingExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
     }
 }
 
@@ -593,6 +710,13 @@ pub mod client {
         fn numbers(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>>;
+        #[doc = ""]
+        fn thing(
+            &self,
+            arg_a: ::std::primitive::i32,
+            arg_b: &::std::primitive::str,
+            arg_c: &::std::collections::BTreeSet<::std::primitive::i32>,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::c::ThingError>> + ::std::marker::Send + 'static>>;
     }
 
     impl<P, T> C for CImpl<P, T>
@@ -715,6 +839,79 @@ pub mod client {
                 }))
                 .boxed()
         }
+        fn thing(
+            &self,
+            arg_a: ::std::primitive::i32,
+            arg_b: &::std::primitive::str,
+            arg_c: &::std::collections::BTreeSet<::std::primitive::i32>,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::c::ThingError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::fbthrift::{ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            const_cstr! {
+                SERVICE_NAME = "C";
+                METHOD_NAME = "C.thing";
+            }
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "thing",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_a", ::fbthrift::TType::I32, 1i16);
+                    ::fbthrift::Serialize::write(&arg_a, p);
+                    p.write_field_end();
+                    p.write_field_begin("arg_b", ::fbthrift::TType::String, 2i16);
+                    ::fbthrift::Serialize::write(&arg_b, p);
+                    p.write_field_end();
+                    p.write_field_begin("arg_c", ::fbthrift::TType::Set, 3i16);
+                    ::fbthrift::Serialize::write(&arg_c, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            self.transport()
+                .call(SERVICE_NAME, METHOD_NAME, request)
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::string::String, crate::errors::c::ThingError> {
+                        use ::fbthrift::{ProtocolReader as _};
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::c::ThingExn = ::fbthrift::Deserialize::read(p)?;
+                                match exn {
+                                    crate::services::c::ThingExn::Success(x) => ::std::result::Result::Ok(x),
+                                    crate::services::c::ThingExn::bang(err) => {
+                                        ::std::result::Result::Err(crate::errors::c::ThingError::bang(err))
+                                    }
+                                    crate::services::c::ThingExn::ApplicationException(ae) => {
+                                        ::std::result::Result::Err(crate::errors::c::ThingError::ApplicationException(ae))
+                                    }
+                                }
+                            }
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::c::ThingError::ApplicationException(ae))
+                            }
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::c::ThingError::ThriftError(err))
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
     }
 
     impl<'a, T> C for T
@@ -732,6 +929,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
             self.as_ref().numbers(
+            )
+        }
+        fn thing(
+            &self,
+            arg_a: ::std::primitive::i32,
+            arg_b: &::std::primitive::str,
+            arg_c: &::std::collections::BTreeSet<::std::primitive::i32>,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::c::ThingError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().thing(
+                arg_a,
+                arg_b,
+                arg_c,
             )
         }
     }
@@ -797,6 +1006,20 @@ pub mod server {
             ))
         }
         // numbers: server-side streaming not yet implemented
+        #[doc = ""]
+        async fn thing(
+            &self,
+            _a: ::std::primitive::i32,
+            _b: ::std::string::String,
+            _c: ::std::collections::BTreeSet<::std::primitive::i32>,
+        ) -> ::std::result::Result<::std::string::String, crate::services::c::ThingExn> {
+            ::std::result::Result::Err(crate::services::c::ThingExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "C",
+                    "thing",
+                ),
+            ))
+        }
     }
 
     /// Processor for C's methods.
@@ -887,6 +1110,95 @@ pub mod server {
             ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
             ::std::result::Result::Ok(res)
         }
+
+        async fn handle_thing<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            req_ctxt: &R,
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
+            use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "C";
+                METHOD_NAME = "C.thing";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("a", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("b", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("c", ::fbthrift::TType::Set, 3),
+            ];
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
+
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
+            let res = self.service.thing(
+                field_a.ok_or_else(|| {
+                    ::fbthrift::ApplicationException::missing_arg(
+                        "thing",
+                        "a",
+                    )
+                })?,
+                field_b.ok_or_else(|| {
+                    ::fbthrift::ApplicationException::missing_arg(
+                        "thing",
+                        "b",
+                    )
+                })?,
+                field_c.ok_or_else(|| {
+                    ::fbthrift::ApplicationException::missing_arg(
+                        "thing",
+                        "c",
+                    )
+                })?,
+            ).await;
+            let res = match res {
+                ::std::result::Result::Ok(res) => {
+                    crate::services::c::ThingExn::Success(res)
+                }
+                ::std::result::Result::Err(crate::services::c::ThingExn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
+                }
+                ::std::result::Result::Err(crate::services::c::ThingExn::Success(_)) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "thing",
+                    )
+                }
+                ::std::result::Result::Err(exn) => exn,
+            };
+            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "thing",
+                ::fbthrift::MessageType::Reply,
+                seqid,
+                |p| ::fbthrift::Serialize::write(&res, p),
+            ));
+            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            ::std::result::Result::Ok(res)
+        }
     }
 
     #[::async_trait::async_trait]
@@ -904,6 +1216,7 @@ pub mod server {
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
                 b"f" => ::std::result::Result::Ok(0usize),
+                b"thing" => ::std::result::Result::Ok(2usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -917,6 +1230,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_f(_p, _r, _seqid).await,
+                2usize => self.handle_thing(_p, _r, _seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "CProcessor",
@@ -1106,6 +1420,7 @@ pub mod mock {
     pub struct C<'mock> {
         pub f: r#impl::c::f<'mock>,
         pub numbers: r#impl::c::numbers<'mock>,
+        pub thing: r#impl::c::thing<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -1114,6 +1429,7 @@ pub mod mock {
             C {
                 f: r#impl::c::f::unimplemented(),
                 numbers: r#impl::c::numbers::unimplemented(),
+                thing: r#impl::c::thing::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -1134,6 +1450,16 @@ pub mod mock {
             let mut closure = self.numbers.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
+        }
+        fn thing(
+            &self,
+            arg_a: ::std::primitive::i32,
+            arg_b: &::std::primitive::str,
+            arg_c: &::std::collections::BTreeSet<::std::primitive::i32>,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::c::ThingError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.thing.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32, ::std::string::String, ::std::collections::BTreeSet<::std::primitive::i32>) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_a.clone(), arg_b.to_owned(), arg_c.clone())))
         }
     }
 
@@ -1227,6 +1553,50 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
+
+            pub struct thing<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i32, ::std::string::String, ::std::collections::BTreeSet<::std::primitive::i32>) -> ::std::result::Result<
+                        ::std::string::String,
+                        crate::errors::c::ThingError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> thing<'mock> {
+                pub fn unimplemented() -> Self {
+                    thing {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32, _: ::std::string::String, _: ::std::collections::BTreeSet<::std::primitive::i32>| panic!(
+                            "{}::{} is not mocked",
+                            "C",
+                            "thing",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ::std::string::String) {
+                    self.mock(move |_: ::std::primitive::i32, _: ::std::string::String, _: ::std::collections::BTreeSet<::std::primitive::i32>| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::string::String, ::std::collections::BTreeSet<::std::primitive::i32>) -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |a, b, c| ::std::result::Result::Ok(mock(a, b, c)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::string::String, ::std::collections::BTreeSet<::std::primitive::i32>) -> ::std::result::Result<::std::string::String, crate::errors::c::ThingError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |a, b, c| mock(a, b, c));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::c::ThingError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i32, _: ::std::string::String, _: ::std::collections::BTreeSet<::std::primitive::i32>| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
         }
     }
 }
@@ -1236,11 +1606,64 @@ pub mod errors {
     /// Errors for C functions.
     pub mod c {
 
+        pub trait AsBang{
+            fn as_bang(&self) -> Option<&crate::types::Bang>;
+        }
+
+        impl AsBang for ::anyhow::Error {
+            fn as_bang(&self) -> Option<&crate::types::Bang> {
+                for cause in self.chain() {
+                    if let Some(ThingError::bang(e)) = cause.downcast_ref::<ThingError>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
         pub type FError = ::fbthrift::NonthrowingFunctionError;
 
         pub type NumbersError = ::fbthrift::NonthrowingFunctionError;
 
         pub type NumbersStreamError = ::fbthrift::NonthrowingFunctionError;
+        /// Errors for thing.
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum ThingError {
+            #[error("C::thing failed with {0:?}")]
+            bang(crate::types::Bang),
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl ::std::convert::From<crate::types::Bang> for ThingError {
+            fn from(e: crate::types::Bang) -> Self {
+                ThingError::bang(e)
+            }
+        }
+
+        impl AsBang for ThingError {
+            fn as_bang(&self) -> Option<&crate::types::Bang> {
+                match self {
+                    ThingError::bang(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
+        impl ::std::convert::From<::anyhow::Error> for ThingError {
+            fn from(err: ::anyhow::Error) -> Self {
+                ThingError::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for ThingError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                ThingError::ApplicationException(ae)
+            }
+        }
+
     }
 
 }

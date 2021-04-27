@@ -69,7 +69,7 @@ identifier    ([a-zA-Z_][\.a-zA-Z_0-9]*)
 whitespace    ([ \t\r\n]*)
 sillycomm     ("/*""*"*"*/")
 multicomm     ("/*"[^*]"/"*([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")
-doctext       ("/**"([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")
+doctext       (("/**"([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")|("///"(\n|[^/\n][^\n]*){whitespace})+)
 comment       ("//"[^\n]*)
 unixcomment   ("#"[^\n]*)
 symbol        ([:;\,\{\}\(\)\=<>\[\]@])
@@ -226,8 +226,14 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
   if (driver.mode == apache::thrift::compiler::parsing_mode::PROGRAM) {
-    std::string doctext{yytext + 3};
-    doctext = doctext.substr(0, doctext.length() - 2);
+    std::string doctext{yytext};
+
+    /* Deal with prefix/suffix */
+    if (doctext.compare(0, 3, "/**") == 0) {
+      doctext = doctext.substr(3, doctext.length() - 3 - 2);
+    } else if (doctext.compare(0, 3, "///") == 0) {
+      doctext = doctext.substr(3, doctext.length() - 3);
+    }
 
     driver.clear_doctext();
     driver.doctext = driver.clean_up_doctext(doctext);

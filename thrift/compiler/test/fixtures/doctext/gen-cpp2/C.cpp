@@ -144,9 +144,75 @@ void CSvIf::async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::a
   }
 }
 
+void CSvIf::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("thing");
+}
+
+folly::SemiFuture<std::unique_ptr<::std::string>> CSvIf::semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { thing(_return, p_a, std::move(p_b), std::move(p_c)); });
+}
+
+folly::Future<std::unique_ptr<::std::string>> CSvIf::future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_thing(p_a, std::move(p_b), std::move(p_c)), std::move(ka));
+}
+
+void CSvIf::async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  switch (__fbthrift_invocation_thing.load(std::memory_order_relaxed)) {
+    case apache::thrift::detail::si::InvocationType::AsyncTm:
+    {
+      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
+      __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_thing(p_a, std::move(p_b), std::move(p_c));
+      });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::SemiFuture:
+    {
+      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
+        return semifuture_thing(p_a, std::move(p_b), std::move(p_c)); });
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        ::std::string _return;
+        thing(_return, p_a, std::move(p_b), std::move(p_c));
+        callback->result(_return);
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
+      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
+        return future_thing(p_a, std::move(p_b), std::move(p_c));
+      });
+      return;
+    }
+    default:
+    {
+      folly::assume_unreachable();
+    }
+  }
+}
+
 void CSvNull::f() {
   return;
 }
+
+void CSvNull::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {}
 
 
 
@@ -173,6 +239,7 @@ const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap(
 const CAsyncProcessor::ProcessMap CAsyncProcessor::binaryProcessMap_ {
   {"f", &CAsyncProcessor::setUpAndProcess_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"numbers", &CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"thing", &CAsyncProcessor::setUpAndProcess_thing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getCompactProtocolProcessMap() {
@@ -182,6 +249,7 @@ const CAsyncProcessor::ProcessMap& CAsyncProcessor::getCompactProtocolProcessMap
 const CAsyncProcessor::ProcessMap CAsyncProcessor::compactProcessMap_ {
   {"f", &CAsyncProcessor::setUpAndProcess_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"numbers", &CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"thing", &CAsyncProcessor::setUpAndProcess_thing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2
