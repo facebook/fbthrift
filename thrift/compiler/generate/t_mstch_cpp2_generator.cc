@@ -2108,12 +2108,38 @@ class splits_validator : public validator {
  private:
   int32_t split_count_;
 };
+
+class lazy_field_validator : public validator {
+ public:
+  using validator::visit;
+  bool visit(t_field* field) override {
+    if (field_is_lazy(field)) {
+      auto t = field->get_type()->get_true_type();
+      boost::optional<std::string> field_type;
+      if (t->is_any_int() || t->is_bool() || t->is_byte()) {
+        field_type = "Integral field";
+      }
+      if (t->is_floating_point()) {
+        field_type = "Floating point field";
+      }
+      if (field_type) {
+        add_error(
+            field->get_lineno(),
+            *field_type + " `" + field->get_name() +
+                "` can not be marked as lazy, "
+                "since doing so won't bring any benefit.");
+      }
+    }
+    return true;
+  }
+};
 } // namespace
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
   l.add<service_method_validator>(this->parsed_options_);
   l.add<splits_validator>(cpp2::get_split_count(parsed_options_));
+  l.add<lazy_field_validator>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

@@ -660,3 +660,32 @@ class CompilerFailureTest(unittest.TestCase):
                 + "`B` before its use in field `field`.\n"
             ),
         )
+
+    def test_lazy_field(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                    1: i32 field (cpp.experimental.lazy)
+                }
+                typedef double FP
+                struct B {
+                    1: FP field (cpp.experimental.lazy)
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:2] Integral field `field` can not be"
+                + " marked as lazy, since doing so won't bring any benefit.\n"
+                "[FAILURE:foo.thrift:6] Floating point field `field` can not be"
+                + " marked as lazy, since doing so won't bring any benefit.\n"
+            ),
+        )
