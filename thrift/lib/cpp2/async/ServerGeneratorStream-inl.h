@@ -41,6 +41,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
            encode,
            gen = std::move(gen),
            interaction]() mutable -> folly::coro::Task<void> {
+            bool pauseStream = false;
             int64_t credits = 0;
             class ReadyCallback
                 : public apache::thrift::detail::ServerStreamConsumer {
@@ -62,7 +63,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
             };
 
             while (true) {
-              if (credits == 0) {
+              if (credits == 0 || pauseStream) {
                 ReadyCallback ready;
                 if (stream->wait(&ready)) {
                   co_await ready.baton;
@@ -74,11 +75,24 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                 while (!queue.empty()) {
                   auto next = queue.front();
                   queue.pop();
-                  if (next == -1) {
-                    co_return;
+                  switch (next) {
+                    case detail::StreamControl::CANCEL:
+                      co_return;
+                    case detail::StreamControl::PAUSE:
+                      pauseStream = true;
+                      break;
+                    case detail::StreamControl::RESUME:
+                      pauseStream = false;
+                      break;
+                    default:
+                      credits += next;
+                      break;
                   }
-                  credits += next;
                 }
+              }
+
+              if (UNLIKELY(pauseStream || credits == 0)) {
+                continue;
               }
 
               auto&& next = co_await folly::coro::co_awaitTry(

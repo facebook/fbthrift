@@ -43,6 +43,8 @@ service StreamService {
   stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
   // Generate strings of size 1KB
   stream<string> buffers(1: i32 count);
+  // Generate strings of specified size
+  stream<string> customBuffers(1: i32 count, 2: i32 size);
 
   stream<i32> slowCancellation();
 

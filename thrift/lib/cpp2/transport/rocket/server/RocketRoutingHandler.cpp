@@ -144,7 +144,9 @@ void RocketRoutingHandler::handleConnection(
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize(),
-      std::move(memLimitParams));
+      std::move(memLimitParams),
+      server->getEgressBufferBackpressureThreshold(),
+      server->getEgressBufferRecoveryFactor());
   onConnection(*connection);
   connectionManager->addConnection(connection);
 

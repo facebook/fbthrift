@@ -38,6 +38,10 @@ class ServerStreamConsumer {
   virtual void canceled() = 0;
 };
 
+struct StreamControl {
+  enum Code : int32_t { CANCEL = -1, PAUSE = -2, RESUME = -3 };
+};
+
 class ServerGeneratorStream;
 
 // This template explicitly instantiated in ServerGeneratorStream.cpp
@@ -89,6 +93,10 @@ class ServerGeneratorStream : public TwoWayBridge<
   void onStreamCancel() override;
 
   void resetClientCallback(StreamClientCallback& clientCallback) override;
+
+  void pauseStream() override;
+
+  void resumeStream() override;
 
   void processPayloads();
 

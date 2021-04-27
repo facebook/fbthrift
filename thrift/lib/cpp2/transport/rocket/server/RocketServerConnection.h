@@ -54,7 +54,8 @@ namespace rocket {
 
 class RocketServerConnection final
     : public wangle::ManagedConnection,
-      private folly::AsyncTransport::WriteCallback {
+      private folly::AsyncTransport::WriteCallback,
+      private folly::AsyncTransport::BufferCallback {
  public:
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
@@ -104,7 +105,9 @@ class RocketServerConnection final
           std::chrono::milliseconds::zero(),
       size_t writeBatchingSize = 0,
       folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef =
-          folly::none);
+          folly::none,
+      size_t egressBufferBackpressureThreshold = 0,
+      double egressBufferBackpressureRecoveryFactor = 0.0);
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
@@ -127,6 +130,10 @@ class RocketServerConnection final
   void writeErr(
       size_t bytesWritten,
       const folly::AsyncSocketException& ex) noexcept final;
+
+  // AsyncTransport::BufferCallback implementation
+  void onEgressBuffered() final;
+  void onEgressBufferCleared() final;
 
   folly::EventBase& getEventBase() const { return evb_; }
 
@@ -233,11 +240,14 @@ class RocketServerConnection final
 
   int32_t getVersion() const { return frameHandler_->getVersion(); }
 
+  bool areStreamsPaused() const noexcept { return streamsPaused_; }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
   folly::AsyncTransport::UniquePtr socket_;
+  folly::AsyncSocket* const rawSocket_;
 
   Parser<RocketServerConnection> parser_{*this};
   std::unique_ptr<RocketServerHandler> frameHandler_;
@@ -289,6 +299,9 @@ class RocketServerConnection final
       boost::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
+  const size_t egressBufferMaxSize_;
+  const size_t egressBufferRecoverySize_;
+  bool streamsPaused_{false};
 
   class WriteBatcher : private folly::EventBase::LoopCallback,
                        private folly::HHWheelTimer::Callback {
@@ -485,6 +498,9 @@ class RocketServerConnection final
     }
     frameHandler_->requestComplete();
   }
+
+  void pauseStreams();
+  void resumeStreams();
 
   friend class RocketServerFrameContext;
 };

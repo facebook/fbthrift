@@ -1085,5 +1085,30 @@ TEST_F(StreamingTest, LeakPublisherCheck) {
   });
 }
 
+TEST_F(StreamingTest, ConnectionEgressBufferBackpressure) {
+  server_->setUseClientTimeout(false);
+  // Disable write batching
+  server_->setWriteBatchingInterval(std::chrono::milliseconds::zero());
+  // Trigger stream pause/resume by generating stream payloads that are too
+  // large to send at once, causing AsyncSocket to buffer the rest and invoking
+  // the buffer callback on the connection. A low backpressure threshold will
+  // then pause streams.
+  server_->setEgressBufferBackpressureThreshold(512);
+  server_->setEgressBufferRecoveryFactor(0.5);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    constexpr int kCount = 5;
+    constexpr int kSize = 10 * 1024 * 1024; // 10MB
+    apache::thrift::RpcOptions rpcOptions;
+    auto gen = client->sync_customBuffers(kCount, kSize).toAsyncGenerator();
+    size_t received = 0;
+    folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+      while (auto next = co_await gen.next()) {
+        received++;
+      }
+    }());
+    EXPECT_EQ(kCount, received);
+  });
+}
+
 } // namespace thrift
 } // namespace apache

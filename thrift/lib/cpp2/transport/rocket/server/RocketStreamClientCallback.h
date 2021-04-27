@@ -54,6 +54,8 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   bool request(uint32_t n);
   void onStreamCancel();
   void headers(HeadersPayload&& payload);
+  void pauseStream();
+  void resumeStream();
 
   StreamServerCallback& getStreamServerCallback();
   void timeoutExpired() noexcept;

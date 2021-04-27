@@ -311,6 +311,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
       512 * 1024};
 
+  /**
+   * Per-connection threshold for number of bytes allowed in egress buffer
+   * before applying backpressure by pausing streams.
+   * (0 == disabled)
+   */
+  ServerAttributeDynamic<size_t> egressBufferBackpressureThreshold_{0};
+
+  /**
+   * Factor of egress buffer backpressure threshold at which to resume streams.
+   * Should be set well below 1 to avoid rapidly turning backpressure on/off.
+   * Ignored if backpressure threshold is disabled.
+   */
+  ServerAttributeDynamic<double> egressBufferRecoveryFactor_{0.75};
+
  protected:
   //! The server's listening addresses
   std::vector<folly::SocketAddress> addresses_;
@@ -1152,6 +1166,37 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   folly::observer::Observer<size_t>
   getMinPayloadSizeToEnforceIngressMemoryLimitObserver() {
     return minPayloadSizeToEnforceIngressMemoryLimit_.getObserver();
+  }
+
+  size_t getEgressBufferBackpressureThreshold() const {
+    return egressBufferBackpressureThreshold_.get();
+  }
+
+  /**
+   * Apply backpressure to all stream generators of a connection when combined
+   * size of inflight writes for that connection exceeds the threshold.
+   */
+  void setEgressBufferBackpressureThreshold(
+      size_t thresholdInBytes,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
+    egressBufferBackpressureThreshold_.set(thresholdInBytes, source);
+  }
+
+  double getEgressBufferRecoveryFactor() const {
+    return egressBufferRecoveryFactor_.get();
+  }
+
+  /**
+   * When egress buffer backpressure is enabled, resume normal operation once
+   * egress buffer size falls below this factor of the threshold.
+   */
+  void setEgressBufferRecoveryFactor(
+      double recoveryFactor,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
+    recoveryFactor = std::max(0.0, std::min(1.0, recoveryFactor));
+    egressBufferRecoveryFactor_.set(recoveryFactor, source);
   }
 };
 } // namespace thrift

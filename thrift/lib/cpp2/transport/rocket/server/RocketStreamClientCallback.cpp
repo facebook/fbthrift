@@ -72,6 +72,9 @@ bool RocketStreamClientCallback::onFirstResponse(
   }
 
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
+  if (UNLIKELY(connection_.areStreamsPaused())) {
+    pauseStream();
+  }
 
   DCHECK_NE(tokens_, 0u);
   int tokens = 0;
@@ -126,6 +129,7 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
 
   connection_.sendPayload(
       streamId_, pack(std::move(payload)), Flags::none().next(true));
+
   return true;
 }
 
@@ -179,6 +183,9 @@ bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
 void RocketStreamClientCallback::resetServerCallback(
     StreamServerCallback& serverCallback) {
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(&serverCallback);
+  if (UNLIKELY(connection_.areStreamsPaused())) {
+    pauseStream();
+  }
 }
 
 bool RocketStreamClientCallback::request(uint32_t tokens) {
@@ -193,6 +200,22 @@ bool RocketStreamClientCallback::request(uint32_t tokens) {
 
 void RocketStreamClientCallback::headers(HeadersPayload&& payload) {
   std::ignore = serverCallback()->onSinkHeaders(std::move(payload));
+}
+
+void RocketStreamClientCallback::pauseStream() {
+  DCHECK(connection_.areStreamsPaused());
+  if (UNLIKELY(!serverCallbackReady())) {
+    return;
+  }
+  serverCallback()->pauseStream();
+}
+
+void RocketStreamClientCallback::resumeStream() {
+  DCHECK(!connection_.areStreamsPaused());
+  if (UNLIKELY(!serverCallbackReady())) {
+    return;
+  }
+  serverCallback()->resumeStream();
 }
 
 void RocketStreamClientCallback::onStreamCancel() {

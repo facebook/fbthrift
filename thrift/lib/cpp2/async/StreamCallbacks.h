@@ -134,6 +134,9 @@ class StreamServerCallback {
 
   // not terminating
   virtual void resetClientCallback(StreamClientCallback&) = 0;
+
+  virtual void pauseStream() {}
+  virtual void resumeStream() {}
 };
 
 class StreamClientCallback {

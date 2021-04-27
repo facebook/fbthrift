@@ -62,13 +62,21 @@ void ServerGeneratorStream::onStreamCancel() {
 #if FOLLY_HAS_COROUTINES
   cancelSource_.requestCancellation();
 #endif
-  clientPush(-1);
+  clientPush(detail::StreamControl::CANCEL);
   clientClose();
 }
 
 void ServerGeneratorStream::resetClientCallback(
     StreamClientCallback& clientCallback) {
   streamClientCallback_ = &clientCallback;
+}
+
+void ServerGeneratorStream::pauseStream() {
+  clientPush(detail::StreamControl::PAUSE);
+}
+
+void ServerGeneratorStream::resumeStream() {
+  clientPush(detail::StreamControl::RESUME);
 }
 
 void ServerGeneratorStream::processPayloads() {

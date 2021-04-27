@@ -33,6 +33,8 @@ class TestStreamServiceMock : public StreamServiceSvIf {
   apache::thrift::ServerStream<int32_t> range(
       int32_t from, int32_t to) override;
   apache::thrift::ServerStream<std::string> buffers(int32_t count) override;
+  apache::thrift::ServerStream<std::string> customBuffers(
+      int32_t count, int32_t size) override;
   apache::thrift::ServerStream<int32_t> slowRange(
       int32_t from, int32_t to, int32_t millis) override;
   apache::thrift::ServerStream<int32_t> slowCancellation() override;
