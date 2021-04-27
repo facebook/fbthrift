@@ -18,7 +18,9 @@
 
 {{#constant:rust}}
 {{#constant:type}}
-{{^constant:lazy?}}
+{{#constant:docs?}}
+    #[doc = {{constant:docs}}]
+{{/constant:docs?}}{{^constant:lazy?}}
     pub const {{constant:name}}{{!
     }}: {{!
     }}{{#type:string?}}&::std::primitive::str = {{value:quoted}}{{/type:string?}}{{!
@@ -26,10 +28,10 @@
     }};
 {{/constant:lazy?}}
 {{#constant:lazy?}}
-      pub static {{constant:name}}{{!
-      }}: ::once_cell::sync::Lazy<{{!
-      }}{{>lib/type}}{{!
-      }}> = ::once_cell::sync::Lazy::new(|| {{>lib/value}});
+    pub static {{constant:name}}{{!
+    }}: ::once_cell::sync::Lazy<{{!
+    }}{{>lib/type}}{{!
+    }}> = ::once_cell::sync::Lazy::new(|| {{>lib/value}});
 {{/constant:lazy?}}
 {{/constant:type}}
 {{/constant:rust}}

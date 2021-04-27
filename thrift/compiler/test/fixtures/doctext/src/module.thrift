@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+/** Constant foo */
+const string FOO = "foo";
+
+/** Constant bar */
+const i32 BAR = 123;
+
+/** Cool new name for string */
+typedef string lanyard
+
+/** Secret name */
+typedef i32 number (rust.newtype)
+
 /**
  * DefinitionList doctext.
  */
@@ -24,6 +36,7 @@ struct A {
   1: i32 useless_field;
 }
 
+/** This enum is great */
 enum B {
   /**
    * EnumDef doctext.
@@ -31,9 +44,27 @@ enum B {
   HELLO = 0,
 }
 
+/** Union U */
+union U {
+  /** i32 field i */
+  1: i32 i;
+  /** string s */
+  2: string s;
+}
+
+/** Something amiss */
+exception Bang {
+  /** All explosions can be explained away */
+  1: string message;
+}
+
+/** Detailed overview of service */
 service C {
   /**
    * Function doctext.
    */
   void f();
+
+  /** Streaming function */
+  stream<number> numbers();
 }

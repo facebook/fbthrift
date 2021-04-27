@@ -16,6 +16,9 @@
 
 }}
 
+    {{#enum:docs?}}
+    #[doc = {{enum:docs}}]
+    {{/enum:docs?}}
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash{{!
         }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
     }})]
@@ -23,6 +26,9 @@
 
     impl {{enum:rust_name}} {{>lib/block}}{{!
         }}{{#enum:values}}
+        {{#enumValue:docs?}}
+        #[doc = {{enumValue:docs}}]
+        {{/enumValue:docs?}}
         pub const {{enumValue:rust_name}}: Self = {{!
             }}{{enum:rust_name}}({{enumValue:value}}i32);{{!
         }}{{/enum:values}}

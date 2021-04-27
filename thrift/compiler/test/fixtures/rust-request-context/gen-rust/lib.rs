@@ -7,6 +7,7 @@
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -409,6 +410,7 @@ pub mod types {
 
 }
 
+#[doc(hidden)]
 pub mod dependencies {
 }
 
@@ -942,7 +944,6 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
-
         #[derive(Clone, Debug)]
         pub enum StreamByIdStreamExn {
             Success(crate::types::MyStruct),
@@ -1033,7 +1034,6 @@ pub mod services {
                 )
             }
         }
-
 
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithExceptionStreamExn {
@@ -1145,7 +1145,6 @@ pub mod services {
                 )
             }
         }
-
 
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithResponseStreamExn {
@@ -1331,6 +1330,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct MyServiceImpl<P, T> {
@@ -2105,6 +2105,7 @@ pub mod client {
     }
 }
 
+/// Server definitions for `module`.
 pub mod server {
     #[::async_trait::async_trait]
     pub trait MyService: ::std::marker::Send + ::std::marker::Sync + 'static {
@@ -2181,8 +2182,12 @@ pub mod server {
                 ),
             ))
         }
+        // streamById: server-side streaming not yet implemented
+        // streamByIdWithException: server-side streaming not yet implemented
+        // streamByIdWithResponse: server-side streaming not yet implemented
     }
 
+    /// Processor for MyService's methods.
     #[derive(Clone, Debug)]
     pub struct MyServiceProcessor<P, H, R> {
         service: H,
@@ -2741,6 +2746,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a MyService service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_MyService_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -3365,7 +3374,9 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for MyService functions.
     pub mod my_service {
 
         pub type PingError = ::fbthrift::NonthrowingFunctionError;

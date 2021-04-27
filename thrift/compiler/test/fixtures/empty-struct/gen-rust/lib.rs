@@ -7,6 +7,7 @@
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -126,5 +127,6 @@ pub mod types {
     }
 }
 
+/// Error return types.
 pub mod errors {
 }

@@ -6,6 +6,7 @@
 
 pub use self::errors::*;
 
+#[doc(hidden)]
 pub mod dependencies {
 }
 
@@ -275,6 +276,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct MyRootImpl<P, T> {
@@ -756,6 +758,7 @@ pub mod client {
     }
 }
 
+/// Server definitions for `module`.
 pub mod server {
     #[::async_trait::async_trait]
     pub trait MyRoot: ::std::marker::Send + ::std::marker::Sync + 'static {
@@ -771,6 +774,7 @@ pub mod server {
         }
     }
 
+    /// Processor for MyRoot's methods.
     #[derive(Clone, Debug)]
     pub struct MyRootProcessor<P, H, R> {
         service: H,
@@ -954,6 +958,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a MyRoot service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_MyRoot_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -988,6 +996,7 @@ pub mod server {
         }
     }
 
+    /// Processor for MyNode's methods.
     #[derive(Clone, Debug)]
     pub struct MyNodeProcessor<P, H, R, SS> {
         service: H,
@@ -1180,6 +1189,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a MyNode service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_MyNode_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1218,6 +1231,7 @@ pub mod server {
         }
     }
 
+    /// Processor for MyLeaf's methods.
     #[derive(Clone, Debug)]
     pub struct MyLeafProcessor<P, H, R, SS> {
         service: H,
@@ -1410,6 +1424,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a MyLeaf service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_MyLeaf_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1777,19 +1795,23 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for MyRoot functions.
     pub mod my_root {
 
         pub type DoRootError = ::fbthrift::NonthrowingFunctionError;
 
     }
 
+    /// Errors for MyNode functions.
     pub mod my_node {
 
         pub type DoMidError = ::fbthrift::NonthrowingFunctionError;
 
     }
 
+    /// Errors for MyLeaf functions.
     pub mod my_leaf {
 
         pub type DoLeafError = ::fbthrift::NonthrowingFunctionError;

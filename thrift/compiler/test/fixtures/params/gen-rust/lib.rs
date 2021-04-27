@@ -6,6 +6,7 @@
 
 pub use self::errors::*;
 
+#[doc(hidden)]
 pub mod dependencies {
 }
 
@@ -439,6 +440,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct NestedContainersImpl<P, T> {
@@ -893,6 +895,7 @@ pub mod client {
     }
 }
 
+/// Server definitions for `module`.
 pub mod server {
     #[::async_trait::async_trait]
     pub trait NestedContainers: ::std::marker::Send + ::std::marker::Sync + 'static {
@@ -953,6 +956,7 @@ pub mod server {
         }
     }
 
+    /// Processor for NestedContainers's methods.
     #[derive(Clone, Debug)]
     pub struct NestedContainersProcessor<P, H, R> {
         service: H,
@@ -1433,6 +1437,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a NestedContainers service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_NestedContainers_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1841,7 +1849,9 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for NestedContainers functions.
     pub mod nested_containers {
 
         pub type MapListError = ::fbthrift::NonthrowingFunctionError;

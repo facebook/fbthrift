@@ -55,12 +55,90 @@ StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
   }
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::U>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.U", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_U = res.first->second;
+  module_U.name_ref() = "module.U";
+  module_U.is_union_ref() = true;
+  static const EncodedThriftField
+  module_U_fields[] = {
+    std::make_tuple(1, "i", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "s", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_U_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
+    module_U.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::Bang>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.Bang", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Bang = res.first->second;
+  module_Bang.name_ref() = "module.Bang";
+  module_Bang.is_union_ref() = false;
+  static const EncodedThriftField
+  module_Bang_fields[] = {
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_Bang_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
+    module_Bang.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
+void ExceptionMetadata<::cpp2::Bang>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions_ref()->emplace("module.Bang", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_Bang = res.first->second;
+  module_Bang.name_ref() = "module.Bang";
+  static const EncodedThriftField
+  module_Bang_fields[] = {
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_Bang_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_Bang.fields_ref()->push_back(std::move(field));
+  }
+}
 void ServiceMetadata<::cpp2::CSvIf>::gen_f(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "f";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
+void ServiceMetadata<::cpp2::CSvIf>::gen_numbers(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "numbers";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Typedef>("module.number", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -72,6 +150,7 @@ void ServiceMetadata<::cpp2::CSvIf>::gen(ThriftMetadata& metadata, ThriftService
   module_C.name_ref() = "module.C";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::CSvIf>::gen_f,
+    ServiceMetadata<::cpp2::CSvIf>::gen_numbers,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_C);

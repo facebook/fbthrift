@@ -25,6 +25,34 @@ struct VisitByThriftId<::cpp2::A> {
     }
   }
 };
+
+template <>
+struct VisitByThriftId<::cpp2::U> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).i_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).s_ref());
+    default:
+      throwInvalidThriftId(id, "::cpp2::U");
+    }
+  }
+};
+
+template <>
+struct VisitByThriftId<::cpp2::Bang> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).message_ref());
+    default:
+      throwInvalidThriftId(id, "::cpp2::Bang");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

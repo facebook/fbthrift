@@ -155,6 +155,21 @@ std::string quote(const std::string& data) {
   return quoted.str();
 }
 
+std::string quoted_rust_doc(const t_node* node) {
+  const std::string doc = node->get_doc();
+
+  // strip leading/trailing whitespace
+  static const std::string whitespace = "\n\r\t ";
+  const auto first = doc.find_first_not_of(whitespace);
+  if (first == std::string::npos) {
+    // empty string
+    return "\"\"";
+  }
+
+  const auto last = doc.find_last_not_of(whitespace);
+  return quote(doc.substr(first, last - first + 1));
+}
+
 bool can_derive_ord(const t_type* type) {
   type = type->get_true_type();
   if (type->is_string() || type->is_binary() || type->is_bool() ||
@@ -296,6 +311,8 @@ class mstch_rust_program : public mstch_program {
              &mstch_rust_program::rust_has_nonstandard_types},
             {"program:nonstandardTypes",
              &mstch_rust_program::rust_nonstandard_types},
+            {"program:docs?", &mstch_rust_program::rust_has_docs},
+            {"program:docs", &mstch_rust_program::rust_docs},
         });
   }
   mstch::node rust_has_types() {
@@ -382,6 +399,8 @@ class mstch_rust_program : public mstch_program {
         nonstandard_types.begin(), nonstandard_types.end());
     return generate_types(elements);
   }
+  mstch::node rust_has_docs() { return program_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(program_); }
 
  private:
   const rust_codegen_options& options_;
@@ -404,6 +423,8 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:ord?", &mstch_rust_struct::rust_is_ord},
             {"struct:copy?", &mstch_rust_struct::rust_is_copy},
             {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
+            {"struct:docs?", &mstch_rust_struct::rust_has_doc},
+            {"struct:docs", &mstch_rust_struct::rust_doc},
         });
   }
   mstch::node rust_name() { return mangle_type(strct_->get_name()); }
@@ -429,6 +450,8 @@ class mstch_rust_struct : public mstch_struct {
     });
     return generate_fields(fields);
   }
+  mstch::node rust_has_doc() { return strct_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(strct_); }
 
  private:
   const rust_codegen_options& options_;
@@ -458,6 +481,8 @@ class mstch_rust_service : public mstch_service {
              &mstch_rust_service::rust_request_context},
             {"service:extendedServices",
              &mstch_rust_service::rust_extended_services},
+            {"service:docs?", &mstch_rust_service::rust_has_doc},
+            {"service:docs", &mstch_rust_service::rust_doc},
         });
   }
   mstch::node rust_functions();
@@ -497,6 +522,8 @@ class mstch_rust_service : public mstch_service {
   }
 
   mstch::node rust_all_exceptions();
+  mstch::node rust_has_doc() { return service_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(service_); }
 
  private:
   std::unordered_multiset<std::string> function_upcamel_names_;
@@ -529,6 +556,8 @@ class mstch_rust_function : public mstch_function {
             {"function:args_by_name", &mstch_rust_function::rust_args_by_name},
             {"function:returns_by_name",
              &mstch_rust_function::rust_returns_by_name},
+            {"function:docs?", &mstch_rust_function::rust_has_doc},
+            {"function:docs", &mstch_rust_function::rust_doc},
         });
   }
   mstch::node rust_upcamel() {
@@ -587,6 +616,8 @@ class mstch_rust_function : public mstch_function {
     });
     return generate_fields(returns);
   }
+  mstch::node rust_has_doc() { return function_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(function_); }
 
  private:
   int32_t index_;
@@ -606,9 +637,13 @@ class mstch_rust_enum_value : public mstch_enum_value {
         this,
         {
             {"enumValue:rust_name", &mstch_rust_enum_value::rust_name},
+            {"enumValue:docs?", &mstch_rust_enum_value::rust_has_doc},
+            {"enumValue:docs", &mstch_rust_enum_value::rust_doc},
         });
   }
   mstch::node rust_name() { return mangle(enm_value_->get_name()); }
+  mstch::node rust_has_doc() { return enm_value_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(enm_value_); }
 };
 
 class mstch_rust_enum : public mstch_enum {
@@ -627,6 +662,8 @@ class mstch_rust_enum : public mstch_enum {
             {"enum:package", &mstch_rust_enum::rust_package},
             {"enum:variants_by_name", &mstch_rust_enum::variants_by_name},
             {"enum:variants_by_number", &mstch_rust_enum::variants_by_number},
+            {"enum:docs?", &mstch_rust_enum::rust_has_doc},
+            {"enum:docs", &mstch_rust_enum::rust_doc},
         });
   }
   mstch::node rust_name() { return mangle_type(enm_->get_name()); }
@@ -647,6 +684,8 @@ class mstch_rust_enum : public mstch_enum {
     });
     return generate_enum_values(variants);
   }
+  mstch::node rust_has_doc() { return enm_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(enm_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1010,6 +1049,8 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:type", &mstch_rust_struct_field::type},
             {"field:box?", &mstch_rust_struct_field::is_boxed},
             {"field:arc?", &mstch_rust_struct_field::is_arc},
+            {"field:docs?", &mstch_rust_struct_field::rust_has_docs},
+            {"field:docs", &mstch_rust_struct_field::rust_docs},
         });
   }
   mstch::node rust_name() { return mangle(field_->get_name()); }
@@ -1031,6 +1072,8 @@ class mstch_rust_struct_field : public mstch_base {
   }
   mstch::node is_boxed() { return field_kind(*field_) == FieldKind::Box; }
   mstch::node is_arc() { return field_kind(*field_) == FieldKind::Arc; }
+  mstch::node rust_has_docs() { return field_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(field_); }
 
  private:
   const t_field* field_;
@@ -1117,6 +1160,8 @@ class mstch_rust_const : public mstch_const {
             {"constant:package", &mstch_rust_const::rust_package},
             {"constant:lazy?", &mstch_rust_const::rust_lazy},
             {"constant:rust", &mstch_rust_const::rust_typed_value},
+            {"constant:docs?", &mstch_rust_const::rust_has_docs},
+            {"constant:docs", &mstch_rust_const::rust_docs},
         });
   }
   mstch::node rust_package() {
@@ -1138,6 +1183,8 @@ class mstch_rust_const : public mstch_const {
         pos_,
         options_);
   }
+  mstch::node rust_has_docs() { return cnst_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(cnst_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1162,6 +1209,8 @@ class mstch_rust_field : public mstch_field {
             {"field:default", &mstch_rust_field::rust_default},
             {"field:box?", &mstch_rust_field::rust_is_boxed},
             {"field:arc?", &mstch_rust_field::rust_is_arc},
+            {"field:docs?", &mstch_rust_field::rust_has_docs},
+            {"field:docs", &mstch_rust_field::rust_docs},
         });
   }
   mstch::node rust_name() { return mangle(field_->get_name()); }
@@ -1184,6 +1233,8 @@ class mstch_rust_field : public mstch_field {
   }
   mstch::node rust_is_boxed() { return field_kind(*field_) == FieldKind::Box; }
   mstch::node rust_is_arc() { return field_kind(*field_) == FieldKind::Arc; }
+  mstch::node rust_has_docs() { return field_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(field_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1206,6 +1257,8 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:copy?", &mstch_rust_typedef::rust_copy},
             {"typedef:rust_type", &mstch_rust_typedef::rust_type},
             {"typedef:nonstandard?", &mstch_rust_typedef::rust_nonstandard},
+            {"typedef:docs?", &mstch_rust_typedef::rust_has_docs},
+            {"typedef:docs", &mstch_rust_typedef::rust_docs},
         });
   }
   mstch::node rust_name() { return mangle_type(typedf_->get_symbolic()); }
@@ -1236,6 +1289,8 @@ class mstch_rust_typedef : public mstch_typedef {
   mstch::node rust_nonstandard() {
     return typedf_->get_annotation("rust.type").find("::") != string::npos;
   }
+  mstch::node rust_has_docs() { return typedf_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(typedf_); }
 };
 
 class mstch_rust_annotation : public mstch_annotation {

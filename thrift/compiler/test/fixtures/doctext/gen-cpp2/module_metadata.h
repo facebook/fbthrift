@@ -29,11 +29,27 @@ class StructMetadata<::cpp2::A> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::U> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Bang> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::Bang> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::cpp2::CSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
  private:
   static void gen_f(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_numbers(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

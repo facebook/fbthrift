@@ -8,10 +8,12 @@ pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Constant definitions for `module`.
 pub mod consts {
     pub const kOne: crate::types::MyEnum = crate::types::MyEnum::ONE;
 }
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -513,5 +515,6 @@ pub mod types {
 
 }
 
+/// Error return types.
 pub mod errors {
 }

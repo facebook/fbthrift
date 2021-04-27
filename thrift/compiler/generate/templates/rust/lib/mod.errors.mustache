@@ -17,6 +17,7 @@
 }}
 
     {{#program:services}}
+    /// Errors for {{service:name}} functions.
     pub mod {{service:snake}} {
 
         {{#service:rust_exceptions}}
@@ -42,6 +43,7 @@
         {{/service:rust_exceptions}}
         {{#service:rustFunctions}}
         {{#function:exceptions?}}
+        /// Errors for {{function:name}}.
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}

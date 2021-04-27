@@ -7,6 +7,7 @@
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -328,6 +329,7 @@ pub mod types {
 
 }
 
+#[doc(hidden)]
 pub mod dependencies {
 }
 
@@ -814,6 +816,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct RaiserImpl<P, T> {
@@ -1184,6 +1187,7 @@ pub mod client {
     }
 }
 
+/// Server definitions for `module`.
 pub mod server {
     #[::async_trait::async_trait]
     pub trait Raiser: ::std::marker::Send + ::std::marker::Sync + 'static {
@@ -1229,6 +1233,7 @@ pub mod server {
         }
     }
 
+    /// Processor for Raiser's methods.
     #[derive(Clone, Debug)]
     pub struct RaiserProcessor<P, H, R> {
         service: H,
@@ -1603,6 +1608,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a Raiser service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_Raiser_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1953,7 +1962,9 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for Raiser functions.
     pub mod raiser {
 
         pub trait AsBanal{
@@ -2012,6 +2023,7 @@ pub mod errors {
 
         pub type DoBlandError = ::fbthrift::NonthrowingFunctionError;
 
+        /// Errors for doRaise.
         #[derive(Debug, ::thiserror::Error)]
         pub enum DoRaiseError {
             #[error("Raiser::doRaise failed with {0:?}")]
@@ -2085,6 +2097,7 @@ pub mod errors {
 
         pub type Get200Error = ::fbthrift::NonthrowingFunctionError;
 
+        /// Errors for get500.
         #[derive(Debug, ::thiserror::Error)]
         pub enum Get500Error {
             #[error("Raiser::get500 failed with {0:?}")]

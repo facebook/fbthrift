@@ -77,11 +77,17 @@
     }
 
     {{/service:extendedServices}}
+    {{#service:docs?}}
+    #[doc = {{service:docs}}]
+    {{/service:docs?}}
     pub trait {{service:name}}: {{!
         }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
         }}::std::marker::Send {{>lib/block}}{{!
 
         }}{{#service:rustFunctions}}
+        {{#function:docs?}}
+        #[doc = {{function:docs}}]
+        {{/function:docs?}}
         fn {{function:name}}(
             &self,
             {{#function:args}}

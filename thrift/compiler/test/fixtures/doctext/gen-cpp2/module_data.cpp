@@ -19,6 +19,15 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::B>::names = {{
   "HELLO",
 }};
 
+const std::array<::cpp2::U::Type, 2> TEnumDataStorage<::cpp2::U::Type>::values = {{
+  type::i,
+  type::s,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::U::Type>::names = {{
+  "i",
+  "s",
+}};
+
 const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::A>::fields_names = {{
   "useless_field",
 }};
@@ -27,6 +36,29 @@ const std::array<int16_t, 1> TStructDataStorage<::cpp2::A>::fields_ids = {{
 }};
 const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::A>::fields_types = {{
   TType::T_I32,
+}};
+
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::U>::fields_names = {{
+  "i",
+  "s",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::U>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::U>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::Bang>::fields_names = {{
+  "message",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::Bang>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::Bang>::fields_types = {{
+  TType::T_STRING,
 }};
 
 } // namespace thrift

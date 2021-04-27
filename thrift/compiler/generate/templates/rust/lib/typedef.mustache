@@ -16,7 +16,10 @@
 
 }}
 
-{{^typedef:newtype?}}
+{{#typedef:docs?}}
+    #[doc = {{typedef:docs}}]
+{{/typedef:docs?}}{{!
+}}{{^typedef:newtype?}}
     pub type {{typedef:rust_name}} = {{#typedef:type}}{{>lib/type}}{{/typedef:type}};
 {{/typedef:newtype?}}
 {{#typedef:newtype?}}

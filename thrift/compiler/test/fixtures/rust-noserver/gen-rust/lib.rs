@@ -7,6 +7,7 @@
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -357,6 +358,7 @@ pub mod types {
     }
 }
 
+#[doc(hidden)]
 pub mod dependencies {
 }
 
@@ -893,6 +895,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct MyServiceImpl<P, T> {
@@ -1862,7 +1865,9 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for MyService functions.
     pub mod my_service {
 
         pub type PingError = ::fbthrift::NonthrowingFunctionError;

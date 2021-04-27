@@ -10,6 +10,7 @@
 
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/CAsyncClient.h"
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/ServerStream.h>
 
 namespace folly {
   class IOBuf;
@@ -30,6 +31,9 @@ class CSvAsyncIf {
   virtual void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_f() = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_f() = 0;
+  virtual void async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) = 0;
+  virtual folly::Future<::apache::thrift::ServerStream<::cpp2::number>> future_numbers() = 0;
+  virtual folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> semifuture_numbers() = 0;
 };
 
 class CAsyncProcessor;
@@ -44,8 +48,13 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
   folly::Future<folly::Unit> future_f() override;
   folly::SemiFuture<folly::Unit> semifuture_f() override;
   void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual ::apache::thrift::ServerStream<::cpp2::number> numbers();
+  folly::Future<::apache::thrift::ServerStream<::cpp2::number>> future_numbers() override;
+  folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> semifuture_numbers() override;
+  void async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) override;
  private:
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_f{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_numbers{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class CSvNull : public CSvIf {
@@ -81,6 +90,14 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   static folly::IOBufQueue return_f(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_f(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_numbers(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_numbers(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::ResponseAndServerStreamFactory return_numbers(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::cpp2::number>&& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_numbers(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   CAsyncProcessor(CSvIf* iface) :
       iface_(iface) {}

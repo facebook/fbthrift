@@ -7,6 +7,7 @@
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -2370,6 +2371,7 @@ pub mod types {
 
 }
 
+#[doc(hidden)]
 pub mod dependencies {
     pub use include as include;
 }
@@ -2561,6 +2563,7 @@ pub mod services {
     }
 }
 
+/// Client implementation for each service in `module`.
 pub mod client {
 
     pub struct SomeServiceImpl<P, T> {
@@ -2793,6 +2796,7 @@ pub mod client {
     }
 }
 
+/// Server definitions for `module`.
 pub mod server {
     #[::async_trait::async_trait]
     pub trait SomeService: ::std::marker::Send + ::std::marker::Sync + 'static {
@@ -2820,6 +2824,7 @@ pub mod server {
         }
     }
 
+    /// Processor for SomeService's methods.
     #[derive(Clone, Debug)]
     pub struct SomeServiceProcessor<P, H, R> {
         service: H,
@@ -3084,6 +3089,10 @@ pub mod server {
         }
     }
 
+    /// Construct a new instance of a SomeService service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_SomeService_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -3330,7 +3339,9 @@ pub mod mock {
     }
 }
 
+/// Error return types.
 pub mod errors {
+    /// Errors for SomeService functions.
     pub mod some_service {
 
         pub type BounceMapError = ::fbthrift::NonthrowingFunctionError;

@@ -8,6 +8,7 @@ pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
 
+/// Constant definitions for `module`.
 pub mod consts {
     pub const myInt: ::std::primitive::i32 = 1337;
 
@@ -15,7 +16,7 @@ pub mod consts {
 
     pub const multi_line_string: &::std::primitive::str = "This\nis a\nmulti line string.\n";
 
-      pub static states: ::once_cell::sync::Lazy<::std::vec::Vec<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>>> = ::once_cell::sync::Lazy::new(|| vec![
+    pub static states: ::once_cell::sync::Lazy<::std::vec::Vec<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>>> = ::once_cell::sync::Lazy::new(|| vec![
             {
                 let mut map = ::std::collections::BTreeMap::new();
                 map.insert("San Diego".to_owned(), 3211000);
@@ -47,27 +48,27 @@ pub mod consts {
 
     pub const bar: crate::types::MyIntIdentifier = 42;
 
-      pub static mymap: ::once_cell::sync::Lazy<crate::types::MyMapIdentifier> = ::once_cell::sync::Lazy::new(|| {
+    pub static mymap: ::once_cell::sync::Lazy<crate::types::MyMapIdentifier> = ::once_cell::sync::Lazy::new(|| {
             let mut map = ::std::collections::BTreeMap::new();
             map.insert("keys".to_owned(), "values".to_owned());
             map
         });
 
-      pub static instagram: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
+    pub static instagram: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
             weeks: 12,
             title: "Software Engineer".to_owned(),
             employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
             compensation: ::std::option::Option::Some(1200.0),
         });
 
-      pub static partial_const: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
+    pub static partial_const: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
             weeks: 8,
             title: "Some Job".to_owned(),
             employer: ::std::default::Default::default(),
             compensation: ::std::default::Default::default(),
         });
 
-      pub static kRanges: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Range>> = ::once_cell::sync::Lazy::new(|| vec![
+    pub static kRanges: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Range>> = ::once_cell::sync::Lazy::new(|| vec![
             crate::types::Range {
                 min: 1,
                 max: 2,
@@ -78,7 +79,7 @@ pub mod consts {
             },
         ]);
 
-      pub static internList: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Internship>> = ::once_cell::sync::Lazy::new(|| vec![
+    pub static internList: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Internship>> = ::once_cell::sync::Lazy::new(|| vec![
             crate::types::Internship {
                 weeks: 12,
                 title: "Software Engineer".to_owned(),
@@ -93,27 +94,27 @@ pub mod consts {
             },
         ]);
 
-      pub static pod_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
+    pub static pod_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 1234567,
             b: "<uninitialized>".to_owned(),
         });
 
-      pub static pod_s_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
+    pub static pod_s_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 1234567,
             b: "<uninitialized>".to_owned(),
         });
 
-      pub static pod_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
+    pub static pod_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 10,
             b: "foo".to_owned(),
         });
 
-      pub static pod_s_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
+    pub static pod_s_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 10,
             b: "foo".to_owned(),
         });
 
-      pub static pod_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
+    pub static pod_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
             a: 98,
             b: "gaz".to_owned(),
             c: crate::types::struct1 {
@@ -127,7 +128,7 @@ pub mod consts {
             ],
         });
 
-      pub static pod_trailing_commas: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
+    pub static pod_trailing_commas: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
             a: 98,
             b: "gaz".to_owned(),
             c: crate::types::struct1 {
@@ -141,7 +142,7 @@ pub mod consts {
             ],
         });
 
-      pub static pod_s_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
+    pub static pod_s_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
             a: 98,
             b: "gaz".to_owned(),
             c: crate::types::struct1 {
@@ -155,7 +156,7 @@ pub mod consts {
             ],
         });
 
-      pub static pod_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
+    pub static pod_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
             a: "abc".to_owned(),
             b: 456,
             c: crate::types::struct2 {
@@ -173,7 +174,7 @@ pub mod consts {
             },
         });
 
-      pub static pod_s_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
+    pub static pod_s_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
             a: "abc".to_owned(),
             b: 456,
             c: crate::types::struct2 {
@@ -191,32 +192,32 @@ pub mod consts {
             },
         });
 
-      pub static pod_4: ::once_cell::sync::Lazy<crate::types::struct4> = ::once_cell::sync::Lazy::new(|| crate::types::struct4 {
+    pub static pod_4: ::once_cell::sync::Lazy<crate::types::struct4> = ::once_cell::sync::Lazy::new(|| crate::types::struct4 {
             a: 1234,
             b: ::std::option::Option::Some(0.333),
             c: ::std::option::Option::Some(25),
         });
 
-      pub static u_1_1: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::i(97));
+    pub static u_1_1: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::i(97));
 
-      pub static u_1_2: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::d(5.6));
+    pub static u_1_2: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::d(5.6));
 
-      pub static u_1_3: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::default());
+    pub static u_1_3: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::default());
 
-      pub static u_2_1: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::i(51));
+    pub static u_2_1: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::i(51));
 
-      pub static u_2_2: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::d(6.7));
+    pub static u_2_2: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::d(6.7));
 
-      pub static u_2_3: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::s(crate::types::struct1 {
+    pub static u_2_3: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::s(crate::types::struct1 {
                 a: 8,
                 b: "abacabb".to_owned(),
             }));
 
-      pub static u_2_4: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::i(43)));
+    pub static u_2_4: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::i(43)));
 
-      pub static u_2_5: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::d(9.8)));
+    pub static u_2_5: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::d(9.8)));
 
-      pub static u_2_6: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::default()));
+    pub static u_2_6: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::default()));
 
     pub const apostrophe: &::std::primitive::str = "'";
 
@@ -228,7 +229,7 @@ pub mod consts {
 
     pub const escaped_a: &::std::primitive::str = "\\x61";
 
-      pub static char2ascii: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| {
+    pub static char2ascii: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| {
             let mut map = ::std::collections::BTreeMap::new();
             map.insert("'".to_owned(), 39);
             map.insert("\"".to_owned(), 34);
@@ -237,7 +238,7 @@ pub mod consts {
             map
         });
 
-      pub static escaped_strings: ::once_cell::sync::Lazy<::std::vec::Vec<::std::string::String>> = ::once_cell::sync::Lazy::new(|| vec![
+    pub static escaped_strings: ::once_cell::sync::Lazy<::std::vec::Vec<::std::string::String>> = ::once_cell::sync::Lazy::new(|| vec![
             "\\x61".to_owned(),
             "\\xab".to_owned(),
             "\\x6a".to_owned(),
@@ -272,23 +273,24 @@ pub mod consts {
 
     pub const empty_string: &::std::primitive::str = "";
 
-      pub static empty_int_list: ::once_cell::sync::Lazy<::std::vec::Vec<::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::vec::Vec::new());
+    pub static empty_int_list: ::once_cell::sync::Lazy<::std::vec::Vec<::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::vec::Vec::new());
 
-      pub static empty_string_list: ::once_cell::sync::Lazy<::std::vec::Vec<::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::vec::Vec::new());
+    pub static empty_string_list: ::once_cell::sync::Lazy<::std::vec::Vec<::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::vec::Vec::new());
 
-      pub static empty_int_set: ::once_cell::sync::Lazy<::std::collections::BTreeSet<::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeSet::new());
+    pub static empty_int_set: ::once_cell::sync::Lazy<::std::collections::BTreeSet<::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeSet::new());
 
-      pub static empty_string_set: ::once_cell::sync::Lazy<::std::collections::BTreeSet<::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeSet::new());
+    pub static empty_string_set: ::once_cell::sync::Lazy<::std::collections::BTreeSet<::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeSet::new());
 
-      pub static empty_int_int_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
+    pub static empty_int_int_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
 
-      pub static empty_int_string_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::primitive::i32, ::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
+    pub static empty_int_string_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::primitive::i32, ::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
 
-      pub static empty_string_int_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
+    pub static empty_string_int_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
 
-      pub static empty_string_string_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
+    pub static empty_string_string_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
 }
 
+/// Thrift type definitions for `module`.
 pub mod types {
     #![allow(clippy::redundant_closure)]
 
@@ -1320,5 +1322,6 @@ pub mod types {
     }
 }
 
+/// Error return types.
 pub mod errors {
 }

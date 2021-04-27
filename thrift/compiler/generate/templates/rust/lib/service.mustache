@@ -17,6 +17,9 @@
 }}
 
     pub mod {{service:snake}} {{>lib/block}}{{!
+        }}{{#service:docs?}}
+        #![doc = {{service:docs}}]
+        {{/service:docs?}}{{!
         }}{{#service:rustFunctions}}{{#function:returns_stream?}}
 
         #[derive(Clone, Debug)]

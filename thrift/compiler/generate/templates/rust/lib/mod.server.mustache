@@ -16,12 +16,18 @@
 
 }}{{#program:services}}
 
+    {{#service:docs?}}
+    #[doc = {{service:docs}}]
+    {{/service:docs?}}
     #[::async_trait::async_trait]
     pub trait {{service:name}}: ::std::marker::Send + ::std::marker::Sync + 'static {{>lib/block}}{{!
     }}{{#service:requestContext?}}
         type RequestContext: ::std::marker::Sync;{{!
     }}{{/service:requestContext?}}
     {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#function:docs?}}
+        #[doc = {{function:docs}}]
+        {{/function:docs?}}
         async fn {{function:name}}(
             &self,{{!
             }}{{#service:requestContext?}}
@@ -41,9 +47,12 @@
                 ),
             ))
         }
+    {{/function:returns_streams?}}{{#function:returns_streams?}}
+        // {{function:name}}: server-side streaming not yet implemented
     {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
+    /// Processor for {{service:name}}'s methods.
     #[derive(Clone, Debug)]
     pub struct {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
@@ -300,6 +309,10 @@
         }
     }
 
+    /// Construct a new instance of a {{service:name}} service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_{{service:name}}_server<F, H, R{{!
         }}{{#service:extends?}}, SMAKE, SS{{/service:extends?}}{{!
     }}>(
