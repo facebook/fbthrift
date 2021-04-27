@@ -231,7 +231,9 @@ class NimbleProtocolReader {
           fieldCur - iprot->decoder_.fieldRange().begin());
     }
 
-    void readStructBegin(NimbleProtocolReader* iprot) {
+    void readStructBegin(
+        NimbleProtocolReader* iprot,
+        NimbleProtocolReader* /*indexReader*/ = nullptr) {
       iprot->readStructBegin("");
       borrowFieldPtrs(iprot);
       decoderState = iprot->borrowState();
@@ -315,6 +317,14 @@ class NimbleProtocolReader {
     template <typename StructTraits>
     void fillFieldTraitsFromName() {
       throw std::logic_error("NimbleProtocol doesn't support field names");
+    }
+
+    folly::Optional<folly::IOBuf> tryFastSkip(
+        NimbleProtocolReader* /*iprot*/,
+        int16_t /*fieldId*/,
+        TType /*fieldType*/,
+        bool /*fixedCostSkip*/) {
+      return {};
     }
   };
 

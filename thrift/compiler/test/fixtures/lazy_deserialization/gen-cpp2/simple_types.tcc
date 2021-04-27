@@ -33,7 +33,8 @@ template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  _readState.readStructBegin(iprot);
+  Protocol_ indexReader;
+  _readState.readStructBegin(iprot, &indexReader);
 
   using apache::thrift::TProtocolException;
 
@@ -46,11 +47,14 @@ void Foo::readNoXfer(Protocol_* iprot) {
     goto _loop;
   }
 _readField_field1:
-  if (iprot->kHasDeferredRead()) {
-    auto cursor = iprot->getCursor();
-    iprot->skip(apache::thrift::protocol::T_STRING);
-    cursor.clone(__fbthrift_serializedData_.field1, iprot->getCursor() - cursor);
-    __fbthrift_serializedData_.field1.makeManaged();
+  if (auto iobuf = _readState.tryFastSkip(
+          iprot,
+          1,
+          apache::thrift::protocol::T_STRING,
+          apache::thrift::fixed_cost_skip_v<Protocol_,
+                                            ::apache::thrift::type_class::string,
+                                            ::std::string>)) {
+    __fbthrift_serializedData_.field1 = *iobuf;
     __fbthrift_isDeserialized_.field1 = false;
   } else {
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
@@ -83,11 +87,14 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  if (iprot->kHasDeferredRead()) {
-    auto cursor = iprot->getCursor();
-    iprot->skip(apache::thrift::protocol::T_LIST);
-    cursor.clone(__fbthrift_serializedData_.field3, iprot->getCursor() - cursor);
-    __fbthrift_serializedData_.field3.makeManaged();
+  if (auto iobuf = _readState.tryFastSkip(
+          iprot,
+          3,
+          apache::thrift::protocol::T_LIST,
+          apache::thrift::fixed_cost_skip_v<Protocol_,
+                                            ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
+                                            ::std::vector<::std::int32_t>>)) {
+    __fbthrift_serializedData_.field3 = *iobuf;
     __fbthrift_isDeserialized_.field3 = false;
   } else {
     _readState.beforeSubobject(iprot);

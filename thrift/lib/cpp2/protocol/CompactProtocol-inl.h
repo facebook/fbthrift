@@ -858,6 +858,32 @@ constexpr std::size_t CompactProtocolReader::fixedSizeInContainer(TType type) {
   }
 }
 
+folly::Optional<folly::IOBuf>
+CompactProtocolReader::StructReadState::tryFastSkip(
+    CompactProtocolReader* iprot, int16_t id, TType type, bool fixedCostSkip) {
+  if (fixedCostSkip) {
+    return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
+  }
+
+  if (indexReader_ && currentIndexFieldId_ == id) {
+    return tryFastSkipImpl(
+        iprot, [&] { iprot->skipBytes(currentIndexFieldSize_); });
+  }
+
+  return {};
+}
+
+template <class Skip>
+folly::IOBuf CompactProtocolReader::StructReadState::tryFastSkipImpl(
+    CompactProtocolReader* iprot, Skip skip) {
+  auto cursor = iprot->getCursor();
+  skip();
+  folly::IOBuf buf;
+  cursor.clone(buf, iprot->getCursor() - cursor);
+  buf.makeManaged();
+  return buf;
+}
+
 } // namespace thrift
 } // namespace apache
 

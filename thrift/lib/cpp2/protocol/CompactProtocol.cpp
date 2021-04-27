@@ -43,5 +43,20 @@ void CompactProtocolReader::readFieldBeginWithStateMediumSlow(
 
   readFieldBeginWithStateImpl(state, prevFieldId, byte);
 }
+
+void CompactProtocolReader::StructReadState::readStructBeginWithIndex(
+    folly::io::Cursor structBegin) {
+  indexReader_->setInput(std::move(structBegin));
+  if (auto serializedDataSize = detail::readIndexOffsetField(*indexReader_)) {
+    indexReader_->skipBytes(*serializedDataSize);
+    if (auto count = detail::readIndexField(*indexReader_)) {
+      indexFieldCount_ = *count;
+      tryAdvanceIndex(0); // Read first (field id, size) pair
+      return;
+    }
+  }
+  indexReader_ = nullptr;
+}
+
 } // namespace thrift
 } // namespace apache

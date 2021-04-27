@@ -27,6 +27,7 @@
 #include <folly/small_vector.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/detail/index.h>
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
@@ -320,6 +321,7 @@ class CompactProtocolReader {
   inline void readStringBody(StrType& str, int32_t size);
 
   inline TType getType(int8_t type);
+  inline bool tryFastSkip(TType type);
 
   inline void readStructBeginWithState(StructReadState& state);
   inline void readFieldBeginWithState(StructReadState& state);
@@ -365,7 +367,13 @@ struct CompactProtocolReader::StructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(CompactProtocolReader* iprot) {
+  void readStructBegin(
+      CompactProtocolReader* iprot,
+      CompactProtocolReader* indexReader = nullptr) {
+    if (indexReader) {
+      indexReader_ = indexReader;
+      readStructBeginWithIndex(iprot->getCursor());
+    }
     iprot->readStructBeginWithState(*this);
   }
 
@@ -379,13 +387,19 @@ struct CompactProtocolReader::StructReadState {
     iprot->readFieldBeginWithState(*this);
   }
 
-  void readFieldEnd(CompactProtocolReader* /*iprot*/) {}
+  void readFieldEnd(CompactProtocolReader* /*iprot*/) {
+    tryAdvanceIndex(fieldId);
+  }
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
       CompactProtocolReader* iprot,
       int32_t currFieldId,
       int32_t nextFieldId,
       TType nextFieldType) {
+    if (currFieldId == 0 && indexReader_) {
+      currFieldId = detail::kSizeField.id;
+    }
+    tryAdvanceIndex(currFieldId);
     return iprot->advanceToNextField(
         currFieldId, nextFieldId, nextFieldType, *this);
   }
@@ -408,7 +422,16 @@ struct CompactProtocolReader::StructReadState {
     return fieldType == expectedFieldType;
   }
 
-  inline void skip(CompactProtocolReader* iprot) { iprot->skip(fieldType); }
+  void skip(CompactProtocolReader* iprot) { iprot->skip(fieldType); }
+
+  FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
+      CompactProtocolReader* iprot,
+      int16_t fieldId,
+      TType fieldType,
+      bool fixedCostSkip);
+
+  template <class Skip>
+  folly::IOBuf tryFastSkipImpl(CompactProtocolReader* iprot, Skip);
 
   std::string& fieldName() {
     throw std::logic_error("CompactProtocol doesn't support field names");
@@ -417,6 +440,22 @@ struct CompactProtocolReader::StructReadState {
   template <typename StructTraits>
   void fillFieldTraitsFromName() {
     throw std::logic_error("CompactProtocol doesn't support field names");
+  }
+
+ private:
+  CompactProtocolReader* indexReader_ = nullptr;
+  uint32_t indexFieldCount_ = 0;
+  int16_t currentIndexFieldId_ = 0;
+  int64_t currentIndexFieldSize_ = 0;
+
+  void readStructBeginWithIndex(folly::io::Cursor structBegin);
+
+  FOLLY_ALWAYS_INLINE void tryAdvanceIndex(int16_t id) {
+    if (indexFieldCount_ > 0 && id == currentIndexFieldId_) {
+      indexReader_->readI16(currentIndexFieldId_);
+      indexReader_->readI64(currentIndexFieldSize_);
+      --indexFieldCount_;
+    }
   }
 };
 

@@ -304,7 +304,9 @@ struct BinaryProtocolReader::StructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
+  void readStructBegin(
+      BinaryProtocolReader* /*iprot*/,
+      BinaryProtocolReader* /*indexReader*/ = nullptr) {}
 
   void readStructEnd(BinaryProtocolReader* /*iprot*/) {}
 
@@ -337,7 +339,11 @@ struct BinaryProtocolReader::StructReadState {
     return fieldType == expectedFieldType;
   }
 
-  inline void skip(BinaryProtocolReader* iprot) { iprot->skip(fieldType); }
+  void skip(BinaryProtocolReader* iprot) { iprot->skip(fieldType); }
+  folly::Optional<folly::IOBuf> tryFastSkip(
+      BinaryProtocolReader*, int16_t, TType, bool) {
+    return {};
+  }
 
   std::string& fieldName() {
     throw std::logic_error("BinaryProtocol doesn't support field names");

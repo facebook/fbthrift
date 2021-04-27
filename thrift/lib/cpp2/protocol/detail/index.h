@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -133,6 +134,43 @@ using IndexWriter = std::conditional_t<
     Protocol::kHasIndexSupport(),
     IndexWriterImpl<Protocol>,
     DummyIndexWriter>;
+
+template <class Protocol>
+folly::Optional<int64_t> readIndexOffsetField(Protocol& p) {
+  std::string name;
+  TType fieldType;
+  int16_t fieldId;
+
+  p.readFieldBegin(name, fieldType, fieldId);
+  if (fieldType != kSizeField.type || fieldId != kSizeField.id) {
+    return {};
+  }
+
+  double indexOffset;
+  p.readDouble(indexOffset);
+  p.readFieldEnd();
+  return indexOffset;
+}
+
+template <class Protocol>
+folly::Optional<uint32_t> readIndexField(Protocol& p) {
+  std::string name;
+  TType fieldType;
+  int16_t fieldId;
+  p.readFieldBegin(name, fieldType, fieldId);
+  if (fieldType != kIndexField.type) {
+    return {};
+  }
+
+  TType key;
+  TType value;
+  uint32_t fieldCount;
+  p.readMapBegin(key, value, fieldCount);
+  if (key != TType::T_I16 || value != TType::T_I64) {
+    return {};
+  }
+  return fieldCount;
+}
 
 } // namespace detail
 } // namespace thrift

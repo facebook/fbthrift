@@ -35,7 +35,9 @@ struct ProtocolReaderStructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(Protocol* iprot) { iprot->readStructBegin(fieldName_); }
+  void readStructBegin(Protocol* iprot, Protocol* /*indexReader*/ = nullptr) {
+    iprot->readStructBegin(fieldName_);
+  }
 
   void readStructEnd(Protocol* iprot) { iprot->readStructEnd(); }
 
@@ -89,7 +91,14 @@ struct ProtocolReaderStructReadState {
     return fieldType == expectedFieldType;
   }
 
-  inline void skip(Protocol* iprot) { iprot->skip(fieldType); }
+  void skip(Protocol* iprot) { iprot->skip(fieldType); }
+  folly::Optional<folly::IOBuf> tryFastSkip(
+      Protocol* /*iprot*/,
+      int16_t /*fieldId*/,
+      TType /*fieldType*/,
+      bool /*fixedCostSkip*/) {
+    return {};
+  }
 
   std::string& fieldName() { return fieldName_; }
 
