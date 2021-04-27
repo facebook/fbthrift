@@ -233,7 +233,7 @@ class ThriftStructSpec(ThriftPyTypeSpec):
         # For a TType.STRUCT, the spec_args is a tuple
         # (py thrift type, py thrift type spec, kind, [adapter name]),
         # where kind is True for a union and False otherwise
-        self.type_class, self.type_spec, self.is_union, *_ = self.spec_args
+        self.type_class, self.type_spec, self.is_union = self.spec_args[:3]
 
         self.subtypes = {}
         self.subtype_requiredness = {}
