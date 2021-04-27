@@ -231,23 +231,19 @@ class Cpp2Worker : public IOWorkerContext,
   // Connections which are kept alive by in-flight requests
   std::shared_ptr<ThriftServer> duplexServer_;
 
-  folly::AsyncSocket::UniquePtr makeNewAsyncSocket(
-      folly::EventBase* base, int fd) override {
-    return folly::AsyncSocket::UniquePtr(
-        new folly::AsyncSocket(base, folly::NetworkSocket::fromFd(fd)));
-  }
-
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* base,
-      int fd) override {
+      int fd,
+      const folly::SocketAddress* peerAddress) override {
     return folly::AsyncSSLSocket::UniquePtr(
         new apache::thrift::async::TAsyncSSLSocket(
             ctx,
             base,
             folly::NetworkSocket::fromFd(fd),
             true, /* set server */
-            true /* defer the security negotiation until sslAccept. */));
+            true /* defer the security negotiation until sslAccept. */,
+            peerAddress));
   }
 
   /**
