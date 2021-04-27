@@ -73,20 +73,17 @@ class t_node {
  public:
   virtual ~t_node() = default;
 
+  const std::string& doc() const { return doc_; }
+  bool has_doc() const { return has_doc_; }
   void set_doc(const std::string& doc) {
     doc_ = doc;
     has_doc_ = true;
   }
 
-  const std::string& get_doc() const { return doc_; }
-
-  bool has_doc() const { return has_doc_; }
-
+  int lineno() const { return lineno_; }
   void set_lineno(int lineno) { lineno_ = lineno; }
 
-  int get_lineno() const { return lineno_; }
-
-  // The annotaions declared directly on this node.
+  // The annotations declared directly on this node.
   const std::map<std::string, std::string>& annotations() const {
     return annotations_;
   }
@@ -95,12 +92,18 @@ class t_node {
   bool has_annotation(alias_span name) const {
     return get_annotation_or_null(name) != nullptr;
   }
+  bool has_annotation(const char* name) const {
+    return has_annotation(alias_span{name});
+  }
 
   // Returns the pointer to the value of the first annotation found with the
   // given name.
   //
   // If not found returns nullptr.
   const std::string* get_annotation_or_null(alias_span name) const;
+  const std::string* get_annotation_or_null(const char* name) const {
+    return get_annotation_or_null(alias_span{name});
+  }
 
   // Returns the value of an annotation with the given name.
   //
@@ -164,15 +167,11 @@ class t_node {
   // Consider removing.
   int last_annotation_lineno_{-1};
 
+  // TODO(afuller): Remove everything below this comment. It is only provideed
+  // for backwards compatibility.
  public:
-  // TODO(afuller): Require arg to be wrapped in {} instead of providing these
-  // overloads.
-  bool has_annotation(const char* name) const {
-    return has_annotation(alias_span{name});
-  }
-  const std::string* get_annotation_or_null(const char* name) const {
-    return get_annotation_or_null(alias_span{name});
-  }
+  const std::string& get_doc() const { return doc_; }
+  int get_lineno() const { return lineno_; }
 };
 
 using t_annotation = std::map<std::string, std::string>::value_type;
