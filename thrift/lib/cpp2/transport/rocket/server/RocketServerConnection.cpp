@@ -520,8 +520,21 @@ void RocketServerConnection::handleSinkFrame(
             freeStream(streamId, true);
           }
         } else {
-          notViolateContract =
-              clientCallback.onSinkNext(std::move(*streamPayload));
+          auto payloadMetadataRef =
+              streamPayload->metadata.payloadMetadata_ref();
+          if (payloadMetadataRef &&
+              payloadMetadataRef->getType() ==
+                  PayloadMetadata::exceptionMetadata) {
+            notViolateContract = clientCallback.onSinkError(
+                apache::thrift::detail::EncodedStreamError(
+                    std::move(streamPayload.value())));
+            if (notViolateContract) {
+              freeStream(streamId, true);
+            }
+          } else {
+            notViolateContract =
+                clientCallback.onSinkNext(std::move(*streamPayload));
+          }
         }
       }
 

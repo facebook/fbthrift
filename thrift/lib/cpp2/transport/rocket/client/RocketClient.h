@@ -132,6 +132,9 @@ class RocketClient : public folly::DelayedDestruction,
       StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
   FOLLY_NODISCARD bool sendHeadersPush(
       StreamId streamId, HeadersPayload&& payload);
+  // sink error can use different frames depends on server version
+  FOLLY_NODISCARD bool sendSinkError(
+      StreamId streamId, StreamPayload&& payload);
 
   bool streamExists(StreamId streamId) const;
 

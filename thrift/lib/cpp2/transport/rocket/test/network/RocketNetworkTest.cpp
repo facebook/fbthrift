@@ -853,12 +853,14 @@ TEST_F(RocketNetworkTest, SinkBasic) {
           co_await sinkClientCallback->getFirstThriftResponse();
           auto clientSink = ClientSink<int, int>(
               std::move(sinkClientCallback),
-              [](folly::Try<int>&& i) {
+              [](folly::Try<int>&& i) -> folly::Try<StreamPayload> {
                 if (i.hasValue()) {
-                  return folly::IOBuf::copyBuffer(
-                      folly::StringPiece{folly::to<std::string>(*i)});
+                  return folly::Try<StreamPayload>(StreamPayload(
+                      folly::IOBuf::copyBuffer(folly::to<std::string>(*i)),
+                      {}));
                 } else {
-                  return folly::IOBuf::create(0);
+                  return folly::Try<StreamPayload>(
+                      StreamPayload(folly::IOBuf::create(0), {}));
                 }
               },
               [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
@@ -905,12 +907,13 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
 
     auto sink = ClientSink<int, int>(
         std::move(sinkClientCallback),
-        [](folly::Try<int>&& i) {
+        [](folly::Try<int>&& i) -> folly::Try<StreamPayload> {
           if (i.hasValue()) {
-            return folly::IOBuf::copyBuffer(
-                folly::StringPiece{folly::to<std::string>(*i)});
+            return folly::Try<StreamPayload>(StreamPayload(
+                folly::IOBuf::copyBuffer(folly::to<std::string>(*i)), {}));
           } else {
-            return folly::IOBuf::create(0);
+            return folly::Try<StreamPayload>(
+                StreamPayload(folly::IOBuf::create(0), {}));
           }
         },
         [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {

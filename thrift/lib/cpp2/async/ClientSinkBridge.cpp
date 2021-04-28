@@ -149,9 +149,9 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
   return sinkImpl(*this, std::move(generator));
 }
 
-void ClientSinkBridge::cancel(std::unique_ptr<folly::IOBuf> ex) {
-  clientPush(folly::Try<StreamPayload>(rocket::RocketException(
-      rocket::ErrorCode::APPLICATION_ERROR, std::move(ex))));
+void ClientSinkBridge::cancel(folly::Try<StreamPayload> payload) {
+  CHECK(payload.hasException());
+  clientPush(std::move(payload));
 }
 
 // SinkClientCallback method

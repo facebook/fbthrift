@@ -324,6 +324,15 @@ void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
       [&](rocket::RocketException& rex) {
         client_.sendError(streamId_, std::move(rex));
       },
+      [this](::apache::thrift::detail::EncodedStreamError& err) {
+        if (compressionConfig_) {
+          apache::thrift::rocket::detail::setCompressionCodec(
+              *compressionConfig_,
+              err.encoded.metadata,
+              err.encoded.payload->computeChainDataLength());
+        }
+        std::ignore = client_.sendSinkError(streamId_, std::move(err.encoded));
+      },
       [&](...) {
         client_.sendError(
             streamId_,

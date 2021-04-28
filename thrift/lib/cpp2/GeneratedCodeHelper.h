@@ -403,6 +403,13 @@ class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
 namespace detail {
 namespace ap {
 
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
+folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val);
+
 template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
     folly::Try<apache::thrift::StreamPayload>&& payload);
@@ -625,18 +632,11 @@ ClientSink<SinkType, FinalResponseType> createSink(
     apache::thrift::detail::ClientSinkBridge::Ptr impl) {
   return ClientSink<SinkType, FinalResponseType>(
       std::move(impl),
-      [](folly::Try<SinkType>&& item) mutable {
-        if (item.hasValue()) {
-          return ap::encode_stream_payload<ProtocolWriter, SinkPResult>(
-              std::move(item).value());
-        } else {
-          return ap::encode_stream_exception<
-                     ProtocolWriter,
-                     SinkPResult,
-                     std::decay_t<ErrorMapFunc>>(std::move(item).exception())
-              .encoded.payload;
-        }
-      },
+      apache::thrift::detail::ap::encode_stream_element<
+          ProtocolWriter,
+          SinkPResult,
+          SinkType,
+          std::decay_t<ErrorMapFunc>>,
       apache::thrift::detail::ap::decode_stream_element<
           ProtocolReader,
           FinalResponsePResult,
@@ -966,7 +966,7 @@ template <
     typename PResult,
     typename T,
     typename ErrorMapFunc>
-folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
+folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val) {
   if (val.hasValue()) {
     return folly::Try<StreamPayload>(
         {encode_stream_payload<Protocol, PResult>(std::move(*val)), {}});
@@ -1088,7 +1088,7 @@ ServerStreamFactory encode_server_stream(
     folly::Executor::KeepAlive<> serverExecutor) {
   return stream(
       std::move(serverExecutor),
-      encode_server_stream_payload<Protocol, PResult, T, ErrorMapFunc>);
+      encode_stream_element<Protocol, PResult, T, ErrorMapFunc>);
 }
 
 template <typename Protocol, typename PResult, typename T>
@@ -1138,20 +1138,10 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
               -> folly::coro::AsyncGenerator<SinkType&&> {
             while (auto item = co_await gen_.next()) {
               auto payload = std::move(*item);
-              if (payload.hasValue()) {
-                // if exception is thrown there, it will propagate to inner
-                // consumer which is intended
-                co_yield ap::decode_stream_payload<
-                    ProtocolReader,
-                    SinkPResult,
-                    SinkType>(*payload->payload);
-              } else {
-                ap::decode_stream_exception<
-                    ProtocolReader,
-                    SinkPResult,
-                    SinkType>(payload.exception())
-                    .throw_exception();
-              }
+              co_yield folly::coro::co_result(ap::decode_stream_element<
+                                              ProtocolReader,
+                                              SinkPResult,
+                                              SinkType>(std::move(payload)));
             }
           }(std::move(gen)));
       co_return folly::Try<StreamPayload>(StreamPayload(
@@ -1163,13 +1153,10 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
     } catch (...) {
       ew = folly::exception_wrapper(std::current_exception());
     }
-    co_return folly::Try<StreamPayload>(rocket::RocketException(
-        rocket::ErrorCode::APPLICATION_ERROR,
-        ap::encode_stream_exception<
-            ProtocolWriter,
-            FinalResponsePResult,
-            ErrorMapFunc>(std::move(ew))
-            .encoded.payload));
+    co_return folly::Try<StreamPayload>(ap::encode_stream_exception<
+                                        ProtocolWriter,
+                                        FinalResponsePResult,
+                                        ErrorMapFunc>(std::move(ew)));
   };
   return apache::thrift::detail::SinkConsumerImpl{
       std::move(consumer),

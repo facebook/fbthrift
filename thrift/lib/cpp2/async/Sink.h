@@ -41,7 +41,7 @@ class SinkThrew : public TApplicationException {};
 template <typename T, typename R>
 class ClientSink {
 #if FOLLY_HAS_COROUTINES
-  using PayloadSerializer = std::unique_ptr<folly::IOBuf> (*)(folly::Try<T>&&);
+  using PayloadSerializer = folly::Try<StreamPayload> (*)(folly::Try<T>&&);
   using FinalResponseDeserializer =
       folly::Try<R> (*)(folly::Try<StreamPayload>&&);
 
@@ -71,31 +71,25 @@ class ClientSink {
   }
 
   folly::coro::Task<R> sink(folly::coro::AsyncGenerator<T&&> generator) {
-    folly::exception_wrapper ew;
+    bool sinkThrew = false;
     auto finalResponse =
         co_await std::exchange(impl_, nullptr)
             ->sink(
-                [this, &ew](auto _generator) -> folly::coro::AsyncGenerator<
-                                                 folly::Try<StreamPayload>&&> {
-                  try {
-                    while (auto item = co_await _generator.next()) {
-                      co_yield folly::Try<StreamPayload>(StreamPayload(
-                          serializer_(folly::Try<T>(std::move(*item))), {}));
+                [this, &sinkThrew](auto _generator)
+                    -> folly::coro::AsyncGenerator<
+                        folly::Try<StreamPayload>&&> {
+                  while (true) {
+                    auto item =
+                        co_await folly::coro::co_awaitTry(_generator.next());
+                    if (!item.hasException() && !item.hasValue()) {
+                      break;
                     }
-                  } catch (std::exception& e) {
-                    ew = folly::exception_wrapper(std::current_exception(), e);
-                  } catch (...) {
-                    ew = folly::exception_wrapper(std::current_exception());
-                  }
-
-                  if (ew) {
-                    co_yield folly::Try<StreamPayload>(rocket::RocketException(
-                        rocket::ErrorCode::APPLICATION_ERROR,
-                        serializer_(folly::Try<T>(ew))));
+                    sinkThrew = item.hasException();
+                    co_yield serializer_(std::move(item));
                   }
                 }(std::move(generator)));
 
-    if (ew) {
+    if (sinkThrew) {
       throw SinkThrew();
     }
 

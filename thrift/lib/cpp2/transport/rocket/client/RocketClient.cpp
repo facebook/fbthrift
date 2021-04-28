@@ -934,6 +934,40 @@ bool RocketClient::sendHeadersPush(
       std::move(onError));
 }
 
+bool RocketClient::sendSinkError(StreamId streamId, StreamPayload&& payload) {
+  freeStream(streamId);
+  auto g = makeRequestCountGuard();
+  auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
+                     transport::TTransportException ex) {
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "sendSinkError failed, closing now: " << ex.what();
+    close(std::move(ex));
+  };
+  return sendVersionDependentFrame(
+      [streamId = streamId,
+       payload = std::move(payload)](int32_t serverVersion) mutable {
+        if (serverVersion >= 8) {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              PayloadFrame(
+                  streamId,
+                  pack(std::move(payload)),
+                  Flags::none().next(true).complete(true))
+                  .serialize(),
+              FrameType::PAYLOAD);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ErrorFrame(
+                  streamId,
+                  RocketException(
+                      ErrorCode::APPLICATION_ERROR, std::move(payload.payload)))
+                  .serialize(),
+              FrameType::ERROR);
+        }
+      },
+      streamId,
+      std::move(onError));
+}
+
 void RocketClient::sendExtAlignedPage(
     StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags) {
   auto g = makeRequestCountGuard();

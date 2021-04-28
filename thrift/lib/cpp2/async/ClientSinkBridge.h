@@ -66,7 +66,7 @@ class ClientSinkBridge : public TwoWayBridge<
   folly::coro::Task<folly::Try<StreamPayload>> sink(
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator);
 
-  void cancel(std::unique_ptr<folly::IOBuf> ex);
+  void cancel(folly::Try<StreamPayload> payload);
 
   // SinkClientCallback method
   bool onFirstResponse(
