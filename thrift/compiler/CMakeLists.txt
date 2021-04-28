@@ -88,6 +88,11 @@ target_link_libraries(
 add_library(
   compiler_lib
 
+  gen/cpp/detail/gen.cc
+  gen/cpp/namespace_resolver.cc
+  gen/cpp/reference_type.cc
+  gen/cpp/type_resolver.cc
+
   lib/cpp2/util.cc
   lib/java/util.cc
 )

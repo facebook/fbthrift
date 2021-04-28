@@ -22,6 +22,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
@@ -186,13 +187,13 @@ class cpp2_generator_context {
     return cpp2::is_orderable(seen, memo, type);
   }
 
-  cpp2::type_resolver& resolver() { return resolver_; }
+  gen::cpp::type_resolver& resolver() { return resolver_; }
 
  private:
   cpp2_generator_context() = default;
 
   std::unordered_map<t_type const*, bool> is_orderable_memo_;
-  cpp2::type_resolver resolver_;
+  gen::cpp::type_resolver resolver_;
 };
 
 class t_mstch_cpp2_generator : public t_mstch_generator {
@@ -493,7 +494,7 @@ class mstch_cpp2_type : public mstch_type {
     return context_->resolver().get_standard_type_name(type_);
   }
   mstch::node cpp_adapter() {
-    if (const auto& adapter = cpp2::type_resolver::find_adapter(type_)) {
+    if (const auto& adapter = gen::cpp::type_resolver::find_adapter(type_)) {
       return *adapter;
     }
     return {};
