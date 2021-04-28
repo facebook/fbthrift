@@ -310,6 +310,13 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
         return serverCallback.onStreamError(
             std::move(streamPayload.exception()));
       }
+      auto payloadMetadataRef = streamPayload->metadata.payloadMetadata_ref();
+      if (payloadMetadataRef &&
+          payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata) {
+        return serverCallback.onStreamError(
+            apache::thrift::detail::EncodedStreamError(
+                std::move(streamPayload.value())));
+      }
       if (complete) {
         return serverCallback.onStreamFinalPayload(std::move(*streamPayload));
       }

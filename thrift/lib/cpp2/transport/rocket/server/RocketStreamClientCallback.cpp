@@ -154,6 +154,27 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
             RocketException(
                 ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
       },
+      [this](::apache::thrift::detail::EncodedStreamError& err) {
+        if (connection_.getVersion() >= 8) {
+          // apply compression if client has specified compression codec
+          if (compressionConfig_) {
+            apache::thrift::rocket::detail::setCompressionCodec(
+                *compressionConfig_,
+                err.encoded.metadata,
+                err.encoded.payload->computeChainDataLength());
+          }
+          connection_.sendPayload(
+              streamId_,
+              pack(std::move(err.encoded)),
+              Flags::none().next(true).complete(true));
+        } else {
+          connection_.sendError(
+              streamId_,
+              RocketException(
+                  ErrorCode::APPLICATION_ERROR,
+                  std::move(err.encoded.payload)));
+        }
+      },
       [this, &ew](...) {
         connection_.sendError(
             streamId_,

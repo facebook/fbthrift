@@ -312,6 +312,7 @@ struct StreamPayloadMetadata {
   // Any frequently used key-value pair in this map should be replaced
   // by a field in this struct.
   2: optional map<string, string> otherMetadata;
+  3: optional PayloadMetadata payloadMetadata;
 }
 
 // Setup metadata sent from the client to the server at the time

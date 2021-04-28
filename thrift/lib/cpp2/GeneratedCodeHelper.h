@@ -419,8 +419,7 @@ template <typename Protocol, typename PResult>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item);
 
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
-std::unique_ptr<folly::IOBuf> encode_stream_exception(
-    folly::exception_wrapper ew);
+EncodedStreamError encode_stream_exception(folly::exception_wrapper ew);
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>);
@@ -632,9 +631,10 @@ ClientSink<SinkType, FinalResponseType> createSink(
               std::move(item).value());
         } else {
           return ap::encode_stream_exception<
-              ProtocolWriter,
-              SinkPResult,
-              std::decay_t<ErrorMapFunc>>(std::move(item).exception());
+                     ProtocolWriter,
+                     SinkPResult,
+                     std::decay_t<ErrorMapFunc>>(std::move(item).exception())
+              .encoded.payload;
         }
       },
       apache::thrift::detail::ap::decode_stream_element<
@@ -930,23 +930,35 @@ std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item) {
 }
 
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
-std::unique_ptr<folly::IOBuf> encode_stream_exception(
-    folly::exception_wrapper ew) {
+EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
   ErrorMapFunc mapException;
   Protocol prot;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   PResult res;
+
+  PayloadExceptionMetadata exceptionMetadata;
+  PayloadExceptionMetadataBase exceptionMetadataBase;
   if (mapException(res, ew)) {
     prot.setOutput(&queue, res.serializedSizeZC(&prot));
     res.write(&prot);
+    exceptionMetadata.set_declaredException(PayloadDeclaredExceptionMetadata());
   } else {
     constexpr size_t kQueueAppenderGrowth = 4096;
     prot.setOutput(&queue, kQueueAppenderGrowth);
     TApplicationException ex(ew.what().toStdString());
+    exceptionMetadataBase.what_utf8_ref() = ex.what();
     apache::thrift::detail::serializeExceptionBody(&prot, &ex);
+    exceptionMetadata.set_appServerException(
+        PayloadAppServerExceptionMetadata());
   }
 
-  return std::move(queue).move();
+  exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+  StreamPayloadMetadata streamPayloadMetadata;
+  PayloadMetadata payloadMetadata;
+  payloadMetadata.set_exceptionMetadata(std::move(exceptionMetadataBase));
+  streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
+  return EncodedStreamError(
+      StreamPayload(std::move(queue).move(), std::move(streamPayloadMetadata)));
 }
 
 template <
@@ -960,8 +972,8 @@ folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
         {encode_stream_payload<Protocol, PResult>(std::move(*val)), {}});
   } else if (val.hasException()) {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
-        EncodedError(encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
-            val.exception()))));
+        encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
+            val.exception())));
   } else {
     return folly::Try<StreamPayload>();
   }
@@ -995,7 +1007,7 @@ template <typename Protocol, typename PResult, typename T>
 folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
   Protocol prot;
   folly::exception_wrapper hijacked;
-  ew.with_exception(
+  ew.handle(
       [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
         PResult result;
         T res{};
@@ -1020,12 +1032,49 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
           apache::thrift::detail::deserializeExceptionBody(&prot, &x);
           hijacked = folly::exception_wrapper(std::move(x));
         }
-      });
+      },
+      [&hijacked, &prot](apache::thrift::detail::EncodedStreamError& err) {
+        auto& payload = err.encoded;
+        DCHECK_EQ(payload.metadata.payloadMetadata_ref().has_value(), true);
+        DCHECK_EQ(
+            payload.metadata.payloadMetadata_ref()->getType(),
+            PayloadMetadata::exceptionMetadata);
+        auto& exceptionMetadataBase =
+            payload.metadata.payloadMetadata_ref()->get_exceptionMetadata();
+        if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
+          if (exceptionMetadataRef->getType() ==
+              PayloadExceptionMetadata::declaredException) {
+            PResult result;
+            T res{};
+            result.template get<0>().value = &res;
+            prot.setInput(payload.payload.get());
+            result.read(&prot);
+            CHECK(!result.getIsSet(0));
+            foreach_index<PResult::size::value - 1>([&](auto index) {
+              if (!hijacked && result.getIsSet(index.value + 1)) {
+                auto& fdata = result.template get<index.value + 1>();
+                hijacked = folly::exception_wrapper(std::move(fdata.ref()));
+              }
+            });
+
+            if (!hijacked) {
+              hijacked =
+                  TApplicationException("Failed to parse declared exception");
+            }
+          } else {
+            hijacked = TApplicationException(
+                exceptionMetadataBase.what_utf8_ref().value_or(""));
+          }
+        } else {
+          hijacked =
+              TApplicationException("Missing payload exception metadata");
+        }
+      },
+      [](...) {});
 
   if (hijacked) {
     return hijacked;
   }
-
   return ew;
 }
 
@@ -1119,7 +1168,8 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
         ap::encode_stream_exception<
             ProtocolWriter,
             FinalResponsePResult,
-            ErrorMapFunc>(std::move(ew))));
+            ErrorMapFunc>(std::move(ew))
+            .encoded.payload));
   };
   return apache::thrift::detail::SinkConsumerImpl{
       std::move(consumer),
