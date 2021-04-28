@@ -21,7 +21,7 @@ using namespace ::testing;
 using namespace apache::thrift;
 
 TEST(MethodMetadataTest, Operations) {
-  MethodMetadata::Data data("123", FunctionQualifier::NONE);
+  MethodMetadata::Data data("123", FunctionQualifier::None);
 
   MethodMetadata a = MethodMetadata::from_static(&data);
   EXPECT_FALSE(a.isOwning());
@@ -33,7 +33,7 @@ TEST(MethodMetadataTest, Operations) {
   EXPECT_EQ(b.name_str(), "123");
   EXPECT_EQ(b.name_view(), "123");
 
-  data = MethodMetadata::Data("234", FunctionQualifier::NONE);
+  data = MethodMetadata::Data("234", FunctionQualifier::None);
   EXPECT_FALSE(a.isOwning());
   EXPECT_EQ(a.name_str(), "234");
   EXPECT_EQ(a.name_view(), "234");

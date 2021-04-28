@@ -1148,7 +1148,7 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node oneway_functions() {
     std::vector<t_function const*> oneway_functions;
     for (auto const* function : service_->get_functions()) {
-      if (function->is_oneway()) {
+      if (function->qualifier() == t_function_qualifier::one_way) {
         oneway_functions.push_back(function);
       }
     }
@@ -1156,7 +1156,7 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node has_oneway() {
     for (auto const* function : service_->get_functions()) {
-      if (function->is_oneway()) {
+      if (function->qualifier() == t_function_qualifier::one_way) {
         return true;
       }
     }

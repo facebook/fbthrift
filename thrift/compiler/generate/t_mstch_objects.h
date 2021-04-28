@@ -1013,11 +1013,14 @@ class mstch_function : public mstch_base {
              &mstch_function::starts_interaction},
             {"function:structured_annotations",
              &mstch_function::structured_annotations},
+            {"function:qualifier", &mstch_function::qualifier},
         });
   }
 
   mstch::node name() { return function_->get_name(); }
-  mstch::node oneway() { return function_->is_oneway(); }
+  mstch::node oneway() {
+    return function_->qualifier() == t_function_qualifier::one_way;
+  }
   mstch::node has_exceptions() {
     return function_->get_xceptions()->has_fields();
   }
@@ -1060,6 +1063,20 @@ class mstch_function : public mstch_base {
 
   mstch::node structured_annotations() {
     return mstch_base::structured_annotations(function_);
+  }
+
+  mstch::node qualifier() {
+    auto q = function_->qualifier();
+    switch (q) {
+      case t_function_qualifier::one_way:
+        return std::string("OneWay");
+      case t_function_qualifier::idempotent:
+        return std::string("Idempotent");
+      case t_function_qualifier::read_only:
+        return std::string("ReadOnly");
+      default:
+        return std::string("None");
+    }
   }
 
  protected:

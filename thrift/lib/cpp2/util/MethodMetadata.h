@@ -24,10 +24,10 @@
 namespace apache::thrift {
 
 enum class FunctionQualifier {
-  NONE = 0,
-  ONE_WAY,
-  IDEMPOTENT,
-  READ_ONLY,
+  None = 0,
+  OneWay,
+  Idempotent,
+  ReadOnly,
 };
 
 /*
@@ -68,21 +68,21 @@ class MethodMetadata {
 
   /* implicit */ MethodMetadata(std::string_view methodName)
       : isOwning_(true),
-        data_(new Data(std::string(methodName), FunctionQualifier::NONE)) {}
+        data_(new Data(std::string(methodName), FunctionQualifier::None)) {}
 
   /* implicit */ MethodMetadata(std::string&& methodName)
       : isOwning_(true),
-        data_(new Data(std::move(methodName), FunctionQualifier::NONE)) {}
+        data_(new Data(std::move(methodName), FunctionQualifier::None)) {}
 
   /* implicit */ MethodMetadata(const std::string& methodName)
-      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::NONE)) {}
+      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::None)) {}
 
   /* implicit */ MethodMetadata(const char* methodName)
-      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::NONE)) {}
+      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::None)) {}
 
   /* implicit */ MethodMetadata(folly::StringPiece methodName)
       : isOwning_(true),
-        data_(new Data(std::string(methodName), FunctionQualifier::NONE)) {}
+        data_(new Data(std::string(methodName), FunctionQualifier::None)) {}
 
   static MethodMetadata from_static(Data* mPtr) {
     return MethodMetadata(mPtr, NonOwningTag{});

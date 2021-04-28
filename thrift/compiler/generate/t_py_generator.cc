@@ -2114,7 +2114,7 @@ void t_py_generator::generate_service_helpers(const t_service* tservice) {
  * @param tfunction The function
  */
 void t_py_generator::generate_py_function_helpers(const t_function* tfunction) {
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     t_struct result(
         program_, rename_reserved_keywords(tfunction->get_name()) + "_result");
     auto success =
@@ -2299,7 +2299,7 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
     }
     f_service_ << ")" << endl;
 
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       f_service_ << indent();
       if (gen_asyncio_) {
         f_service_ << "return fut" << endl;
@@ -2338,7 +2338,9 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                  << rename_reserved_keywords((*fld_iter)->get_name()) << endl;
     }
 
-    std::string flush = (*f_iter)->is_oneway() ? "onewayFlush" : "flush";
+    std::string flush = (*f_iter)->qualifier() == t_function_qualifier::one_way
+        ? "onewayFlush"
+        : "flush";
     // Write to the stream
     f_service_ << indent() << "args.write(self._oprot)" << endl
                << indent() << "self._oprot.writeMessageEnd()" << endl
@@ -2346,7 +2348,7 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
 
     indent_down();
 
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       std::string resultname = (*f_iter)->get_name() + "_result";
       // Open function
       f_service_ << endl;
@@ -2521,7 +2523,7 @@ void t_py_generator::generate_service_remote(const t_service* tservice) {
 
       f_remote << "    '" << fn_name << "': Function('" << fn_name << "', '"
                << svc_name << "', ";
-      if (fn->is_oneway()) {
+      if (fn->qualifier() == t_function_qualifier::one_way) {
         f_remote << "None, ";
       } else {
         f_remote << "'" << thrift_type_name(fn->get_returntype()) << "', ";
@@ -2631,7 +2633,7 @@ void t_py_generator::generate_service_server(
 
   f_service_ << indent() << "_onewayMethods = (";
   for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    if ((*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() == t_function_qualifier::one_way) {
       f_service_ << "\"" << (*f_iter)->get_name() << "\",";
     }
   }
@@ -2743,7 +2745,10 @@ void t_py_generator::generate_process_function(
   } else {
     indent(f_service_) << "@thrift_process_method(" << fn_name << "_args, "
                        << "oneway="
-                       << (tfunction->is_oneway() ? "True" : "False")
+                       << (tfunction->qualifier() ==
+                                   t_function_qualifier::one_way
+                               ? "True"
+                               : "False")
                        << (gen_asyncio_ ? ", asyncio=True" : "") << ")" << endl;
 
     f_service_ << indent() << "def process_" << fn_name
@@ -2757,7 +2762,7 @@ void t_py_generator::generate_process_function(
   vector<t_field*>::const_iterator x_iter;
 
   // Declare result for non oneway function
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     f_service_ << indent() << "result = " << fn_name + "_result()" << endl;
   }
 
@@ -2793,7 +2798,7 @@ void t_py_generator::generate_process_function(
                << indent() << "  fut = call_as_future(" << handler
                << ", self._loop, " << args_list << ")" << endl;
 
-    if (!tfunction->is_oneway()) {
+    if (tfunction->qualifier() != t_function_qualifier::one_way) {
       string known_exceptions = "{";
       int exc_num;
       for (exc_num = 0, x_iter = xceptions.begin(); x_iter != xceptions.end();
@@ -2832,7 +2837,8 @@ void t_py_generator::generate_process_function(
 
     f_service_ << indent();
 
-    if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+    if (tfunction->qualifier() != t_function_qualifier::one_way &&
+        !tfunction->get_returntype()->is_void()) {
       f_service_ << "result.success = ";
     }
     f_service_ << handler << "(";
@@ -2857,7 +2863,7 @@ void t_py_generator::generate_process_function(
          ++x_iter, ++exc_num) {
       f_service_ << indent() << "except " << type_name((*x_iter)->get_type())
                  << " as exc" << exc_num << ":" << endl;
-      if (!tfunction->is_oneway()) {
+      if (tfunction->qualifier() != t_function_qualifier::one_way) {
         indent_up();
         f_service_ << indent()
                    << "self._event_handler.handlerException(handler_ctx, '"
@@ -2877,7 +2883,7 @@ void t_py_generator::generate_process_function(
                << "', ex)" << endl
                << indent() << "  result = Thrift.TApplicationException(message="
                << "repr(ex))" << endl;
-    if (!tfunction->is_oneway()) {
+    if (tfunction->qualifier() != t_function_qualifier::one_way) {
       f_service_ << indent() << "return result" << endl;
     }
 
@@ -2889,7 +2895,10 @@ void t_py_generator::generate_process_function(
 
       f_service_ << indent() << "@future_process_method(" << fn_name
                  << "_args, oneway="
-                 << (tfunction->is_oneway() ? "True" : "False") << ")" << endl;
+                 << (tfunction->qualifier() == t_function_qualifier::one_way
+                         ? "True"
+                         : "False")
+                 << ")" << endl;
 
       f_service_ << indent() << "def future_process_" << fn_name
                  << "(self, args, handler_ctx):" << endl;

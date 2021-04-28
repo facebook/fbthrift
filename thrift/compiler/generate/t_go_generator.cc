@@ -2137,7 +2137,7 @@ void t_go_generator::generate_service_helpers(const t_service* tservice) {
  * @param tfunction The function
  */
 void t_go_generator::generate_go_function_helpers(const t_function* tfunction) {
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     t_struct result(program_, tfunction->get_name() + "_result");
     auto success =
         std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
@@ -2220,7 +2220,7 @@ void t_go_generator::generate_service_client_method(
   /*
   f_service_ <<
     indent() << "p.SeqId += 1" << endl;
-  if (!(*f_iter)->is_oneway()) {
+  if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
     f_service_ <<
       indent() << "d := defer.Deferred()" << endl <<
       indent() << "p.Reqs[p.SeqId] = d" << endl;
@@ -2236,7 +2236,7 @@ void t_go_generator::generate_service_client_method(
 
   f_service_ << indent() << "if err != nil { return }" << endl;
 
-  if (!(*f_iter)->is_oneway()) {
+  if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
     f_service_ << indent() << "return p.recv" << funname << "()" << endl;
   } else {
     f_service_ << indent() << "return" << endl;
@@ -2245,7 +2245,7 @@ void t_go_generator::generate_service_client_method(
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
 
-  if (!(*f_iter)->is_oneway()) {
+  if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
     generate_service_client_recv_method(clientTypeName, f_iter);
   }
 }
@@ -2267,7 +2267,7 @@ void t_go_generator::generate_service_client_channel_call(
   auto methodName = (*f_iter)->get_name();
   auto result_type_name = publicize((*f_iter)->get_name() + "_result", true);
   auto argsType = publicize(methodName + "_args", true);
-  auto isOneway = (*f_iter)->is_oneway();
+  auto isOneway = (*f_iter)->qualifier() == t_function_qualifier::one_way;
   auto returnsVoid = (*f_iter)->get_returntype()->is_void();
   const auto& exceptions = (*f_iter)->get_xceptions()->get_members();
   // bool raisesExceptions = exceptions.size() > 0;
@@ -2321,7 +2321,9 @@ void t_go_generator::generate_service_client_send_msg_call(
     const vector<t_function*>::const_iterator& f_iter) {
   auto methodName = (*f_iter)->get_name();
   auto argsType = publicize(methodName + "_args", true);
-  auto messageType = (*f_iter)->is_oneway() ? "thrift.ONEWAY" : "thrift.CALL";
+  auto messageType = (*f_iter)->qualifier() == t_function_qualifier::one_way
+      ? "thrift.ONEWAY"
+      : "thrift.CALL";
 
   auto arg_struct = (*f_iter)->get_paramlist();
   const auto& fields = arg_struct->get_members();
@@ -3440,12 +3442,12 @@ void t_go_generator::generate_run_function(
   const t_struct* exceptions = tfunction->get_xceptions();
   const vector<t_field*>& x_fields = exceptions->get_members();
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     indent(f_service_) << "var result " << resultname << endl;
   }
   indent(f_service_) << "if ";
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     if (!tfunction->get_returntype()->is_void()) {
       f_service_ << "retval, ";
     }
@@ -3499,7 +3501,8 @@ void t_go_generator::generate_run_function(
 
   bool need_reference = type_need_reference(tfunction->get_returntype());
 
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void()) {
     f_service_ << " else {"
                << endl; // make sure we set Success retval only on success
     indent_up();
@@ -3514,7 +3517,7 @@ void t_go_generator::generate_run_function(
     f_service_ << endl;
   }
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     indent(f_service_) << "return &result, nil" << endl;
   } else {
     indent(f_service_) << "return nil, nil" << endl;

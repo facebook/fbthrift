@@ -2570,7 +2570,7 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
     }
     f_service_ << ");" << endl;
 
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       f_service_ << indent();
       if (!(*f_iter)->get_returntype()->is_void()) {
         f_service_ << "return ";
@@ -2611,7 +2611,9 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
 
     string bytes = tmp("_bytes");
 
-    string flush = (*f_iter)->is_oneway() ? "onewayFlush" : "flush";
+    string flush = (*f_iter)->qualifier() == t_function_qualifier::one_way
+        ? "onewayFlush"
+        : "flush";
     f_service_ << indent() << "args.write(oprot_);" << endl
                << indent() << "oprot_.writeMessageEnd();" << endl
                << indent() << "oprot_.getTransport()." << flush << "();" << endl
@@ -2623,7 +2625,7 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
     f_service_ << endl;
 
     // Generate recv function only if not a oneway function
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       string resultname = (*f_iter)->get_name() + "_result";
 
       t_function recv_function(
@@ -2809,8 +2811,11 @@ void t_java_generator::generate_service_async_client(
     indent(f_service_) << "  super(" << client_sybmol << ", "
                        << protocol_factory_symbol << ", " << transport_symbol
                        << ", " << result_handler_symbol << ", "
-                       << ((*f_iter)->is_oneway() ? "true" : "false") << ");"
-                       << endl;
+                       << ((*f_iter)->qualifier() ==
+                                   t_function_qualifier::one_way
+                               ? "true"
+                               : "false")
+                       << ");" << endl;
 
     // Assign member variables
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
@@ -2868,7 +2873,7 @@ void t_java_generator::generate_service_async_client(
         << indent()
         << "TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);"
         << endl;
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       indent(f_service_);
       if (!ret_type->is_void()) {
         f_service_ << "return ";
@@ -3027,7 +3032,7 @@ void t_java_generator::generate_service_server(const t_service* tservice) {
  * @param tfunction The function
  */
 void t_java_generator::generate_function_helpers(const t_function* tfunction) {
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     return;
   }
 
@@ -3089,7 +3094,7 @@ void t_java_generator::generate_process_function(
   vector<t_field*>::const_iterator x_iter;
 
   // Declare result for non oneway function
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     f_service_ << indent() << resultname << " result = new " << resultname
                << "();" << endl;
   }
@@ -3106,7 +3111,8 @@ void t_java_generator::generate_process_function(
   vector<t_field*>::const_iterator f_iter;
 
   f_service_ << indent();
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void()) {
     f_service_ << "result.success = ";
   }
   f_service_ << "iface_." << tfunction->get_name() << "(";
@@ -3122,13 +3128,15 @@ void t_java_generator::generate_process_function(
   f_service_ << ");" << endl;
 
   // Set isset on success field
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void() &&
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void() &&
       !type_can_be_null(tfunction->get_returntype())) {
     f_service_ << indent() << "result.set" << get_cap_name("success")
                << get_cap_name("isSet") << "(true);" << endl;
   }
 
-  if (!tfunction->is_oneway() && xceptions.size() > 0) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      xceptions.size() > 0) {
     string pservice_func_name =
         "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
     string pservice_func_name_error =
@@ -3138,7 +3146,7 @@ void t_java_generator::generate_process_function(
     for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
       f_service_ << " catch (" << type_name((*x_iter)->get_type(), false, false)
                  << " " << (*x_iter)->get_name() << ") {" << endl;
-      if (!tfunction->is_oneway()) {
+      if (tfunction->qualifier() != t_function_qualifier::one_way) {
         indent_up();
         f_service_ << indent() << "result." << (*x_iter)->get_name() << " = "
                    << (*x_iter)->get_name() << ";" << endl
@@ -3177,7 +3185,7 @@ void t_java_generator::generate_process_function(
   }
 
   // Shortcut out here for oneway functions
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     f_service_ << indent() << "return;" << endl;
     scope_down(f_service_);
 

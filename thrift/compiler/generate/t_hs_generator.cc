@@ -1286,7 +1286,7 @@ void t_hs_generator::generate_service_client(const t_service* tservice) {
 
     f_client_ << nl;
 
-    if (!(*f_iter)->is_oneway())
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way)
       indent(f_client_) << "recv_" << funname << " ip" << nl;
 
     indent_down();
@@ -1326,7 +1326,7 @@ void t_hs_generator::generate_service_client(const t_service* tservice) {
     indent(f_client_) << "Thrift.tFlush (Thrift.getTransport op)" << nl;
     indent_down();
 
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       string resultname = capitalize((*f_iter)->get_name() + "_result");
 
       string recv_fn_name = string("recv_") + (*f_iter)->get_name();
@@ -1749,7 +1749,8 @@ void t_hs_generator::generate_process_function(
   }
   indent(f_service_);
 
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void())
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void())
     f_service_ << "val <- ";
 
   f_service_ << "Iface." << decapitalize(tfunction->get_name()) << " handler";
@@ -1757,19 +1758,20 @@ void t_hs_generator::generate_process_function(
     f_service_ << " (" << field_name(argsname, (*f_iter)->get_name())
                << " args)";
 
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void()) {
     f_service_ << nl;
     indent(f_service_) << "let res = default_" << resultname << "{"
                        << field_name(resultname, "success") << " = val}";
 
-  } else if (!tfunction->is_oneway()) {
+  } else if (tfunction->qualifier() != t_function_qualifier::one_way) {
     f_service_ << nl;
     indent(f_service_) << "let res = default_" << resultname;
   }
   f_service_ << nl;
 
   // Shortcut out here for oneway functions
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     indent(f_service_) << "return ()";
   } else {
     indent(f_service_) << "Thrift.writeMessage oprot (\""
@@ -1789,7 +1791,7 @@ void t_hs_generator::generate_process_function(
       indent(f_service_) << "(\\e  -> do" << nl;
       indent_up();
 
-      if (!tfunction->is_oneway()) {
+      if (tfunction->qualifier() != t_function_qualifier::one_way) {
         indent(f_service_) << "let res = default_" << resultname << "{"
                            << field_name(resultname, (*x_iter)->get_name())
                            << " = Just e}" << nl;
@@ -1809,7 +1811,7 @@ void t_hs_generator::generate_process_function(
     indent(f_service_) << "((\\_ -> do" << nl;
     indent_up();
 
-    if (!tfunction->is_oneway()) {
+    if (tfunction->qualifier() != t_function_qualifier::one_way) {
       indent(f_service_) << "Thrift.writeMessage oprot (\""
                          << tfunction->get_name()
                          << "\", Types.M_EXCEPTION, seqid) $" << nl;

@@ -1588,7 +1588,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
         std::make_unique<t_const_value>("exceptions"), std::move(exceptions));
   }
 
-  if (function->is_oneway()) {
+  if (function->qualifier() == t_function_qualifier::one_way) {
     auto is_oneway = std::make_unique<t_const_value>();
     is_oneway->set_bool(true);
     tmeta_ThriftFunction->add_map(
@@ -3243,7 +3243,7 @@ void t_hack_generator::generate_process_function(
              << fn_name << "', $args);\n";
 
   // Declare result for non oneway function
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     f_service_ << indent() << "$result = " << resultname
                << "::withDefaultValues();\n";
   }
@@ -3257,7 +3257,8 @@ void t_hack_generator::generate_process_function(
                      << service_name << "', '" << fn_name << "', $args);\n";
 
   f_service_ << indent();
-  if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way &&
+      !tfunction->get_returntype()->is_void()) {
     f_service_ << "$result->success = ";
   }
   f_service_ << (async ? "await " : "") << "$this->handler->"
@@ -3269,7 +3270,7 @@ void t_hack_generator::generate_process_function(
   }
   f_service_ << ");\n";
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     indent(f_service_) << "$this->eventHandler_->postExec($handler_ctx, '"
                        << fn_name << "', $result);\n";
   }
@@ -3279,7 +3280,7 @@ void t_hack_generator::generate_process_function(
   for (const auto* x : tfunction->get_xceptions()->fields()) {
     f_service_ << indent() << "} catch (" << hack_name(x->get_type()) << " $exc"
                << exc_num << ") {\n";
-    if (!tfunction->is_oneway()) {
+    if (tfunction->qualifier() != t_function_qualifier::one_way) {
       indent_up();
       f_service_ << indent()
                  << "$this->eventHandler_->handlerException($handler_ctx, '"
@@ -3300,7 +3301,7 @@ void t_hack_generator::generate_process_function(
       << indent() << "}\n";
 
   // Shortcut out here for oneway functions
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     f_service_ << indent() << "return;\n";
     indent_down();
     f_service_ << indent() << "}\n";
@@ -3471,7 +3472,7 @@ void t_hack_generator::generate_service_interactions(
       _generate_service_client_child_fn(
           f_service_, interaction, function, /*rpc_options*/ true);
       _generate_sendImpl(f_service_, interaction, function);
-      if (!function->is_oneway()) {
+      if (function->qualifier() != t_function_qualifier::one_way) {
         _generate_recvImpl(f_service_, interaction, function);
       }
     }
@@ -3495,7 +3496,7 @@ void t_hack_generator::generate_php_function_helpers(
   generate_php_struct_definition(
       f_service_, params, false, false, true, params_name);
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     t_struct result(
         program_, service_name + "_" + tfunction->get_name() + "_result");
     auto success =
@@ -3527,7 +3528,7 @@ void t_hack_generator::generate_php_interaction_function_helpers(
   generate_php_struct_definition(
       f_service_, params, false, false, true, params_name);
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     t_struct result(program_, prefix + "_" + tfunction->get_name() + "_result");
     auto success =
         std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
@@ -3593,7 +3594,7 @@ void t_hack_generator::generate_php_docstring(
               << "Original thrift definition:-\n";
   // Return type.
   indent(out) << " * ";
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     out << "oneway ";
   }
   out << thrift_type_name(tfunction->get_returntype()) << "\n";
@@ -4016,7 +4017,7 @@ void t_hack_generator::_generate_service_client(
   // Generate client method implementations
   for (const auto* function : get_supported_functions(tservice)) {
     _generate_sendImpl(out, tservice, function);
-    if (!function->is_oneway()) {
+    if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
     }
     out << "\n";
@@ -4276,7 +4277,9 @@ void t_hack_generator::_generate_sendImpl(
       << rpc_function_name << "', "
       << "\\TMessageType::CALL, $args, $currentseqid, "
       << "$this->output_->isStrictWrite(), "
-      << (tfunction->is_oneway() ? "true" : "false") << ");\n";
+      << (tfunction->qualifier() == t_function_qualifier::one_way ? "true"
+                                                                  : "false")
+      << ");\n";
 
   scope_down(out);
   out << indent()
@@ -4286,7 +4289,9 @@ void t_hack_generator::_generate_sendImpl(
   out << indent() << "\\thrift_protocol_write_compact($this->output_, '"
       << rpc_function_name << "', "
       << "\\TMessageType::CALL, $args, $currentseqid, "
-      << (tfunction->is_oneway() ? "true" : "false") << ");\n";
+      << (tfunction->qualifier() == t_function_qualifier::one_way ? "true"
+                                                                  : "false")
+      << ");\n";
 
   scope_down(out);
   out << indent() << "else\n";
@@ -4299,7 +4304,7 @@ void t_hack_generator::_generate_sendImpl(
   // Write to the stream
   out << indent() << "$args->write($this->output_);\n"
       << indent() << "$this->output_->writeMessageEnd();\n";
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     out << indent() << "$this->output_->getTransport()->onewayFlush();\n";
   } else {
     out << indent() << "$this->output_->getTransport()->flush();\n";
@@ -4490,7 +4495,7 @@ void t_hack_generator::_generate_service_client_children(
         delim = ", ";
       }
       out << ");\n" << indent() << "}\n";
-      if (!function->is_oneway()) {
+      if (function->qualifier() != t_function_qualifier::one_way) {
         t_function recv_function(
             function->get_returntype(),
             std::string("recv_") + function->get_name(),
@@ -4576,7 +4581,7 @@ void t_hack_generator::_generate_service_client_child_fn(
   }
   out << ");\n";
 
-  if (!tfunction->is_oneway()) {
+  if (tfunction->qualifier() != t_function_qualifier::one_way) {
     out << indent() << "$channel = $this->channel_;\n"
         << indent() << "$out_transport = $this->output_->getTransport();\n"
         << indent() << "$in_transport = $this->input_->getTransport();\n"

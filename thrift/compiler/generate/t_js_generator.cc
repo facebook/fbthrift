@@ -885,7 +885,7 @@ void t_js_generator::generate_process_function(
   }
 
   // Shortcut out here for oneway functions
-  if (tfunction->is_oneway()) {
+  if (tfunction->qualifier() == t_function_qualifier::one_way) {
     f_service_ << ")" << endl;
     scope_down(f_service_);
     f_service_ << endl;
@@ -1047,7 +1047,7 @@ void t_js_generator::generate_service_client(const t_service* tservice) {
     f_service_ << indent() << "this.send_" << funname << "(" << arglist << ");"
                << endl;
 
-    if (!gen_node_ && !(*f_iter)->is_oneway()) {
+    if (!gen_node_ && (*f_iter)->qualifier() != t_function_qualifier::one_way) {
       f_service_ << indent();
       if (!(*f_iter)->get_returntype()->is_void()) {
         f_service_ << "return ";
@@ -1128,7 +1128,7 @@ void t_js_generator::generate_service_client(const t_service* tservice) {
 
     f_service_ << "};" << endl;
 
-    if (!(*f_iter)->is_oneway()) {
+    if ((*f_iter)->qualifier() != t_function_qualifier::one_way) {
       std::string resultname = js_namespace(tservice->program()) +
           service_name_ + "_" + (*f_iter)->get_name() + "_result";
 
