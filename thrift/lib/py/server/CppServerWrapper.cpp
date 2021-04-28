@@ -255,7 +255,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
                 [req_up = std::move(req_up)]() mutable { req_up = {}; });
           };
 
-          if (!oneway && !req_up->isActive()) {
+          if (!oneway && !req_up->getShouldStartProcessing()) {
             return;
           }
 
