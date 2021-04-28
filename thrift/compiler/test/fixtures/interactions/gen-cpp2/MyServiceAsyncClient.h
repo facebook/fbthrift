@@ -45,6 +45,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
+  ::std::int32_t sync_frobnicate();
+  ::std::int32_t sync_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_frobnicate() {
@@ -98,8 +104,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
-  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
   static folly::exception_wrapper recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
   static ::std::int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
@@ -112,6 +116,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  protected:
   void pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
+  void sync_ping();
+  void sync_ping(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<folly::Unit> semifuture_ping();
+  folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -153,8 +163,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<folly::Unit> semifuture_ping();
-  folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
 
  private:
   template <typename Protocol_>
@@ -165,6 +173,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  protected:
   void truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
+
+  apache::thrift::ClientBufferedStream<bool> sync_truthify();
+  apache::thrift::ClientBufferedStream<bool> sync_truthify(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -221,8 +235,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
-  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
   static folly::exception_wrapper recv_wrapped_truthify(apache::thrift::ClientBufferedStream<bool>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::ClientBufferedStream<bool> recv_truthify(::apache::thrift::ClientReceiveState& state);
@@ -262,6 +274,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
+  ::std::int32_t sync_frobnicate();
+  ::std::int32_t sync_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
+  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_frobnicate() {
@@ -315,8 +333,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
-  folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
   static folly::exception_wrapper recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
   static ::std::int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
@@ -329,6 +345,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  protected:
   void pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
+  void sync_ping();
+  void sync_ping(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<folly::Unit> semifuture_ping();
+  folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -370,8 +392,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<folly::Unit> semifuture_ping();
-  folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
 
  private:
   template <typename Protocol_>
@@ -382,6 +402,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  protected:
   void truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
+
+  apache::thrift::ClientBufferedStream<bool> sync_truthify();
+  apache::thrift::ClientBufferedStream<bool> sync_truthify(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -438,8 +464,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
-  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
   static folly::exception_wrapper recv_wrapped_truthify(apache::thrift::ClientBufferedStream<bool>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::ClientBufferedStream<bool> recv_truthify(::apache::thrift::ClientReceiveState& state);
@@ -478,6 +502,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  protected:
   void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
+  void sync_frobnicate();
+  void sync_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+
+  folly::SemiFuture<folly::Unit> semifuture_frobnicate();
+  folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -530,8 +560,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<folly::Unit> semifuture_frobnicate();
-  folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
   static folly::exception_wrapper recv_wrapped_frobnicate(::apache::thrift::ClientReceiveState& state);
   static void recv_frobnicate(::apache::thrift::ClientReceiveState& state);

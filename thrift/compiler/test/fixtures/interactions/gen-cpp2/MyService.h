@@ -48,24 +48,28 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
   }
+  virtual ::std::int32_t frobnicate();
   virtual folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<::std::int32_t> co_frobnicate();
   virtual folly::coro::Task<::std::int32_t> co_frobnicate(apache::thrift::RequestParams params);
 #endif
   virtual void async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
+  virtual void ping();
   virtual folly::SemiFuture<folly::Unit> semifuture_ping();
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<void> co_ping();
   virtual folly::coro::Task<void> co_ping(apache::thrift::RequestParams params);
 #endif
   virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback);
+  virtual ::apache::thrift::ServerStream<bool> truthify();
   virtual folly::SemiFuture<::apache::thrift::ServerStream<bool>> semifuture_truthify();
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<::apache::thrift::ServerStream<bool>> co_truthify();
   virtual folly::coro::Task<::apache::thrift::ServerStream<bool>> co_truthify(apache::thrift::RequestParams params);
 #endif
   virtual void async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback);
+  virtual ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string> encode();
   virtual folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> semifuture_encode();
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> co_encode();
@@ -96,6 +100,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
   }
+  virtual void frobnicate();
   virtual folly::SemiFuture<folly::Unit> semifuture_frobnicate();
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<void> co_frobnicate();

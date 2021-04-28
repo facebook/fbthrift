@@ -32,8 +32,9 @@
   }
 <%/service:interaction?%>
 <%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
-<%^function:eb%><%^service:interaction?%>
+<%^function:eb%>
   virtual <% > service_common/function_return_type%> <%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>);
+<%^service:interaction?%>
   folly::Future<<% > service_common/async_return_type%>> future_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
   folly::SemiFuture<<% > service_common/async_return_type%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
 <%/service:interaction?%>

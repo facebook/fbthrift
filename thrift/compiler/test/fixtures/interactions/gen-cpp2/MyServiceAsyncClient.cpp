@@ -313,6 +313,37 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteraction.frobnicate");
 }
+::std::int32_t MyServiceAsyncClient::MyInteraction::sync_frobnicate() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return sync_frobnicate(rpcOptions);
+}
+
+::std::int32_t MyServiceAsyncClient::MyInteraction::sync_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = frobnicateCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  frobnicateImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      return recv_frobnicate(returnState);
+  });
+}
+
+
 folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_frobnicate(rpcOptions);
@@ -406,6 +437,26 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteraction.ping");
 }
+void MyServiceAsyncClient::MyInteraction::sync_ping() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_ping(rpcOptions);
+}
+
+void MyServiceAsyncClient::MyInteraction::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<true> callback(&returnState);
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = pingCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  pingImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+}
+
+
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteraction::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_ping(rpcOptions);
@@ -464,6 +515,39 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteraction.truthify");
 }
+apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteraction::sync_truthify() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return sync_truthify(rpcOptions);
+}
+
+apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteraction::sync_truthify(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = truthifyCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(&callback),
+    rpcOptions.getBufferOptions());
+  truthifyImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      return recv_truthify(returnState);
+  });
+}
+
+
 folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClient::MyInteraction::semifuture_truthify() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_truthify(rpcOptions);
@@ -721,6 +805,37 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteractionFast.frobnicate");
 }
+::std::int32_t MyServiceAsyncClient::MyInteractionFast::sync_frobnicate() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return sync_frobnicate(rpcOptions);
+}
+
+::std::int32_t MyServiceAsyncClient::MyInteractionFast::sync_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = frobnicateCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  frobnicateImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      return recv_frobnicate(returnState);
+  });
+}
+
+
 folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_frobnicate(rpcOptions);
@@ -814,6 +929,26 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteractionFast.ping");
 }
+void MyServiceAsyncClient::MyInteractionFast::sync_ping() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_ping(rpcOptions);
+}
+
+void MyServiceAsyncClient::MyInteractionFast::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<true> callback(&returnState);
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = pingCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  pingImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+}
+
+
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteractionFast::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_ping(rpcOptions);
@@ -872,6 +1007,39 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.MyInteractionFast.truthify");
 }
+apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteractionFast::sync_truthify() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return sync_truthify(rpcOptions);
+}
+
+apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteractionFast::sync_truthify(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = truthifyCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::createStreamClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(&callback),
+    rpcOptions.getBufferOptions());
+  truthifyImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      return recv_truthify(returnState);
+  });
+}
+
+
 folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClient::MyInteractionFast::semifuture_truthify() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_truthify(rpcOptions);
@@ -1078,6 +1246,37 @@ std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsy
       getServiceName(),
       "MyService.SerialInteraction.frobnicate");
 }
+void MyServiceAsyncClient::SerialInteraction::sync_frobnicate() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_frobnicate(rpcOptions);
+}
+
+void MyServiceAsyncClient::SerialInteraction::sync_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = frobnicateCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  frobnicateImpl(rpcOptions, ctx, std::move(wrappedCallback));
+  callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      recv_frobnicate(returnState);
+  });
+}
+
+
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::SerialInteraction::semifuture_frobnicate() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_frobnicate(rpcOptions);

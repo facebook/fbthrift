@@ -31,19 +31,17 @@
 <% > service_async_client_cpp/function_implementation%>
 
 
-<%^function:returns_sink?%><%^service:reduced_client?%>
+<%^function:returns_sink?%>
 <% > service_async_client_cpp/sync_functions%>
-<%/service:reduced_client?%>
 
 <% > service_async_client_cpp/future_functions%>
 
-<%^service:reduced_client?%>
-<%^type:streamresponse?%>
+<%^service:reduced_client?%><%^type:streamresponse?%>
 void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%function:cpp_name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
 }
-<%/type:streamresponse?%>
-<%/service:reduced_client?%><%/function:returns_sink?%>
+<%/type:streamresponse?%><%/service:reduced_client?%>
+<%/function:returns_sink?%>
 
 <% > service_async_client_cpp/coroutine_functions%>
 
@@ -76,6 +74,8 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::
 <% > service_async_client_cpp/function_implementation%>
 
 <%^function:returns_sink?%>
+<% > service_async_client_cpp/sync_functions%>
+
 <% > service_async_client_cpp/future_functions%>
 <%/function:returns_sink?%>
 

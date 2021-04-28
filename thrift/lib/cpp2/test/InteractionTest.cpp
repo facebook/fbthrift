@@ -37,11 +37,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     int acc_{0};
     Point pacc_;
 
-    folly::SemiFuture<folly::Unit> semifuture_accumulatePrimitive(
-        int32_t a) override {
-      acc_ += a;
-      return folly::makeSemiFuture();
-    }
+    void accumulatePrimitive(int32_t a) override { acc_ += a; }
     folly::SemiFuture<folly::Unit> semifuture_noop() override {
       return folly::makeSemiFuture();
     }
@@ -51,9 +47,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
       *pacc_.y_ref() += *a->y_ref();
       return folly::makeSemiFuture();
     }
-    folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
-      return acc_;
-    }
+    int32_t getPrimitive() override { return acc_; }
     folly::SemiFuture<std::unique_ptr<::apache::thrift::test::Point>>
     semifuture_getPoint() override {
       return folly::copy_to_unique_ptr(pacc_);
@@ -324,6 +318,32 @@ TEST(InteractionCodegenTest, BasicSemiFuture) {
   p.y_ref() = 2;
   adder.semifuture_accumulatePoint(p).get();
   auto pacc = adder.semifuture_getPoint().get();
+  EXPECT_EQ(*pacc.x_ref(), 2);
+  EXPECT_EQ(*pacc.y_ref(), 2);
+}
+
+TEST(InteractionCodegenTest, BasicSync) {
+  ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  auto adder = client->createAddition();
+  adder.sync_accumulatePrimitive(1);
+  adder.sync_accumulatePrimitive(2);
+  adder.sync_noop();
+  auto acc = adder.sync_getPrimitive();
+  EXPECT_EQ(acc, 3);
+
+  auto sum = client->sync_addPrimitive(20, 22);
+  EXPECT_EQ(sum, 42);
+
+  Point p;
+  p.x_ref() = 1;
+  adder.sync_accumulatePoint(p);
+  p.y_ref() = 2;
+  adder.sync_accumulatePoint(p);
+  Point pacc;
+  adder.sync_getPoint(pacc);
   EXPECT_EQ(*pacc.x_ref(), 2);
   EXPECT_EQ(*pacc.y_ref(), 2);
 }

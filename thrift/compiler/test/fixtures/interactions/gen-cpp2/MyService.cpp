@@ -86,8 +86,16 @@ void MyServiceSvNull::foo() {
 
 
 
+::std::int32_t MyServiceSvIf::MyInteractionIf::frobnicate() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("frobnicate");
+}
+
 folly::SemiFuture<::std::int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture([&] {
+    return frobnicate();
+  });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -166,6 +174,15 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
       return;
     }
 #endif // FOLLY_HAS_COROUTINES
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        callback->result(frobnicate());
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
     default:
     {
       folly::assume_unreachable();
@@ -173,8 +190,16 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
   }
 }
 
+void MyServiceSvIf::MyInteractionIf::ping() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
+}
+
 folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_ping() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_ping");
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture([&] {
+    return ping();
+  });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -253,6 +278,15 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
       return;
     }
 #endif // FOLLY_HAS_COROUTINES
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        ping();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
     default:
     {
       folly::assume_unreachable();
@@ -260,8 +294,16 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
   }
 }
 
+::apache::thrift::ServerStream<bool> MyServiceSvIf::MyInteractionIf::truthify() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("truthify");
+}
+
 folly::SemiFuture<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_truthify");
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture([&] {
+    return truthify();
+  });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -340,6 +382,15 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
       return;
     }
 #endif // FOLLY_HAS_COROUTINES
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        callback->result(truthify());
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
     default:
     {
       folly::assume_unreachable();
@@ -347,8 +398,16 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
   }
 }
 
+::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string> MyServiceSvIf::MyInteractionIf::encode() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("encode");
+}
+
 folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_encode");
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture([&] {
+    return encode();
+  });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -427,6 +486,15 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
       return;
     }
 #endif // FOLLY_HAS_COROUTINES
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        callback->result(encode());
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
     default:
     {
       folly::assume_unreachable();
@@ -450,8 +518,16 @@ void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache:
   callback->exception(apache::thrift::TApplicationException("Function encode is unimplemented"));
 }
 
+void MyServiceSvIf::SerialInteractionIf::frobnicate() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("frobnicate");
+}
+
 folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_frobnicate() {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return apache::thrift::detail::si::semifuture([&] {
+    return frobnicate();
+  });
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -530,6 +606,16 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
       return;
     }
 #endif // FOLLY_HAS_COROUTINES
+    case apache::thrift::detail::si::InvocationType::Sync:
+    {
+      try {
+        frobnicate();
+        callback->done();
+      } catch (...) {
+        callback->exception(std::current_exception());
+      }
+      return;
+    }
     default:
     {
       folly::assume_unreachable();

@@ -17,9 +17,8 @@
 %><%#service:functions%><%#function:return_type%>
 <%^function:starts_interaction?%>
 <%^function:eb%>
-<%^service:interaction?%>
 
-<% > service_common/function_return_type%> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>) {
+<% > service_common/function_return_type%> <% > service_common/service_class_name%>::<%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
@@ -35,6 +34,7 @@ folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/s
   return apache::thrift::detail::si::semifuture_returning<%^function:stack_arguments?%>_uptr<%/function:stack_arguments?%>([&](<%type:cpp_type%>& _return) { <%function:cpp_name%>(_return<%function:comma%><% > service_common/param_list_move%>); });
 <%/type:resolves_to_complex_return?%>
 }
+<%^service:interaction?%>
 
 folly::Future<<% > service_common/async_return_type%>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
@@ -43,28 +43,7 @@ folly::Future<<% > service_common/async_return_type%>> <%service:name%>SvIf::fut
   return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), std::move(ka));
 }
 <%/service:interaction?%>
-<%#service:interaction?%>
-
-folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/service_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_<%function:name%>");
-}
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
-  auto expected{apache::thrift::detail::si::InvocationType::Coro};
-  __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::<%^service:interaction?%>Future<%/service:interaction?%><%#service:interaction?%>SemiFuture<%/service:interaction?%>, std::memory_order_relaxed);
-  return folly::coro::toTask(<%^service:interaction?%>future_<%/service:interaction?%><%#service:interaction?%>semifuture_<%/service:interaction?%><%function:cpp_name%>(<% > service_common/param_list_move%>));
-}
-
-folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
-  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
-  __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
-  return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
-}
-#endif // FOLLY_HAS_COROUTINES
-<%/service:interaction?%>
-<%^service:interaction?%>
-<%#function:coroutine?%><%!The following block is duplicated from the service:interaction case, we can remove it once function:coroutine is retired%>
+<%#function:coroutine?%>
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
@@ -80,7 +59,6 @@ folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/servi
 }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
-<%/service:interaction?%>
 <%#function:oneway?%>
 
 void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
@@ -170,7 +148,6 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
     }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
-<%^service:interaction?%>
     case apache::thrift::detail::si::InvocationType::Sync:
     {
       try {
@@ -195,6 +172,7 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
       }
       return;
     }
+<%^service:interaction?%>
     case apache::thrift::detail::si::InvocationType::Future:
     {
       apache::thrift::detail::si::<%#function:oneway?%>async_tm_future_oneway<%/function:oneway?%><%^function:oneway?%>async_tm_future<%/function:oneway?%>(std::move(callback), [&] {
