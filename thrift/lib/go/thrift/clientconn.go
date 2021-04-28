@@ -17,11 +17,30 @@
 package thrift
 
 import (
+	"context"
 	"fmt"
 )
 
-// ClientConn holds all the connection information for a thrift client
-type ClientConn struct {
+type ClientConn interface {
+	Transport() Transport
+	Open() error
+	Close() error
+	IsOpen() bool
+	SendMsg(method string, req IRequest, msgType MessageType) error
+	RecvMsg(method string, res IResponse) error
+}
+
+type ClientConnContext interface {
+	Transport() Transport
+	Open() error
+	Close() error
+	IsOpen() bool
+	SendMsg(ctx context.Context, method string, req IRequest, msgType MessageType) error
+	RecvMsg(ctx context.Context, method string, res IResponse) error
+}
+
+// clientConn holds all the connection information for a thrift client
+type clientConn struct {
 	transport       Transport
 	protocolFactory ProtocolFactory
 	iproto          Protocol
@@ -29,15 +48,19 @@ type ClientConn struct {
 	seqID           int32
 }
 
-// Transport returns the underlying Transport object inside the ClientConn
+type clientConnContext struct {
+	*clientConn
+}
+
+// Transport returns the underlying Transport object inside the clientConn
 // object
-func (cc *ClientConn) Transport() Transport {
+func (cc *clientConn) Transport() Transport {
 	return cc.transport
 }
 
 // NewClientConn creates a new ClientConn object using the provided ProtocolFactory
 func NewClientConn(t Transport, pf ProtocolFactory) ClientConn {
-	return ClientConn{
+	return &clientConn{
 		transport:       t,
 		protocolFactory: pf,
 		iproto:          pf.GetProtocol(t),
@@ -45,13 +68,27 @@ func NewClientConn(t Transport, pf ProtocolFactory) ClientConn {
 	}
 }
 
+// NewClientConnContext creates a new ClientConnContext object using the provided ProtocolFactory
+func NewClientConnContext(t Transport, pf ProtocolFactory) ClientConnContext {
+	return &clientConnContext{
+		clientConn: NewClientConn(t, pf).(*clientConn),
+	}
+}
+
 // NewClientConnWithProtocols creates a new ClientConn object using the input and output protocols provided
 func NewClientConnWithProtocols(t Transport, iproto, oproto Protocol) ClientConn {
-	return ClientConn{
+	return &clientConn{
 		transport:       t,
 		protocolFactory: nil,
 		iproto:          iproto,
 		oproto:          oproto,
+	}
+}
+
+// NewClientConnContextWithProtocols creates a new ClientConnContext object using the input and output protocols provided
+func NewClientConnContextWithProtocols(t Transport, iproto, oproto Protocol) ClientConnContext {
+	return &clientConnContext{
+		clientConn: NewClientConnWithProtocols(t, iproto, oproto).(*clientConn),
 	}
 }
 
@@ -66,22 +103,22 @@ type IResponse interface {
 }
 
 // Open opens the client connection
-func (cc *ClientConn) Open() error {
+func (cc *clientConn) Open() error {
 	return cc.transport.Open()
 }
 
 // Close closes the client connection
-func (cc *ClientConn) Close() error {
+func (cc *clientConn) Close() error {
 	return cc.transport.Close()
 }
 
 // IsOpen return true if the client connection is open; otherwise, it returns false.
-func (cc *ClientConn) IsOpen() bool {
+func (cc *clientConn) IsOpen() bool {
 	return cc.transport.IsOpen()
 }
 
 // SendMsg sends a request to a given thrift endpoint
-func (cc *ClientConn) SendMsg(method string, req IRequest, msgType MessageType) error {
+func (cc *clientConn) SendMsg(method string, req IRequest, msgType MessageType) error {
 	cc.seqID++
 
 	if err := cc.oproto.WriteMessageBegin(method, msgType, cc.seqID); err != nil {
@@ -100,7 +137,7 @@ func (cc *ClientConn) SendMsg(method string, req IRequest, msgType MessageType) 
 }
 
 // RecvMsg receives the response from a call to a thrift endpoint
-func (cc *ClientConn) RecvMsg(method string, res IResponse) error {
+func (cc *clientConn) RecvMsg(method string, res IResponse) error {
 	recvMethod, mTypeID, seqID, err := cc.iproto.ReadMessageBegin()
 
 	if err != nil {
@@ -138,4 +175,17 @@ func (cc *ClientConn) RecvMsg(method string, res IResponse) error {
 	default:
 		return NewApplicationException(INVALID_MESSAGE_TYPE_EXCEPTION, fmt.Sprintf("%s failed: invalid message type", method))
 	}
+}
+
+func (cc *clientConnContext) SendMsg(ctx context.Context, method string, req IRequest, msgType MessageType) error {
+	if p, ok := cc.oproto.(*HeaderProtocol); ok {
+		for k, v := range HeadersFromContext(ctx) {
+			p.SetHeader(k, v)
+		}
+	}
+	return cc.clientConn.SendMsg(method, req, msgType)
+}
+
+func (cc *clientConnContext) RecvMsg(ctx context.Context, method string, res IResponse) error {
+	return cc.clientConn.RecvMsg(method, res)
 }

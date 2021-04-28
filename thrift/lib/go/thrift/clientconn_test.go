@@ -129,7 +129,7 @@ func TestSendMsgError(t *testing.T) {
 	}
 
 	for i, testCase := range testCases {
-		cc := ClientConn{oproto: testCase.oproto}
+		cc := &clientConn{oproto: testCase.oproto}
 
 		if err := cc.SendMsg("foobar", testCase.request, CALL); err.Error() != testCase.expected.Error() {
 			t.Errorf("#%d: expected call to SendMsg to return \"%+v\"; got \"%+v\"", i, testCase.expected, err)
@@ -177,7 +177,7 @@ func TestRecvMsgError(t *testing.T) {
 	}
 
 	for i, testCase := range testCases {
-		cc := ClientConn{iproto: testCase.iproto}
+		cc := &clientConn{iproto: testCase.iproto}
 
 		if err := cc.RecvMsg("foobar", testCase.response); err.Error() != testCase.expected.Error() {
 			t.Errorf("#%d: expected call to RecvMsg to return \"%+v\"; got \"%+v\"", i, testCase.expected, err)
