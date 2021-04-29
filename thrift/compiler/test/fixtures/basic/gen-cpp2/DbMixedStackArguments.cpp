@@ -38,11 +38,15 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_getDataByKey0.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_getDataByKey0.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_getDataByKey0.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_getDataByKey0.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_getDataByKey0(std::move(p_key));
       });
@@ -63,13 +67,6 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_getDataByKey0(std::move(p_key));
-      });
       return;
     }
     default:
@@ -102,11 +99,15 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_getDataByKey1.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_getDataByKey1.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_getDataByKey1.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_getDataByKey1.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_getDataByKey1(std::move(p_key));
       });
@@ -127,13 +128,6 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_getDataByKey1(std::move(p_key));
-      });
       return;
     }
     default:

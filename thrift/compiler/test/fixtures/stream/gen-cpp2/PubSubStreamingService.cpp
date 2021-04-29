@@ -40,11 +40,15 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_returnstream.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_returnstream.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_returnstream.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_returnstream.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_returnstream(p_i32_from, p_i32_to);
       });
@@ -63,13 +67,6 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_returnstream(p_i32_from, p_i32_to);
-      });
       return;
     }
     default:
@@ -104,11 +101,15 @@ void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_streamthrows.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_streamthrows.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_streamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_streamthrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_streamthrows(p_foo);
       });
@@ -127,13 +128,6 @@ void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_streamthrows(p_foo);
-      });
       return;
     }
     default:
@@ -168,11 +162,15 @@ void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thr
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_boththrows.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_boththrows.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_boththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_boththrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_boththrows(p_foo);
       });
@@ -191,13 +189,6 @@ void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thr
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_boththrows(p_foo);
-      });
       return;
     }
     default:
@@ -232,11 +223,15 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_responseandstreamthrows.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_responseandstreamthrows.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_responseandstreamthrows(p_foo);
       });
@@ -255,13 +250,6 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_responseandstreamthrows(p_foo);
-      });
       return;
     }
     default:

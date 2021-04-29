@@ -44,11 +44,15 @@ void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_byte_i16_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_byte_i16_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_byte_i16_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_byte_i16_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_byte_i16_param(p_param1, p_param2);
       });
@@ -68,13 +72,6 @@ void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_byte_i16_param(p_param1, p_param2);
-      });
       return;
     }
     default:
@@ -109,11 +106,15 @@ void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrif
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_map_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_map_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_map_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_map_param(std::move(p_param1));
       });
@@ -133,13 +134,6 @@ void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrif
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_map_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -174,11 +168,15 @@ void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_map_setlist_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_map_setlist_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_map_setlist_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
       });
@@ -198,13 +196,6 @@ void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
-      });
       return;
     }
     default:
@@ -239,11 +230,15 @@ void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_map_typedef_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_map_typedef_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_map_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_map_typedef_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_map_typedef_param(p_param1);
       });
@@ -263,13 +258,6 @@ void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_map_typedef_param(p_param1);
-      });
       return;
     }
     default:
@@ -304,11 +292,15 @@ void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thri
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_enum_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_enum_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_enum_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_enum_param(p_param1);
       });
@@ -328,13 +320,6 @@ void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thri
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_enum_param(p_param1);
-      });
       return;
     }
     default:
@@ -369,11 +354,15 @@ void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::th
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_struct_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_struct_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_struct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_struct_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_struct_param(std::move(p_param1));
       });
@@ -393,13 +382,6 @@ void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::th
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_struct_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -434,11 +416,15 @@ void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache:
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_void_ret_listunion_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_void_ret_listunion_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_void_ret_listunion_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_void_ret_listunion_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_void_ret_listunion_param(std::move(p_param1));
       });
@@ -458,13 +444,6 @@ void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache:
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_void_ret_listunion_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -499,11 +478,15 @@ void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_bool_ret_i32_i64_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_bool_ret_i32_i64_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_bool_ret_i32_i64_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_bool_ret_i32_i64_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_bool_ret_i32_i64_param(p_param1, p_param2);
       });
@@ -522,13 +505,6 @@ void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_bool_ret_i32_i64_param(p_param1, p_param2);
-      });
       return;
     }
     default:
@@ -563,11 +539,15 @@ void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrif
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_bool_ret_map_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_bool_ret_map_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_bool_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_bool_ret_map_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_bool_ret_map_param(std::move(p_param1));
       });
@@ -586,13 +566,6 @@ void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrif
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_bool_ret_map_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -627,11 +600,15 @@ void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thr
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_bool_ret_union_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_bool_ret_union_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_bool_ret_union_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_bool_ret_union_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_bool_ret_union_param(std::move(p_param1));
       });
@@ -650,13 +627,6 @@ void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thr
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_bool_ret_union_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -691,11 +661,15 @@ void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_i64_ret_float_double_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_i64_ret_float_double_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_i64_ret_float_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_i64_ret_float_double_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_i64_ret_float_double_param(p_param1, p_param2);
       });
@@ -714,13 +688,6 @@ void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_i64_ret_float_double_param(p_param1, p_param2);
-      });
       return;
     }
     default:
@@ -755,11 +722,15 @@ void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apa
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_i64_ret_string_typedef_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_i64_ret_string_typedef_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_i64_ret_string_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_i64_ret_string_typedef_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2));
       });
@@ -778,13 +749,6 @@ void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apa
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2));
-      });
       return;
     }
     default:
@@ -823,11 +787,15 @@ void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_double_ret_setstruct_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_double_ret_setstruct_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_double_ret_setstruct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_double_ret_setstruct_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_double_ret_setstruct_param(std::move(p_param1));
       });
@@ -846,13 +814,6 @@ void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_double_ret_setstruct_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -885,11 +846,15 @@ void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_string_ret_string_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_string_ret_string_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_string_ret_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_string_ret_string_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_string_ret_string_param(std::move(p_param1));
       });
@@ -910,13 +875,6 @@ void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_string_ret_string_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -949,11 +907,15 @@ void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_binary_ret_binary_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_binary_ret_binary_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_binary_ret_binary_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_binary_ret_binary_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_binary_ret_binary_param(std::move(p_param1));
       });
@@ -974,13 +936,6 @@ void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_binary_ret_binary_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -1013,11 +968,15 @@ void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrif
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_map_ret_bool_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_map_ret_bool_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_map_ret_bool_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_map_ret_bool_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_map_ret_bool_param(p_param1);
       });
@@ -1038,13 +997,6 @@ void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrif
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_map_ret_bool_param(p_param1);
-      });
       return;
     }
     default:
@@ -1077,11 +1029,15 @@ void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_list_ret_map_setlist_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_list_ret_map_setlist_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_list_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_list_ret_map_setlist_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
       });
@@ -1102,13 +1058,6 @@ void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
-      });
       return;
     }
     default:
@@ -1141,11 +1090,15 @@ void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(s
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1));
       });
@@ -1166,13 +1119,6 @@ void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(s
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -1207,11 +1153,15 @@ void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::th
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_typedef_ret_i32_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_typedef_ret_i32_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_typedef_ret_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_typedef_ret_i32_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_typedef_ret_i32_param(p_param1);
       });
@@ -1230,13 +1180,6 @@ void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::th
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_typedef_ret_i32_param(p_param1);
-      });
       return;
     }
     default:
@@ -1275,11 +1218,15 @@ void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::th
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_enum_ret_double_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_enum_ret_double_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_enum_ret_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_enum_ret_double_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_enum_ret_double_param(p_param1);
       });
@@ -1298,13 +1245,6 @@ void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::th
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_enum_ret_double_param(p_param1);
-      });
       return;
     }
     default:
@@ -1339,11 +1279,15 @@ void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apach
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_enum_ret_double_enum_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_enum_ret_double_enum_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_enum_ret_double_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_enum_ret_double_enum_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_enum_ret_double_enum_param(p_param1, p_param2);
       });
@@ -1362,13 +1306,6 @@ void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apach
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_enum_ret_double_enum_param(p_param1, p_param2);
-      });
       return;
     }
     default:
@@ -1401,11 +1338,15 @@ void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_listenum_ret_map_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_listenum_ret_map_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_listenum_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_listenum_ret_map_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_listenum_ret_map_param(std::move(p_param1));
       });
@@ -1426,13 +1367,6 @@ void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_listenum_ret_map_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -1469,11 +1403,15 @@ void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_setstruct_ret_set_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_setstruct_ret_set_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_setstruct_ret_set_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_setstruct_ret_set_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_setstruct_ret_set_param(std::move(p_param1));
       });
@@ -1494,13 +1432,6 @@ void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_setstruct_ret_set_param(std::move(p_param1));
-      });
       return;
     }
     default:
@@ -1533,11 +1464,15 @@ void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_union_ret_i32_i32_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_union_ret_i32_i32_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_union_ret_i32_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_union_ret_i32_i32_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_union_ret_i32_i32_param(p_param1, p_param2);
       });
@@ -1558,13 +1493,6 @@ void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_union_ret_i32_i32_param(p_param1, p_param2);
-      });
       return;
     }
     default:
@@ -1597,11 +1525,15 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
   // available to the future through the thread-local backchannel, so we set that up
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  switch (__fbthrift_invocation_listunion_string_param.load(std::memory_order_relaxed)) {
+  auto invocationType = __fbthrift_invocation_listunion_string_param.load(std::memory_order_relaxed);
+  switch (invocationType) {
     case apache::thrift::detail::si::InvocationType::AsyncTm:
     {
-      auto expected{apache::thrift::detail::si::InvocationType::AsyncTm};
-      __fbthrift_invocation_listunion_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      __fbthrift_invocation_listunion_string_param.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+      FOLLY_FALLTHROUGH;
+    }
+    case apache::thrift::detail::si::InvocationType::Future:
+    {
       apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
         return future_listunion_string_param(std::move(p_param1));
       });
@@ -1622,13 +1554,6 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
       } catch (...) {
         callback->exception(std::current_exception());
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_listunion_string_param(std::move(p_param1));
-      });
       return;
     }
     default:
