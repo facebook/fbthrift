@@ -1097,7 +1097,7 @@ FunctionQualifier:
     }
 |
     {
-      $$ = t_function_qualifier::none;
+      $$ = {};
     }
 
 Throws:

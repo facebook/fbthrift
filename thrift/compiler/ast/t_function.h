@@ -30,7 +30,7 @@ namespace thrift {
 namespace compiler {
 
 enum class t_function_qualifier {
-  none = 0,
+  unspecified = 0,
   one_way,
   idempotent,
   read_only,
@@ -44,7 +44,7 @@ enum class t_function_qualifier {
  * struct.
  *
  */
-class t_function : public t_named {
+class t_function final : public t_named {
  public:
   /**
    * Constructor for t_function
@@ -60,10 +60,10 @@ class t_function : public t_named {
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_throws> exceptions = nullptr,
-      t_function_qualifier qualifier = t_function_qualifier::none);
+      t_function_qualifier qualifier = {});
 
   t_function_qualifier qualifier() const { return qualifier_; }
-  const t_type* return_type() const { return return_type_.type(); }
+  const t_type_ref* return_type() const { return &return_type_; }
   const t_paramlist* params() const { return paramlist_.get(); }
   const t_throws* exceptions() const {
     return t_throws::get_or_empty(exceptions_);
@@ -101,7 +101,7 @@ class t_function : public t_named {
       std::string name,
       std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_throws> exceptions = nullptr,
-      t_function_qualifier qualifier = t_function_qualifier::none)
+      t_function_qualifier qualifier = {})
       : t_function(
             t_type_ref(return_type),
             std::move(name),
@@ -110,8 +110,8 @@ class t_function : public t_named {
             qualifier) {}
 
   t_paramlist* get_paramlist() const { return paramlist_.get(); }
-  const t_type* get_return_type() const { return return_type(); }
-  const t_type* get_returntype() const { return return_type(); }
+  const t_type* get_return_type() const { return return_type()->get_type(); }
+  const t_type* get_returntype() const { return return_type()->get_type(); }
   const t_throws* get_xceptions() const { return exceptions(); }
   const t_throws* get_stream_xceptions() const { return stream_exceptions_; }
   const t_throws* get_sink_xceptions() const { return sink_exceptions_; }
