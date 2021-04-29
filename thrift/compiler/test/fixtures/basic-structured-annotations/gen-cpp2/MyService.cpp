@@ -28,8 +28,7 @@ folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> MyServiceSvI
 folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> MyServiceSvIf::future_first() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_first.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_first(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_first(), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) {
@@ -91,8 +90,7 @@ folly::SemiFuture<bool> MyServiceSvIf::semifuture_second(::std::int64_t p_count)
 folly::Future<bool> MyServiceSvIf::future_second(::std::int64_t p_count) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_second.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_second(p_count), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_second(p_count), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) {

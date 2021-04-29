@@ -39,8 +39,7 @@ folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/s
 folly::Future<<% > service_common/async_return_type%>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getInternalKeepAlive());
 }
 <%/service:interaction?%>
 <%#function:coroutine?%>

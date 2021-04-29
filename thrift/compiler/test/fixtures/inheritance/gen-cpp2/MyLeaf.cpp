@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> MyLeafSvIf::semifuture_do_leaf() {
 folly::Future<folly::Unit> MyLeafSvIf::future_do_leaf() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_do_leaf.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_do_leaf(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_do_leaf(), getInternalKeepAlive());
 }
 
 void MyLeafSvIf::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

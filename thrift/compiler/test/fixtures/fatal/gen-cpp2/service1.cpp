@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> service1SvIf::semifuture_method1() {
 folly::Future<folly::Unit> service1SvIf::future_method1() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method1.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method1(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method1(), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
@@ -92,8 +91,7 @@ folly::SemiFuture<folly::Unit> service1SvIf::semifuture_method2(::std::int32_t p
 folly::Future<folly::Unit> service1SvIf::future_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method2.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method2(p_x, std::move(p_y), p_z), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method2(p_x, std::move(p_y), p_z), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
@@ -154,8 +152,7 @@ folly::SemiFuture<::std::int32_t> service1SvIf::semifuture_method3() {
 folly::Future<::std::int32_t> service1SvIf::future_method3() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method3.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method3(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method3(), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method3(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
@@ -215,8 +212,7 @@ folly::SemiFuture<::std::int32_t> service1SvIf::semifuture_method4(::std::int32_
 folly::Future<::std::int32_t> service1SvIf::future_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method4.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method4(p_i, std::move(p_j), p_k), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method4(p_i, std::move(p_j), p_k), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method4(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
@@ -274,8 +270,7 @@ folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service
 folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service1SvIf::future_method5() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method5.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method5(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method5(), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) {
@@ -335,8 +330,7 @@ folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service
 folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service1SvIf::future_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method6.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method6(p_l, std::move(p_m), p_n), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method6(p_l, std::move(p_m), p_n), getInternalKeepAlive());
 }
 
 void service1SvIf::async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {

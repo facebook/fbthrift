@@ -28,8 +28,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
 folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getDataByKey0.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(p_key)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(p_key)), getInternalKeepAlive());
 }
 
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
@@ -89,8 +88,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
 folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey1(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getDataByKey1.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getDataByKey1(std::move(p_key)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getDataByKey1(std::move(p_key)), getInternalKeepAlive());
 }
 
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {

@@ -30,8 +30,7 @@ folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::Fi
 folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_method() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_method.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_method(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_method(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
@@ -91,8 +90,7 @@ folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialRespo
 folly::Future<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodAndReponse() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodAndReponse.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_methodAndReponse(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_methodAndReponse(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
@@ -152,8 +150,7 @@ folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::Fi
 folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodThrow() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodThrow.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_methodThrow(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_methodThrow(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
@@ -213,8 +210,7 @@ folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::Fi
 folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodSinkThrow() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodSinkThrow.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_methodSinkThrow(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_methodSinkThrow(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_methodSinkThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
@@ -274,8 +270,7 @@ folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::Fi
 folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodFinalThrow() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodFinalThrow.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_methodFinalThrow(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_methodFinalThrow(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_methodFinalThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
@@ -335,8 +330,7 @@ folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::Fi
 folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodBothThrow() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodBothThrow.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_methodBothThrow(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_methodBothThrow(), getInternalKeepAlive());
 }
 
 void SinkServiceSvIf::async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {

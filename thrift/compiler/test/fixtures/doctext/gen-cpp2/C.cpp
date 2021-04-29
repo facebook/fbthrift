@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
 folly::Future<folly::Unit> CSvIf::future_f() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_f.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_f(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_f(), getInternalKeepAlive());
 }
 
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
@@ -92,8 +91,7 @@ folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> CSvIf::semifut
 folly::Future<::apache::thrift::ServerStream<::cpp2::number>> CSvIf::future_numbers() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_numbers.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_numbers(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_numbers(), getInternalKeepAlive());
 }
 
 void CSvIf::async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) {
@@ -151,8 +149,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> CSvIf::semifuture_thing(::std:
 folly::Future<std::unique_ptr<::std::string>> CSvIf::future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_thing(p_a, std::move(p_b), std::move(p_c)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_thing(p_a, std::move(p_b), std::move(p_c)), getInternalKeepAlive());
 }
 
 void CSvIf::async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {

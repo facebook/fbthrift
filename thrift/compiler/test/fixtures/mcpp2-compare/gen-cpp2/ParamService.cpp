@@ -34,8 +34,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_byte_i16_pa
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_byte_i16_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_byte_i16_param(p_param1, p_param2), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_byte_i16_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) {
@@ -96,8 +95,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_param(s
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_map_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
@@ -158,8 +156,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_setlist
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
@@ -220,8 +217,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_typedef
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_map_typedef_param(p_param1), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_map_typedef_param(p_param1), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) {
@@ -282,8 +278,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_enum_param(
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_enum_param(p_param1), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_enum_param(p_param1), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) {
@@ -344,8 +339,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_struct_para
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_struct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_struct_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_struct_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
@@ -406,8 +400,7 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_listunion_p
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_listunion_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_void_ret_listunion_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_void_ret_listunion_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
@@ -468,8 +461,7 @@ folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_i32_i64_param(::st
 folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_i32_i64_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_bool_ret_i32_i64_param(p_param1, p_param2), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_bool_ret_i32_i64_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) {
@@ -529,8 +521,7 @@ folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_map_param(std::uni
 folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_bool_ret_map_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_bool_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
@@ -590,8 +581,7 @@ folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_union_param(std::u
 folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_union_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_bool_ret_union_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_bool_ret_union_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
@@ -651,8 +641,7 @@ folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_float_dou
 folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float p_param1, double p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i64_ret_float_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_i64_ret_float_double_param(p_param1, p_param2), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_i64_ret_float_double_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) {
@@ -712,8 +701,7 @@ folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_string_ty
 folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i64_ret_string_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
@@ -777,8 +765,7 @@ folly::SemiFuture<double> ParamServiceSvIf::semifuture_double_ret_setstruct_para
 folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_double_ret_setstruct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_double_ret_setstruct_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_double_ret_setstruct_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
@@ -836,8 +823,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_s
 folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_string_ret_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_string_ret_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_string_ret_string_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_string_ret_string_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
@@ -897,8 +883,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_b
 folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_binary_ret_binary_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_binary_ret_binary_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_binary_ret_binary_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
@@ -958,8 +943,7 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> Pa
 folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_map_ret_bool_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_map_ret_bool_param(p_param1), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_map_ret_bool_param(p_param1), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) {
@@ -1019,8 +1003,7 @@ folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::semifu
 folly::Future<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
@@ -1080,8 +1063,7 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int
 folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
@@ -1143,8 +1125,7 @@ folly::SemiFuture<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::semifuture
 folly::Future<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typedef_ret_i32_param(::std::int32_t p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_typedef_ret_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_typedef_ret_i32_param(p_param1), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_typedef_ret_i32_param(p_param1), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) {
@@ -1208,8 +1189,7 @@ folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_
 folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_enum_ret_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_enum_ret_double_param(p_param1), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_enum_ret_double_param(p_param1), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) {
@@ -1269,8 +1249,7 @@ folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_
 folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_enum_ret_double_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_enum_ret_double_enum_param(p_param1, p_param2), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_enum_ret_double_enum_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
@@ -1328,8 +1307,7 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> Pa
 folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> ParamServiceSvIf::future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listenum_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listenum_ret_map_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listenum_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
@@ -1393,8 +1371,7 @@ folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> Para
 folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_setstruct_ret_set_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_setstruct_ret_set_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_setstruct_ret_set_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) {
@@ -1454,8 +1431,7 @@ folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamService
 folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceSvIf::future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_union_ret_i32_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_union_ret_i32_i32_param(p_param1, p_param2), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_union_ret_i32_i32_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) {
@@ -1515,8 +1491,7 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>
 folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listunion_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listunion_string_param(std::move(p_param1)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listunion_string_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
 void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) {

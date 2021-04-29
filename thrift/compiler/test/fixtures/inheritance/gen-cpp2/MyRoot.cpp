@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> MyRootSvIf::semifuture_do_root() {
 folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_do_root.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_do_root(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_do_root(), getInternalKeepAlive());
 }
 
 void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

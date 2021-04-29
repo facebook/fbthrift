@@ -402,6 +402,9 @@ class ServerInterface : public virtual AsyncProcessorFactory,
 
   std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
 
+ protected:
+  folly::Executor::KeepAlive<> getInternalKeepAlive();
+
  private:
   class BlockingThreadManager : public folly::Executor {
    public:
@@ -533,6 +536,8 @@ class HandlerCallbackBase {
 
   template <class F>
   void runFuncInQueue(F&& func, bool oneway = false);
+
+  folly::Executor::KeepAlive<> getInternalKeepAlive();
 
  protected:
   // HACK(tudorb): Call this to set up forwarding to the event base and

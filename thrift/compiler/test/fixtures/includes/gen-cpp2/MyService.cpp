@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr<:
 folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_query.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_query(std::move(p_s), std::move(p_i)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_query(std::move(p_s), std::move(p_i)), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
@@ -92,8 +91,7 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::uniqu
 folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_has_arg_docs.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_has_arg_docs(std::move(p_s), std::move(p_i)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_has_arg_docs(std::move(p_s), std::move(p_i)), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) {

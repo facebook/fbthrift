@@ -1255,11 +1255,7 @@ auto makeFutureWithAndMaybeReschedule(CallbackBase& callback, F&& f) {
   if (fut.isReady()) {
     return fut;
   }
-  auto tm = callback.getThreadManager();
-  auto ka = tm->getKeepAlive(
-      callback.getRequestContext()->getRequestExecutionScope(),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return std::move(fut).via(std::move(ka));
+  return std::move(fut).via(callback.getInternalKeepAlive());
 }
 
 template <class F>
@@ -1278,23 +1274,17 @@ void async_tm_future(CallbackPtr<F> callback, F&& f) {
 
 template <class F>
 void async_tm_semifuture_oneway(CallbackBasePtr callback, F&& f) {
-  auto scope = callback->getRequestContext()->getRequestExecutionScope();
-  auto ka = callback->getThreadManager()->getKeepAlive(
-      std::move(scope),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   apache::thrift::detail::si::future(
-      folly::makeSemiFutureWith(std::forward<F>(f)), std::move(ka))
+      folly::makeSemiFutureWith(std::forward<F>(f)),
+      callback->getInternalKeepAlive())
       .thenValueInline([cb = std::move(callback)](auto&&) {});
 }
 
 template <class F>
 void async_tm_semifuture(CallbackPtr<F> callback, F&& f) {
-  auto scope = callback->getRequestContext()->getRequestExecutionScope();
-  auto ka = callback->getThreadManager()->getKeepAlive(
-      std::move(scope),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   apache::thrift::detail::si::future(
-      folly::makeSemiFutureWith(std::forward<F>(f)), std::move(ka))
+      folly::makeSemiFutureWith(std::forward<F>(f)),
+      callback->getInternalKeepAlive())
       .thenTryInline([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
         cb->complete(std::move(_ret));
       });
@@ -1304,12 +1294,8 @@ void async_tm_semifuture(CallbackPtr<F> callback, F&& f) {
 template <typename T>
 void async_tm_coro_oneway(
     folly::coro::Task<T>&& task, CallbackBasePtr&& callback) {
-  auto scope = callback->getRequestContext()->getRequestExecutionScope();
-  auto executor = callback->getThreadManager()->getKeepAlive(
-      std::move(scope),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   std::move(task)
-      .scheduleOn(std::move(executor))
+      .scheduleOn(callback->getInternalKeepAlive())
       .startInlineUnsafe([callback = std::move(callback)](
                              folly::Try<folly::lift_unit_t<T>>&&) mutable {});
 }
@@ -1318,12 +1304,8 @@ template <typename T>
 void async_tm_coro(
     folly::coro::Task<T>&& task,
     std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
-  auto scope = callback->getRequestContext()->getRequestExecutionScope();
-  auto executor = callback->getThreadManager()->getKeepAlive(
-      std::move(scope),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   std::move(task)
-      .scheduleOn(std::move(executor))
+      .scheduleOn(callback->getInternalKeepAlive())
       .startInlineUnsafe([callback = std::move(callback)](
                              folly::Try<folly::lift_unit_t<T>>&& tryResult) {
         callback->complete(std::move(tryResult));

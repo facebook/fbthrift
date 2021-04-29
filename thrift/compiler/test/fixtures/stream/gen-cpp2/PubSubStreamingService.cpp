@@ -30,8 +30,7 @@ folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamin
 folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_returnstream.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_returnstream(p_i32_from, p_i32_to), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_returnstream(p_i32_from, p_i32_to), getInternalKeepAlive());
 }
 
 void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
@@ -91,8 +90,7 @@ folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamin
 folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_streamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_streamthrows(p_foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_streamthrows(p_foo), getInternalKeepAlive());
 }
 
 void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
@@ -152,8 +150,7 @@ folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamin
 folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_boththrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_boththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_boththrows(p_foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_boththrows(p_foo), getInternalKeepAlive());
 }
 
 void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
@@ -213,8 +210,7 @@ folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::st
 folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> PubSubStreamingServiceSvIf::future_responseandstreamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(p_foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(p_foo), getInternalKeepAlive());
 }
 
 void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {

@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::uni
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_mapList.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_mapList(std::move(p_foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_mapList(std::move(p_foo)), getInternalKeepAlive());
 }
 
 void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo) {
@@ -92,8 +91,7 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::uniq
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_mapSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(p_foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(p_foo)), getInternalKeepAlive());
 }
 
 void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::set<::std::int32_t>>> p_foo) {
@@ -154,8 +152,7 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::uni
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listMap.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listMap(std::move(p_foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listMap(std::move(p_foo)), getInternalKeepAlive());
 }
 
 void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> p_foo) {
@@ -216,8 +213,7 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::uni
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listSet.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listSet(std::move(p_foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listSet(std::move(p_foo)), getInternalKeepAlive());
 }
 
 void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_foo) {
@@ -278,8 +274,7 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::uni
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_turtles.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_turtles(std::move(p_foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_turtles(std::move(p_foo)), getInternalKeepAlive());
 }
 
 void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo) {

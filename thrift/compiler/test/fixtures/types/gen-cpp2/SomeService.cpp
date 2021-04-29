@@ -28,8 +28,7 @@ folly::SemiFuture<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>> S
 folly::Future<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::future_bounce_map(std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> p_m) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bounce_map.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(p_m)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(p_m)), getInternalKeepAlive());
 }
 
 void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> p_m) {
@@ -89,8 +88,7 @@ folly::SemiFuture<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::
 folly::Future<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<::std::vector<::std::int64_t>> p_r) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_binary_keyed_map.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(p_r)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(p_r)), getInternalKeepAlive());
 }
 
 void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_r) {

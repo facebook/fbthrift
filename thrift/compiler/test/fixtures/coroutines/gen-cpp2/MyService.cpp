@@ -30,8 +30,7 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_ping() {
 folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_ping(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_ping(), getInternalKeepAlive());
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -144,8 +143,7 @@ folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getR
 folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getRandomData() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getRandomData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getRandomData(), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getRandomData(), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
@@ -207,8 +205,7 @@ folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(::std::int64_t p_i
 folly::Future<bool> MyServiceSvIf::future_hasDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_hasDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), getInternalKeepAlive());
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -326,8 +323,7 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(::std::int6
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_putDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), getInternalKeepAlive());
 }
 
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {

@@ -358,6 +358,18 @@ void ServerInterface::BlockingThreadManager::keepAliveRelease() noexcept {
   }
 }
 
+folly::Executor::KeepAlive<> ServerInterface::getInternalKeepAlive() {
+  return getThreadManager()->getKeepAlive(
+      getRequestContext()->getRequestExecutionScope(),
+      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+}
+
+folly::Executor::KeepAlive<> HandlerCallbackBase::getInternalKeepAlive() {
+  return getThreadManager()->getKeepAlive(
+      getRequestContext()->getRequestExecutionScope(),
+      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+}
+
 HandlerCallbackBase::~HandlerCallbackBase() {
   // req must be deleted in the eb
   if (req_) {

@@ -30,8 +30,7 @@ folly::SemiFuture<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std:
 folly::Future<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> ServiceSvIf::future_func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>> p_arg1, std::unique_ptr<::cpp2::Foo> p_arg2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_func.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  auto ka = getThreadManager()->getKeepAlive(getRequestContext()->getRequestExecutionScope(), apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_func(std::move(p_arg1), std::move(p_arg2)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_func(std::move(p_arg1), std::move(p_arg2)), getInternalKeepAlive());
 }
 
 void ServiceSvIf::async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>> callback, std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>> p_arg1, std::unique_ptr<::cpp2::Foo> p_arg2) {
