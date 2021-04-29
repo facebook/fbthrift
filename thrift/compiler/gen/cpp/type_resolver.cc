@@ -129,6 +129,9 @@ std::string type_resolver::gen_storage_type(
     case reference_type::shared_const:
       return detail::gen_template_type(
           "::std::shared_ptr", {"const " + type_name});
+    case reference_type::boxed:
+      return detail::gen_template_type(
+          "::apache::thrift::detail::boxed_value_ptr", {type_name});
     default:
       throw std::runtime_error("unknown cpp ref_type");
   }

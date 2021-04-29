@@ -16,6 +16,28 @@
 
 %><%#struct:fields%>
 <%#field:cpp_ref?%>
+<%#field:boxed_ref?%>
+  template <typename..., typename T = <%field:cpp_storage_type%>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> <%field:cpp_name%>_ref() const& {
+    return {this-><% > common/field_value%>};
+  }
+
+  template <typename..., typename T = <%field:cpp_storage_type%>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
+    return {std::move(this-><% > common/field_value%>)};
+  }
+
+  template <typename..., typename T = <%field:cpp_storage_type%>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> <%field:cpp_name%>_ref() & {
+    return {this-><% > common/field_value%>};
+  }
+
+  template <typename..., typename T = <%field:cpp_storage_type%>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> <%field:cpp_name%>_ref() && {
+    return {std::move(this-><% > common/field_value%>)};
+  }
+<%/field:boxed_ref?%>
+<%^field:boxed_ref?%>
   template <typename ..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE T& <%field:cpp_name%>_ref() & { return <% > common/field_value%>; }
 
@@ -27,6 +49,7 @@
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE const T&& <%field:cpp_name%>_ref() const&& { return std::move(<% > common/field_value%>); }
+<%/field:boxed_ref?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
 <%#field:optional?%>

@@ -23,7 +23,10 @@
   if it's optional.
 
 }}{{#field:has_ref_accessor?}}{{!
-}}{{#field:optional?}}{{field:py_name}}_ref().value_unchecked(){{/field:optional?}}{{!
+}}{{#field:optional?}}{{!
+}}{{#field:boxed_ref?}}{{field:py_name}}_ref().value(){{/field:boxed_ref?}}{{!
+}}{{^field:boxed_ref?}}{{field:py_name}}_ref().value_unchecked(){{/field:boxed_ref?}}{{!
+}}{{/field:optional?}}{{!
 }}{{^field:optional?}}{{field:py_name}}_ref().value(){{/field:optional?}}{{!
 }}{{/field:has_ref_accessor?}}{{!
 }}{{^field:has_ref_accessor?}}{{field:py_name}}{{/field:has_ref_accessor?}}

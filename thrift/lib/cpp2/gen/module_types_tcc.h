@@ -23,6 +23,7 @@
 #include <folly/Traits.h>
 
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
@@ -60,6 +61,13 @@ auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T>>) {
 template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T const>>) {
   return std::make_shared<T>();
+}
+
+template <typename..., class T>
+auto make_mutable_smart_ptr(folly::tag_t<boxed_value_ptr<T>>) {
+  // Make sure we invoke a constructor that allocates the unique_ptr so that
+  // this overload behaves the same as the other ones.
+  return boxed_value_ptr<T>(T());
 }
 
 template <class T>

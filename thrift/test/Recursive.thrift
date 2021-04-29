@@ -54,3 +54,7 @@ struct StructUsingOtherNamespace {
     cpp2.ref = "true",
   );
 }
+
+struct StructUsingAnnotation {
+  1: optional MyField field (cpp.box);
+}

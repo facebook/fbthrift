@@ -33,6 +33,10 @@ const std::string* find_ref_type_annot(const t_node* node) {
 } // namespace detail
 
 reference_type find_ref_type(const t_field* node) {
+  if (node->has_annotation("cpp.box")) {
+    return reference_type::boxed;
+  }
+
   // Look for a specific ref type annotation.
   if (const std::string* ref_type = detail::find_ref_type_annot(node)) {
     if (*ref_type == "unique") {

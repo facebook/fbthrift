@@ -31,6 +31,7 @@ enum class reference_type {
   unique,
   shared_const,
   shared_mutable,
+  boxed,
 
   // TODO(afuller): Remove this and always throw an exception instead.
   unrecognized, // Got some unrecognized string value.

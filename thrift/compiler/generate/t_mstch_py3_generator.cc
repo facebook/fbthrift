@@ -18,6 +18,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
@@ -775,6 +776,7 @@ class mstch_py3_field : public mstch_field {
             {"field:cppName", &mstch_py3_field::cppName},
             {"field:hasModifiedName?", &mstch_py3_field::hasModifiedName},
             {"field:hasPyName?", &mstch_py3_field::hasPyName},
+            {"field:boxed_ref?", &mstch_py3_field::boxed_ref},
         });
   }
 
@@ -815,6 +817,10 @@ class mstch_py3_field : public mstch_field {
 
   bool has_default_value() {
     return !is_ref() && (field_->get_value() != nullptr || !is_optional());
+  }
+
+  mstch::node boxed_ref() {
+    return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
   }
 
  protected:

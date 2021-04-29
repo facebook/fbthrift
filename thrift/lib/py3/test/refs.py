@@ -72,3 +72,8 @@ class RefTest(unittest.TestCase):
         bar, baz = ComplexRef(name="bar"), ComplexRef(name="baz")
         x = ComplexRef(name="foo", set_const_shared_ref={bar, baz})
         self.assertEqual(x.set_const_shared_ref, {bar, baz})
+
+    def test_recursive(self) -> None:
+        bar = ComplexRef(name="bar")
+        baz = ComplexRef(recursive=bar)
+        self.assertEqual(baz.recursive, bar)

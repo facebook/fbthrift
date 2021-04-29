@@ -689,3 +689,73 @@ class CompilerFailureTest(unittest.TestCase):
                 + " marked as lazy, since doing so won't bring any benefit.\n"
             ),
         )
+
+    def test_recursive_union(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                union A {
+                    1: i64 field (cpp.box)
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:2] Unions cannot contain fields with the "
+                "`cpp.box` annotation. Remove the annotation from `field`.\n"
+            ),
+        )
+
+    def test_recursive_ref(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                    1: optional i64 field (cpp.ref, cpp.box)
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:2] The `cpp.box` annotation cannot be combined "
+                "with the `ref` or `ref_type` annotations. Remove one of the "
+                "annotations from `field`.\n"
+            ),
+        )
+
+    def test_recursive_optional(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                    1: i64 field (cpp.box)
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:2] The `cpp.box` annotation can only be used with "
+                "optional fields. Make sure field is optional.\n"
+            ),
+        )

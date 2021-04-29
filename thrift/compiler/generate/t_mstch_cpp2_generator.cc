@@ -589,6 +589,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:visibility", &mstch_cpp2_field::visibility},
             {"field:metadata_name", &mstch_cpp2_field::metadata_name},
             {"field:lazy?", &mstch_cpp2_field::lazy},
+            {"field:boxed_ref?", &mstch_cpp2_field::boxed_ref},
         });
   }
   mstch::node name_hash() {
@@ -612,6 +613,9 @@ class mstch_cpp2_field : public mstch_field {
         field_->get_req() != t_field::e_req::optional;
   }
   mstch::node lazy() { return field_is_lazy(field_); }
+  mstch::node boxed_ref() {
+    return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
+  }
   mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
   mstch::node cpp_ref_unique_either() {
     return boost::get<bool>(cpp_ref_unique()) ||
