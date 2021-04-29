@@ -37,7 +37,7 @@ class t_program;
  * whole thing out.
  *
  */
-class t_const : public t_named {
+class t_const final : public t_named {
  public:
   /**
    * Constructor for t_const
@@ -62,30 +62,28 @@ class t_const : public t_named {
     }
   }
 
-  /**
-   * t_const getters
-   */
-  t_program* get_program() const { return program_; }
-
-  const t_type* get_type() const { return type_.type(); }
-
-  t_const_value* get_value() const { return value_.get(); }
+  const t_program* program() const { return program_; }
+  const t_type_ref* type() const { return &type_; }
+  const t_const_value* value() const { return value_.get(); }
 
  private:
   t_program* program_;
   t_type_ref type_;
   std::unique_ptr<t_const_value> value_;
 
- public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-
+ public:
   t_const(
       t_program* program,
       const t_type* type,
       std::string name,
       std::unique_ptr<t_const_value> value)
       : t_const(program, t_type_ref(type), std::move(name), std::move(value)) {}
+
+  t_program* get_program() const { return program_; }
+  const t_type* get_type() const { return type_.type(); }
+  t_const_value* get_value() const { return value_.get(); }
 };
 
 } // namespace compiler
