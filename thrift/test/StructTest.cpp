@@ -30,29 +30,6 @@ TEST_F(StructTest, compilation_terse_writes_refs_shared) {
   (void)a;
 }
 
-TEST_F(StructTest, copy_ctor_refs_annot_cpp_noexcept_move_ctor) {
-  {
-    BasicRefsAnnotCppNoexceptMoveCtor a;
-    a.def_field = std::make_unique<HasInt>();
-    a.def_field->field = 3;
-
-    BasicRefsAnnotCppNoexceptMoveCtor b(a);
-    EXPECT_EQ(3, b.def_field->field);
-  }
-}
-
-TEST_F(StructTest, copy_assign_refs_annot_cpp_noexcept_move_ctor) {
-  {
-    BasicRefsAnnotCppNoexceptMoveCtor a;
-    a.def_field = std::make_unique<HasInt>();
-    a.def_field->field = 3;
-
-    BasicRefsAnnotCppNoexceptMoveCtor b;
-    b = a;
-    EXPECT_EQ(3, b.def_field->field);
-  }
-}
-
 TEST_F(StructTest, equal_to) {
   std::equal_to<Basic> op;
 
