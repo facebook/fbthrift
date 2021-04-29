@@ -27,11 +27,11 @@ namespace compiler {
  * A list is a lightweight container type that just wraps another data type.
  *
  */
-class t_list : public t_container {
+class t_list final : public t_container {
  public:
   explicit t_list(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
-  const t_type* get_elem_type() const { return elem_type_.type(); }
+  const t_type_ref* elem_type() const { return &elem_type_; }
 
   type container_type() const override { return type::t_list; }
   std::string get_full_name() const override {
@@ -41,11 +41,11 @@ class t_list : public t_container {
  private:
   t_type_ref elem_type_;
 
- public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-
+ public:
   explicit t_list(const t_type* elem_type) : t_list(t_type_ref(elem_type)) {}
+  const t_type* get_elem_type() const { return elem_type()->type(); }
 };
 
 } // namespace compiler

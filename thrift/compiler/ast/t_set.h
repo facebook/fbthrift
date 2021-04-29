@@ -26,11 +26,11 @@ namespace compiler {
  * A set is a lightweight container type that just wraps another data type.
  *
  */
-class t_set : public t_container {
+class t_set final : public t_container {
  public:
   explicit t_set(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
-  const t_type* get_elem_type() const { return elem_type_.type(); }
+  const t_type_ref* elem_type() const { return &elem_type_; }
 
   type container_type() const override { return type::t_set; }
   std::string get_full_name() const override {
@@ -40,11 +40,11 @@ class t_set : public t_container {
  private:
   t_type_ref elem_type_;
 
- public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-
+ public:
   explicit t_set(const t_type* elem_type) : t_set(t_type_ref(elem_type)) {}
+  const t_type* get_elem_type() const { return elem_type()->type(); }
 };
 
 } // namespace compiler

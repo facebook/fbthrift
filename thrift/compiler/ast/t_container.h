@@ -38,28 +38,15 @@ class t_container : public t_type {
     return type_name(static_cast<t_type::type>(container_type));
   }
 
-  t_container() = default;
-
   virtual type container_type() const = 0;
 
-  void set_cpp_name(std::string cpp_name) {
-    cpp_name_ = std::move(cpp_name);
-    has_cpp_name_ = true;
-  }
-
-  bool has_cpp_name() const { return has_cpp_name_; }
-
-  const std::string& get_cpp_name() const { return cpp_name_; }
-
- private:
-  std::string cpp_name_;
-  bool has_cpp_name_ = false;
+ protected:
+  t_container() = default;
 
   // TODO(afuller): Remove everything below here. It is provided only for
   // backwards compatibility.
  public:
   bool is_container() const override { return true; }
-
   bool is_set() const final { return container_type() == type::t_set; }
   bool is_list() const final { return container_type() == type::t_list; }
   bool is_map() const final { return container_type() == type::t_map; }
