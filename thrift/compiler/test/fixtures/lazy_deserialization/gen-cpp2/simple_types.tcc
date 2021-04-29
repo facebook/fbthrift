@@ -201,7 +201,7 @@ const ::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() cons
     return field1;
   }
 
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field1);
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
   if (!__fbthrift_isDeserialized_.field1) {
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
 
@@ -226,7 +226,7 @@ const ::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() const {
     return field3;
   }
 
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_.field3);
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
   if (!__fbthrift_isDeserialized_.field3) {
     auto* ptr = &this->field3;
     this->field3 = ::std::vector<::std::int32_t>();

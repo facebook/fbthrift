@@ -226,10 +226,7 @@ class Foo final  {
     std::atomic<bool> field3{true};
   } __fbthrift_isDeserialized_;
 
-  mutable struct __fbthrift_DeserializationMutex {
-    std::mutex field1;
-    std::mutex field3;
-  } __fbthrift_deserializationMutex_;
+  mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1() const;
   ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1();

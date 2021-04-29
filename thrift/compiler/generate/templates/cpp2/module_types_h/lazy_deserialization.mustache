@@ -30,11 +30,7 @@
 <%/field:lazy?%><%/struct:fields%>
   } __fbthrift_isDeserialized_;
 
-  mutable struct __fbthrift_DeserializationMutex {
-<%#struct:fields%><%#field:lazy?%>
-    std::mutex <%field:cpp_name%>;
-<%/field:lazy?%><%/struct:fields%>
-  } __fbthrift_deserializationMutex_;
+  mutable std::mutex __fbthrift_deserializationMutex_;
 
 <%#struct:fields%><%#field:lazy?%>
   const <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>() const;
