@@ -57,6 +57,8 @@ _readField_field1:
     __fbthrift_serializedData_.field1 = *iobuf;
     __fbthrift_isDeserialized_.field1 = false;
   } else {
+    __fbthrift_serializedData_.field1.clear();
+    __fbthrift_isDeserialized_.field1 = true;
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
     this->field1 = std::move(ptr);
@@ -97,6 +99,8 @@ _readField_field3:
     __fbthrift_serializedData_.field3 = *iobuf;
     __fbthrift_isDeserialized_.field3 = false;
   } else {
+    __fbthrift_serializedData_.field3.clear();
+    __fbthrift_isDeserialized_.field3 = true;
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);

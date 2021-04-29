@@ -147,4 +147,16 @@ TEST(Serialization, Comparison) {
   }
 }
 
+TEST(Serialization, Evolution) {
+  LazyFoo foo;
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(gen<LazyFoo>()), foo);
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(Foo()), foo);
+  EXPECT_TRUE(foo.field1_ref()->empty());
+  EXPECT_TRUE(foo.field2_ref()->empty());
+  EXPECT_TRUE(foo.field3_ref()->empty());
+  EXPECT_TRUE(foo.field4_ref()->empty());
+}
+
 } // namespace apache::thrift::test
