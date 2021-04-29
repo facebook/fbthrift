@@ -22,9 +22,8 @@ void service3SvIf::methodA() {
 folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodA() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodA.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return methodA();
-  });
+  methodA();
+  return folly::makeSemiFuture();
 }
 
 folly::Future<folly::Unit> service3SvIf::future_methodA() {
@@ -40,39 +39,38 @@ void service3SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodA.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodA.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodA();
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodA(); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodA.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodA();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodA();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         methodA();
         callback->done();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -83,9 +81,8 @@ void service3SvIf::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cp
 folly::SemiFuture<folly::Unit> service3SvIf::semifuture_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodB.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return methodB(p_x, std::move(p_y), p_z);
-  });
+  methodB(p_x, std::move(p_y), p_z);
+  return folly::makeSemiFuture();
 }
 
 folly::Future<folly::Unit> service3SvIf::future_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
@@ -101,39 +98,38 @@ void service3SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodB.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodB.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodB(p_x, std::move(p_y), p_z);
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodB(p_x, std::move(p_y), p_z); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodB.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodB(p_x, std::move(p_y), p_z);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodB(p_x, std::move(p_y), p_z);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         methodB(p_x, std::move(p_y), p_z);
         callback->done();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -144,9 +140,7 @@ void service3SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallb
 folly::SemiFuture<::std::int32_t> service3SvIf::semifuture_methodC() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodC.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return methodC();
-  });
+  return methodC();
 }
 
 folly::Future<::std::int32_t> service3SvIf::future_methodC() {
@@ -162,38 +156,37 @@ void service3SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodC.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodC.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodC();
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodC(); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
-        callback->result(methodC());
-      } catch (...) {
-        callback->exception(std::current_exception());
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodC.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
       }
-      return;
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodC();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodC();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(methodC());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -204,9 +197,7 @@ void service3SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallb
 folly::SemiFuture<::std::int32_t> service3SvIf::semifuture_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodD.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return methodD(p_i, std::move(p_j), p_k);
-  });
+  return methodD(p_i, std::move(p_j), p_k);
 }
 
 folly::Future<::std::int32_t> service3SvIf::future_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
@@ -222,38 +213,37 @@ void service3SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodD.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodD.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodD(p_i, std::move(p_j), p_k);
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodD(p_i, std::move(p_j), p_k); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
-        callback->result(methodD(p_i, std::move(p_j), p_k));
-      } catch (...) {
-        callback->exception(std::current_exception());
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodD.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
       }
-      return;
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodD(p_i, std::move(p_j), p_k);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodD(p_i, std::move(p_j), p_k);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(methodD(p_i, std::move(p_j), p_k));
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -264,7 +254,9 @@ void service3SvIf::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {
 folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service3SvIf::semifuture_methodE() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodE.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::test_cpp2::cpp_reflection::struct2& _return) { methodE(_return); });
+  auto ret = std::make_unique<::test_cpp2::cpp_reflection::struct2>();
+  methodE(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
 folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service3SvIf::future_methodE() {
@@ -280,40 +272,39 @@ void service3SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodE.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodE.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodE();
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodE(); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodE.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodE();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodE();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         ::test_cpp2::cpp_reflection::struct2 _return;
         methodE(_return);
         callback->result(_return);
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -324,7 +315,9 @@ void service3SvIf::methodF(::test_cpp2::cpp_reflection::struct3& /*_return*/, ::
 folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct3>> service3SvIf::semifuture_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodF.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::test_cpp2::cpp_reflection::struct3& _return) { methodF(_return, p_l, std::move(p_m), p_n); });
+  auto ret = std::make_unique<::test_cpp2::cpp_reflection::struct3>();
+  methodF(*ret, p_l, std::move(p_m), p_n);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
 folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct3>> service3SvIf::future_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
@@ -340,40 +333,39 @@ void service3SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallb
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_methodF.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_methodF.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_methodF(p_l, std::move(p_m), p_n);
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_methodF(p_l, std::move(p_m), p_n); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_methodF.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_methodF(p_l, std::move(p_m), p_n);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_methodF(p_l, std::move(p_m), p_n);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         ::test_cpp2::cpp_reflection::struct3 _return;
         methodF(_return, p_l, std::move(p_m), p_n);
         callback->result(_return);
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 

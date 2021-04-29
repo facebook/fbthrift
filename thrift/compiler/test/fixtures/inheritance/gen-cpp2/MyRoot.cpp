@@ -22,9 +22,8 @@ void MyRootSvIf::do_root() {
 folly::SemiFuture<folly::Unit> MyRootSvIf::semifuture_do_root() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_do_root.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return do_root();
-  });
+  do_root();
+  return folly::makeSemiFuture();
 }
 
 folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
@@ -40,39 +39,38 @@ void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallbac
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_do_root.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_do_root.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_do_root();
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_do_root(); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_do_root.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_do_root();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_do_root();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         do_root();
         callback->done();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 

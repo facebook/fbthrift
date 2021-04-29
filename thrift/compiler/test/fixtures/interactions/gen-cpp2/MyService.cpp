@@ -22,9 +22,8 @@ void MyServiceSvIf::foo() {
 folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_foo() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return foo();
-  });
+  foo();
+  return folly::makeSemiFuture();
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_foo() {
@@ -40,39 +39,38 @@ void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_foo.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
-      __fbthrift_invocation_foo.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
-    }
-    case apache::thrift::detail::si::InvocationType::Future:
-    {
-      apache::thrift::detail::si::async_tm_future(std::move(callback), [&] {
-        return future_foo();
-      });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_foo(); });
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_foo.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_foo();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_foo();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         foo();
         callback->done();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -89,9 +87,7 @@ void MyServiceSvNull::foo() {
 folly::SemiFuture<::std::int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return frobnicate();
-  });
+  return frobnicate();
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -115,71 +111,57 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_frobnicate.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
 #if FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
+        __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
         apache::thrift::detail::si::async_tm_coro(
           co_frobnicate(params),
           std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
-      }
-      return;
+        return;
 #else // FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
+        __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
 #endif // FOLLY_HAS_COROUTINES
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_frobnicate(); });
-      return;
-    }
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_frobnicate();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
 #if FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::CoroParam:
-    {
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_frobnicate(params),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
+        auto task = co_frobnicate(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Coro:
-    {
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_frobnicate(),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_frobnicate();
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
 #endif // FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         callback->result(frobnicate());
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -190,9 +172,8 @@ void MyServiceSvIf::MyInteractionIf::ping() {
 folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return ping();
-  });
+  ping();
+  return folly::makeSemiFuture();
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -216,71 +197,57 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_ping.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
 #if FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
+        __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
         apache::thrift::detail::si::async_tm_coro_oneway(
           co_ping(params),
           std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
-      }
-      return;
+        return;
 #else // FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
+        __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
 #endif // FOLLY_HAS_COROUTINES
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture_oneway(std::move(callback), [&] {
-        return semifuture_ping(); });
-      return;
-    }
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_ping();
+        apache::thrift::detail::si::async_tm_semifuture_oneway(std::move(callback), std::move(fut));
+        return;
+      }
 #if FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::CoroParam:
-    {
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
-        apache::thrift::detail::si::async_tm_coro_oneway(
-          co_ping(params),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
+        auto task = co_ping(params);
+        apache::thrift::detail::si::async_tm_coro_oneway(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Coro:
-    {
-      try {
-        apache::thrift::detail::si::async_tm_coro_oneway(
-          co_ping(),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_ping();
+        apache::thrift::detail::si::async_tm_coro_oneway(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
 #endif // FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         ping();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -291,9 +258,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
 folly::SemiFuture<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return truthify();
-  });
+  return truthify();
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -317,71 +282,57 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_truthify.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
 #if FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_truthify.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
+        __fbthrift_invocation_truthify.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
         apache::thrift::detail::si::async_tm_coro(
           co_truthify(params),
           std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
-      }
-      return;
+        return;
 #else // FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_truthify.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
+        __fbthrift_invocation_truthify.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
 #endif // FOLLY_HAS_COROUTINES
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_truthify(); });
-      return;
-    }
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_truthify();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
 #if FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::CoroParam:
-    {
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_truthify(params),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
+        auto task = co_truthify(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Coro:
-    {
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_truthify(),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_truthify();
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
 #endif // FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         callback->result(truthify());
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -392,9 +343,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
 folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return encode();
-  });
+  return encode();
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -418,71 +367,57 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_encode.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
 #if FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_encode.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
+        __fbthrift_invocation_encode.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
         apache::thrift::detail::si::async_tm_coro(
           co_encode(params),
           std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
-      }
-      return;
+        return;
 #else // FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_encode.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
+        __fbthrift_invocation_encode.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
 #endif // FOLLY_HAS_COROUTINES
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_encode(); });
-      return;
-    }
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_encode();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
 #if FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::CoroParam:
-    {
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_encode(params),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
+        auto task = co_encode(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Coro:
-    {
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_encode(),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_encode();
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
 #endif // FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         callback->result(encode());
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 
@@ -509,9 +444,8 @@ void MyServiceSvIf::SerialInteractionIf::frobnicate() {
 folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  return apache::thrift::detail::si::semifuture([&] {
-    return frobnicate();
-  });
+  frobnicate();
+  return folly::makeSemiFuture();
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -535,72 +469,58 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
   // for all cases.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
   auto invocationType = __fbthrift_invocation_frobnicate.load(std::memory_order_relaxed);
-  switch (invocationType) {
-    case apache::thrift::detail::si::InvocationType::AsyncTm:
-    {
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
 #if FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
+        __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
         apache::thrift::detail::si::async_tm_coro(
           co_frobnicate(params),
           std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
-      }
-      return;
+        return;
 #else // FOLLY_HAS_COROUTINES
-      __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-      FOLLY_FALLTHROUGH;
+        __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
 #endif // FOLLY_HAS_COROUTINES
-    }
-    case apache::thrift::detail::si::InvocationType::SemiFuture:
-    {
-      apache::thrift::detail::si::async_tm_semifuture(std::move(callback), [&] {
-        return semifuture_frobnicate(); });
-      return;
-    }
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_frobnicate();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
 #if FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::CoroParam:
-    {
-      apache::thrift::RequestParams params{callback->getRequestContext(),
-        callback->getThreadManager(), callback->getEventBase()};
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_frobnicate(params),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase()};
+        auto task = co_frobnicate(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
-    case apache::thrift::detail::si::InvocationType::Coro:
-    {
-      try {
-        apache::thrift::detail::si::async_tm_coro(
-          co_frobnicate(),
-          std::move(callback));
-      } catch (...) {
-        callback->exception(std::current_exception());
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_frobnicate();
+        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        return;
       }
-      return;
-    }
 #endif // FOLLY_HAS_COROUTINES
-    case apache::thrift::detail::si::InvocationType::Sync:
-    {
-      try {
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
         frobnicate();
         callback->done();
-      } catch (...) {
-        callback->exception(std::current_exception());
+        return;
       }
-      return;
+      default:
+      {
+        folly::assume_unreachable();
+      }
     }
-    default:
-    {
-      folly::assume_unreachable();
-    }
+  } catch (...) {
+    callback->exception(std::current_exception());
   }
 }
 

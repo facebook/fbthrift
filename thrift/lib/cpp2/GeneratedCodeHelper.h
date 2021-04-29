@@ -1174,30 +1174,6 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
 //  ServerInterface helpers
 namespace detail {
 namespace si {
-
-template <typename F>
-using ret = typename folly::invoke_result_t<F>;
-template <typename F>
-using ret_lift = typename folly::lift_unit<ret<F>>::type;
-template <typename F>
-using fut_ret = typename ret<F>::value_type;
-template <typename F>
-using fut_ret_drop = typename folly::drop_unit<fut_ret<F>>::type;
-template <typename T>
-struct action_traits_impl;
-template <typename C, typename A>
-struct action_traits_impl<void (C::*)(A&) const> {
-  using arg_type = A;
-};
-template <typename C, typename A>
-struct action_traits_impl<void (C::*)(A&)> {
-  using arg_type = A;
-};
-template <typename F>
-using action_traits = action_traits_impl<decltype(&F::operator())>;
-template <typename F>
-using arg = typename action_traits<F>::arg_type;
-
 template <typename T>
 folly::Future<T> future(
     folly::SemiFuture<T>&& future, folly::Executor::KeepAlive<> keepAlive) {
@@ -1207,41 +1183,12 @@ folly::Future<T> future(
   return std::move(future).via(keepAlive);
 }
 
-template <class F>
-folly::SemiFuture<ret_lift<F>> semifuture(F&& f) {
-  return folly::makeSemiFutureWith(std::forward<F>(f));
-}
-
-template <class F>
-arg<F> returning(F&& f) {
-  arg<F> ret;
-  f(ret);
-  return ret;
-}
-
-template <class F>
-folly::SemiFuture<arg<F>> semifuture_returning(F&& f) {
-  return semifuture([&]() { return returning(std::forward<F>(f)); });
-}
-
-template <class F>
-std::unique_ptr<arg<F>> returning_uptr(F&& f) {
-  auto ret = std::make_unique<arg<F>>();
-  f(*ret);
-  return ret;
-}
-
-template <class F>
-folly::SemiFuture<std::unique_ptr<arg<F>>> semifuture_returning_uptr(F&& f) {
-  return semifuture([&]() { return returning_uptr(std::forward<F>(f)); });
-}
-
 using CallbackBase = HandlerCallbackBase;
 using CallbackBasePtr = std::unique_ptr<CallbackBase>;
-template <class R>
-using Callback = HandlerCallback<fut_ret_drop<R>>;
-template <class R>
-using CallbackPtr = std::unique_ptr<Callback<R>>;
+template <typename T>
+using Callback = HandlerCallback<T>;
+template <typename T>
+using CallbackPtr = std::unique_ptr<Callback<T>>;
 
 inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
   si->setEventBase(callback->getEventBase());
@@ -1249,51 +1196,62 @@ inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
   si->setRequestContext(callback->getRequestContext());
 }
 
-template <class F>
-auto makeFutureWithAndMaybeReschedule(CallbackBase& callback, F&& f) {
-  auto fut = folly::makeFutureWith(std::forward<F>(f));
-  if (fut.isReady()) {
-    return fut;
+inline void async_tm_future_oneway(
+    CallbackBasePtr callback, folly::Future<folly::Unit>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenValueInline([cb = std::move(callback)](auto&&) {});
   }
-  return std::move(fut).via(callback.getInternalKeepAlive());
 }
 
-template <class F>
-void async_tm_future_oneway(CallbackBasePtr callback, F&& f) {
-  makeFutureWithAndMaybeReschedule(*callback.get(), std::forward<F>(f))
-      .thenValueInline([cb = std::move(callback)](auto&&) {});
+template <typename T>
+void async_tm_future(
+    CallbackPtr<T> callback, folly::Future<folly::lift_unit_t<T>>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenTryInline([cb = std::move(callback)](
+                           folly::Try<folly::lift_unit_t<T>>&& ret) {
+          cb->complete(std::move(ret));
+        });
+  } else {
+    callback->complete(std::move(fut).result());
+  }
 }
 
-template <class F>
-void async_tm_future(CallbackPtr<F> callback, F&& f) {
-  makeFutureWithAndMaybeReschedule(*callback.get(), std::forward<F>(f))
-      .thenTryInline([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-        cb->complete(std::move(_ret));
-      });
+inline void async_tm_semifuture_oneway(
+    CallbackBasePtr callback, folly::SemiFuture<folly::Unit>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenValueInline([cb = std::move(callback)](auto&&) {});
+  }
 }
 
-template <class F>
-void async_tm_semifuture_oneway(CallbackBasePtr callback, F&& f) {
-  apache::thrift::detail::si::future(
-      folly::makeSemiFutureWith(std::forward<F>(f)),
-      callback->getInternalKeepAlive())
-      .thenValueInline([cb = std::move(callback)](auto&&) {});
-}
-
-template <class F>
-void async_tm_semifuture(CallbackPtr<F> callback, F&& f) {
-  apache::thrift::detail::si::future(
-      folly::makeSemiFutureWith(std::forward<F>(f)),
-      callback->getInternalKeepAlive())
-      .thenTryInline([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-        cb->complete(std::move(_ret));
-      });
+template <typename T>
+void async_tm_semifuture(
+    CallbackPtr<T> callback, folly::SemiFuture<folly::lift_unit_t<T>>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenTryInline([cb = std::move(callback)](
+                           folly::Try<folly::lift_unit_t<T>>&& ret) {
+          cb->complete(std::move(ret));
+        });
+  } else {
+    callback->complete(std::move(fut).result());
+  }
 }
 
 #if FOLLY_HAS_COROUTINES
 template <typename T>
 void async_tm_coro_oneway(
-    folly::coro::Task<T>&& task, CallbackBasePtr&& callback) {
+    folly::coro::Task<T>&& task, CallbackBasePtr callback) {
   std::move(task)
       .scheduleOn(callback->getInternalKeepAlive())
       .startInlineUnsafe([callback = std::move(callback)](
@@ -1301,9 +1259,7 @@ void async_tm_coro_oneway(
 }
 
 template <typename T>
-void async_tm_coro(
-    folly::coro::Task<T>&& task,
-    std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
+void async_tm_coro(folly::coro::Task<T>&& task, CallbackPtr<T> callback) {
   std::move(task)
       .scheduleOn(callback->getInternalKeepAlive())
       .startInlineUnsafe([callback = std::move(callback)](
