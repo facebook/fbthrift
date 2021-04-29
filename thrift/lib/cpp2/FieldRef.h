@@ -32,6 +32,8 @@
 #include <folly/CPortability.h>
 #include <folly/CppAttributes.h>
 #include <folly/Portability.h>
+#include <folly/Traits.h>
+#include <thrift/lib/cpp2/BoxedValuePtr.h>
 
 namespace apache {
 namespace thrift {
@@ -544,9 +546,314 @@ bool operator!=(std::nullopt_t, const optional_field_ref<T>& a) {
 
 namespace detail {
 
+template <typename T>
+struct is_boxed_value_ptr : std::false_type {};
+
+template <typename T>
+struct is_boxed_value_ptr<boxed_value_ptr<T>> : std::true_type {};
+
+template <typename From, typename To>
+using copy_reference_t = std::conditional_t<
+    std::is_lvalue_reference<From>{},
+    std::add_lvalue_reference_t<To>,
+    std::add_rvalue_reference_t<To>>;
+
+template <typename From, typename To>
+using copy_const_t = std::conditional_t<
+    std::is_const<std::remove_reference_t<From>>{},
+    std::add_const_t<To>,
+    To>;
+
+} // namespace detail
+
+template <typename T>
+class optional_boxed_field_ref {
+  static_assert(std::is_reference<T>::value, "not a reference");
+  static_assert(
+      detail::is_boxed_value_ptr<folly::remove_cvref_t<T>>::value,
+      "not a boxed_value_ptr");
+
+  using element_type = typename folly::remove_cvref_t<T>::element_type;
+
+  template <typename U>
+  friend class optional_boxed_field_ref;
+
+ public:
+  using value_type = detail::copy_const_t<T, element_type>;
+  using reference_type = detail::copy_reference_t<T, value_type>;
+
+  FOLLY_ERASE optional_boxed_field_ref(T value) noexcept : value_(value) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<
+              std::add_const_t<std::remove_reference_t<U>>,
+              std::remove_reference_t<T>>{} &&
+              !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
+          int> = 0>
+  FOLLY_ERASE /* implicit */ optional_boxed_field_ref(
+      const optional_boxed_field_ref<U>& other) noexcept
+      : value_(other.value_) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<T, U&&>{} || std::is_same<T, const U&&>{},
+          int> = 0>
+  FOLLY_ERASE explicit optional_boxed_field_ref(
+      const optional_boxed_field_ref<U&>& other) noexcept
+      : value_(other.value_) {}
+
+  template <typename U = value_type>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_assignable<value_type&, U&&>::value,
+      optional_boxed_field_ref&>
+  operator=(U&& value) {
+    value_ = static_cast<U&&>(value);
+    return *this;
+  }
+
+  // Copies the data (the set flag and the value if available) from another
+  // optional_boxed_field_ref object.
+  //
+  // Assignment from optional_boxed_field_ref is intentionally not provided to
+  // prevent potential confusion between two possible behaviors, copying and
+  // reference rebinding. This copy_from method is provided instead.
+  template <typename U>
+  FOLLY_ERASE void copy_from(const optional_boxed_field_ref<U>& other) {
+    value_ = T(other.value_);
+  }
+
+  template <typename U>
+  FOLLY_ERASE void move_from(optional_boxed_field_ref<U> other) noexcept {
+    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+  }
+
+#ifdef THRIFT_HAS_OPTIONAL
+  template <typename U>
+  FOLLY_ERASE void from_optional(const std::optional<U>& other) {
+    // Use if instead of a shorter ternary expression to prevent a potential
+    // copy if T and U mismatch.
+    if (other) {
+      value_ = *other;
+    } else {
+      value_ = {};
+    }
+  }
+
+  // Moves the value from std::optional. As std::optional's move constructor,
+  // move_from doesn't make other empty.
+  template <typename U>
+  FOLLY_ERASE void from_optional(std::optional<U>&& other) {
+    // Use if instead of a shorter ternary expression to prevent a potential
+    // copy if T and U mismatch.
+    if (other) {
+      value_ = static_cast<U&&>(*other);
+    } else {
+      value_ = {};
+    }
+  }
+
+  FOLLY_ERASE std::optional<std::remove_const_t<value_type>> to_optional()
+      const {
+    using type = std::optional<std::remove_const_t<value_type>>;
+    return has_value() ? type(*value_) : type();
+  }
+#endif
+
+  FOLLY_ERASE bool has_value() const noexcept {
+    return static_cast<bool>(value_);
+  }
+
+  FOLLY_ERASE explicit operator bool() const noexcept { return has_value(); }
+
+  FOLLY_ERASE void reset() noexcept { value_.reset(); }
+
+  // Returns a reference to the value if this optional_boxed_field_ref has one;
+  // throws bad_field_access otherwise.
+  FOLLY_ERASE reference_type value() const {
+    throw_if_unset();
+    return static_cast<reference_type>(*value_);
+  }
+
+  template <typename U = std::remove_const_t<value_type>>
+  FOLLY_ERASE std::remove_const_t<value_type> value_or(
+      U&& default_value) const {
+    using type = std::remove_const_t<value_type>;
+    return has_value() ? type(static_cast<reference_type>(*value_))
+                       : type(static_cast<U&&>(default_value));
+  }
+
+  FOLLY_ERASE reference_type operator*() const { return value(); }
+
+  FOLLY_ERASE value_type* operator->() const {
+    throw_if_unset();
+    return &*value_;
+  }
+
+  FOLLY_ERASE reference_type ensure() {
+    if (!has_value()) {
+      emplace();
+    }
+    return static_cast<reference_type>(*value_);
+  }
+
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    reset(); // C++ Standard requires *this to be empty if
+             // `std::optional::emplace(...)` throws
+    value_ = value_type(static_cast<Args&&>(args)...);
+    return *value_;
+  }
+
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>&, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    reset();
+    value_ = value_type(ilist, static_cast<Args&&>(args)...);
+    return *value_;
+  }
+
+ private:
+  FOLLY_ERASE void throw_if_unset() const {
+    if (!has_value()) {
+      apache::thrift::detail::throw_on_bad_field_access();
+    }
+  }
+
+  std::remove_reference_t<T>& value_;
+};
+
+template <typename T1, typename T2>
+bool operator==(
+    optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  return a && b ? *a == *b : a.has_value() == b.has_value();
+}
+
+template <typename T1, typename T2>
+bool operator!=(
+    optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  return !(a == b);
+}
+
+template <typename T1, typename T2>
+bool operator<(optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  if (a.has_value() != b.has_value()) {
+    return a.has_value() < b.has_value();
+  }
+  return a ? *a < *b : false;
+}
+
+template <typename T1, typename T2>
+bool operator>(optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  return b < a;
+}
+
+template <typename T1, typename T2>
+bool operator<=(
+    optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  return !(a > b);
+}
+
+template <typename T1, typename T2>
+bool operator>=(
+    optional_boxed_field_ref<T1> a, optional_boxed_field_ref<T2> b) {
+  return !(a < b);
+}
+
+template <typename T, typename U>
+bool operator==(optional_boxed_field_ref<T> a, const U& b) {
+  return a ? *a == b : false;
+}
+
+template <typename T, typename U>
+bool operator!=(optional_boxed_field_ref<T> a, const U& b) {
+  return !(a == b);
+}
+
+template <typename T, typename U>
+bool operator==(const U& a, optional_boxed_field_ref<T> b) {
+  return b == a;
+}
+
+template <typename T, typename U>
+bool operator!=(const U& a, optional_boxed_field_ref<T> b) {
+  return b != a;
+}
+
+template <typename T, typename U>
+bool operator<(optional_boxed_field_ref<T> a, const U& b) {
+  return a ? *a < b : true;
+}
+
+template <typename T, typename U>
+bool operator>(optional_boxed_field_ref<T> a, const U& b) {
+  return a ? *a > b : false;
+}
+
+template <typename T, typename U>
+bool operator<=(optional_boxed_field_ref<T> a, const U& b) {
+  return !(a > b);
+}
+
+template <typename T, typename U>
+bool operator>=(optional_boxed_field_ref<T> a, const U& b) {
+  return !(a < b);
+}
+
+template <typename T, typename U>
+bool operator<(const U& a, optional_boxed_field_ref<T> b) {
+  return b > a;
+}
+
+template <typename T, typename U>
+bool operator<=(const U& a, optional_boxed_field_ref<T> b) {
+  return b >= a;
+}
+
+template <typename T, typename U>
+bool operator>(const U& a, optional_boxed_field_ref<T> b) {
+  return b < a;
+}
+
+template <typename T, typename U>
+bool operator>=(const U& a, optional_boxed_field_ref<T> b) {
+  return b <= a;
+}
+
+#ifdef THRIFT_HAS_OPTIONAL
+template <class T>
+bool operator==(const optional_boxed_field_ref<T>& a, std::nullopt_t) {
+  return !a.has_value();
+}
+template <class T>
+bool operator==(std::nullopt_t, const optional_boxed_field_ref<T>& a) {
+  return !a.has_value();
+}
+template <class T>
+bool operator!=(const optional_boxed_field_ref<T>& a, std::nullopt_t) {
+  return a.has_value();
+}
+template <class T>
+bool operator!=(std::nullopt_t, const optional_boxed_field_ref<T>& a) {
+  return a.has_value();
+}
+#endif
+
+namespace detail {
+
 struct get_pointer_fn {
   template <class T>
   T* operator()(optional_field_ref<T&> field) const {
+    return field ? &*field : nullptr;
+  }
+
+  template <class T>
+  auto* operator()(optional_boxed_field_ref<T&> field) const {
     return field ? &*field : nullptr;
   }
 };
