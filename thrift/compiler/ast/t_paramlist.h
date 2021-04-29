@@ -32,8 +32,6 @@ class t_paramlist : public t_struct {
   // 'unnamed' t_type (or more accurately, not a type at all).
   explicit t_paramlist(t_program* program) : t_struct(program) {}
 
-  bool is_paramlist() const override { return true; }
-
   t_field* get_stream_field() {
     return has_stream_field_ ? fields_[0].get() : nullptr;
   }
@@ -47,6 +45,11 @@ class t_paramlist : public t_struct {
 
   friend class t_struct;
   t_paramlist* clone_DO_NOT_USE() const override;
+
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
+  bool is_paramlist() const override { return true; }
 };
 
 } // namespace compiler

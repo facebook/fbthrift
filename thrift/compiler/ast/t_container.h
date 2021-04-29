@@ -40,13 +40,7 @@ class t_container : public t_type {
 
   t_container() = default;
 
-  type container_type() const { return static_cast<type>(get_type_value()); }
-
-  bool is_set() const final { return container_type() == type::t_set; }
-
-  bool is_list() const final { return container_type() == type::t_list; }
-
-  bool is_map() const final { return container_type() == type::t_map; }
+  virtual type container_type() const = 0;
 
   void set_cpp_name(std::string cpp_name) {
     cpp_name_ = std::move(cpp_name);
@@ -57,11 +51,21 @@ class t_container : public t_type {
 
   const std::string& get_cpp_name() const { return cpp_name_; }
 
-  bool is_container() const override { return true; }
-
  private:
   std::string cpp_name_;
   bool has_cpp_name_ = false;
+
+  // TODO(afuller): Remove everything below here. It is provided only for
+  // backwards compatibility.
+ public:
+  bool is_container() const override { return true; }
+
+  bool is_set() const final { return container_type() == type::t_set; }
+  bool is_list() const final { return container_type() == type::t_list; }
+  bool is_map() const final { return container_type() == type::t_map; }
+  t_type::type get_type_value() const override {
+    return static_cast<t_type::type>(container_type());
+  }
 };
 
 } // namespace compiler

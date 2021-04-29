@@ -33,11 +33,10 @@ class t_list : public t_container {
 
   const t_type* get_elem_type() const { return elem_type_.type(); }
 
+  type container_type() const override { return type::t_list; }
   std::string get_full_name() const override {
     return "list<" + elem_type_.type()->get_full_name() + ">";
   }
-
-  t_type::type get_type_value() const override { return t_type::type::t_list; }
 
  private:
   t_type_ref elem_type_;

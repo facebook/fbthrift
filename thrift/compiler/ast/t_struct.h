@@ -73,13 +73,9 @@ class t_struct : public t_type {
     return itr == fields_by_name_.end() ? nullptr : itr->second;
   }
 
-  bool is_struct() const override { return !is_exception(); }
-
   std::string get_full_name() const override {
     return make_full_name("struct");
   }
-
-  type get_type_value() const override { return type::t_struct; }
 
  protected:
   std::vector<std::unique_ptr<t_field>> fields_;
@@ -90,9 +86,8 @@ class t_struct : public t_type {
   explicit t_struct(t_program* program) : t_type(program) {}
   explicit t_struct() : t_type(nullptr) {}
 
-  ////
-  // Everyting below here is for backwards compatiblity, and will be removed.
-  ////
+  // TODO(afuller): Remove everything below here. It is provided only for
+  // backwards compatibility.
  public:
   /**
    * Thrift AST nodes are meant to be non-copyable and non-movable, and should
@@ -130,6 +125,10 @@ class t_struct : public t_type {
   bool validate_field(t_field* field) {
     return get_field_by_id(field->get_key()) == nullptr;
   }
+
+  bool is_struct() const override { return !is_exception(); }
+
+  type get_type_value() const override { return type::t_struct; }
 
  protected:
   std::vector<t_field*> fields_raw_;

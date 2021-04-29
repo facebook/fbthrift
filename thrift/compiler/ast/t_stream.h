@@ -46,8 +46,6 @@ class t_stream_response : public t_type {
     return first_response_type_.get();
   }
 
-  bool is_streamresponse() const override { return true; }
-
   std::string get_full_name() const override {
     if (has_first_response()) {
       return first_response_type_->type()->get_full_name() + ", stream<" +
@@ -56,17 +54,14 @@ class t_stream_response : public t_type {
     return "stream<" + elem_type_.type()->get_full_name() + ">";
   }
 
-  type get_type_value() const override { return type::t_stream; }
-
  private:
   t_type_ref elem_type_;
   std::unique_ptr<t_throws> throws_;
   std::unique_ptr<t_type_ref> first_response_type_;
 
- public:
-  // TODO(afuller): Delete everything below here. It is only provided for
+  // TODO(afuller): Remove everything below here. It is provided only for
   // backwards compatibility.
-
+ public:
   explicit t_stream_response(
       const t_type* elem_type, std::unique_ptr<t_throws> throws = nullptr)
       : t_stream_response(t_type_ref(elem_type), std::move(throws)) {}
@@ -80,6 +75,9 @@ class t_stream_response : public t_type {
   }
   t_throws* get_throws_struct() const { return throws_.get(); }
   bool has_throws_struct() const { return throws_ == nullptr; }
+
+  bool is_streamresponse() const override { return true; }
+  type get_type_value() const override { return type::t_stream; }
 };
 
 } // namespace compiler

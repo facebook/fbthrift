@@ -32,123 +32,27 @@ namespace compiler {
 class t_program;
 
 /**
- * class t_type
+ * Generic representation of a thrift type.
  *
- * Generic representation of a thrift type. These objects are used by the
- * parser module to build up a tree of object that are all explicitly typed.
- * The generic t_type class exports a variety of useful methods that are
- * used by the code generator to branch based upon different handling for the
- * various types.
- *
+ * These objects are used by the parser module to build up a tree of object that
+ * are all explicitly typed. The generic t_type class exports a variety of
+ * useful methods that are used by the code generator to branch based upon
+ * different handling for the various types.
  */
 class t_type : public t_named {
  public:
-  /*
-   * All the thrift supported types
-   *
-   * TODO(afuller): Remove 'legacy type id's use of these enum values, then
-   * remove the explicit numbering.
-   */
-  enum class type {
-    // Base types.
-    t_void = 0,
-    t_bool = 2,
-    t_byte = 3,
-    t_i16 = 4,
-    t_i32 = 5,
-    t_i64 = 6,
-    t_float = 15,
-    t_double = 7,
-    t_string = 1,
-    t_binary = 18,
-
-    // Container types.
-    t_list = 9,
-    t_set = 10,
-    t_map = 11,
-
-    // Declared types
-    t_enum = 8,
-    t_struct = 12,
-    t_service = 13,
-    t_sink = 16,
-    t_stream = 17,
-    t_program = 14,
-  };
-  static constexpr size_t kTypeCount = 19;
-  // TODO: add description
-  static constexpr size_t kTypeBits = 5;
-  // TODO: add description
-  static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
-  static const std::string& type_name(type t);
+  // The program this type is defined in, or null if the type is built into
+  // thrift.
+  const t_program* program() const { return program_; }
 
   // Returns the full name for the given type. For example:
   // `list<string, string>`
   virtual std::string get_full_name() const = 0;
 
-  // TODO: Rename function.
-  virtual type get_type_value() const = 0;
-
-  /**
-   * Default returns for every thrift type
-   */
-  virtual bool is_void() const { return false; }
-  virtual bool is_base_type() const { return false; }
-  virtual bool is_string() const { return false; }
-  virtual bool is_bool() const { return false; }
-  virtual bool is_byte() const { return false; }
-  virtual bool is_i16() const { return false; }
-  virtual bool is_i32() const { return false; }
-  virtual bool is_i64() const { return false; }
-  virtual bool is_float() const { return false; }
-  virtual bool is_double() const { return false; }
-  virtual bool is_typedef() const { return false; }
-  virtual bool is_enum() const { return false; }
-  virtual bool is_struct() const { return false; }
-  virtual bool is_union() const { return false; }
-  // TODO: remove old function "xception" once everything has been swtiched to
-  // "exception"
-  virtual bool is_xception() const { return is_exception(); }
-  virtual bool is_exception() const { return false; }
-  virtual bool is_container() const { return false; }
-  virtual bool is_list() const { return false; }
-  virtual bool is_set() const { return false; }
-  virtual bool is_map() const { return false; }
-  virtual bool is_sink() const { return false; }
-  virtual bool is_streamresponse() const { return false; }
-  virtual bool is_service() const { return false; }
-  virtual bool is_binary() const { return false; }
-  virtual bool is_paramlist() const { return false; }
-
-  bool is_string_or_binary() const { return is_string() || is_binary(); }
-  bool is_any_int() const { return is_i16() || is_i32() || is_i64(); }
-  bool is_floating_point() const { return is_double() || is_float(); }
-
-  /**
-   * Create a unique hash number based on t_type's properties.
-   */
-  virtual uint64_t get_type_id() const;
-
   /**
    * Resolves all typedefs (if any) to get the true type.
    */
   const t_type* get_true_type() const;
-
-  // TODO: make this go away. Instead use const t_type* everywhere.
-  t_type* get_true_type() {
-    return const_cast<t_type*>(
-        const_cast<const t_type*>(this)->get_true_type());
-  }
-
-  /**
-   * t_type getters
-   */
-  const t_program* program() const { return program_; }
-
-  /**
-   * TODO: remove, see: T84718055
-   */
-  const t_program* get_program() const { return program_; }
 
  protected:
   /**
@@ -189,13 +93,97 @@ class t_type : public t_named {
    */
   std::string make_full_name(const char* prefix) const;
 
-  t_program* program_{nullptr};
+  // TODO(afuller): Make this private.
+  t_program* program_ = nullptr;
 
- public:
   // TODO(afuller): Delete everything below this point. It's only here for
-  // backwards captibility.
+  // backwards compatibility.
+ public:
+  /*
+   * All the thrift supported types
+   */
+  enum class type {
+    // Base types.
+    t_void = 0,
+    t_bool = 2,
+    t_byte = 3,
+    t_i16 = 4,
+    t_i32 = 5,
+    t_i64 = 6,
+    t_float = 15,
+    t_double = 7,
+    t_string = 1,
+    t_binary = 18,
+
+    // Container types.
+    t_list = 9,
+    t_set = 10,
+    t_map = 11,
+
+    // Declared types
+    t_enum = 8,
+    t_struct = 12,
+    t_service = 13,
+    t_sink = 16,
+    t_stream = 17,
+    t_program = 14,
+  };
+  static constexpr size_t kTypeCount = 19;
+  // TODO: add description
+  static constexpr size_t kTypeBits = 5;
+  // TODO: add description
+  static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
+  static const std::string& type_name(type t);
 
   std::string get_impl_full_name() const { return get_full_name(); }
+
+  // TODO: Rename function.
+  virtual type get_type_value() const = 0;
+
+  /**
+   * Default returns for every thrift type
+   */
+  virtual bool is_void() const { return false; }
+  virtual bool is_base_type() const { return false; }
+  virtual bool is_string() const { return false; }
+  virtual bool is_bool() const { return false; }
+  virtual bool is_byte() const { return false; }
+  virtual bool is_i16() const { return false; }
+  virtual bool is_i32() const { return false; }
+  virtual bool is_i64() const { return false; }
+  virtual bool is_float() const { return false; }
+  virtual bool is_double() const { return false; }
+  virtual bool is_typedef() const { return false; }
+  virtual bool is_enum() const { return false; }
+  virtual bool is_struct() const { return false; }
+  virtual bool is_union() const { return false; }
+  virtual bool is_xception() const { return is_exception(); }
+  virtual bool is_exception() const { return false; }
+  virtual bool is_container() const { return false; }
+  virtual bool is_list() const { return false; }
+  virtual bool is_set() const { return false; }
+  virtual bool is_map() const { return false; }
+  virtual bool is_sink() const { return false; }
+  virtual bool is_streamresponse() const { return false; }
+  virtual bool is_service() const { return false; }
+  virtual bool is_binary() const { return false; }
+  virtual bool is_paramlist() const { return false; }
+
+  bool is_string_or_binary() const { return is_string() || is_binary(); }
+  bool is_any_int() const { return is_i16() || is_i32() || is_i64(); }
+  bool is_floating_point() const { return is_double() || is_float(); }
+
+  /**
+   * Create a unique hash number based on t_type's properties.
+   */
+  virtual uint64_t get_type_id() const;
+
+  t_type* get_true_type() {
+    return const_cast<t_type*>(
+        const_cast<const t_type*>(this)->get_true_type());
+  }
+
+  const t_program* get_program() const { return program(); }
 };
 
 /**

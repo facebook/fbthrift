@@ -64,15 +64,9 @@ class t_typedef : public t_type {
 
   const std::string& get_symbolic() const { return symbolic_; }
 
-  bool is_typedef() const override { return true; }
-
   std::string get_full_name() const override {
     return get_type()->get_full_name();
   }
-
-  type get_type_value() const override { return get_type()->get_type_value(); }
-
-  uint64_t get_type_id() const override { return get_type()->get_type_id(); }
 
   bool is_defined() const { return defined_; }
 
@@ -92,12 +86,12 @@ class t_typedef : public t_type {
     };
   }
 
-  // Finds the first matching annoation in the typdef's type hierarchy.
+  // Finds the first matching annoation in the typedef's type hierarchy.
   // Return null if not found.
   static const std::string* get_first_annotation_or_null(
       const t_type* type, alias_span name);
 
-  // Finds the first matching annoation in the typdef's type heiarchy.
+  // Finds the first matching annoation in the typedef's type hierarchy.
   // Return default_value or "" if not found.
   template <typename D = const std::string*>
   static auto get_first_annotation(
@@ -123,6 +117,11 @@ class t_typedef : public t_type {
       std::string symbolic,
       t_scope* scope)
       : t_typedef(program, t_type_ref(type), std::move(symbolic), scope) {}
+
+  bool is_typedef() const override { return true; }
+  type get_type_value() const override { return get_type()->get_type_value(); }
+
+  uint64_t get_type_id() const override { return get_type()->get_type_id(); }
 };
 
 } // namespace compiler

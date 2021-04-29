@@ -46,9 +46,6 @@ class t_service : public t_type {
   void set_functions(std::vector<std::unique_ptr<t_function>> functions);
   void add_function(std::unique_ptr<t_function> func);
 
-  type get_type_value() const override { return type::t_service; }
-  bool is_service() const override { return true; }
-
   std::string get_full_name() const override {
     return make_full_name("service");
   }
@@ -73,6 +70,9 @@ class t_service : public t_type {
 
   bool is_interaction() const;
   bool is_serial_interaction() const;
+
+  type get_type_value() const override { return type::t_service; }
+  bool is_service() const override { return true; }
 };
 
 } // namespace compiler

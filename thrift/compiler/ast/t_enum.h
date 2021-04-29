@@ -73,11 +73,7 @@ class t_enum : public t_type {
     return nullptr;
   }
 
-  bool is_enum() const override { return true; }
-
   std::string get_full_name() const override { return make_full_name("enum"); }
-
-  type get_type_value() const override { return type::t_enum; }
 
  private:
   std::vector<std::unique_ptr<t_enum_value>> enum_values_;
@@ -100,6 +96,9 @@ class t_enum : public t_type {
   const std::vector<t_enum_value*>& get_enum_values() const {
     return enum_values_raw_;
   }
+
+  bool is_enum() const override { return true; }
+  type get_type_value() const override { return type::t_enum; }
 
  private:
   std::vector<t_enum_value*> enum_values_raw_;
