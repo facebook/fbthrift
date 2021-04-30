@@ -259,6 +259,9 @@ void TccStructTraits<::cpp2::Bang>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Bang::Bang(const Bang&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(Bang&& other) noexcept  :
     message(std::move(other.message)),
     __isset(other.__isset) {}

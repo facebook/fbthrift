@@ -526,7 +526,7 @@ class Bang final : public apache::thrift::TException {
 
   Bang(Bang&&) noexcept;
 
-  Bang(const Bang&) = default;
+  Bang(const Bang& src);
 
 
   Bang& operator=(Bang&&) noexcept;

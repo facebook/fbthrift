@@ -127,7 +127,7 @@ class Foo final  {
 
   Foo(Foo&&) noexcept;
 
-  Foo(const Foo&) = default;
+  Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) noexcept;
@@ -437,7 +437,7 @@ class Bar final  {
 
   Bar(Bar&&) noexcept;
 
-  Bar(const Bar&) = default;
+  Bar(const Bar& src);
 
 
   Bar& operator=(Bar&&) noexcept;

@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::Banal>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal(const Banal&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(Banal&& other) noexcept { (void)other; }
 Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
     return *this;
@@ -107,6 +110,9 @@ void TccStructTraits<::cpp2::Fiery>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Fiery::Fiery(const Fiery&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
     message(std::move(other.message)) {}
@@ -190,6 +196,9 @@ void TccStructTraits<::cpp2::Serious>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Serious::Serious(const Serious&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
     sonnet(std::move(other.sonnet)),
@@ -282,6 +291,9 @@ void TccStructTraits<::cpp2::ComplexFieldNames>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
@@ -386,6 +398,9 @@ void TccStructTraits<::cpp2::CustomFieldNames>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),

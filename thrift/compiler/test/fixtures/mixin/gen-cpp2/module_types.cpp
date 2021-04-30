@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::Mixin1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin1::Mixin1(const Mixin1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(Mixin1&& other) noexcept  :
     field1(std::move(other.field1)),
     __isset(other.__isset) {}
@@ -127,6 +130,9 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin2::Mixin2(const Mixin2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(Mixin2&& other) noexcept  :
     m1(std::move(other.m1)),
@@ -252,6 +258,9 @@ void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
     field3(std::move(other.field3)),
     __isset(other.__isset) {}
@@ -343,6 +352,9 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(Foo&& other) noexcept  :
     field4(std::move(other.field4)),

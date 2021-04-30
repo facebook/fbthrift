@@ -132,7 +132,7 @@ class containerStruct2 final  {
 
   containerStruct2(containerStruct2&&) noexcept;
 
-  containerStruct2(const containerStruct2&) = default;
+  containerStruct2(const containerStruct2& src);
 
 
   containerStruct2& operator=(containerStruct2&&) noexcept;

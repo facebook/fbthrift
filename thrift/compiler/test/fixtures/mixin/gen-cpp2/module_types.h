@@ -106,7 +106,7 @@ class Mixin1 final  {
 
   Mixin1(Mixin1&&) noexcept;
 
-  Mixin1(const Mixin1&) = default;
+  Mixin1(const Mixin1& src);
 
 
   Mixin1& operator=(Mixin1&&) noexcept;
@@ -217,7 +217,7 @@ class Mixin2 final  {
 
   Mixin2(Mixin2&&) noexcept;
 
-  Mixin2(const Mixin2&) = default;
+  Mixin2(const Mixin2& src);
 
 
   Mixin2& operator=(Mixin2&&) noexcept;
@@ -365,7 +365,7 @@ class Mixin3Base final  {
 
   Mixin3Base(Mixin3Base&&) noexcept;
 
-  Mixin3Base(const Mixin3Base&) = default;
+  Mixin3Base(const Mixin3Base& src);
 
 
   Mixin3Base& operator=(Mixin3Base&&) noexcept;
@@ -476,7 +476,7 @@ class Foo final  {
 
   Foo(Foo&&) noexcept;
 
-  Foo(const Foo&) = default;
+  Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) noexcept;

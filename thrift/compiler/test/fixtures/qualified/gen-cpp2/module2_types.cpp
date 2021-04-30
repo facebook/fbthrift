@@ -36,6 +36,9 @@ void TccStructTraits<::module2::Struct>::translateFieldName(
 namespace module2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Struct::Struct(const Struct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(Struct&& other) noexcept  :
     first(std::move(other.first)),
     second(std::move(other.second)),
@@ -179,6 +182,9 @@ void TccStructTraits<::module2::BigStruct>::translateFieldName(
 
 namespace module2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+BigStruct::BigStruct(const BigStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(BigStruct&& other) noexcept  :
     s(std::move(other.s)),

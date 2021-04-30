@@ -83,7 +83,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
@@ -414,7 +414,7 @@ class MyException final : public apache::thrift::TException {
 
   MyException(MyException&&) noexcept;
 
-  MyException(const MyException&) = default;
+  MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;

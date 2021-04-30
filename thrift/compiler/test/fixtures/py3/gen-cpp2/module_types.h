@@ -273,7 +273,7 @@ class SimpleException final : public apache::thrift::TException {
 
   SimpleException(SimpleException&&) noexcept;
 
-  SimpleException(const SimpleException&) = default;
+  SimpleException(const SimpleException& src);
 
 
   SimpleException& operator=(SimpleException&&) noexcept;
@@ -501,7 +501,7 @@ class SimpleStruct final  {
 
   SimpleStruct(SimpleStruct&&) noexcept;
 
-  SimpleStruct(const SimpleStruct&) = default;
+  SimpleStruct(const SimpleStruct& src);
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
@@ -839,7 +839,7 @@ class ComplexStruct final  {
 
   ComplexStruct(ComplexStruct&&) noexcept;
 
-  ComplexStruct(const ComplexStruct&) = default;
+  ComplexStruct(const ComplexStruct& src);
 
 
   ComplexStruct& operator=(ComplexStruct&&) noexcept;
@@ -1444,7 +1444,7 @@ class BinaryUnionStruct final  {
 
   BinaryUnionStruct(BinaryUnionStruct&&) noexcept;
 
-  BinaryUnionStruct(const BinaryUnionStruct&) = default;
+  BinaryUnionStruct(const BinaryUnionStruct& src);
 
 
   BinaryUnionStruct& operator=(BinaryUnionStruct&&) noexcept;

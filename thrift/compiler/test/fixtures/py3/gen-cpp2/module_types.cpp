@@ -102,6 +102,9 @@ void TccStructTraits<::py3::simple::SimpleException>::translateFieldName(
 namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleException::SimpleException(const SimpleException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
     err_code(std::move(other.err_code)),
     __isset(other.__isset) {}
@@ -310,6 +313,9 @@ void TccStructTraits<::py3::simple::SimpleStruct>::translateFieldName(
 namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     is_on(std::move(other.is_on)),
     tiny_int(std::move(other.tiny_int)),
@@ -485,6 +491,9 @@ void TccStructTraits<::py3::simple::ComplexStruct>::translateFieldName(
 
 namespace py3 { namespace simple {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexStruct::ComplexStruct(const ComplexStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct() :
       an_integer(0),
@@ -801,6 +810,9 @@ void TccStructTraits<::py3::simple::BinaryUnionStruct>::translateFieldName(
 
 namespace py3 { namespace simple {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :
     u(std::move(other.u)),

@@ -315,7 +315,7 @@ class Internship final  {
 
   Internship(Internship&&) noexcept;
 
-  Internship(const Internship&) = default;
+  Internship(const Internship& src);
 
 
   Internship& operator=(Internship&&) noexcept;
@@ -669,7 +669,7 @@ class struct1 final  {
 
   struct1(struct1&&) noexcept;
 
-  struct1(const struct1&) = default;
+  struct1(const struct1& src);
 
 
   struct1& operator=(struct1&&) noexcept;
@@ -814,7 +814,7 @@ class struct2 final  {
 
   struct2(struct2&&) noexcept;
 
-  struct2(const struct2&) = default;
+  struct2(const struct2& src);
 
 
   struct2& operator=(struct2&&) noexcept;
@@ -1023,7 +1023,7 @@ class struct3 final  {
 
   struct3(struct3&&) noexcept;
 
-  struct3(const struct3&) = default;
+  struct3(const struct3& src);
 
 
   struct3& operator=(struct3&&) noexcept;
@@ -1202,7 +1202,7 @@ class struct4 final  {
 
   struct4(struct4&&) noexcept;
 
-  struct4(const struct4&) = default;
+  struct4(const struct4& src);
 
 
   struct4& operator=(struct4&&) noexcept;

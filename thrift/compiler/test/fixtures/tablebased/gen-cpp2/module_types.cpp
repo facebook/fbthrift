@@ -338,6 +338,9 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
 namespace test { namespace fixtures { namespace tablebased {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

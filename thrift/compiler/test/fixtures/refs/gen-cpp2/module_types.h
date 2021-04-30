@@ -1008,7 +1008,7 @@ class RecursiveStruct final  {
 
   RecursiveStruct(RecursiveStruct&&) noexcept;
 
-  RecursiveStruct(const RecursiveStruct&) = default;
+  RecursiveStruct(const RecursiveStruct& src);
 
 
   RecursiveStruct& operator=(RecursiveStruct&&) noexcept;
@@ -1266,7 +1266,7 @@ class StructWithSharedConst final  {
 
   StructWithSharedConst(StructWithSharedConst&&) noexcept;
 
-  StructWithSharedConst(const StructWithSharedConst&) = default;
+  StructWithSharedConst(const StructWithSharedConst& src);
 
 
   StructWithSharedConst& operator=(StructWithSharedConst&&) noexcept;
@@ -1663,7 +1663,7 @@ class StructWithRefTypeShared final  {
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) noexcept;
 
-  StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
+  StructWithRefTypeShared(const StructWithRefTypeShared& src);
 
 
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) noexcept;
@@ -1774,7 +1774,7 @@ class StructWithRefTypeSharedConst final  {
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) noexcept;
 
-  StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
+  StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst& src);
 
 
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) noexcept;

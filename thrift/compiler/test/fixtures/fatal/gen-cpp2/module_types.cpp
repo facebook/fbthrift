@@ -540,6 +540,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structA::structA(const structA&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(structA&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
@@ -876,6 +879,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structC>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structC::structC(const structC&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
       a(0),
@@ -1653,6 +1659,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct1>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(const struct1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
@@ -1852,6 +1861,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct2>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(const struct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
       fieldA(0),
@@ -2086,6 +2098,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct3>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(const struct3&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
       fieldA(0),
@@ -2769,6 +2784,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct5>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct5::struct5(const struct5&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
@@ -2956,6 +2974,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_binary>::translateField
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_binary::struct_binary(const struct_binary&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(struct_binary&& other) noexcept  :
     bi(std::move(other.bi)),
@@ -4050,6 +4071,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_indirections>::tra
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_with_indirections::struct_with_indirections(const struct_with_indirections&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :
       real(0),

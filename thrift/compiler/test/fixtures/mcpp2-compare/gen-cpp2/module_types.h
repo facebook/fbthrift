@@ -1392,7 +1392,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
@@ -4172,7 +4172,7 @@ class AnException final : public apache::thrift::TException {
 
   AnException(AnException&&) noexcept;
 
-  AnException(const AnException&) = default;
+  AnException(const AnException& src);
 
 
   AnException& operator=(AnException&&) noexcept;
@@ -4749,7 +4749,7 @@ class AnotherException : public apache::thrift::TException {
 
   AnotherException(AnotherException&&) noexcept;
 
-  AnotherException(const AnotherException&) = default;
+  AnotherException(const AnotherException& src);
 
 
   AnotherException& operator=(AnotherException&&) noexcept;

@@ -134,6 +134,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyIntField(0),
       myEnum( ::cpp2::MyEnum::MyValue1),

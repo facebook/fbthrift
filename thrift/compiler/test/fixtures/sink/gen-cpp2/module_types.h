@@ -106,7 +106,7 @@ class InitialResponse final  {
 
   InitialResponse(InitialResponse&&) noexcept;
 
-  InitialResponse(const InitialResponse&) = default;
+  InitialResponse(const InitialResponse& src);
 
 
   InitialResponse& operator=(InitialResponse&&) noexcept;
@@ -217,7 +217,7 @@ class FinalResponse final  {
 
   FinalResponse(FinalResponse&&) noexcept;
 
-  FinalResponse(const FinalResponse&) = default;
+  FinalResponse(const FinalResponse& src);
 
 
   FinalResponse& operator=(FinalResponse&&) noexcept;
@@ -328,7 +328,7 @@ class SinkPayload final  {
 
   SinkPayload(SinkPayload&&) noexcept;
 
-  SinkPayload(const SinkPayload&) = default;
+  SinkPayload(const SinkPayload& src);
 
 
   SinkPayload& operator=(SinkPayload&&) noexcept;
@@ -439,7 +439,7 @@ class CompatibleWithKeywordSink final  {
 
   CompatibleWithKeywordSink(CompatibleWithKeywordSink&&) noexcept;
 
-  CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
+  CompatibleWithKeywordSink(const CompatibleWithKeywordSink& src);
 
 
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) noexcept;
@@ -556,7 +556,7 @@ class InitialException final : public apache::thrift::TException {
 
   InitialException(InitialException&&) noexcept;
 
-  InitialException(const InitialException&) = default;
+  InitialException(const InitialException& src);
 
 
   InitialException& operator=(InitialException&&) noexcept;
@@ -677,7 +677,7 @@ class SinkException1 final : public apache::thrift::TException {
 
   SinkException1(SinkException1&&) noexcept;
 
-  SinkException1(const SinkException1&) = default;
+  SinkException1(const SinkException1& src);
 
 
   SinkException1& operator=(SinkException1&&) noexcept;
@@ -799,7 +799,7 @@ class SinkException2 final : public apache::thrift::TException {
 
   SinkException2(SinkException2&&) noexcept;
 
-  SinkException2(const SinkException2&) = default;
+  SinkException2(const SinkException2& src);
 
 
   SinkException2& operator=(SinkException2&&) noexcept;

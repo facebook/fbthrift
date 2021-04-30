@@ -124,7 +124,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;

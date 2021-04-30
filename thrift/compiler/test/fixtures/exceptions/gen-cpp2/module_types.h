@@ -105,7 +105,7 @@ class Banal final : public apache::thrift::TException {
 
   Banal(Banal&&) noexcept;
 
-  Banal(const Banal&) = default;
+  Banal(const Banal& src);
 
 
   Banal& operator=(Banal&&) noexcept;
@@ -189,7 +189,7 @@ class Fiery final : public apache::thrift::TException {
 
   Fiery(Fiery&&) noexcept;
 
-  Fiery(const Fiery&) = default;
+  Fiery(const Fiery& src);
 
 
   Fiery& operator=(Fiery&&) noexcept;
@@ -311,7 +311,7 @@ class Serious final : public apache::thrift::TException {
 
   Serious(Serious&&) noexcept;
 
-  Serious(const Serious&) = default;
+  Serious(const Serious& src);
 
 
   Serious& operator=(Serious&&) noexcept;
@@ -439,7 +439,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
   ComplexFieldNames(ComplexFieldNames&&) noexcept;
 
-  ComplexFieldNames(const ComplexFieldNames&) = default;
+  ComplexFieldNames(const ComplexFieldNames& src);
 
 
   ComplexFieldNames& operator=(ComplexFieldNames&&) noexcept;
@@ -604,7 +604,7 @@ class CustomFieldNames final : public apache::thrift::TException {
 
   CustomFieldNames(CustomFieldNames&&) noexcept;
 
-  CustomFieldNames(const CustomFieldNames&) = default;
+  CustomFieldNames(const CustomFieldNames& src);
 
 
   CustomFieldNames& operator=(CustomFieldNames&&) noexcept;

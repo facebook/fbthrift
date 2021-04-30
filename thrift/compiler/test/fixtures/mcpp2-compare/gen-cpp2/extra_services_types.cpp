@@ -36,6 +36,9 @@ void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
 namespace extra { namespace svc {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+containerStruct2::containerStruct2(const containerStruct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :
       fieldA(0),
       req_fieldA(0),

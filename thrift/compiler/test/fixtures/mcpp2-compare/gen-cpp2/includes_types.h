@@ -236,7 +236,7 @@ class AStructB final  {
 
   AStructB(AStructB&&) noexcept;
 
-  AStructB(const AStructB&) = default;
+  AStructB(const AStructB& src);
 
 
   AStructB& operator=(AStructB&&) noexcept;

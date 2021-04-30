@@ -88,7 +88,7 @@ class Struct final  {
 
   Struct(Struct&&) noexcept;
 
-  Struct(const Struct&) = default;
+  Struct(const Struct& src);
 
 
   Struct& operator=(Struct&&) noexcept;
@@ -226,7 +226,7 @@ class BigStruct final  {
 
   BigStruct(BigStruct&&) noexcept;
 
-  BigStruct(const BigStruct&) = default;
+  BigStruct(const BigStruct& src);
 
 
   BigStruct& operator=(BigStruct&&) noexcept;

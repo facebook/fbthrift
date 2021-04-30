@@ -581,7 +581,7 @@ class decorated_struct final  {
 
   decorated_struct(decorated_struct&&) noexcept;
 
-  decorated_struct(const decorated_struct&) = default;
+  decorated_struct(const decorated_struct& src);
 
 
   decorated_struct& operator=(decorated_struct&&) noexcept;
@@ -693,7 +693,7 @@ class ContainerStruct final  {
 
   ContainerStruct(ContainerStruct&&) noexcept;
 
-  ContainerStruct(const ContainerStruct&) = default;
+  ContainerStruct(const ContainerStruct& src);
 
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
@@ -1025,7 +1025,7 @@ class CppTypeStruct final  {
 
   CppTypeStruct(CppTypeStruct&&) noexcept;
 
-  CppTypeStruct(const CppTypeStruct&) = default;
+  CppTypeStruct(const CppTypeStruct& src);
 
 
   CppTypeStruct& operator=(CppTypeStruct&&) noexcept;
@@ -1131,7 +1131,7 @@ class VirtualStruct  {
 
   VirtualStruct(VirtualStruct&&) noexcept;
 
-  VirtualStruct(const VirtualStruct&) = default;
+  VirtualStruct(const VirtualStruct& src);
 
 
   VirtualStruct& operator=(VirtualStruct&&) noexcept;
@@ -1242,7 +1242,7 @@ class MyStructWithForwardRefEnum final  {
 
   MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) noexcept;
 
-  MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
+  MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum& src);
 
 
   MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) noexcept;
@@ -1662,7 +1662,7 @@ class ComplexString final  {
 
   ComplexString(ComplexString&&) noexcept;
 
-  ComplexString(const ComplexString&) = default;
+  ComplexString(const ComplexString& src);
 
 
   ComplexString& operator=(ComplexString&&) noexcept;
@@ -1807,7 +1807,7 @@ class ComplexNestedWithDefault final  {
 
   ComplexNestedWithDefault(ComplexNestedWithDefault&&) noexcept;
 
-  ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
+  ComplexNestedWithDefault(const ComplexNestedWithDefault& src);
 
 
   ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) noexcept;
@@ -1955,7 +1955,7 @@ class MinPadding final  {
 
   MinPadding(MinPadding&&) noexcept;
 
-  MinPadding(const MinPadding&) = default;
+  MinPadding(const MinPadding& src);
 
 
   MinPadding& operator=(MinPadding&&) noexcept;
@@ -2247,7 +2247,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
@@ -2560,7 +2560,7 @@ class AnnotatedTypes final  {
 
   AnnotatedTypes(AnnotatedTypes&&) noexcept;
 
-  AnnotatedTypes(const AnnotatedTypes&) = default;
+  AnnotatedTypes(const AnnotatedTypes& src);
 
 
   AnnotatedTypes& operator=(AnnotatedTypes&&) noexcept;
@@ -2703,7 +2703,7 @@ class ForwardUsageStruct final  {
 
   ForwardUsageStruct(ForwardUsageStruct&&) noexcept;
 
-  ForwardUsageStruct(const ForwardUsageStruct&) = default;
+  ForwardUsageStruct(const ForwardUsageStruct& src);
 
 
   ForwardUsageStruct& operator=(ForwardUsageStruct&&) noexcept;
@@ -2926,7 +2926,7 @@ class ForwardUsageByRef final  {
 
   ForwardUsageByRef(ForwardUsageByRef&&) noexcept;
 
-  ForwardUsageByRef(const ForwardUsageByRef&) = default;
+  ForwardUsageByRef(const ForwardUsageByRef& src);
 
 
   ForwardUsageByRef& operator=(ForwardUsageByRef&&) noexcept;
@@ -3208,7 +3208,7 @@ class NoexceptMoveComplexStruct final  {
 
   NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&) noexcept;
 
-  NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
+  NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct& src);
 
 
   NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept;
@@ -3886,7 +3886,7 @@ class AllocatorAware final  {
 
   AllocatorAware(AllocatorAware&&) noexcept;
 
-  AllocatorAware(const AllocatorAware&) = default;
+  AllocatorAware(const AllocatorAware& src);
 
   explicit AllocatorAware(const allocator_type& alloc) noexcept :
     __fbthrift_alloc(alloc),
@@ -4162,7 +4162,7 @@ class AllocatorAware2 final  {
 
   AllocatorAware2(AllocatorAware2&&) noexcept;
 
-  AllocatorAware2(const AllocatorAware2&) = default;
+  AllocatorAware2(const AllocatorAware2& src);
 
   explicit AllocatorAware2(const allocator_type& alloc) noexcept :
     __fbthrift_alloc(alloc),
@@ -4284,7 +4284,7 @@ class TypedefStruct final  {
 
   TypedefStruct(TypedefStruct&&) noexcept;
 
-  TypedefStruct(const TypedefStruct&) = default;
+  TypedefStruct(const TypedefStruct& src);
 
 
   TypedefStruct& operator=(TypedefStruct&&) noexcept;

@@ -2272,7 +2272,7 @@ class structA final  {
 
   structA(structA&&) noexcept;
 
-  structA(const structA&) = default;
+  structA(const structA& src);
 
 
   structA& operator=(structA&&) noexcept;
@@ -3036,7 +3036,7 @@ class structC final  {
 
   structC(structC&&) noexcept;
 
-  structC(const structC&) = default;
+  structC(const structC& src);
 
 
   structC& operator=(structC&&) noexcept;
@@ -4084,7 +4084,7 @@ class struct1 final  {
 
   struct1(struct1&&) noexcept;
 
-  struct1(const struct1&) = default;
+  struct1(const struct1& src);
 
 
   struct1& operator=(struct1&&) noexcept;
@@ -4360,7 +4360,7 @@ class struct2 final  {
 
   struct2(struct2&&) noexcept;
 
-  struct2(const struct2&) = default;
+  struct2(const struct2& src);
 
 
   struct2& operator=(struct2&&) noexcept;
@@ -4670,7 +4670,7 @@ class struct3 final  {
 
   struct3(struct3&&) noexcept;
 
-  struct3(const struct3&) = default;
+  struct3(const struct3& src);
 
 
   struct3& operator=(struct3&&) noexcept;
@@ -5522,7 +5522,7 @@ class struct5 final  {
 
   struct5(struct5&&) noexcept;
 
-  struct5(const struct5&) = default;
+  struct5(const struct5& src);
 
 
   struct5& operator=(struct5&&) noexcept;
@@ -5765,7 +5765,7 @@ class struct_binary final  {
 
   struct_binary(struct_binary&&) noexcept;
 
-  struct_binary(const struct_binary&) = default;
+  struct_binary(const struct_binary& src);
 
 
   struct_binary& operator=(struct_binary&&) noexcept;
@@ -9250,7 +9250,7 @@ class struct_with_indirections final  {
 
   struct_with_indirections(struct_with_indirections&&) noexcept;
 
-  struct_with_indirections(const struct_with_indirections&) = default;
+  struct_with_indirections(const struct_with_indirections& src);
 
 
   struct_with_indirections& operator=(struct_with_indirections&&) noexcept;

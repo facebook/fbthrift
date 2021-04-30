@@ -153,6 +153,9 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AStructB::AStructB(const AStructB&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(AStructB&& other) noexcept  :
     FieldA(std::move(other.FieldA)) {}
 

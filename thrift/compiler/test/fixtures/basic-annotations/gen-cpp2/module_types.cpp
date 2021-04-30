@@ -69,6 +69,9 @@ void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
     name(std::move(other.name)),
     __isset(other.__isset) {}
@@ -160,6 +163,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       majorVer(0) {}
@@ -320,6 +326,9 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SecretStruct::SecretStruct(const SecretStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
     id(std::move(other.id)),

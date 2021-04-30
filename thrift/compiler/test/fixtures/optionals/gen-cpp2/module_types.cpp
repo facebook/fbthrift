@@ -179,6 +179,9 @@ void TccStructTraits<::cpp2::Vehicle>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Vehicle::Vehicle(const Vehicle&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle() :
       hasAC(false) {}
 
@@ -346,6 +349,9 @@ void TccStructTraits<::cpp2::Person>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Person::Person(const Person&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person() :
       id(0),

@@ -76,7 +76,7 @@ class IncludedA final  {
 
   IncludedA(IncludedA&&) noexcept;
 
-  IncludedA(const IncludedA&) = default;
+  IncludedA(const IncludedA& src);
 
 
   IncludedA& operator=(IncludedA&&) noexcept;

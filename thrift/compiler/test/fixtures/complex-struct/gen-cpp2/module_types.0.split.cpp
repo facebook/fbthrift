@@ -69,6 +69,9 @@ void TccStructTraits<::cpp2::MyStructFloatFieldThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&& other) noexcept  :
     myLongField(std::move(other.myLongField)),
     MyByteField(std::move(other.MyByteField)),
@@ -196,6 +199,9 @@ void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     age(std::move(other.age)),
@@ -365,6 +371,9 @@ void TccStructTraits<::cpp2::ComplexNestedStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedStruct::ComplexNestedStruct(const ComplexNestedStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedStruct::ComplexNestedStruct() {}
 
@@ -872,6 +881,9 @@ void TccStructTraits<::cpp2::reqXcep>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep(const reqXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(reqXcep&& other) noexcept  :
     message(std::move(other.message)),

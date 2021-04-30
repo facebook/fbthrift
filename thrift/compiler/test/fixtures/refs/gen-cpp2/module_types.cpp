@@ -813,6 +813,9 @@ void TccStructTraits<::cpp2::RecursiveStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+RecursiveStruct::RecursiveStruct(const RecursiveStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
     mes(std::move(other.mes)),
     __isset(other.__isset) {}
@@ -1142,6 +1145,9 @@ void TccStructTraits<::cpp2::StructWithSharedConst>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithSharedConst::StructWithSharedConst(const StructWithSharedConst&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(StructWithSharedConst&& other) noexcept  :
     opt_shared_const(std::move(other.opt_shared_const)),
@@ -1745,6 +1751,9 @@ void TccStructTraits<::cpp2::StructWithRefTypeShared>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithRefTypeShared::StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(StructWithRefTypeShared&& other) noexcept  :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
@@ -1912,6 +1921,9 @@ void TccStructTraits<::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&& other) noexcept  :
     def_field(std::move(other.def_field)),

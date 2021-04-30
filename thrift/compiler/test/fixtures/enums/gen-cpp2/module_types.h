@@ -138,7 +138,7 @@ class SomeStruct final  {
 
   SomeStruct(SomeStruct&&) noexcept;
 
-  SomeStruct(const SomeStruct&) = default;
+  SomeStruct(const SomeStruct& src);
 
 
   SomeStruct& operator=(SomeStruct&&) noexcept;

@@ -208,8 +208,14 @@ class <%struct:name%> <%!
 <%/struct:is_eligible_for_constexpr?%>
 <%^struct:cpp_noncopyable%>
 <%^struct:nondefault_copy_ctor_and_assignment?%>
+<%#struct:is_eligible_for_constexpr?%>
 
   <%struct:name%>(const <%struct:name%>&) = default;
+<%/struct:is_eligible_for_constexpr?%>
+<%^struct:is_eligible_for_constexpr?%>
+
+  <%struct:name%>(const <%struct:name%>& src);
+<%/struct:is_eligible_for_constexpr?%>
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%#struct:nondefault_copy_ctor_and_assignment?%>
   <%struct:name%>(const <%struct:name%>& src);

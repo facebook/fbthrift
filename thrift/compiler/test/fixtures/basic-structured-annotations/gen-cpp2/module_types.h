@@ -209,7 +209,7 @@ class structured_annotation_inline final  {
 
   structured_annotation_inline(structured_annotation_inline&&) noexcept;
 
-  structured_annotation_inline(const structured_annotation_inline&) = default;
+  structured_annotation_inline(const structured_annotation_inline& src);
 
 
   structured_annotation_inline& operator=(structured_annotation_inline&&) noexcept;
@@ -354,7 +354,7 @@ class structured_annotation_with_default final  {
 
   structured_annotation_with_default(structured_annotation_with_default&&) noexcept;
 
-  structured_annotation_with_default(const structured_annotation_with_default&) = default;
+  structured_annotation_with_default(const structured_annotation_with_default& src);
 
 
   structured_annotation_with_default& operator=(structured_annotation_with_default&&) noexcept;
@@ -572,7 +572,7 @@ class structured_annotation_recursive final  {
 
   structured_annotation_recursive(structured_annotation_recursive&&) noexcept;
 
-  structured_annotation_recursive(const structured_annotation_recursive&) = default;
+  structured_annotation_recursive(const structured_annotation_recursive& src);
 
 
   structured_annotation_recursive& operator=(structured_annotation_recursive&&) noexcept;
@@ -747,7 +747,7 @@ class structured_annotation_nested final  {
 
   structured_annotation_nested(structured_annotation_nested&&) noexcept;
 
-  structured_annotation_nested(const structured_annotation_nested&) = default;
+  structured_annotation_nested(const structured_annotation_nested& src);
 
 
   structured_annotation_nested& operator=(structured_annotation_nested&&) noexcept;
@@ -892,7 +892,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
@@ -1113,7 +1113,7 @@ class MyException final : public apache::thrift::TException {
 
   MyException(MyException&&) noexcept;
 
-  MyException(const MyException&) = default;
+  MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;

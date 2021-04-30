@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::InitialResponse>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+InitialResponse::InitialResponse(const InitialResponse&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
     content(std::move(other.content)),
     __isset(other.__isset) {}
@@ -127,6 +130,9 @@ void TccStructTraits<::cpp2::FinalResponse>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+FinalResponse::FinalResponse(const FinalResponse&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
     content(std::move(other.content)),
@@ -220,6 +226,9 @@ void TccStructTraits<::cpp2::SinkPayload>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkPayload::SinkPayload(const SinkPayload&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
     content(std::move(other.content)),
     __isset(other.__isset) {}
@@ -311,6 +320,9 @@ void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
     sink(std::move(other.sink)),
@@ -404,6 +416,9 @@ void TccStructTraits<::cpp2::InitialException>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+InitialException::InitialException(const InitialException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(InitialException&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
@@ -496,6 +511,9 @@ void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException1::SinkException1(const SinkException1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(SinkException1&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
@@ -587,6 +605,9 @@ void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException2::SinkException2(const SinkException2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(SinkException2&& other) noexcept  :
     reason(std::move(other.reason)),

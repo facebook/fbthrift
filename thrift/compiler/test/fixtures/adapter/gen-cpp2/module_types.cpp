@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
       intField(my::Adapter1::fromThrift(0)),
       optionalIntField(my::Adapter1::fromThrift(0)),
@@ -241,6 +244,9 @@ void TccStructTraits<::cpp2::Bar>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Bar::Bar(const Bar&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar(Bar&& other) noexcept  :
     structField(std::move(other.structField)),

@@ -69,6 +69,9 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SomeStruct::SomeStruct(const SomeStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :
     reasonable(std::move(other.reasonable)),
     fine(std::move(other.fine)),

@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyIntField(0),
       myEnum( ::cpp2::MyEnum::MyValue1),
@@ -637,6 +640,9 @@ void TccStructTraits<::cpp2::MyStructTypeDef>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
       myLongField(0),
       myLongTypeDef(0) {}
@@ -1022,6 +1028,9 @@ void TccStructTraits<::cpp2::emptyXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+emptyXcep::emptyXcep(const emptyXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
 emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
     return *this;
@@ -1093,6 +1102,9 @@ void TccStructTraits<::cpp2::complexException>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+complexException::complexException(const complexException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException() :
       errorEnum( ::cpp2::MyEnum::MyValue1) {}

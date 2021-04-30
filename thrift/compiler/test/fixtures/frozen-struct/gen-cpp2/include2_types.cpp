@@ -36,6 +36,9 @@ void TccStructTraits<::some::ns::IncludedB>::translateFieldName(
 namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+IncludedB::IncludedB(const IncludedB&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedB::IncludedB(IncludedB&& other) noexcept  :
     i32Field(std::move(other.i32Field)),
     strField(std::move(other.strField)),

@@ -90,6 +90,15 @@ class field_ref {
     return *this;
   }
 
+  // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
+  FOLLY_ERASE field_ref& operator=(value_type&& value) noexcept(
+      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+    value_ = static_cast<value_type&&>(value);
+    is_set_ = true;
+    return *this;
+    value.~value_type(); // Force emit destructor...
+  }
+
   // Assignment from field_ref is intentionally not provided to prevent
   // potential confusion between two possible behaviors, copying and reference
   // rebinding. The copy_from method is provided instead.
@@ -298,6 +307,15 @@ class optional_field_ref {
     value_ = static_cast<U&&>(value);
     is_set_ = true;
     return *this;
+  }
+
+  // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
+  FOLLY_ERASE optional_field_ref& operator=(value_type&& value) noexcept(
+      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+    value_ = static_cast<value_type&&>(value);
+    is_set_ = true;
+    return *this;
+    value.~value_type(); // Force emit destructor...
   }
 
   // Copies the data (the set flag and the value if available) from another
@@ -958,6 +976,14 @@ class required_field_ref {
       std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = static_cast<U&&>(value);
     return *this;
+  }
+
+  // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
+  FOLLY_ERASE required_field_ref& operator=(value_type&& value) noexcept(
+      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+    value_ = static_cast<value_type&&>(value);
+    return *this;
+    value.~value_type(); // Force emit destructor...
   }
 
   // Assignment from required_field_ref is intentionally not provided to prevent

@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyIncludedField(std::move(other.MyIncludedField)),
     MyOtherIncludedField(std::move(other.MyOtherIncludedField)),

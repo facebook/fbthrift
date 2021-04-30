@@ -36,6 +36,9 @@ void TccStructTraits<::cpp2::MyStructMapFloatThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
     myLongField(std::move(other.myLongField)),
     mapListOfFloats(std::move(other.mapListOfFloats)),
@@ -147,6 +150,9 @@ void TccStructTraits<::cpp2::defaultStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+defaultStruct::defaultStruct(const defaultStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct() :
       myLongDFset(10LL),
@@ -848,6 +854,9 @@ void TccStructTraits<::cpp2::TypeRemapped>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
     lsMap(std::move(other.lsMap)),
     ioMap(std::move(other.ioMap)),
@@ -991,6 +1000,9 @@ void TccStructTraits<::cpp2::optXcep>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+optXcep::optXcep(const optXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(optXcep&& other) noexcept  :
     message(std::move(other.message)),

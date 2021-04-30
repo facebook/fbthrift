@@ -156,7 +156,7 @@ class ModuleA final  {
 
   ModuleA(ModuleA&&) noexcept;
 
-  ModuleA(const ModuleA&) = default;
+  ModuleA(const ModuleA& src);
 
 
   ModuleA& operator=(ModuleA&&) noexcept;

@@ -135,6 +135,9 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Internship::Internship(const Internship&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(Internship&& other) noexcept  :
     weeks(std::move(other.weeks)),
     title(std::move(other.title)),
@@ -343,6 +346,9 @@ void TccStructTraits<::cpp2::struct1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(const struct1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(struct1&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
@@ -446,6 +452,9 @@ void TccStructTraits<::cpp2::struct2>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(const struct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(struct2&& other) noexcept  :
     a(std::move(other.a)),
@@ -603,6 +612,9 @@ void TccStructTraits<::cpp2::struct3>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(const struct3&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(struct3&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
@@ -738,6 +750,9 @@ void TccStructTraits<::cpp2::struct4>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(const struct4&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(struct4&& other) noexcept  :
     a(std::move(other.a)),

@@ -397,6 +397,9 @@ void TccStructTraits<::cpp2::Val>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Val::Val(const Val&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(Val&& other) noexcept  :
     strVal(std::move(other.strVal)),
     intVal(std::move(other.intVal)),

@@ -69,6 +69,9 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
     count(std::move(other.count)),
     name(std::move(other.name)),
@@ -172,6 +175,9 @@ void TccStructTraits<::cpp2::structured_annotation_with_default>::translateField
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
     name(std::move(other.name)),
@@ -345,6 +351,9 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(structured_annotation_recursive&& other) noexcept  :
     name(std::move(other.name)),
     recurse(std::move(other.recurse)),
@@ -501,6 +510,9 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
     name(std::move(other.name)),
     nest(std::move(other.nest)),
@@ -624,6 +636,9 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     annotated_field(std::move(other.annotated_field)),
@@ -752,6 +767,9 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 
 namespace cpp2 {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyException::MyException(const MyException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     context(std::move(other.context)),

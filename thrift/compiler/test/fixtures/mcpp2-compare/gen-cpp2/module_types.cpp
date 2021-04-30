@@ -395,6 +395,9 @@ void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyBoolField(0),
       MyIntField(12LL),
@@ -1158,6 +1161,9 @@ void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnException::AnException(const AnException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
       code(0),
       req_code(0),
@@ -1559,6 +1565,9 @@ void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnotherException::AnotherException(const AnotherException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(AnotherException&& other) noexcept  :
     code(std::move(other.code)),

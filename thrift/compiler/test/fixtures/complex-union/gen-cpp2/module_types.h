@@ -1332,7 +1332,7 @@ class Val final  {
 
   Val(Val&&) noexcept;
 
-  Val(const Val&) = default;
+  Val(const Val& src);
 
 
   Val& operator=(Val&&) noexcept;

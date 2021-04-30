@@ -686,7 +686,7 @@ class MyStructFloatFieldThrowExp final  {
 
   MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&&) noexcept;
 
-  MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
+  MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp& src);
 
 
   MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) noexcept;
@@ -897,7 +897,7 @@ class MyStructMapFloatThrowExp final  {
 
   MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&&) noexcept;
 
-  MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
+  MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp& src);
 
 
   MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) noexcept;
@@ -1104,7 +1104,7 @@ class MyStruct final  {
 
   MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
@@ -2091,7 +2091,7 @@ class SimpleStruct final  {
 
   SimpleStruct(SimpleStruct&&) noexcept;
 
-  SimpleStruct(const SimpleStruct&) = default;
+  SimpleStruct(const SimpleStruct& src);
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
@@ -2236,7 +2236,7 @@ class ComplexNestedStruct final  {
 
   ComplexNestedStruct(ComplexNestedStruct&&) noexcept;
 
-  ComplexNestedStruct(const ComplexNestedStruct&) = default;
+  ComplexNestedStruct(const ComplexNestedStruct& src);
 
 
   ComplexNestedStruct& operator=(ComplexNestedStruct&&) noexcept;
@@ -3444,7 +3444,7 @@ class defaultStruct final  {
 
   defaultStruct(defaultStruct&&) noexcept;
 
-  defaultStruct(const defaultStruct&) = default;
+  defaultStruct(const defaultStruct& src);
 
 
   defaultStruct& operator=(defaultStruct&&) noexcept;
@@ -4246,7 +4246,7 @@ class MyStructTypeDef final  {
 
   MyStructTypeDef(MyStructTypeDef&&) noexcept;
 
-  MyStructTypeDef(const MyStructTypeDef&) = default;
+  MyStructTypeDef(const MyStructTypeDef& src);
 
 
   MyStructTypeDef& operator=(MyStructTypeDef&&) noexcept;
@@ -5054,7 +5054,7 @@ class TypeRemapped final  {
 
   TypeRemapped(TypeRemapped&&) noexcept;
 
-  TypeRemapped(const TypeRemapped&) = default;
+  TypeRemapped(const TypeRemapped& src);
 
 
   TypeRemapped& operator=(TypeRemapped&&) noexcept;
@@ -5268,7 +5268,7 @@ class emptyXcep final : public apache::thrift::TException {
 
   emptyXcep(emptyXcep&&) noexcept;
 
-  emptyXcep(const emptyXcep&) = default;
+  emptyXcep(const emptyXcep& src);
 
 
   emptyXcep& operator=(emptyXcep&&) noexcept;
@@ -5347,7 +5347,7 @@ class reqXcep final : public apache::thrift::TException {
 
   reqXcep(reqXcep&&) noexcept;
 
-  reqXcep(const reqXcep&) = default;
+  reqXcep(const reqXcep& src);
 
 
   reqXcep& operator=(reqXcep&&) noexcept;
@@ -5495,7 +5495,7 @@ class optXcep final : public apache::thrift::TException {
 
   optXcep(optXcep&&) noexcept;
 
-  optXcep(const optXcep&) = default;
+  optXcep(const optXcep& src);
 
 
   optXcep& operator=(optXcep&&) noexcept;
@@ -5656,7 +5656,7 @@ class complexException final : public apache::thrift::TException {
 
   complexException(complexException&&) noexcept;
 
-  complexException(const complexException&) = default;
+  complexException(const complexException& src);
 
 
   complexException& operator=(complexException&&) noexcept;
