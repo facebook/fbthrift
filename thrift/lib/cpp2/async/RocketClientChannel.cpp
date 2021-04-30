@@ -214,7 +214,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         auto exceptionNameRef = exceptionMetadataBase.name_utf8_ref();
         auto exceptionWhatRef = exceptionMetadataBase.what_utf8_ref();
         if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
-          switch (exceptionMetadataRef->getType()) {
+          auto metaType = exceptionMetadataRef->getType();
+          switch (metaType) {
             case PayloadExceptionMetadata::declaredException:
               if (exceptionNameRef) {
                 (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
@@ -260,11 +261,25 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
                       TApplicationException(exceptionWhatRef.value_or("")))
                       .buffer;
               break;
-            case PayloadExceptionMetadata::appClientException:
-              (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
-                  kAppClientErrorCode;
-              FOLLY_FALLTHROUGH;
             default:
+              switch (metaType) {
+                case PayloadExceptionMetadata::DEPRECATED_appClientException:
+                  (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
+                      kAppClientErrorCode;
+                  break;
+                case PayloadExceptionMetadata::appUnknownException:
+                  if (auto ec = exceptionMetadataRef->appUnknownException_ref()
+                                    ->errorClassification_ref()) {
+                    if (ec->blame_ref() &&
+                        *ec->blame_ref() == ErrorBlame::CLIENT) {
+                      (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
+                          kAppClientErrorCode;
+                    }
+                  }
+                  break;
+                default:;
+              }
+
               if (exceptionNameRef) {
                 (*otherMetadataRef)[isProxiedResponse ? "puex" : "uex"] =
                     *exceptionNameRef;

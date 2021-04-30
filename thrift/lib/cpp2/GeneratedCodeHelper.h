@@ -948,8 +948,9 @@ EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
     TApplicationException ex(ew.what().toStdString());
     exceptionMetadataBase.what_utf8_ref() = ex.what();
     apache::thrift::detail::serializeExceptionBody(&prot, &ex);
-    exceptionMetadata.set_appServerException(
-        PayloadAppServerExceptionMetadata());
+    PayloadAppUnknownExceptionMetdata aue;
+    aue.errorClassification_ref().ensure().blame_ref() = ErrorBlame::SERVER;
+    exceptionMetadata.set_appUnknownException(std::move(aue));
   }
 
   exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);

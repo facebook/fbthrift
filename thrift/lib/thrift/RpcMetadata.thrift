@@ -206,13 +206,22 @@ struct PayloadAppClientExceptionMetadata {
 struct PayloadAppServerExceptionMetadata {
 }
 
+struct PayloadAppUnknownExceptionMetdata {
+  // We only use the blame field for now
+  1: optional ErrorClassification errorClassification;
+}
+
 union PayloadExceptionMetadata {
   1: PayloadDeclaredExceptionMetadata declaredException;
   2: PayloadProxyExceptionMetadata proxyException;
-  // Replaced by PayloadProxyExceptionMetadata + ProxiedPayloadMetadata
+  // Deprecated
+  // replaced by PayloadProxyExceptionMetadata + ProxiedPayloadMetadata
   3: PayloadProxiedExceptionMetadata DEPRECATED_proxiedException;
-  4: PayloadAppClientExceptionMetadata appClientException;
-  5: PayloadAppServerExceptionMetadata appServerException;
+  // replaced by PayloadAppUnknownExceptionMetdata
+  4: PayloadAppClientExceptionMetadata DEPRECATED_appClientException;
+  // replaced by PayloadAppUnknownExceptionMetdata
+  5: PayloadAppServerExceptionMetadata DEPRECATED_appServerException;
+  6: PayloadAppUnknownExceptionMetdata appUnknownException;
 }
 
 struct PayloadExceptionMetadataBase {

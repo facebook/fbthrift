@@ -314,11 +314,25 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           }
           PayloadExceptionMetadata exceptionMetadata;
           if (exPtr && *exPtr == kAppClientErrorCode) {
-            exceptionMetadata.set_appClientException(
-                PayloadAppClientExceptionMetadata());
+            if (version < 8) {
+              exceptionMetadata.set_DEPRECATED_appClientException(
+                  PayloadAppClientExceptionMetadata());
+            } else {
+              PayloadAppUnknownExceptionMetdata aue;
+              aue.errorClassification_ref().ensure().blame_ref() =
+                  ErrorBlame::CLIENT;
+              exceptionMetadata.set_appUnknownException(std::move(aue));
+            }
           } else {
-            exceptionMetadata.set_appServerException(
-                PayloadAppServerExceptionMetadata());
+            if (version < 8) {
+              exceptionMetadata.set_DEPRECATED_appServerException(
+                  PayloadAppServerExceptionMetadata());
+            } else {
+              PayloadAppUnknownExceptionMetdata aue;
+              aue.errorClassification_ref().ensure().blame_ref() =
+                  ErrorBlame::SERVER;
+              exceptionMetadata.set_appUnknownException(std::move(aue));
+            }
           }
           exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
 
