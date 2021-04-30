@@ -213,8 +213,7 @@ class structured_annotation_inline final  {
 
 
   structured_annotation_inline& operator=(structured_annotation_inline&&) noexcept;
-
-  structured_annotation_inline& operator=(const structured_annotation_inline&) = default;
+  structured_annotation_inline& operator=(const structured_annotation_inline& src);
   void __clear();
  private:
   ::std::int64_t count;
@@ -358,8 +357,7 @@ class structured_annotation_with_default final  {
 
 
   structured_annotation_with_default& operator=(structured_annotation_with_default&&) noexcept;
-
-  structured_annotation_with_default& operator=(const structured_annotation_with_default&) = default;
+  structured_annotation_with_default& operator=(const structured_annotation_with_default& src);
   void __clear();
  private:
   ::std::string name;
@@ -576,8 +574,7 @@ class structured_annotation_recursive final  {
 
 
   structured_annotation_recursive& operator=(structured_annotation_recursive&&) noexcept;
-
-  structured_annotation_recursive& operator=(const structured_annotation_recursive&) = default;
+  structured_annotation_recursive& operator=(const structured_annotation_recursive& src);
   void __clear();
  private:
   ::std::string name;
@@ -751,8 +748,7 @@ class structured_annotation_nested final  {
 
 
   structured_annotation_nested& operator=(structured_annotation_nested&&) noexcept;
-
-  structured_annotation_nested& operator=(const structured_annotation_nested&) = default;
+  structured_annotation_nested& operator=(const structured_annotation_nested& src);
   void __clear();
  private:
   ::std::string name;
@@ -896,8 +892,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-
-  MyStruct& operator=(const MyStruct&) = default;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
   ::std::int64_t annotated_field;
@@ -1117,8 +1112,7 @@ class MyException final : public apache::thrift::TException {
 
 
   MyException& operator=(MyException&&) noexcept;
-
-  MyException& operator=(const MyException&) = default;
+  MyException& operator=(const MyException& src);
   void __clear();
  private:
   ::std::string context;

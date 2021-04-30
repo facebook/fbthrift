@@ -37,6 +37,7 @@ namespace extra { namespace svc {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2(const containerStruct2&) = default;
+containerStruct2& containerStruct2::operator=(const containerStruct2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :

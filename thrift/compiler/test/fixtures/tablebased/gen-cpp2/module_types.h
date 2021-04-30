@@ -463,8 +463,7 @@ class ContainerStruct final  {
 
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
-
-  ContainerStruct& operator=(const ContainerStruct&) = default;
+  ContainerStruct& operator=(const ContainerStruct& src);
   void __clear();
 
   ~ContainerStruct();

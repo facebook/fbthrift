@@ -160,8 +160,7 @@ class ModuleA final  {
 
 
   ModuleA& operator=(ModuleA&&) noexcept;
-
-  ModuleA& operator=(const ModuleA&) = default;
+  ModuleA& operator=(const ModuleA& src);
   void __clear();
 
   ~ModuleA();

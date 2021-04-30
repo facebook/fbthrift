@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(const Banal&) = default;
+Banal& Banal::operator=(const Banal&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(Banal&& other) noexcept { (void)other; }
@@ -112,6 +113,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(const Fiery&) = default;
+Fiery& Fiery::operator=(const Fiery&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
@@ -198,6 +200,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(const Serious&) = default;
+Serious& Serious::operator=(const Serious&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
@@ -293,6 +296,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
+ComplexFieldNames& ComplexFieldNames::operator=(const ComplexFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
@@ -400,6 +404,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
+CustomFieldNames& CustomFieldNames::operator=(const CustomFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :

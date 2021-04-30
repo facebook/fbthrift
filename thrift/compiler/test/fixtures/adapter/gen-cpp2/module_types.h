@@ -131,8 +131,7 @@ class Foo final  {
 
 
   Foo& operator=(Foo&&) noexcept;
-
-  Foo& operator=(const Foo&) = default;
+  Foo& operator=(const Foo& src);
   void __clear();
 
   ~Foo();
@@ -441,8 +440,7 @@ class Bar final  {
 
 
   Bar& operator=(Bar&&) noexcept;
-
-  Bar& operator=(const Bar&) = default;
+  Bar& operator=(const Bar& src);
   void __clear();
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField;

@@ -541,6 +541,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(const structA&) = default;
+structA& structA::operator=(const structA&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(structA&& other) noexcept  :
@@ -881,6 +882,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC(const structC&) = default;
+structC& structC::operator=(const structC&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
@@ -1660,6 +1662,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(const struct1&) = default;
+struct1& struct1::operator=(const struct1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
@@ -1863,6 +1866,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(const struct2&) = default;
+struct2& struct2::operator=(const struct2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
@@ -2100,6 +2104,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(const struct3&) = default;
+struct3& struct3::operator=(const struct3&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
@@ -2785,6 +2790,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5(const struct5&) = default;
+struct5& struct5::operator=(const struct5&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
@@ -2976,6 +2982,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(const struct_binary&) = default;
+struct_binary& struct_binary::operator=(const struct_binary&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(struct_binary&& other) noexcept  :
@@ -4073,6 +4080,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections(const struct_with_indirections&) = default;
+struct_with_indirections& struct_with_indirections::operator=(const struct_with_indirections&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :

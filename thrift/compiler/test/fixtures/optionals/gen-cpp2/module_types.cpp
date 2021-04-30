@@ -180,6 +180,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle(const Vehicle&) = default;
+Vehicle& Vehicle::operator=(const Vehicle&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle() :
@@ -351,6 +352,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person(const Person&) = default;
+Person& Person::operator=(const Person&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person() :

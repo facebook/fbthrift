@@ -2276,8 +2276,7 @@ class structA final  {
 
 
   structA& operator=(structA&&) noexcept;
-
-  structA& operator=(const structA&) = default;
+  structA& operator=(const structA& src);
   void __clear();
  private:
   ::std::int32_t a;
@@ -3040,8 +3039,7 @@ class structC final  {
 
 
   structC& operator=(structC&&) noexcept;
-
-  structC& operator=(const structC&) = default;
+  structC& operator=(const structC& src);
   void __clear();
 
   ~structC();
@@ -4088,8 +4086,7 @@ class struct1 final  {
 
 
   struct1& operator=(struct1&&) noexcept;
-
-  struct1& operator=(const struct1&) = default;
+  struct1& operator=(const struct1& src);
   void __clear();
 
   ~struct1();
@@ -4364,8 +4361,7 @@ class struct2 final  {
 
 
   struct2& operator=(struct2&&) noexcept;
-
-  struct2& operator=(const struct2&) = default;
+  struct2& operator=(const struct2& src);
   void __clear();
 
   ~struct2();
@@ -4674,8 +4670,7 @@ class struct3 final  {
 
 
   struct3& operator=(struct3&&) noexcept;
-
-  struct3& operator=(const struct3&) = default;
+  struct3& operator=(const struct3& src);
   void __clear();
 
   ~struct3();
@@ -5526,8 +5521,7 @@ class struct5 final  {
 
 
   struct5& operator=(struct5&&) noexcept;
-
-  struct5& operator=(const struct5&) = default;
+  struct5& operator=(const struct5& src);
   void __clear();
 
   ~struct5();
@@ -5769,8 +5763,7 @@ class struct_binary final  {
 
 
   struct_binary& operator=(struct_binary&&) noexcept;
-
-  struct_binary& operator=(const struct_binary&) = default;
+  struct_binary& operator=(const struct_binary& src);
   void __clear();
  private:
   ::std::string bi;
@@ -9254,8 +9247,7 @@ class struct_with_indirections final  {
 
 
   struct_with_indirections& operator=(struct_with_indirections&&) noexcept;
-
-  struct_with_indirections& operator=(const struct_with_indirections&) = default;
+  struct_with_indirections& operator=(const struct_with_indirections& src);
   void __clear();
 
   ~struct_with_indirections();

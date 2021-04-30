@@ -37,6 +37,7 @@ namespace module2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(const Struct&) = default;
+Struct& Struct::operator=(const Struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(Struct&& other) noexcept  :
@@ -184,6 +185,7 @@ namespace module2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(const BigStruct&) = default;
+BigStruct& BigStruct::operator=(const BigStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(BigStruct&& other) noexcept  :

@@ -70,6 +70,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
+MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(const MyStructFloatFieldThrowExp&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&& other) noexcept  :
@@ -201,6 +202,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
+SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
@@ -373,6 +375,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedStruct::ComplexNestedStruct(const ComplexNestedStruct&) = default;
+ComplexNestedStruct& ComplexNestedStruct::operator=(const ComplexNestedStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedStruct::ComplexNestedStruct() {}
@@ -883,6 +886,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(const reqXcep&) = default;
+reqXcep& reqXcep::operator=(const reqXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(reqXcep&& other) noexcept  :

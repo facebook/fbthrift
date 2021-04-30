@@ -585,8 +585,7 @@ class decorated_struct final  {
 
 
   decorated_struct& operator=(decorated_struct&&) noexcept;
-
-  decorated_struct& operator=(const decorated_struct&) = default;
+  decorated_struct& operator=(const decorated_struct& src);
   void __clear();
  private:
   ::std::string field;
@@ -697,8 +696,7 @@ class ContainerStruct final  {
 
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
-
-  ContainerStruct& operator=(const ContainerStruct&) = default;
+  ContainerStruct& operator=(const ContainerStruct& src);
   void __clear();
 
   ~ContainerStruct();
@@ -1029,8 +1027,7 @@ class CppTypeStruct final  {
 
 
   CppTypeStruct& operator=(CppTypeStruct&&) noexcept;
-
-  CppTypeStruct& operator=(const CppTypeStruct&) = default;
+  CppTypeStruct& operator=(const CppTypeStruct& src);
   void __clear();
  private:
   std::list<int32_t> fieldA;
@@ -1135,8 +1132,7 @@ class VirtualStruct  {
 
 
   VirtualStruct& operator=(VirtualStruct&&) noexcept;
-
-  VirtualStruct& operator=(const VirtualStruct&) = default;
+  VirtualStruct& operator=(const VirtualStruct& src);
   void __clear();
 
   virtual ~VirtualStruct() {}
@@ -1246,8 +1242,7 @@ class MyStructWithForwardRefEnum final  {
 
 
   MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) noexcept;
-
-  MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum&) = default;
+  MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum& src);
   void __clear();
  private:
   ::apache::thrift::fixtures::types::MyForwardRefEnum a;
@@ -1666,8 +1661,7 @@ class ComplexString final  {
 
 
   ComplexString& operator=(ComplexString&&) noexcept;
-
-  ComplexString& operator=(const ComplexString&) = default;
+  ComplexString& operator=(const ComplexString& src);
   void __clear();
  private:
   ::std::string a;
@@ -1811,8 +1805,7 @@ class ComplexNestedWithDefault final  {
 
 
   ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) noexcept;
-
-  ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
+  ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault& src);
   void __clear();
  private:
   ::std::string z;
@@ -1959,8 +1952,7 @@ class MinPadding final  {
 
 
   MinPadding& operator=(MinPadding&&) noexcept;
-
-  MinPadding& operator=(const MinPadding&) = default;
+  MinPadding& operator=(const MinPadding& src);
   void __clear();
  public:
   ::std::int64_t big;
@@ -2251,8 +2243,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-
-  MyStruct& operator=(const MyStruct&) = default;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
   ::std::int64_t MyIntField;
@@ -2564,8 +2555,7 @@ class AnnotatedTypes final  {
 
 
   AnnotatedTypes& operator=(AnnotatedTypes&&) noexcept;
-
-  AnnotatedTypes& operator=(const AnnotatedTypes&) = default;
+  AnnotatedTypes& operator=(const AnnotatedTypes& src);
   void __clear();
  private:
   ::apache::thrift::fixtures::types::TBinary binary_field;
@@ -2707,8 +2697,7 @@ class ForwardUsageStruct final  {
 
 
   ForwardUsageStruct& operator=(ForwardUsageStruct&&) noexcept;
-
-  ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
+  ForwardUsageStruct& operator=(const ForwardUsageStruct& src);
   void __clear();
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
@@ -2930,8 +2919,7 @@ class ForwardUsageByRef final  {
 
 
   ForwardUsageByRef& operator=(ForwardUsageByRef&&) noexcept;
-
-  ForwardUsageByRef& operator=(const ForwardUsageByRef&) = default;
+  ForwardUsageByRef& operator=(const ForwardUsageByRef& src);
   void __clear();
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
@@ -3212,8 +3200,7 @@ class NoexceptMoveComplexStruct final  {
 
 
   NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept;
-
-  NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct&) = default;
+  NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct& src);
   void __clear();
 
   ~NoexceptMoveComplexStruct();
@@ -3915,8 +3902,7 @@ class AllocatorAware final  {
     __isset(other.__isset) {}
 
   AllocatorAware& operator=(AllocatorAware&&) noexcept;
-
-  AllocatorAware& operator=(const AllocatorAware&) = default;
+  AllocatorAware& operator=(const AllocatorAware& src);
   void __clear();
 
   ~AllocatorAware();
@@ -4179,8 +4165,7 @@ class AllocatorAware2 final  {
     __isset(other.__isset) {}
 
   AllocatorAware2& operator=(AllocatorAware2&&) noexcept;
-
-  AllocatorAware2& operator=(const AllocatorAware2&) = default;
+  AllocatorAware2& operator=(const AllocatorAware2& src);
   void __clear();
  private:
   ::std::int32_t not_a_container;
@@ -4288,8 +4273,7 @@ class TypedefStruct final  {
 
 
   TypedefStruct& operator=(TypedefStruct&&) noexcept;
-
-  TypedefStruct& operator=(const TypedefStruct&) = default;
+  TypedefStruct& operator=(const TypedefStruct& src);
   void __clear();
  private:
   ::std::int32_t i32_field;

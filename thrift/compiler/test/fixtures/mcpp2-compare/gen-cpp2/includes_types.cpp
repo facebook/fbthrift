@@ -154,6 +154,7 @@ namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(const AStructB&) = default;
+AStructB& AStructB::operator=(const AStructB&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(AStructB&& other) noexcept  :

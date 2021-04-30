@@ -142,8 +142,7 @@ class SomeStruct final  {
 
 
   SomeStruct& operator=(SomeStruct&&) noexcept;
-
-  SomeStruct& operator=(const SomeStruct&) = default;
+  SomeStruct& operator=(const SomeStruct& src);
   void __clear();
  private:
   ::cpp2::Metasyntactic reasonable;

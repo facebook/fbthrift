@@ -80,8 +80,7 @@ class IncludedA final  {
 
 
   IncludedA& operator=(IncludedA&&) noexcept;
-
-  IncludedA& operator=(const IncludedA&) = default;
+  IncludedA& operator=(const IncludedA& src);
   void __clear();
  private:
   ::std::int32_t i32Field;

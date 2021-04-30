@@ -110,8 +110,7 @@ class InitialResponse final  {
 
 
   InitialResponse& operator=(InitialResponse&&) noexcept;
-
-  InitialResponse& operator=(const InitialResponse&) = default;
+  InitialResponse& operator=(const InitialResponse& src);
   void __clear();
  private:
   ::std::string content;
@@ -221,8 +220,7 @@ class FinalResponse final  {
 
 
   FinalResponse& operator=(FinalResponse&&) noexcept;
-
-  FinalResponse& operator=(const FinalResponse&) = default;
+  FinalResponse& operator=(const FinalResponse& src);
   void __clear();
  private:
   ::std::string content;
@@ -332,8 +330,7 @@ class SinkPayload final  {
 
 
   SinkPayload& operator=(SinkPayload&&) noexcept;
-
-  SinkPayload& operator=(const SinkPayload&) = default;
+  SinkPayload& operator=(const SinkPayload& src);
   void __clear();
  private:
   ::std::string content;
@@ -443,8 +440,7 @@ class CompatibleWithKeywordSink final  {
 
 
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) noexcept;
-
-  CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
+  CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink& src);
   void __clear();
  private:
   ::std::string sink;
@@ -560,8 +556,7 @@ class InitialException final : public apache::thrift::TException {
 
 
   InitialException& operator=(InitialException&&) noexcept;
-
-  InitialException& operator=(const InitialException&) = default;
+  InitialException& operator=(const InitialException& src);
   void __clear();
  private:
   ::std::string reason;
@@ -681,8 +676,7 @@ class SinkException1 final : public apache::thrift::TException {
 
 
   SinkException1& operator=(SinkException1&&) noexcept;
-
-  SinkException1& operator=(const SinkException1&) = default;
+  SinkException1& operator=(const SinkException1& src);
   void __clear();
  private:
   ::std::string reason;
@@ -803,8 +797,7 @@ class SinkException2 final : public apache::thrift::TException {
 
 
   SinkException2& operator=(SinkException2&&) noexcept;
-
-  SinkException2& operator=(const SinkException2&) = default;
+  SinkException2& operator=(const SinkException2& src);
   void __clear();
  private:
   ::std::int64_t reason;

@@ -103,6 +103,7 @@ namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(const SimpleException&) = default;
+SimpleException& SimpleException::operator=(const SimpleException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
@@ -314,6 +315,7 @@ namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
+SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
@@ -493,6 +495,7 @@ namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct(const ComplexStruct&) = default;
+ComplexStruct& ComplexStruct::operator=(const ComplexStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct() :
@@ -812,6 +815,7 @@ namespace py3 { namespace simple {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
+BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :

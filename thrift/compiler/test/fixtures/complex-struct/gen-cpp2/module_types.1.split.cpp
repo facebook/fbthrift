@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
+MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
@@ -152,6 +153,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct(const defaultStruct&) = default;
+defaultStruct& defaultStruct::operator=(const defaultStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct() :
@@ -855,6 +857,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
+TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
@@ -1002,6 +1005,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(const optXcep&) = default;
+optXcep& optXcep::operator=(const optXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(optXcep&& other) noexcept  :

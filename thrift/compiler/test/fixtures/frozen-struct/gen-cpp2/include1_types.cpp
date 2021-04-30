@@ -37,6 +37,7 @@ namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedA::IncludedA(const IncludedA&) = default;
+IncludedA& IncludedA::operator=(const IncludedA&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedA::IncludedA(IncludedA&& other) noexcept  :

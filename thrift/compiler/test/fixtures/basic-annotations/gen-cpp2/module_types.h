@@ -165,8 +165,7 @@ class MyStructNestedAnnotation final  {
 
 
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) noexcept;
-
-  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
+  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation& src);
   void __clear();
  private:
   ::std::string name;
@@ -283,8 +282,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-
-  MyStruct& operator=(const MyStruct&) = default;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
 
   ~MyStruct();
@@ -583,8 +581,7 @@ class SecretStruct final  {
 
 
   SecretStruct& operator=(SecretStruct&&) noexcept;
-
-  SecretStruct& operator=(const SecretStruct&) = default;
+  SecretStruct& operator=(const SecretStruct& src);
   void __clear();
  private:
   ::std::int64_t id;

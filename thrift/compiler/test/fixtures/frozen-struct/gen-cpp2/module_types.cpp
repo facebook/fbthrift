@@ -70,6 +70,7 @@ namespace some { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA(const ModuleA&) = default;
+ModuleA& ModuleA::operator=(const ModuleA&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA() :

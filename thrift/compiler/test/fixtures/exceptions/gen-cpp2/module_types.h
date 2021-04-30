@@ -109,8 +109,7 @@ class Banal final : public apache::thrift::TException {
 
 
   Banal& operator=(Banal&&) noexcept;
-
-  Banal& operator=(const Banal&) = default;
+  Banal& operator=(const Banal& src);
   void __clear();
 
   bool operator==(const Banal&) const;
@@ -193,8 +192,7 @@ class Fiery final : public apache::thrift::TException {
 
 
   Fiery& operator=(Fiery&&) noexcept;
-
-  Fiery& operator=(const Fiery&) = default;
+  Fiery& operator=(const Fiery& src);
   void __clear();
  public:
   ::std::string message;
@@ -315,8 +313,7 @@ class Serious final : public apache::thrift::TException {
 
 
   Serious& operator=(Serious&&) noexcept;
-
-  Serious& operator=(const Serious&) = default;
+  Serious& operator=(const Serious& src);
   void __clear();
  private:
   ::std::string sonnet;
@@ -443,8 +440,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
 
   ComplexFieldNames& operator=(ComplexFieldNames&&) noexcept;
-
-  ComplexFieldNames& operator=(const ComplexFieldNames&) = default;
+  ComplexFieldNames& operator=(const ComplexFieldNames& src);
   void __clear();
  private:
   ::std::string error_message;
@@ -608,8 +604,7 @@ class CustomFieldNames final : public apache::thrift::TException {
 
 
   CustomFieldNames& operator=(CustomFieldNames&&) noexcept;
-
-  CustomFieldNames& operator=(const CustomFieldNames&) = default;
+  CustomFieldNames& operator=(const CustomFieldNames& src);
   void __clear();
  private:
   ::std::string error_message;

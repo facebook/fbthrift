@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(const Mixin1&) = default;
+Mixin1& Mixin1::operator=(const Mixin1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(Mixin1&& other) noexcept  :
@@ -132,6 +133,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(const Mixin2&) = default;
+Mixin2& Mixin2::operator=(const Mixin2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(Mixin2&& other) noexcept  :
@@ -259,6 +261,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
+Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
@@ -354,6 +357,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(const Foo&) = default;
+Foo& Foo::operator=(const Foo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(Foo&& other) noexcept  :

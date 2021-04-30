@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(const InitialResponse&) = default;
+InitialResponse& InitialResponse::operator=(const InitialResponse&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
@@ -132,6 +133,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(const FinalResponse&) = default;
+FinalResponse& FinalResponse::operator=(const FinalResponse&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
@@ -227,6 +229,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(const SinkPayload&) = default;
+SinkPayload& SinkPayload::operator=(const SinkPayload&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
@@ -322,6 +325,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
+CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(const CompatibleWithKeywordSink&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
@@ -417,6 +421,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(const InitialException&) = default;
+InitialException& InitialException::operator=(const InitialException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(InitialException&& other) noexcept  :
@@ -512,6 +517,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(const SinkException1&) = default;
+SinkException1& SinkException1::operator=(const SinkException1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(SinkException1&& other) noexcept  :
@@ -607,6 +613,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(const SinkException2&) = default;
+SinkException2& SinkException2::operator=(const SinkException2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(SinkException2&& other) noexcept  :

@@ -396,6 +396,7 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
@@ -1162,6 +1163,7 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException(const AnException&) = default;
+AnException& AnException::operator=(const AnException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
@@ -1567,6 +1569,7 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(const AnotherException&) = default;
+AnotherException& AnotherException::operator=(const AnotherException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(AnotherException&& other) noexcept  :

@@ -92,8 +92,7 @@ class Struct final  {
 
 
   Struct& operator=(Struct&&) noexcept;
-
-  Struct& operator=(const Struct&) = default;
+  Struct& operator=(const Struct& src);
   void __clear();
  private:
   ::module0::Struct first;
@@ -230,8 +229,7 @@ class BigStruct final  {
 
 
   BigStruct& operator=(BigStruct&&) noexcept;
-
-  BigStruct& operator=(const BigStruct&) = default;
+  BigStruct& operator=(const BigStruct& src);
   void __clear();
  private:
   ::module2::Struct s;

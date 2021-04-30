@@ -240,8 +240,7 @@ class AStructB final  {
 
 
   AStructB& operator=(AStructB&&) noexcept;
-
-  AStructB& operator=(const AStructB&) = default;
+  AStructB& operator=(const AStructB& src);
   void __clear();
  public:
   ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA;

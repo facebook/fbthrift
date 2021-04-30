@@ -319,8 +319,7 @@ class Internship final  {
 
 
   Internship& operator=(Internship&&) noexcept;
-
-  Internship& operator=(const Internship&) = default;
+  Internship& operator=(const Internship& src);
   void __clear();
  public:
   ::std::int32_t weeks;
@@ -673,8 +672,7 @@ class struct1 final  {
 
 
   struct1& operator=(struct1&&) noexcept;
-
-  struct1& operator=(const struct1&) = default;
+  struct1& operator=(const struct1& src);
   void __clear();
  private:
   ::std::int32_t a;
@@ -818,8 +816,7 @@ class struct2 final  {
 
 
   struct2& operator=(struct2&&) noexcept;
-
-  struct2& operator=(const struct2&) = default;
+  struct2& operator=(const struct2& src);
   void __clear();
  private:
   ::std::int32_t a;
@@ -1027,8 +1024,7 @@ class struct3 final  {
 
 
   struct3& operator=(struct3&&) noexcept;
-
-  struct3& operator=(const struct3&) = default;
+  struct3& operator=(const struct3& src);
   void __clear();
  private:
   ::std::string a;
@@ -1206,8 +1202,7 @@ class struct4 final  {
 
 
   struct4& operator=(struct4&&) noexcept;
-
-  struct4& operator=(const struct4&) = default;
+  struct4& operator=(const struct4& src);
   void __clear();
  private:
   ::std::int32_t a;

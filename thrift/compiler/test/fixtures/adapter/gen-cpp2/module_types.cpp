@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(const Foo&) = default;
+Foo& Foo::operator=(const Foo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
@@ -246,6 +247,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar(const Bar&) = default;
+Bar& Bar::operator=(const Bar&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar(Bar&& other) noexcept  :

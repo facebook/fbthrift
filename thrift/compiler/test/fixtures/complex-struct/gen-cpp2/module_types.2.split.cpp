@@ -37,6 +37,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
@@ -641,6 +642,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
+MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
@@ -1029,6 +1031,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(const emptyXcep&) = default;
+emptyXcep& emptyXcep::operator=(const emptyXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
@@ -1104,6 +1107,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException(const complexException&) = default;
+complexException& complexException::operator=(const complexException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException() :

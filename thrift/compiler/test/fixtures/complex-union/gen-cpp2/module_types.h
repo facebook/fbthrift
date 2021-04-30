@@ -1336,8 +1336,7 @@ class Val final  {
 
 
   Val& operator=(Val&&) noexcept;
-
-  Val& operator=(const Val&) = default;
+  Val& operator=(const Val& src);
   void __clear();
  private:
   ::std::string strVal;

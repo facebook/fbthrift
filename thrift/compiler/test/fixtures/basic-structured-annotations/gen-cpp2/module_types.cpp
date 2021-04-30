@@ -70,6 +70,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
+structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
@@ -177,6 +178,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
+structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
@@ -352,6 +354,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
+structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(structured_annotation_recursive&& other) noexcept  :
@@ -511,6 +514,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
+structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
@@ -638,6 +642,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
@@ -769,6 +774,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(const MyException&) = default;
+MyException& MyException::operator=(const MyException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :

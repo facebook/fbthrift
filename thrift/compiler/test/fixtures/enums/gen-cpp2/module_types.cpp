@@ -70,6 +70,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(const SomeStruct&) = default;
+SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :

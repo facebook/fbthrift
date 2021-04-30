@@ -814,6 +814,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(const RecursiveStruct&) = default;
+RecursiveStruct& RecursiveStruct::operator=(const RecursiveStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
@@ -1147,6 +1148,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(const StructWithSharedConst&) = default;
+StructWithSharedConst& StructWithSharedConst::operator=(const StructWithSharedConst&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(StructWithSharedConst&& other) noexcept  :
@@ -1752,6 +1754,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(const StructWithRefTypeShared&) = default;
+StructWithRefTypeShared& StructWithRefTypeShared::operator=(const StructWithRefTypeShared&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(StructWithRefTypeShared&& other) noexcept  :
@@ -1923,6 +1926,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst&) = default;
+StructWithRefTypeSharedConst& StructWithRefTypeSharedConst::operator=(const StructWithRefTypeSharedConst&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&& other) noexcept  :

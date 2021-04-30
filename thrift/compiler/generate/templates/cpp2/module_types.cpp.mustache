@@ -113,6 +113,7 @@ const char* <%struct:name%>::__fbthrift_cpp2_gen_thrift_uri() {
 <%^struct:is_eligible_for_constexpr?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<%struct:name%>(const <%struct:name%>&) = default;
+<%struct:name%>& <%struct:name%>::operator=(const <%struct:name%>&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:is_eligible_for_constexpr?%>
 <%/struct:nondefault_copy_ctor_and_assignment?%>

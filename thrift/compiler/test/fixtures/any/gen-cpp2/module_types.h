@@ -87,8 +87,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-
-  MyStruct& operator=(const MyStruct&) = default;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
   ::std::string myString;
@@ -418,8 +417,7 @@ class MyException final : public apache::thrift::TException {
 
 
   MyException& operator=(MyException&&) noexcept;
-
-  MyException& operator=(const MyException&) = default;
+  MyException& operator=(const MyException& src);
   void __clear();
  private:
   ::std::string myString;

@@ -530,8 +530,7 @@ class Bang final : public apache::thrift::TException {
 
 
   Bang& operator=(Bang&&) noexcept;
-
-  Bang& operator=(const Bang&) = default;
+  Bang& operator=(const Bang& src);
   void __clear();
  private:
   ::std::string message;

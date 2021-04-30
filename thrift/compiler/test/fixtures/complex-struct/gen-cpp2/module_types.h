@@ -690,8 +690,7 @@ class MyStructFloatFieldThrowExp final  {
 
 
   MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) noexcept;
-
-  MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp&) = default;
+  MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp& src);
   void __clear();
  private:
   ::std::int64_t myLongField;
@@ -901,8 +900,7 @@ class MyStructMapFloatThrowExp final  {
 
 
   MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) noexcept;
-
-  MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp&) = default;
+  MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp& src);
   void __clear();
  private:
   ::std::int64_t myLongField;
@@ -1108,8 +1106,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-
-  MyStruct& operator=(const MyStruct&) = default;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
 
   ~MyStruct();
@@ -2095,8 +2092,7 @@ class SimpleStruct final  {
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
-
-  SimpleStruct& operator=(const SimpleStruct&) = default;
+  SimpleStruct& operator=(const SimpleStruct& src);
   void __clear();
  private:
   ::std::int64_t age;
@@ -2240,8 +2236,7 @@ class ComplexNestedStruct final  {
 
 
   ComplexNestedStruct& operator=(ComplexNestedStruct&&) noexcept;
-
-  ComplexNestedStruct& operator=(const ComplexNestedStruct&) = default;
+  ComplexNestedStruct& operator=(const ComplexNestedStruct& src);
   void __clear();
 
   ~ComplexNestedStruct();
@@ -3448,8 +3443,7 @@ class defaultStruct final  {
 
 
   defaultStruct& operator=(defaultStruct&&) noexcept;
-
-  defaultStruct& operator=(const defaultStruct&) = default;
+  defaultStruct& operator=(const defaultStruct& src);
   void __clear();
 
   ~defaultStruct();
@@ -4250,8 +4244,7 @@ class MyStructTypeDef final  {
 
 
   MyStructTypeDef& operator=(MyStructTypeDef&&) noexcept;
-
-  MyStructTypeDef& operator=(const MyStructTypeDef&) = default;
+  MyStructTypeDef& operator=(const MyStructTypeDef& src);
   void __clear();
 
   ~MyStructTypeDef();
@@ -5058,8 +5051,7 @@ class TypeRemapped final  {
 
 
   TypeRemapped& operator=(TypeRemapped&&) noexcept;
-
-  TypeRemapped& operator=(const TypeRemapped&) = default;
+  TypeRemapped& operator=(const TypeRemapped& src);
   void __clear();
  private:
   ::std::map<::std::int64_t, ::std::string> lsMap;
@@ -5272,8 +5264,7 @@ class emptyXcep final : public apache::thrift::TException {
 
 
   emptyXcep& operator=(emptyXcep&&) noexcept;
-
-  emptyXcep& operator=(const emptyXcep&) = default;
+  emptyXcep& operator=(const emptyXcep& src);
   void __clear();
 
   bool operator==(const emptyXcep&) const;
@@ -5351,8 +5342,7 @@ class reqXcep final : public apache::thrift::TException {
 
 
   reqXcep& operator=(reqXcep&&) noexcept;
-
-  reqXcep& operator=(const reqXcep&) = default;
+  reqXcep& operator=(const reqXcep& src);
   void __clear();
  public:
   ::std::string message;
@@ -5499,8 +5489,7 @@ class optXcep final : public apache::thrift::TException {
 
 
   optXcep& operator=(optXcep&&) noexcept;
-
-  optXcep& operator=(const optXcep&) = default;
+  optXcep& operator=(const optXcep& src);
   void __clear();
  private:
   ::std::string message;
@@ -5660,8 +5649,7 @@ class complexException final : public apache::thrift::TException {
 
 
   complexException& operator=(complexException&&) noexcept;
-
-  complexException& operator=(const complexException&) = default;
+  complexException& operator=(const complexException& src);
   void __clear();
 
   ~complexException();

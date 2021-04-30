@@ -1012,8 +1012,7 @@ class RecursiveStruct final  {
 
 
   RecursiveStruct& operator=(RecursiveStruct&&) noexcept;
-
-  RecursiveStruct& operator=(const RecursiveStruct&) = default;
+  RecursiveStruct& operator=(const RecursiveStruct& src);
   void __clear();
  private:
   ::std::vector<::cpp2::RecursiveStruct> mes;
@@ -1270,8 +1269,7 @@ class StructWithSharedConst final  {
 
 
   StructWithSharedConst& operator=(StructWithSharedConst&&) noexcept;
-
-  StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
+  StructWithSharedConst& operator=(const StructWithSharedConst& src);
   void __clear();
  public:
   ::std::shared_ptr<const ::cpp2::MyField> opt_shared_const;
@@ -1667,8 +1665,7 @@ class StructWithRefTypeShared final  {
 
 
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) noexcept;
-
-  StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
+  StructWithRefTypeShared& operator=(const StructWithRefTypeShared& src);
   void __clear();
  public:
   ::std::shared_ptr<::cpp2::Empty> def_field;
@@ -1778,8 +1775,7 @@ class StructWithRefTypeSharedConst final  {
 
 
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) noexcept;
-
-  StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
+  StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst& src);
   void __clear();
  public:
   ::std::shared_ptr<const ::cpp2::Empty> def_field;

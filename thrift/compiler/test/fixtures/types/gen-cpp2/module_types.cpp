@@ -169,6 +169,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(const decorated_struct&) = default;
+decorated_struct& decorated_struct::operator=(const decorated_struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(decorated_struct&& other) noexcept  :
@@ -264,6 +265,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
+ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ContainerStruct::ContainerStruct() {}
@@ -483,6 +485,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(const CppTypeStruct&) = default;
+CppTypeStruct& CppTypeStruct::operator=(const CppTypeStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(CppTypeStruct&& other) noexcept  :
@@ -586,6 +589,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 VirtualStruct::VirtualStruct(const VirtualStruct&) = default;
+VirtualStruct& VirtualStruct::operator=(const VirtualStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 VirtualStruct::VirtualStruct(VirtualStruct&& other) noexcept  :
@@ -681,6 +685,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
+MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(const MyStructWithForwardRefEnum&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&& other) noexcept  :
@@ -988,6 +993,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexString::ComplexString(const ComplexString&) = default;
+ComplexString& ComplexString::operator=(const ComplexString&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexString::ComplexString(ComplexString&& other) noexcept  :
@@ -1103,6 +1109,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedWithDefault::ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
+ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(const ComplexNestedWithDefault&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedWithDefault::ComplexNestedWithDefault(ComplexNestedWithDefault&& other) noexcept  :
@@ -1230,6 +1237,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MinPadding::MinPadding(const MinPadding&) = default;
+MinPadding& MinPadding::operator=(const MinPadding&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MinPadding::MinPadding(MinPadding&& other) noexcept  :
@@ -1413,6 +1421,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
@@ -1607,6 +1616,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedTypes::AnnotatedTypes(const AnnotatedTypes&) = default;
+AnnotatedTypes& AnnotatedTypes::operator=(const AnnotatedTypes&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedTypes::AnnotatedTypes(AnnotatedTypes&& other) noexcept  :
@@ -1709,6 +1719,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageStruct::ForwardUsageStruct(const ForwardUsageStruct&) = default;
+ForwardUsageStruct& ForwardUsageStruct::operator=(const ForwardUsageStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageStruct::ForwardUsageStruct(ForwardUsageStruct&& other) noexcept  :
@@ -1984,6 +1995,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageByRef::ForwardUsageByRef(const ForwardUsageByRef&) = default;
+ForwardUsageByRef& ForwardUsageByRef::operator=(const ForwardUsageByRef&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageByRef::ForwardUsageByRef(ForwardUsageByRef&& other) noexcept  :
@@ -2244,6 +2256,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
+NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(const NoexceptMoveComplexStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
@@ -2582,6 +2595,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware(const AllocatorAware&) = default;
+AllocatorAware& AllocatorAware::operator=(const AllocatorAware&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware() :
@@ -2757,6 +2771,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware2::AllocatorAware2(const AllocatorAware2&) = default;
+AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
@@ -2852,6 +2867,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypedefStruct::TypedefStruct(const TypedefStruct&) = default;
+TypedefStruct& TypedefStruct::operator=(const TypedefStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypedefStruct::TypedefStruct(TypedefStruct&& other) noexcept  :

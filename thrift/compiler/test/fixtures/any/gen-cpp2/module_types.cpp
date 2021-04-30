@@ -62,6 +62,7 @@ const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
@@ -268,6 +269,7 @@ const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(const MyException&) = default;
+MyException& MyException::operator=(const MyException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :

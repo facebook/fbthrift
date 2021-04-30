@@ -110,8 +110,7 @@ class Mixin1 final  {
 
 
   Mixin1& operator=(Mixin1&&) noexcept;
-
-  Mixin1& operator=(const Mixin1&) = default;
+  Mixin1& operator=(const Mixin1& src);
   void __clear();
  private:
   ::std::string field1;
@@ -221,8 +220,7 @@ class Mixin2 final  {
 
 
   Mixin2& operator=(Mixin2&&) noexcept;
-
-  Mixin2& operator=(const Mixin2&) = default;
+  Mixin2& operator=(const Mixin2& src);
   void __clear();
  private:
   ::cpp2::Mixin1 m1;
@@ -369,8 +367,7 @@ class Mixin3Base final  {
 
 
   Mixin3Base& operator=(Mixin3Base&&) noexcept;
-
-  Mixin3Base& operator=(const Mixin3Base&) = default;
+  Mixin3Base& operator=(const Mixin3Base& src);
   void __clear();
  private:
   ::std::string field3;
@@ -480,8 +477,7 @@ class Foo final  {
 
 
   Foo& operator=(Foo&&) noexcept;
-
-  Foo& operator=(const Foo&) = default;
+  Foo& operator=(const Foo& src);
   void __clear();
  private:
   ::std::string field4;

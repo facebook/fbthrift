@@ -277,8 +277,7 @@ class SimpleException final : public apache::thrift::TException {
 
 
   SimpleException& operator=(SimpleException&&) noexcept;
-
-  SimpleException& operator=(const SimpleException&) = default;
+  SimpleException& operator=(const SimpleException& src);
   void __clear();
  private:
   ::std::int16_t err_code;
@@ -505,8 +504,7 @@ class SimpleStruct final  {
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
-
-  SimpleStruct& operator=(const SimpleStruct&) = default;
+  SimpleStruct& operator=(const SimpleStruct& src);
   void __clear();
  private:
   bool is_on;
@@ -843,8 +841,7 @@ class ComplexStruct final  {
 
 
   ComplexStruct& operator=(ComplexStruct&&) noexcept;
-
-  ComplexStruct& operator=(const ComplexStruct&) = default;
+  ComplexStruct& operator=(const ComplexStruct& src);
   void __clear();
 
   ~ComplexStruct();
@@ -1448,8 +1445,7 @@ class BinaryUnionStruct final  {
 
 
   BinaryUnionStruct& operator=(BinaryUnionStruct&&) noexcept;
-
-  BinaryUnionStruct& operator=(const BinaryUnionStruct&) = default;
+  BinaryUnionStruct& operator=(const BinaryUnionStruct& src);
   void __clear();
  private:
   ::py3::simple::BinaryUnion u;

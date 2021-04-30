@@ -75,8 +75,7 @@ class FooEx final : public apache::thrift::TException {
 
 
   FooEx& operator=(FooEx&&) noexcept;
-
-  FooEx& operator=(const FooEx&) = default;
+  FooEx& operator=(const FooEx& src);
   void __clear();
 
   bool operator==(const FooEx&) const;

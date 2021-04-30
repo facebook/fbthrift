@@ -136,6 +136,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(const Internship&) = default;
+Internship& Internship::operator=(const Internship&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(Internship&& other) noexcept  :
@@ -347,6 +348,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(const struct1&) = default;
+struct1& struct1::operator=(const struct1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(struct1&& other) noexcept  :
@@ -454,6 +456,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(const struct2&) = default;
+struct2& struct2::operator=(const struct2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(struct2&& other) noexcept  :
@@ -613,6 +616,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(const struct3&) = default;
+struct3& struct3::operator=(const struct3&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(struct3&& other) noexcept  :
@@ -752,6 +756,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(const struct4&) = default;
+struct4& struct4::operator=(const struct4&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(struct4&& other) noexcept  :

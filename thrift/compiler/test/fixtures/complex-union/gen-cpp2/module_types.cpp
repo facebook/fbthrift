@@ -398,6 +398,7 @@ namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(const Val&) = default;
+Val& Val::operator=(const Val&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(Val&& other) noexcept  :
