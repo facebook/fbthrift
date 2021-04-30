@@ -88,18 +88,18 @@ bool same_types(const t_type* a, const t_type* b) {
 
   switch (resolved_a->get_type_value()) {
     case t_type::type::t_list: {
-      const auto* list_a = dynamic_cast<const t_list*>(resolved_a);
-      const auto* list_b = dynamic_cast<const t_list*>(resolved_b);
+      const auto* list_a = static_cast<const t_list*>(resolved_a);
+      const auto* list_b = static_cast<const t_list*>(resolved_b);
       return same_types(list_a->get_elem_type(), list_b->get_elem_type());
     }
     case t_type::type::t_set: {
-      const auto* set_a = dynamic_cast<const t_set*>(resolved_a);
-      const auto* set_b = dynamic_cast<const t_set*>(resolved_b);
+      const auto* set_a = static_cast<const t_set*>(resolved_a);
+      const auto* set_b = static_cast<const t_set*>(resolved_b);
       return same_types(set_a->get_elem_type(), set_b->get_elem_type());
     }
     case t_type::type::t_map: {
-      const auto* map_a = dynamic_cast<const t_map*>(resolved_a);
-      const auto* map_b = dynamic_cast<const t_map*>(resolved_b);
+      const auto* map_a = static_cast<const t_map*>(resolved_a);
+      const auto* map_b = static_cast<const t_map*>(resolved_b);
       return same_types(map_a->get_key_type(), map_b->get_key_type()) &&
           same_types(map_a->get_val_type(), map_b->get_val_type());
     }
@@ -520,11 +520,8 @@ class mstch_cpp2_type : public mstch_type {
         type_->has_annotation("cpp.use_allocator");
   }
   mstch::node is_non_empty_struct() {
-    if (resolved_type_->is_struct() || resolved_type_->is_xception()) {
-      auto as_struct = dynamic_cast<t_struct const*>(resolved_type_);
-      return as_struct->has_fields();
-    }
-    return false;
+    auto as_struct = dynamic_cast<t_struct const*>(resolved_type_);
+    return as_struct && as_struct->has_fields();
   }
   mstch::node namespace_cpp2() {
     return t_mstch_cpp2_generator::get_namespace_array(type_->program());
@@ -630,8 +627,7 @@ class mstch_cpp2_field : public mstch_field {
     return field_->get_type()->has_annotation("cpp2.noncopyable");
   }
   mstch::node enum_has_value() {
-    if (field_->get_type()->is_enum()) {
-      auto const* enm = dynamic_cast<t_enum const*>(field_->get_type());
+    if (auto enm = dynamic_cast<t_enum const*>(field_->get_type())) {
       auto const* const_value = field_->get_value();
       using cv = t_const_value::t_const_value_type;
       if (const_value->get_type() == cv::CV_INTEGER) {
@@ -1587,21 +1583,18 @@ class mstch_cpp2_program : public mstch_program {
         }
 
         auto add_dependency = [&](const t_type* type) {
-          if (type->is_struct()) {
-            // TODO(afuller): Remove const cast, once the return type also has
-            // const elements.
-            auto* strct =
-                const_cast<t_struct*>(dynamic_cast<const t_struct*>(type));
+          if (auto strct = dynamic_cast<const t_struct*>(type)) {
             // We're only interested in types defined in the current program.
-            if (strct->program() == program) {
-              deps.emplace_back(strct);
+            if (!strct->is_exception() && strct->program() == program) {
+              // TODO(afuller): Remove const cast, once the return type also has
+              // const elements.
+              deps.emplace_back(const_cast<t_struct*>(strct));
             }
           }
         };
 
         auto t = f->get_type()->get_true_type();
-        if (t->is_map()) {
-          const auto* map = dynamic_cast<const t_map*>(t);
+        if (auto map = dynamic_cast<t_map const*>(t)) {
           add_dependency(map->get_key_type());
           add_dependency(map->get_val_type());
         } else {
