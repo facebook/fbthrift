@@ -832,7 +832,30 @@ class mstch_cpp2_struct : public mstch_struct {
         {"cpp.declare_equal_to", "cpp2.declare_equal_to"});
   }
   mstch::node cpp_noncopyable() {
-    return strct_->has_annotation("cpp2.noncopyable");
+    if (strct_->has_annotation("cpp2.noncopyable")) {
+      return true;
+    }
+    bool result = false;
+    cpp2::for_each_transitive_field(strct_, [&result](const t_field* field) {
+      if (!field->get_type()->has_annotation("cpp2.noncopyable")) {
+        return true;
+      }
+      switch (gen::cpp::find_ref_type(field)) {
+        case gen::cpp::reference_type::shared_const:
+        case gen::cpp::reference_type::shared_mutable: {
+          return true;
+        }
+        case gen::cpp::reference_type::boxed:
+        case gen::cpp::reference_type::none:
+        case gen::cpp::reference_type::unique:
+        case gen::cpp::reference_type::unrecognized: {
+          break;
+        }
+      }
+      result = true;
+      return false;
+    });
+    return result;
   }
   mstch::node cpp_noncomparable() {
     return strct_->has_annotation("cpp2.noncomparable");
