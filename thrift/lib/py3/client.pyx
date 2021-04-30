@@ -82,6 +82,12 @@ cdef class Client:
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
         self._client.reset()
 
+    def __enter__(Client self):
+        raise asyncio.InvalidStateError('Use an async context for thrift clients and interactions')
+
+    def __exit__(Client self):
+        raise NotImplementedError()
+
     async def __aenter__(Client self):
         await asyncio.shield(self._connect_future)
         if self._context_entered:
