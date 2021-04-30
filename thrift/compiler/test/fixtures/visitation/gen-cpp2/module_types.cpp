@@ -2610,7 +2610,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.field3) field3.reset(new ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
+  field3 = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.field3);
 }
 
 struct4& struct4::operator=(const struct4& src) {

@@ -39,7 +39,8 @@ Foo::Foo(const Foo& srcObj) {
   srcObj.field1_ref();
   __fbthrift_isDeserialized_.field1 = true;
   __fbthrift_serializedData_.field1.clear();
-  if (srcObj.field1) field1.reset(new ::std::string(*srcObj.field1));
+  field1 = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::string>(srcObj.field1);
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;

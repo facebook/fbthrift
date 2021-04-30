@@ -17,6 +17,7 @@
 #include <thrift/compiler/lib/cpp2/util.h>
 
 #include <algorithm>
+#include <queue>
 #include <stdexcept>
 
 #include <openssl/sha.h>
@@ -130,6 +131,51 @@ bool is_implicit_ref(const t_type* type) {
   return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
       get_type(resolved_typedef).find("std::unique_ptr") != std::string::npos &&
       get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
+}
+
+bool field_transitively_refers_to_unique(const t_field* field) {
+  switch (gen::cpp::find_ref_type(field)) {
+    case gen::cpp::reference_type::none:
+    case gen::cpp::reference_type::unrecognized: {
+      break;
+    }
+    case gen::cpp::reference_type::unique: {
+      return true;
+    }
+    case gen::cpp::reference_type::boxed:
+    case gen::cpp::reference_type::shared_const:
+    case gen::cpp::reference_type::shared_mutable: {
+      return false;
+    }
+  }
+  std::queue<const t_type*> queue;
+  queue.push(field->get_type());
+  while (!queue.empty()) {
+    auto type = queue.front()->get_true_type();
+    queue.pop();
+    if (cpp2::is_implicit_ref(type)) {
+      return true;
+    }
+    switch (type->get_type_value()) {
+      case t_type::type::t_list: {
+        queue.push(static_cast<const t_list*>(type)->get_elem_type());
+        break;
+      }
+      case t_type::type::t_set: {
+        queue.push(static_cast<const t_set*>(type)->get_elem_type());
+        break;
+      }
+      case t_type::type::t_map: {
+        queue.push(static_cast<const t_map*>(type)->get_key_type());
+        queue.push(static_cast<const t_map*>(type)->get_val_type());
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  return false;
 }
 
 bool is_eligible_for_constexpr::operator()(const t_type* type) {

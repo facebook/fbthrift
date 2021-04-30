@@ -17,6 +17,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include <type_traits>
 
 #include <folly/Indestructible.h>
@@ -32,6 +33,72 @@ namespace thrift {
 namespace detail {
 
 namespace st {
+
+/**
+ * Specializations of `copy_unique_impl` encapsulate copying methods for
+ * containers that transitively refer to a `unique_ptr`.
+ * e.g. `list<unique_ptr<IOBuf>>`, `map<i32, IOBufPtr>`.
+ **/
+template <typename TypeClass, typename T>
+struct copy_unique_impl;
+
+// Handle containers by delegating to specializations of `copy_unique_impl`.
+template <typename TypeClass, typename T>
+T copy_unique(T const& t) {
+  return copy_unique_impl<TypeClass, T>{}(t);
+}
+
+// Handle field-level annotations such as `cpp.ref`, `cpp.ref_type = "unique"`,
+// as well as `cpp.type` that refers to `unique_ptr`.
+template <typename TypeClass, typename T>
+std::unique_ptr<T> copy_unique(std::unique_ptr<T> const& p) {
+  return p ? std::make_unique<T>(
+                 ::apache::thrift::detail::st::copy_unique<TypeClass>(*p))
+           : nullptr;
+}
+
+template <typename TypeClass, typename T>
+struct copy_unique_impl {
+  T operator()(T const& t) const { return t; }
+};
+
+template <typename ElemClass, typename T>
+struct copy_unique_impl<type_class::list<ElemClass>, T> {
+  T operator()(T const& t) const {
+    T result;
+    for (auto const& e : t) {
+      result.push_back(::apache::thrift::detail::st::copy_unique<ElemClass>(e));
+    }
+    return result;
+  }
+};
+
+template <typename ElemClass, typename T>
+struct copy_unique_impl<type_class::set<ElemClass>, T> {
+  T operator()(T const& t) const {
+    T result;
+    for (auto const& e : t) {
+      result.emplace_hint(
+          result.end(),
+          ::apache::thrift::detail::st::copy_unique<ElemClass>(e));
+    }
+    return result;
+  }
+};
+
+template <typename KeyClass, typename ValClass, typename T>
+struct copy_unique_impl<type_class::map<KeyClass, ValClass>, T> {
+  T operator()(T const& m) const {
+    T result;
+    for (auto const& [k, v] : m) {
+      result.emplace_hint(
+          result.end(),
+          ::apache::thrift::detail::st::copy_unique<KeyClass>(k),
+          ::apache::thrift::detail::st::copy_unique<ValClass>(v));
+    }
+    return result;
+  }
+};
 
 struct translate_field_name_table {
   size_t size;

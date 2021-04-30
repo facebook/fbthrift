@@ -212,12 +212,18 @@ void TccStructTraits<::cpp2::MyField>::translateFieldName(
 namespace cpp2 {
 
 MyField::MyField(const MyField& srcObj) {
-  if (srcObj.opt_value) opt_value.reset(new ::std::int64_t(*srcObj.opt_value));
-  if (srcObj.value) value.reset(new ::std::int64_t(*srcObj.value));
-  if (srcObj.req_value) req_value.reset(new ::std::int64_t(*srcObj.req_value));
-  if (srcObj.opt_enum_value) opt_enum_value.reset(new ::cpp2::MyEnum(*srcObj.opt_enum_value));
-  if (srcObj.enum_value) enum_value.reset(new ::cpp2::MyEnum(*srcObj.enum_value));
-  if (srcObj.req_enum_value) req_enum_value.reset(new ::cpp2::MyEnum(*srcObj.req_enum_value));
+  opt_value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::integral>(srcObj.opt_value);
+  value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::integral>(srcObj.value);
+  req_value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::integral>(srcObj.req_value);
+  opt_enum_value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::enumeration>(srcObj.opt_enum_value);
+  enum_value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::enumeration>(srcObj.enum_value);
+  req_enum_value = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::enumeration>(srcObj.req_enum_value);
 }
 
 MyField& MyField::operator=(const MyField& src) {
@@ -438,9 +444,12 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 MyStruct::MyStruct(const MyStruct& srcObj) {
-  if (srcObj.opt_ref) opt_ref.reset(new ::cpp2::MyField(*srcObj.opt_ref));
-  if (srcObj.ref) ref.reset(new ::cpp2::MyField(*srcObj.ref));
-  if (srcObj.req_ref) req_ref.reset(new ::cpp2::MyField(*srcObj.req_ref));
+  opt_ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.opt_ref);
+  ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.ref);
+  req_ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.req_ref);
 }
 
 MyStruct& MyStruct::operator=(const MyStruct& src) {
@@ -621,8 +630,10 @@ void TccStructTraits<::cpp2::StructWithUnion>::translateFieldName(
 namespace cpp2 {
 
 StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
-  if (srcObj.u) u.reset(new ::cpp2::MyUnion(*srcObj.u));
-  if (srcObj.aDouble) aDouble.reset(new double(*srcObj.aDouble));
+  u = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::variant>(srcObj.u);
+  aDouble = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
   f = srcObj.f;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.f = srcObj.__isset.f;
@@ -902,10 +913,14 @@ void TccStructTraits<::cpp2::StructWithContainers>::translateFieldName(
 namespace cpp2 {
 
 StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
-  if (srcObj.list_ref) list_ref.reset(new ::std::vector<::std::int32_t>(*srcObj.list_ref));
-  if (srcObj.set_ref) set_ref.reset(new ::std::set<::std::int32_t>(*srcObj.set_ref));
-  if (srcObj.map_ref) map_ref.reset(new ::std::map<::std::int32_t, ::std::int32_t>(*srcObj.map_ref));
-  if (srcObj.list_ref_unique) list_ref_unique.reset(new ::std::vector<::std::int32_t>(*srcObj.list_ref_unique));
+  list_ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref);
+  set_ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>(srcObj.set_ref);
+  map_ref = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>>(srcObj.map_ref);
+  list_ref_unique = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.list_ref_unique);
   set_ref_shared = srcObj.set_ref_shared;
   list_ref_shared_const = srcObj.list_ref_shared_const;
 }
@@ -1364,9 +1379,12 @@ void TccStructTraits<::cpp2::StructWithRef>::translateFieldName(
 namespace cpp2 {
 
 StructWithRef::StructWithRef(const StructWithRef& srcObj) {
-  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
-  if (srcObj.opt_field) opt_field.reset(new ::cpp2::Empty(*srcObj.opt_field));
-  if (srcObj.req_field) req_field.reset(new ::cpp2::Empty(*srcObj.req_field));
+  def_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.def_field);
+  opt_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.opt_field);
+  req_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.req_field);
 }
 
 StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
@@ -1544,9 +1562,12 @@ void TccStructTraits<::cpp2::StructWithRefTypeUnique>::translateFieldName(
 namespace cpp2 {
 
 StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& srcObj) {
-  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
-  if (srcObj.opt_field) opt_field.reset(new ::cpp2::Empty(*srcObj.opt_field));
-  if (srcObj.req_field) req_field.reset(new ::cpp2::Empty(*srcObj.req_field));
+  def_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.def_field);
+  opt_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.opt_field);
+  req_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.req_field);
 }
 
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& src) {
@@ -2060,7 +2081,8 @@ void TccStructTraits<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translat
 namespace cpp2 {
 
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& srcObj) {
-  if (srcObj.def_field) def_field.reset(new ::cpp2::Empty(*srcObj.def_field));
+  def_field = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.def_field);
 }
 
 StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src) {

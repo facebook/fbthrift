@@ -122,7 +122,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldC = srcObj.__isset.fieldC;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.fieldD) fieldD = srcObj.fieldD->clone();
+  fieldD = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::binary>(srcObj.fieldD);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldD = srcObj.__isset.fieldD;
 THRIFT_IGNORE_ISSET_USE_WARNING_END

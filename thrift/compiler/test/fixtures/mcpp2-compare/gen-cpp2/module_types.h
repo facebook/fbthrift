@@ -7740,13 +7740,11 @@ class ComplexContainerStruct final  {
   ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
 
   ComplexContainerStruct(ComplexContainerStruct&&) noexcept;
-
-  ComplexContainerStruct(const ComplexContainerStruct&) = default;
+  ComplexContainerStruct(const ComplexContainerStruct& src);
 
 
   ComplexContainerStruct& operator=(ComplexContainerStruct&&) noexcept;
-
-  ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
+  ComplexContainerStruct& operator=(const ComplexContainerStruct& src);
   void __clear();
  private:
   ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs;

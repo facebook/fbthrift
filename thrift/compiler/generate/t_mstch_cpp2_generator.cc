@@ -572,8 +572,6 @@ class mstch_cpp2_field : public mstch_field {
             {"field:non_opt_cpp_ref?", &mstch_cpp2_field::non_opt_cpp_ref},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
-            {"field:cpp_ref_unique_either?",
-             &mstch_cpp2_field::cpp_ref_unique_either},
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
@@ -590,6 +588,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:metadata_name", &mstch_cpp2_field::metadata_name},
             {"field:lazy?", &mstch_cpp2_field::lazy},
             {"field:boxed_ref?", &mstch_cpp2_field::boxed_ref},
+            {"field:transitively_refers_to_unique?",
+             &mstch_cpp2_field::transitively_refers_to_unique},
         });
   }
   mstch::node name_hash() {
@@ -616,11 +616,10 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node boxed_ref() {
     return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
   }
-  mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
-  mstch::node cpp_ref_unique_either() {
-    return boost::get<bool>(cpp_ref_unique()) ||
-        cpp2::is_implicit_ref(field_->get_type());
+  mstch::node transitively_refers_to_unique() {
+    return cpp2::field_transitively_refers_to_unique(field_);
   }
+  mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
   mstch::node cpp_ref_shared() {
     return cpp2::get_ref_type(field_) == "shared";
   }
@@ -816,7 +815,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
     for (auto const* f : strct_->fields()) {
-      if (is_cpp_ref_unique_either(f) || field_is_lazy(f)) {
+      if (cpp2::field_transitively_refers_to_unique(f) || field_is_lazy(f)) {
         return true;
       }
     }

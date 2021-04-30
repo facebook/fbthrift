@@ -82,6 +82,8 @@ inline bool is_ref(const t_field* f) {
   return is_explicit_ref(f) || is_implicit_ref(f->get_type());
 }
 
+bool field_transitively_refers_to_unique(const t_field* field);
+
 /**
  * Determines if the operations on the C++ representation of type can be
  * constexpr and, in particular, if the move constructor and assignment

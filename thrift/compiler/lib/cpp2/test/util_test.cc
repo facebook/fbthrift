@@ -188,6 +188,55 @@ TEST_F(UtilTest, for_each_transitive_field) {
   EXPECT_EQ(count, depth - 1);
 }
 
+TEST_F(UtilTest, field_transitively_refers_to_unique) {
+  auto i = t_base_type::t_i32();
+  auto li = t_list(&i);
+  auto lli = t_list(t_list(&i));
+  auto si = t_set(&i);
+  auto mii = t_map(&i, &i);
+
+  const t_type* no_uniques[] = {&i, &li, &lli, &si, &mii};
+  for (const auto* no_unique : no_uniques) {
+    // no_unique f;
+    auto f = t_field(no_unique, "f", 1);
+    EXPECT_FALSE(cpp2::field_transitively_refers_to_unique(&f));
+  }
+
+  // typedef binary (cpp.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr;
+  auto p = t_base_type::t_binary();
+  p.set_annotation("cpp.type", "std::unique_ptr<folly::IOBuf>");
+
+  auto lp = t_list(&p);
+  auto llp = t_list(t_list(&p));
+  auto sp = t_set(&p);
+  auto mip = t_map(&i, &p);
+
+  const t_type* uniques[] = {&p, &lp, &llp, &sp, &mip};
+  for (const auto* unique : uniques) {
+    // unique f;
+    auto f = t_field(unique, "f", 1);
+    EXPECT_TRUE(cpp2::field_transitively_refers_to_unique(&f));
+  }
+
+  const t_type* types[] = {&i, &li, &si, &mii, &p, &lp, &sp, &mip};
+  for (const auto* type : types) {
+    // type r (cpp.ref = "true");
+    auto r = t_field(type, "r", 1);
+    r.set_annotation("cpp.ref", "true");
+    EXPECT_TRUE(cpp2::field_transitively_refers_to_unique(&r));
+
+    // type u (cpp.ref_type = "unique");
+    auto u = t_field(type, "u", 1);
+    u.set_annotation("cpp.ref_type", "unique");
+    EXPECT_TRUE(cpp2::field_transitively_refers_to_unique(&u));
+
+    // type s (cpp.ref_type = "shared");
+    auto s = t_field(type, "s", 1);
+    s.set_annotation("cpp.ref_type", "shared");
+    EXPECT_FALSE(cpp2::field_transitively_refers_to_unique(&s));
+  }
+}
+
 TEST_F(UtilTest, get_gen_type_class) {
   // a single example as demo
   EXPECT_EQ(

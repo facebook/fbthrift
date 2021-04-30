@@ -21,16 +21,13 @@
   __fbthrift_isDeserialized_.<%field:cpp_name%> = true;
   __fbthrift_serializedData_.<%field:cpp_name%>.clear();
 <%/field:lazy?%>
-<%^field:cpp_ref_unique_either?%>
+<%^field:transitively_refers_to_unique?%>
   <%field:cpp_name%> = srcObj.<%field:cpp_name%>;
-<%/field:cpp_ref_unique_either?%>
-<%#field:cpp_ref_unique_either?%>
-  if (srcObj.<%field:cpp_name%>) <%#field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%>.reset(new <%type:cpp_type%>(*srcObj.<%field:cpp_name%>));
-<%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%> = srcObj.<%field:cpp_name%>->clone();
-<%/field:cpp_ref_unique?%>
-<%/field:cpp_ref_unique_either?%>
+<%/field:transitively_refers_to_unique?%>
+<%#field:transitively_refers_to_unique?%>
+  <%field:cpp_name%> = ::apache::thrift::detail::st::copy_unique<
+        <%type:type_class%>>(srcObj.<%field:cpp_name%>);
+<%/field:transitively_refers_to_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.<%field:cpp_name%> = srcObj.__isset.<%field:cpp_name%>;

@@ -2621,7 +2621,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.MyIncludedStruct = srcObj.__isset.MyIncludedStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.ARefField) ARefField.reset(new ::some::valid::ns::AStruct(*srcObj.ARefField));
+  ARefField = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::structure>(srcObj.ARefField);
   ARequiredField = srcObj.ARequiredField;
 }
 
@@ -3573,6 +3574,24 @@ void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldN
 } // namespace apache
 
 namespace some { namespace valid { namespace ns {
+
+ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) {
+  map_of_iobufs = srcObj.map_of_iobufs;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.map_of_iobufs = srcObj.__isset.map_of_iobufs;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_unique<
+        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.map_of_iobuf_ptrs);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.map_of_iobuf_ptrs = srcObj.__isset.map_of_iobuf_ptrs;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& src) {
+  ComplexContainerStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexContainerStruct::ComplexContainerStruct(ComplexContainerStruct&& other) noexcept  :
