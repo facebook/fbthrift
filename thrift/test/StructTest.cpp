@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <thrift/test/gen-cpp2/structs_terse_types.h>
 #include <thrift/test/gen-cpp2/structs_types.h>
 
@@ -28,6 +29,48 @@ class StructTest : public testing::Test {};
 TEST_F(StructTest, compilation_terse_writes_refs_shared) {
   BasicRefsSharedTerseWrites a;
   (void)a;
+}
+
+TEST_F(StructTest, serialization_terse_writes_refs_shared) {
+  using apache::thrift::CompactSerializer;
+
+  BasicRefsSharedTerseWrites a;
+
+  a.shared_field_ref() = std::make_shared<HasInt>();
+  a.shared_field_ref()->field_ref() = 3;
+
+  a.shared_fields_ref() = std::make_shared<std::vector<HasInt>>();
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 4;
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 5;
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 6;
+
+  a.shared_fields_const_ref() = std::make_shared<const std::vector<HasInt>>();
+
+  const std::string serialized = CompactSerializer::serialize<std::string>(a);
+
+  BasicRefsSharedTerseWrites b;
+  CompactSerializer::deserialize(serialized, b);
+
+  EXPECT_EQ(a, b);
+}
+
+TEST_F(StructTest, serialization_terse_writes_default_values) {
+  using apache::thrift::CompactSerializer;
+
+  BasicRefsSharedTerseWrites empty;
+
+  BasicRefsSharedTerseWrites defaults;
+  defaults.shared_field_req_ref() = std::make_shared<HasInt>();
+  defaults.shared_fields_req_ref() = std::make_shared<std::vector<HasInt>>();
+
+  // This struct has terse writes enabled, so the default values set above
+  // should not be part of the serialization.
+  EXPECT_EQ(
+      CompactSerializer::serialize<std::string>(empty),
+      CompactSerializer::serialize<std::string>(defaults));
 }
 
 TEST_F(StructTest, equal_to) {
