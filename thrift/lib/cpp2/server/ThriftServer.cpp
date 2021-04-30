@@ -398,6 +398,9 @@ void ThriftServer::setup() {
     handleSetupFailure();
     throw;
   }
+
+  // Called after setup
+  callOnStartServing();
 }
 
 void ThriftServer::setupThreadManager() {
@@ -517,6 +520,9 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
+  // Called before cleanUp
+  callOnStopServing();
+
   {
     auto sockets = getSockets();
     folly::Baton<> done;
@@ -604,6 +610,37 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
       }
     }
   });
+}
+
+void ThriftServer::callOnStartServing() {
+  calledOnStopServing_ = false;
+  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  futures.reserve(handlerList.size());
+  for (auto handler : handlerList) {
+    futures.emplace_back(handler->semifuture_onStartServing());
+  }
+  folly::collectAll(futures.begin(), futures.end())
+      .via(getThreadManager().get())
+      .get();
+}
+
+void ThriftServer::callOnStopServing() {
+  // We have to make sure callOnStopServing() is not called twice when both
+  // stopListening() and cleanUp() are called
+  if (calledOnStopServing_.exchange(true)) {
+    // callOnStopServing() was called earlier
+    return;
+  }
+  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  futures.reserve(handlerList.size());
+  for (auto handler : handlerList) {
+    futures.emplace_back(handler->semifuture_onStopServing());
+  }
+  folly::collectAll(futures.begin(), futures.end())
+      .via(getThreadManager().get())
+      .get();
 }
 
 void ThriftServer::stopCPUWorkers() {

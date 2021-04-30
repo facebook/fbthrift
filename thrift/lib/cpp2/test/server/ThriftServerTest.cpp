@@ -290,6 +290,62 @@ TEST(ThriftServer, HeaderTest) {
   }
 }
 
+TEST(ThriftServer, OnStartStopServingTest) {
+  class TestInterface : public TestServiceSvIf {
+   public:
+    folly::Baton<> startEnter, startExit;
+    folly::Baton<> stopEnter, stopExit;
+
+    void voidResponse() override {}
+
+    folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
+      return folly::makeSemiFuture().deferValue([this](folly::Unit) {
+        startEnter.post();
+        startExit.wait();
+      });
+    }
+
+    folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
+      return folly::makeSemiFuture().deferValue([this](folly::Unit) {
+        stopEnter.post();
+        stopExit.wait();
+      });
+    }
+  };
+
+  auto testIf = std::make_shared<TestInterface>();
+
+  auto runner = std::make_unique<ScopedServerInterfaceThread>(
+      testIf, "::1", 0, [](auto& ts) {
+        auto tf =
+            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
+        // We need at least 2 threads for the test
+        auto tm = ThreadManager::newSimpleThreadManager(2, false);
+        tm->threadFactory(move(tf));
+        tm->start();
+        ts.setThreadManager(tm);
+      });
+
+  auto client = runner->newClient<TestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  // Wait for onStartServing()
+  EXPECT_TRUE(testIf->startEnter.try_wait_for(2s));
+  client->semifuture_voidResponse().get();
+  testIf->startExit.post();
+
+  // Stop the server on a different thread
+  folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(
+      [&runner]() { runner.reset(); });
+
+  // Wait for onStopServing()
+  EXPECT_TRUE(testIf->stopEnter.try_wait_for(2s));
+  client->semifuture_voidResponse().get();
+  testIf->stopExit.post();
+}
+
 namespace {
 class ServerErrorCallback : public RequestCallback {
  private:

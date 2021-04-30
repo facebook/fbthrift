@@ -201,6 +201,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopCPUWorkers();
   void stopAcceptingAndJoinOutstandingRequests();
 
+  void callOnStartServing();
+  void callOnStopServing();
+
+  std::atomic<bool> calledOnStopServing_{false};
+
   bool stopAcceptingAndJoinOutstandingRequestsDone_{false};
 
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
