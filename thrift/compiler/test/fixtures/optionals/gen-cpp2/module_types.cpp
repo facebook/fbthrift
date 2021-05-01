@@ -198,7 +198,6 @@ Vehicle::Vehicle(Vehicle&& other) noexcept  :
     name(std::move(other.name)),
     hasAC(std::move(other.hasAC)),
     __isset(other.__isset) {}
-
 Vehicle& Vehicle::operator=(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept {
     this->color = std::move(other.color);
     this->licensePlate = std::move(other.licensePlate);
@@ -378,7 +377,6 @@ Person::Person(Person&& other) noexcept  :
     afraidOfAnimal(std::move(other.afraidOfAnimal)),
     vehicles(std::move(other.vehicles)),
     __isset(other.__isset) {}
-
 Person& Person::operator=(FOLLY_MAYBE_UNUSED Person&& other) noexcept {
     this->id = std::move(other.id);
     this->name = std::move(other.name);

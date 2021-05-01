@@ -43,7 +43,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
     content(std::move(other.content)),
     __isset(other.__isset) {}
-
 InitialResponse& InitialResponse::operator=(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept {
     this->content = std::move(other.content);
     __isset = other.__isset;
@@ -139,7 +138,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
     content(std::move(other.content)),
     __isset(other.__isset) {}
-
 FinalResponse& FinalResponse::operator=(FOLLY_MAYBE_UNUSED FinalResponse&& other) noexcept {
     this->content = std::move(other.content);
     __isset = other.__isset;
@@ -235,7 +233,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
     content(std::move(other.content)),
     __isset(other.__isset) {}
-
 SinkPayload& SinkPayload::operator=(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept {
     this->content = std::move(other.content);
     __isset = other.__isset;
@@ -331,7 +328,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
     sink(std::move(other.sink)),
     __isset(other.__isset) {}
-
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept {
     this->sink = std::move(other.sink);
     __isset = other.__isset;
@@ -427,7 +423,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(InitialException&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
-
 InitialException& InitialException::operator=(FOLLY_MAYBE_UNUSED InitialException&& other) noexcept {
     this->reason = std::move(other.reason);
     __isset = other.__isset;
@@ -523,7 +518,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(SinkException1&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
-
 SinkException1& SinkException1::operator=(FOLLY_MAYBE_UNUSED SinkException1&& other) noexcept {
     this->reason = std::move(other.reason);
     __isset = other.__isset;
@@ -619,7 +613,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(SinkException2&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
-
 SinkException2& SinkException2::operator=(FOLLY_MAYBE_UNUSED SinkException2&& other) noexcept {
     this->reason = std::move(other.reason);
     __isset = other.__isset;

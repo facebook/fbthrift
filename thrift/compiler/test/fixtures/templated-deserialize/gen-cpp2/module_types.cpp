@@ -296,7 +296,6 @@ containerStruct::containerStruct(containerStruct&& other) noexcept  :
     fieldU(std::move(other.fieldU)),
     fieldX(std::move(other.fieldX)),
     __isset(other.__isset) {}
-
 containerStruct& containerStruct::operator=(FOLLY_MAYBE_UNUSED containerStruct&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->fieldB = std::move(other.fieldB);

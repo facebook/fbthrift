@@ -44,7 +44,6 @@ IncludedB::IncludedB(IncludedB&& other) noexcept  :
     i32Field(std::move(other.i32Field)),
     strField(std::move(other.strField)),
     __isset(other.__isset) {}
-
 IncludedB& IncludedB::operator=(FOLLY_MAYBE_UNUSED IncludedB&& other) noexcept {
     this->i32Field = std::move(other.i32Field);
     this->strField = std::move(other.strField);

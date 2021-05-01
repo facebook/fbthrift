@@ -254,7 +254,6 @@ MyField::MyField(MyField&& other) noexcept  :
     enum_value(std::move(other.enum_value)),
     req_enum_value(std::move(other.req_enum_value)) {}
 
-
 MyField& MyField::operator=(FOLLY_MAYBE_UNUSED MyField&& other) noexcept {
     this->opt_value = std::move(other.opt_value);
     this->value = std::move(other.value);
@@ -464,7 +463,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     ref(std::move(other.ref)),
     req_ref(std::move(other.req_ref)) {}
 
-
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->opt_ref = std::move(other.opt_ref);
     this->ref = std::move(other.ref);
@@ -652,7 +650,6 @@ StructWithUnion::StructWithUnion(StructWithUnion&& other) noexcept  :
     aDouble(std::move(other.aDouble)),
     f(std::move(other.f)),
     __isset(other.__isset) {}
-
 StructWithUnion& StructWithUnion::operator=(FOLLY_MAYBE_UNUSED StructWithUnion&& other) noexcept {
     this->u = std::move(other.u);
     this->aDouble = std::move(other.aDouble);
@@ -820,7 +817,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
     mes(std::move(other.mes)),
     __isset(other.__isset) {}
-
 RecursiveStruct& RecursiveStruct::operator=(FOLLY_MAYBE_UNUSED RecursiveStruct&& other) noexcept {
     this->mes = std::move(other.mes);
     __isset = other.__isset;
@@ -956,7 +952,6 @@ StructWithContainers::StructWithContainers(StructWithContainers&& other) noexcep
     list_ref_unique(std::move(other.list_ref_unique)),
     set_ref_shared(std::move(other.set_ref_shared)),
     list_ref_shared_const(std::move(other.list_ref_shared_const)) {}
-
 
 StructWithContainers& StructWithContainers::operator=(FOLLY_MAYBE_UNUSED StructWithContainers&& other) noexcept {
     this->list_ref = std::move(other.list_ref);
@@ -1155,7 +1150,6 @@ StructWithSharedConst::StructWithSharedConst(StructWithSharedConst&& other) noex
     opt_shared_const(std::move(other.opt_shared_const)),
     shared_const(std::move(other.shared_const)),
     req_shared_const(std::move(other.req_shared_const)) {}
-
 
 StructWithSharedConst& StructWithSharedConst::operator=(FOLLY_MAYBE_UNUSED StructWithSharedConst&& other) noexcept {
     this->opt_shared_const = std::move(other.opt_shared_const);
@@ -1407,7 +1401,6 @@ StructWithRef::StructWithRef(StructWithRef&& other) noexcept  :
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {}
 
-
 StructWithRef& StructWithRef::operator=(FOLLY_MAYBE_UNUSED StructWithRef&& other) noexcept {
     this->def_field = std::move(other.def_field);
     this->opt_field = std::move(other.opt_field);
@@ -1590,7 +1583,6 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(StructWithRefTypeUnique&& other
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {}
 
-
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeUnique&& other) noexcept {
     this->def_field = std::move(other.def_field);
     this->opt_field = std::move(other.opt_field);
@@ -1762,7 +1754,6 @@ StructWithRefTypeShared::StructWithRefTypeShared(StructWithRefTypeShared&& other
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {}
 
-
 StructWithRefTypeShared& StructWithRefTypeShared::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeShared&& other) noexcept {
     this->def_field = std::move(other.def_field);
     this->opt_field = std::move(other.opt_field);
@@ -1933,7 +1924,6 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(StructWithRefTypeShar
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
     req_field(std::move(other.req_field)) {}
-
 
 StructWithRefTypeSharedConst& StructWithRefTypeSharedConst::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeSharedConst&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -2110,7 +2100,6 @@ StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCt
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept  :
     def_field(std::move(other.def_field)) {}
-
 
 StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(FOLLY_MAYBE_UNUSED StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept {
     this->def_field = std::move(other.def_field);

@@ -59,7 +59,6 @@ Foo::Foo(Foo&& other) noexcept  :
     mapField(std::move(other.mapField)),
     optionalMapField(std::move(other.optionalMapField)),
     __isset(other.__isset) {}
-
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
     this->intField = std::move(other.intField);
     this->optionalIntField = std::move(other.optionalIntField);
@@ -256,7 +255,6 @@ Bar::Bar(Bar&& other) noexcept  :
     structListField(std::move(other.structListField)),
     optionalStructListField(std::move(other.optionalStructListField)),
     __isset(other.__isset) {}
-
 Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
     this->structField = std::move(other.structField);
     this->optionalStructField = std::move(other.optionalStructField);

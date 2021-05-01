@@ -160,7 +160,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(AStructB&& other) noexcept  :
     FieldA(std::move(other.FieldA)) {}
 
-
 AStructB& AStructB::operator=(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept {
     this->FieldA = std::move(other.FieldA);
     return *this;

@@ -79,7 +79,6 @@ SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :
     questionable(std::move(other.questionable)),
     tags(std::move(other.tags)),
     __isset(other.__isset) {}
-
 SomeStruct& SomeStruct::operator=(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept {
     this->reasonable = std::move(other.reasonable);
     this->fine = std::move(other.fine);

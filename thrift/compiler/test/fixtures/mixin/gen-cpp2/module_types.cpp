@@ -43,7 +43,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(Mixin1&& other) noexcept  :
     field1(std::move(other.field1)),
     __isset(other.__isset) {}
-
 Mixin1& Mixin1::operator=(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept {
     this->field1 = std::move(other.field1);
     __isset = other.__isset;
@@ -140,7 +139,6 @@ Mixin2::Mixin2(Mixin2&& other) noexcept  :
     m1(std::move(other.m1)),
     field2(std::move(other.field2)),
     __isset(other.__isset) {}
-
 Mixin2& Mixin2::operator=(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept {
     this->m1 = std::move(other.m1);
     this->field2 = std::move(other.field2);
@@ -267,7 +265,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
     field3(std::move(other.field3)),
     __isset(other.__isset) {}
-
 Mixin3Base& Mixin3Base::operator=(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept {
     this->field3 = std::move(other.field3);
     __isset = other.__isset;
@@ -365,7 +362,6 @@ Foo::Foo(Foo&& other) noexcept  :
     m2(std::move(other.m2)),
     m3(std::move(other.m3)),
     __isset(other.__isset) {}
-
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
     this->field4 = std::move(other.field4);
     this->m2 = std::move(other.m2);

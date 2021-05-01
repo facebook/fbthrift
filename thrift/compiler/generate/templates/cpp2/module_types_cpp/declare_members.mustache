@@ -27,8 +27,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_cpp/move_ctor%>
 <%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
+<%#struct:lazy_fields?%>
+    const auto relaxed = std::memory_order::memory_order_relaxed;
+    __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
+<%/struct:lazy_fields?%>
 <%#struct:fields_in_layout_order%>
     this-><%field:cpp_name%> = std::move(other.<%field:cpp_name%>);
+<%#field:lazy?%>
+    __fbthrift_isDeserialized_.<%field:cpp_name%>.store(other.__fbthrift_isDeserialized_.<%field:cpp_name%>.exchange(true), relaxed);
+<%/field:lazy?%>
 <%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>
     __isset = other.__isset;

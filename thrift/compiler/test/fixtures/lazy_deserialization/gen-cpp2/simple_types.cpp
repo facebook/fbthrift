@@ -70,12 +70,22 @@ Foo::Foo(Foo&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
-
+    __isset(other.__isset),
+    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
+  const auto relaxed = std::memory_order::memory_order_relaxed;
+  __fbthrift_isDeserialized_.field1.store(other.__fbthrift_isDeserialized_.field1, relaxed);
+  other.__fbthrift_isDeserialized_.field1.store(true, relaxed);
+  __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3, relaxed);
+  other.__fbthrift_isDeserialized_.field3.store(true, relaxed);
+}
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
+    const auto relaxed = std::memory_order::memory_order_relaxed;
+    __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     this->field1 = std::move(other.field1);
+    __fbthrift_isDeserialized_.field1.store(other.__fbthrift_isDeserialized_.field1.exchange(true), relaxed);
     this->field2 = std::move(other.field2);
     this->field3 = std::move(other.field3);
+    __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3.exchange(true), relaxed);
     this->field4 = std::move(other.field4);
     __isset = other.__isset;
     return *this;

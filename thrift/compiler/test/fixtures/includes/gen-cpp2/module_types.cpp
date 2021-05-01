@@ -45,7 +45,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyOtherIncludedField(std::move(other.MyOtherIncludedField)),
     MyIncludedInt(std::move(other.MyIncludedInt)),
     __isset(other.__isset) {}
-
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyIncludedField = std::move(other.MyIncludedField);
     this->MyOtherIncludedField = std::move(other.MyOtherIncludedField);

@@ -159,7 +159,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     readonly(std::move(other.readonly)),
     idempotent(std::move(other.idempotent)),
     __isset(other.__isset) {}
-
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyIntField = std::move(other.MyIntField);
     this->MyStringField = std::move(other.MyStringField);

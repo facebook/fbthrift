@@ -79,7 +79,6 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowEx
     myStringField(std::move(other.myStringField)),
     myFloatField(std::move(other.myFloatField)),
     __isset(other.__isset) {}
-
 MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept {
     this->myLongField = std::move(other.myLongField);
     this->MyByteField = std::move(other.MyByteField);
@@ -209,7 +208,6 @@ SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     age(std::move(other.age)),
     name(std::move(other.name)),
     __isset(other.__isset) {}
-
 SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
     this->age = std::move(other.age);
     this->name = std::move(other.name);
@@ -405,7 +403,6 @@ ComplexNestedStruct::ComplexNestedStruct(ComplexNestedStruct&& other) noexcept  
     mapKeySetValInt(std::move(other.mapKeySetValInt)),
     mapKeyListValSet(std::move(other.mapKeyListValSet)),
     __isset(other.__isset) {}
-
 ComplexNestedStruct& ComplexNestedStruct::operator=(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept {
     this->setOfSetOfInt = std::move(other.setOfSetOfInt);
     this->listofListOfListOfListOfEnum = std::move(other.listofListOfListOfListOfEnum);
@@ -892,7 +889,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(reqXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)) {}
-
 
 reqXcep& reqXcep::operator=(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept {
     this->message = std::move(other.message);

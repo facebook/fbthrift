@@ -76,7 +76,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
     name(std::move(other.name)),
     __isset(other.__isset) {}
-
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept {
     this->name = std::move(other.name);
     __isset = other.__isset;
@@ -185,7 +184,6 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     annotation_with_trailing_comma(std::move(other.annotation_with_trailing_comma)),
     empty_annotations(std::move(other.empty_annotations)),
     __isset(other.__isset) {}
-
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->majorVer = std::move(other.majorVer);
     this->package = std::move(other.package);
@@ -337,7 +335,6 @@ SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
     id(std::move(other.id)),
     password(std::move(other.password)),
     __isset(other.__isset) {}
-
 SecretStruct& SecretStruct::operator=(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept {
     this->id = std::move(other.id);
     this->password = std::move(other.password);
