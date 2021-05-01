@@ -82,6 +82,10 @@ inline bool is_ref(const t_field* f) {
   return is_explicit_ref(f) || is_implicit_ref(f->get_type());
 }
 
+inline bool is_lazy(const t_field* field) {
+  return field->has_annotation("cpp.experimental.lazy");
+}
+
 bool field_transitively_refers_to_unique(const t_field* field);
 
 /**

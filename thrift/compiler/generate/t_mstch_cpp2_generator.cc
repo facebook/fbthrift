@@ -39,10 +39,6 @@ bool field_has_isset(const t_field* field) {
       !cpp2::is_explicit_ref(field);
 }
 
-bool field_is_lazy(const t_field* field) {
-  return field->has_annotation("cpp.experimental.lazy");
-}
-
 std::string const& get_cpp_template(const t_type* type) {
   return type->get_annotation({"cpp.template", "cpp2.template"});
 }
@@ -609,7 +605,7 @@ class mstch_cpp2_field : public mstch_field {
     return cpp2::is_explicit_ref(field_) &&
         field_->get_req() != t_field::e_req::optional;
   }
-  mstch::node lazy() { return field_is_lazy(field_); }
+  mstch::node lazy() { return cpp2::is_lazy(field_); }
   mstch::node boxed_ref() {
     return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
   }
@@ -693,7 +689,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node visibility() {
     auto req = field_->get_req();
     bool isPrivate = true;
-    if (field_is_lazy(field_)) {
+    if (cpp2::is_lazy(field_)) {
       // Lazy field has to be private.
     } else if (cpp2::is_ref(field_) || req == t_field::e_req::required) {
       isPrivate = false;
@@ -811,7 +807,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
     for (auto const* f : strct_->fields()) {
-      if (cpp2::field_transitively_refers_to_unique(f) || field_is_lazy(f)) {
+      if (cpp2::field_transitively_refers_to_unique(f) || cpp2::is_lazy(f)) {
         return true;
       }
     }
@@ -884,7 +880,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_lazy_fields() {
     for (const auto* field : strct_->get_members()) {
-      if (field_is_lazy(field)) {
+      if (cpp2::is_lazy(field)) {
         return true;
       }
     }
@@ -2133,7 +2129,7 @@ class lazy_field_validator : public validator {
  public:
   using validator::visit;
   bool visit(t_field* field) override {
-    if (field_is_lazy(field)) {
+    if (cpp2::is_lazy(field)) {
       auto t = field->get_type()->get_true_type();
       boost::optional<std::string> field_type;
       if (t->is_any_int() || t->is_bool() || t->is_byte()) {

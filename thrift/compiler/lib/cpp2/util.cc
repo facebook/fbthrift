@@ -215,7 +215,7 @@ bool is_eligible_for_constexpr::operator()(const t_type* type) {
       result = check(field->get_type());
       if (result == eligible::no) {
         return false;
-      } else if (is_explicit_ref(field)) {
+      } else if (is_explicit_ref(field) || is_lazy(field)) {
         result = eligible::no;
         return false;
       } else if (result == eligible::unknown) {
