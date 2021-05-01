@@ -58,10 +58,10 @@ _readField_intField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intField, ::std::move(tvalue));
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.intField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.intField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -76,10 +76,10 @@ _readField_optionalIntField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalIntField, ::std::move(tvalue));
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.optionalIntField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.optionalIntField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -94,10 +94,10 @@ _readField_intFieldWithDefault:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->intFieldWithDefault, ::std::move(tvalue));
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.intFieldWithDefault = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.intFieldWithDefault = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -113,10 +113,10 @@ _readField_setField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::cpp2::SetWithAdapter>::readWithContext(*iprot, this->setField, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.setField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.setField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -132,10 +132,10 @@ _readField_optionalSetField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::cpp2::SetWithAdapter>::readWithContext(*iprot, this->optionalSetField, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.optionalSetField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.optionalSetField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -153,10 +153,10 @@ _readField_mapField:
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->mapField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.mapField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.mapField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -174,10 +174,10 @@ _readField_optionalMapField:
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter3>(this->optionalMapField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.optionalMapField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.optionalMapField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -442,10 +442,10 @@ _readField_structField:
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->structField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.structField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.structField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -462,10 +462,10 @@ _readField_optionalStructField:
     ::apache::thrift::adapt_detail::fromThrift<my::Adapter1>(this->optionalStructField, ::std::move(tvalue));
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.optionalStructField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.optionalStructField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -481,10 +481,10 @@ _readField_structListField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::Foo>>::readWithContext(*iprot, this->structListField, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.structListField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.structListField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -500,10 +500,10 @@ _readField_optionalStructListField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::Foo>>::readWithContext(*iprot, this->optionalStructListField, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.optionalStructListField = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.optionalStructListField = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

@@ -70,10 +70,10 @@ _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.name = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.name = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -190,10 +190,10 @@ _readField_majorVer:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->majorVer, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.majorVer = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.majorVer = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -206,10 +206,10 @@ _readField_package:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->package, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.package = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.package = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -222,10 +222,10 @@ _readField_annotation_with_quote:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_quote, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotation_with_quote = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotation_with_quote = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -238,10 +238,10 @@ _readField_class_:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->class_, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.class_ = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.class_ = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -254,10 +254,10 @@ _readField_annotation_with_trailing_comma:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_trailing_comma, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotation_with_trailing_comma = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotation_with_trailing_comma = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -270,10 +270,10 @@ _readField_empty_annotations:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->empty_annotations, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.empty_annotations = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.empty_annotations = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -505,10 +505,10 @@ _readField_id:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->id, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.id = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.id = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -521,10 +521,10 @@ _readField_password:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->password, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.password = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.password = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

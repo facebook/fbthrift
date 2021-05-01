@@ -105,10 +105,10 @@ _readField_count:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->count, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.count = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.count = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -121,10 +121,10 @@ _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.name = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.name = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -264,10 +264,10 @@ _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.name = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.name = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -384,10 +384,10 @@ _readField_count:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->count, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.count = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.count = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -504,10 +504,10 @@ _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.name = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.name = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -522,10 +522,10 @@ _readField_recurse:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_recursive>::readWithContext(*iprot, this->recurse, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.recurse = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.recurse = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -540,10 +540,10 @@ _readField_forward:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_forward>::readWithContext(*iprot, this->forward, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.forward = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.forward = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -706,10 +706,10 @@ _readField_name:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.name = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.name = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -724,10 +724,10 @@ _readField_nest:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::structured_annotation_with_default>::readWithContext(*iprot, this->nest, _readState);
     _readState.afterSubobject(iprot);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.nest = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.nest = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -867,10 +867,10 @@ _readField_annotated_field:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->annotated_field, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotated_field = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotated_field = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -883,10 +883,10 @@ _readField_annotated_type:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::cpp2::annotated_inline_string>::readWithContext(*iprot, this->annotated_type, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotated_type = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotated_type = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -899,10 +899,10 @@ _readField_annotated_recursive:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotated_recursive, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotated_recursive = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotated_recursive = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -915,10 +915,10 @@ _readField_annotated_nested:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->annotated_nested, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.annotated_nested = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.annotated_nested = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1104,10 +1104,10 @@ _readField_context:
   {
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->context, _readState);
     
-    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    this->__isset.context = true;
-    THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  this->__isset.context = true;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

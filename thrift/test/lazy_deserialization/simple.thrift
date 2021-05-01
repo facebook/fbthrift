@@ -32,6 +32,20 @@ struct LazyFoo {
   4: list<i32> field4 (cpp.experimental.lazy);
 }
 
+struct OptionalFoo {
+  1: optional list<double> field1;
+  2: optional list<i32> field2;
+  3: optional list<double> field3;
+  4: optional list<i32> field4;
+}
+
+struct OptionalLazyFoo {
+  1: optional list<double> field1;
+  2: optional list<i32> field2;
+  3: optional list<double> field3 (cpp.experimental.lazy);
+  4: optional list<i32> field4 (cpp.experimental.lazy);
+}
+
 struct LazyCppRef {
   1: optional list<i32> field1 (cpp.ref_type = "unique", cpp.experimental.lazy);
   2: optional list<i32> field2 (cpp.ref_type = "shared", cpp.experimental.lazy);
