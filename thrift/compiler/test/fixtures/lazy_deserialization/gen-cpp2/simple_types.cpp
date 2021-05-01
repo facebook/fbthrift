@@ -36,18 +36,18 @@ void TccStructTraits<::apache::thrift::test::Foo>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 Foo::Foo(const Foo& srcObj) {
-  srcObj.field1_ref();
-  __fbthrift_isDeserialized_.field1 = true;
-  __fbthrift_serializedData_.field1.clear();
+  std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
+  __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
+  __fbthrift_isDeserialized_.field1.store(srcObj.__fbthrift_isDeserialized_.field1.load(std::memory_order::memory_order_relaxed),
+                                                      std::memory_order::memory_order_relaxed);
   field1 = ::apache::thrift::detail::st::copy_unique<
         ::apache::thrift::type_class::string>(srcObj.field1);
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  srcObj.field3_ref();
-  __fbthrift_isDeserialized_.field3 = true;
-  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_isDeserialized_.field3.store(srcObj.__fbthrift_isDeserialized_.field3.load(std::memory_order::memory_order_relaxed),
+                                                      std::memory_order::memory_order_relaxed);
   field3 = srcObj.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field3 = srcObj.__isset.field3;
