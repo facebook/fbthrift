@@ -18,6 +18,7 @@
 
 #include <type_traits>
 #include <utility>
+#include "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h"
 
 #include <folly/Portability.h>
 
@@ -969,8 +970,13 @@ template <
     typename ErrorMapFunc>
 folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val) {
   if (val.hasValue()) {
+    StreamPayloadMetadata streamPayloadMetadata;
+    PayloadMetadata payloadMetadata;
+    payloadMetadata.responseMetadata_ref().ensure();
+    streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
     return folly::Try<StreamPayload>(
-        {encode_stream_payload<Protocol, PResult>(std::move(*val)), {}});
+        {encode_stream_payload<Protocol, PResult>(std::move(*val)),
+         streamPayloadMetadata});
   } else if (val.hasException()) {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
         encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
@@ -1006,14 +1012,13 @@ T decode_stream_payload(folly::IOBuf& payload) {
 
 template <typename Protocol, typename PResult, typename T>
 folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
-  Protocol prot;
   folly::exception_wrapper hijacked;
   ew.handle(
-      [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
+      [&hijacked](apache::thrift::detail::EncodedError& err) {
         PResult result;
         T res{};
         result.template get<0>().value = &res;
-
+        Protocol prot;
         prot.setInput(err.encoded.get());
         result.read(&prot);
 
@@ -1034,7 +1039,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
           hijacked = folly::exception_wrapper(std::move(x));
         }
       },
-      [&hijacked, &prot](apache::thrift::detail::EncodedStreamError& err) {
+      [&hijacked](apache::thrift::detail::EncodedStreamError& err) {
         auto& payload = err.encoded;
         DCHECK_EQ(payload.metadata.payloadMetadata_ref().has_value(), true);
         DCHECK_EQ(
@@ -1047,6 +1052,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
               PayloadExceptionMetadata::declaredException) {
             PResult result;
             T res{};
+            Protocol prot;
             result.template get<0>().value = &res;
             prot.setInput(payload.payload.get());
             result.read(&prot);
@@ -1070,6 +1076,22 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
           hijacked =
               TApplicationException("Missing payload exception metadata");
         }
+      },
+      [&hijacked](apache::thrift::detail::EncodedStreamRpcError& err) {
+        StreamRpcError streamRpcError;
+        CompactProtocolReader reader;
+        reader.setInput(err.encoded.get());
+        streamRpcError.read(&reader);
+        TApplicationException::TApplicationExceptionType exType{
+            TApplicationException::UNKNOWN};
+        auto code = streamRpcError.code_ref();
+        if (code &&
+            (code.value() == StreamRpcErrorCode::CREDIT_TIMEOUT ||
+             code.value() == StreamRpcErrorCode::CHUNK_TIMEOUT)) {
+          exType = TApplicationException::TIMEOUT;
+        }
+        hijacked = TApplicationException(
+            exType, streamRpcError.what_utf8_ref().value_or(""));
       },
       [](...) {});
 

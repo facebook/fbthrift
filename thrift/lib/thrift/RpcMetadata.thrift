@@ -312,6 +312,18 @@ struct ResponseRpcError {
   5: optional i64 load;
 }
 
+enum StreamRpcErrorCode {
+  UNKNOWN = 0,
+  CREDIT_TIMEOUT = 1,
+  CHUNK_TIMEOUT = 2,
+}
+
+struct StreamRpcError {
+  1: optional string name_utf8;
+  2: optional string what_utf8;
+  4: optional StreamRpcErrorCode code;
+}
+
 struct StreamPayloadMetadata {
   // The CompressionAlgorithm used to compress responses (if any)
   1: optional CompressionAlgorithm compression;

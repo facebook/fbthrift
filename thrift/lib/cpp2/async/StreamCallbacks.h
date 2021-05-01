@@ -117,6 +117,20 @@ struct EncodedStreamError : std::exception {
   StreamPayload encoded;
 };
 
+struct EncodedStreamRpcError : std::exception {
+  explicit EncodedStreamRpcError(std::unique_ptr<folly::IOBuf> rpcError)
+      : encoded(std::move(rpcError)) {}
+  EncodedStreamRpcError(const EncodedStreamRpcError& oth)
+      : encoded(oth.encoded->clone()) {}
+  EncodedStreamRpcError& operator=(const EncodedStreamRpcError& oth) {
+    encoded = oth.encoded->clone();
+    return *this;
+  }
+  EncodedStreamRpcError(EncodedStreamRpcError&&) = default;
+  EncodedStreamRpcError& operator=(EncodedStreamRpcError&&) = default;
+  std::unique_ptr<folly::IOBuf> encoded;
+};
+
 } // namespace detail
 
 /**

@@ -247,13 +247,25 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0u, tokens_);
 
   serverCallback()->onStreamCancel();
-  onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
-      rocket::ErrorCode::APPLICATION_ERROR,
-      serializeErrorStruct(
-          protoId_,
-          TApplicationException(
-              TApplicationException::TApplicationExceptionType::TIMEOUT,
-              "Stream expire timeout(no credit from client)"))));
+  if (connection_.getVersion() >= 8) {
+    StreamRpcError streamRpcError;
+    streamRpcError.code_ref() = StreamRpcErrorCode::CREDIT_TIMEOUT;
+    streamRpcError.name_utf8_ref() =
+        apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+            StreamRpcErrorCode::CREDIT_TIMEOUT);
+    streamRpcError.what_utf8_ref() =
+        "Stream expire timeout(no credit from client)";
+    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
+  } else {
+    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::APPLICATION_ERROR,
+        serializeErrorStruct(
+            protoId_,
+            TApplicationException(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                "Stream expire timeout(no credit from client)"))));
+  }
 }
 
 void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {

@@ -203,9 +203,20 @@ void RocketSinkClientCallback::timeoutExpired() noexcept {
       TApplicationException::TApplicationExceptionType::TIMEOUT,
       "Sink chunk timeout");
   onSinkError(folly::make_exception_wrapper<TApplicationException>(ex));
-  onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
-      rocket::ErrorCode::APPLICATION_ERROR,
-      serializeErrorStruct(protoId_, ex)));
+  if (connection_.getVersion() >= 8) {
+    StreamRpcError streamRpcError;
+    streamRpcError.code_ref() = StreamRpcErrorCode::CHUNK_TIMEOUT;
+    streamRpcError.name_utf8_ref() =
+        apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+            StreamRpcErrorCode::CHUNK_TIMEOUT);
+    streamRpcError.what_utf8_ref() = "Sink chunk timeout";
+    onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
+  } else {
+    onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::APPLICATION_ERROR,
+        serializeErrorStruct(protoId_, ex)));
+  }
 }
 
 void RocketSinkClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {

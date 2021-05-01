@@ -85,8 +85,14 @@ StreamChannelStatus RocketStreamServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        clientCallback_->onStreamError(
-            thrift::detail::EncodedError(ex.moveErrorData()));
+        auto serverVersion = client_.getServerVersion();
+        if (serverVersion && serverVersion.value() >= 8) {
+          clientCallback_->onStreamError(
+              thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
+        } else {
+          clientCallback_->onStreamError(
+              thrift::detail::EncodedError(ex.moveErrorData()));
+        }
       },
       [&](...) {
         clientCallback_->onStreamError(std::move(ew));
@@ -385,8 +391,14 @@ StreamChannelStatus RocketSinkServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        clientCallback_->onFinalResponseError(
-            thrift::detail::EncodedError(ex.moveErrorData()));
+        auto serverVersion = client_.getServerVersion();
+        if (serverVersion && serverVersion.value() >= 8) {
+          clientCallback_->onFinalResponseError(
+              thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
+        } else {
+          clientCallback_->onFinalResponseError(
+              thrift::detail::EncodedError(ex.moveErrorData()));
+        }
       },
       [&](...) { clientCallback_->onFinalResponseError(std::move(ew)); });
   return StreamChannelStatus::Complete;
