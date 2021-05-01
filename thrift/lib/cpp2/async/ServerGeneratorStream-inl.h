@@ -39,7 +39,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
       folly::coro::co_invoke(
           [stream = std::move(streamPtr),
            encode,
-           gen = std::move(gen),
+           gen_ = std::move(gen),
            interaction]() mutable -> folly::coro::Task<void> {
             bool pauseStream = false;
             int64_t credits = 0;
@@ -61,6 +61,9 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
               }
               stream->serverClose();
             };
+
+            // Make sure the generator is destroyed before the interaction.
+            auto gen = std::move(gen_);
 
             while (true) {
               if (credits == 0 || pauseStream) {
