@@ -245,7 +245,7 @@ class t_container_type;
 
 %type<t_field*>              Field
 %type<t_field_id>            FieldIdentifier
-%type<t_field::e_req>        FieldRequiredness
+%type<t_field_qualifier>     FieldQualifier
 %type<t_type_ref*>           FieldType
 %type<t_stream_response*>    ResponseAndStreamReturnType
 %type<t_sink*>               ResponseAndSinkReturnType
@@ -1129,13 +1129,13 @@ FieldList:
     }
 
 Field:
-  DefinitionAttrs FieldIdentifier FieldRequiredness FieldType Identifier
+  DefinitionAttrs FieldIdentifier FieldQualifier FieldType Identifier
     {
       driver.start_node(LineType::Field);
     }
    FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("Field => DefinitionAttrs FieldIdentifier FieldRequiredness "
+      driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
       if ($2.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts "
@@ -1146,14 +1146,14 @@ Field:
       }
 
       $$ = new t_field(consume($4), std::move($5), $2.value);
-      $$->set_req($3);
+      $$->set_qualifier($3);
       if ($7 != nullptr) {
         driver.validate_field_value($$, $7);
-        $$->set_value(own($7));
+        $$->set_default_value(own($7));
       }
       driver.finish_node($$, LineType::Field, own($1), own($8));
 
-      if ($3 != t_field::e_req::optional && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
+      if ($3 != t_field_qualifier::optional && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
         driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
       }
     }
@@ -1200,16 +1200,16 @@ FieldIdentifier:
       $$.auto_assigned = true;
     }
 
-FieldRequiredness:
+FieldQualifier:
   tok_required
     {
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "required keyword is ignored in argument lists.");
         }
-        $$ = t_field::e_req::opt_in_req_out;
+        $$ = {};
       } else {
-        $$ = t_field::e_req::required;
+        $$ = t_field_qualifier::required;
       }
     }
 | tok_optional
@@ -1218,14 +1218,14 @@ FieldRequiredness:
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "optional keyword is ignored in argument lists.");
         }
-        $$ = t_field::e_req::opt_in_req_out;
+        $$ = {};
       } else {
-        $$ = t_field::e_req::optional;
+        $$ = t_field_qualifier::optional;
       }
     }
 |
     {
-      $$ = t_field::e_req::opt_in_req_out;
+      $$ = {};
     }
 
 FieldValue:
