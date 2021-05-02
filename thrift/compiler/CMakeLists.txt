@@ -36,12 +36,12 @@ add_library(
 
   ast/t_base_type.cc
   ast/t_function.cc
+  ast/t_interface.cc
   ast/t_named.cc
   ast/t_node.cc
   ast/t_paramlist.cc
   ast/t_program.cc
   ast/t_scope.cc
-  ast/t_service.cc
   ast/t_struct.cc
   ast/t_type.cc
   ast/t_typedef.cc

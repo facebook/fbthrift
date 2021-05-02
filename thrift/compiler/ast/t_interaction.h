@@ -30,8 +30,7 @@ class t_program;
 /**
  * An interaction is a service with context.
  */
-// TODO(afuller): Split out a common t_interface base class, instead of directly
-// inheriting from t_service.
+// TODO(afuller): Inherit from t_interface directly.
 class t_interaction : public t_service {
  public:
   using t_service::t_service;

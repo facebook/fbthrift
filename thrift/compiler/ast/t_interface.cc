@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_interface.h>
 
 #include <thrift/compiler/ast/t_interaction.h>
 
@@ -22,7 +22,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-void t_service::set_functions(
+void t_interface::set_functions(
     std::vector<std::unique_ptr<t_function>> functions) {
   functions_ = std::move(functions);
   functions_raw_.clear();
@@ -34,18 +34,18 @@ void t_service::set_functions(
   }
 }
 
-void t_service::add_function(std::unique_ptr<t_function> func) {
+void t_interface::add_function(std::unique_ptr<t_function> func) {
   assert(func != nullptr);
   functions_raw_.push_back(func.get());
   old_functions_raw_.push_back(func.get());
   functions_.push_back(std::move(func));
 }
 
-bool t_service::is_interaction() const {
+bool t_interface::is_interaction() const {
   return dynamic_cast<const t_interaction*>(this) != nullptr;
 }
 
-bool t_service::is_serial_interaction() const {
+bool t_interface::is_serial_interaction() const {
   if (const auto* tinteraction = dynamic_cast<const t_interaction*>(this)) {
     return tinteraction->is_serial();
   }

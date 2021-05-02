@@ -622,7 +622,7 @@ void parsing_driver::finish_node(
 }
 
 void parsing_driver::finish_node(
-    t_service* node,
+    t_interface* node,
     LineType lineType,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_function_list> functions,
