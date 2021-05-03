@@ -976,7 +976,7 @@ folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val) {
     streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
     return folly::Try<StreamPayload>(
         {encode_stream_payload<Protocol, PResult>(std::move(*val)),
-         streamPayloadMetadata});
+         std::move(streamPayloadMetadata)});
   } else if (val.hasException()) {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
         encode_stream_exception<Protocol, PResult, ErrorMapFunc>(

@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 
@@ -29,7 +30,8 @@ namespace apache {
 namespace thrift {
 
 struct FirstResponsePayload {
-  FirstResponsePayload(std::unique_ptr<folly::IOBuf> p, ResponseRpcMetadata md)
+  FirstResponsePayload(
+      std::unique_ptr<folly::IOBuf> p, ResponseRpcMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   std::unique_ptr<folly::IOBuf> payload;
@@ -37,7 +39,7 @@ struct FirstResponsePayload {
 };
 
 struct StreamPayload {
-  StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata md)
+  StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   std::unique_ptr<folly::IOBuf> payload;
@@ -45,7 +47,7 @@ struct StreamPayload {
 };
 
 struct HeadersPayload {
-  HeadersPayload(HeadersPayloadContent p, HeadersPayloadMetadata md)
+  HeadersPayload(HeadersPayloadContent&& p, HeadersPayloadMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   explicit HeadersPayload(HeadersPayloadContent&& p) : payload(std::move(p)) {}
@@ -84,14 +86,16 @@ struct EncodedError : std::exception {
 };
 
 struct EncodedFirstResponseError : std::exception {
-  explicit EncodedFirstResponseError(FirstResponsePayload payload)
+  explicit EncodedFirstResponseError(FirstResponsePayload&& payload)
       : encoded(std::move(payload)) {}
 
   EncodedFirstResponseError(const EncodedFirstResponseError& other)
-      : encoded(other.encoded.payload->clone(), other.encoded.metadata) {}
+      : encoded(
+            other.encoded.payload->clone(),
+            folly::copy(other.encoded.metadata)) {}
   EncodedFirstResponseError& operator=(const EncodedFirstResponseError& other) {
     encoded = FirstResponsePayload(
-        other.encoded.payload->clone(), other.encoded.metadata);
+        other.encoded.payload->clone(), folly::copy(other.encoded.metadata));
     return *this;
   }
   EncodedFirstResponseError(EncodedFirstResponseError&&) = default;
@@ -101,14 +105,16 @@ struct EncodedFirstResponseError : std::exception {
 };
 
 struct EncodedStreamError : std::exception {
-  explicit EncodedStreamError(StreamPayload payload)
+  explicit EncodedStreamError(StreamPayload&& payload)
       : encoded(std::move(payload)) {}
 
   EncodedStreamError(const EncodedStreamError& other)
-      : encoded(other.encoded.payload->clone(), other.encoded.metadata) {}
+      : encoded(
+            other.encoded.payload->clone(),
+            folly::copy(other.encoded.metadata)) {}
   EncodedStreamError& operator=(const EncodedStreamError& other) {
-    encoded =
-        StreamPayload(other.encoded.payload->clone(), other.encoded.metadata);
+    encoded = StreamPayload(
+        other.encoded.payload->clone(), folly::copy(other.encoded.metadata));
     return *this;
   }
   EncodedStreamError(EncodedStreamError&&) = default;
