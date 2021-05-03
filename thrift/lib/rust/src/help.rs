@@ -43,3 +43,7 @@ pub fn enum_from_str(
         Err(_) => bail!("Unable to parse {} as {}", value, type_name),
     }
 }
+
+pub fn type_name_of_val<T>(_: &T) -> &'static str {
+    std::any::type_name::<T>()
+}

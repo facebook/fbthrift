@@ -165,6 +165,7 @@
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
@@ -174,7 +175,10 @@
                     )
                 }
                 {{#function:exceptions?}}
-                ::std::result::Result::Err(exn) => exn,
+                ::std::result::Result::Err(exn) => { 
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
+                    exn
+                }
                 {{/function:exceptions?}}
             };
             ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;

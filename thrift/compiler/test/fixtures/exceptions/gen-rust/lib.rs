@@ -1301,6 +1301,7 @@ pub mod server {
                     crate::services::raiser::DoBlandExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoBlandExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoBlandExn::Success(_)) => {
@@ -1362,6 +1363,7 @@ pub mod server {
                     crate::services::raiser::DoRaiseExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::Success(_)) => {
@@ -1370,7 +1372,10 @@ pub mod server {
                         "doRaise",
                     )
                 }
-                ::std::result::Result::Err(exn) => exn,
+                ::std::result::Result::Err(exn) => { 
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
+                    exn
+                }
             };
             ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
@@ -1424,6 +1429,7 @@ pub mod server {
                     crate::services::raiser::Get200Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get200Exn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get200Exn::Success(_)) => {
@@ -1485,6 +1491,7 @@ pub mod server {
                     crate::services::raiser::Get500Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get500Exn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get500Exn::Success(_)) => {
@@ -1493,7 +1500,10 @@ pub mod server {
                         "get500",
                     )
                 }
-                ::std::result::Result::Err(exn) => exn,
+                ::std::result::Result::Err(exn) => { 
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
+                    exn
+                }
             };
             ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(

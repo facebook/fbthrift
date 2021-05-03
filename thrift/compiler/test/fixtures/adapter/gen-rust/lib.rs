@@ -605,6 +605,7 @@ pub mod server {
                     crate::services::service::FuncExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::service::FuncExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::service::FuncExn::Success(_)) => {

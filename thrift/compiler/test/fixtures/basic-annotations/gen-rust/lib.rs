@@ -2368,6 +2368,7 @@ pub mod server {
                     crate::services::my_service::PingExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::PingExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::PingExn::Success(_)) => {
@@ -2429,6 +2430,7 @@ pub mod server {
                     crate::services::my_service::GetRandomDataExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::Success(_)) => {
@@ -2499,6 +2501,7 @@ pub mod server {
                     crate::services::my_service::HasDataByIdExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::Success(_)) => {
@@ -2569,6 +2572,7 @@ pub mod server {
                     crate::services::my_service::GetDataByIdExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::Success(_)) => {
@@ -2648,6 +2652,7 @@ pub mod server {
                     crate::services::my_service::PutDataByIdExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::Success(_)) => {
@@ -2727,6 +2732,7 @@ pub mod server {
                     crate::services::my_service::LobDataByIdExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::Success(_)) => {
@@ -2788,6 +2794,7 @@ pub mod server {
                     crate::services::my_service::DoNothingExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service::DoNothingExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service::DoNothingExn::Success(_)) => {
@@ -3032,6 +3039,7 @@ pub mod server {
                     crate::services::my_service_prio_parent::PingExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_parent::PingExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_parent::PingExn::Success(_)) => {
@@ -3093,6 +3101,7 @@ pub mod server {
                     crate::services::my_service_prio_parent::PongExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_parent::PongExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_parent::PongExn::Success(_)) => {
@@ -3320,6 +3329,7 @@ pub mod server {
                     crate::services::my_service_prio_child::PangExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_child::PangExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_service_prio_child::PangExn::Success(_)) => {

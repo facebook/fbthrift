@@ -1033,6 +1033,7 @@ pub mod server {
                     crate::services::nested_containers::MapListExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapListExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapListExn::Success(_)) => {
@@ -1103,6 +1104,7 @@ pub mod server {
                     crate::services::nested_containers::MapSetExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapSetExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapSetExn::Success(_)) => {
@@ -1173,6 +1175,7 @@ pub mod server {
                     crate::services::nested_containers::ListMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListMapExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListMapExn::Success(_)) => {
@@ -1243,6 +1246,7 @@ pub mod server {
                     crate::services::nested_containers::ListSetExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListSetExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListSetExn::Success(_)) => {
@@ -1313,6 +1317,7 @@ pub mod server {
                     crate::services::nested_containers::TurtlesExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::Success(_)) => {

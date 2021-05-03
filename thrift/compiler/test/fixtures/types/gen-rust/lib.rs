@@ -2901,6 +2901,7 @@ pub mod server {
                     crate::services::some_service::BounceMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::some_service::BounceMapExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::some_service::BounceMapExn::Success(_)) => {
@@ -2971,6 +2972,7 @@ pub mod server {
                     crate::services::some_service::BinaryKeyedMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::Success(_)) => {

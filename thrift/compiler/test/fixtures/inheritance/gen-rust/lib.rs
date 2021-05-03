@@ -842,6 +842,7 @@ pub mod server {
                     crate::services::my_root::DoRootExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_root::DoRootExn::Success(_)) => {
@@ -1067,6 +1068,7 @@ pub mod server {
                     crate::services::my_node::DoMidExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_node::DoMidExn::Success(_)) => {
@@ -1302,6 +1304,7 @@ pub mod server {
                     crate::services::my_leaf::DoLeafExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::Success(_)) => {
