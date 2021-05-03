@@ -325,11 +325,6 @@ void ThriftServer::setup() {
             std::make_shared<folly::NamedThreadFactory>("Acceptor Thread"));
       }
 
-      // Resize the SSL handshake pool
-      size_t nSSLHandshakeWorkers = getNumSSLHandshakeWorkerThreads();
-      VLOG(1) << "Using " << nSSLHandshakeWorkers << " SSL handshake threads";
-      sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers);
-
       auto acceptorFactory = acceptorFactory_
           ? acceptorFactory_
           : std::make_shared<DefaultThriftAcceptorFactory>(this);
@@ -552,7 +547,6 @@ void ThriftServer::stopWorkers() {
   DCHECK(!duplexWorker_);
   ServerBootstrap::stop();
   ServerBootstrap::join();
-  sslHandshakePool_->join();
   configMutable_ = true;
 }
 

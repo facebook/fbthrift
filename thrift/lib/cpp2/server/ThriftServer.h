@@ -147,11 +147,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       std::make_shared<folly::IOThreadPoolExecutor>(
           0, std::make_shared<folly::NamedThreadFactory>("ThriftIO"));
 
-  //! Separate thread pool for handling SSL handshakes.
-  std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool_ =
-      std::make_shared<folly::IOThreadPoolExecutor>(
-          0, std::make_shared<folly::NamedThreadFactory>("ThriftTLS"));
-
   /**
    * The speed for adjusting connection accept rate.
    * 0 for disabling auto adjusting connection accept rate.
@@ -275,38 +270,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       std::shared_ptr<folly::NamedThreadFactory> threadFactory) {
     CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
-  }
-
-  /**
-   * Set the thread pool used to handle TLS handshakes. Note that the pool's
-   * thread factory will be overridden - if you'd like to use your own, set it
-   * afterwards via ThriftServer::setSSLHandshakeThreadFactory(). If the given
-   * thread pool has one or more allocated threads, the number of workers will
-   * be set to this number. Use ThriftServer::setNumSSLHandshakeWorkerThreads()
-   * to set it afterwards if you want to change the number of workers.
-   *
-   * @param the new thread pool
-   */
-  void setSSLHandshakeThreadPool(
-      std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool) {
-    CHECK(configMutable());
-    sslHandshakePool_ = sslHandshakePool;
-
-    if (sslHandshakePool_->numThreads() > 0) {
-      setNumSSLHandshakeWorkerThreads(sslHandshakePool_->numThreads());
-    }
-  }
-
-  /**
-   * Set the thread factory that will be used to create the server's SSL
-   * handshake threads.
-   *
-   * @param the new thread factory
-   */
-  void setSSLHandshakeThreadFactory(
-      std::shared_ptr<folly::NamedThreadFactory> threadFactory) {
-    CHECK(configMutable());
-    sslHandshakePool_->setThreadFactory(threadFactory);
   }
 
   /**

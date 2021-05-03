@@ -678,11 +678,6 @@ class CppServerWrapper : public ThriftServer {
         numCPUWorkerThreads, AttributeSource::OVERRIDE);
   }
 
-  void setNumSSLHandshakeWorkerThreads(size_t nSSLHandshakeThreads) {
-    BaseThriftServer::setNumSSLHandshakeWorkerThreads(
-        nSSLHandshakeThreads, AttributeSource::OVERRIDE);
-  }
-
   void setEnableCodel(bool enableCodel) {
     BaseThriftServer::setEnableCodel(enableCodel, AttributeSource::OVERRIDE);
   }

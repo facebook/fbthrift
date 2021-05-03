@@ -187,9 +187,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
-  //! Number of SSL handshake worker threads (may be set)
-  ServerAttributeStatic<size_t> nSSLHandshakeWorkers_{0};
-
   //! Number of CPU worker threads
   ServerAttributeStatic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
@@ -727,24 +724,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   size_t getNumCPUWorkerThreads() const {
     auto nCPUWorkers = nPoolThreads_.get();
     return nCPUWorkers ? nCPUWorkers : T_ASYNC_DEFAULT_WORKER_THREADS;
-  }
-
-  /**
-   * Set the number of SSL handshake worker threads.
-   */
-  void setNumSSLHandshakeWorkerThreads(
-      size_t nSSLHandshakeThreads,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{}) {
-    setStaticAttribute(
-        nSSLHandshakeWorkers_, std::move(nSSLHandshakeThreads), source);
-  }
-
-  /**
-   * Get the number of threads used to perform SSL handshakes
-   */
-  size_t getNumSSLHandshakeWorkerThreads() const {
-    return nSSLHandshakeWorkers_.get();
   }
 
   /**

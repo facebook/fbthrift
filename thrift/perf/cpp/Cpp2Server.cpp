@@ -32,12 +32,6 @@ using namespace apache::thrift;
 DEFINE_int32(port, 1234, "server port");
 DEFINE_int64(num_threads, 4, "number of worker threads");
 DEFINE_int64(num_queue_threads, 4, "number of task queue threads");
-DEFINE_int64(
-    num_ssl_handshake_threads,
-    0,
-    "number of ssl handshake threads. Default is 0, which indicates no "
-    "additional threads will be spawned to handle SSL handshakes; "
-    "handshakes will instead be performed in the acceptor thread");
 DEFINE_int32(max_conn_pool_size, 0, "maximum size of idle connection pool");
 DEFINE_int32(idle_timeout, 0, "idle timeout (in milliseconds)");
 DEFINE_int32(task_timeout, 0, "task timeout (in milliseconds)");
@@ -100,7 +94,6 @@ int main(int argc, char* argv[]) {
   server->setPort(FLAGS_port);
   server->setNumIOWorkerThreads(FLAGS_num_threads);
   server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
-  server->setNumSSLHandshakeWorkerThreads(FLAGS_num_ssl_handshake_threads);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
   server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);

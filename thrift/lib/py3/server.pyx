@@ -208,12 +208,6 @@ cdef class ThriftServer:
     def set_workers_join_timeout(self, timeout):
         self.server.get().setWorkersJoinTimeout(seconds(<int64_t>timeout))
 
-    def set_ssl_handshake_worker_threads(self, num):
-        self.server.get().setNumSSLHandshakeWorkerThreads(num)
-
-    def get_ssl_handshake_worker_threads(self):
-        return self.server.get().getNumSSLHandshakeWorkerThreads()
-
     def get_ssl_policy(self):
         cdef cSSLPolicy cPolicy = self.server.get().getSSLPolicy()
         if cPolicy == SSLPolicy__DISABLED:

@@ -108,8 +108,6 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setNumCPUWorkerThreads(uint32_t numCPUWorkerThreads)
         uint32_t getNumCPUWorkerThreads()
         void setWorkersJoinTimeout(seconds timeout)
-        void setNumSSLHandshakeWorkerThreads(uint32_t nSSLHandshakeThreads)
-        uint32_t getNumSSLHandshakeWorkerThreads()
         void setAllowPlaintextOnLoopback(cbool allow)
         cbool isPlaintextAllowedOnLoopback()
         void setIdleTimeout(milliseconds idleTimeout)

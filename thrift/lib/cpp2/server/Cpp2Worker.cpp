@@ -329,17 +329,7 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     return wangle::AcceptorHandshakeHelper::UniquePtr(
         new wangle::UnencryptedAcceptorHandshakeHelper());
   }
-
-  auto sslAcceptor = createSSLHelper(bytes, clientAddr, acceptTime, ti);
-
-  // If we have a nonzero dedicated ssl handshake pool, offload the SSL
-  // handshakes with EvbHandshakeHelper.
-  if (server_->sslHandshakePool_->numThreads() > 0) {
-    return wangle::EvbHandshakeHelper::UniquePtr(new wangle::EvbHandshakeHelper(
-        std::move(sslAcceptor), server_->sslHandshakePool_->getEventBase()));
-  } else {
-    return sslAcceptor;
-  }
+  return createSSLHelper(bytes, clientAddr, acceptTime, ti);
 }
 
 void Cpp2Worker::requestStop() {
