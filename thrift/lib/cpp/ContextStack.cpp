@@ -129,19 +129,5 @@ void ContextStack::userExceptionWrapped(
   }
 }
 
-void ContextStack::asyncComplete() {
-  FOLLY_SDT(
-      thrift,
-      thrift_context_stack_async_complete,
-      getServiceName(),
-      getMethod());
-
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->asyncComplete(ctxs_[i], getMethod());
-    }
-  }
-}
-
 } // namespace thrift
 } // namespace apache

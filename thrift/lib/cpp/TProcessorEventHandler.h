@@ -114,11 +114,6 @@ class TProcessorEventHandler {
       void* /*ctx*/, const char* /*fn_name*/, uint32_t /*bytes*/) {}
 
   /**
-   * Called when an async function call completes successfully.
-   */
-  virtual void asyncComplete(void* /*ctx*/, const char* /*fn_name*/) {}
-
-  /**
    * Called if the handler throws an undeclared exception.
    */
   virtual void handlerError(void* /*ctx*/, const char* /*fn_name*/) {}

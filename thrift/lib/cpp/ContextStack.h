@@ -92,8 +92,6 @@ class ContextStack {
   void handlerErrorWrapped(const folly::exception_wrapper& ew);
   void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew);
 
-  void asyncComplete();
-
   const char* getServiceName() const { return serviceName_; }
 
   const char* getMethod() const { return method_; }
