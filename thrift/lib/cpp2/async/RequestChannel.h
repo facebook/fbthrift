@@ -212,7 +212,11 @@ class ClientSyncCallback : public RequestClientCallback {
         }
       }
     }
-    doneBaton_.wait();
+
+    // Check if it's ready to avoid unnecessarily preempting a fiber.
+    if (!doneBaton_.ready()) {
+      doneBaton_.wait();
+    }
   }
 
   // This approach avoids an inner coroutine frame
