@@ -35,10 +35,6 @@ void service2AsyncProcessor::setUpAndProcess_methodA(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -51,6 +47,10 @@ void service2AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodA");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_methodA<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodA<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -89,10 +89,6 @@ void service2AsyncProcessor::setUpAndProcess_methodB(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -111,6 +107,10 @@ void service2AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodB");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_methodB<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodB<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -149,10 +149,6 @@ void service2AsyncProcessor::setUpAndProcess_methodC(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -165,6 +161,10 @@ void service2AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodC");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_methodC<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodC<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -205,10 +205,6 @@ void service2AsyncProcessor::setUpAndProcess_methodD(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -227,6 +223,10 @@ void service2AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodD");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_methodD<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodD<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -267,10 +267,6 @@ void service2AsyncProcessor::setUpAndProcess_methodE(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -283,6 +279,10 @@ void service2AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodE");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(ctxStack), return_methodE<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodE<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -323,10 +323,6 @@ void service2AsyncProcessor::setUpAndProcess_methodF(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -345,6 +341,10 @@ void service2AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequ
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "methodF");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(ctxStack), return_methodF<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodF<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);

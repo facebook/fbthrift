@@ -105,10 +105,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_five(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_five(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -121,6 +117,10 @@ void SimpleServiceAsyncProcessor::process_get_five(apache::thrift::ResponseChann
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_five");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_get_five<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_five<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -161,10 +161,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_add_five(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_add_five(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -179,6 +175,10 @@ void SimpleServiceAsyncProcessor::process_add_five(apache::thrift::ResponseChann
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "add_five");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_add_five<ProtocolIn_,ProtocolOut_>, throw_wrapped_add_five<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -219,10 +219,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_do_nothing(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_do_nothing(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -235,6 +231,10 @@ void SimpleServiceAsyncProcessor::process_do_nothing(apache::thrift::ResponseCha
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "do_nothing");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_nothing<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_nothing<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -273,10 +273,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_concat(apache::thrift::Respons
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_concat(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -293,6 +289,10 @@ void SimpleServiceAsyncProcessor::process_concat(apache::thrift::ResponseChannel
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "concat");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_concat<ProtocolIn_,ProtocolOut_>, throw_wrapped_concat<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -333,10 +333,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_value(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -351,6 +347,10 @@ void SimpleServiceAsyncProcessor::process_get_value(apache::thrift::ResponseChan
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_value");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_get_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -391,10 +391,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_negate(apache::thrift::Respons
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_negate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -409,6 +405,10 @@ void SimpleServiceAsyncProcessor::process_negate(apache::thrift::ResponseChannel
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "negate");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_negate<ProtocolIn_,ProtocolOut_>, throw_wrapped_negate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -449,10 +449,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_tiny(apache::thrift::ResponseC
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_tiny(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -467,6 +463,10 @@ void SimpleServiceAsyncProcessor::process_tiny(apache::thrift::ResponseChannelRe
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "tiny");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int8_t>>(std::move(req), std::move(ctxStack), return_tiny<ProtocolIn_,ProtocolOut_>, throw_wrapped_tiny<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -507,10 +507,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_small(apache::thrift::Response
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_small(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -525,6 +521,10 @@ void SimpleServiceAsyncProcessor::process_small(apache::thrift::ResponseChannelR
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "small");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int16_t>>(std::move(req), std::move(ctxStack), return_small<ProtocolIn_,ProtocolOut_>, throw_wrapped_small<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -565,10 +565,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_big(apache::thrift::ResponseCh
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_big(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -583,6 +579,10 @@ void SimpleServiceAsyncProcessor::process_big(apache::thrift::ResponseChannelReq
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "big");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_big<ProtocolIn_,ProtocolOut_>, throw_wrapped_big<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -623,10 +623,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_two(apache::thrift::ResponseCh
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_two(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -641,6 +637,10 @@ void SimpleServiceAsyncProcessor::process_two(apache::thrift::ResponseChannelReq
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "two");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_two<ProtocolIn_,ProtocolOut_>, throw_wrapped_two<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -681,10 +681,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_expected_exception(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_expected_exception(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -697,6 +693,10 @@ void SimpleServiceAsyncProcessor::process_expected_exception(apache::thrift::Res
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "expected_exception");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_expected_exception<ProtocolIn_,ProtocolOut_>, throw_wrapped_expected_exception<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -719,7 +719,7 @@ void SimpleServiceAsyncProcessor::throw_wrapped_expected_exception(apache::thrif
   if (ew.with_exception([&]( ::py3::simple::SimpleException& e) {
     ctx->userExceptionWrapped(true, ew);
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::py3::simple::SimpleException>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::py3::simple::SimpleException>(*reqCtx);                                                                
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
@@ -748,10 +748,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_unexpected_exception(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_unexpected_exception(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -764,6 +760,10 @@ void SimpleServiceAsyncProcessor::process_unexpected_exception(apache::thrift::R
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "unexpected_exception");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_unexpected_exception<ProtocolIn_,ProtocolOut_>, throw_wrapped_unexpected_exception<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -804,10 +804,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_sum_i16_list(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_sum_i16_list(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -822,6 +818,10 @@ void SimpleServiceAsyncProcessor::process_sum_i16_list(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "sum_i16_list");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sum_i16_list<ProtocolIn_,ProtocolOut_>, throw_wrapped_sum_i16_list<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -862,10 +862,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_sum_i32_list(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_sum_i32_list(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -880,6 +876,10 @@ void SimpleServiceAsyncProcessor::process_sum_i32_list(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "sum_i32_list");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sum_i32_list<ProtocolIn_,ProtocolOut_>, throw_wrapped_sum_i32_list<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -920,10 +920,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_sum_i64_list(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_sum_i64_list(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -938,6 +934,10 @@ void SimpleServiceAsyncProcessor::process_sum_i64_list(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "sum_i64_list");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sum_i64_list<ProtocolIn_,ProtocolOut_>, throw_wrapped_sum_i64_list<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -978,10 +978,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_concat_many(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_concat_many(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -996,6 +992,10 @@ void SimpleServiceAsyncProcessor::process_concat_many(apache::thrift::ResponseCh
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "concat_many");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_concat_many<ProtocolIn_,ProtocolOut_>, throw_wrapped_concat_many<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1036,10 +1036,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_count_structs(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_count_structs(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1054,6 +1050,10 @@ void SimpleServiceAsyncProcessor::process_count_structs(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "count_structs");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_count_structs<ProtocolIn_,ProtocolOut_>, throw_wrapped_count_structs<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1094,10 +1094,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_sum_set(apache::thrift::Respon
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_sum_set(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1112,6 +1108,10 @@ void SimpleServiceAsyncProcessor::process_sum_set(apache::thrift::ResponseChanne
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "sum_set");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_sum_set<ProtocolIn_,ProtocolOut_>, throw_wrapped_sum_set<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1152,10 +1152,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_contains_word(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_contains_word(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1172,6 +1168,10 @@ void SimpleServiceAsyncProcessor::process_contains_word(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "contains_word");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_contains_word<ProtocolIn_,ProtocolOut_>, throw_wrapped_contains_word<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1212,10 +1212,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_map_value(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_map_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1232,6 +1228,10 @@ void SimpleServiceAsyncProcessor::process_get_map_value(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_map_value");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_get_map_value<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_map_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1272,10 +1272,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_map_length(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_map_length(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1290,6 +1286,10 @@ void SimpleServiceAsyncProcessor::process_map_length(apache::thrift::ResponseCha
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "map_length");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int16_t>>(std::move(req), std::move(ctxStack), return_map_length<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_length<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1330,10 +1330,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_sum_map_values(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_sum_map_values(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1348,6 +1344,10 @@ void SimpleServiceAsyncProcessor::process_sum_map_values(apache::thrift::Respons
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "sum_map_values");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int16_t>>(std::move(req), std::move(ctxStack), return_sum_map_values<ProtocolIn_,ProtocolOut_>, throw_wrapped_sum_map_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1388,10 +1388,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_complex_sum_i32(apache::thrift
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_complex_sum_i32(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1406,6 +1402,10 @@ void SimpleServiceAsyncProcessor::process_complex_sum_i32(apache::thrift::Respon
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "complex_sum_i32");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_complex_sum_i32<ProtocolIn_,ProtocolOut_>, throw_wrapped_complex_sum_i32<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1446,10 +1446,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_repeat_name(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_repeat_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1464,6 +1460,10 @@ void SimpleServiceAsyncProcessor::process_repeat_name(apache::thrift::ResponseCh
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "repeat_name");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_repeat_name<ProtocolIn_,ProtocolOut_>, throw_wrapped_repeat_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1504,10 +1504,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_struct(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_struct(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1520,6 +1516,10 @@ void SimpleServiceAsyncProcessor::process_get_struct(apache::thrift::ResponseCha
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_struct");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::SimpleStruct>>>(std::move(req), std::move(ctxStack), return_get_struct<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_struct<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1560,10 +1560,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_fib(apache::thrift::ResponseCh
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_fib(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1578,6 +1574,10 @@ void SimpleServiceAsyncProcessor::process_fib(apache::thrift::ResponseChannelReq
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "fib");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::int32_t>>>>(std::move(req), std::move(ctxStack), return_fib<ProtocolIn_,ProtocolOut_>, throw_wrapped_fib<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1618,10 +1618,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_unique_words(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_unique_words(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1636,6 +1632,10 @@ void SimpleServiceAsyncProcessor::process_unique_words(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "unique_words");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>>(std::move(req), std::move(ctxStack), return_unique_words<ProtocolIn_,ProtocolOut_>, throw_wrapped_unique_words<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1676,10 +1676,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_words_count(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_words_count(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1694,6 +1690,10 @@ void SimpleServiceAsyncProcessor::process_words_count(apache::thrift::ResponseCh
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "words_count");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>>>(std::move(req), std::move(ctxStack), return_words_count<ProtocolIn_,ProtocolOut_>, throw_wrapped_words_count<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1734,10 +1734,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_set_enum(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_set_enum(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1752,6 +1748,10 @@ void SimpleServiceAsyncProcessor::process_set_enum(apache::thrift::ResponseChann
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "set_enum");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::py3::simple::AnEnum>>(std::move(req), std::move(ctxStack), return_set_enum<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_enum<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1792,10 +1792,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_list_of_lists(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_list_of_lists(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1812,6 +1808,10 @@ void SimpleServiceAsyncProcessor::process_list_of_lists(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "list_of_lists");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>>>(std::move(req), std::move(ctxStack), return_list_of_lists<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_of_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1852,10 +1852,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_word_character_frequency(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_word_character_frequency(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1870,6 +1866,10 @@ void SimpleServiceAsyncProcessor::process_word_character_frequency(apache::thrif
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "word_character_frequency");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>>(std::move(req), std::move(ctxStack), return_word_character_frequency<ProtocolIn_,ProtocolOut_>, throw_wrapped_word_character_frequency<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1910,10 +1910,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_list_of_sets(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_list_of_sets(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1928,6 +1924,10 @@ void SimpleServiceAsyncProcessor::process_list_of_sets(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "list_of_sets");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::set<::std::string>>>>>(std::move(req), std::move(ctxStack), return_list_of_sets<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_of_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -1968,10 +1968,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_nested_map_argument(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_nested_map_argument(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -1986,6 +1982,10 @@ void SimpleServiceAsyncProcessor::process_nested_map_argument(apache::thrift::Re
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "nested_map_argument");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_nested_map_argument<ProtocolIn_,ProtocolOut_>, throw_wrapped_nested_map_argument<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2026,10 +2026,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_make_sentence(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_make_sentence(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2044,6 +2040,10 @@ void SimpleServiceAsyncProcessor::process_make_sentence(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "make_sentence");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_make_sentence<ProtocolIn_,ProtocolOut_>, throw_wrapped_make_sentence<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2084,10 +2084,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_union(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_union(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2102,6 +2098,10 @@ void SimpleServiceAsyncProcessor::process_get_union(apache::thrift::ResponseChan
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_union");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::int32_t>>>>(std::move(req), std::move(ctxStack), return_get_union<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_union<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2142,10 +2142,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_keys(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_keys(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2160,6 +2156,10 @@ void SimpleServiceAsyncProcessor::process_get_keys(apache::thrift::ResponseChann
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_keys");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>>(std::move(req), std::move(ctxStack), return_get_keys<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2200,10 +2200,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_lookup_double(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_lookup_double(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2218,6 +2214,10 @@ void SimpleServiceAsyncProcessor::process_lookup_double(apache::thrift::Response
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "lookup_double");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_lookup_double<ProtocolIn_,ProtocolOut_>, throw_wrapped_lookup_double<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2258,10 +2258,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_retrieve_binary(apache::thrift
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_retrieve_binary(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2276,6 +2272,10 @@ void SimpleServiceAsyncProcessor::process_retrieve_binary(apache::thrift::Respon
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "retrieve_binary");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_retrieve_binary<ProtocolIn_,ProtocolOut_>, throw_wrapped_retrieve_binary<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2316,10 +2316,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_contain_binary(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_contain_binary(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2334,6 +2330,10 @@ void SimpleServiceAsyncProcessor::process_contain_binary(apache::thrift::Respons
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "contain_binary");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>>(std::move(req), std::move(ctxStack), return_contain_binary<ProtocolIn_,ProtocolOut_>, throw_wrapped_contain_binary<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2374,10 +2374,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_contain_enum(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_contain_enum(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2392,6 +2388,10 @@ void SimpleServiceAsyncProcessor::process_contain_enum(apache::thrift::ResponseC
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "contain_enum");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>>>(std::move(req), std::move(ctxStack), return_contain_enum<ProtocolIn_,ProtocolOut_>, throw_wrapped_contain_enum<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -2432,10 +2432,6 @@ void SimpleServiceAsyncProcessor::setUpAndProcess_get_binary_union_struct(apache
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SimpleServiceAsyncProcessor::process_get_binary_union_struct(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -2450,6 +2446,10 @@ void SimpleServiceAsyncProcessor::process_get_binary_union_struct(apache::thrift
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "get_binary_union_struct");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>>(std::move(req), std::move(ctxStack), return_get_binary_union_struct<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_binary_union_struct<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);

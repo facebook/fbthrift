@@ -177,11 +177,9 @@ void Cpp2Connection::stop() {
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: "
             << context_.getPeerAddress()->describe();
-    if (!req->isOneway()) {
-      req->cancelRequest();
-      if (auto* observer = worker_->getServer()->getObserver()) {
-        observer->taskKilled();
-      }
+    req->cancelRequest();
+    if (auto* observer = worker_->getServer()->getObserver()) {
+      observer->taskKilled();
     }
   }
 

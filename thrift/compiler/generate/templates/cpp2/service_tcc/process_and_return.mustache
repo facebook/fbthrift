@@ -31,13 +31,6 @@ void <%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%#service:i
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-<%#service:interaction?%>
-  auto tile = ctx->getTile();
-<%/service:interaction?%>
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb<%#service:interaction?%>, tile<%/service:interaction?%>);
-    return;
-  }
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -64,6 +57,9 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", ctx));
+<%#service:interaction?%>
+  auto tile = ctx->getTile();
+<%/service:interaction?%>
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -79,6 +75,10 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew, std::move(req), ctx, eb, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
+    return;
+  }
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb<%#service:interaction?%>, tile<%/service:interaction?%>);
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx<%!
@@ -204,7 +204,7 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
   if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
     ctx->userExceptionWrapped(true, ew);
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader<<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader<<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>>(*reqCtx);                                                                
 <%#type:void?%>
     result.get<<%field:index%>>().ref() = e;
     result.setIsSet(<%field:index%>, true);
