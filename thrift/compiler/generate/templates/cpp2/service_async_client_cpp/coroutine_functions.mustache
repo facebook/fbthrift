@@ -25,7 +25,7 @@ folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = <%function:cpp_name%>Ctx(&rpcOptions);
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
-  <%function:cpp_name%>Impl(rpcOptions, ctx, callback.get()<%function:comma%><% > service_common/param_list%>);
+  <%function:cpp_name%>Impl(rpcOptions, ctx, ctx->ctx.get(), callback.get()<%function:comma%><% > service_common/param_list%>);
   auto firstPayload = co_await callback->getFirstThriftResponse();
   if (firstPayload.hasException()) {
     firstPayload.exception().throw_exception();
@@ -39,7 +39,7 @@ folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%
       std::move(firstPayload->payload),
       std::move(callback),
       std::move(tHeader),
-      std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+      std::move(ctx->ctx));
   co_return recv_<%function:cpp_name%>(_returnState);
 }
 <%/function:returns_sink?%><%!

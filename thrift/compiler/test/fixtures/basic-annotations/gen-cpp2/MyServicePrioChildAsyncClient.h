@@ -31,7 +31,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void pangImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pangImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual void sync_pang();
@@ -68,9 +68,9 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      pangImpl(*rpcOptions, ctx, std::move(wrappedCallback));
+      pangImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     } else {
-      pangImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+      pangImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -82,7 +82,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -105,7 +105,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   virtual folly::exception_wrapper recv_instance_wrapped_pang(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void pangT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pangT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> pangCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

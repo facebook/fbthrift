@@ -233,7 +233,7 @@ folly::Future<RequestState> sendRequest(
 
   apache::thrift::RequestCallback::Context context;
   context.protocolId = apache::thrift::detail::compact::PROTOCOL_ID;
-  context.ctx = std::make_unique<ContextStack>("test");
+
   auto cb = std::make_unique<ThriftClientCallback>(
       &evb,
       false,

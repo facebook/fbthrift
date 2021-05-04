@@ -33,7 +33,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void methodA(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodA(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void methodAImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodAImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual void sync_methodA();
@@ -70,9 +70,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodAImpl(*rpcOptions, ctx, std::move(wrappedCallback));
+      methodAImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     } else {
-      methodAImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+      methodAImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -84,7 +84,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -107,13 +107,13 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodA(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodAT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodAT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodACtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void methodB(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
   virtual void methodB(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
  protected:
-  void methodBImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
+  void methodBImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
  public:
 
   virtual void sync_methodB(::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
@@ -150,9 +150,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodBImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_x, p_y, p_z);
+      methodBImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_x, p_y, p_z);
     } else {
-      methodBImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_x, p_y, p_z);
+      methodBImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_x, p_y, p_z);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -164,7 +164,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -187,13 +187,13 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodB(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodBT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
+  void methodBT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodBCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void methodC(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodC(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void methodCImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodCImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual ::std::int32_t sync_methodC();
@@ -230,9 +230,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodCImpl(*rpcOptions, ctx, std::move(wrappedCallback));
+      methodCImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     } else {
-      methodCImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+      methodCImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -244,7 +244,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -269,13 +269,13 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodC(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodCT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodCT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodCCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void methodD(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
   virtual void methodD(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
  protected:
-  void methodDImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
+  void methodDImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
  public:
 
   virtual ::std::int32_t sync_methodD(::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
@@ -312,9 +312,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodDImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_i, p_j, p_k);
+      methodDImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_i, p_j, p_k);
     } else {
-      methodDImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_i, p_j, p_k);
+      methodDImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_i, p_j, p_k);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -326,7 +326,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -351,13 +351,13 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodD(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodDT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
+  void methodDT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodDCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void methodE(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodE(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void methodEImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodEImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual void sync_methodE(::test_cpp2::cpp_reflection::struct2& _return);
@@ -394,9 +394,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodEImpl(*rpcOptions, ctx, std::move(wrappedCallback));
+      methodEImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     } else {
-      methodEImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+      methodEImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -408,7 +408,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -433,13 +433,13 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodE(::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodET(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void methodET(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodECtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void methodF(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
   virtual void methodF(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
  protected:
-  void methodFImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
+  void methodFImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
  public:
 
   virtual void sync_methodF(::test_cpp2::cpp_reflection::struct2& _return, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
@@ -476,9 +476,9 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      methodFImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_l, p_m, p_n);
+      methodFImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_l, p_m, p_n);
     } else {
-      methodFImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_l, p_m, p_n);
+      methodFImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_l, p_m, p_n);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -490,7 +490,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -515,7 +515,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_methodF(::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void methodFT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
+  void methodFT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodFCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

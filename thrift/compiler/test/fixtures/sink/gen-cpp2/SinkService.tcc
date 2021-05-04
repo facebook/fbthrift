@@ -253,7 +253,9 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(apache::thrift::Respon
   }
   SinkService_methodThrow_presult result;
   if (ew.with_exception([&]( ::cpp2::InitialException& e) {
-    ctx->userExceptionWrapped(true, ew);
+    if (ctx) {
+      ctx->userExceptionWrapped(true, ew);
+    }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
     ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::InitialException>(*reqCtx);                                                                
     result.fields.get<0>().ref() = e;

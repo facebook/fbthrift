@@ -44,13 +44,14 @@ struct ClientRequestContext {
   ClientRequestContext(
       uint16_t protocolId,
       std::map<std::string, std::string> headers,
-      std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
-          handlers,
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
       const char* service_name,
       const char* fn_name)
       : header(protocolId, std::move(headers)),
         reqContext(initReqContext(&header)),
-        ctx(std::move(handlers), service_name, fn_name, &reqContext) {}
+        ctx(ContextStack::create(
+            handlers, service_name, fn_name, &reqContext)) {}
 
   struct THeaderWrapper : public transport::THeader {
     THeaderWrapper(
@@ -63,7 +64,7 @@ struct ClientRequestContext {
 
   THeaderWrapper header;
   Cpp2ClientRequestContext reqContext;
-  ContextStack ctx;
+  std::unique_ptr<ContextStack> ctx;
 
  private:
   static Cpp2ClientRequestContext initReqContext(transport::THeader* header) {

@@ -487,7 +487,9 @@ folly::exception_wrapper recv_wrapped_helper(
   std::string fname;
   int32_t protoSeqId = 0;
   MessageType mtype;
-  ctx->preRead();
+  if (ctx) {
+    ctx->preRead();
+  }
   try {
     if (state.header() && state.header()->getCrc32c().has_value() &&
         checksum::crc32c(*state.buf()) != *state.header()->getCrc32c()) {
@@ -520,12 +522,16 @@ folly::exception_wrapper recv_wrapped_helper(
     SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
     smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
+    if (ctx) {
+      ctx->onReadData(smsg);
+    }
     apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(
-        state.header(),
-        folly::to_narrow(state.buf()->computeChainDataLength()));
+    if (ctx) {
+      ctx->postRead(
+          state.header(),
+          folly::to_narrow(state.buf()->computeChainDataLength()));
+    }
     return folly::exception_wrapper();
   } catch (std::exception const& e) {
     return folly::exception_wrapper(std::current_exception(), e);
@@ -554,7 +560,7 @@ folly::exception_wrapper recv_wrapped(
     constexpr auto const kHasReturnType = sizeof...(_returns) != 0;
     ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
   return ew;
@@ -577,7 +583,7 @@ folly::exception_wrapper recv_wrapped(
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -606,7 +612,7 @@ folly::exception_wrapper recv_wrapped(
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -672,7 +678,7 @@ folly::exception_wrapper recv_wrapped(
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -721,7 +727,7 @@ folly::exception_wrapper recv_wrapped(
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 

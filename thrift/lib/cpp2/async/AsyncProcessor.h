@@ -674,12 +674,16 @@ void GeneratedAsyncProcessor::deserializeRequest(
     ContextStack* c) {
   ProtocolIn iprot;
   iprot.setInput(serializedRequest.buffer.get());
-  c->preRead();
+  if (c) {
+    c->preRead();
+  }
   SerializedMessage smsg;
   smsg.protocolType = iprot.protocolType();
   smsg.buffer = serializedRequest.buffer.get();
   smsg.methodName = methodName;
-  c->onReadData(smsg);
+  if (c) {
+    c->onReadData(smsg);
+  }
   uint32_t bytes = 0;
   try {
     bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
@@ -690,7 +694,9 @@ void GeneratedAsyncProcessor::deserializeRequest(
     throw RequestParsingError(
         folly::exceptionStr(std::current_exception()).toStdString());
   }
-  c->postRead(nullptr, bytes);
+  if (c) {
+    c->postRead(nullptr, bytes);
+  }
 }
 
 template <typename ProtocolOut, typename Result>
@@ -712,18 +718,24 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   queue.append(std::move(buf));
 
   prot->setOutput(&queue, bufSize);
-  ctx->preWrite();
+  if (ctx) {
+    ctx->preWrite();
+  }
   prot->writeMessageBegin(method, T_REPLY, protoSeqId);
   apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
   SerializedMessage smsg;
   smsg.protocolType = prot->protocolType();
   smsg.buffer = queue.front();
-  ctx->onWriteData(smsg);
+  if (ctx) {
+    ctx->onWriteData(smsg);
+  }
   DCHECK_LE(
       queue.chainLength(),
       static_cast<size_t>(std::numeric_limits<int>::max()));
-  ctx->postWrite(folly::to_narrow(queue.chainLength()));
+  if (ctx) {
+    ctx->postWrite(folly::to_narrow(queue.chainLength()));
+  }
   return queue;
 }
 

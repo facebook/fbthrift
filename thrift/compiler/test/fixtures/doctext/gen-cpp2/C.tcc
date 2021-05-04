@@ -189,7 +189,9 @@ void CAsyncProcessor::throw_wrapped_thing(apache::thrift::ResponseChannelRequest
   }
   C_thing_presult result;
   if (ew.with_exception([&]( ::cpp2::Bang& e) {
-    ctx->userExceptionWrapped(true, ew);
+    if (ctx) {
+      ctx->userExceptionWrapped(true, ew);
+    }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
     ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Bang>(*reqCtx);                                                                
     result.get<1>().ref() = e;

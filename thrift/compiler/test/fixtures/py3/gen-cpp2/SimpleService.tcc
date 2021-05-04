@@ -717,7 +717,9 @@ void SimpleServiceAsyncProcessor::throw_wrapped_expected_exception(apache::thrif
   }
   SimpleService_expected_exception_presult result;
   if (ew.with_exception([&]( ::py3::simple::SimpleException& e) {
-    ctx->userExceptionWrapped(true, ew);
+    if (ctx) {
+      ctx->userExceptionWrapped(true, ew);
+    }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
     ::apache::thrift::util::appendErrorClassificationToHeader< ::py3::simple::SimpleException>(*reqCtx);                                                                
     result.get<0>().ref() = e;

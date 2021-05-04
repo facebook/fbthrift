@@ -30,7 +30,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual void mapList(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
   virtual void mapList(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
  protected:
-  void mapListImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
+  void mapListImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
  public:
 
   virtual void sync_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
@@ -67,9 +67,9 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      mapListImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      mapListImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     } else {
-      mapListImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      mapListImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -81,7 +81,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -104,13 +104,13 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::exception_wrapper recv_instance_wrapped_mapList(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void mapListT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
+  void mapListT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> mapListCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void mapSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
   virtual void mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
  protected:
-  void mapSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
+  void mapSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
  public:
 
   virtual void sync_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
@@ -147,9 +147,9 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      mapSetImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      mapSetImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     } else {
-      mapSetImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      mapSetImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -161,7 +161,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -184,13 +184,13 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::exception_wrapper recv_instance_wrapped_mapSet(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void mapSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
+  void mapSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> mapSetCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void listMap(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
   virtual void listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
  protected:
-  void listMapImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
+  void listMapImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
  public:
 
   virtual void sync_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
@@ -227,9 +227,9 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      listMapImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      listMapImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     } else {
-      listMapImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      listMapImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -241,7 +241,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -264,13 +264,13 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::exception_wrapper recv_instance_wrapped_listMap(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void listMapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
+  void listMapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listMapCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void listSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
   virtual void listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
  protected:
-  void listSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
+  void listSetImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
  public:
 
   virtual void sync_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo);
@@ -307,9 +307,9 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      listSetImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      listSetImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     } else {
-      listSetImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      listSetImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -321,7 +321,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -344,13 +344,13 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::exception_wrapper recv_instance_wrapped_listSet(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void listSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
+  void listSetT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listSetCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void turtles(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
   virtual void turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
  protected:
-  void turtlesImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
+  void turtlesImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
  public:
 
   virtual void sync_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
@@ -387,9 +387,9 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      turtlesImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      turtlesImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     } else {
-      turtlesImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_foo);
+      turtlesImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_foo);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -401,7 +401,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -424,7 +424,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::exception_wrapper recv_instance_wrapped_turtles(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void turtlesT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
+  void turtlesT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> turtlesCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

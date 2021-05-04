@@ -41,7 +41,7 @@ class EventHandlerBase {
       const char* service_name,
       const char* fn_name,
       server::TConnectionContext* connectionContext) {
-    return std::make_unique<ContextStack>(
+    return ContextStack::create(
         handlers_, service_name, fn_name, connectionContext);
   }
 

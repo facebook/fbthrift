@@ -21,13 +21,82 @@
 namespace apache {
 namespace thrift {
 
+ContextStack::ContextStack(
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* method,
+    TConnectionContext* connectionContext)
+    : handlers_(handlers), serviceName_(""), method_(method) {
+  CHECK(handlers_ && !handlers_->empty());
+  for (size_t i = 0; i < handlers_->size(); ++i) {
+    contextAt(i) = (*handlers_)[i]->getContext(method_, connectionContext);
+  }
+}
+
+ContextStack::ContextStack(
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* serviceName,
+    const char* method,
+    TConnectionContext* connectionContext)
+    : handlers_(handlers), serviceName_(serviceName), method_(method) {
+  CHECK(handlers_ && !handlers_->empty());
+  for (size_t i = 0; i < handlers_->size(); ++i) {
+    contextAt(i) = (*handlers_)[i]->getServiceContext(
+        serviceName_, method_, connectionContext);
+  }
+}
+
+ContextStack::~ContextStack() {
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->freeContext(contextAt(i), getMethod());
+  }
+}
+
+std::unique_ptr<ContextStack> ContextStack::create(
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* method,
+    TConnectionContext* connectionContext) {
+  if (!handlers || handlers->empty()) {
+    return {};
+  }
+
+  const size_t nbytes = sizeof(ContextStack) + handlers->size() * sizeof(void*);
+  auto* storage = static_cast<ContextStack*>(operator new (
+      nbytes, std::align_val_t{alignof(ContextStack)}));
+  auto* object =
+      new (storage) ContextStack(handlers, method, connectionContext);
+
+  return std::unique_ptr<ContextStack>(object);
+}
+
+std::unique_ptr<ContextStack> ContextStack::create(
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* serviceName,
+    const char* method,
+    TConnectionContext* connectionContext) {
+  if (!handlers || handlers->empty()) {
+    return {};
+  }
+
+  const size_t nbytes = sizeof(ContextStack) + handlers->size() * sizeof(void*);
+  auto* storage = static_cast<ContextStack*>(operator new (
+      nbytes, std::align_val_t{alignof(ContextStack)}));
+  auto* object = new (storage)
+      ContextStack(handlers, serviceName, method, connectionContext);
+
+  return std::unique_ptr<ContextStack>(object);
+}
+
 void ContextStack::preWrite() {
   FOLLY_SDT(
       thrift, thrift_context_stack_pre_write, getServiceName(), getMethod());
 
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->preWrite(ctxs_[i], getMethod());
+      (*handlers_)[i]->preWrite(contextAt(i), getMethod());
     }
   }
 }
@@ -39,10 +108,8 @@ void ContextStack::onWriteData(const SerializedMessage& msg) {
       getServiceName(),
       getMethod());
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->onWriteData(ctxs_[i], getMethod(), msg);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->onWriteData(contextAt(i), getMethod(), msg);
   }
 }
 
@@ -54,10 +121,8 @@ void ContextStack::postWrite(uint32_t bytes) {
       getMethod(),
       bytes);
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->postWrite(ctxs_[i], getMethod(), bytes);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->postWrite(contextAt(i), getMethod(), bytes);
   }
 }
 
@@ -65,10 +130,8 @@ void ContextStack::preRead() {
   FOLLY_SDT(
       thrift, thrift_context_stack_pre_read, getServiceName(), getMethod());
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->preRead(ctxs_[i], getMethod());
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->preRead(contextAt(i), getMethod());
   }
 }
 
@@ -76,10 +139,8 @@ void ContextStack::onReadData(const SerializedMessage& msg) {
   FOLLY_SDT(
       thrift, thrift_context_stack_on_read_data, getServiceName(), getMethod());
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->onReadData(ctxs_[i], getMethod(), msg);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->onReadData(contextAt(i), getMethod(), msg);
   }
 }
 
@@ -92,10 +153,8 @@ void ContextStack::postRead(
       getMethod(),
       bytes);
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->postRead(ctxs_[i], getMethod(), header, bytes);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->postRead(contextAt(i), getMethod(), header, bytes);
   }
 }
 
@@ -106,10 +165,8 @@ void ContextStack::handlerErrorWrapped(const folly::exception_wrapper& ew) {
       getServiceName(),
       getMethod());
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->handlerErrorWrapped(ctxs_[i], getMethod(), ew);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->handlerErrorWrapped(contextAt(i), getMethod(), ew);
   }
 }
 
@@ -121,11 +178,9 @@ void ContextStack::userExceptionWrapped(
       getServiceName(),
       getMethod());
 
-  if (handlers_) {
-    for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->userExceptionWrapped(
-          ctxs_[i], getMethod(), declared, ew);
-    }
+  for (size_t i = 0; i < handlers_->size(); i++) {
+    (*handlers_)[i]->userExceptionWrapped(
+        contextAt(i), getMethod(), declared, ew);
   }
 }
 

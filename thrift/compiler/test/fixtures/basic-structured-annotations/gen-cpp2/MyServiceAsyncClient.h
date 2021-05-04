@@ -32,7 +32,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void first(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void first(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void firstImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void firstImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual void sync_first(::cpp2::annotated_inline_string& _return);
@@ -69,9 +69,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      firstImpl(*rpcOptions, ctx, std::move(wrappedCallback));
+      firstImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     } else {
-      firstImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+      firstImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -83,7 +83,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -108,13 +108,13 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void firstT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void firstT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> firstCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void second(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_count);
   virtual void second(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_count);
  protected:
-  void secondImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
+  void secondImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
  public:
 
   virtual bool sync_second(::std::int64_t p_count);
@@ -151,9 +151,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      secondImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_count);
+      secondImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_count);
     } else {
-      secondImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_count);
+      secondImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_count);
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -165,7 +165,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    returnState.resetCtx(std::move(ctx->ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -190,7 +190,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_second(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void secondT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
+  void secondT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_count);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> secondCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };

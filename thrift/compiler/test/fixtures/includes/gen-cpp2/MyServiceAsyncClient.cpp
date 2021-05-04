@@ -16,7 +16,7 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true> MyService_has_arg_docs_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_query_pargs args;
@@ -25,12 +25,12 @@ void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions rp
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "query";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
 
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_has_arg_docs_pargs args;
@@ -39,7 +39,7 @@ void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, apache::thrift::RpcOpt
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "has_arg_docs";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -55,23 +55,24 @@ void MyServiceAsyncClient::query(apache::thrift::RpcOptions& rpcOptions, std::un
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  callbackContext.ctx = std::move(ctx->ctx);
+  auto* contextStack = callbackContext.ctx.get();
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
-  queryImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_s, p_i);
+  queryImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::queryImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      queryT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_s, p_i);
+      queryT(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback), p_s, p_i);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      queryT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_s, p_i);
+      queryT(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback), p_s, p_i);
       break;
     }
     default:
@@ -102,14 +103,14 @@ void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, co
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = queryCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  queryImpl(rpcOptions, ctx, std::move(wrappedCallback), p_s, p_i);
+  queryImpl(rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_s, p_i);
   callback.waitUntilDone(evb);
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  returnState.resetCtx(std::move(ctx->ctx));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -222,23 +223,24 @@ void MyServiceAsyncClient::has_arg_docs(apache::thrift::RpcOptions& rpcOptions, 
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  callbackContext.ctx = std::move(ctx->ctx);
+  auto* contextStack = callbackContext.ctx.get();
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
-  has_arg_docsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_s, p_i);
+  has_arg_docsImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback), p_s, p_i);
 }
 
-void MyServiceAsyncClient::has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
+void MyServiceAsyncClient::has_arg_docsImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::cpp2::MyStruct& p_s, const ::cpp2::Included& p_i) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      has_arg_docsT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_s, p_i);
+      has_arg_docsT(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback), p_s, p_i);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      has_arg_docsT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_s, p_i);
+      has_arg_docsT(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback), p_s, p_i);
       break;
     }
     default:
@@ -269,14 +271,14 @@ void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOpti
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = has_arg_docsCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  has_arg_docsImpl(rpcOptions, ctx, std::move(wrappedCallback), p_s, p_i);
+  has_arg_docsImpl(rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback), p_s, p_i);
   callback.waitUntilDone(evb);
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  returnState.resetCtx(std::move(ctx->ctx));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());

@@ -51,7 +51,7 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
-  <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+  <%function:cpp_name%>Impl(rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
   callback.waitUntilDone(evb);
 
   if (returnState.isException()) {
@@ -59,7 +59,7 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
   }
 <%^function:oneway?%>
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  returnState.resetCtx(std::move(ctx->ctx));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -98,11 +98,11 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
-  <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+  <%function:cpp_name%>Impl(rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
 
   callback.waitUntilDone(evb);
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  returnState.resetCtx(std::move(ctx->ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>> tryResponse;
   if (!returnState.buf()) {

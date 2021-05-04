@@ -30,7 +30,8 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
   <%/function:oneway?%>
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  callbackContext.ctx = std::move(ctx->ctx);
+  auto* contextStack = callbackContext.ctx.get();
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
 <%/function:returns_stream?%><%#function:returns_stream?%>
@@ -38,22 +39,22 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
-  <%function:cpp_name%>Impl(rpcOptions, std::move(ctx), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+  <%function:cpp_name%>Impl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
 }
 
 <%/function:returns_sink?%>
-void <% > service_common/client_class_name%>::<%function:cpp_name%>Impl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <% > service_common/client_class_name%>::<%function:cpp_name%>Impl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      <%function:cpp_name%>T(&writer, rpcOptions, std::move(ctx), std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      <%function:cpp_name%>T(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      <%function:cpp_name%>T(&writer, rpcOptions, std::move(ctx), std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      <%function:cpp_name%>T(&writer, rpcOptions, std::move(ctx), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
       break;
     }
     default:

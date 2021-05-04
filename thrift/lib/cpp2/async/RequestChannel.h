@@ -298,7 +298,7 @@ template <class Protocol>
 SerializedRequest preprocessSendT(
     Protocol* prot,
     const apache::thrift::RpcOptions& rpcOptions,
-    apache::thrift::ContextStack& ctx,
+    apache::thrift::ContextStack* ctx,
     apache::thrift::transport::THeader& header,
     folly::StringPiece methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
@@ -316,17 +316,23 @@ SerializedRequest preprocessSendT(
     prot->setOutput(&queue, bufSize);
     auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
     try {
-      ctx.preWrite();
+      if (ctx) {
+        ctx->preWrite();
+      }
       writefunc(prot);
       ::apache::thrift::SerializedMessage smsg;
       smsg.protocolType = prot->protocolType();
       smsg.buffer = queue.front();
       smsg.methodName = methodName;
-      ctx.onWriteData(smsg);
-      ctx.postWrite(folly::to_narrow(queue.chainLength()));
+      if (ctx) {
+        ctx->onWriteData(smsg);
+        ctx->postWrite(folly::to_narrow(queue.chainLength()));
+      }
     } catch (const apache::thrift::TException& ex) {
-      ctx.handlerErrorWrapped(
-          folly::exception_wrapper(std::current_exception(), ex));
+      if (ctx) {
+        ctx->handlerErrorWrapped(
+            folly::exception_wrapper(std::current_exception(), ex));
+      }
       throw;
     }
 
@@ -344,7 +350,7 @@ void clientSendT(
     apache::thrift::RpcOptions&& rpcOptions,
     typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
         callback,
-    apache::thrift::ContextStack& ctx,
+    apache::thrift::ContextStack* ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
     apache::thrift::ManagedStringView&& methodName,
