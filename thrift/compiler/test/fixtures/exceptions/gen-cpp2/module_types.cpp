@@ -16,82 +16,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::Banal>::translateFieldName(
-    folly::StringPiece _fname,
-    int16_t& fid,
-    apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::Banal>;
-  static const st::translate_field_name_table table{
-      data::fields_size,
-      data::fields_names.data(),
-      data::fields_ids.data(),
-      data::fields_types.data()};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Banal::Banal(const Banal&) = default;
-Banal& Banal::operator=(const Banal&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Banal::Banal(Banal&& other) noexcept { (void)other; }
-Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
-    return *this;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Banal::Banal(apache::thrift::FragileConstructor) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void Banal::__clear() {
-  // clear all fields
-}
-
-bool Banal::operator==(const Banal& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return true;
-}
-
-bool Banal::operator<(const Banal& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return false;
-}
-
-
-void swap(Banal& a, Banal& b) {
-  using ::std::swap;
-  (void)a;
-  (void)b;
-}
-
-template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Banal::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Banal::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Banal::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-
-
-} // cpp2
-
-namespace apache {
-namespace thrift {
-namespace detail {
-
 void TccStructTraits<::cpp2::Fiery>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -478,6 +402,82 @@ template void CustomFieldNames::readNoXfer<>(apache::thrift::CompactProtocolRead
 template uint32_t CustomFieldNames::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t CustomFieldNames::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CustomFieldNames::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::Banal>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::Banal>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal(const Banal&) = default;
+Banal& Banal::operator=(const Banal&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal(Banal&& other) noexcept { (void)other; }
+Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal(apache::thrift::FragileConstructor) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void Banal::__clear() {
+  // clear all fields
+}
+
+bool Banal::operator==(const Banal& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return true;
+}
+
+bool Banal::operator<(const Banal& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return false;
+}
+
+
+void swap(Banal& a, Banal& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Banal::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Banal::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Banal::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 

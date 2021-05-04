@@ -14,11 +14,6 @@ import thrift.py3.builder
 import module.types as _module_types
 
 
-class Banal_Builder(thrift.py3.builder.StructBuilder):
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
 class Fiery_Builder(thrift.py3.builder.StructBuilder):
     message: _typing.Optional[str]
 
@@ -41,6 +36,11 @@ class ComplexFieldNames_Builder(thrift.py3.builder.StructBuilder):
 class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
     error_message: _typing.Optional[str]
     internal_error_message: _typing.Optional[str]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class Banal_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

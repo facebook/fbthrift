@@ -14,8 +14,6 @@ from thrift.py3.reflection cimport (
     FieldSpec as __FieldSpec,
 )
 
-cdef __StructSpec get_reflection__Banal()
-
 cdef __StructSpec get_reflection__Fiery()
 
 cdef __StructSpec get_reflection__Serious()
@@ -23,3 +21,5 @@ cdef __StructSpec get_reflection__Serious()
 cdef __StructSpec get_reflection__ComplexFieldNames()
 
 cdef __StructSpec get_reflection__CustomFieldNames()
+
+cdef __StructSpec get_reflection__Banal()

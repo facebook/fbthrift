@@ -1611,7 +1611,7 @@ pub mod errors {
     /// Errors for C functions.
     pub mod c {
 
-        pub trait AsBang{
+        pub trait AsBang {
             fn as_bang(&self) -> Option<&crate::types::Bang>;
         }
 

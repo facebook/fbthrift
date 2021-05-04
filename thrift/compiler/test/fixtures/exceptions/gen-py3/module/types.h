@@ -20,13 +20,6 @@ namespace py3 {
 
 
 template<>
-void reset_field<::cpp2::Banal>(
-    ::cpp2::Banal& obj, uint16_t index) {
-  switch (index) {
-  }
-}
-
-template<>
 void reset_field<::cpp2::Fiery>(
     ::cpp2::Fiery& obj, uint16_t index) {
   switch (index) {
@@ -73,13 +66,10 @@ void reset_field<::cpp2::CustomFieldNames>(
 }
 
 template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::Banal>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
+void reset_field<::cpp2::Banal>(
+    ::cpp2::Banal& obj, uint16_t index) {
+  switch (index) {
+  }
 }
 
 template<>
@@ -115,6 +105,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::CustomFieldNames>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::Banal>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

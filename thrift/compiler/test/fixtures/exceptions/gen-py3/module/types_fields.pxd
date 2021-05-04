@@ -43,16 +43,6 @@ cimport module.types as _module_types
 
 
 
-ctypedef void (*__Banal_FieldsSetterFunc)(__Banal_FieldsSetter, object) except *
-
-cdef class __Banal_FieldsSetter(__StructFieldsSetter):
-    cdef _module_types.cBanal* _struct_cpp_obj
-    cdef cumap[__cstring_view, __Banal_FieldsSetterFunc] _setters
-
-    @staticmethod
-    cdef __Banal_FieldsSetter create(_module_types.cBanal* struct_cpp_obj)
-
-
 ctypedef void (*__Fiery_FieldsSetterFunc)(__Fiery_FieldsSetter, object) except *
 
 cdef class __Fiery_FieldsSetter(__StructFieldsSetter):
@@ -97,4 +87,14 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
     cdef __CustomFieldNames_FieldsSetter create(_module_types.cCustomFieldNames* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
+
+
+ctypedef void (*__Banal_FieldsSetterFunc)(__Banal_FieldsSetter, object) except *
+
+cdef class __Banal_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cBanal* _struct_cpp_obj
+    cdef cumap[__cstring_view, __Banal_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __Banal_FieldsSetter create(_module_types.cBanal* struct_cpp_obj)
 

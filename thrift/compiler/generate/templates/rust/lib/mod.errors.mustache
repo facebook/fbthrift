@@ -21,7 +21,7 @@
     pub mod {{service:snake}} {
 
         {{#service:rust_exceptions}}
-        pub trait As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}}{
+        pub trait As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}} {
             fn as_{{#rust_exception:type}}{{type:rust_name_snake}}{{/rust_exception:type}}(&self) -> Option<&{{#rust_exception:type}}{{>lib/type}}{{/rust_exception:type}}>;
         }
 

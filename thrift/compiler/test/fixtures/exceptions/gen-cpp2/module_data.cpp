@@ -12,13 +12,6 @@
 namespace apache {
 namespace thrift {
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::Banal>::fields_names = {{
-}};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::Banal>::fields_ids = {{
-}};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::Banal>::fields_types = {{
-}};
-
 const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::Fiery>::fields_names = {{
   "message",
 }};
@@ -63,6 +56,13 @@ const std::array<int16_t, 2> TStructDataStorage<::cpp2::CustomFieldNames>::field
 const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::CustomFieldNames>::fields_types = {{
   TType::T_STRING,
   TType::T_STRING,
+}};
+
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::Banal>::fields_names = {{
+}};
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::Banal>::fields_ids = {{
+}};
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::Banal>::fields_types = {{
 }};
 
 } // namespace thrift

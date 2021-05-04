@@ -8,50 +8,6 @@
 
 /**
  * Original thrift exception:-
- * Banal
- */
-class Banal extends \TException implements \IThriftStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-  ];
-  const dict<string, int> FIELDMAP = dict[
-  ];
-
-  const type TConstructorShape = shape(
-  );
-
-  const int STRUCTURAL_ID = 957977401221134810;
-
-  public function __construct(  )[] {
-    parent::__construct();
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function getName()[]: string {
-    return 'Banal';
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-}
-
-/**
- * Original thrift exception:-
  * Fiery
  */
 class Fiery extends \TException implements \IThriftStruct {
@@ -307,6 +263,50 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
   <<__Override>>
   public function getMessage()[]: string {
     return $this->internal_error_message ?? '';
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * Banal
+ */
+class Banal extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+    parent::__construct();
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Banal';
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {

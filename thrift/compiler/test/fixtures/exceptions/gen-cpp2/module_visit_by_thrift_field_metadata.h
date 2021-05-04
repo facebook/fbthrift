@@ -14,17 +14,6 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Banal> {
-  template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
-    default:
-      throwInvalidThriftId(id, "::cpp2::Banal");
-    }
-  }
-};
-
-template <>
 struct VisitByThriftId<::cpp2::Fiery> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -76,6 +65,17 @@ struct VisitByThriftId<::cpp2::CustomFieldNames> {
       return f(1, static_cast<T&&>(t).internal_error_message_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::CustomFieldNames");
+    }
+  }
+};
+
+template <>
+struct VisitByThriftId<::cpp2::Banal> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    default:
+      throwInvalidThriftId(id, "::cpp2::Banal");
     }
   }
 };

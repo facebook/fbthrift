@@ -18,23 +18,6 @@ from thrift.py3.types cimport const_pointer_cast
 
 
 @__cython.auto_pickle(False)
-cdef class __Banal_FieldsSetter(__StructFieldsSetter):
-
-    @staticmethod
-    cdef __Banal_FieldsSetter create(_module_types.cBanal* struct_cpp_obj):
-        cdef __Banal_FieldsSetter __fbthrift_inst = __Banal_FieldsSetter.__new__(__Banal_FieldsSetter)
-        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
-        return __fbthrift_inst
-
-    cdef void set_field(__Banal_FieldsSetter self, const char* name, object value) except *:
-        cdef __cstring_view cname = __cstring_view(name)
-        cdef cumap[__cstring_view, __Banal_FieldsSetterFunc].iterator found = self._setters.find(cname)
-        if found == self._setters.end():
-            raise TypeError(f"invalid field name {name.decode('utf-8')}")
-        deref(found).second(self, value)
-
-
-@__cython.auto_pickle(False)
 cdef class __Fiery_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
@@ -160,4 +143,21 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'internal_error_message is not a { str !r}.')
         deref(self._struct_cpp_obj).internal_error_message_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+
+@__cython.auto_pickle(False)
+cdef class __Banal_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __Banal_FieldsSetter create(_module_types.cBanal* struct_cpp_obj):
+        cdef __Banal_FieldsSetter __fbthrift_inst = __Banal_FieldsSetter.__new__(__Banal_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        return __fbthrift_inst
+
+    cdef void set_field(__Banal_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __Banal_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
 

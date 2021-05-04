@@ -1385,6 +1385,15 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 1,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          shape(
+                            "name" => "Banal",
+                            "underlyingType" => tmeta_ThriftType::fromShape(
+                              shape(
+                              )
+                            ),
+                          )
+                        ),
                       )
                     ),
                     "name" => "b",
@@ -1447,6 +1456,15 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 2,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                          shape(
+                            "name" => "Banal",
+                            "underlyingType" => tmeta_ThriftType::fromShape(
+                              shape(
+                              )
+                            ),
+                          )
+                        ),
                       )
                     ),
                     "name" => "b",

@@ -59,67 +59,6 @@ cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
-cdef class Banal(thrift.py3.exceptions.GeneratedError):
-    def __init__(Banal self, *args, **kwargs):
-        self._cpp_obj = make_shared[cBanal]()
-        self._fields_setter = _fbthrift_types_fields.__Banal_FieldsSetter.create(self._cpp_obj.get())
-        super().__init__( *args, **kwargs)
-
-    cdef void _fbthrift_set_field(self, str name, object value) except *:
-        self._fields_setter.set_field(name.encode("utf-8"), value)
-
-    cdef object _fbthrift_isset(self):
-        return thrift.py3.types._IsSet("Banal", {
-        })
-
-    @staticmethod
-    cdef create(shared_ptr[cBanal] cpp_obj):
-        __fbthrift_inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
-        return __fbthrift_inst
-
-
-    def __hash__(Banal self):
-        return  super().__hash__()
-
-    def __copy__(Banal self):
-        cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](
-            deref(self._cpp_obj)
-        )
-        return Banal.create(cmove(cpp_obj))
-
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cBanal](
-            self._cpp_obj,
-            (<Banal>other)._cpp_obj,
-            op,
-        ) if r is None else r
-
-    @staticmethod
-    def __get_reflection__():
-        return _types_reflection.get_reflection__Banal()
-
-    @staticmethod
-    def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        ExceptionMetadata[cBanal].gen(meta)
-        return __MetadataBox.box(cmove(meta))
-
-    @staticmethod
-    def __get_thrift_name__():
-        return "module.Banal"
-
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cBanal](idx)
-
-    def __cinit__(self):
-        self._fbthrift_struct_size = 0
-
-
-
-@__cython.auto_pickle(False)
 cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     def __init__(Fiery self, *args, **kwargs):
         self._cpp_obj = make_shared[cFiery]()
@@ -422,6 +361,67 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
     def __cinit__(self):
         self._fbthrift_struct_size = 2
+
+
+
+@__cython.auto_pickle(False)
+cdef class Banal(thrift.py3.exceptions.GeneratedError):
+    def __init__(Banal self, *args, **kwargs):
+        self._cpp_obj = make_shared[cBanal]()
+        self._fields_setter = _fbthrift_types_fields.__Banal_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("Banal", {
+        })
+
+    @staticmethod
+    cdef create(shared_ptr[cBanal] cpp_obj):
+        __fbthrift_inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+
+    def __hash__(Banal self):
+        return  super().__hash__()
+
+    def __copy__(Banal self):
+        cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](
+            deref(self._cpp_obj)
+        )
+        return Banal.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cBanal](
+            self._cpp_obj,
+            (<Banal>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Banal()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cBanal].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.Banal"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cBanal](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
 
 
 

@@ -23,19 +23,6 @@ from thrift.py3.types cimport (
 )
 
 
-cdef __StructSpec get_reflection__Banal():
-    cdef _module_types.Banal defaults = _module_types.Banal.create(
-        constant_shared_ptr[_module_types.cBanal](
-            default_inst[_module_types.cBanal]()
-        )
-    )
-    cdef __StructSpec spec = __StructSpec.create(
-        name="Banal",
-        kind=__StructType.EXCEPTION,
-        annotations={
-        },
-    )
-    return spec
 cdef __StructSpec get_reflection__Fiery():
     cdef _module_types.Fiery defaults = _module_types.Fiery.create(
         constant_shared_ptr[_module_types.cFiery](
@@ -158,5 +145,18 @@ cdef __StructSpec get_reflection__CustomFieldNames():
             annotations={
                 """java.swift.name""": """internalGreatMessage""",            },
         ),
+    )
+    return spec
+cdef __StructSpec get_reflection__Banal():
+    cdef _module_types.Banal defaults = _module_types.Banal.create(
+        constant_shared_ptr[_module_types.cBanal](
+            default_inst[_module_types.cBanal]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="Banal",
+        kind=__StructType.EXCEPTION,
+        annotations={
+        },
     )
     return spec

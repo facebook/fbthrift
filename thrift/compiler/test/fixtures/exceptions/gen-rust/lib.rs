@@ -13,10 +13,6 @@ pub mod types {
 
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct Banal {
-    }
-
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Fiery {
         pub message: ::std::string::String,
     }
@@ -38,53 +34,9 @@ pub mod types {
         pub internal_error_message: ::std::string::String,
     }
 
-    impl ::std::default::Default for self::Banal {
-        fn default() -> Self {
-            Self {
-            }
-        }
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct Banal {
     }
-
-    unsafe impl ::std::marker::Send for self::Banal {}
-    unsafe impl ::std::marker::Sync for self::Banal {}
-
-    impl ::fbthrift::GetTType for self::Banal {
-        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
-    }
-
-    impl<P> ::fbthrift::Serialize<P> for self::Banal
-    where
-        P: ::fbthrift::ProtocolWriter,
-    {
-        fn write(&self, p: &mut P) {
-            p.write_struct_begin("Banal");
-            p.write_field_stop();
-            p.write_struct_end();
-        }
-    }
-
-    impl<P> ::fbthrift::Deserialize<P> for self::Banal
-    where
-        P: ::fbthrift::ProtocolReader,
-    {
-        fn read(p: &mut P) -> ::anyhow::Result<Self> {
-            static FIELDS: &[::fbthrift::Field] = &[
-            ];
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
-                }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
-            ::std::result::Result::Ok(Self {
-            })
-        }
-    }
-
 
     impl ::std::default::Default for self::Fiery {
         fn default() -> Self {
@@ -323,6 +275,54 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 error_message: field_error_message.unwrap_or_default(),
                 internal_error_message: field_internal_error_message.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::Banal {
+        fn default() -> Self {
+            Self {
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::Banal {}
+    unsafe impl ::std::marker::Sync for self::Banal {}
+
+    impl ::fbthrift::GetTType for self::Banal {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::Banal
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("Banal");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::Banal
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
             })
         }
     }
@@ -1977,25 +1977,7 @@ pub mod errors {
     /// Errors for Raiser functions.
     pub mod raiser {
 
-        pub trait AsBanal{
-            fn as_banal(&self) -> Option<&crate::types::Banal>;
-        }
-
-        impl AsBanal for ::anyhow::Error {
-            fn as_banal(&self) -> Option<&crate::types::Banal> {
-                for cause in self.chain() {
-                    if let Some(DoRaiseError::b(e)) = cause.downcast_ref::<DoRaiseError>() {
-                        return Some(e);
-                    }
-                    if let Some(Get500Error::b(e)) = cause.downcast_ref::<Get500Error>() {
-                        return Some(e);
-                    }
-                }
-                None
-            }
-        }
-
-        pub trait AsFiery{
+        pub trait AsFiery {
             fn as_fiery(&self) -> Option<&crate::types::Fiery>;
         }
 
@@ -2013,7 +1995,7 @@ pub mod errors {
             }
         }
 
-        pub trait AsSerious{
+        pub trait AsSerious {
             fn as_serious(&self) -> Option<&crate::types::Serious>;
         }
 
@@ -2024,6 +2006,24 @@ pub mod errors {
                         return Some(e);
                     }
                     if let Some(Get500Error::s(e)) = cause.downcast_ref::<Get500Error>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
+        pub trait AsBanal {
+            fn as_banal(&self) -> Option<&crate::types::Banal>;
+        }
+
+        impl AsBanal for ::anyhow::Error {
+            fn as_banal(&self) -> Option<&crate::types::Banal> {
+                for cause in self.chain() {
+                    if let Some(DoRaiseError::b(e)) = cause.downcast_ref::<DoRaiseError>() {
+                        return Some(e);
+                    }
+                    if let Some(Get500Error::b(e)) = cause.downcast_ref::<Get500Error>() {
                         return Some(e);
                     }
                 }

@@ -54,11 +54,11 @@ APACHE_THRIFT_DEFINE_ACCESSOR(internal_error_message);
 // END declare_enums
 // BEGIN forward_declare
 namespace cpp2 {
-class Banal;
 class Fiery;
 class Serious;
 class ComplexFieldNames;
 class CustomFieldNames;
+class Banal;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -67,83 +67,6 @@ class CustomFieldNames;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-namespace cpp2 {
-#ifndef SWIG
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-#endif
-
-class Banal final : public apache::thrift::TException {
- private:
-  friend struct ::apache::thrift::detail::st::struct_private_access;
-
-  //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
-  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
-         ::apache::thrift::ExceptionKind::PERMANENT;
-  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
-         ::apache::thrift::ExceptionSafety::SAFE;
-  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
-         ::apache::thrift::ExceptionBlame::CLIENT;
-
- public:
-  using __fbthrift_cpp2_type = Banal;
-  static constexpr bool __fbthrift_cpp2_is_union =
-    false;
-
-
- public:
-
-  Banal() {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  Banal(apache::thrift::FragileConstructor);
-
-  Banal(Banal&&) noexcept;
-
-  Banal(const Banal& src);
-
-
-  Banal& operator=(Banal&&) noexcept;
-  Banal& operator=(const Banal& src);
-  void __clear();
-
-  bool operator==(const Banal&) const;
-  bool operator<(const Banal&) const;
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
-  const char* what() const noexcept override {
-    return "::cpp2::Banal";
-  }
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops<Banal>;
-  friend void swap(Banal& a, Banal& b);
-};
-
-template <class Protocol_>
-uint32_t Banal::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
 namespace cpp2 {
 #ifndef SWIG
 using ::apache::thrift::detail::operator!=;
@@ -714,6 +637,83 @@ class CustomFieldNames final : public apache::thrift::TException {
 
 template <class Protocol_>
 uint32_t CustomFieldNames::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
+class Banal final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
+         ::apache::thrift::ExceptionKind::PERMANENT;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
+         ::apache::thrift::ExceptionSafety::SAFE;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
+         ::apache::thrift::ExceptionBlame::CLIENT;
+
+ public:
+  using __fbthrift_cpp2_type = Banal;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  Banal() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  Banal(apache::thrift::FragileConstructor);
+
+  Banal(Banal&&) noexcept;
+
+  Banal(const Banal& src);
+
+
+  Banal& operator=(Banal&&) noexcept;
+  Banal& operator=(const Banal& src);
+  void __clear();
+
+  bool operator==(const Banal&) const;
+  bool operator<(const Banal&) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return "::cpp2::Banal";
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<Banal>;
+  friend void swap(Banal& a, Banal& b);
+};
+
+template <class Protocol_>
+uint32_t Banal::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

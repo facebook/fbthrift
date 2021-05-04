@@ -14,13 +14,6 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::cpp2::Banal> {
-  template <typename F, typename... T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-  }
-};
-
-template <>
 struct ForEachField<::cpp2::Fiery> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
@@ -51,6 +44,13 @@ struct ForEachField<::cpp2::CustomFieldNames> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).error_message_ref()...);
     f(1, static_cast<T&&>(t).internal_error_message_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::Banal> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 } // namespace detail
