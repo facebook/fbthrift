@@ -1272,19 +1272,19 @@ void async_tm_semifuture(
 }
 
 #if FOLLY_HAS_COROUTINES
-template <typename T>
-void async_tm_coro_oneway(
-    folly::coro::Task<T>&& task, CallbackBasePtr callback) {
+inline void async_tm_coro_oneway(
+    CallbackBasePtr callback, folly::coro::Task<void>&& task) {
+  auto ka = callback->getInternalKeepAlive();
   std::move(task)
-      .scheduleOn(callback->getInternalKeepAlive())
-      .startInlineUnsafe([callback = std::move(callback)](
-                             folly::Try<folly::lift_unit_t<T>>&&) mutable {});
+      .scheduleOn(std::move(ka))
+      .startInlineUnsafe([callback = std::move(callback)](auto&&) {});
 }
 
 template <typename T>
-void async_tm_coro(folly::coro::Task<T>&& task, CallbackPtr<T> callback) {
+void async_tm_coro(CallbackPtr<T> callback, folly::coro::Task<T>&& task) {
+  auto ka = callback->getInternalKeepAlive();
   std::move(task)
-      .scheduleOn(callback->getInternalKeepAlive())
+      .scheduleOn(std::move(ka))
       .startInlineUnsafe([callback = std::move(callback)](
                              folly::Try<folly::lift_unit_t<T>>&& tryResult) {
         callback->complete(std::move(tryResult));

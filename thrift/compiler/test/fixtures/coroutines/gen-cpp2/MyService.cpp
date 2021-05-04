@@ -61,9 +61,8 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
         __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
           callback->getThreadManager(), callback->getEventBase()};
-        apache::thrift::detail::si::async_tm_coro(
-          co_ping(params),
-          std::move(callback));
+        auto task = co_ping(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
 #else // FOLLY_HAS_COROUTINES
         __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
@@ -88,13 +87,13 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
         apache::thrift::RequestParams params{callback->getRequestContext(),
           callback->getThreadManager(), callback->getEventBase()};
         auto task = co_ping(params);
-        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
       }
       case apache::thrift::detail::si::InvocationType::Coro:
       {
         auto task = co_ping();
-        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
       }
 #endif // FOLLY_HAS_COROUTINES
@@ -220,9 +219,8 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
         __fbthrift_invocation_hasDataById.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
           callback->getThreadManager(), callback->getEventBase()};
-        apache::thrift::detail::si::async_tm_coro(
-          co_hasDataById(params, p_id),
-          std::move(callback));
+        auto task = co_hasDataById(params, p_id);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
 #else // FOLLY_HAS_COROUTINES
         __fbthrift_invocation_hasDataById.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
@@ -247,13 +245,13 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
         apache::thrift::RequestParams params{callback->getRequestContext(),
           callback->getThreadManager(), callback->getEventBase()};
         auto task = co_hasDataById(params, p_id);
-        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
       }
       case apache::thrift::detail::si::InvocationType::Coro:
       {
         auto task = co_hasDataById(p_id);
-        apache::thrift::detail::si::async_tm_coro(std::move(task), std::move(callback));
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
       }
 #endif // FOLLY_HAS_COROUTINES
