@@ -203,15 +203,14 @@ const ::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() cons
 
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
   if (!__fbthrift_isDeserialized_.field1) {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
-
     ::apache::thrift::CompactProtocolReader reader;
     reader.setInput(&__fbthrift_serializedData_.field1);
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::read(reader, *ptr);
-
+    ::apache::thrift::CompactProtocolReader *iprot = &reader;
+    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
     this->field1 = std::move(ptr);
-
-    __fbthrift_isDeserialized_.field1 = true;
+        __fbthrift_isDeserialized_.field1 = true;
   }
   return field1;
 }
@@ -228,15 +227,15 @@ const ::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() const {
 
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
   if (!__fbthrift_isDeserialized_.field3) {
-    auto* ptr = &this->field3;
-    this->field3 = ::std::vector<::std::int32_t>();
-
     ::apache::thrift::CompactProtocolReader reader;
     reader.setInput(&__fbthrift_serializedData_.field3);
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::read(reader, *ptr);
-
-
-    __fbthrift_isDeserialized_.field3 = true;
+    ::apache::thrift::CompactProtocolReader *iprot = &reader;
+    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
+    _readState.beforeSubobject(iprot);
+    this->field3 = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);
+    _readState.afterSubobject(iprot);
+        __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;
 }
