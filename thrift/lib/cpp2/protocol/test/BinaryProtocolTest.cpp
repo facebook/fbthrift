@@ -45,15 +45,15 @@ TEST_F(BinaryProtocolTest, writeInvalidBool) {
   auto q = folly::IOBufQueue();
   w.setOutput(&q);
   bool value = *reinterpret_cast<const volatile bool*>("\x42");
-  // writeBool should either throw or write a valid bool.
-  try {
-    w.writeBool(value);
-  } catch (const std::invalid_argument&) {
-    return;
-  }
-  auto s = std::string();
-  q.appendToString(s);
-  EXPECT_EQ(s, std::string(1, '\0'));
+  // writeBool should either fail CHECK or write a valid bool.
+  EXPECT_DEATH(
+      {
+        w.writeBool(value);
+        auto s = std::string();
+        q.appendToString(s);
+        CHECK(s != std::string(1, '\0')); // Die on success.
+      },
+      "Check failed");
 }
 #endif
 

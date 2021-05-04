@@ -103,9 +103,7 @@ uint32_t BinaryProtocolWriter::writeBool(bool value) {
   // check away. Without the check we may produce undeserializable data.
   volatile uint8_t volatileByte = value;
   uint8_t byte = volatileByte;
-  if (byte != 0 && byte != 1) {
-    folly::throw_exception<std::invalid_argument>("invalid bool value");
-  }
+  CHECK(byte == 0 || byte == 1);
   out_.write(byte);
   return sizeof(value);
 }
