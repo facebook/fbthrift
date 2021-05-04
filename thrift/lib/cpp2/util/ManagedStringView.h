@@ -105,6 +105,10 @@ class ManagedStringViewWithConversions : public ManagedStringView {
   using value_type = char;
 
   using ManagedStringView::ManagedStringView;
+  /* implicit */ ManagedStringViewWithConversions(const ManagedStringView& view)
+      : ManagedStringView(view) {}
+  /* implicit */ ManagedStringViewWithConversions(ManagedStringView&& view)
+      : ManagedStringView(std::move(view)) {}
 
   /* implicit */ operator folly::StringPiece() const { return view(); }
   void clear() { *this = ManagedStringViewWithConversions(); }
