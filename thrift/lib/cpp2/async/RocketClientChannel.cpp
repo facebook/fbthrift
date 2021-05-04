@@ -487,19 +487,14 @@ void setCompression(RequestRpcMetadata& metadata, ssize_t payloadSize) {
 
 class RocketClientChannel::SingleRequestSingleResponseCallback final
     : public rocket::RocketClient::RequestResponseCallback {
-  using InflightGuardT =
-      decltype(std::declval<RocketClientChannel>().inflightGuard());
-
  public:
   SingleRequestSingleResponseCallback(
       RequestClientCallback::Ptr cb,
-      InflightGuardT g,
       uint16_t protocolId,
       ManagedStringView&& methodName,
       size_t requestSerializedSize,
       size_t requestWireSize)
       : cb_(std::move(cb)),
-        g_(std::move(g)),
         protocolId_(protocolId),
         methodName_(std::move(methodName)),
         requestSerializedSize_(requestSerializedSize),
@@ -563,7 +558,6 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
 
  private:
   RequestClientCallback::Ptr cb_;
-  InflightGuardT g_;
   const uint16_t protocolId_;
   ManagedStringView methodName_;
   const size_t requestSerializedSize_;
@@ -572,13 +566,9 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
 
 class RocketClientChannel::SingleRequestNoResponseCallback final
     : public rocket::RocketClient::RequestFnfCallback {
-  using InflightGuardT =
-      decltype(std::declval<RocketClientChannel>().inflightGuard());
-
  public:
-  SingleRequestNoResponseCallback(
-      RequestClientCallback::Ptr cb, InflightGuardT g)
-      : cb_(std::move(cb)), g_(std::move(g)) {}
+  explicit SingleRequestNoResponseCallback(RequestClientCallback::Ptr cb)
+      : cb_(std::move(cb)) {}
 
   void onWrite(folly::Try<void> writeResult) noexcept override {
     auto* cbPtr = cb_.release();
@@ -591,7 +581,6 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 
  private:
   RequestClientCallback::Ptr cb_;
-  InflightGuardT g_;
 };
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
@@ -819,7 +808,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     RequestClientCallback::Ptr cb) {
   auto requestPayload = rocket::pack(metadata, std::move(buf));
   const bool isSync = cb->isSync();
-  SingleRequestNoResponseCallback callback(std::move(cb), inflightGuard());
+  SingleRequestNoResponseCallback callback(std::move(cb));
 
   if (isSync && folly::fibers::onFiber()) {
     callback.onWrite(rclient_->sendRequestFnfSync(std::move(requestPayload)));
@@ -843,7 +832,6 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
   assert(metadata.name_ref());
   SingleRequestSingleResponseCallback callback(
       std::move(cb),
-      inflightGuard(),
       static_cast<uint16_t>(*metadata.protocol_ref()),
       std::move(*metadata.name_ref()),
       requestSerializedSize,
@@ -978,7 +966,7 @@ bool RocketClientChannel::good() {
 }
 
 size_t RocketClientChannel::inflightRequestsAndStreams() const {
-  return shared_->inflightRequests + (rclient_ ? rclient_->streams() : 0);
+  return (rclient_ ? rclient_->streams() + rclient_->requests() : 0);
 }
 
 void RocketClientChannel::setTimeout(uint32_t timeoutMs) {

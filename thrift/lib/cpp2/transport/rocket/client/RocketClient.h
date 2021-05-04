@@ -154,6 +154,8 @@ class RocketClient : public folly::DelayedDestruction,
 
   size_t streams() const { return streams_.size(); }
 
+  size_t requests() const { return clientRequests_; }
+
   const folly::AsyncTransport* getTransportWrapper() const {
     return socket_.get();
   }
@@ -232,7 +234,10 @@ class RocketClient : public folly::DelayedDestruction,
   folly::EventBase* evb_;
   folly::AsyncTransport::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
+  // Client requests + internal requests (requestN, cancel, etc).
   size_t requests_{0};
+  // Client facing requests (singleRequest(Single|No)Response)
+  size_t clientRequests_{0};
   size_t interactions_{0};
   StreamId nextStreamId_{1};
   bool hitMaxStreamId_{false};
@@ -491,9 +496,17 @@ class RocketClient : public folly::DelayedDestruction,
   bool isFirstResponse(StreamId streamId) const;
   void acknowledgeFirstResponse(StreamId);
 
-  FOLLY_NODISCARD auto makeRequestCountGuard() {
+  enum class RequestType { INTERNAL, CLIENT };
+
+  FOLLY_NODISCARD auto makeRequestCountGuard(RequestType type) {
     ++requests_;
-    return folly::makeGuard([this] {
+    if (type == RequestType::CLIENT) {
+      ++clientRequests_;
+    }
+    return folly::makeGuard([this, type] {
+      if (type == RequestType::CLIENT) {
+        --clientRequests_;
+      }
       if (!--requests_) {
         notifyIfDetachable();
       }

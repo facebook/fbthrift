@@ -146,10 +146,6 @@ class RocketClientChannel final : public ClientChannel {
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
 
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
-  struct Shared {
-    uint32_t inflightRequests{0};
-  };
-  const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
   folly::F14FastMap<int64_t, ManagedStringView> pendingInteractions_;
 
@@ -190,11 +186,6 @@ class RocketClientChannel final : public ClientChannel {
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
   const std::optional<int32_t>& getServerVersion() const;
-
-  auto inflightGuard() {
-    ++shared_->inflightRequests;
-    return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
-  }
 
   class SingleRequestSingleResponseCallback;
   class SingleRequestNoResponseCallback;
