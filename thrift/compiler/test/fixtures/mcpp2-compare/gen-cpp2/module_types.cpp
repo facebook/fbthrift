@@ -405,7 +405,8 @@ MyStruct::MyStruct() :
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
   { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")},
-  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}}) {}
+  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}}) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1171,7 +1172,8 @@ AnException::AnException() :
       exception_list(std::initializer_list<::std::int32_t>{1,
   2,
   3}),
-      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
+      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1736,7 +1738,8 @@ containerStruct::containerStruct() :
    ::some::valid::ns::MyEnumA::fieldB,
    ::some::valid::ns::MyEnumA::fieldA}),
       fieldAC( ::some::valid::ns::MyEnumB::AField),
-      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {}
+      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2850,7 +2853,8 @@ AnnotatedStruct::AnnotatedStruct() :
       indirection_a(0),
       iobuf_type_val(apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value")),
       iobuf_ptr_val(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {}
+      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

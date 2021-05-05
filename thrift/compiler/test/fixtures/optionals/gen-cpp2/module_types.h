@@ -211,7 +211,8 @@ class Color final  {
       red(0),
       green(0),
       blue(0),
-      alpha(0) {}
+      alpha(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg);

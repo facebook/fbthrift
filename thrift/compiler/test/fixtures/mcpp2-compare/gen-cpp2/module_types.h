@@ -1102,7 +1102,8 @@ class Empty final  {
 
  public:
 
-  Empty() {}
+  Empty() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
@@ -1171,7 +1172,8 @@ class ASimpleStruct final  {
  public:
 
   ASimpleStruct() :
-      boolField(0) {}
+      boolField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
@@ -1278,7 +1280,8 @@ class ASimpleStructNoexcept final  {
  public:
 
   ASimpleStructNoexcept() :
-      boolField(0) {}
+      boolField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
@@ -4740,7 +4743,8 @@ class AnotherException : public apache::thrift::TException {
 
   AnotherException() :
       code(0),
-      req_code(0) {}
+      req_code(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg);
@@ -6513,7 +6517,8 @@ class MyIncludedStruct final  {
 
   MyIncludedStruct() :
       MyIncludedInt(42LL),
-      ARefField(std::make_unique<::some::valid::ns::AStruct>()) {}
+      ARefField(std::make_unique<::some::valid::ns::AStruct>()) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg);
@@ -7731,7 +7736,8 @@ class ComplexContainerStruct final  {
 
  public:
 
-  ComplexContainerStruct() {}
+  ComplexContainerStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
@@ -7868,7 +7874,8 @@ class FloatStruct final  {
 
   FloatStruct() :
       floatField(0),
-      doubleField(0) {}
+      doubleField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
@@ -8269,7 +8276,8 @@ class AllRequiredNoExceptMoveCtrStruct final  {
  public:
 
   AllRequiredNoExceptMoveCtrStruct() :
-      intField(0) {}
+      intField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg);

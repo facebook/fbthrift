@@ -411,6 +411,113 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::ExceptionWithPrimitiveField>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::ExceptionWithPrimitiveField>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField&) = default;
+ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
+    message(std::move(other.message)),
+    error_code(std::move(other.error_code)),
+    __isset(other.__isset) {}
+ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept {
+    this->message = std::move(other.message);
+    this->error_code = std::move(other.error_code);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg) :
+    message(std::move(message__arg)),
+    error_code(std::move(error_code__arg)) {
+  __isset.message = true;
+  __isset.error_code = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+void ExceptionWithPrimitiveField::__clear() {
+  // clear all fields
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->error_code = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return false;
+  }
+  if (!(lhs.error_code == rhs.error_code)) {
+    return false;
+  }
+  return true;
+}
+
+bool ExceptionWithPrimitiveField::operator<(const ExceptionWithPrimitiveField& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return lhs.message < rhs.message;
+  }
+  if (!(lhs.error_code == rhs.error_code)) {
+    return lhs.error_code < rhs.error_code;
+  }
+  return false;
+}
+
+
+void swap(ExceptionWithPrimitiveField& a, ExceptionWithPrimitiveField& b) {
+  using ::std::swap;
+  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.error_code_ref().value(), b.error_code_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void ExceptionWithPrimitiveField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ExceptionWithPrimitiveField::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ExceptionWithPrimitiveField::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ExceptionWithPrimitiveField::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ExceptionWithPrimitiveField::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ExceptionWithPrimitiveField::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ExceptionWithPrimitiveField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ExceptionWithPrimitiveField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::Banal>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,

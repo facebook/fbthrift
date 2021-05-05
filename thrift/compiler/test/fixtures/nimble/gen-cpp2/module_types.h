@@ -82,7 +82,8 @@ class BasicTypes final  {
       first(0),
       second(0),
       third(0),
-      isTrue(0) {}
+      isTrue(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg);

@@ -70,6 +70,21 @@ struct VisitByThriftId<::cpp2::CustomFieldNames> {
 };
 
 template <>
+struct VisitByThriftId<::cpp2::ExceptionWithPrimitiveField> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).message_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).error_code_ref());
+    default:
+      throwInvalidThriftId(id, "::cpp2::ExceptionWithPrimitiveField");
+    }
+  }
+};
+
+template <>
 struct VisitByThriftId<::cpp2::Banal> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {

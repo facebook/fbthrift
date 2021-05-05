@@ -147,6 +147,43 @@ cdef __StructSpec get_reflection__CustomFieldNames():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__ExceptionWithPrimitiveField():
+    cdef _module_types.ExceptionWithPrimitiveField defaults = _module_types.ExceptionWithPrimitiveField.create(
+        constant_shared_ptr[_module_types.cExceptionWithPrimitiveField](
+            default_inst[_module_types.cExceptionWithPrimitiveField]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="ExceptionWithPrimitiveField",
+        kind=__StructType.EXCEPTION,
+        annotations={
+            """message""": """message""",        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=2,
+            name="error_code",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__Banal():
     cdef _module_types.Banal defaults = _module_types.Banal.create(
         constant_shared_ptr[_module_types.cBanal](

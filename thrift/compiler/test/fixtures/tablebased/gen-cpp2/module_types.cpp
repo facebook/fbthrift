@@ -142,7 +142,8 @@ TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& src)
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialTypesStruct::TrivialTypesStruct() :
       fieldA(0),
-      fieldE( ::test::fixtures::tablebased::ExampleEnum::ZERO) {}
+      fieldE( ::test::fixtures::tablebased::ExampleEnum::ZERO) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -341,7 +342,8 @@ ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
 ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct() {}
+ContainerStruct::ContainerStruct() {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

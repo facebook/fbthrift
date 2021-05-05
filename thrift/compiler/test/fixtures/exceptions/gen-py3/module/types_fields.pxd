@@ -89,6 +89,18 @@ cdef class __CustomFieldNames_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_1(self, _fbthrift_value) except *
 
 
+ctypedef void (*__ExceptionWithPrimitiveField_FieldsSetterFunc)(__ExceptionWithPrimitiveField_FieldsSetter, object) except *
+
+cdef class __ExceptionWithPrimitiveField_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cExceptionWithPrimitiveField* _struct_cpp_obj
+    cdef cumap[__cstring_view, __ExceptionWithPrimitiveField_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __ExceptionWithPrimitiveField_FieldsSetter create(_module_types.cExceptionWithPrimitiveField* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+
+
 ctypedef void (*__Banal_FieldsSetterFunc)(__Banal_FieldsSetter, object) except *
 
 cdef class __Banal_FieldsSetter(__StructFieldsSetter):

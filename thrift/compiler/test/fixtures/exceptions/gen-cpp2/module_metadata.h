@@ -39,6 +39,11 @@ class StructMetadata<::cpp2::CustomFieldNames> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::ExceptionWithPrimitiveField> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::cpp2::Banal> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
@@ -60,6 +65,11 @@ class ExceptionMetadata<::cpp2::ComplexFieldNames> {
 };
 template <>
 class ExceptionMetadata<::cpp2::CustomFieldNames> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::ExceptionWithPrimitiveField> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

@@ -66,6 +66,19 @@ void reset_field<::cpp2::CustomFieldNames>(
 }
 
 template<>
+void reset_field<::cpp2::ExceptionWithPrimitiveField>(
+    ::cpp2::ExceptionWithPrimitiveField& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.message_ref().copy_from(default_inst<::cpp2::ExceptionWithPrimitiveField>().message_ref());
+      return;
+    case 1:
+      obj.error_code_ref().copy_from(default_inst<::cpp2::ExceptionWithPrimitiveField>().error_code_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::cpp2::Banal>(
     ::cpp2::Banal& obj, uint16_t index) {
   switch (index) {
@@ -105,6 +118,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::CustomFieldNames>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::ExceptionWithPrimitiveField>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

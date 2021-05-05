@@ -265,7 +265,8 @@ containerStruct::containerStruct() :
       fieldS(std::make_unique<::cpp2::SmallStruct>()),
       fieldT(std::make_shared<::cpp2::SmallStruct>()),
       fieldU(std::make_shared<::cpp2::SmallStruct>()),
-      fieldX(std::make_unique<::cpp2::SmallStruct>()) {}
+      fieldX(std::make_unique<::cpp2::SmallStruct>()) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -202,7 +202,8 @@ class structured_annotation_inline final  {
 
   structured_annotation_inline() :
       count(0),
-      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg);
@@ -346,7 +347,8 @@ class structured_annotation_with_default final  {
  public:
 
   structured_annotation_with_default() :
-      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba")) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg);
@@ -457,7 +459,8 @@ class structured_annotation_forward final  {
  public:
 
   structured_annotation_forward() :
-      count(0) {}
+      count(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg);
@@ -563,7 +566,8 @@ class structured_annotation_recursive final  {
 
  public:
 
-  structured_annotation_recursive() {}
+  structured_annotation_recursive() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg);
@@ -737,7 +741,8 @@ class structured_annotation_nested final  {
 
  public:
 
-  structured_annotation_nested() {}
+  structured_annotation_nested() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg);
@@ -881,7 +886,8 @@ class MyStruct final  {
 
   MyStruct() :
       annotated_field(0),
-      annotated_nested(0) {}
+      annotated_nested(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
@@ -1101,7 +1107,8 @@ class MyException final : public apache::thrift::TException {
 
  public:
 
-  MyException() {}
+  MyException() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyException(apache::thrift::FragileConstructor, ::std::string context__arg);

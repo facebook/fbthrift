@@ -59,7 +59,8 @@ class Empty final  {
 
  public:
 
-  Empty() {}
+  Empty() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);

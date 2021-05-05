@@ -131,7 +131,8 @@ class SomeStruct final  {
   SomeStruct() :
       reasonable( ::cpp2::Metasyntactic::FOO),
       fine( ::cpp2::Metasyntactic::BAR),
-      questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {}
+      questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);

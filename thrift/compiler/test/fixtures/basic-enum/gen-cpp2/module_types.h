@@ -198,7 +198,8 @@ class MyStruct final  {
 
   MyStruct() :
       myEnum(static_cast< ::test::fixtures::enumstrict::MyEnum>(0)),
-      myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {}
+      myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);

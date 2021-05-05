@@ -48,6 +48,15 @@ struct ForEachField<::cpp2::CustomFieldNames> {
 };
 
 template <>
+struct ForEachField<::cpp2::ExceptionWithPrimitiveField> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).message_ref()...);
+    f(1, static_cast<T&&>(t).error_code_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::Banal> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {

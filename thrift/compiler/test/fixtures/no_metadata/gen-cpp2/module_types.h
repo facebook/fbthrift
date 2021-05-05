@@ -143,7 +143,8 @@ class MyDataItem final  {
 
  public:
 
-  MyDataItem() {}
+  MyDataItem() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
@@ -213,7 +214,8 @@ class MyStruct final  {
 
   MyStruct() :
       MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1) {}
+      myEnum( ::cpp2::MyEnum::MyValue1) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg);

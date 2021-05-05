@@ -889,7 +889,8 @@ structC::structC() :
       c(0),
       d(0),
       e( ::test_cpp2::cpp_reflection::enum1::field0),
-      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1666,7 +1667,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
-      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1869,7 +1871,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2106,7 +2109,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2789,7 +2793,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
       field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
+      field2( ::test_cpp2::cpp_reflection::enum1::field0) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -4079,7 +4084,8 @@ struct_with_indirections::struct_with_indirections() :
       real(0),
       fake(0),
       number(0),
-      result(0) {}
+      result(0) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

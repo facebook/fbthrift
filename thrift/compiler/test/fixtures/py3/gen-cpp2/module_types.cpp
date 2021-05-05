@@ -497,7 +497,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct() :
       an_integer(0),
-      an_enum( ::py3::simple::AnEnum::None) {}
+      an_enum( ::py3::simple::AnEnum::None) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -19,6 +19,8 @@ struct error_message;
 struct internal_error_message;
 struct error_message;
 struct internal_error_message;
+struct message;
+struct error_code;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_message
@@ -45,6 +47,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(error_message);
 #define APACHE_THRIFT_ACCESSOR_internal_error_message
 APACHE_THRIFT_DEFINE_ACCESSOR(internal_error_message);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_message
+#define APACHE_THRIFT_ACCESSOR_message
+APACHE_THRIFT_DEFINE_ACCESSOR(message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_error_code
+#define APACHE_THRIFT_ACCESSOR_error_code
+APACHE_THRIFT_DEFINE_ACCESSOR(error_code);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -58,6 +68,7 @@ class Fiery;
 class Serious;
 class ComplexFieldNames;
 class CustomFieldNames;
+class ExceptionWithPrimitiveField;
 class Banal;
 } // cpp2
 // END forward_declare
@@ -98,7 +109,8 @@ class Fiery final : public apache::thrift::TException {
 
  public:
 
-  Fiery() {}
+  Fiery() {
+  }
 
   explicit Fiery(const std::string& __message) :
       message(__message) {}
@@ -219,7 +231,8 @@ class Serious final : public apache::thrift::TException {
 
  public:
 
-  Serious() {}
+  Serious() {
+  }
 
   explicit Serious(const std::string& __message) :
       sonnet(__message) {}
@@ -346,7 +359,8 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
 
-  ComplexFieldNames() {}
+  ComplexFieldNames() {
+  }
 
   explicit ComplexFieldNames(const std::string& __message) :
       internal_error_message(__message) {}
@@ -510,7 +524,8 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
 
-  CustomFieldNames() {}
+  CustomFieldNames() {
+  }
 
   explicit CustomFieldNames(const std::string& __message) :
       internal_error_message(__message) {}
@@ -651,6 +666,167 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
+class ExceptionWithPrimitiveField final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
+         ::apache::thrift::ExceptionKind::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
+         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
+         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
+
+ public:
+  using __fbthrift_cpp2_type = ExceptionWithPrimitiveField;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  ExceptionWithPrimitiveField() :
+      error_code(0) {
+  }
+
+  explicit ExceptionWithPrimitiveField(const std::string& __message) :
+      message(__message) {}
+
+  explicit ExceptionWithPrimitiveField(std::string&& __message) :
+      message(std::move(__message)) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg);
+
+  ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&&) noexcept;
+
+  ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField& src);
+
+
+  ExceptionWithPrimitiveField& operator=(ExceptionWithPrimitiveField&&) noexcept;
+  ExceptionWithPrimitiveField& operator=(const ExceptionWithPrimitiveField& src);
+  void __clear();
+ private:
+  ::std::string message;
+ private:
+  ::std::int32_t error_code;
+
+ public:
+  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+  struct __isset {
+    bool message;
+    bool error_code;
+  } __isset = {};
+
+  bool operator==(const ExceptionWithPrimitiveField&) const;
+  bool operator<(const ExceptionWithPrimitiveField&) const;
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {
+    return {this->message, __isset.message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
+    return {std::move(this->message), __isset.message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> message_ref() & {
+    return {this->message, __isset.message};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
+    return {std::move(this->message), __isset.message};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_code_ref() const& {
+    return {this->error_code, __isset.error_code};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_code_ref() const&& {
+    return {std::move(this->error_code), __isset.error_code};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> error_code_ref() & {
+    return {this->error_code, __isset.error_code};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_code_ref() && {
+    return {std::move(this->error_code), __isset.error_code};
+  }
+
+  const ::std::string& get_message() const& {
+    return message;
+  }
+
+  ::std::string get_message() && {
+    return std::move(message);
+  }
+
+  template <typename T_ExceptionWithPrimitiveField_message_struct_setter = ::std::string>
+  ::std::string& set_message(T_ExceptionWithPrimitiveField_message_struct_setter&& message_) {
+    message = std::forward<T_ExceptionWithPrimitiveField_message_struct_setter>(message_);
+    __isset.message = true;
+    return message;
+  }
+
+  ::std::int32_t get_error_code() const {
+    return error_code;
+  }
+
+  ::std::int32_t& set_error_code(::std::int32_t error_code_) {
+    error_code = error_code_;
+    __isset.error_code = true;
+    return error_code;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return message.c_str();
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<ExceptionWithPrimitiveField>;
+  friend void swap(ExceptionWithPrimitiveField& a, ExceptionWithPrimitiveField& b);
+};
+
+template <class Protocol_>
+uint32_t ExceptionWithPrimitiveField::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+#ifndef SWIG
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+#endif
+
 class Banal final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -674,7 +850,8 @@ class Banal final : public apache::thrift::TException {
 
  public:
 
-  Banal() {}
+  Banal() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Banal(apache::thrift::FragileConstructor);

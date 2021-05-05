@@ -35,6 +35,12 @@ pub mod types {
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct ExceptionWithPrimitiveField {
+        pub message: ::std::string::String,
+        pub error_code: ::std::primitive::i32,
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Banal {
     }
 
@@ -275,6 +281,70 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 error_message: field_error_message.unwrap_or_default(),
                 internal_error_message: field_internal_error_message.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::ExceptionWithPrimitiveField {
+        fn default() -> Self {
+            Self {
+                message: ::std::default::Default::default(),
+                error_code: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::ExceptionWithPrimitiveField {}
+    unsafe impl ::std::marker::Sync for self::ExceptionWithPrimitiveField {}
+
+    impl ::fbthrift::GetTType for self::ExceptionWithPrimitiveField {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::ExceptionWithPrimitiveField
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("ExceptionWithPrimitiveField");
+            p.write_field_begin("message", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.message, p);
+            p.write_field_end();
+            p.write_field_begin("error_code", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.error_code, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::ExceptionWithPrimitiveField
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("error_code", ::fbthrift::TType::I32, 2),
+                ::fbthrift::Field::new("message", ::fbthrift::TType::String, 1),
+            ];
+            let mut field_message = ::std::option::Option::None;
+            let mut field_error_code = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_message = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_error_code = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                message: field_message.unwrap_or_default(),
+                error_code: field_error_code.unwrap_or_default(),
             })
         }
     }

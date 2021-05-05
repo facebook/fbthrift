@@ -30,6 +30,13 @@ cdef class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
         yield "error_message", self.error_message
         yield "internal_error_message", self.internal_error_message
 
+cdef class ExceptionWithPrimitiveField_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.ExceptionWithPrimitiveField
+
+    def __iter__(self):
+        yield "message", self.message
+        yield "error_code", self.error_code
+
 cdef class Banal_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.Banal
 

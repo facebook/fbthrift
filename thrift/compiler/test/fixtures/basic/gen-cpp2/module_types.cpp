@@ -143,7 +143,8 @@ MyStruct::MyStruct() :
       myEnum( ::cpp2::MyEnum::MyValue1),
       oneway(0),
       readonly(0),
-      idempotent(0) {}
+      idempotent(0) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

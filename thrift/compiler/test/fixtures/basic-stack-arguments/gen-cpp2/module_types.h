@@ -117,7 +117,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField(0) {}
+      MyIntField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg);

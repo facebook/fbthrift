@@ -376,7 +376,8 @@ ComplexNestedStruct::ComplexNestedStruct(const ComplexNestedStruct&) = default;
 ComplexNestedStruct& ComplexNestedStruct::operator=(const ComplexNestedStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct() {}
+ComplexNestedStruct::ComplexNestedStruct() {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

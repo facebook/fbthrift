@@ -76,7 +76,8 @@ class MyStruct final  {
 
  public:
 
-  MyStruct() {}
+  MyStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg);
@@ -406,7 +407,8 @@ class MyException final : public apache::thrift::TException {
 
  public:
 
-  MyException() {}
+  MyException() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyException(apache::thrift::FragileConstructor, ::std::string myString__arg);

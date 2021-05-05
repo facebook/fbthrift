@@ -132,7 +132,8 @@ class A final  {
  public:
 
   A() :
-      useless_field(0) {}
+      useless_field(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg);
@@ -519,7 +520,8 @@ class Bang final : public apache::thrift::TException {
 
  public:
 
-  Bang() {}
+  Bang() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Bang(apache::thrift::FragileConstructor, ::std::string message__arg);

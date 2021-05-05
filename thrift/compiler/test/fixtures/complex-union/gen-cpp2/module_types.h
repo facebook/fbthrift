@@ -1325,7 +1325,8 @@ class Val final  {
  public:
 
   Val() :
-      intVal(0) {}
+      intVal(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg);
@@ -2080,7 +2081,8 @@ class NonCopyableStruct final  {
  public:
 
   NonCopyableStruct() :
-      num(0) {}
+      num(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg);

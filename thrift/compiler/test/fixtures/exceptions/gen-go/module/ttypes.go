@@ -584,6 +584,163 @@ func (p *CustomFieldNames) Error() string {
   return p.String()
 }
 
+// Attributes:
+//  - Message
+//  - ErrorCode
+type ExceptionWithPrimitiveField struct {
+  Message string `thrift:"message,1" db:"message" json:"message"`
+  ErrorCode int32 `thrift:"error_code,2" db:"error_code" json:"error_code"`
+}
+
+func NewExceptionWithPrimitiveField() *ExceptionWithPrimitiveField {
+  return &ExceptionWithPrimitiveField{}
+}
+
+
+func (p *ExceptionWithPrimitiveField) GetMessage() string {
+  return p.Message
+}
+
+func (p *ExceptionWithPrimitiveField) GetErrorCode() int32 {
+  return p.ErrorCode
+}
+type ExceptionWithPrimitiveFieldBuilder struct {
+  obj *ExceptionWithPrimitiveField
+}
+
+func NewExceptionWithPrimitiveFieldBuilder() *ExceptionWithPrimitiveFieldBuilder{
+  return &ExceptionWithPrimitiveFieldBuilder{
+    obj: NewExceptionWithPrimitiveField(),
+  }
+}
+
+func (p ExceptionWithPrimitiveFieldBuilder) Emit() *ExceptionWithPrimitiveField{
+  return &ExceptionWithPrimitiveField{
+    Message: p.obj.Message,
+    ErrorCode: p.obj.ErrorCode,
+  }
+}
+
+func (e *ExceptionWithPrimitiveFieldBuilder) Message(message string) *ExceptionWithPrimitiveFieldBuilder {
+  e.obj.Message = message
+  return e
+}
+
+func (e *ExceptionWithPrimitiveFieldBuilder) ErrorCode(errorCode int32) *ExceptionWithPrimitiveFieldBuilder {
+  e.obj.ErrorCode = errorCode
+  return e
+}
+
+func (e *ExceptionWithPrimitiveField) SetMessage(message string) *ExceptionWithPrimitiveField {
+  e.Message = message
+  return e
+}
+
+func (e *ExceptionWithPrimitiveField) SetErrorCode(errorCode int32) *ExceptionWithPrimitiveField {
+  e.ErrorCode = errorCode
+  return e
+}
+
+func (p *ExceptionWithPrimitiveField) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ExceptionWithPrimitiveField)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Message = v
+  }
+  return nil
+}
+
+func (p *ExceptionWithPrimitiveField)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.ErrorCode = v
+  }
+  return nil
+}
+
+func (p *ExceptionWithPrimitiveField) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ExceptionWithPrimitiveField"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ExceptionWithPrimitiveField) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("message", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:message: ", p), err) }
+  if err := oprot.WriteString(string(p.Message)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.message (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:message: ", p), err) }
+  return err
+}
+
+func (p *ExceptionWithPrimitiveField) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("error_code", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:error_code: ", p), err) }
+  if err := oprot.WriteI32(int32(p.ErrorCode)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.error_code (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:error_code: ", p), err) }
+  return err
+}
+
+func (p *ExceptionWithPrimitiveField) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  messageVal := fmt.Sprintf("%v", p.Message)
+  errorCodeVal := fmt.Sprintf("%v", p.ErrorCode)
+  return fmt.Sprintf("ExceptionWithPrimitiveField({Message:%s ErrorCode:%s})", messageVal, errorCodeVal)
+}
+
+func (p *ExceptionWithPrimitiveField) Error() string {
+  return p.String()
+}
+
 type Banal struct {
 }
 

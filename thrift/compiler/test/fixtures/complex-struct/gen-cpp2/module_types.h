@@ -679,7 +679,8 @@ class MyStructFloatFieldThrowExp final  {
   MyStructFloatFieldThrowExp() :
       myLongField(0),
       MyByteField(0),
-      myFloatField(0) {}
+      myFloatField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg);
@@ -889,7 +890,8 @@ class MyStructMapFloatThrowExp final  {
  public:
 
   MyStructMapFloatThrowExp() :
-      myLongField(0) {}
+      myLongField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg);
@@ -1026,7 +1028,8 @@ class MyDataItem final  {
 
  public:
 
-  MyDataItem() {}
+  MyDataItem() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
@@ -2081,7 +2084,8 @@ class SimpleStruct final  {
 
   SimpleStruct() :
       age(60LL),
-      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman")) {}
+      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman")) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg);
@@ -5040,7 +5044,8 @@ class TypeRemapped final  {
  public:
 
   TypeRemapped() :
-      BigInteger(0) {}
+      BigInteger(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std::int64_t, ::std::string> lsMap__arg, ::std::map<::std::int32_t, ::cpp2::FMap> ioMap__arg, ::std::int32_t BigInteger__arg, ::std::string binaryTestBuffer__arg);
@@ -5253,7 +5258,8 @@ class emptyXcep final : public apache::thrift::TException {
 
  public:
 
-  emptyXcep() {}
+  emptyXcep() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   emptyXcep(apache::thrift::FragileConstructor);
@@ -5331,7 +5337,8 @@ class reqXcep final : public apache::thrift::TException {
  public:
 
   reqXcep() :
-      errorCode(0) {}
+      errorCode(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);
@@ -5478,7 +5485,8 @@ class optXcep final : public apache::thrift::TException {
  public:
 
   optXcep() :
-      errorCode(0) {}
+      errorCode(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);

@@ -14,5 +14,5 @@ from thrift.protocol.TProtocol import TProtocolException
 
 
 
-from .ttypes import UTF8STRINGS, Fiery, Serious, ComplexFieldNames, CustomFieldNames, Banal
+from .ttypes import UTF8STRINGS, Fiery, Serious, ComplexFieldNames, CustomFieldNames, ExceptionWithPrimitiveField, Banal
 

@@ -99,7 +99,8 @@ class Mixin1 final  {
 
  public:
 
-  Mixin1() {}
+  Mixin1() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg);
@@ -209,7 +210,8 @@ class Mixin2 final  {
 
  public:
 
-  Mixin2() {}
+  Mixin2() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg);
@@ -356,7 +358,8 @@ class Mixin3Base final  {
 
  public:
 
-  Mixin3Base() {}
+  Mixin3Base() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg);
@@ -466,7 +469,8 @@ class Foo final  {
 
  public:
 
-  Foo() {}
+  Foo() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg);

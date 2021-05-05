@@ -81,7 +81,8 @@ class Struct final  {
 
  public:
 
-  Struct() {}
+  Struct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg);
@@ -218,7 +219,8 @@ class BigStruct final  {
  public:
 
   BigStruct() :
-      id(0) {}
+      id(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg);

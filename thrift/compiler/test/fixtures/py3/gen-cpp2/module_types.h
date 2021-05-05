@@ -266,7 +266,8 @@ class SimpleException final : public apache::thrift::TException {
  public:
 
   SimpleException() :
-      err_code(0) {}
+      err_code(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg);
@@ -375,7 +376,8 @@ class OptionalRefStruct final  {
 
  public:
 
-  OptionalRefStruct() {}
+  OptionalRefStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::simple::IOBufPtr optional_blob__arg);
@@ -493,7 +495,8 @@ class SimpleStruct final  {
       big_int(0),
       real(0),
       smaller_real(0),
-      hidden_field(0) {}
+      hidden_field(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, ::std::int8_t tiny_int__arg, ::std::int16_t small_int__arg, ::std::int32_t nice_sized_int__arg, ::std::int64_t big_int__arg, double real__arg, float smaller_real__arg, ::std::int16_t hidden_field__arg);
@@ -1434,7 +1437,8 @@ class BinaryUnionStruct final  {
 
  public:
 
-  BinaryUnionStruct() {}
+  BinaryUnionStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg);

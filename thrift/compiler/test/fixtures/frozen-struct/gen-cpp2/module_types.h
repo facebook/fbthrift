@@ -425,7 +425,8 @@ class ModuleB final  {
 
   ModuleB() :
       i32Field(0),
-      inclEnumB(static_cast< ::some::ns::EnumB>(0)) {}
+      inclEnumB(static_cast< ::some::ns::EnumB>(0)) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg);

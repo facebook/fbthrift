@@ -267,7 +267,8 @@ ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
 ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct() {}
+ContainerStruct::ContainerStruct() {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2251,7 +2252,8 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyIntField(12LL),
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
-  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}}) {}
+  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}}) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2585,7 +2587,8 @@ AllocatorAware& AllocatorAware::operator=(const AllocatorAware&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware() :
-      not_a_container(0) {}
+      not_a_container(0) {
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

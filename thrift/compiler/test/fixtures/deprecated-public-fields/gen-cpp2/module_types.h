@@ -64,7 +64,8 @@ class Foo final  {
  public:
 
   Foo() :
-      bar(0) {}
+      bar(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg);

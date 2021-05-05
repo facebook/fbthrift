@@ -122,7 +122,8 @@ class AStruct final  {
  public:
 
   AStruct() :
-      FieldA(0) {}
+      FieldA(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg);
@@ -229,7 +230,8 @@ class AStructB final  {
  public:
 
   AStructB() :
-      FieldA(std::make_shared<::a::different::ns::AStruct>()) {}
+      FieldA(std::make_shared<::a::different::ns::AStruct>()) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);

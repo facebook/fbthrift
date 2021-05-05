@@ -64,7 +64,8 @@ class FooEx final : public apache::thrift::TException {
 
  public:
 
-  FooEx() {}
+  FooEx() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FooEx(apache::thrift::FragileConstructor);

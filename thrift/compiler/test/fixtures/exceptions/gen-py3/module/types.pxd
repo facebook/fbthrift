@@ -114,6 +114,21 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string internal_error_message
 
 
+    cdef cppclass cExceptionWithPrimitiveField "::cpp2::ExceptionWithPrimitiveField"(cTException):
+        cExceptionWithPrimitiveField() except +
+        cExceptionWithPrimitiveField(const cExceptionWithPrimitiveField&) except +
+        bint operator==(cExceptionWithPrimitiveField&)
+        bint operator!=(cExceptionWithPrimitiveField&)
+        bint operator<(cExceptionWithPrimitiveField&)
+        bint operator>(cExceptionWithPrimitiveField&)
+        bint operator<=(cExceptionWithPrimitiveField&)
+        bint operator>=(cExceptionWithPrimitiveField&)
+        __field_ref[string] message_ref()
+        __field_ref[cint32_t] error_code_ref()
+        string message
+        cint32_t error_code
+
+
     cdef cppclass cBanal "::cpp2::Banal"(cTException):
         cBanal() except +
         cBanal(const cBanal&) except +
@@ -160,6 +175,15 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cCustomFieldNames])
+
+
+
+cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
+    cdef shared_ptr[cExceptionWithPrimitiveField] _cpp_obj
+    cdef _fbthrift_types_fields.__ExceptionWithPrimitiveField_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cExceptionWithPrimitiveField])
 
 
 

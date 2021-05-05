@@ -574,7 +574,8 @@ class decorated_struct final  {
 
  public:
 
-  decorated_struct() {}
+  decorated_struct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg);
@@ -1016,7 +1017,8 @@ class CppTypeStruct final  {
 
  public:
 
-  CppTypeStruct() {}
+  CppTypeStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
@@ -1121,7 +1123,8 @@ class VirtualStruct  {
  public:
 
   VirtualStruct() :
-      MyIntField(0) {}
+      MyIntField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg);
@@ -1231,7 +1234,8 @@ class MyStructWithForwardRefEnum final  {
 
   MyStructWithForwardRefEnum() :
       a( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO),
-      b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {}
+      b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
@@ -1371,7 +1375,8 @@ class TrivialNumeric final  {
 
   TrivialNumeric() :
       a(0),
-      b(0) {}
+      b(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg);
@@ -1512,7 +1517,8 @@ class TrivialNestedWithDefault final  {
 
   TrivialNestedWithDefault() :
       z(4),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(true))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(true))) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
@@ -1650,7 +1656,8 @@ class ComplexString final  {
 
  public:
 
-  ComplexString() {}
+  ComplexString() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg);
@@ -1794,7 +1801,8 @@ class ComplexNestedWithDefault final  {
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits<std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg);
@@ -1941,7 +1949,8 @@ class MinPadding final  {
       biggish(0),
       medium(0),
       small(0),
-      tiny(0) {}
+      tiny(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg);
@@ -2165,7 +2174,8 @@ class MyDataItem final  {
 
  public:
 
-  MyDataItem() {}
+  MyDataItem() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
@@ -2232,7 +2242,8 @@ class MyStruct final  {
 
   MyStruct() :
       MyIntField(0),
-      majorVer(0) {}
+      majorVer(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg);
@@ -2438,7 +2449,8 @@ class Renaming final  {
  public:
 
   Renaming() :
-      bar(0) {}
+      bar(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
@@ -2544,7 +2556,8 @@ class AnnotatedTypes final  {
 
  public:
 
-  AnnotatedTypes() {}
+  AnnotatedTypes() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
@@ -2686,7 +2699,8 @@ class ForwardUsageStruct final  {
 
  public:
 
-  ForwardUsageStruct() {}
+  ForwardUsageStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
@@ -2791,7 +2805,8 @@ class ForwardUsageRoot final  {
 
  public:
 
-  ForwardUsageRoot() {}
+  ForwardUsageRoot() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
@@ -2908,7 +2923,8 @@ class ForwardUsageByRef final  {
 
  public:
 
-  ForwardUsageByRef() {}
+  ForwardUsageByRef() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
@@ -3013,7 +3029,8 @@ class NoexceptMoveEmpty final  {
 
  public:
 
-  NoexceptMoveEmpty() {}
+  NoexceptMoveEmpty() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveEmpty(apache::thrift::FragileConstructor);
@@ -3082,7 +3099,8 @@ class NoexceptMoveSimpleStruct final  {
  public:
 
   NoexceptMoveSimpleStruct() :
-      boolField(0) {}
+      boolField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
@@ -4141,7 +4159,8 @@ class AllocatorAware2 final  {
  public:
 
   AllocatorAware2() :
-      not_a_container(0) {}
+      not_a_container(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg);
@@ -4262,7 +4281,8 @@ class TypedefStruct final  {
   TypedefStruct() :
       i32_field(0),
       IntTypedef_field(0),
-      UintTypedef_field(0) {}
+      UintTypedef_field(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg);
@@ -4434,7 +4454,8 @@ class StructWithDoubleUnderscores final  {
  public:
 
   StructWithDoubleUnderscores() :
-      __field(0) {}
+      __field(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg);

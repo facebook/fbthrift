@@ -308,7 +308,8 @@ class Internship final  {
   Internship() :
       weeks(0),
       employer( ::cpp2::Company::FACEBOOK),
-      compensation(0) {}
+      compensation(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg);
@@ -527,7 +528,8 @@ class Range final  {
 
   Range() :
       min(0),
-      max(0) {}
+      max(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg);
@@ -661,7 +663,8 @@ class struct1 final  {
 
   struct1() :
       a(1234567),
-      b(apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>")) {}
+      b(apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>")) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg);
@@ -805,7 +808,8 @@ class struct2 final  {
  public:
 
   struct2() :
-      a(0) {}
+      a(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg);
@@ -1013,7 +1017,8 @@ class struct3 final  {
  public:
 
   struct3() :
-      b(0) {}
+      b(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg);
@@ -1191,7 +1196,8 @@ class struct4 final  {
   struct4() :
       a(0),
       b(0),
-      c(0) {}
+      c(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg);

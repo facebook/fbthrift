@@ -2265,7 +2265,8 @@ class structA final  {
  public:
 
   structA() :
-      a(0) {}
+      a(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg);
@@ -2888,7 +2889,8 @@ class structB final  {
 
   structB() :
       c(0),
-      d(0) {}
+      d(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg);
@@ -5322,7 +5324,8 @@ class struct4 final  {
   struct4() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
-      field3(std::make_unique<::test_cpp2::cpp_reflection::structA>()) {}
+      field3(std::make_unique<::test_cpp2::cpp_reflection::structA>()) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg);
@@ -5752,7 +5755,8 @@ class struct_binary final  {
 
  public:
 
-  struct_binary() {}
+  struct_binary() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg);
@@ -5863,7 +5867,8 @@ class dep_A_struct final  {
  public:
 
   dep_A_struct() :
-      i_a(0) {}
+      i_a(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg);
@@ -6034,7 +6039,8 @@ class dep_B_struct final  {
  public:
 
   dep_B_struct() :
-      i_a(0) {}
+      i_a(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg);
@@ -6205,7 +6211,8 @@ class annotated final  {
  public:
 
   annotated() :
-      a(0) {}
+      a(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg);
@@ -8238,7 +8245,8 @@ class struct_with_special_names final  {
       member(0),
       members(0),
       field(0),
-      fields(0) {}
+      fields(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct_with_special_names(apache::thrift::FragileConstructor, ::std::int32_t get__arg, ::std::int32_t getter__arg, ::std::int32_t lists__arg, ::std::int32_t maps__arg, ::std::int32_t name__arg, ::std::int32_t name_to_value__arg, ::std::int32_t names__arg, ::std::int32_t prefix_tree__arg, ::std::int32_t sets__arg, ::std::int32_t setter__arg, ::std::int32_t str__arg, ::std::int32_t strings__arg, ::std::int32_t type__arg, ::std::int32_t value__arg, ::std::int32_t value_to_name__arg, ::std::int32_t values__arg, ::std::int32_t id__arg, ::std::int32_t ids__arg, ::std::int32_t descriptor__arg, ::std::int32_t descriptors__arg, ::std::int32_t key__arg, ::std::int32_t keys__arg, ::std::int32_t annotation__arg, ::std::int32_t annotations__arg, ::std::int32_t member__arg, ::std::int32_t members__arg, ::std::int32_t field__arg, ::std::int32_t fields__arg);

@@ -31,6 +31,11 @@ cdef class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
     cdef public str internal_error_message
 
 
+cdef class ExceptionWithPrimitiveField_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str message
+    cdef public pint error_code
+
+
 cdef class Banal_Builder(thrift.py3.builder.StructBuilder):
     pass
 

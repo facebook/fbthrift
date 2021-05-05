@@ -22,4 +22,6 @@ cdef __StructSpec get_reflection__ComplexFieldNames()
 
 cdef __StructSpec get_reflection__CustomFieldNames()
 
+cdef __StructSpec get_reflection__ExceptionWithPrimitiveField()
+
 cdef __StructSpec get_reflection__Banal()

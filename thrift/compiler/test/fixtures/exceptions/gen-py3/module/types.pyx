@@ -365,6 +365,85 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
 @__cython.auto_pickle(False)
+cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
+    def __init__(ExceptionWithPrimitiveField self, *args, **kwargs):
+        self._cpp_obj = make_shared[cExceptionWithPrimitiveField]()
+        self._fields_setter = _fbthrift_types_fields.__ExceptionWithPrimitiveField_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("ExceptionWithPrimitiveField", {
+          "message": deref(self._cpp_obj).message_ref().has_value(),
+          "error_code": deref(self._cpp_obj).error_code_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef create(shared_ptr[cExceptionWithPrimitiveField] cpp_obj):
+        __fbthrift_inst = <ExceptionWithPrimitiveField>ExceptionWithPrimitiveField.__new__(ExceptionWithPrimitiveField, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+    @property
+    def message(self):
+
+        return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
+
+    @property
+    def error_code(self):
+
+        return deref(self._cpp_obj).error_code_ref().value()
+
+
+    def __hash__(ExceptionWithPrimitiveField self):
+        return  super().__hash__()
+
+    def __str__(ExceptionWithPrimitiveField self):
+        field = self.message
+        if field is None:
+            return str(field)
+        return field
+
+    def __copy__(ExceptionWithPrimitiveField self):
+        cdef shared_ptr[cExceptionWithPrimitiveField] cpp_obj = make_shared[cExceptionWithPrimitiveField](
+            deref(self._cpp_obj)
+        )
+        return ExceptionWithPrimitiveField.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cExceptionWithPrimitiveField](
+            self._cpp_obj,
+            (<ExceptionWithPrimitiveField>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__ExceptionWithPrimitiveField()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cExceptionWithPrimitiveField].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.ExceptionWithPrimitiveField"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cExceptionWithPrimitiveField](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
+
+
+
+@__cython.auto_pickle(False)
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __init__(Banal self, *args, **kwargs):
         self._cpp_obj = make_shared[cBanal]()

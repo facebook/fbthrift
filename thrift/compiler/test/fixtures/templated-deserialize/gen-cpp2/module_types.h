@@ -235,7 +235,8 @@ class SmallStruct final  {
 
   SmallStruct() :
       small_A(0),
-      small_B(0) {}
+      small_B(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg);
