@@ -75,9 +75,10 @@ unique_ptr<IOBuf> HeaderServerChannel::ServerFramingHandler::addFrame(
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
+  transport::THeader::StringToStringMap persistentWriteHeaders;
   return header->addHeader(
       std::move(buf),
-      channel_.getPersistentWriteHeaders(),
+      persistentWriteHeaders,
       false /* Data already transformed in AsyncProcessor.h */);
 }
 

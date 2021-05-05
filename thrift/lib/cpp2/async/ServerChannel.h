@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 
 namespace apache {
@@ -25,7 +24,7 @@ namespace thrift {
 /**
  * Interface for Thrift Server channels
  */
-class ServerChannel : public ResponseChannel, public HeaderChannel {
+class ServerChannel : public ResponseChannel {
  public:
   ServerChannel() {}
 };
