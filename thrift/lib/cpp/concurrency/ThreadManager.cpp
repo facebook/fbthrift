@@ -1495,13 +1495,21 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
   }
 }
 
-void ThreadManagerExecutorAdapter::join() {}
+ThreadManagerExecutorAdapter::~ThreadManagerExecutorAdapter() {
+  joinKeepAliveOnce();
+}
+
+void ThreadManagerExecutorAdapter::join() {
+  joinKeepAliveOnce();
+}
 
 void ThreadManagerExecutorAdapter::start() {
   forEachThreadManager(executors_, [](auto tm, auto) { tm->start(); });
 }
 
-void ThreadManagerExecutorAdapter::stop() {}
+void ThreadManagerExecutorAdapter::stop() {
+  joinKeepAliveOnce();
+}
 
 void ThreadManagerExecutorAdapter::addWorker(size_t value) {
   forEachThreadManager(

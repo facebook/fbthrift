@@ -405,13 +405,16 @@ class PriorityThreadManager : public ThreadManager {
 };
 
 // Adapter class that converts a folly::Executor to a ThreadManager interface
-class ThreadManagerExecutorAdapter : public ThreadManager {
+class ThreadManagerExecutorAdapter : public ThreadManager,
+                                     public folly::DefaultKeepAliveExecutor {
  public:
   /* implicit */
   ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe);
   explicit ThreadManagerExecutorAdapter(folly::Executor::KeepAlive<> ka);
   explicit ThreadManagerExecutorAdapter(
       std::array<std::shared_ptr<Executor>, N_PRIORITIES>);
+
+  ~ThreadManagerExecutorAdapter() override;
 
   void join() override;
   void start() override;
@@ -458,6 +461,13 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 
   std::vector<std::shared_ptr<void>> owning_;
   std::array<folly::Executor*, N_PRIORITIES * N_SOURCES> executors_;
+  void joinKeepAliveOnce() {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
+    }
+  }
+
+  bool keepAliveJoined_{false};
 };
 
 class SimpleThreadManager : public ThreadManager,
