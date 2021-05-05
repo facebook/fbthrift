@@ -115,32 +115,6 @@ TEST(ThriftServer, H2ClientAddressTest) {
   EXPECT_EQ(response, channel->getTransport()->getLocalAddress().describe());
 }
 
-TEST(ThriftServer, OnewayClientConnectionCloseTest) {
-  static std::atomic<bool> done(false);
-
-  class OnewayTestInterface : public TestServiceSvIf {
-    void noResponse(int64_t size) override {
-      usleep(size);
-      done = true;
-    }
-  };
-
-  TestThriftServerFactory<OnewayTestInterface> factory2;
-  ScopedServerThread st(factory2.create());
-
-  {
-    folly::EventBase base;
-    auto socket = folly::AsyncSocket::newSocket(&base, *st.getAddress());
-    TestServiceAsyncClient client(
-        HeaderClientChannel::newChannel(std::move(socket)));
-
-    client.sync_noResponse(10000);
-  } // client out of scope
-
-  usleep(50000);
-  EXPECT_TRUE(done);
-}
-
 TEST(ThriftServer, OnewayDeferredHandlerTest) {
   class OnewayTestInterface : public TestServiceSvIf {
    public:
@@ -727,6 +701,53 @@ class HeaderOrRocket : public HeaderOrRocketTest,
  public:
   void SetUp() override { transport = GetParam(); }
 };
+
+TEST_P(HeaderOrRocket, OnewayClientConnectionCloseTest) {
+  static folly::Baton baton;
+
+  class OnewayTestInterface : public TestServiceSvIf {
+    void noResponse(int64_t) override { baton.post(); }
+  };
+
+  ScopedServerInterfaceThread runner(std::make_shared<OnewayTestInterface>());
+  {
+    auto client = makeClient(runner, nullptr);
+    client->sync_noResponse(0);
+  }
+  bool posted = baton.try_wait_for(1s);
+  EXPECT_TRUE(posted);
+}
+
+TEST_P(HeaderOrRocket, OnewayQueueTimeTest) {
+  static folly::Baton running, finished;
+  static folly::Baton running2;
+
+  class TestInterface : public TestServiceSvIf {
+    void voidResponse() override {
+      static int once;
+      EXPECT_EQ(once++, 0);
+      running.post();
+      finished.wait();
+    }
+    void noResponse(int64_t) override { running2.post(); }
+  };
+
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  runner.getThriftServer().setQueueTimeout(100ms);
+
+  auto client = makeClient(runner, nullptr);
+
+  auto first = client->semifuture_voidResponse();
+  EXPECT_TRUE(running.try_wait_for(1s));
+  auto second = client->semifuture_noResponse(0);
+  EXPECT_THROW(
+      client->sync_voidResponse(RpcOptions{}.setTimeout(1s)),
+      TApplicationException);
+  finished.post();
+  // even though 3rd request was loaded shedded, the second is oneway
+  // and should have went through
+  EXPECT_TRUE(running2.try_wait_for(1s));
+}
 
 TEST_P(HeaderOrRocket, Priority) {
   int callCount{0};

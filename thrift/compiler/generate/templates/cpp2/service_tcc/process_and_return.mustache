@@ -34,10 +34,12 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%#service:interaction?%>
   auto tile = ctx->getTile();
 <%/service:interaction?%>
+<%^function:oneway?%>
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb<%#service:interaction?%>, tile<%/service:interaction?%>);
     return;
   }
+<%/function:oneway?%>
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
