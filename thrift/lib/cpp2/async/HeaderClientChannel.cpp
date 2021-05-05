@@ -548,7 +548,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
 
   size_t remaining = 0;
   std::unique_ptr<folly::IOBuf> buf =
-      header->removeHeader(q, remaining, channel_.getPersistentReadHeaders());
+      header->removeHeader(q, remaining, channel_.persistentReadHeaders_);
   if (!buf) {
     return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
   }

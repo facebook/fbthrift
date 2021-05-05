@@ -94,8 +94,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf =
-        header->removeHeader(q, remaining, channel_.getPersistentReadHeaders());
+    buf = header->removeHeader(q, remaining, channel_.persistentReadHeaders_);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "

@@ -36,10 +36,6 @@ class HeaderChannel {
     persistentWriteHeaders_[key] = value;
   }
 
-  transport::THeader::StringToStringMap& getPersistentReadHeaders() {
-    return persistentReadHeaders_;
-  }
-
   transport::THeader::StringToStringMap& getPersistentWriteHeaders() {
     return persistentWriteHeaders_;
   }
@@ -51,7 +47,6 @@ class HeaderChannel {
 
  private:
   // Map to use for persistent headers
-  transport::THeader::StringToStringMap persistentReadHeaders_;
   transport::THeader::StringToStringMap persistentWriteHeaders_;
 };
 } // namespace thrift

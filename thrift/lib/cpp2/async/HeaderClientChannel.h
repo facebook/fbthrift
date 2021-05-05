@@ -358,6 +358,8 @@ class HeaderClientChannel : public ClientChannel,
 
   folly::Optional<CompressionConfig> compressionConfig_;
 
+  transport::THeader::StringToStringMap persistentReadHeaders_;
+
   class RocketUpgradeCallback;
   friend class TransportUpgradeTest;
   friend class TransportUpgradeTest_RawClientRocketUpgradeOneway_Test;

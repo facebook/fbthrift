@@ -231,6 +231,8 @@ class HeaderServerChannel : public ServerChannel,
   static std::atomic<uint32_t> sample_;
   uint32_t sampleRate_;
 
+  transport::THeader::StringToStringMap persistentReadHeaders_;
+
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 };
 
