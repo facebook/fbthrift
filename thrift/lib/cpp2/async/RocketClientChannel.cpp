@@ -627,6 +627,7 @@ RocketClientChannel::RocketClientChannel(
               makeSetupFrame(std::move(meta))))) {}
 
 RocketClientChannel::~RocketClientChannel() {
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   unsetOnDetachable();
   closeNow();
 }
