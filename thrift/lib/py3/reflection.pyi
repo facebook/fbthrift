@@ -22,6 +22,7 @@ from thrift.py3.server import ServiceInterface
 from thrift.py3.types import Struct
 
 TClient = TypeVar("TClient", bound=Client)
+
 @overload
 def inspect(cls: Union[Struct, Type[Struct], Error, Type[Error]]) -> StructSpec: ...
 @overload
