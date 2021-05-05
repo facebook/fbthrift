@@ -66,10 +66,6 @@ class ContextStack {
   void handlerErrorWrapped(const folly::exception_wrapper& ew);
   void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew);
 
-  const char* getServiceName() const { return serviceName_; }
-
-  const char* getMethod() const { return method_; }
-
  private:
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;

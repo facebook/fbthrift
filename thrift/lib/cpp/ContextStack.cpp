@@ -49,7 +49,7 @@ ContextStack::ContextStack(
 
 ContextStack::~ContextStack() {
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->freeContext(contextAt(i), getMethod());
+    (*handlers_)[i]->freeContext(contextAt(i), method_);
   }
 }
 
@@ -91,70 +91,55 @@ std::unique_ptr<ContextStack> ContextStack::create(
 }
 
 void ContextStack::preWrite() {
-  FOLLY_SDT(
-      thrift, thrift_context_stack_pre_write, getServiceName(), getMethod());
+  FOLLY_SDT(thrift, thrift_context_stack_pre_write, serviceName_, method_);
 
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
-      (*handlers_)[i]->preWrite(contextAt(i), getMethod());
+      (*handlers_)[i]->preWrite(contextAt(i), method_);
     }
   }
 }
 
 void ContextStack::onWriteData(const SerializedMessage& msg) {
-  FOLLY_SDT(
-      thrift,
-      thrift_context_stack_on_write_data,
-      getServiceName(),
-      getMethod());
+  FOLLY_SDT(thrift, thrift_context_stack_on_write_data, serviceName_, method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->onWriteData(contextAt(i), getMethod(), msg);
+    (*handlers_)[i]->onWriteData(contextAt(i), method_, msg);
   }
 }
 
 void ContextStack::postWrite(uint32_t bytes) {
   FOLLY_SDT(
-      thrift,
-      thrift_context_stack_post_write,
-      getServiceName(),
-      getMethod(),
-      bytes);
+      thrift, thrift_context_stack_post_write, serviceName_, method_, bytes);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->postWrite(contextAt(i), getMethod(), bytes);
+    (*handlers_)[i]->postWrite(contextAt(i), method_, bytes);
   }
 }
 
 void ContextStack::preRead() {
-  FOLLY_SDT(
-      thrift, thrift_context_stack_pre_read, getServiceName(), getMethod());
+  FOLLY_SDT(thrift, thrift_context_stack_pre_read, serviceName_, method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->preRead(contextAt(i), getMethod());
+    (*handlers_)[i]->preRead(contextAt(i), method_);
   }
 }
 
 void ContextStack::onReadData(const SerializedMessage& msg) {
-  FOLLY_SDT(
-      thrift, thrift_context_stack_on_read_data, getServiceName(), getMethod());
+  FOLLY_SDT(thrift, thrift_context_stack_on_read_data, serviceName_, method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->onReadData(contextAt(i), getMethod(), msg);
+    (*handlers_)[i]->onReadData(contextAt(i), method_, msg);
   }
 }
 
 void ContextStack::postRead(
     apache::thrift::transport::THeader* header, uint32_t bytes) {
   FOLLY_SDT(
-      thrift,
-      thrift_context_stack_post_read,
-      getServiceName(),
-      getMethod(),
-      bytes);
+      thrift, thrift_context_stack_post_read, serviceName_, method_, bytes);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->postRead(contextAt(i), getMethod(), header, bytes);
+    (*handlers_)[i]->postRead(contextAt(i), method_, header, bytes);
   }
 }
 
@@ -162,11 +147,11 @@ void ContextStack::handlerErrorWrapped(const folly::exception_wrapper& ew) {
   FOLLY_SDT(
       thrift,
       thrift_context_stack_handler_error_wrapped,
-      getServiceName(),
-      getMethod());
+      serviceName_,
+      method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->handlerErrorWrapped(contextAt(i), getMethod(), ew);
+    (*handlers_)[i]->handlerErrorWrapped(contextAt(i), method_, ew);
   }
 }
 
@@ -175,12 +160,12 @@ void ContextStack::userExceptionWrapped(
   FOLLY_SDT(
       thrift,
       thrift_context_stack_user_exception_wrapped,
-      getServiceName(),
-      getMethod());
+      serviceName_,
+      method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
     (*handlers_)[i]->userExceptionWrapped(
-        contextAt(i), getMethod(), declared, ew);
+        contextAt(i), method_, declared, ew);
   }
 }
 
