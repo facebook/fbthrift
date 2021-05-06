@@ -182,8 +182,10 @@ class <%struct:name%> <%!
 <%^struct:union?%>
 
 <%#struct:is_large?%>
-  <%#struct:message%>explicit <%/struct:message%><%struct:name%>(<%!
-    %><%#struct:message%>std::string __message = {}<%/struct:message%>);
+  <%struct:name%>();
+  <%#struct:message%>
+  explicit <%struct:name%>(std::string __message);
+  <%/struct:message%>
 <%/struct:is_large?%>
 <%^struct:is_large?%>
   <% > module_types_h/base_ctor%>

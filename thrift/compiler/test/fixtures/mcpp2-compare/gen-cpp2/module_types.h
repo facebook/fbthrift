@@ -4160,7 +4160,8 @@ class AnException final : public apache::thrift::TException {
 
  public:
 
-  explicit AnException(std::string __message = {});
+  AnException();
+  explicit AnException(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

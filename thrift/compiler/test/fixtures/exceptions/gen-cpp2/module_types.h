@@ -109,7 +109,8 @@ class Fiery final : public apache::thrift::TException {
 
  public:
 
-  explicit Fiery(std::string __message = {});
+  Fiery();
+  explicit Fiery(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -228,7 +229,8 @@ class Serious final : public apache::thrift::TException {
 
  public:
 
-  explicit Serious(std::string __message = {});
+  Serious();
+  explicit Serious(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -353,7 +355,8 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
 
-  explicit ComplexFieldNames(std::string __message = {});
+  ComplexFieldNames();
+  explicit ComplexFieldNames(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -515,7 +518,8 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
 
-  explicit CustomFieldNames(std::string __message = {});
+  CustomFieldNames();
+  explicit CustomFieldNames(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -677,7 +681,8 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
 
  public:
 
-  explicit ExceptionWithPrimitiveField(std::string __message = {});
+  ExceptionWithPrimitiveField();
+  explicit ExceptionWithPrimitiveField(std::string __message);
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

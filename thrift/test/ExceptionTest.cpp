@@ -20,6 +20,11 @@
 
 using namespace apache::thrift::test;
 
+TEST(ExceptionTest, braced_init) {
+  MyException e = {};
+  EXPECT_EQ(e.msg_ref(), "");
+}
+
 TEST(ExceptionTest, test_default_constructor) {
   try {
     MyException e;

@@ -40,7 +40,10 @@ Fiery::Fiery(const Fiery&) = default;
 Fiery& Fiery::operator=(const Fiery&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Fiery::Fiery(std::string __message) {
+Fiery::Fiery() {
+}
+
+Fiery::Fiery(std::string __message) : Fiery() {
   message = std::move(__message);
 }
 
@@ -136,7 +139,10 @@ Serious::Serious(const Serious&) = default;
 Serious& Serious::operator=(const Serious&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Serious::Serious(std::string __message) {
+Serious::Serious() {
+}
+
+Serious::Serious(std::string __message) : Serious() {
   sonnet = std::move(__message);
 }
 
@@ -241,7 +247,10 @@ ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
 ComplexFieldNames& ComplexFieldNames::operator=(const ComplexFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexFieldNames::ComplexFieldNames(std::string __message) {
+ComplexFieldNames::ComplexFieldNames() {
+}
+
+ComplexFieldNames::ComplexFieldNames(std::string __message) : ComplexFieldNames() {
   internal_error_message = std::move(__message);
 }
 
@@ -358,7 +367,10 @@ CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
 CustomFieldNames& CustomFieldNames::operator=(const CustomFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-CustomFieldNames::CustomFieldNames(std::string __message) {
+CustomFieldNames::CustomFieldNames() {
+}
+
+CustomFieldNames::CustomFieldNames(std::string __message) : CustomFieldNames() {
   internal_error_message = std::move(__message);
 }
 
@@ -475,8 +487,11 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrim
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) :
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField() :
       error_code(0) {
+}
+
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) : ExceptionWithPrimitiveField() {
   message = std::move(__message);
 }
 
@@ -506,6 +521,7 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::Fragile
   __isset.error_code = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ExceptionWithPrimitiveField::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

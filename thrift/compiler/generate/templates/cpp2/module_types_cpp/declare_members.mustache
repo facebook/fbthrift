@@ -17,6 +17,12 @@
 %><%#struct:is_large?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_h/base_ctor%>
+<%#struct:message%>
+
+<%struct:name%>::<%struct:name%>(std::string __message) : <%struct:name%>() {
+  <%struct:message%> = std::move(__message);
+}
+<%/struct:message%>
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
