@@ -182,20 +182,13 @@ class <%struct:name%> <%!
 <%^struct:union?%>
 
 <%#struct:is_large?%>
-  <%struct:name%>();
+  <%#struct:message%>explicit <%/struct:message%><%struct:name%>(<%!
+    %><%#struct:message%>std::string __message = {}<%/struct:message%>);
 <%/struct:is_large?%>
 <%^struct:is_large?%>
   <% > module_types_h/base_ctor%>
 <%/struct:is_large?%>
 
-<%#struct:exception?%><%#struct:message%>
-
-  explicit <%struct:name%>(const std::string& __message) :
-      <%struct:message%>(__message) {}
-
-  explicit <%struct:name%>(std::string&& __message) :
-      <%struct:message%>(std::move(__message)) {}
-<%/struct:message%><%/struct:exception?%>
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);

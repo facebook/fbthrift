@@ -407,8 +407,8 @@ class MyException final : public apache::thrift::TException {
 
  public:
 
-  MyException() {
-  }
+  MyException();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyException(apache::thrift::FragileConstructor, ::std::string myString__arg);
@@ -421,6 +421,9 @@ class MyException final : public apache::thrift::TException {
   MyException& operator=(MyException&&) noexcept;
   MyException& operator=(const MyException& src);
   void __clear();
+
+  ~MyException();
+
  private:
   ::std::string myString;
 

@@ -5258,8 +5258,8 @@ class emptyXcep final : public apache::thrift::TException {
 
  public:
 
-  emptyXcep() {
-  }
+  emptyXcep();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   emptyXcep(apache::thrift::FragileConstructor);
@@ -5272,6 +5272,9 @@ class emptyXcep final : public apache::thrift::TException {
   emptyXcep& operator=(emptyXcep&&) noexcept;
   emptyXcep& operator=(const emptyXcep& src);
   void __clear();
+
+  ~emptyXcep();
+
 
   bool operator==(const emptyXcep&) const;
   bool operator<(const emptyXcep&) const;
@@ -5336,9 +5339,8 @@ class reqXcep final : public apache::thrift::TException {
 
  public:
 
-  reqXcep() :
-      errorCode(0) {
-  }
+  reqXcep();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);
@@ -5351,6 +5353,9 @@ class reqXcep final : public apache::thrift::TException {
   reqXcep& operator=(reqXcep&&) noexcept;
   reqXcep& operator=(const reqXcep& src);
   void __clear();
+
+  ~reqXcep();
+
  public:
   ::std::string message;
  public:
@@ -5484,9 +5489,8 @@ class optXcep final : public apache::thrift::TException {
 
  public:
 
-  optXcep() :
-      errorCode(0) {
-  }
+  optXcep();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);
@@ -5499,6 +5503,9 @@ class optXcep final : public apache::thrift::TException {
   optXcep& operator=(optXcep&&) noexcept;
   optXcep& operator=(const optXcep& src);
   void __clear();
+
+  ~optXcep();
+
  private:
   ::std::string message;
  private:

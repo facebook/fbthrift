@@ -40,6 +40,15 @@ Fiery::Fiery(const Fiery&) = default;
 Fiery& Fiery::operator=(const Fiery&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Fiery::Fiery(std::string __message) {
+  message = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+Fiery::~Fiery() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
     message(std::move(other.message)) {}
 
@@ -126,6 +135,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(const Serious&) = default;
 Serious& Serious::operator=(const Serious&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Serious::Serious(std::string __message) {
+  sonnet = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+Serious::~Serious() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
     sonnet(std::move(other.sonnet)),
@@ -222,6 +240,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
 ComplexFieldNames& ComplexFieldNames::operator=(const ComplexFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexFieldNames::ComplexFieldNames(std::string __message) {
+  internal_error_message = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+ComplexFieldNames::~ComplexFieldNames() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
@@ -331,6 +358,15 @@ CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
 CustomFieldNames& CustomFieldNames::operator=(const CustomFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomFieldNames::CustomFieldNames(std::string __message) {
+  internal_error_message = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+CustomFieldNames::~CustomFieldNames() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
@@ -439,6 +475,16 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrim
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) :
+      error_code(0) {
+  message = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+ExceptionWithPrimitiveField::~ExceptionWithPrimitiveField() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
     message(std::move(other.message)),
     error_code(std::move(other.error_code)),
@@ -545,6 +591,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(const Banal&) = default;
 Banal& Banal::operator=(const Banal&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Banal::Banal() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+Banal::~Banal() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(Banal&& other) noexcept { (void)other; }
 Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {

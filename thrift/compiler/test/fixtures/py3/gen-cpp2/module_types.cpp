@@ -106,6 +106,15 @@ SimpleException::SimpleException(const SimpleException&) = default;
 SimpleException& SimpleException::operator=(const SimpleException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleException::SimpleException() :
+      err_code(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+SimpleException::~SimpleException() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
     err_code(std::move(other.err_code)),
     __isset(other.__isset) {}

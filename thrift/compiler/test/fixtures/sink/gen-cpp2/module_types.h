@@ -549,8 +549,8 @@ class InitialException final : public apache::thrift::TException {
 
  public:
 
-  InitialException() {
-  }
+  InitialException();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg);
@@ -563,6 +563,9 @@ class InitialException final : public apache::thrift::TException {
   InitialException& operator=(InitialException&&) noexcept;
   InitialException& operator=(const InitialException& src);
   void __clear();
+
+  ~InitialException();
+
  private:
   ::std::string reason;
 
@@ -670,8 +673,8 @@ class SinkException1 final : public apache::thrift::TException {
 
  public:
 
-  SinkException1() {
-  }
+  SinkException1();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg);
@@ -684,6 +687,9 @@ class SinkException1 final : public apache::thrift::TException {
   SinkException1& operator=(SinkException1&&) noexcept;
   SinkException1& operator=(const SinkException1& src);
   void __clear();
+
+  ~SinkException1();
+
  private:
   ::std::string reason;
 
@@ -791,9 +797,8 @@ class SinkException2 final : public apache::thrift::TException {
 
  public:
 
-  SinkException2() :
-      reason(0) {
-  }
+  SinkException2();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg);
@@ -806,6 +811,9 @@ class SinkException2 final : public apache::thrift::TException {
   SinkException2& operator=(SinkException2&&) noexcept;
   SinkException2& operator=(const SinkException2& src);
   void __clear();
+
+  ~SinkException2();
+
  private:
   ::std::int64_t reason;
 

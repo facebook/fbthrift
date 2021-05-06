@@ -520,8 +520,8 @@ class Bang final : public apache::thrift::TException {
 
  public:
 
-  Bang() {
-  }
+  Bang();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Bang(apache::thrift::FragileConstructor, ::std::string message__arg);
@@ -534,6 +534,9 @@ class Bang final : public apache::thrift::TException {
   Bang& operator=(Bang&&) noexcept;
   Bang& operator=(const Bang& src);
   void __clear();
+
+  ~Bang();
+
  private:
   ::std::string message;
 

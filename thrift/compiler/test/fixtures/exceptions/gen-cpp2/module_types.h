@@ -109,14 +109,8 @@ class Fiery final : public apache::thrift::TException {
 
  public:
 
-  Fiery() {
-  }
+  explicit Fiery(std::string __message = {});
 
-  explicit Fiery(const std::string& __message) :
-      message(__message) {}
-
-  explicit Fiery(std::string&& __message) :
-      message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Fiery(apache::thrift::FragileConstructor, ::std::string message__arg);
@@ -129,6 +123,9 @@ class Fiery final : public apache::thrift::TException {
   Fiery& operator=(Fiery&&) noexcept;
   Fiery& operator=(const Fiery& src);
   void __clear();
+
+  ~Fiery();
+
  public:
   ::std::string message;
 
@@ -231,14 +228,8 @@ class Serious final : public apache::thrift::TException {
 
  public:
 
-  Serious() {
-  }
+  explicit Serious(std::string __message = {});
 
-  explicit Serious(const std::string& __message) :
-      sonnet(__message) {}
-
-  explicit Serious(std::string&& __message) :
-      sonnet(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg);
@@ -251,6 +242,9 @@ class Serious final : public apache::thrift::TException {
   Serious& operator=(Serious&&) noexcept;
   Serious& operator=(const Serious& src);
   void __clear();
+
+  ~Serious();
+
  private:
   ::std::string sonnet;
 
@@ -359,14 +353,8 @@ class ComplexFieldNames final : public apache::thrift::TException {
 
  public:
 
-  ComplexFieldNames() {
-  }
+  explicit ComplexFieldNames(std::string __message = {});
 
-  explicit ComplexFieldNames(const std::string& __message) :
-      internal_error_message(__message) {}
-
-  explicit ComplexFieldNames(std::string&& __message) :
-      internal_error_message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
@@ -379,6 +367,9 @@ class ComplexFieldNames final : public apache::thrift::TException {
   ComplexFieldNames& operator=(ComplexFieldNames&&) noexcept;
   ComplexFieldNames& operator=(const ComplexFieldNames& src);
   void __clear();
+
+  ~ComplexFieldNames();
+
  private:
   ::std::string error_message;
  private:
@@ -524,14 +515,8 @@ class CustomFieldNames final : public apache::thrift::TException {
 
  public:
 
-  CustomFieldNames() {
-  }
+  explicit CustomFieldNames(std::string __message = {});
 
-  explicit CustomFieldNames(const std::string& __message) :
-      internal_error_message(__message) {}
-
-  explicit CustomFieldNames(std::string&& __message) :
-      internal_error_message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
@@ -544,6 +529,9 @@ class CustomFieldNames final : public apache::thrift::TException {
   CustomFieldNames& operator=(CustomFieldNames&&) noexcept;
   CustomFieldNames& operator=(const CustomFieldNames& src);
   void __clear();
+
+  ~CustomFieldNames();
+
  private:
   ::std::string error_message;
  private:
@@ -689,15 +677,8 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
 
  public:
 
-  ExceptionWithPrimitiveField() :
-      error_code(0) {
-  }
+  explicit ExceptionWithPrimitiveField(std::string __message = {});
 
-  explicit ExceptionWithPrimitiveField(const std::string& __message) :
-      message(__message) {}
-
-  explicit ExceptionWithPrimitiveField(std::string&& __message) :
-      message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg);
@@ -710,6 +691,9 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
   ExceptionWithPrimitiveField& operator=(ExceptionWithPrimitiveField&&) noexcept;
   ExceptionWithPrimitiveField& operator=(const ExceptionWithPrimitiveField& src);
   void __clear();
+
+  ~ExceptionWithPrimitiveField();
+
  private:
   ::std::string message;
  private:
@@ -850,8 +834,8 @@ class Banal final : public apache::thrift::TException {
 
  public:
 
-  Banal() {
-  }
+  Banal();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Banal(apache::thrift::FragileConstructor);
@@ -864,6 +848,9 @@ class Banal final : public apache::thrift::TException {
   Banal& operator=(Banal&&) noexcept;
   Banal& operator=(const Banal& src);
   void __clear();
+
+  ~Banal();
+
 
   bool operator==(const Banal&) const;
   bool operator<(const Banal&) const;

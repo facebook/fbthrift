@@ -424,6 +424,14 @@ InitialException::InitialException(const InitialException&) = default;
 InitialException& InitialException::operator=(const InitialException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+InitialException::InitialException() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+InitialException::~InitialException() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 InitialException::InitialException(InitialException&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
@@ -520,6 +528,14 @@ SinkException1::SinkException1(const SinkException1&) = default;
 SinkException1& SinkException1::operator=(const SinkException1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException1::SinkException1() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+SinkException1::~SinkException1() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException1::SinkException1(SinkException1&& other) noexcept  :
     reason(std::move(other.reason)),
     __isset(other.__isset) {}
@@ -615,6 +631,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(const SinkException2&) = default;
 SinkException2& SinkException2::operator=(const SinkException2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SinkException2::SinkException2() :
+      reason(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+SinkException2::~SinkException2() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2(SinkException2&& other) noexcept  :
     reason(std::move(other.reason)),

@@ -265,9 +265,8 @@ class SimpleException final : public apache::thrift::TException {
 
  public:
 
-  SimpleException() :
-      err_code(0) {
-  }
+  SimpleException();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg);
@@ -280,6 +279,9 @@ class SimpleException final : public apache::thrift::TException {
   SimpleException& operator=(SimpleException&&) noexcept;
   SimpleException& operator=(const SimpleException& src);
   void __clear();
+
+  ~SimpleException();
+
  private:
   ::std::int16_t err_code;
 

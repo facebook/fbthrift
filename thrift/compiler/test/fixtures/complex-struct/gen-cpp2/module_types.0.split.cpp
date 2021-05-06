@@ -891,6 +891,15 @@ reqXcep::reqXcep(const reqXcep&) = default;
 reqXcep& reqXcep::operator=(const reqXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep() :
+      errorCode(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+reqXcep::~reqXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(reqXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)) {}

@@ -1170,13 +1170,14 @@ AnException::AnException(const AnException&) = default;
 AnException& AnException::operator=(const AnException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnException::AnException() :
+AnException::AnException(std::string __message) :
       code(0),
       req_code(0),
       exception_list(std::initializer_list<::std::int32_t>{1,
   2,
   3}),
       enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {
+  message2 = std::move(__message);
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1576,6 +1577,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(const AnotherException&) = default;
 AnotherException& AnotherException::operator=(const AnotherException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnotherException::AnotherException() :
+      code(0),
+      req_code(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+AnotherException::~AnotherException() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(AnotherException&& other) noexcept  :
     code(std::move(other.code)),

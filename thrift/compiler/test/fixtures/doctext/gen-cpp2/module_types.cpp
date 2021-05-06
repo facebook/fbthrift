@@ -264,6 +264,14 @@ Bang::Bang(const Bang&) = default;
 Bang& Bang::operator=(const Bang&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Bang::Bang() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+Bang::~Bang() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(Bang&& other) noexcept  :
     message(std::move(other.message)),
     __isset(other.__isset) {}

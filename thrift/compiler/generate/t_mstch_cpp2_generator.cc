@@ -859,7 +859,10 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node cpp_virtual() {
     return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
   }
-  mstch::node message() { return strct_->get_annotation("message"); }
+  mstch::node message() {
+    return strct_->is_exception() ? strct_->get_annotation("message")
+                                  : mstch::node();
+  }
   mstch::node cpp_allocator() {
     return strct_->get_annotation("cpp.allocator");
   }
@@ -912,6 +915,9 @@ class mstch_cpp2_struct : public mstch_struct {
     // enough members and at least one has a non-trivial destructor
     // (involving at least a branch and a likely deallocation).
     // TODO(ott): Support unions.
+    if (strct_->is_exception()) {
+      return true;
+    }
     constexpr size_t kLargeStructThreshold = 4;
     if (strct_->fields().size() <= kLargeStructThreshold) {
       return false;

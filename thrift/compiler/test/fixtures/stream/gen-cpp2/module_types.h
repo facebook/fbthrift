@@ -64,8 +64,8 @@ class FooEx final : public apache::thrift::TException {
 
  public:
 
-  FooEx() {
-  }
+  FooEx();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FooEx(apache::thrift::FragileConstructor);
@@ -78,6 +78,9 @@ class FooEx final : public apache::thrift::TException {
   FooEx& operator=(FooEx&&) noexcept;
   FooEx& operator=(const FooEx& src);
   void __clear();
+
+  ~FooEx();
+
 
   bool operator==(const FooEx&) const;
   bool operator<(const FooEx&) const;

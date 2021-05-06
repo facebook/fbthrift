@@ -778,6 +778,14 @@ MyException::MyException(const MyException&) = default;
 MyException& MyException::operator=(const MyException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyException::MyException() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+MyException::~MyException() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     context(std::move(other.context)),
     __isset(other.__isset) {}

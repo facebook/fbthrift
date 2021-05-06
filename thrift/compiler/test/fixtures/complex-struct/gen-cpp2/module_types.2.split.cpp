@@ -1036,6 +1036,14 @@ emptyXcep::emptyXcep(const emptyXcep&) = default;
 emptyXcep& emptyXcep::operator=(const emptyXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+emptyXcep::emptyXcep() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+emptyXcep::~emptyXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
 emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
     return *this;

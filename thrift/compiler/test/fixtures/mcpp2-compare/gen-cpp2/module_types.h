@@ -4160,14 +4160,8 @@ class AnException final : public apache::thrift::TException {
 
  public:
 
-  AnException();
+  explicit AnException(std::string __message = {});
 
-
-  explicit AnException(const std::string& __message) :
-      message2(__message) {}
-
-  explicit AnException(std::string&& __message) :
-      message2(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
@@ -4741,10 +4735,8 @@ class AnotherException : public apache::thrift::TException {
 
  public:
 
-  AnotherException() :
-      code(0),
-      req_code(0) {
-  }
+  AnotherException();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg);
@@ -4758,7 +4750,7 @@ class AnotherException : public apache::thrift::TException {
   AnotherException& operator=(const AnotherException& src);
   void __clear();
 
-  virtual ~AnotherException() {}
+  virtual ~AnotherException();
 
  private:
   ::std::int32_t code;

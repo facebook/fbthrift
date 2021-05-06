@@ -1009,6 +1009,15 @@ optXcep::optXcep(const optXcep&) = default;
 optXcep& optXcep::operator=(const optXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+optXcep::optXcep() :
+      errorCode(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+optXcep::~optXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(optXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)),
