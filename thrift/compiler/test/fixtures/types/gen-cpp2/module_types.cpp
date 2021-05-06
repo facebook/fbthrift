@@ -1843,7 +1843,7 @@ ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.ForwardUsageStruct = srcObj.__isset.ForwardUsageStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  ForwardUsageByRef = ::apache::thrift::detail::st::copy_unique<
+  ForwardUsageByRef = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
 }
 

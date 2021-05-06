@@ -207,7 +207,7 @@ void TccStructTraits<::py3::simple::OptionalRefStruct>::translateFieldName(
 namespace py3 { namespace simple {
 
 OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
-  optional_blob = ::apache::thrift::detail::st::copy_unique<
+  optional_blob = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.optional_blob);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.optional_blob = srcObj.__isset.optional_blob;

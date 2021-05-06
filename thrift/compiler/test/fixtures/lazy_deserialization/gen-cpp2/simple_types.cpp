@@ -40,7 +40,7 @@ Foo::Foo(const Foo& srcObj) {
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_isDeserialized_.field1.store(srcObj.__fbthrift_isDeserialized_.field1.load(std::memory_order::memory_order_relaxed),
                                                       std::memory_order::memory_order_relaxed);
-  field1 = ::apache::thrift::detail::st::copy_unique<
+  field1 = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::string>(srcObj.field1);
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

@@ -2651,7 +2651,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.MyIncludedStruct = srcObj.__isset.MyIncludedStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  ARefField = ::apache::thrift::detail::st::copy_unique<
+  ARefField = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ARefField);
   ARequiredField = srcObj.ARequiredField;
 }
@@ -3612,7 +3612,7 @@ ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& src
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.map_of_iobufs = srcObj.__isset.map_of_iobufs;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_unique<
+  map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.map_of_iobuf_ptrs);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.map_of_iobuf_ptrs = srcObj.__isset.map_of_iobuf_ptrs;

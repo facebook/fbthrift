@@ -34,69 +34,72 @@ namespace detail {
 
 namespace st {
 
-/**
- * Specializations of `copy_unique_impl` encapsulate copying methods for
- * containers that transitively refer to a `unique_ptr`.
- * e.g. `list<unique_ptr<IOBuf>>`, `map<i32, IOBufPtr>`.
- **/
-template <typename TypeClass, typename T>
-struct copy_unique_impl;
+//  copy_field_fn
+//  copy_field
+//
+//  Returns a copy of a field. Used by structure copy-cosntructors.
+//
+//  Transitively copies through unique-ptr's, which are not copy-constructible.
+template <typename TypeClass>
+struct copy_field_fn;
+template <typename TypeClass>
+FOLLY_INLINE_VARIABLE constexpr copy_field_fn<TypeClass> copy_field{};
 
-// Handle containers by delegating to specializations of `copy_unique_impl`.
-template <typename TypeClass, typename T>
-T copy_unique(T const& t) {
-  return copy_unique_impl<TypeClass, T>{}(t);
-}
-
-// Handle field-level annotations such as `cpp.ref`, `cpp.ref_type = "unique"`,
-// as well as `cpp.type` that refers to `unique_ptr`.
-template <typename TypeClass, typename T>
-std::unique_ptr<T> copy_unique(std::unique_ptr<T> const& p) {
-  return p ? std::make_unique<T>(
-                 ::apache::thrift::detail::st::copy_unique<TypeClass>(*p))
-           : nullptr;
-}
-
-template <typename TypeClass, typename T>
-struct copy_unique_impl {
-  T operator()(T const& t) const { return t; }
+template <typename>
+struct copy_field_rec {
+  template <typename T>
+  T operator()(T const& t) const {
+    return t;
+  }
 };
 
-template <typename ElemClass, typename T>
-struct copy_unique_impl<type_class::list<ElemClass>, T> {
+template <typename ValueTypeClass>
+struct copy_field_rec<type_class::list<ValueTypeClass>> {
+  template <typename T>
   T operator()(T const& t) const {
     T result;
     for (auto const& e : t) {
-      result.push_back(::apache::thrift::detail::st::copy_unique<ElemClass>(e));
+      result.push_back(copy_field<ValueTypeClass>(e));
     }
     return result;
   }
 };
 
-template <typename ElemClass, typename T>
-struct copy_unique_impl<type_class::set<ElemClass>, T> {
+template <typename ValueTypeClass>
+struct copy_field_rec<type_class::set<ValueTypeClass>> {
+  template <typename T>
   T operator()(T const& t) const {
     T result;
     for (auto const& e : t) {
-      result.emplace_hint(
-          result.end(),
-          ::apache::thrift::detail::st::copy_unique<ElemClass>(e));
+      result.emplace_hint(result.end(), copy_field<ValueTypeClass>(e));
     }
     return result;
   }
 };
 
-template <typename KeyClass, typename ValClass, typename T>
-struct copy_unique_impl<type_class::map<KeyClass, ValClass>, T> {
-  T operator()(T const& m) const {
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct copy_field_rec<type_class::map<KeyTypeClass, MappedTypeClass>> {
+  template <typename T>
+  T operator()(T const& t) const {
     T result;
-    for (auto const& [k, v] : m) {
+    for (auto const& pair : t) {
       result.emplace_hint(
           result.end(),
-          ::apache::thrift::detail::st::copy_unique<KeyClass>(k),
-          ::apache::thrift::detail::st::copy_unique<ValClass>(v));
+          copy_field<KeyTypeClass>(pair.first),
+          copy_field<MappedTypeClass>(pair.second));
     }
     return result;
+  }
+};
+
+template <typename TypeClass>
+struct copy_field_fn : copy_field_rec<TypeClass> {
+  using rec = copy_field_rec<TypeClass>;
+
+  using rec::operator();
+  template <typename T>
+  std::unique_ptr<T> operator()(std::unique_ptr<T> const& t) const {
+    return !t ? nullptr : std::make_unique<T>((*this)(*t));
   }
 };
 
