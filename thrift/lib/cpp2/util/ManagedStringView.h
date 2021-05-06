@@ -41,8 +41,6 @@ class ManagedStringView {
     return ManagedStringView{view, FromStaticTag{}};
   }
 
-  /* implicit */ operator std::string_view() const { return view(); }
-
   std::string str() const& { return is_owned() ? string_ : std::string{view_}; }
   std::string str() && {
     return is_owned() ? std::move(string_) : std::string{view_};

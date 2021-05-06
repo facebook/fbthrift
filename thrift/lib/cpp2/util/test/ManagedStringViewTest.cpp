@@ -73,4 +73,7 @@ TEST(ManagedStringViewTest, Conversions) {
   // Expected to be moved to s2.
   EXPECT_EQ(wc.size(), 0);
   EXPECT_EQ(s2.size(), 3);
+
+  static_assert(!std::is_convertible_v<ManagedStringView, std::string_view>);
+  static_assert(!std::is_convertible_v<ManagedStringView, std::string>);
 }
