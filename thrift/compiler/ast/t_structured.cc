@@ -16,7 +16,7 @@
 
 #include <stdexcept>
 
-#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_structured.h>
 
 namespace apache {
 namespace thrift {
@@ -38,7 +38,7 @@ auto find_by_id(const C& fields_id_order, const t_field& field) {
 
 } // namespace
 
-bool t_struct::try_append_field(std::unique_ptr<t_field>&& elem) {
+bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
   auto elem_ptr = elem.get();
 
   auto bounds = find_by_id(fields_id_order_, *elem_ptr);
@@ -65,13 +65,13 @@ bool t_struct::try_append_field(std::unique_ptr<t_field>&& elem) {
   return true;
 }
 
-const t_field* t_struct::get_field_by_id(int32_t id) const {
+const t_field* t_structured::get_field_by_id(int32_t id) const {
   t_field dummy(nullptr, {}, id);
   auto bounds = find_by_id(fields_id_order_, dummy);
   return bounds.first == bounds.second ? nullptr : *bounds.first;
 }
 
-void t_struct::append(std::unique_ptr<t_field> elem) {
+void t_structured::append(std::unique_ptr<t_field> elem) {
   if (try_append_field(std::move(elem))) {
     return;
   }

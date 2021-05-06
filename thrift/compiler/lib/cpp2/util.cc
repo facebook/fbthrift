@@ -336,10 +336,10 @@ std::string get_gen_type_class_(
     return tc + "map<" + key_tc + ", " + val_tc + ">";
   } else if (type.is_union()) {
     return tc + "variant";
-  } else if (type.is_struct() || type.is_xception()) {
+  } else if (type.is_struct() || type.is_exception()) {
     return tc + "structure";
   } else {
-    return tc + "unknown";
+    throw std::runtime_error("unknown type class for: " + type.get_full_name());
   }
 }
 

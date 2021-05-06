@@ -27,9 +27,10 @@ class t_program;
 /**
  * The exceptions thrown by a t_function, t_sink, etc.
  */
+// TODO(afuller): Inherit from t_structured instead.
 class t_throws : public t_struct {
  public:
-  t_throws() = default;
+  t_throws() : t_struct(nullptr, "") {}
 
   static const t_throws* no_exceptions() {
     static const auto* kEmpty = new t_throws;
@@ -42,10 +43,10 @@ class t_throws : public t_struct {
   }
 
  private:
-  friend class t_struct;
+  friend class t_structured;
   t_throws* clone_DO_NOT_USE() const override {
     auto clone = std::make_unique<t_throws>();
-    cloneStruct(clone.get());
+    clone_structured(clone.get());
     return clone.release();
   }
 };

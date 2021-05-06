@@ -408,7 +408,7 @@ class parsing_driver {
       std::unique_ptr<t_def_attrs> attrs,
       std::unique_ptr<t_annotations> annotations);
   void finish_node(
-      t_struct* node,
+      t_structured* node,
       LineType lineType,
       std::unique_ptr<t_def_attrs> attrs,
       std::unique_ptr<t_field_list> fields,
@@ -508,7 +508,7 @@ class parsing_driver {
   // Returns the starting line number.
   int pop_node(LineType lineType);
 
-  void append_fields(t_struct& tstruct, t_field_list&& fields);
+  void append_fields(t_structured& tstruct, t_field_list&& fields);
 
   // Returns true if the node should be
   // added to the program. Otherwise, the driver itself

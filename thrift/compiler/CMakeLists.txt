@@ -42,7 +42,7 @@ add_library(
   ast/t_paramlist.cc
   ast/t_program.cc
   ast/t_scope.cc
-  ast/t_struct.cc
+  ast/t_structured.cc
   ast/t_type.cc
   ast/t_typedef.cc
   ast/visitor.cc

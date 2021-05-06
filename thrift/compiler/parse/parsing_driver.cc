@@ -612,7 +612,7 @@ void parsing_driver::finish_node(
 }
 
 void parsing_driver::finish_node(
-    t_struct* node,
+    t_structured* node,
     LineType lineType,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_field_list> fields,
@@ -654,7 +654,8 @@ std::unique_ptr<t_throws> parsing_driver::new_throws(
   return result;
 }
 
-void parsing_driver::append_fields(t_struct& tstruct, t_field_list&& fields) {
+void parsing_driver::append_fields(
+    t_structured& tstruct, t_field_list&& fields) {
   for (auto& field : fields) {
     if (!tstruct.try_append_field(std::move(field))) {
       failure(

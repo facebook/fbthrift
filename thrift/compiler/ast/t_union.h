@@ -22,17 +22,21 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+// TODO(afuller): Inherit from t_structured instead.
 class t_union : public t_struct {
  public:
   using t_struct::t_struct;
 
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
   bool is_union() const override { return true; }
 
  private:
   friend class t_struct;
   t_union* clone_DO_NOT_USE() const override {
     auto clone = std::make_unique<t_union>(program_, name_);
-    cloneStruct(clone.get());
+    clone_structured(clone.get());
     return clone.release();
   }
 };
