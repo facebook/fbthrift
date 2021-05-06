@@ -249,7 +249,7 @@
             "returnType" : "void",
             "lineno" : 55
           }
-        },
+        }
       },
       "DbMixedStackArguments" : {
         "name" : "DbMixedStackArguments",
