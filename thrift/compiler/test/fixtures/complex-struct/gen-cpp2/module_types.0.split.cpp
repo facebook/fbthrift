@@ -102,6 +102,7 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileCo
   __isset.myFloatField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructFloatFieldThrowExp::__clear() {
   // clear all fields
   this->myLongField = 0;
@@ -225,6 +226,7 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t ag
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SimpleStruct::__clear() {
   // clear all fields
   this->age = 60LL;
@@ -310,6 +312,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyDataItem::__clear() {
   // clear all fields
 }
@@ -469,6 +472,7 @@ ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::s
   __isset.mapKeyListValSet = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexNestedStruct::__clear() {
   // clear all fields
   this->setOfSetOfInt.clear();
@@ -904,6 +908,7 @@ reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void reqXcep::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

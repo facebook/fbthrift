@@ -42,6 +42,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
   __isset.bar = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Foo::__clear() {
   // clear all fields
   this->bar = 0;

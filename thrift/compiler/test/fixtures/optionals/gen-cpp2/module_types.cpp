@@ -81,6 +81,7 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
   __isset.alpha = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Color::__clear() {
   // clear all fields
   this->red = 0;
@@ -225,6 +226,7 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, :
   __isset.hasAC = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Vehicle::__clear() {
   // clear all fields
   this->color.__clear();
@@ -420,6 +422,7 @@ Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::s
   __isset.vehicles = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Person::__clear() {
   // clear all fields
   this->id = 0;

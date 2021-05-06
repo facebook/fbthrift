@@ -426,6 +426,7 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
   __isset.typedefValue = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Val::__clear() {
   // clear all fields
   this->strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -774,6 +775,7 @@ NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::
   __isset.num = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NonCopyableStruct::__clear() {
   // clear all fields
   this->num = 0;

@@ -61,6 +61,7 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstr
   __isset.mapListOfFloats = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
   this->myLongField = 0;
@@ -303,6 +304,7 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
   __isset.enumMapDFset = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void defaultStruct::__clear() {
   // clear all fields
   this->myLongDFset = 10LL;
@@ -888,6 +890,7 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
   __isset.binaryTestBuffer = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TypeRemapped::__clear() {
   // clear all fields
   this->lsMap.clear();
@@ -1027,6 +1030,7 @@ optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
   __isset.errorCode = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void optXcep::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

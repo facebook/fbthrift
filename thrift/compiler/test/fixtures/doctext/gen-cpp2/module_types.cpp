@@ -75,6 +75,7 @@ A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
   __isset.useless_field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void A::__clear() {
   // clear all fields
   this->useless_field = 0;
@@ -280,6 +281,7 @@ Bang::Bang(apache::thrift::FragileConstructor, ::std::string message__arg) :
   __isset.message = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Bang::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

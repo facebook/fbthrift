@@ -102,6 +102,7 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
   __isset.tags = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SomeStruct::__clear() {
   // clear all fields
   this->reasonable =  ::cpp2::Metasyntactic::FOO;

@@ -183,6 +183,7 @@ TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std
   __isset.fieldE = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialTypesStruct::__clear() {
   // clear all fields
   this->fieldA = 0;
@@ -395,6 +396,7 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
   __isset.fieldH = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ContainerStruct::__clear() {
   // clear all fields
   this->fieldA.clear();

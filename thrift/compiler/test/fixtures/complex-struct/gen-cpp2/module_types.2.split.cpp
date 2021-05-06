@@ -180,6 +180,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.mListList = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->MyIntField = 0;
@@ -704,6 +705,7 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
   __isset.myMapListOfTypeDef = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructTypeDef::__clear() {
   // clear all fields
   this->myLongField = 0;
@@ -1044,6 +1046,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void emptyXcep::__clear() {
   // clear all fields
 }
@@ -1156,6 +1159,7 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
   __isset.lsMap = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void complexException::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

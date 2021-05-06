@@ -90,6 +90,7 @@ MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstr
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructNestedAnnotation::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -214,6 +215,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
   __isset.empty_annotations = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->majorVer = 0;
@@ -353,6 +355,7 @@ SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id
   __isset.password = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SecretStruct::__clear() {
   // clear all fields
   this->id = 0;

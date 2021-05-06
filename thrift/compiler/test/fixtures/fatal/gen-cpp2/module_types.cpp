@@ -565,6 +565,7 @@ structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structA::__clear() {
   // clear all fields
   this->a = 0;
@@ -798,6 +799,7 @@ structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg)
   __isset.d = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structB::__clear() {
   // clear all fields
   this->c = 0;
@@ -1030,6 +1032,7 @@ structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.o3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structC::__clear() {
   // clear all fields
   this->a = 0;
@@ -1710,6 +1713,7 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.field5 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct1::__clear() {
   // clear all fields
   this->field0 = 0;
@@ -1920,6 +1924,7 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
   __isset.fieldG = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct2::__clear() {
   // clear all fields
   this->fieldA = 0;
@@ -2202,6 +2207,7 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
   __isset.fieldR = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct3::__clear() {
   // clear all fields
   this->fieldA = 0;
@@ -2667,6 +2673,7 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.field2 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct4::__clear() {
   // clear all fields
   this->field0 = 0;
@@ -2833,6 +2840,7 @@ struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.field4 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct5::__clear() {
   // clear all fields
   this->field0 = 0;
@@ -3000,6 +3008,7 @@ struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string b
   __isset.bi = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_binary::__clear() {
   // clear all fields
   this->bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -3084,6 +3093,7 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
   __isset.i_a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void dep_A_struct::__clear() {
   // clear all fields
   this->b.__clear();
@@ -3224,6 +3234,7 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
   __isset.i_a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void dep_B_struct::__clear() {
   // clear all fields
   this->b.__clear();
@@ -3360,6 +3371,7 @@ annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) 
   __isset.a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void annotated::__clear() {
   // clear all fields
   this->a = 0;
@@ -3786,6 +3798,7 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
   __isset.fields = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_with_special_names::__clear() {
   // clear all fields
   this->get = 0;
@@ -4125,6 +4138,7 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
   __isset.phrase = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_with_indirections::__clear() {
   // clear all fields
   this->real = 0;

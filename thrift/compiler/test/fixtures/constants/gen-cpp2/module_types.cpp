@@ -167,6 +167,7 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
   __isset.compensation = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Internship::__clear() {
   // clear all fields
   this->weeks = 0;
@@ -270,6 +271,7 @@ Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std:
     min(std::move(min__arg)),
     max(std::move(max__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Range::__clear() {
   // clear all fields
   this->min = 0;
@@ -371,6 +373,7 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct1::__clear() {
   // clear all fields
   this->a = 1234567;
@@ -486,6 +489,7 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.d = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct2::__clear() {
   // clear all fields
   this->a = 0;
@@ -641,6 +645,7 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
   __isset.c = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct3::__clear() {
   // clear all fields
   this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -780,6 +785,7 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, doub
   __isset.c = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct4::__clear() {
   // clear all fields
   this->a = 0;

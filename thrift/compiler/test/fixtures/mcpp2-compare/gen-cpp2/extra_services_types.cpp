@@ -127,6 +127,7 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
   __isset.opt_fieldE = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void containerStruct2::__clear() {
   // clear all fields
   this->fieldA = 0;

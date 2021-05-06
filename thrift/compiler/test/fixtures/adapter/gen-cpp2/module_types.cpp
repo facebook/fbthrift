@@ -92,6 +92,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   __isset.optionalMapField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Foo::__clear() {
   // clear all fields
   this->intField = my::Adapter1::fromThrift(0);
@@ -279,6 +280,7 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   __isset.optionalStructListField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Bar::__clear() {
   // clear all fields
   this->structField.__clear();

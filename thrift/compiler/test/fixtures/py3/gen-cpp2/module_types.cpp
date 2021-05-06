@@ -123,6 +123,7 @@ SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int1
   __isset.err_code = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SimpleException::__clear() {
   // clear all fields
   this->err_code = 0;
@@ -228,6 +229,7 @@ OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::
   __isset.optional_blob = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void OptionalRefStruct::__clear() {
   // clear all fields
   this->optional_blob = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
@@ -361,6 +363,7 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
   __isset.hidden_field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SimpleStruct::__clear() {
   // clear all fields
   this->is_on = 0;
@@ -554,6 +557,7 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
   __isset.bytes_with_cpp_type = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexStruct::__clear() {
   // clear all fields
   this->structOne.__clear();
@@ -832,6 +836,7 @@ BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::
   __isset.u = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void BinaryUnionStruct::__clear() {
   // clear all fields
   this->u.__clear();

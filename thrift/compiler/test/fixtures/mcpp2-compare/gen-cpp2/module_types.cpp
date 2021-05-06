@@ -171,6 +171,7 @@ namespace some { namespace valid { namespace ns {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Empty::__clear() {
   // clear all fields
 }
@@ -243,6 +244,7 @@ ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t 
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ASimpleStruct::__clear() {
   // clear all fields
   this->boolField = 0;
@@ -317,6 +319,7 @@ ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor,
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ASimpleStructNoexcept::__clear() {
   // clear all fields
   this->boolField = 0;
@@ -461,6 +464,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
   __isset.MyMapEnumAndInt = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->MyBoolField = 0;
@@ -1250,6 +1254,7 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
   __isset.a_union_typedef_list = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnException::__clear() {
   // clear all fields
   this->code = 0;
@@ -1596,6 +1601,7 @@ AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::in
   __isset.message = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnotherException::__clear() {
   // clear all fields
   this->code = 0;
@@ -1835,6 +1841,7 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
   __isset.fieldSD = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void containerStruct::__clear() {
   // clear all fields
   this->fieldA = 0;
@@ -2672,6 +2679,7 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
   __isset.MyIncludedStruct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyIncludedStruct::__clear() {
   // clear all fields
   this->MyIncludedInt = 42LL;
@@ -2927,6 +2935,7 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::val
   __isset.struct_struct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnnotatedStruct::__clear() {
   // clear all fields
   this->no_annotation.__clear();
@@ -3627,6 +3636,7 @@ ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructo
   __isset.map_of_iobuf_ptrs = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexContainerStruct::__clear() {
   // clear all fields
   this->map_of_iobufs.clear();
@@ -3737,6 +3747,7 @@ FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__a
   __isset.doubleField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void FloatStruct::__clear() {
   // clear all fields
   this->floatField = 0;
@@ -3941,6 +3952,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :
     intField(std::move(intField__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllRequiredNoExceptMoveCtrStruct::__clear() {
   // clear all fields
   this->intField = 0;

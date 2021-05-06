@@ -94,6 +94,7 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structured_annotation_inline::__clear() {
   // clear all fields
   this->count = 0;
@@ -197,6 +198,7 @@ structured_annotation_with_default::structured_annotation_with_default(apache::t
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structured_annotation_with_default::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
@@ -277,6 +279,7 @@ structured_annotation_forward::structured_annotation_forward(apache::thrift::Fra
   __isset.count = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structured_annotation_forward::__clear() {
   // clear all fields
   this->count = 0;
@@ -380,6 +383,7 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
   __isset.forward = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structured_annotation_recursive::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -535,6 +539,7 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
   __isset.nest = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structured_annotation_nested::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -670,6 +675,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
   __isset.annotated_nested = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->annotated_field = 0;
@@ -789,6 +795,7 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string conte
   __isset.context = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyException::__clear() {
   // clear all fields
   this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

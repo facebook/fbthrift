@@ -57,6 +57,7 @@ Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
   __isset.field1 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin1::__clear() {
   // clear all fields
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -156,6 +157,7 @@ Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std
   __isset.field2 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin2::__clear() {
   // clear all fields
   this->m1.__clear();
@@ -279,6 +281,7 @@ Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3_
   __isset.field3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin3Base::__clear() {
   // clear all fields
   this->field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -382,6 +385,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::
   __isset.m3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Foo::__clear() {
   // clear all fields
   this->field4 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

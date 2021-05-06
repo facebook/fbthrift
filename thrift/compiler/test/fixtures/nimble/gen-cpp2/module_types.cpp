@@ -47,6 +47,7 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
   __isset.isTrue = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void BasicTypes::__clear() {
   // clear all fields
   this->first = 0;

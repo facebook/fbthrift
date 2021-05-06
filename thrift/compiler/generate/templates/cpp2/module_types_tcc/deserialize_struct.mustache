@@ -150,36 +150,6 @@ _skip:
     }
   }
 }
-<%#struct:lazy_fields?%>
-<%#struct:fields%>
-<%#field:type%>
-<%#field:lazy?%>
-const <%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() const {
-
-  if (__fbthrift_isDeserialized_.<%field:cpp_name%>) {
-    return <%field:cpp_name%>;
-  }
-
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.<%field:cpp_name%>) {
-    ::apache::thrift::CompactProtocolReader reader;
-    reader.setInput(&__fbthrift_serializedData_.<%field:cpp_name%>);
-    ::apache::thrift::CompactProtocolReader *iprot = &reader;
-    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
-    <% > module_types_tcc/deserialize_field%>
-    __fbthrift_isDeserialized_.<%field:cpp_name%> = true;
-  }
-  return <%field:cpp_name%>;
-}
-
-<%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>() {
-  std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
-  return <%field:cpp_name%>;
-}
-<%/field:lazy?%>
-<%/field:type%>
-<%/struct:fields%>
-<%/struct:lazy_fields?%>
 <%/program:tablebased?%>
 <%#program:tablebased?%>
 template <class Protocol_>

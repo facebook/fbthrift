@@ -143,6 +143,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstr
   __isset.myBigEnum = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->myEnum = static_cast< ::test::fixtures::enumstrict::MyEnum>(0);

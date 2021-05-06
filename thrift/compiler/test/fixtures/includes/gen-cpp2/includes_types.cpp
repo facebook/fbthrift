@@ -44,6 +44,7 @@ Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.MyTransitiveField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Included::__clear() {
   // clear all fields
   this->MyIntField = 0LL;

@@ -77,6 +77,7 @@ SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, 
   __isset.small_B = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SmallStruct::__clear() {
   // clear all fields
   this->small_A = 0;
@@ -369,6 +370,7 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
   __isset.fieldQ = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void containerStruct::__clear() {
   // clear all fields
   this->fieldA = 0;

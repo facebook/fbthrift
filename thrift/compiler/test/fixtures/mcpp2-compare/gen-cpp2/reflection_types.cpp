@@ -42,6 +42,7 @@ ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::in
   __isset.fieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ReflectionStruct::__clear() {
   // clear all fields
   this->fieldA = 5;

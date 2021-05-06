@@ -207,6 +207,7 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA
   __isset.fieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SomeStruct::__clear() {
   // clear all fields
   this->fieldA = 0;

@@ -61,6 +61,7 @@ IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field
   __isset.strField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void IncludedA::__clear() {
   // clear all fields
   this->i32Field = 0;

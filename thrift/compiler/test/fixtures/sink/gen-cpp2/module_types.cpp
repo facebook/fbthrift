@@ -57,6 +57,7 @@ InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::stri
   __isset.content = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void InitialResponse::__clear() {
   // clear all fields
   this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -152,6 +153,7 @@ FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string c
   __isset.content = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void FinalResponse::__clear() {
   // clear all fields
   this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -247,6 +249,7 @@ SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string conte
   __isset.content = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SinkPayload::__clear() {
   // clear all fields
   this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -342,6 +345,7 @@ CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileCons
   __isset.sink = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void CompatibleWithKeywordSink::__clear() {
   // clear all fields
   this->sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -437,6 +441,7 @@ InitialException::InitialException(apache::thrift::FragileConstructor, ::std::st
   __isset.reason = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void InitialException::__clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -532,6 +537,7 @@ SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string
   __isset.reason = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SinkException1::__clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -627,6 +633,7 @@ SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_
   __isset.reason = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SinkException2::__clear() {
   // clear all fields
   this->reason = 0;

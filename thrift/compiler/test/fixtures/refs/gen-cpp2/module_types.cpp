@@ -276,6 +276,7 @@ MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::in
     enum_value(std::move(enum_value__arg)),
     req_enum_value(std::move(req_enum_value__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyField::__clear() {
   // clear all fields
   this->opt_value = 0;
@@ -479,6 +480,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2:
     ref(std::move(ref__arg)),
     req_ref(std::move(req_ref__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->opt_ref.reset();
@@ -669,6 +671,7 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
   __isset.f = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithUnion::__clear() {
   // clear all fields
   if (this->u) this->u->__clear();
@@ -832,6 +835,7 @@ RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vect
   __isset.mes = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void RecursiveStruct::__clear() {
   // clear all fields
   this->mes.clear();
@@ -976,6 +980,7 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, :
     set_ref_shared(std::move(set_ref_shared__arg)),
     list_ref_shared_const(std::move(list_ref_shared_const__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithContainers::__clear() {
   // clear all fields
   this->list_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
@@ -1168,6 +1173,7 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
     shared_const(std::move(shared_const__arg)),
     req_shared_const(std::move(req_shared_const__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithSharedConst::__clear() {
   // clear all fields
   this->opt_shared_const.reset();
@@ -1321,6 +1327,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Empty::__clear() {
   // clear all fields
 }
@@ -1418,6 +1425,7 @@ StructWithRef::StructWithRef(apache::thrift::FragileConstructor, ::std::unique_p
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithRef::__clear() {
   // clear all fields
 }
@@ -1600,6 +1608,7 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstruc
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithRefTypeUnique::__clear() {
   // clear all fields
 }
@@ -1771,6 +1780,7 @@ StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstruc
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithRefTypeShared::__clear() {
   // clear all fields
 }
@@ -1942,6 +1952,7 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::Fragi
     opt_field(std::move(opt_field__arg)),
     req_field(std::move(req_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithRefTypeSharedConst::__clear() {
   // clear all fields
 }
@@ -2114,6 +2125,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg) :
     def_field(std::move(def_field__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {
   // clear all fields
 }

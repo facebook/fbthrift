@@ -104,6 +104,56 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> fi
   __isset.field4 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+const ::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() const {
+
+  if (__fbthrift_isDeserialized_.field1) {
+    return field1;
+  }
+
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  if (!__fbthrift_isDeserialized_.field1) {
+    ::apache::thrift::CompactProtocolReader reader;
+    reader.setInput(&__fbthrift_serializedData_.field1);
+    ::apache::thrift::CompactProtocolReader *iprot = &reader;
+    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+    this->field1 = std::move(ptr);
+        __fbthrift_isDeserialized_.field1 = true;
+  }
+  return field1;
+}
+
+::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() {
+  std::as_const(*this).__fbthrift_read_field_field1();
+  return field1;
+}
+const ::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() const {
+
+  if (__fbthrift_isDeserialized_.field3) {
+    return field3;
+  }
+
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  if (!__fbthrift_isDeserialized_.field3) {
+    ::apache::thrift::CompactProtocolReader reader;
+    reader.setInput(&__fbthrift_serializedData_.field3);
+    ::apache::thrift::CompactProtocolReader *iprot = &reader;
+    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
+    _readState.beforeSubobject(iprot);
+    this->field3 = ::std::vector<::std::int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);
+    _readState.afterSubobject(iprot);
+        __fbthrift_isDeserialized_.field3 = true;
+  }
+  return field3;
+}
+
+::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() {
+  std::as_const(*this).__fbthrift_read_field_field3();
+  return field3;
+}
+
 void Foo::__clear() {
   // clear all fields
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

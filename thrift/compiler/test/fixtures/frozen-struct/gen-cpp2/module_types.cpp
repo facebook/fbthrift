@@ -119,6 +119,7 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
   __isset.inclBField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ModuleA::__clear() {
   // clear all fields
   this->i32Field = 0;
@@ -297,6 +298,7 @@ ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
   __isset.inclEnumB = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ModuleB::__clear() {
   // clear all fields
   this->i32Field = 0;

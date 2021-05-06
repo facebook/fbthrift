@@ -54,6 +54,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Fiery::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -143,6 +144,7 @@ Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) 
   __isset.sonnet = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Serious::__clear() {
   // clear all fields
   this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -242,6 +244,7 @@ ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::
   __isset.internal_error_message = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexFieldNames::__clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -349,6 +352,7 @@ CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::st
   __isset.internal_error_message = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void CustomFieldNames::__clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -552,6 +556,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Banal::__clear() {
   // clear all fields
 }

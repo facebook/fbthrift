@@ -189,6 +189,7 @@ decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::st
   __isset.field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void decorated_struct::__clear() {
   // clear all fields
   this->field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -320,6 +321,7 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
   __isset.fieldH = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ContainerStruct::__clear() {
   // clear all fields
   this->fieldA.clear();
@@ -504,6 +506,7 @@ CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32
   __isset.fieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void CppTypeStruct::__clear() {
   // clear all fields
   this->fieldA.clear();
@@ -607,6 +610,7 @@ VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t 
   __isset.MyIntField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void VirtualStruct::__clear() {
   // clear all fields
   this->MyIntField = 0;
@@ -706,6 +710,7 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileCo
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructWithForwardRefEnum::__clear() {
   // clear all fields
   this->a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
@@ -796,6 +801,7 @@ TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialNumeric::__clear() {
   // clear all fields
   this->a = 0;
@@ -886,6 +892,7 @@ TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstr
   __isset.n = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialNestedWithDefault::__clear() {
   // clear all fields
   this->z = 4;
@@ -1013,6 +1020,7 @@ ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexString::__clear() {
   // clear all fields
   this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1128,6 +1136,7 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
   __isset.n = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexNestedWithDefault::__clear() {
   // clear all fields
   this->z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
@@ -1260,6 +1269,7 @@ MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__
     small(std::move(small__arg)),
     tiny(std::move(tiny__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MinPadding::__clear() {
   // clear all fields
   this->small = 0;
@@ -1363,6 +1373,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyDataItem::__clear() {
   // clear all fields
 }
@@ -1446,6 +1457,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.data = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
   this->MyIntField = 0;
@@ -1533,6 +1545,7 @@ Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) 
   __isset.bar = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Renaming::__clear() {
   // clear all fields
   this->bar = 0;
@@ -1632,6 +1645,7 @@ AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thr
   __isset.list_field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnnotatedTypes::__clear() {
   // clear all fields
   this->binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1730,6 +1744,7 @@ ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apa
   __isset.foo = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageStruct::__clear() {
   // clear all fields
   this->foo.__clear();
@@ -1859,6 +1874,7 @@ ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache:
   __isset.ForwardUsageStruct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageRoot::__clear() {
   // clear all fields
   this->ForwardUsageStruct.__clear();
@@ -2004,6 +2020,7 @@ ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apach
   __isset.foo = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageByRef::__clear() {
   // clear all fields
   this->foo.__clear();
@@ -2101,6 +2118,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveEmpty::__clear() {
   // clear all fields
 }
@@ -2169,6 +2187,7 @@ NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstr
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveSimpleStruct::__clear() {
   // clear all fields
   this->boolField = 0;
@@ -2308,6 +2327,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
   __isset.MyMapEnumAndInt = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
   this->MyBoolField = 0;
@@ -2628,6 +2648,7 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
   __isset.not_a_container = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllocatorAware::__clear() {
   // clear all fields
   this->aa_list.clear();
@@ -2779,6 +2800,7 @@ AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int3
   __isset.not_a_container = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllocatorAware2::__clear() {
   // clear all fields
   this->not_a_container = 0;
@@ -2882,6 +2904,7 @@ TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t 
   __isset.UintTypedef_field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TypedefStruct::__clear() {
   // clear all fields
   this->i32_field = 0;
@@ -2978,6 +3001,7 @@ StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::Fragile
   __isset.__field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void StructWithDoubleUnderscores::__clear() {
   // clear all fields
   this->__field = 0;
