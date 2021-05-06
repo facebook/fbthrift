@@ -213,6 +213,15 @@ void H2ClientConnection::closeNow() {
     if (!evb_) {
       attachEventBase(folly::EventBaseManager::get()->getEventBase());
     }
+
+    // Fire close callbacks preemptively and reset info callback since it's
+    // rarely possible that HTTPSession destruction is delayed and the callback
+    // fires on destroyed H2ClientConnection.
+    for (auto& cb : closeCallbacks_) {
+      cb.second->channelClosed();
+    }
+    closeCallbacks_.clear();
+    httpSession_->setInfoCallback(nullptr);
     httpSession_->dropConnection();
     httpSession_ = nullptr;
   }
