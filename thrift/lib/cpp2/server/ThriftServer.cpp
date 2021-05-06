@@ -249,15 +249,15 @@ void ThriftServer::setup() {
   addRoutingHandler(
       std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
 
-  // Initialize event base for this thread, ensure event_init() is called
-  serveEventBase_ = eventBaseManager_->getEventBase();
+  // Initialize event base for this thread
+  auto serveEventBase = eventBaseManager_->getEventBase();
+  serveEventBase_ = serveEventBase;
   if (idleServerTimeout_.count() > 0) {
-    idleServer_.emplace(
-        *this, serveEventBase_.load()->timer(), idleServerTimeout_);
+    idleServer_.emplace(*this, serveEventBase->timer(), idleServerTimeout_);
   }
   // Print some libevent stats
   VLOG(1) << "libevent " << folly::EventBase::getLibeventVersion() << " method "
-          << folly::EventBase::getLibeventMethod();
+          << serveEventBase->getLibeventMethod();
 
   try {
 #ifndef _WIN32
