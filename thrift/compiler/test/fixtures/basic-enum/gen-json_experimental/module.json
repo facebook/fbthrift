@@ -17,7 +17,7 @@
       "enumNames": {
         "name": "enumNames",
         "type": "map<enum module.MyEnum, string>",
-        "value": {1: "one", 2: "two"},
+        "value": {"1": "one", "2": "two"},
         "lineno": 55
       }
   },

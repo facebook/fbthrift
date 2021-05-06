@@ -217,7 +217,12 @@ static inline std::string to_string(t_const_value const* value) {
   auto stringify_map = [](const auto& value) {
     std::string result;
     for (const auto& v : value) {
-      result += to_string(v.first) + ": " + to_string(v.second) + ", ";
+      auto key = to_string(v.first);
+      if (v.first->get_type() != mstch_const_value::cv::CV_STRING) {
+        // map keys must be strings
+        key = json_quote_ascii(key);
+      }
+      result += key + ": " + to_string(v.second) + ", ";
     }
     rtrim(result);
     return "{" + result + "}";
