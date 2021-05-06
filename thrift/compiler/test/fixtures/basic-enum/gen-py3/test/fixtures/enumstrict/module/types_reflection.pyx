@@ -60,3 +60,11 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     return spec
+cdef __MapSpec get_reflection__Map__MyEnum_string():
+    return __MapSpec.create(
+        key=_test_fixtures_enumstrict_module_types.MyEnum,
+        key_kind=__NumberType.NOT_A_NUMBER,
+        value=str,
+        value_kind=__NumberType.NOT_A_NUMBER,
+    )
+

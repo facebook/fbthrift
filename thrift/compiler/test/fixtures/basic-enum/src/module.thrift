@@ -52,6 +52,8 @@ enum MyBigEnum {
 
 const MyEnum kOne = MyEnum.ONE;
 
+const map<MyEnum, string> enumNames = {MyEnum.ONE: "one", MyEnum.TWO: "two"};
+
 struct MyStruct {
   1: MyEnum myEnum;
   2: MyBigEnum myBigEnum = MyBigEnum.ONE;

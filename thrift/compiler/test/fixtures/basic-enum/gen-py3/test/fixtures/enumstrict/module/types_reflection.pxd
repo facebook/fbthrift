@@ -15,3 +15,5 @@ from thrift.py3.reflection cimport (
 )
 
 cdef __StructSpec get_reflection__MyStruct()
+
+cdef __MapSpec get_reflection__Map__MyEnum_string()

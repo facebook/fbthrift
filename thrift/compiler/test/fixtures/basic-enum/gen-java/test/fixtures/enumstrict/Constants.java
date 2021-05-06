@@ -20,4 +20,10 @@ public class Constants {
 
   public static final MyEnum kOne = test.fixtures.enumstrict.MyEnum.ONE;
 
+  public static final Map<MyEnum,String> enumNames = new HashMap<MyEnum,String>();
+  static {
+    enumNames.put(test.fixtures.enumstrict.MyEnum.ONE, "one");
+    enumNames.put(test.fixtures.enumstrict.MyEnum.TWO, "two");
+  }
+
 }

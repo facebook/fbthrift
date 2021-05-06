@@ -20,6 +20,8 @@ struct module_constants {
     return kOne_;
   }
 
+  static ::std::map<::test::fixtures::enumstrict::MyEnum, ::std::string> const& enumNames();
+
 };
 
 }}} // test::fixtures::enumstrict

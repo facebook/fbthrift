@@ -282,4 +282,100 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return needed
 
 
+@__cython.auto_pickle(False)
+cdef class Map__MyEnum_string(thrift.py3.types.Map):
+    def __init__(self, items=None):
+        if isinstance(items, Map__MyEnum_string):
+            self._cpp_obj = (<Map__MyEnum_string> items)._cpp_obj
+        else:
+            self._cpp_obj = Map__MyEnum_string._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[cMyEnum,string]] c_items):
+        __fbthrift_inst = <Map__MyEnum_string>Map__MyEnum_string.__new__(Map__MyEnum_string)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(Map__MyEnum_string self):
+        cdef shared_ptr[cmap[cMyEnum,string]] cpp_obj = make_shared[cmap[cMyEnum,string]](
+            deref(self._cpp_obj)
+        )
+        return Map__MyEnum_string.create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[cmap[cMyEnum,string]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[cMyEnum,string]] c_inst = make_shared[cmap[cMyEnum,string]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, MyEnum):
+                    raise TypeError(f"{key!r} is not of type MyEnum")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
+                deref(c_inst)[<cMyEnum><int>key] = item.encode('UTF-8')
+        return c_inst
+
+    cdef _check_key_type(self, key):
+        if not self or key is None:
+            return
+        if isinstance(key, MyEnum):
+            return key
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        key = self._check_key_type(key)
+        if key is None:
+            raise err
+        cdef cMyEnum ckey = <cMyEnum><int>key
+        if not __map_contains(self._cpp_obj, ckey):
+            raise err
+        cdef string citem
+        __map_getitem(self._cpp_obj, ckey, citem)
+        return bytes(citem).decode('UTF-8')
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cMyEnum,string]] itr = __map_iter[cmap[cMyEnum,string]](self._cpp_obj)
+        cdef cMyEnum citem
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextKey(self._cpp_obj, citem)
+            yield translate_cpp_enum_to_python(MyEnum, <int> citem)
+
+    def __contains__(self, key):
+        key = self._check_key_type(key)
+        if key is None:
+            return False
+        cdef cMyEnum ckey = <cMyEnum><int>key
+        return __map_contains(self._cpp_obj, ckey)
+
+    def values(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cMyEnum,string]] itr = __map_iter[cmap[cMyEnum,string]](self._cpp_obj)
+        cdef string citem
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextValue(self._cpp_obj, citem)
+            yield bytes(citem).decode('UTF-8')
+
+    def items(self):
+        if not self:
+            return
+        cdef __map_iter[cmap[cMyEnum,string]] itr = __map_iter[cmap[cMyEnum,string]](self._cpp_obj)
+        cdef cMyEnum ckey
+        cdef string citem
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextItem(self._cpp_obj, ckey, citem)
+            yield (translate_cpp_enum_to_python(MyEnum, <int> ckey), bytes(citem).decode('UTF-8'))
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Map__MyEnum_string()
+
+Mapping.register(Map__MyEnum_string)
+
 kOne = MyEnum(<int> (ckOne()))
+enumNames = Map__MyEnum_string.create(constant_shared_ptr(cenumNames()))

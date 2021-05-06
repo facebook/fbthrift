@@ -111,6 +111,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef create(shared_ptr[cMyStruct])
 
 
+cdef class Map__MyEnum_string(thrift.py3.types.Map):
+    cdef shared_ptr[cmap[cMyEnum,string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[cMyEnum,string]])
+    @staticmethod
+    cdef shared_ptr[cmap[cMyEnum,string]] _make_instance(object items) except *
+
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::test::fixtures::enumstrict":
     cdef cMyEnum ckOne "::test::fixtures::enumstrict::module_constants::kOne"()
+    cdef cmap[cMyEnum,string] cenumNames "::test::fixtures::enumstrict::module_constants::enumNames"()
