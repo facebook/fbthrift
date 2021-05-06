@@ -52,7 +52,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
-#include <thrift/lib/cpp2/async/RocketClientTestChannel.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -631,14 +630,13 @@ class HeaderOrRocketTest : public testing::Test {
     } else {
       return runner.newClient<TestServiceAsyncClient>(
           evb, [&](auto socket) mutable {
-            auto channel =
-                RocketClientTestChannel::newChannel(std::move(socket));
+            auto channel = RocketClientChannel::newChannel(std::move(socket));
             if (compression == Compression::Enabled) {
               CodecConfig codec;
               codec.set_zstdConfig(ZstdCompressionCodecConfig());
               CompressionConfig compressionConfig;
               compressionConfig.set_codecConfig(codec);
-              channel->setDesiredCompressionConfig(compressionConfig);
+              channel->setDefaultCompressionConfig(compressionConfig);
             }
             return channel;
           });

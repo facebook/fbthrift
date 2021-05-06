@@ -22,7 +22,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
-#include <thrift/lib/cpp2/async/RocketClientTestChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -137,7 +137,7 @@ class HeaderOrRocketTest {
       });
     } else {
       return runner.newClient<ClientT>(nullptr, [&](auto socket) mutable {
-        return RocketClientTestChannel::newChannel(std::move(socket));
+        return RocketClientChannel::newChannel(std::move(socket));
       });
     }
   }

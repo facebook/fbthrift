@@ -19,6 +19,7 @@
 #include <chrono>
 #include <limits>
 #include <memory>
+#include <optional>
 
 #include <folly/ScopeGuard.h>
 #include <folly/fibers/FiberManagerMap.h>
@@ -128,6 +129,10 @@ class RocketClientChannel final : public ClientChannel {
 
   void setFlushList(FlushList* flushList);
 
+  void setDefaultCompressionConfig(CompressionConfig compressionConfig) {
+    compressionConfig_ = compressionConfig;
+  }
+
   // must be called from evb thread
   void terminateInteraction(InteractionId id) override;
 
@@ -144,6 +149,7 @@ class RocketClientChannel final : public ClientChannel {
       rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
+  std::optional<CompressionConfig> compressionConfig_;
 
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
 
