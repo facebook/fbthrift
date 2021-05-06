@@ -138,6 +138,7 @@ struct diagnostic_message {
   std::string last_token;
   std::string message;
 
+  diagnostic_message() = default;
   diagnostic_message(
       diagnostic_level level_,
       std::string filename_,

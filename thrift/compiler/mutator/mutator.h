@@ -17,10 +17,15 @@
 #pragma once
 
 #include <thrift/compiler/ast/visitor.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+struct MutatorException : std::exception {
+  diagnostic_message diagnostic;
+};
 
 class mutator : virtual public visitor {
  public:

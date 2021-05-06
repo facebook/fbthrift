@@ -101,7 +101,14 @@ static void match_type_with_const_value(
   if (type->is_struct()) {
     auto* struct_type = dynamic_cast<const t_struct*>(type);
     for (auto map_val : value->get_map()) {
-      auto tfield = struct_type->get_field_by_name(map_val.first->get_string());
+      auto name = map_val.first->get_string();
+      auto tfield = struct_type->get_field_by_name(name);
+      if (!tfield) {
+        MutatorException e;
+        e.diagnostic.last_token = name;
+        e.diagnostic.message = "field `" + name + "` does not exist.";
+        throw e;
+      }
       match_type_with_const_value(program, tfield->get_type(), map_val.second);
     }
   }
@@ -146,9 +153,16 @@ bool field_type_to_const_value::visit(t_program* const program) {
   return true;
 }
 bool field_type_to_const_value::visit(t_field* const tfield) {
-  if (tfield->get_type() && tfield->get_value()) {
-    match_type_with_const_value(
-        program_, tfield->get_type(), tfield->get_value());
+  try {
+    if (tfield->get_type() && tfield->get_value()) {
+      match_type_with_const_value(
+          program_, tfield->get_type(), tfield->get_value());
+    }
+  } catch (MutatorException& e) {
+    e.diagnostic.level = diagnostic_level::FAILURE;
+    e.diagnostic.lineno = tfield->lineno();
+    e.diagnostic.filename = program_->path();
+    throw;
   }
   return true;
 }
@@ -161,9 +175,16 @@ bool const_type_to_const_value::visit(t_program* const program) {
   return true;
 }
 bool const_type_to_const_value::visit(t_const* const tconst) {
-  if (tconst->get_type() && tconst->get_value()) {
-    match_type_with_const_value(
-        program_, tconst->get_type(), tconst->get_value());
+  try {
+    if (tconst->get_type() && tconst->get_value()) {
+      match_type_with_const_value(
+          program_, tconst->get_type(), tconst->get_value());
+    }
+  } catch (MutatorException& e) {
+    e.diagnostic.level = diagnostic_level::FAILURE;
+    e.diagnostic.lineno = tconst->lineno();
+    e.diagnostic.filename = program_->path();
+    throw;
   }
   return true;
 }

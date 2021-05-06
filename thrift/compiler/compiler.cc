@@ -418,7 +418,13 @@ compile_result compile(const std::vector<std::string>& arguments) {
   }
 
   // Mutate it!
-  mutator::mutate(program->get_root_program());
+  try {
+    mutator::mutate(program->get_root_program());
+  } catch (MutatorException& e) {
+    result.diagnostics.push_back(e.diagnostic);
+    return result;
+  }
+
   program->get_root_program()->set_include_prefix(
       get_include_path(gparams.targets, input_filename));
 

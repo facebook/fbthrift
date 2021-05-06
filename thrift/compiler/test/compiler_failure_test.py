@@ -759,3 +759,25 @@ class CompilerFailureTest(unittest.TestCase):
                 "optional fields. Make sure field is optional.\n"
             ),
         )
+
+    def test_nonexist_field_name(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {}
+                typedef list<Foo> List
+                const List l = [{"foo": "bar"}];
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:3] field `foo` does not exist.\n"
+            ),
+        )
