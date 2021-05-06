@@ -36,7 +36,10 @@
                 "required" : "opt-in-req-out"
               }
             },
-            "returnType" : ,
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
             "lineno" : 23
           },
           "streamthrows" : {
@@ -50,7 +53,10 @@
                 "required" : "opt-in-req-out"
               }
             },
-            "returnType" : ,
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
             "lineno" : 24
           },
           "boththrows" : {
@@ -73,7 +79,10 @@
 }
               }
             },
-            "returnType" : ,
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
             "lineno" : 25
           },
           "responseandstreamthrows" : {
@@ -96,7 +105,11 @@
 }
               }
             },
-            "returnType" : ,
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32",
+  "first_response_type" : "i32"
+},
             "lineno" : 26
           },
           "returnstreamFast" : {
@@ -117,7 +130,10 @@
                 "required" : "opt-in-req-out"
               }
             },
-            "returnType" : ,
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
             "lineno" : 29
           }
         }
