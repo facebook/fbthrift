@@ -164,8 +164,7 @@ void ContextStack::userExceptionWrapped(
       method_);
 
   for (size_t i = 0; i < handlers_->size(); i++) {
-    (*handlers_)[i]->userExceptionWrapped(
-        contextAt(i), method_, declared, ew);
+    (*handlers_)[i]->userExceptionWrapped(contextAt(i), method_, declared, ew);
   }
 }
 
