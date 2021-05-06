@@ -422,7 +422,7 @@ class MyException final : public apache::thrift::TException {
   MyException& operator=(const MyException& src);
   void __clear();
 
-  ~MyException();
+  ~MyException() override;
 
  private:
   ::std::string myString;

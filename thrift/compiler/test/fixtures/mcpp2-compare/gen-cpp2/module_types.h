@@ -4175,7 +4175,7 @@ class AnException final : public apache::thrift::TException {
   AnException& operator=(const AnException& src);
   void __clear();
 
-  ~AnException();
+  ~AnException() override;
 
  private:
   ::std::int32_t code;

@@ -535,7 +535,7 @@ class Bang final : public apache::thrift::TException {
   Bang& operator=(const Bang& src);
   void __clear();
 
-  ~Bang();
+  ~Bang() override;
 
  private:
   ::std::string message;

@@ -5273,7 +5273,7 @@ class emptyXcep final : public apache::thrift::TException {
   emptyXcep& operator=(const emptyXcep& src);
   void __clear();
 
-  ~emptyXcep();
+  ~emptyXcep() override;
 
 
   bool operator==(const emptyXcep&) const;
@@ -5354,7 +5354,7 @@ class reqXcep final : public apache::thrift::TException {
   reqXcep& operator=(const reqXcep& src);
   void __clear();
 
-  ~reqXcep();
+  ~reqXcep() override;
 
  public:
   ::std::string message;
@@ -5504,7 +5504,7 @@ class optXcep final : public apache::thrift::TException {
   optXcep& operator=(const optXcep& src);
   void __clear();
 
-  ~optXcep();
+  ~optXcep() override;
 
  private:
   ::std::string message;
@@ -5667,7 +5667,7 @@ class complexException final : public apache::thrift::TException {
   complexException& operator=(const complexException& src);
   void __clear();
 
-  ~complexException();
+  ~complexException() override;
 
  private:
   ::std::string message;

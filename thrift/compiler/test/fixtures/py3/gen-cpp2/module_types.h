@@ -280,7 +280,7 @@ class SimpleException final : public apache::thrift::TException {
   SimpleException& operator=(const SimpleException& src);
   void __clear();
 
-  ~SimpleException();
+  ~SimpleException() override;
 
  private:
   ::std::int16_t err_code;

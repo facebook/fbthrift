@@ -243,7 +243,7 @@ class <%struct:name%> <%!
 <%^struct:virtual%>
 <%#struct:is_large?%>
 
-  ~<%struct:name%>();
+  ~<%struct:name%>()<%#struct:exception?%> override<%/struct:exception?%>;
 
 <%/struct:is_large?%>
 <%/struct:virtual%>

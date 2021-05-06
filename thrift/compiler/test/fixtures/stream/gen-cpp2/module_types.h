@@ -79,7 +79,7 @@ class FooEx final : public apache::thrift::TException {
   FooEx& operator=(const FooEx& src);
   void __clear();
 
-  ~FooEx();
+  ~FooEx() override;
 
 
   bool operator==(const FooEx&) const;

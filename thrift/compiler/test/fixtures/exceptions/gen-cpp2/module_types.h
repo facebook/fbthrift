@@ -124,7 +124,7 @@ class Fiery final : public apache::thrift::TException {
   Fiery& operator=(const Fiery& src);
   void __clear();
 
-  ~Fiery();
+  ~Fiery() override;
 
  public:
   ::std::string message;
@@ -243,7 +243,7 @@ class Serious final : public apache::thrift::TException {
   Serious& operator=(const Serious& src);
   void __clear();
 
-  ~Serious();
+  ~Serious() override;
 
  private:
   ::std::string sonnet;
@@ -368,7 +368,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   ComplexFieldNames& operator=(const ComplexFieldNames& src);
   void __clear();
 
-  ~ComplexFieldNames();
+  ~ComplexFieldNames() override;
 
  private:
   ::std::string error_message;
@@ -530,7 +530,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   CustomFieldNames& operator=(const CustomFieldNames& src);
   void __clear();
 
-  ~CustomFieldNames();
+  ~CustomFieldNames() override;
 
  private:
   ::std::string error_message;
@@ -692,7 +692,7 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
   ExceptionWithPrimitiveField& operator=(const ExceptionWithPrimitiveField& src);
   void __clear();
 
-  ~ExceptionWithPrimitiveField();
+  ~ExceptionWithPrimitiveField() override;
 
  private:
   ::std::string message;
@@ -849,7 +849,7 @@ class Banal final : public apache::thrift::TException {
   Banal& operator=(const Banal& src);
   void __clear();
 
-  ~Banal();
+  ~Banal() override;
 
 
   bool operator==(const Banal&) const;

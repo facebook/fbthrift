@@ -564,7 +564,7 @@ class InitialException final : public apache::thrift::TException {
   InitialException& operator=(const InitialException& src);
   void __clear();
 
-  ~InitialException();
+  ~InitialException() override;
 
  private:
   ::std::string reason;
@@ -688,7 +688,7 @@ class SinkException1 final : public apache::thrift::TException {
   SinkException1& operator=(const SinkException1& src);
   void __clear();
 
-  ~SinkException1();
+  ~SinkException1() override;
 
  private:
   ::std::string reason;
@@ -812,7 +812,7 @@ class SinkException2 final : public apache::thrift::TException {
   SinkException2& operator=(const SinkException2& src);
   void __clear();
 
-  ~SinkException2();
+  ~SinkException2() override;
 
  private:
   ::std::int64_t reason;
