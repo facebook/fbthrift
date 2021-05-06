@@ -169,6 +169,13 @@ pub mod types {
         const TTYPE: ::fbthrift::TType = <::std::primitive::i32 as ::fbthrift::GetTType>::TTYPE;
     }
 
+    impl number {
+      pub fn new(v: ::std::primitive::i32) -> Self {
+        Self(v)
+      }
+    }
+
+
     impl<P> ::fbthrift::Serialize<P> for number
     where
         P: ::fbthrift::ProtocolWriter,
