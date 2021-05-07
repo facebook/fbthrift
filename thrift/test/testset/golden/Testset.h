@@ -14,6 +14,7 @@ enum class FieldModifier {
   Optional = 1,
   Required,
   Reference,
+  Lazy,
 };
 
 namespace detail {
@@ -1156,6 +1157,176 @@ struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Re
 };
 
 template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_bool_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_byte_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_i16_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_i32_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_float_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_double_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_binary_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::list<conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_list_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::set<conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_set_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::set<conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_set_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_bool_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_byte_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_i16_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_i32_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_float_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_double_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_binary_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_bool_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_byte_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_i16_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_i32_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_float_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_double_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_binary_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::set<conformance::type::string_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_set_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::set<conformance::type::i64_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_string_set_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::string_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_set_string_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::i64_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = struct_map_i64_set_i64_lazy;
+};
+
+template <>
+struct struct_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Lazy>> {
+  using type = struct_string_lazy;
+};
+
+template <>
 struct exception_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<>> {
   using type = exception_list_bool;
 };
@@ -2278,6 +2449,176 @@ struct exception_ByFieldType<conformance::type::binary_t, mod_set<FieldModifier:
 template <>
 struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Required>> {
   using type = exception_required_string;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_bool_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_byte_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_i16_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_i32_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_float_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_double_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_binary_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::list<conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_list_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::set<conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_set_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::set<conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_set_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_bool_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_byte_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_i16_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_i32_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_float_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_double_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_binary_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::bool_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_bool_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::byte_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_byte_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i16_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_i16_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i32_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_i32_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::i64_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::float_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_float_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::double_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_double_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::binary_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_binary_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::string_t>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::set<conformance::type::string_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_set_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::string_t, conformance::type::set<conformance::type::i64_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_string_set_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::string_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_set_string_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::map<conformance::type::i64_t, conformance::type::set<conformance::type::i64_t>>, mod_set<FieldModifier::Lazy>> {
+  using type = exception_map_i64_set_i64_lazy;
+};
+
+template <>
+struct exception_ByFieldType<conformance::type::string_t, mod_set<FieldModifier::Lazy>> {
+  using type = exception_string_lazy;
 };
 
 template <>

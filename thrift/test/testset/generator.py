@@ -48,6 +48,7 @@ enum class FieldModifier {{
   Optional = 1,
   Required,
   Reference,
+  Lazy,
 }};
 
 namespace detail {{
@@ -159,6 +160,12 @@ CPP_REF_TRANSFORM: Dict[Target, str] = {
     Target.CPP2: "{}|FieldModifier::Reference",
 }
 
+LAZY_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_lazy",
+    Target.THRIFT: "{}|cpp.experimental.lazy",
+    Target.CPP2: "{}|FieldModifier::Lazy",
+}
+
 
 def gen_primatives(
     target: Target, prims: Iterable[str] = PRIMITIVE_TYPES
@@ -211,6 +218,10 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(CPP_REF_TRANSFORM, target, values)
 
 
+def gen_lazy(target: Target, values: Dict[str, str]) -> Dict[str, str]:
+    return _gen_unary_tramsform(LAZY_TRANSFORM, target, values)
+
+
 def gen_container_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in unions."""
     prims = gen_primatives(target, PRIMITIVE_TYPES)
@@ -232,10 +243,17 @@ def gen_union_fields(target: Target) -> Dict[str, str]:
     return ret
 
 
+def gen_lazy_fields(target: Target) -> Dict[str, str]:
+    fields = gen_container_fields(target)
+    fields.update(gen_primatives(target, ["string"]))
+    return gen_lazy(target, fields)
+
+
 def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
     ret.update(**gen_optional(target, ret), **gen_required(target, ret))
+    ret.update(**gen_lazy_fields(target))
     return ret
 
 

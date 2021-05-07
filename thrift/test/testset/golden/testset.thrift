@@ -680,6 +680,108 @@ struct struct_required_binary {
 struct struct_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string")
+struct struct_list_bool_lazy {
+  1: list<bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_bool_lazy")
+struct struct_list_byte_lazy {
+  1: list<byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_byte_lazy")
+struct struct_list_i16_lazy {
+  1: list<i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i16_lazy")
+struct struct_list_i32_lazy {
+  1: list<i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i32_lazy")
+struct struct_list_i64_lazy {
+  1: list<i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i64_lazy")
+struct struct_list_float_lazy {
+  1: list<float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_float_lazy")
+struct struct_list_double_lazy {
+  1: list<double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_double_lazy")
+struct struct_list_binary_lazy {
+  1: list<binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_binary_lazy")
+struct struct_list_string_lazy {
+  1: list<string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_string_lazy")
+struct struct_set_string_lazy {
+  1: set<string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_string_lazy")
+struct struct_set_i64_lazy {
+  1: set<i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64_lazy")
+struct struct_map_string_bool_lazy {
+  1: map<string, bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool_lazy")
+struct struct_map_string_byte_lazy {
+  1: map<string, byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_byte_lazy")
+struct struct_map_string_i16_lazy {
+  1: map<string, i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i16_lazy")
+struct struct_map_string_i32_lazy {
+  1: map<string, i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i32_lazy")
+struct struct_map_string_i64_lazy {
+  1: map<string, i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i64_lazy")
+struct struct_map_string_float_lazy {
+  1: map<string, float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_float_lazy")
+struct struct_map_string_double_lazy {
+  1: map<string, double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_double_lazy")
+struct struct_map_string_binary_lazy {
+  1: map<string, binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_binary_lazy")
+struct struct_map_string_string_lazy {
+  1: map<string, string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string_lazy")
+struct struct_map_i64_bool_lazy {
+  1: map<i64, bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_bool_lazy")
+struct struct_map_i64_byte_lazy {
+  1: map<i64, byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_byte_lazy")
+struct struct_map_i64_i16_lazy {
+  1: map<i64, i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i16_lazy")
+struct struct_map_i64_i32_lazy {
+  1: map<i64, i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i32_lazy")
+struct struct_map_i64_i64_lazy {
+  1: map<i64, i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i64_lazy")
+struct struct_map_i64_float_lazy {
+  1: map<i64, float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_float_lazy")
+struct struct_map_i64_double_lazy {
+  1: map<i64, double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_double_lazy")
+struct struct_map_i64_binary_lazy {
+  1: map<i64, binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_binary_lazy")
+struct struct_map_i64_string_lazy {
+  1: map<i64, string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_string_lazy")
+struct struct_map_string_set_string_lazy {
+  1: map<string, set<string>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string_lazy")
+struct struct_map_string_set_i64_lazy {
+  1: map<string, set<i64>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64_lazy")
+struct struct_map_i64_set_string_lazy {
+  1: map<i64, set<string>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_string_lazy")
+struct struct_map_i64_set_i64_lazy {
+  1: map<i64, set<i64>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_i64_lazy")
+struct struct_string_lazy {
+  1: string field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_string_lazy")
 exception exception_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/exception_empty")
 exception exception_list_bool {
@@ -1357,6 +1459,108 @@ exception exception_required_binary {
 exception exception_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_string")
+exception exception_list_bool_lazy {
+  1: list<bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_bool_lazy")
+exception exception_list_byte_lazy {
+  1: list<byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_byte_lazy")
+exception exception_list_i16_lazy {
+  1: list<i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i16_lazy")
+exception exception_list_i32_lazy {
+  1: list<i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i32_lazy")
+exception exception_list_i64_lazy {
+  1: list<i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i64_lazy")
+exception exception_list_float_lazy {
+  1: list<float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_float_lazy")
+exception exception_list_double_lazy {
+  1: list<double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_double_lazy")
+exception exception_list_binary_lazy {
+  1: list<binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_binary_lazy")
+exception exception_list_string_lazy {
+  1: list<string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_string_lazy")
+exception exception_set_string_lazy {
+  1: set<string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_string_lazy")
+exception exception_set_i64_lazy {
+  1: set<i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64_lazy")
+exception exception_map_string_bool_lazy {
+  1: map<string, bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_bool_lazy")
+exception exception_map_string_byte_lazy {
+  1: map<string, byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_byte_lazy")
+exception exception_map_string_i16_lazy {
+  1: map<string, i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i16_lazy")
+exception exception_map_string_i32_lazy {
+  1: map<string, i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i32_lazy")
+exception exception_map_string_i64_lazy {
+  1: map<string, i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i64_lazy")
+exception exception_map_string_float_lazy {
+  1: map<string, float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_float_lazy")
+exception exception_map_string_double_lazy {
+  1: map<string, double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_double_lazy")
+exception exception_map_string_binary_lazy {
+  1: map<string, binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_binary_lazy")
+exception exception_map_string_string_lazy {
+  1: map<string, string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_string_lazy")
+exception exception_map_i64_bool_lazy {
+  1: map<i64, bool> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_bool_lazy")
+exception exception_map_i64_byte_lazy {
+  1: map<i64, byte> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_byte_lazy")
+exception exception_map_i64_i16_lazy {
+  1: map<i64, i16> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i16_lazy")
+exception exception_map_i64_i32_lazy {
+  1: map<i64, i32> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i32_lazy")
+exception exception_map_i64_i64_lazy {
+  1: map<i64, i64> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i64_lazy")
+exception exception_map_i64_float_lazy {
+  1: map<i64, float> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_float_lazy")
+exception exception_map_i64_double_lazy {
+  1: map<i64, double> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_double_lazy")
+exception exception_map_i64_binary_lazy {
+  1: map<i64, binary> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_binary_lazy")
+exception exception_map_i64_string_lazy {
+  1: map<i64, string> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_string_lazy")
+exception exception_map_string_set_string_lazy {
+  1: map<string, set<string>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_string_lazy")
+exception exception_map_string_set_i64_lazy {
+  1: map<string, set<i64>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64_lazy")
+exception exception_map_i64_set_string_lazy {
+  1: map<i64, set<string>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_string_lazy")
+exception exception_map_i64_set_i64_lazy {
+  1: map<i64, set<i64>> field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_i64_lazy")
+exception exception_string_lazy {
+  1: string field_1 (cpp.experimental.lazy);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_string_lazy")
 union union_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/union_empty")
 union union_list_bool {
@@ -1886,80 +2090,114 @@ struct struct_all {
   224: struct_required_double field_224;
   225: struct_required_binary field_225;
   226: struct_required_string field_226;
-  227: union_empty field_227;
-  228: union_list_bool field_228;
-  229: union_list_byte field_229;
-  230: union_list_i16 field_230;
-  231: union_list_i32 field_231;
-  232: union_list_i64 field_232;
-  233: union_list_float field_233;
-  234: union_list_double field_234;
-  235: union_list_binary field_235;
-  236: union_list_string field_236;
-  237: union_set_string field_237;
-  238: union_set_i64 field_238;
-  239: union_map_string_bool field_239;
-  240: union_map_string_byte field_240;
-  241: union_map_string_i16 field_241;
-  242: union_map_string_i32 field_242;
-  243: union_map_string_i64 field_243;
-  244: union_map_string_float field_244;
-  245: union_map_string_double field_245;
-  246: union_map_string_binary field_246;
-  247: union_map_string_string field_247;
-  248: union_map_i64_bool field_248;
-  249: union_map_i64_byte field_249;
-  250: union_map_i64_i16 field_250;
-  251: union_map_i64_i32 field_251;
-  252: union_map_i64_i64 field_252;
-  253: union_map_i64_float field_253;
-  254: union_map_i64_double field_254;
-  255: union_map_i64_binary field_255;
-  256: union_map_i64_string field_256;
-  257: union_map_string_set_string field_257;
-  258: union_map_string_set_i64 field_258;
-  259: union_map_i64_set_string field_259;
-  260: union_map_i64_set_i64 field_260;
-  261: union_list_bool_cpp_ref field_261;
-  262: union_list_byte_cpp_ref field_262;
-  263: union_list_i16_cpp_ref field_263;
-  264: union_list_i32_cpp_ref field_264;
-  265: union_list_i64_cpp_ref field_265;
-  266: union_list_float_cpp_ref field_266;
-  267: union_list_double_cpp_ref field_267;
-  268: union_list_binary_cpp_ref field_268;
-  269: union_list_string_cpp_ref field_269;
-  270: union_set_string_cpp_ref field_270;
-  271: union_set_i64_cpp_ref field_271;
-  272: union_map_string_bool_cpp_ref field_272;
-  273: union_map_string_byte_cpp_ref field_273;
-  274: union_map_string_i16_cpp_ref field_274;
-  275: union_map_string_i32_cpp_ref field_275;
-  276: union_map_string_i64_cpp_ref field_276;
-  277: union_map_string_float_cpp_ref field_277;
-  278: union_map_string_double_cpp_ref field_278;
-  279: union_map_string_binary_cpp_ref field_279;
-  280: union_map_string_string_cpp_ref field_280;
-  281: union_map_i64_bool_cpp_ref field_281;
-  282: union_map_i64_byte_cpp_ref field_282;
-  283: union_map_i64_i16_cpp_ref field_283;
-  284: union_map_i64_i32_cpp_ref field_284;
-  285: union_map_i64_i64_cpp_ref field_285;
-  286: union_map_i64_float_cpp_ref field_286;
-  287: union_map_i64_double_cpp_ref field_287;
-  288: union_map_i64_binary_cpp_ref field_288;
-  289: union_map_i64_string_cpp_ref field_289;
-  290: union_map_string_set_string_cpp_ref field_290;
-  291: union_map_string_set_i64_cpp_ref field_291;
-  292: union_map_i64_set_string_cpp_ref field_292;
-  293: union_map_i64_set_i64_cpp_ref field_293;
-  294: union_bool field_294;
-  295: union_byte field_295;
-  296: union_i16 field_296;
-  297: union_i32 field_297;
-  298: union_i64 field_298;
-  299: union_float field_299;
-  300: union_double field_300;
-  301: union_binary field_301;
-  302: union_string field_302;
+  227: struct_list_bool_lazy field_227;
+  228: struct_list_byte_lazy field_228;
+  229: struct_list_i16_lazy field_229;
+  230: struct_list_i32_lazy field_230;
+  231: struct_list_i64_lazy field_231;
+  232: struct_list_float_lazy field_232;
+  233: struct_list_double_lazy field_233;
+  234: struct_list_binary_lazy field_234;
+  235: struct_list_string_lazy field_235;
+  236: struct_set_string_lazy field_236;
+  237: struct_set_i64_lazy field_237;
+  238: struct_map_string_bool_lazy field_238;
+  239: struct_map_string_byte_lazy field_239;
+  240: struct_map_string_i16_lazy field_240;
+  241: struct_map_string_i32_lazy field_241;
+  242: struct_map_string_i64_lazy field_242;
+  243: struct_map_string_float_lazy field_243;
+  244: struct_map_string_double_lazy field_244;
+  245: struct_map_string_binary_lazy field_245;
+  246: struct_map_string_string_lazy field_246;
+  247: struct_map_i64_bool_lazy field_247;
+  248: struct_map_i64_byte_lazy field_248;
+  249: struct_map_i64_i16_lazy field_249;
+  250: struct_map_i64_i32_lazy field_250;
+  251: struct_map_i64_i64_lazy field_251;
+  252: struct_map_i64_float_lazy field_252;
+  253: struct_map_i64_double_lazy field_253;
+  254: struct_map_i64_binary_lazy field_254;
+  255: struct_map_i64_string_lazy field_255;
+  256: struct_map_string_set_string_lazy field_256;
+  257: struct_map_string_set_i64_lazy field_257;
+  258: struct_map_i64_set_string_lazy field_258;
+  259: struct_map_i64_set_i64_lazy field_259;
+  260: struct_string_lazy field_260;
+  261: union_empty field_261;
+  262: union_list_bool field_262;
+  263: union_list_byte field_263;
+  264: union_list_i16 field_264;
+  265: union_list_i32 field_265;
+  266: union_list_i64 field_266;
+  267: union_list_float field_267;
+  268: union_list_double field_268;
+  269: union_list_binary field_269;
+  270: union_list_string field_270;
+  271: union_set_string field_271;
+  272: union_set_i64 field_272;
+  273: union_map_string_bool field_273;
+  274: union_map_string_byte field_274;
+  275: union_map_string_i16 field_275;
+  276: union_map_string_i32 field_276;
+  277: union_map_string_i64 field_277;
+  278: union_map_string_float field_278;
+  279: union_map_string_double field_279;
+  280: union_map_string_binary field_280;
+  281: union_map_string_string field_281;
+  282: union_map_i64_bool field_282;
+  283: union_map_i64_byte field_283;
+  284: union_map_i64_i16 field_284;
+  285: union_map_i64_i32 field_285;
+  286: union_map_i64_i64 field_286;
+  287: union_map_i64_float field_287;
+  288: union_map_i64_double field_288;
+  289: union_map_i64_binary field_289;
+  290: union_map_i64_string field_290;
+  291: union_map_string_set_string field_291;
+  292: union_map_string_set_i64 field_292;
+  293: union_map_i64_set_string field_293;
+  294: union_map_i64_set_i64 field_294;
+  295: union_list_bool_cpp_ref field_295;
+  296: union_list_byte_cpp_ref field_296;
+  297: union_list_i16_cpp_ref field_297;
+  298: union_list_i32_cpp_ref field_298;
+  299: union_list_i64_cpp_ref field_299;
+  300: union_list_float_cpp_ref field_300;
+  301: union_list_double_cpp_ref field_301;
+  302: union_list_binary_cpp_ref field_302;
+  303: union_list_string_cpp_ref field_303;
+  304: union_set_string_cpp_ref field_304;
+  305: union_set_i64_cpp_ref field_305;
+  306: union_map_string_bool_cpp_ref field_306;
+  307: union_map_string_byte_cpp_ref field_307;
+  308: union_map_string_i16_cpp_ref field_308;
+  309: union_map_string_i32_cpp_ref field_309;
+  310: union_map_string_i64_cpp_ref field_310;
+  311: union_map_string_float_cpp_ref field_311;
+  312: union_map_string_double_cpp_ref field_312;
+  313: union_map_string_binary_cpp_ref field_313;
+  314: union_map_string_string_cpp_ref field_314;
+  315: union_map_i64_bool_cpp_ref field_315;
+  316: union_map_i64_byte_cpp_ref field_316;
+  317: union_map_i64_i16_cpp_ref field_317;
+  318: union_map_i64_i32_cpp_ref field_318;
+  319: union_map_i64_i64_cpp_ref field_319;
+  320: union_map_i64_float_cpp_ref field_320;
+  321: union_map_i64_double_cpp_ref field_321;
+  322: union_map_i64_binary_cpp_ref field_322;
+  323: union_map_i64_string_cpp_ref field_323;
+  324: union_map_string_set_string_cpp_ref field_324;
+  325: union_map_string_set_i64_cpp_ref field_325;
+  326: union_map_i64_set_string_cpp_ref field_326;
+  327: union_map_i64_set_i64_cpp_ref field_327;
+  328: union_bool field_328;
+  329: union_byte field_329;
+  330: union_i16 field_330;
+  331: union_i32 field_331;
+  332: union_i64 field_332;
+  333: union_float field_333;
+  334: union_double field_334;
+  335: union_binary field_335;
+  336: union_string field_336;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_all")
