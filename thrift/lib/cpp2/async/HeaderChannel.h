@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -36,9 +37,15 @@ class HeaderChannel {
     persistentWriteHeaders_[key] = value;
   }
 
-  transport::THeader::StringToStringMap& getPersistentWriteHeaders() {
+  void setDesiredCompressionConfig(CompressionConfig compressionConfig) {
+    compressionConfig_ = compressionConfig;
+  }
+
+  const transport::THeader::StringToStringMap& getPersistentWriteHeaders() {
     return persistentWriteHeaders_;
   }
+
+  void preprocessHeader(apache::thrift::transport::THeader* header);
 
  protected:
   virtual ~HeaderChannel() {}
@@ -48,6 +55,7 @@ class HeaderChannel {
  private:
   // Map to use for persistent headers
   transport::THeader::StringToStringMap persistentWriteHeaders_;
+  folly::Optional<CompressionConfig> compressionConfig_;
 };
 } // namespace thrift
 } // namespace apache

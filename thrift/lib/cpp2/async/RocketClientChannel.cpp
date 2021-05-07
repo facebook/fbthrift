@@ -687,6 +687,8 @@ void RocketClientChannel::sendRequestStream(
     StreamClientCallback* clientCallback) {
   DestructorGuard dg(this);
 
+  preprocessHeader(header.get());
+
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
@@ -695,7 +697,6 @@ void RocketClientChannel::sendRequestStream(
       timeout_,
       compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
-      getPersistentWriteHeaders(),
       getServerVersion());
 
   std::chrono::milliseconds firstResponseTimeout;
@@ -726,6 +727,8 @@ void RocketClientChannel::sendRequestSink(
     SinkClientCallback* clientCallback) {
   DestructorGuard dg(this);
 
+  preprocessHeader(header.get());
+
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINK,
@@ -734,7 +737,6 @@ void RocketClientChannel::sendRequestSink(
       timeout_,
       compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
-      getPersistentWriteHeaders(),
       getServerVersion());
 
   std::chrono::milliseconds firstResponseTimeout;
@@ -766,6 +768,8 @@ void RocketClientChannel::sendThriftRequest(
     RequestClientCallback::Ptr cb) {
   DestructorGuard dg(this);
 
+  preprocessHeader(header.get());
+
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
@@ -774,7 +778,6 @@ void RocketClientChannel::sendThriftRequest(
       timeout_,
       compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
-      getPersistentWriteHeaders(),
       getServerVersion());
 
   std::chrono::milliseconds timeout;

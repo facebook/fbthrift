@@ -110,6 +110,7 @@ ThriftClient::createRequestMetadata(
     RpcKind kind,
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
+  preprocessHeader(header);
   auto requestMetadata = std::make_unique<ThriftChannelIf::RequestMetadata>();
   auto& metadata = requestMetadata->requestRpcMetadata;
   metadata.protocol_ref() = protocolId;
@@ -156,8 +157,6 @@ ThriftClient::createRequestMetadata(
       (*otherMetadata)[entry.first] = entry.second;
     }
   }
-  auto& pwh = getPersistentWriteHeaders();
-  otherMetadata->insert(pwh.begin(), pwh.end());
   if (otherMetadata->empty()) {
     otherMetadata.reset();
   }

@@ -535,8 +535,8 @@ std::unique_ptr<folly::IOBuf>
 HeaderClientChannel::ClientFramingHandler::addFrame(
     unique_ptr<IOBuf> buf, THeader* header) {
   header->setSequenceNumber(channel_.sendSeqId_);
-  return header->addHeader(
-      std::move(buf), channel_.getPersistentWriteHeaders());
+  THeader::StringToStringMap persistentWriteHeaders;
+  return header->addHeader(std::move(buf), persistentWriteHeaders);
 }
 
 std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
@@ -658,13 +658,6 @@ folly::AsyncTransport::UniquePtr HeaderClientChannel::stealTransport() {
   auto deleter = std::get_deleter<ReleasableDestructor>(transportShared);
   deleter->release();
   return folly::AsyncTransport::UniquePtr(transportShared.get());
-}
-
-void HeaderClientChannel::preprocessHeader(
-    apache::thrift::transport::THeader* header) {
-  if (compressionConfig_ && !header->getDesiredCompressionConfig()) {
-    header->setDesiredCompressionConfig(*compressionConfig_);
-  }
 }
 
 } // namespace thrift

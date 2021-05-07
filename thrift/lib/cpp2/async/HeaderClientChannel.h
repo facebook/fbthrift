@@ -36,7 +36,6 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -251,10 +250,6 @@ class HeaderClientChannel : public ClientChannel,
 
   void setConnectionAgentName(std::string_view name);
 
-  void setDesiredCompressionConfig(CompressionConfig compressionConfig) {
-    compressionConfig_ = compressionConfig;
-  }
-
  protected:
   explicit HeaderClientChannel(std::shared_ptr<Cpp2Channel> cpp2Channel);
 
@@ -263,7 +258,6 @@ class HeaderClientChannel : public ClientChannel,
  private:
   void setRequestHeaderOptions(
       apache::thrift::transport::THeader* header, ssize_t payloadSize);
-  void preprocessHeader(apache::thrift::transport::THeader* header);
   void attachMetadataOnce(apache::thrift::transport::THeader* header);
 
   // Transport upgrade from header to rocket for raw header client. If
@@ -355,8 +349,6 @@ class HeaderClientChannel : public ClientChannel,
    * was in progress) should be sent using rocket transport.
    */
   std::deque<HeaderRequestContext> pendingRequests_;
-
-  folly::Optional<CompressionConfig> compressionConfig_;
 
   transport::THeader::StringToStringMap persistentReadHeaders_;
 

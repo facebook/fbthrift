@@ -271,20 +271,14 @@ void HTTPClientChannel::setHeaders(
 }
 
 proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
+  preprocessHeader(header);
+
   proxygen::HTTPMessage msg;
   msg.setMethod(proxygen::HTTPMethod::POST);
   msg.setURL(httpUrl_);
   msg.setHTTPVersion(1, 1);
   msg.setIsChunked(false);
   auto& headers = msg.getHeaders();
-
-  {
-    auto pwh = getPersistentWriteHeaders();
-    setHeaders(headers, pwh);
-    // We do not clear the persistent write headers, since http does not
-    // distinguish persistent/per request headers
-    // pwh.clear();
-  }
 
   {
     auto wh = header->releaseWriteHeaders();
