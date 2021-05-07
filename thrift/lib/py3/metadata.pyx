@@ -292,11 +292,11 @@ cdef class ThriftConstValueProxy:
         self.thriftType = value
         if self.thriftType.type in (ThriftConstValue.Type.cv_bool, ThriftConstValue.Type.cv_integer, ThriftConstValue.Type.cv_double, ThriftConstValue.Type.cv_string):
             self.type = self.thriftType.value
-            if ThriftConstValue.Type.cv_bool:
+            if self.thriftType.type is ThriftConstValue.Type.cv_bool:
                 self.kind = CV_BOOL
-            elif ThriftConstValue.Type.cv_integer:
+            elif self.thriftType.type is ThriftConstValue.Type.cv_integer:
                 self.kind = CV_INT
-            elif ThriftConstValue.Type.cv_double:
+            elif self.thriftType.type is ThriftConstValue.Type.cv_double:
                 self.kind = CV_FLOAT
             else:
                 self.kind = CV_STRING

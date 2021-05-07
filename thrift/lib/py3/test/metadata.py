@@ -215,6 +215,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(first.as_map()[1.1].type, 2)
 
         self.assertEqual(second.type, 3)
+        self.assertEqual(second.as_int(), 3)
         self.assertEqual(third.as_list()[0].type, "a")
         self.assertEqual(third.as_list()[1].type, "b")
 
