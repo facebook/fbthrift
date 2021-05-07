@@ -295,12 +295,13 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
         serverCallback.onInitialError(std::move(firstResponse.exception()));
         return StreamChannelStatus::Complete;
       }
-      serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
+      auto status =
+          serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
+      if (status != StreamChannelStatus::Alive) {
+        return status;
+      }
       if (complete) {
-        // onInitialPayload could have resulted in canceling the stream.
-        if (streams_.find(streamId) != streams_.end()) {
-          return serverCallback.onStreamComplete();
-        }
+        return serverCallback.onStreamComplete();
       }
       return StreamChannelStatus::Alive;
     }

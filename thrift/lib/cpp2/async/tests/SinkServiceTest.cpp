@@ -162,6 +162,8 @@ TEST_F(SinkServiceTest, SinkInitialThrows) {
         } catch (const MyException& ex) {
           EXPECT_EQ("reason", *ex.reason_ref());
         }
+        // connection should still be alive after initial throw
+        co_await client.co_purge();
       });
 }
 

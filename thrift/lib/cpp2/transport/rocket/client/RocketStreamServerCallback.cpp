@@ -48,10 +48,13 @@ bool RocketStreamServerCallback::onSinkHeaders(HeadersPayload&& payload) {
   return client_.sendHeadersPush(streamId_, std::move(payload));
 }
 
-void RocketStreamServerCallback::onInitialPayload(
+StreamChannelStatus RocketStreamServerCallback::onInitialPayload(
     FirstResponsePayload&& payload, folly::EventBase* evb) {
-  std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
+  return clientCallback_->onFirstResponse(std::move(payload), evb, this)
+      ? StreamChannelStatus::Alive
+      : StreamChannelStatus::Complete;
 }
+
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));
   client_.cancelStream(streamId_);
@@ -130,12 +133,13 @@ bool RocketStreamServerCallbackWithChunkTimeout::onStreamRequestN(
   return RocketStreamServerCallback::onStreamRequestN(tokens);
 }
 
-void RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
+StreamChannelStatus
+RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
     FirstResponsePayload&& payload, folly::EventBase* evb) {
   if (credits_ > 0) {
     scheduleTimeout();
   }
-  RocketStreamServerCallback::onInitialPayload(std::move(payload), evb);
+  return RocketStreamServerCallback::onInitialPayload(std::move(payload), evb);
 }
 
 StreamChannelStatus RocketStreamServerCallbackWithChunkTimeout::onStreamPayload(
@@ -203,9 +207,11 @@ void RocketChannelServerCallback::onSinkComplete() {
   client_.sendComplete(streamId_, true);
 }
 
-void RocketChannelServerCallback::onInitialPayload(
+StreamChannelStatus RocketChannelServerCallback::onInitialPayload(
     FirstResponsePayload&& payload, folly::EventBase* evb) {
+  // TODO channel API can also return alive status
   clientCallback_.onFirstResponse(std::move(payload), evb, this);
+  return StreamChannelStatus::Alive;
 }
 void RocketChannelServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_.onFirstResponseError(std::move(ew));
@@ -353,9 +359,11 @@ bool RocketSinkServerCallback::onSinkComplete() {
   return true;
 }
 
-void RocketSinkServerCallback::onInitialPayload(
+StreamChannelStatus RocketSinkServerCallback::onInitialPayload(
     FirstResponsePayload&& payload, folly::EventBase* evb) {
-  std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
+  return clientCallback_->onFirstResponse(std::move(payload), evb, this)
+      ? StreamChannelStatus::Alive
+      : StreamChannelStatus::Complete;
 }
 void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));

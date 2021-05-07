@@ -163,9 +163,13 @@ bool ClientSinkBridge::onFirstResponse(
   evb_ = folly::getKeepAliveToken(evb);
   bool scheduledWait = serverWait(this);
   DCHECK(scheduledWait);
+  auto hasEx = detail::hasException(firstPayload);
   firstResponse_.emplace(std::move(firstPayload));
   firstResponseBaton_.post();
-  return true;
+  if (hasEx) {
+    close();
+  }
+  return !hasEx;
 }
 
 void ClientSinkBridge::onFirstResponseError(folly::exception_wrapper ew) {

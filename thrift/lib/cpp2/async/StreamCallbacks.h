@@ -137,6 +137,12 @@ struct EncodedStreamRpcError : std::exception {
   std::unique_ptr<folly::IOBuf> encoded;
 };
 
+inline bool hasException(const FirstResponsePayload& payload) {
+  auto payloadMetadataRef = payload.metadata.payloadMetadata_ref();
+  return payloadMetadataRef &&
+      payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata;
+}
+
 } // namespace detail
 
 /**

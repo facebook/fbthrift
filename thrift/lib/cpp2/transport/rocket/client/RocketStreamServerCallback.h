@@ -55,7 +55,8 @@ class RocketStreamServerCallback : public StreamServerCallback {
     clientCallback_ = &clientCallback;
   }
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper ew);
   void onStreamTransportError(folly::exception_wrapper);
 
@@ -95,7 +96,8 @@ class RocketStreamServerCallbackWithChunkTimeout
 
   bool onStreamRequestN(uint64_t tokens) override;
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
 
   StreamChannelStatus onStreamPayload(StreamPayload&&);
 
@@ -125,7 +127,8 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   void onSinkError(folly::exception_wrapper) override;
   void onSinkComplete() override;
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
   void onStreamTransportError(folly::exception_wrapper);
 
@@ -170,7 +173,8 @@ class RocketSinkServerCallback : public SinkServerCallback {
     clientCallback_ = &clientCallback;
   }
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
   void onStreamTransportError(folly::exception_wrapper);
 
