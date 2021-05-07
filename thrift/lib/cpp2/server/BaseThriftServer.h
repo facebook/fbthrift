@@ -762,8 +762,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     cpp2Pfac_ = pFac;
   }
 
-  std::shared_ptr<apache::thrift::AsyncProcessorFactory> getProcessorFactory()
-      const {
+  const std::shared_ptr<apache::thrift::AsyncProcessorFactory>&
+  getProcessorFactory() const {
     return cpp2Pfac_;
   }
 
