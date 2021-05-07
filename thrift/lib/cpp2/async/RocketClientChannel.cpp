@@ -695,7 +695,6 @@ void RocketClientChannel::sendRequestStream(
       static_cast<ProtocolId>(protocolId_),
       folly::copy(methodName),
       timeout_,
-      compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
       getServerVersion());
 
@@ -735,7 +734,6 @@ void RocketClientChannel::sendRequestSink(
       static_cast<ProtocolId>(protocolId_),
       folly::copy(methodName),
       timeout_,
-      compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
       getServerVersion());
 
@@ -776,7 +774,6 @@ void RocketClientChannel::sendThriftRequest(
       static_cast<ProtocolId>(protocolId_),
       std::move(methodName),
       timeout_,
-      compressionConfig_ ? &*compressionConfig_ : nullptr,
       *header,
       getServerVersion());
 

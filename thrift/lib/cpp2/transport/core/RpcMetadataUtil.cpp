@@ -37,7 +37,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
     ProtocolId protocolId,
     ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
-    const CompressionConfig* defaultCompressionConfig,
     transport::THeader& header,
     const std::optional<int32_t>& version) {
   RequestRpcMetadata metadata;
@@ -62,8 +61,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
   // add user specified compression settings to metadata
   if (auto compressionConfig = header.getDesiredCompressionConfig()) {
     metadata.compressionConfig_ref() = *compressionConfig;
-  } else if (defaultCompressionConfig) {
-    metadata.compressionConfig_ref() = *defaultCompressionConfig;
   }
 
   auto writeHeaders = header.releaseWriteHeaders();

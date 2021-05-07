@@ -636,7 +636,7 @@ class HeaderOrRocketTest : public testing::Test {
               codec.set_zstdConfig(ZstdCompressionCodecConfig());
               CompressionConfig compressionConfig;
               compressionConfig.set_codecConfig(codec);
-              channel->setDefaultCompressionConfig(compressionConfig);
+              channel->setDesiredCompressionConfig(compressionConfig);
             }
             return channel;
           });

@@ -41,7 +41,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
     ProtocolId protocolId,
     ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
-    const CompressionConfig* defaultCompressionConfig,
     transport::THeader& header,
     const std::optional<int32_t>& version);
 
