@@ -184,7 +184,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       }
     }
     // no custom frame handler was found, do the default
-    cpp2Processor_ = worker_->getServer()->getCpp2Processor();
+    cpp2Processor_ =
+        worker_->getServer()->getProcessorFactory()->getProcessor();
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();

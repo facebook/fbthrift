@@ -581,10 +581,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return observer_.copy();
   }
 
-  std::unique_ptr<apache::thrift::AsyncProcessor> getCpp2Processor() {
-    return cpp2Pfac_->getProcessor();
-  }
-
   /**
    * Set the address(es) to listen on.
    */

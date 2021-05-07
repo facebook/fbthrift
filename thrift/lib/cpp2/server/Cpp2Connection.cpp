@@ -118,7 +118,7 @@ Cpp2Connection::Cpp2Connection(
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processor_(worker->getServer()->getCpp2Processor()),
+    : processor_(worker->getServer()->getProcessorFactory()->getProcessor()),
       duplexChannel_(
           worker->getServer()->isDuplex()
               ? std::make_unique<DuplexChannel>(
