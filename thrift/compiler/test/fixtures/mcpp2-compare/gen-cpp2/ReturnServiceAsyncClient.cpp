@@ -319,8 +319,10 @@ void ReturnServiceAsyncClient::noReturn(apache::thrift::RpcOptions& rpcOptions, 
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   noReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -487,8 +489,10 @@ void ReturnServiceAsyncClient::boolReturn(apache::thrift::RpcOptions& rpcOptions
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   boolReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -657,8 +661,10 @@ void ReturnServiceAsyncClient::i16Return(apache::thrift::RpcOptions& rpcOptions,
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   i16ReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -827,8 +833,10 @@ void ReturnServiceAsyncClient::i32Return(apache::thrift::RpcOptions& rpcOptions,
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   i32ReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -997,8 +1005,10 @@ void ReturnServiceAsyncClient::i64Return(apache::thrift::RpcOptions& rpcOptions,
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   i64ReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -1167,8 +1177,10 @@ void ReturnServiceAsyncClient::floatReturn(apache::thrift::RpcOptions& rpcOption
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   floatReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -1337,8 +1349,10 @@ void ReturnServiceAsyncClient::doubleReturn(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   doubleReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -1507,8 +1521,10 @@ void ReturnServiceAsyncClient::stringReturn(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   stringReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -1675,8 +1691,10 @@ void ReturnServiceAsyncClient::binaryReturn(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   binaryReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -1843,8 +1861,10 @@ void ReturnServiceAsyncClient::mapReturn(apache::thrift::RpcOptions& rpcOptions,
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   mapReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2011,8 +2031,10 @@ void ReturnServiceAsyncClient::simpleTypedefReturn(apache::thrift::RpcOptions& r
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   simpleTypedefReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2181,8 +2203,10 @@ void ReturnServiceAsyncClient::complexTypedefReturn(apache::thrift::RpcOptions& 
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   complexTypedefReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2349,8 +2373,10 @@ void ReturnServiceAsyncClient::list_mostComplexTypedefReturn(apache::thrift::Rpc
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   list_mostComplexTypedefReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2517,8 +2543,10 @@ void ReturnServiceAsyncClient::enumReturn(apache::thrift::RpcOptions& rpcOptions
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   enumReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2687,8 +2715,10 @@ void ReturnServiceAsyncClient::list_EnumReturn(apache::thrift::RpcOptions& rpcOp
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   list_EnumReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -2855,8 +2885,10 @@ void ReturnServiceAsyncClient::structReturn(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   structReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -3023,8 +3055,10 @@ void ReturnServiceAsyncClient::set_StructReturn(apache::thrift::RpcOptions& rpcO
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   set_StructReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -3191,8 +3225,10 @@ void ReturnServiceAsyncClient::unionReturn(apache::thrift::RpcOptions& rpcOption
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   unionReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -3359,8 +3395,10 @@ void ReturnServiceAsyncClient::list_UnionReturn(apache::thrift::RpcOptions& rpcO
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   list_UnionReturnImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback));
 }
@@ -3527,8 +3565,10 @@ void ReturnServiceAsyncClient::readDataEb(apache::thrift::RpcOptions& rpcOptions
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   readDataEbImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback), p_size);
 }
@@ -3695,8 +3735,10 @@ void ReturnServiceAsyncClient::readData(apache::thrift::RpcOptions& rpcOptions, 
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   readDataImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback), p_size);
 }

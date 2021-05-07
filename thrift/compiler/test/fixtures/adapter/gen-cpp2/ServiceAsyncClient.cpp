@@ -39,8 +39,10 @@ void ServiceAsyncClient::func(apache::thrift::RpcOptions& rpcOptions, std::uniqu
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
   funcImpl(rpcOptions, std::move(ctx), contextStack, std::move(wrappedCallback), p_arg1, p_arg2);
 }

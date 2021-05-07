@@ -115,8 +115,10 @@ void PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions&
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());
@@ -268,8 +270,10 @@ void PubSubStreamingServiceAsyncClient::streamthrows(apache::thrift::RpcOptions&
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());
@@ -421,8 +425,10 @@ void PubSubStreamingServiceAsyncClient::boththrows(apache::thrift::RpcOptions& r
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());
@@ -574,8 +580,10 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrows(apache::thrift::
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());
@@ -727,8 +735,10 @@ void PubSubStreamingServiceAsyncClient::returnstreamFast(apache::thrift::RpcOpti
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
     rpcOptions.getBufferOptions());

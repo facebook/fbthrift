@@ -30,8 +30,10 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
   <%/function:oneway?%>
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  callbackContext.ctx = std::move(ctx->ctx);
-  auto* contextStack = callbackContext.ctx.get();
+  auto* contextStack = ctx->ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx->ctx);
+  }
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
 <%/function:returns_stream?%><%#function:returns_stream?%>
