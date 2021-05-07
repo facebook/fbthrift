@@ -227,7 +227,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
 
   // Ensure that client transforms take precedence
   auto channel =
-      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
+      boost::polymorphic_downcast<ClientChannel*>(client.getChannel());
   apache::thrift::CompressionConfig compressionConfig;
   compressionConfig.codecConfig_ref().ensure().set_zstdConfig();
   channel->setDesiredCompressionConfig(compressionConfig);
@@ -1780,7 +1780,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
 
   std::string response;
 
-  boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel())
+  boost::polymorphic_downcast<ClientChannel*>(client.getChannel())
       ->setTimeout(100);
 
   // This should fail as soon as it connects:
