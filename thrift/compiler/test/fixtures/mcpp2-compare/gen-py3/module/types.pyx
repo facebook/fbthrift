@@ -4225,7 +4225,7 @@ cdef class List__bool(thrift.py3.types.List):
         )
 
     cdef _get_single_item(self, size_t index):
-        cdef cbool citem
+        cdef cbool citem = False
         __list_getitem(self._cpp_obj, index, citem)
         return citem
 
@@ -5685,7 +5685,7 @@ cdef class Map__string_bool(thrift.py3.types.Map):
         cdef string ckey = key.encode('UTF-8')
         if not __map_contains(self._cpp_obj, ckey):
             raise err
-        cdef cbool citem
+        cdef cbool citem = False
         __map_getitem(self._cpp_obj, ckey, citem)
         return citem
 
@@ -5709,7 +5709,7 @@ cdef class Map__string_bool(thrift.py3.types.Map):
         if not self:
             return
         cdef __map_iter[cmap[string,cbool]] itr = __map_iter[cmap[string,cbool]](self._cpp_obj)
-        cdef cbool citem
+        cdef cbool citem = False
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextValue(self._cpp_obj, citem)
             yield citem
@@ -5719,7 +5719,7 @@ cdef class Map__string_bool(thrift.py3.types.Map):
             return
         cdef __map_iter[cmap[string,cbool]] itr = __map_iter[cmap[string,cbool]](self._cpp_obj)
         cdef string ckey
-        cdef cbool citem
+        cdef cbool citem = False
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextItem(self._cpp_obj, ckey, citem)
             yield (ckey.data().decode('UTF-8'), citem)
@@ -6230,7 +6230,7 @@ cdef class Set__bool(thrift.py3.types.Set):
         if not self:
             return
         cdef __set_iter[cset[cbool]] itr = __set_iter[cset[cbool]](self._cpp_obj)
-        cdef cbool citem
+        cdef cbool citem = False
         for i in range(deref(self._cpp_obj).size()):
             itr.genNext(self._cpp_obj, citem)
             yield citem

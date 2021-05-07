@@ -211,7 +211,7 @@ cdef class List__bool(thrift.py3.types.List):
         )
 
     cdef _get_single_item(self, size_t index):
-        cdef cbool citem
+        cdef cbool citem = False
         __list_getitem(self._cpp_obj, index, citem)
         return citem
 

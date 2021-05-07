@@ -487,7 +487,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
     cdef _get_single_item(self, size_t index):
         {{#type:list_elem_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         __list_getitem(self._cpp_obj, index, citem)
         return {{> ContainerCythonCppToPythonItem}}
         {{/type:list_elem_type}}
@@ -588,7 +588,7 @@ Sequence.register({{> types/CythonPythonType}})
         cdef __set_iter[{{> types/CythonCppType}}] itr = __set_iter[{{> types/CythonCppType}}](self._cpp_obj)
         {{#type:set_elem_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNext(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
@@ -695,7 +695,7 @@ Set.register({{> types/CythonPythonType}})
             raise err
         {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         __map_getitem(self._cpp_obj, ckey, citem)
         return {{> ContainerCythonCppToPythonItem}}
         {{/type:value_type}}
@@ -706,7 +706,7 @@ Set.register({{> types/CythonPythonType}})
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
         {{#type:key_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextKey(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
@@ -727,7 +727,7 @@ Set.register({{> types/CythonPythonType}})
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
         {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextValue(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
@@ -739,11 +739,11 @@ Set.register({{> types/CythonPythonType}})
         cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
         {{#type:key_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} ckey{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} ckey{{> types/TypeDefaultValue}}
         {{/type:key_type}}
         {{#type:value_type}}
         cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
-            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{> types/TypeDefaultValue}}
         {{/type:value_type}}
         for i in range(deref(self._cpp_obj).size()):
             itr.genNextItem(self._cpp_obj, ckey, citem)
