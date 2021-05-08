@@ -47,7 +47,8 @@ class DuplexChannel {
 
   explicit DuplexChannel(
       Who::WhoEnum mainChannel,
-      const std::shared_ptr<folly::AsyncTransport>& transport);
+      const std::shared_ptr<folly::AsyncTransport>& transport,
+      HeaderClientChannel::Options options = HeaderClientChannel::Options());
 
   ~DuplexChannel() {
     clientChannel_->duplex_ = nullptr;
@@ -68,8 +69,11 @@ class DuplexChannel {
   class DuplexClientChannel : public HeaderClientChannel {
    public:
     DuplexClientChannel(
-        DuplexChannel& duplex, const std::shared_ptr<Cpp2Channel>& cpp2Channel)
-        : HeaderClientChannel(cpp2Channel), duplex_(&duplex) {}
+        DuplexChannel& duplex,
+        const std::shared_ptr<Cpp2Channel>& cpp2Channel,
+        HeaderClientChannel::Options options = HeaderClientChannel::Options())
+        : HeaderClientChannel(cpp2Channel, std::move(options)),
+          duplex_(&duplex) {}
     void sendMessage(
         Cpp2Channel::SendCallback* callback,
         std::unique_ptr<folly::IOBuf> buf,

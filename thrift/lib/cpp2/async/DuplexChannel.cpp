@@ -32,13 +32,15 @@ namespace apache {
 namespace thrift {
 
 DuplexChannel::DuplexChannel(
-    Who::WhoEnum who, const shared_ptr<folly::AsyncTransport>& transport)
+    Who::WhoEnum who,
+    const shared_ptr<folly::AsyncTransport>& transport,
+    HeaderClientChannel::Options options)
     : cpp2Channel_(
           new DuplexCpp2Channel(
               who, transport, make_unique<DuplexFramingHandler>(*this)),
           folly::DelayedDestruction::Destructor()),
       clientChannel_(
-          new DuplexClientChannel(*this, cpp2Channel_),
+          new DuplexClientChannel(*this, cpp2Channel_, std::move(options)),
           folly::DelayedDestruction::Destructor()),
       clientFramingHandler_(*clientChannel_.get()),
       serverChannel_(

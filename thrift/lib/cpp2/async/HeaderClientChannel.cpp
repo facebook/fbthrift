@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include "thrift/lib/cpp/transport/THeader.h"
 
 #include <chrono>
 #include <utility>
@@ -77,30 +78,55 @@ std::unique_ptr<folly::AsyncTransport, ReleasableDestructor> toReleasable(
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
 HeaderClientChannel::HeaderClientChannel(
-    folly::AsyncTransport::UniquePtr transport)
-    : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          toReleasable(std::move(transport)),
-          make_unique<ClientFramingHandler>(*this)))) {
+    folly::AsyncTransport::UniquePtr transport, Options options)
+    : HeaderClientChannel(
+          std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
+              toReleasable(std::move(transport)),
+              make_unique<ClientFramingHandler>(*this))),
+          std::move(options)) {
   upgradeToRocket_ = THRIFT_FLAG(raw_client_rocket_upgrade_enabled);
 }
 
 HeaderClientChannel::HeaderClientChannel(
-    WithRocketUpgrade rocketUpgrade, folly::AsyncTransport::UniquePtr transport)
-    : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          toReleasable(std::move(transport)),
-          make_unique<ClientFramingHandler>(*this)))) {
+    WithRocketUpgrade rocketUpgrade,
+    folly::AsyncTransport::UniquePtr transport,
+    Options options)
+    : HeaderClientChannel(
+          std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
+              toReleasable(std::move(transport)),
+              make_unique<ClientFramingHandler>(*this))),
+          std::move(options)) {
   upgradeToRocket_ = rocketUpgrade.enabled;
 }
 
 HeaderClientChannel::HeaderClientChannel(
-    std::shared_ptr<Cpp2Channel> cpp2Channel)
-    : sendSeqId_(0),
+    std::shared_ptr<Cpp2Channel> cpp2Channel, Options options)
+    : clientType_(options.clientType),
+      sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
       cpp2Channel_(cpp2Channel),
       protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL),
+      agentName_(options.agentName),
       upgradeToRocket_(false),
-      upgradeState_(RocketUpgradeState::INIT) {}
+      rocketRequestSetupMetadata_(
+          std::move(options.rocketUpgradeSetupMetadata)),
+      upgradeState_(RocketUpgradeState::INIT) {
+  checkSupportedClient(clientType_);
+  if (clientType_ == THRIFT_HTTP_CLIENT_TYPE) {
+    upgradeState_ = RocketUpgradeState::NO_UPGRADE;
+  }
+  if (options.httpClientOptions) {
+    updateHttpClientConfig(
+        options.httpClientOptions->host, options.httpClientOptions->uri);
+  }
+}
+
+void HeaderClientChannel::updateHttpClientConfig(
+    const std::string& host, const std::string& uri) {
+  DCHECK(clientType_ == THRIFT_HTTP_CLIENT_TYPE);
+  httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
+}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
   if (isUpgradedToRocket()) {
@@ -122,16 +148,6 @@ void HeaderClientChannel::closeNow() {
 void HeaderClientChannel::destroy() {
   closeNow();
   folly::DelayedDestruction::destroy();
-}
-
-void HeaderClientChannel::useAsHttpClient(
-    const std::string& host, const std::string& uri) {
-  setClientType(THRIFT_HTTP_CLIENT_TYPE);
-  httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
-  // Do not attempt transport upgrade to rocket if the channel is used as http
-  // channel
-  upgradeToRocket_ = false;
-  upgradeState_ = RocketUpgradeState::NO_UPGRADE;
 }
 
 bool HeaderClientChannel::good() {
@@ -400,10 +416,6 @@ void HeaderClientChannel::setRequestHeaderOptions(
   if (getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
     header->setHttpClientParser(httpClientParser_);
   }
-}
-
-void HeaderClientChannel::setConnectionAgentName(std::string_view name) {
-  agentName_ = name;
 }
 
 void HeaderClientChannel::attachMetadataOnce(THeader* header) {

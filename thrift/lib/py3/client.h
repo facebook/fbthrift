@@ -59,14 +59,21 @@ void destroyInEventBaseThread(RequestChannel_ptr&& ptr) {
   eb->runInEventBaseThread([ptr = std::move(ptr)] {});
 }
 
-HeaderChannel_ptr configureClientChannel(
-    HeaderChannel_ptr&& chan,
+RequestChannel_ptr createHeaderChannel(
+    folly::AsyncTransport::UniquePtr sock,
     CLIENT_TYPE client,
-    apache::thrift::protocol::PROTOCOL_TYPES proto) {
-  chan->setProtocolId(proto);
-  if (client != THRIFT_HEADER_CLIENT_TYPE) {
-    chan->setClientType(client);
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    folly::Optional<std::string> host = folly::none,
+    folly::Optional<std::string> endpoint = folly::none) {
+  apache::thrift::HeaderClientChannel::Options options;
+  if (client == THRIFT_HTTP_CLIENT_TYPE) {
+    options.useAsHttpClient(*host, *endpoint);
+  } else {
+    options.setClientType(client);
   }
+  auto chan = apache::thrift::HeaderClientChannel::newChannel(
+      std::move(sock), std::move(options));
+  chan->setProtocolId(proto);
 
   if (client == THRIFT_FRAMED_DEPRECATED) {
     chan->setProtocolId(
@@ -75,7 +82,7 @@ HeaderChannel_ptr configureClientChannel(
     chan->setProtocolId(
         apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL);
   }
-  return std::move(chan);
+  return chan;
 }
 
 struct FutureConnectCallback : folly::AsyncSocket::ConnectCallback {
@@ -135,14 +142,8 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
           chan->setProtocolId(proto);
           return chan;
         }
-        auto chan = configureClientChannel(
-            apache::thrift::HeaderClientChannel::newChannel(std::move(socket)),
-            client_t,
-            proto);
-        if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
-          chan->useAsHttpClient(host, endpoint);
-        }
-        return chan;
+        return createHeaderChannel(
+            std::move(socket), client_t, proto, host, endpoint);
       });
 }
 
@@ -171,11 +172,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelUnix(
               chan->setProtocolId(proto);
               return chan;
             }
-            return configureClientChannel(
-                apache::thrift::HeaderClientChannel::newChannel(
-                    std::move(socket)),
-                client_t,
-                proto);
+            return createHeaderChannel(std::move(socket), client_t, proto);
           });
 }
 

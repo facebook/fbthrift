@@ -31,12 +31,6 @@ class HeaderChannelTrait {
  public:
   static bool isSupportedClient(CLIENT_TYPE ct);
   static void checkSupportedClient(CLIENT_TYPE ct);
-
-  void setClientType(CLIENT_TYPE ct);
-  CLIENT_TYPE getClientType() { return clientType_; }
-
- private:
-  CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
 };
 } // namespace thrift
 } // namespace apache

@@ -185,9 +185,11 @@ void testNonHeader(CLIENT_TYPE type) {
   std::shared_ptr<AsyncSocket> socket(
       AsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  auto duplexChannel =
-      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
-  duplexChannel->getClientChannel()->setClientType(type);
+  HeaderClientChannel::Options options;
+  options.setClientType(type);
+  auto duplexChannel = std::make_shared<DuplexChannel>(
+      DuplexChannel::Who::CLIENT, socket, std::move(options));
+
   DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
 
   int res = client.sync_regularMethod(5);

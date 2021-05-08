@@ -55,7 +55,50 @@ class HeaderClientChannel : public ClientChannel,
   ~HeaderClientChannel() override {}
 
  public:
-  explicit HeaderClientChannel(folly::AsyncTransport::UniquePtr transport);
+  struct Options {
+    Options() {}
+
+    CLIENT_TYPE clientType{THRIFT_HEADER_CLIENT_TYPE};
+    Options& setClientType(CLIENT_TYPE ct) & {
+      clientType = ct;
+      return *this;
+    }
+    Options&& setClientType(CLIENT_TYPE ct) && {
+      setClientType(ct);
+      return std::move(*this);
+    }
+    struct HttpClientOptions {
+      std::string host;
+      std::string uri;
+    };
+    std::unique_ptr<HttpClientOptions> httpClientOptions;
+    Options& useAsHttpClient(
+        const std::string& host, const std::string& uri) & {
+      clientType = THRIFT_HTTP_CLIENT_TYPE;
+      httpClientOptions = std::make_unique<HttpClientOptions>();
+      httpClientOptions->host = host;
+      httpClientOptions->uri = uri;
+      return *this;
+    }
+    Options&& useAsHttpClient(
+        const std::string& host, const std::string& uri) && {
+      useAsHttpClient(host, uri);
+      return std::move(*this);
+    }
+    std::string agentName;
+    /**
+     * Optional RequestSetupMetadata for transport upgrade from header
+     * to rocket. If this is provided, then the upgrade mechanism will call
+     * `RocketClientChannel::newChannelWithMetadata` instead of
+     * `RocketClientChannel::newChannel`.
+     * NOTE: This is for transport upgrade from header to rocket for non-TLS
+     * services.
+     */
+    std::unique_ptr<RequestSetupMetadata> rocketUpgradeSetupMetadata;
+  };
+
+  explicit HeaderClientChannel(
+      folly::AsyncTransport::UniquePtr transport, Options options = Options());
 
   struct WithRocketUpgrade {
     bool enabled{true};
@@ -68,21 +111,25 @@ class HeaderClientChannel : public ClientChannel,
 
   HeaderClientChannel(
       WithRocketUpgrade rocketUpgrade,
-      folly::AsyncTransport::UniquePtr transport);
+      folly::AsyncTransport::UniquePtr transport,
+      Options options = Options());
 
   typedef std::
       unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
           Ptr;
 
-  static Ptr newChannel(folly::AsyncTransport::UniquePtr transport) {
-    return Ptr(new HeaderClientChannel(std::move(transport)));
+  static Ptr newChannel(
+      folly::AsyncTransport::UniquePtr transport, Options options = Options()) {
+    return Ptr(
+        new HeaderClientChannel(std::move(transport), std::move(options)));
   }
 
   static Ptr newChannel(
       WithRocketUpgrade rocketUpgrade,
-      folly::AsyncTransport::UniquePtr transport) {
+      folly::AsyncTransport::UniquePtr transport,
+      Options options = Options()) {
     return Ptr(new HeaderClientChannel(
-        std::move(rocketUpgrade), std::move(transport)));
+        std::move(rocketUpgrade), std::move(transport), std::move(options)));
   }
 
   virtual void sendMessage(
@@ -110,24 +157,6 @@ class HeaderClientChannel : public ClientChannel,
    * services.
    */
   folly::AsyncTransport::UniquePtr stealTransport();
-
-  /**
-   * Sets the optional RequestSetupMetadata for transport upgrade from header
-   * to rocket. If this is provided, then the upgrade mechanism will call
-   * `RocketClientChannel::newChannelWithMetadata` instead of
-   * `RocketClientChannel::newChannel`.
-   * NOTE: This is for transport upgrade from header to rocket for non-TLS
-   * services.
-   */
-  void setRocketUpgradeSetupMetadata(
-      apache::thrift::RequestSetupMetadata rocketRequestSetupMetadata) {
-    CHECK(
-        upgradeState_.load(std::memory_order_acquire) ==
-        RocketUpgradeState::INIT);
-    rocketRequestSetupMetadata_ =
-        std::make_unique<apache::thrift::RequestSetupMetadata>(
-            std::move(rocketRequestSetupMetadata));
-  }
 
   // Client interface from RequestChannel
   using RequestChannel::sendRequestNoResponse;
@@ -174,12 +203,10 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   /**
-   * Set the channel up in HTTP CLIENT mode. host can be an empty string.
-   *
-   * Note: this needs to be called before sending first request due to the
-   * possibility of the channel upgrading itself to rocket.
+   * Updates the HTTP client config for the channel. The channel has to be
+   * constructed with HTTP client type.
    */
-  void useAsHttpClient(const std::string& host, const std::string& uri);
+  void updateHttpClientConfig(const std::string& host, const std::string& uri);
 
   bool good() override;
 
@@ -208,7 +235,7 @@ class HeaderClientChannel : public ClientChannel,
     if (isUpgradedToRocket()) {
       return rocketChannel_->getClientType();
     }
-    return HeaderChannelTrait::getClientType();
+    return clientType_;
   }
 
   void setOnDetachable(folly::Function<void()> onDetachable) override {
@@ -248,10 +275,9 @@ class HeaderClientChannel : public ClientChannel,
   // Remove a callback from the recvCallbacks_ map.
   void eraseCallback(uint32_t seqId, TwowayCallback<HeaderClientChannel>* cb);
 
-  void setConnectionAgentName(std::string_view name);
-
  protected:
-  explicit HeaderClientChannel(std::shared_ptr<Cpp2Channel> cpp2Channel);
+  explicit HeaderClientChannel(
+      std::shared_ptr<Cpp2Channel> cpp2Channel, Options options);
 
   bool clientSupportHeader() override;
 
@@ -269,6 +295,8 @@ class HeaderClientChannel : public ClientChannel,
 
   // Set the base class callback based on current state.
   void setBaseReceivedCallback();
+
+  CLIENT_TYPE clientType_;
 
   uint32_t sendSeqId_;
 

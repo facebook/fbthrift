@@ -23,11 +23,6 @@
 namespace apache {
 namespace thrift {
 
-void HeaderChannelTrait::setClientType(CLIENT_TYPE ct) {
-  checkSupportedClient(ct);
-  clientType_ = ct;
-}
-
 bool HeaderChannelTrait::isSupportedClient(CLIENT_TYPE ct) {
   static folly::Indestructible<std::bitset<CLIENT_TYPES_LEN>> supportedClients(
       [] {
