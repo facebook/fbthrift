@@ -207,18 +207,17 @@ void SampleServer<Service>::connectToServer(
         callMe) {
   ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
-    std::shared_ptr<HeaderClientChannel> channel;
+    std::shared_ptr<ClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
       channel = HeaderClientChannel::newChannel(
           folly::AsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
               evbThread_.getEventBase(), FLAGS_host, port_)));
-      channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     });
     auto channelPtr = channel.get();
-    std::shared_ptr<HeaderClientChannel> destroyInEvbChannel(
+    std::shared_ptr<ClientChannel> destroyInEvbChannel(
         channelPtr,
         [channel = std::move(channel),
-         eventBase = evbThread_.getEventBase()](HeaderClientChannel*) mutable {
+         eventBase = evbThread_.getEventBase()](ClientChannel*) mutable {
           eventBase->runImmediatelyOrRunInEventBaseThreadAndWait(
               [channel_ = std::move(channel)] {});
         });

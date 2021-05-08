@@ -106,7 +106,7 @@ HeaderClientChannel::HeaderClientChannel(
       closeCallback_(nullptr),
       timeout_(0),
       cpp2Channel_(cpp2Channel),
-      protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL),
+      protocolId_(options.protocolId),
       agentName_(options.agentName),
       upgradeToRocket_(false),
       rocketRequestSetupMetadata_(

@@ -58,6 +58,15 @@ class HeaderClientChannel : public ClientChannel,
   struct Options {
     Options() {}
 
+    protocol::PROTOCOL_TYPES protocolId{protocol::T_COMPACT_PROTOCOL};
+    Options& setProtocolId(protocol::PROTOCOL_TYPES prot) & {
+      protocolId = prot;
+      return *this;
+    }
+    Options&& setProtocolId(protocol::PROTOCOL_TYPES prot) && {
+      setProtocolId(prot);
+      return std::move(*this);
+    }
     CLIENT_TYPE clientType{THRIFT_HEADER_CLIENT_TYPE};
     Options& setClientType(CLIENT_TYPE ct) & {
       clientType = ct;
@@ -220,13 +229,6 @@ class HeaderClientChannel : public ClientChannel,
   bool isDetachable() override;
 
   uint16_t getProtocolId() override;
-  void setProtocolId(uint16_t protocolId) {
-    if (isUpgradedToRocket()) {
-      rocketChannel_->setProtocolId(protocolId);
-    } else {
-      protocolId_ = protocolId;
-    }
-  }
 
   CLIENT_TYPE getClientType() override {
     if (isUpgradedToRocket()) {
@@ -296,7 +298,7 @@ class HeaderClientChannel : public ClientChannel,
   // Set the base class callback based on current state.
   void setBaseReceivedCallback();
 
-  CLIENT_TYPE clientType_;
+  const CLIENT_TYPE clientType_;
 
   uint32_t sendSeqId_;
 
@@ -309,9 +311,9 @@ class HeaderClientChannel : public ClientChannel,
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
-  uint16_t protocolId_;
+  const uint16_t protocolId_;
 
-  std::string agentName_;
+  const std::string agentName_;
   bool firstRequest_{true};
 
   // If true, on first request this HeaderClientChannel will try to upgrade to

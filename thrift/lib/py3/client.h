@@ -71,18 +71,16 @@ RequestChannel_ptr createHeaderChannel(
   } else {
     options.setClientType(client);
   }
-  auto chan = apache::thrift::HeaderClientChannel::newChannel(
-      std::move(sock), std::move(options));
-  chan->setProtocolId(proto);
-
+  options.setProtocolId(proto);
   if (client == THRIFT_FRAMED_DEPRECATED) {
-    chan->setProtocolId(
+    options.setProtocolId(
         apache::thrift::protocol::PROTOCOL_TYPES::T_BINARY_PROTOCOL);
   } else if (client == THRIFT_FRAMED_COMPACT) {
-    chan->setProtocolId(
+    options.setProtocolId(
         apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL);
   }
-  return chan;
+  return apache::thrift::HeaderClientChannel::newChannel(
+      std::move(sock), std::move(options));
 }
 
 struct FutureConnectCallback : folly::AsyncSocket::ConnectCallback {

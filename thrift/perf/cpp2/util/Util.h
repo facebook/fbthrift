@@ -55,7 +55,6 @@ static std::unique_ptr<AsyncClient> newHeaderClient(
     folly::EventBase* evb, folly::SocketAddress const& addr) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, false);
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
-  chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(chan));
 }
 
@@ -77,7 +76,6 @@ static std::unique_ptr<AsyncClient> newRocketClient(
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs2"});
   RocketClientChannel::Ptr channel =
       RocketClientChannel::newChannel(std::move(sock));
-  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(channel));
 }
 

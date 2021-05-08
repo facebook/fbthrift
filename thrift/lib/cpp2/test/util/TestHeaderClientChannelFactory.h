@@ -27,10 +27,11 @@ struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
 
   apache::thrift::ClientChannel::Ptr create(
       folly::AsyncTransport::UniquePtr socket) override {
-    auto channel =
-        apache::thrift::HeaderClientChannel::newChannel(std::move(socket));
+    auto channel = apache::thrift::HeaderClientChannel::newChannel(
+        std::move(socket),
+        apache::thrift::HeaderClientChannel::Options().setProtocolId(
+            protocol_));
 
-    channel->setProtocolId(protocol_);
     channel->setTimeout(timeout_);
 
     return channel;

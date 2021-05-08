@@ -67,11 +67,11 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   if (!config->useHeaderProtocol()) {
     options.setClientType(THRIFT_FRAMED_DEPRECATED);
   }
+  // Always use binary in loadtesting to get apples to apples comparison
+  options.setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
       headerChannel(HeaderClientChannel::newChannel(
           std::move(socket), std::move(options)));
-  // Always use binary in loadtesting to get apples to apples comparison
-  headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   if (config->zlib()) {
     apache::thrift::CompressionConfig compressionConfig;
     compressionConfig.codecConfig_ref().ensure().set_zlibConfig();
