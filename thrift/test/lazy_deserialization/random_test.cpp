@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
 
-constexpr int kIterationCount = 50'000;
+constexpr int kIterationCount = folly::kIsDebug ? 50'000 : 500'000;
 constexpr int kListMaxSize = 10;
 
 namespace apache::thrift::test {
@@ -43,6 +43,13 @@ std::string randomSerializedStruct() {
   Struct s;
   s.field4_ref() = randomField();
   return CompactSerializer::serialize<std::string>(s);
+}
+
+auto create(const std::vector<int32_t>& field4) {
+  std::pair<OptionalFoo, OptionalLazyFoo> ret;
+  ret.first.field4_ref() = field4;
+  ret.second.field4_ref() = field4;
+  return ret;
 }
 
 class RandomTestWithSeed : public testing::TestWithParam<int> {};
@@ -85,6 +92,77 @@ TEST_P(RandomTestWithSeed, test) {
             EXPECT_THROW(*lazyFoo.field4_ref(), bad_field_access);
           }
         },
+        [&] { EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref()); },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo < foo2, lazyFoo < lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo > foo2, lazyFoo > lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo <= foo2, lazyFoo <= lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo >= foo2, lazyFoo >= lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo == foo2, lazyFoo == lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          EXPECT_EQ(foo != foo2, lazyFoo != lazyFoo2);
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          foo = foo2;
+          lazyFoo = lazyFoo2;
+          EXPECT_EQ(foo, foo2);
+          EXPECT_EQ(lazyFoo, lazyFoo2);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          foo2 = foo;
+          lazyFoo2 = lazyFoo;
+          EXPECT_EQ(foo, foo2);
+          EXPECT_EQ(lazyFoo, lazyFoo2);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          foo = std::move(foo2);
+          lazyFoo = std::move(lazyFoo2);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
+        [&] {
+          auto [foo2, lazyFoo2] = create(arg);
+          foo2 = std::move(foo);
+          lazyFoo2 = std::move(lazyFoo);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
+        [&] {
+          OptionalFoo foo2 = foo;
+          OptionalLazyFoo lazyFoo2 = lazyFoo;
+          EXPECT_EQ(foo, foo2);
+          EXPECT_EQ(lazyFoo, lazyFoo2);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
+        [&] {
+          OptionalFoo foo2 = std::move(foo);
+          OptionalLazyFoo lazyFoo2 = std::move(lazyFoo);
+          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
+          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+        },
         [&] {
           auto s = randomSerializedStruct<OptionalFoo>();
           CompactSerializer::deserialize(s, foo);
@@ -114,6 +192,6 @@ TEST_P(RandomTestWithSeed, test) {
 INSTANTIATE_TEST_CASE_P(
     RandomTest,
     RandomTestWithSeed,
-    testing::Range(0, folly::kIsDebug ? 16 : 256));
+    testing::Range(0, folly::kIsDebug ? 10 : 1000));
 
 } // namespace apache::thrift::test
