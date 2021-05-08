@@ -23,6 +23,7 @@
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/parse/parsing_driver.h>
+#include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache {
 namespace thrift {
@@ -112,8 +113,7 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
 /**
  * Dump the diagnostic messages to stderr.
  */
-void dump_diagnostics(
-    const std::vector<diagnostic_message>& diagnostic_messages);
+void dump_diagnostics(const std::vector<diagnostic>& diagnostic_messages);
 
 void mark_file_executable(std::string const& path);
 

@@ -159,53 +159,52 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params params) {
   parsing_driver driver{path, std::move(params)};
 
-  std::vector<diagnostic_message> diagnostic_messages;
+  std::vector<diagnostic> diagnostic_messages;
   auto program = driver.parse(diagnostic_messages);
   dump_diagnostics(diagnostic_messages);
 
   return program;
 }
 
-void dump_diagnostics(
-    const std::vector<diagnostic_message>& diagnostic_messages) {
+void dump_diagnostics(const std::vector<diagnostic>& diagnostic_messages) {
   char lineno[16];
   for (auto const& message : diagnostic_messages) {
-    if (message.lineno > 0) {
-      sprintf(lineno, ":%d", message.lineno);
+    if (message.lineno() > 0) {
+      sprintf(lineno, ":%d", message.lineno());
     } else {
       *lineno = '\0';
     }
-    switch (message.level) {
-      case diagnostic_level::YY_ERROR:
+    switch (message.level()) {
+      case diagnostic_level::parse_error:
         fprintf(
             stderr,
             "[ERROR:%s%s] (last token was '%s')\n%s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.last_token.c_str(),
-            message.message.c_str());
+            message.token().c_str(),
+            message.message().c_str());
         break;
-      case diagnostic_level::WARNING:
+      case diagnostic_level::warning:
         fprintf(
             stderr,
             "[WARNING:%s%s] %s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.message.c_str());
+            message.message().c_str());
         break;
-      case diagnostic_level::VERBOSE:
-        fprintf(stderr, "%s", message.message.c_str());
+      case diagnostic_level::info:
+        fprintf(stderr, "%s", message.message().c_str());
         break;
-      case diagnostic_level::DBG:
-        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message.c_str());
+      case diagnostic_level::debug:
+        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message().c_str());
         break;
-      case diagnostic_level::FAILURE:
+      case diagnostic_level::failure:
         fprintf(
             stderr,
             "[FAILURE:%s%s] %s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.message.c_str());
+            message.message().c_str());
         break;
     }
   }

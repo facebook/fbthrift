@@ -62,7 +62,7 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
 parsing_driver::~parsing_driver() = default;
 
 std::unique_ptr<t_program_bundle> parsing_driver::parse(
-    std::vector<diagnostic_message>& messages) {
+    std::vector<diagnostic>& messages) {
   std::unique_ptr<t_program_bundle> result{};
 
   try {

@@ -44,11 +44,11 @@ def thrift_compile(vector[string] argv):
     while it != end:
         py_messages.append(
             DiagnosticMessage(
-                DiagnosticLevel(<uint32_t>(deref(it).level)),
-                deref(it).filename,
-                deref(it).lineno,
-                deref(it).last_token,
-                deref(it).message,
+                DiagnosticLevel(<uint32_t>(deref(it).level())),
+                deref(it).file(),
+                deref(it).lineno(),
+                deref(it).token(),
+                deref(it).message(),
             )
         )
         inc(it)

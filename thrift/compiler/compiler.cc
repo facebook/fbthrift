@@ -327,7 +327,7 @@ bool generate(
 
       bool has_failure = false;
       for (const auto& d : diagnostics) {
-        has_failure = has_failure || (d.getType() == diagnostic::type::failure);
+        has_failure = has_failure || (d.level() == diagnostic_level::failure);
         std::cerr << d << std::endl;
       }
       if (has_failure) {
@@ -421,7 +421,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   try {
     mutator::mutate(program->get_root_program());
   } catch (MutatorException& e) {
-    result.diagnostics.push_back(e.diagnostic);
+    result.diagnostics.emplace_back(std::move(e.message));
     return result;
   }
 
@@ -432,7 +432,8 @@ compile_result compile(const std::vector<std::string>& arguments) {
   auto diagnostics = validator::validate(program->get_root_program());
   bool has_failure = false;
   for (const auto& d : diagnostics) {
-    has_failure = has_failure || (d.getType() == diagnostic::type::failure);
+    has_failure = has_failure || (d.level() == diagnostic_level::failure);
+    // TODO(afuller): Add them to result.diagnostics instead.
     std::cerr << d << std::endl;
   }
   if (has_failure) {
@@ -446,12 +447,10 @@ compile_result compile(const std::vector<std::string>& arguments) {
       result.retcode = compile_retcode::SUCCESS;
     }
   } catch (const std::exception& e) {
-    result.diagnostics.push_back(diagnostic_message(
-        diagnostic_level::FAILURE,
-        program->get_root_program()->path(),
-        0,
-        {},
-        e.what()));
+    result.diagnostics.emplace_back(
+        diagnostic_level::failure,
+        e.what(),
+        program->get_root_program()->path());
   }
   return result;
 }

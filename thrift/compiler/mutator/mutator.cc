@@ -75,27 +75,30 @@ static const t_type* resolve_type(const t_type* type) {
 }
 
 static void match_type_with_const_value(
-    t_program* program, const t_type* long_type, t_const_value* value) {
+    t_node* node,
+    t_program* program,
+    const t_type* long_type,
+    t_const_value* value) {
   const t_type* type = resolve_type(long_type);
   value->set_ttype(type);
   if (type->is_list()) {
     auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
     for (auto list_val : value->get_list()) {
-      match_type_with_const_value(program, elem_type, list_val);
+      match_type_with_const_value(node, program, elem_type, list_val);
     }
   }
   if (type->is_set()) {
     auto* elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
     for (auto set_val : value->get_list()) {
-      match_type_with_const_value(program, elem_type, set_val);
+      match_type_with_const_value(node, program, elem_type, set_val);
     }
   }
   if (type->is_map()) {
     auto* key_type = dynamic_cast<const t_map*>(type)->get_key_type();
     auto* val_type = dynamic_cast<const t_map*>(type)->get_val_type();
     for (auto map_val : value->get_map()) {
-      match_type_with_const_value(program, key_type, map_val.first);
-      match_type_with_const_value(program, val_type, map_val.second);
+      match_type_with_const_value(node, program, key_type, map_val.first);
+      match_type_with_const_value(node, program, val_type, map_val.second);
     }
   }
   if (type->is_struct()) {
@@ -104,12 +107,14 @@ static void match_type_with_const_value(
       auto name = map_val.first->get_string();
       auto tfield = struct_type->get_field_by_name(name);
       if (!tfield) {
-        MutatorException e;
-        e.diagnostic.last_token = name;
-        e.diagnostic.message = "field `" + name + "` does not exist.";
-        throw e;
+        throw MutatorException(
+            {diagnostic_level::failure,
+             "field `" + name + "` does not exist.",
+             node,
+             program});
       }
-      match_type_with_const_value(program, tfield->get_type(), map_val.second);
+      match_type_with_const_value(
+          node, program, tfield->get_type(), map_val.second);
     }
   }
   // Set constant value types as enums when they are declared with integers
@@ -153,16 +158,9 @@ bool field_type_to_const_value::visit(t_program* const program) {
   return true;
 }
 bool field_type_to_const_value::visit(t_field* const tfield) {
-  try {
-    if (tfield->get_type() && tfield->get_value()) {
-      match_type_with_const_value(
-          program_, tfield->get_type(), tfield->get_value());
-    }
-  } catch (MutatorException& e) {
-    e.diagnostic.level = diagnostic_level::FAILURE;
-    e.diagnostic.lineno = tfield->lineno();
-    e.diagnostic.filename = program_->path();
-    throw;
+  if (tfield->get_type() && tfield->get_value()) {
+    match_type_with_const_value(
+        tfield, program_, tfield->get_type(), tfield->get_value());
   }
   return true;
 }
@@ -175,16 +173,9 @@ bool const_type_to_const_value::visit(t_program* const program) {
   return true;
 }
 bool const_type_to_const_value::visit(t_const* const tconst) {
-  try {
-    if (tconst->get_type() && tconst->get_value()) {
-      match_type_with_const_value(
-          program_, tconst->get_type(), tconst->get_value());
-    }
-  } catch (MutatorException& e) {
-    e.diagnostic.level = diagnostic_level::FAILURE;
-    e.diagnostic.lineno = tconst->lineno();
-    e.diagnostic.filename = program_->path();
-    throw;
+  if (tconst->get_type() && tconst->get_value()) {
+    match_type_with_const_value(
+        tconst, program_, tconst->get_type(), tconst->get_value());
   }
   return true;
 }

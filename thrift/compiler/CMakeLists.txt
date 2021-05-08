@@ -55,9 +55,12 @@ add_library(
 
   common.cc
   filesystem.cc
-  parse/parsing_driver.cc
   platform.cc
   util.cc
+
+  parse/parsing_driver.cc
+  sema/diagnostic.cc
+
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}
 )
@@ -135,7 +138,6 @@ add_executable(
   main.cc
   compiler.cc
   mutator/mutator.cc
-  validator/diagnostic.cc
   validator/validator.cc
   ast/visitor.cc
 )

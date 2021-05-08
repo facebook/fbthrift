@@ -18,13 +18,16 @@
 
 #include <thrift/compiler/ast/visitor.h>
 #include <thrift/compiler/parse/parsing_driver.h>
+#include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 struct MutatorException : std::exception {
-  diagnostic_message diagnostic;
+  explicit MutatorException(diagnostic msg) : message(std::move(msg)) {}
+
+  diagnostic message;
 };
 
 class mutator : virtual public visitor {

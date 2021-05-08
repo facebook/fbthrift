@@ -47,7 +47,7 @@ validator::diagnostics_t validator::validate(t_program* const program) {
 void validator::add_error(
     boost::optional<int> const lineno, std::string const& message) {
   diagnostics_->emplace_back(
-      diagnostic::type::failure, program_->path(), lineno, message);
+      diagnostic_level::failure, message, program_->path(), lineno.value_or(0));
 }
 
 void validator::set_program(t_program* const program) {

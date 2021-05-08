@@ -23,7 +23,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-struct diagnostic_message;
+class diagnostic;
 
 enum class compile_retcode {
   SUCCESS = 0,
@@ -32,7 +32,7 @@ enum class compile_retcode {
 
 struct compile_result {
   compile_retcode retcode;
-  std::vector<diagnostic_message> diagnostics;
+  std::vector<diagnostic> diagnostics;
 };
 
 /**
