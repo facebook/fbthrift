@@ -97,9 +97,6 @@ class HeaderClientChannel : public ClientChannel,
     std::unique_ptr<RequestSetupMetadata> rocketUpgradeSetupMetadata;
   };
 
-  explicit HeaderClientChannel(
-      folly::AsyncTransport::UniquePtr transport, Options options = Options());
-
   struct WithRocketUpgrade {
     bool enabled{true};
   };
@@ -282,6 +279,9 @@ class HeaderClientChannel : public ClientChannel,
   bool clientSupportHeader() override;
 
  private:
+  HeaderClientChannel(
+      folly::AsyncTransport::UniquePtr transport, Options options);
+
   void setRequestHeaderOptions(
       apache::thrift::transport::THeader* header, ssize_t payloadSize);
   void attachMetadataOnce(apache::thrift::transport::THeader* header);
