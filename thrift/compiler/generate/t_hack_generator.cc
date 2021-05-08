@@ -1578,10 +1578,10 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
         std::make_unique<t_const_value>("arguments"), std::move(arguments));
   }
 
-  if (function->get_xceptions()->has_fields()) {
+  if (function->exceptions()->has_fields()) {
     auto exceptions = std::make_unique<t_const_value>();
     exceptions->set_list();
-    for (const auto& field : function->get_xceptions()->fields()) {
+    for (const auto& field : function->exceptions()->fields()) {
       exceptions->add_list(field_to_tmeta(field));
     }
     tmeta_ThriftFunction->add_map(
@@ -1629,40 +1629,40 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
 
 void t_hack_generator::append_to_t_enum(
     t_enum* tenum, t_program* program, ThriftPrimitiveType value) {
-  auto enum_value = std::make_unique<t_enum_value>();
-  enum_value->set_value(value);
+  std::unique_ptr<t_enum_value> enum_value;
   switch (value) {
     case ThriftPrimitiveType::THRIFT_BOOL_TYPE:
-      enum_value->set_name("THRIFT_BOOL_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_BOOL_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_BYTE_TYPE:
-      enum_value->set_name("THRIFT_BYTE_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_BYTE_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I16_TYPE:
-      enum_value->set_name("THRIFT_I16_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_I16_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I32_TYPE:
-      enum_value->set_name("THRIFT_I32_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_I32_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I64_TYPE:
-      enum_value->set_name("THRIFT_I64_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_I64_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_FLOAT_TYPE:
-      enum_value->set_name("THRIFT_FLOAT_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_FLOAT_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_DOUBLE_TYPE:
-      enum_value->set_name("THRIFT_DOUBLE_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_DOUBLE_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_BINARY_TYPE:
-      enum_value->set_name("THRIFT_BINARY_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_BINARY_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_STRING_TYPE:
-      enum_value->set_name("THRIFT_STRING_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_STRING_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_VOID_TYPE:
-      enum_value->set_name("THRIFT_VOID_TYPE");
+      enum_value = std::make_unique<t_enum_value>("THRIFT_VOID_TYPE");
       break;
   }
+  enum_value->set_value(value);
   auto const_value = std::make_unique<t_const>(
       program,
       tenum,
@@ -1674,7 +1674,7 @@ void t_hack_generator::append_to_t_enum(
 const t_type* t_hack_generator::tmeta_ThriftType_type() {
   static t_program empty_program("");
   static t_union type(&empty_program, "tmeta_ThriftType");
-  static t_enum primitive_type(&empty_program);
+  static t_enum primitive_type(&empty_program, "");
   static t_struct list_type(&empty_program, "tmeta_ThriftListType");
   static t_struct set_type(&empty_program, "tmeta_ThriftSetType");
   static t_struct map_type(&empty_program, "tmeta_ThriftMapType");

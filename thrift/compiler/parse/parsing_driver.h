@@ -28,6 +28,7 @@
 
 #include <boost/optional.hpp>
 
+#include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_named.h>
@@ -85,6 +86,7 @@ struct t_def_attrs {
   std::unique_ptr<t_struct_annotations> struct_annotations;
 };
 using t_function_list = std::vector<std::unique_ptr<t_function>>;
+using t_enum_value_list = std::vector<std::unique_ptr<t_enum_value>>;
 
 // A const pointer to an AST node.
 //

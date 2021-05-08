@@ -34,7 +34,7 @@ namespace compiler {
  */
 class t_enum_value : public t_named {
  public:
-  t_enum_value() = default;
+  explicit t_enum_value(std::string name) : t_named(std::move(name)) {}
 
   /**
    * t_enum_value setters

@@ -256,8 +256,8 @@ class t_container_type;
 %type<t_field_list*>         FieldList
 
 %type<t_enum*>               Enum
-%type<t_enum*>               EnumDefList
-%type<t_enum_value*>         EnumDef
+%type<t_enum_value_list*>    EnumValueList
+%type<t_enum_value*>         EnumValueDef
 %type<t_enum_value*>         EnumValue
 
 %type<t_const*>              Const
@@ -549,35 +549,35 @@ Enum:
     {
       driver.start_node(LineType::Enum);
     }
-  "{" EnumDefList "}" TypeAnnotations
+  "{" EnumValueList "}" TypeAnnotations
     {
-      driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumDefList } TypeAnnotations");
-      $6->set_name(std::move($3));
-      driver.finish_node($6, LineType::Enum, own($1), own($8));
-      $$ = $6;
+      driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumValueList } TypeAnnotations");
+      $$ = new t_enum(driver.program, std::move($3));
+      $$->set_values(consume($6));
+      driver.finish_node($$, LineType::Enum, own($1), own($8));
     }
 
-EnumDefList:
-  EnumDefList EnumDef
+EnumValueList:
+  EnumValueList EnumValueDef
     {
-      driver.debug("EnumDefList -> EnumDefList EnumDef");
+      driver.debug("EnumValueList -> EnumValueList EnumValueDef");
       $$ = $1;
-      $$->append(own($2));
+      $$->emplace_back(own($2));
     }
 |
     {
-      driver.debug("EnumDefList -> ");
-      $$ = new t_enum(driver.program);
+      driver.debug("EnumValueList -> ");
+      $$ = new t_enum_value_list;
     }
 
-EnumDef:
+EnumValueDef:
   DefinitionAttrs EnumValue
     {
       driver.start_node(LineType::EnumValue);
     }
   TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("EnumDef => DefinitionAttrs EnumValue "
+      driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
         "TypeAnnotations CommaOrSemicolonOptional");
       driver.finish_node($2, LineType::EnumValue, own($1), own($4));
       $$ = $2;
@@ -598,8 +598,7 @@ EnumValue:
         // truncated i32 value that thrift has always been using anyway.
         driver.failure("64-bit value supplied for enum %s will be truncated.", $1.c_str());
       }
-      $$ = new t_enum_value;
-      $$->set_name($1);
+      $$ = new t_enum_value(std::move($1));
       $$->set_value($3);
       $$->set_lineno(driver.scanner->get_lineno());
     }
@@ -607,8 +606,7 @@ EnumValue:
   Identifier
     {
       driver.debug("EnumValue -> Identifier");
-      $$ = new t_enum_value;
-      $$->set_name($1);
+      $$ = new t_enum_value(std::move($1));
       $$->set_lineno(driver.scanner->get_lineno());
     }
 

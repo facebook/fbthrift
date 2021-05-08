@@ -36,7 +36,18 @@ namespace compiler {
  */
 class t_enum : public t_type {
  public:
-  explicit t_enum(t_program* program) : t_type(program) {}
+  t_enum(t_program* program, std::string name)
+      : t_type(program, std::move(name)) {}
+
+  void set_values(std::vector<std::unique_ptr<t_enum_value>> values) {
+    enum_values_raw_.clear();
+    raw_constants_.clear();
+    enum_values_.clear();
+    constants_.clear();
+    for (auto& value : values) {
+      append(std::move(value));
+    }
+  }
 
   void append(std::unique_ptr<t_enum_value> enum_value) {
     if (!enum_value->has_value()) {
@@ -60,7 +71,7 @@ class t_enum : public t_type {
     append(std::move(enum_value), std::move(tconst));
   }
 
-  const std::vector<const t_const*> enum_values() const {
+  const std::vector<const t_const*>& enum_values() const {
     return raw_constants_;
   }
 
@@ -78,7 +89,6 @@ class t_enum : public t_type {
  private:
   std::vector<std::unique_ptr<t_enum_value>> enum_values_;
   std::vector<std::unique_ptr<t_const>> constants_;
-
   std::vector<const t_const*> raw_constants_;
 
   // TODO(afuller): These methods are only provided for backwards

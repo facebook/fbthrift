@@ -35,9 +35,7 @@ namespace {
 class ValidatorTest : public testing::Test {};
 
 std::unique_ptr<t_enum_value> new_enum_value(std::string name) {
-  auto result = std::make_unique<t_enum_value>();
-  result->set_name(std::move(name));
-  return result;
+  return std::make_unique<t_enum_value>(std::move(name));
 }
 
 std::unique_ptr<t_enum_value> new_enum_value(std::string name, int value) {
