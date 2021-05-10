@@ -776,6 +776,7 @@ void RocketClientChannel::sendThriftRequest(
       timeout_,
       *header,
       getServerVersion());
+  header.reset();
 
   std::chrono::milliseconds timeout;
   if (!preSendValidation(metadata, rpcOptions, cb, timeout)) {
