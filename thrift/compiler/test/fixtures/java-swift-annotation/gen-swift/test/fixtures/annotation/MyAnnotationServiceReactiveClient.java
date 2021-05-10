@@ -9,5 +9,5 @@ package test.fixtures.annotation;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
-import com.facebook.swift.transport.client.ResponseWrapper;
+import com.facebook.thrift.client.ResponseWrapper;
 // Generation of this class is disabled using (java.swift.disable_reactive)

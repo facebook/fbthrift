@@ -18,7 +18,7 @@ public class ServiceReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
-  public ServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public ServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new ServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,23 +29,23 @@ public class ServiceReactiveAsyncWrapper
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.func(arg1, arg2));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1, arg2));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Integer> func(
     final String arg1,
     final test.fixtures.adapter.Foo arg2,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.func(arg1,arg2, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1,arg2, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Integer>> funcWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Integer>> funcWrapper(
     final String arg1,
     final test.fixtures.adapter.Foo arg2,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.funcWrapper(arg1,arg2, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.funcWrapper(arg1,arg2, rpcOptions));
   }
 
 }

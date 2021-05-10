@@ -25,7 +25,7 @@ public class MyServicePrioChildAsyncReactiveWrapper  extends test.fixtures.basic
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> pang() {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.pang());
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.pang());
     }
 
 }

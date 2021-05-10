@@ -18,7 +18,7 @@ public class MyRootReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
-  public MyRootReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyRootReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyRootReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,19 +29,19 @@ public class MyRootReactiveAsyncWrapper
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doRoot() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doRoot());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doRoot());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doRoot(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doRoot( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doRoot( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> doRootWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doRootWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> doRootWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doRootWrapper( rpcOptions));
   }
 
 }

@@ -11,13 +11,13 @@ import java.util.*;
 import org.apache.thrift.protocol.*;
 
 public class LegacyServiceRpcServerHandler 
-  implements com.facebook.swift.transport.server.RpcServerHandler {
+  implements com.facebook.thrift.server.RpcServerHandler {
 
-  private final java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> _methodMap;
+  private final java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _methodMap;
 
   private final LegacyService.Reactive _delegate;
 
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _getPointsReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _getPointsReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -44,8 +44,8 @@ public class LegacyServiceRpcServerHandler
 
   }
 
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _creategetPointsReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _creategetPointsReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -81,18 +81,18 @@ public class LegacyServiceRpcServerHandler
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _creategetPointsWriter(
+  private static com.facebook.thrift.payload.Writer _creategetPointsWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getPoints", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
         Map<String, List<Integer>> _iter0 = (Map<String, List<Integer>>)_r;
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.MAP_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.MAP_FIELD);
 oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
         for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
           oprot.writeString(_iter1.getKey());
@@ -120,12 +120,12 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dogetPoints(
     LegacyService.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -141,19 +141,19 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
             .getPoints(key, legacyStuff)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _creategetPointsWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
@@ -162,10 +162,10 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
   }
 
   @Override
-  public reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.swift.transport.payload.ServerRequestPayload _payload) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 
-    reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> _result;
+    reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
         case "getPoints":
@@ -182,7 +182,7 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
     return _result;
   }
 
-  public java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> getMethodMap() {
+  public java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> getMethodMap() {
       return _methodMap;
   }
 

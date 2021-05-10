@@ -18,7 +18,7 @@ public class LegacyServiceReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
-  public LegacyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public LegacyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new LegacyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -36,15 +36,15 @@ public class LegacyServiceReactiveBlockingWrapper
   public Map<String, List<Integer>> getPoints(
         final Set<String> key,
         final long legacyStuff,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.getPoints(key, legacyStuff).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Map<String, List<Integer>>> getPointsWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Map<String, List<Integer>>> getPointsWrapper(
     final Set<String> key,
     final long legacyStuff,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.getPointsWrapper(key, legacyStuff, rpcOptions).block();
   }
 

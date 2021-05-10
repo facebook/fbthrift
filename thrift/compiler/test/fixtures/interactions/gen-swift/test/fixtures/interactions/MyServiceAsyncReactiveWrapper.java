@@ -25,7 +25,7 @@ public class MyServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> foo() {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.foo());
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.foo());
     }
 
 }

@@ -10,7 +10,7 @@ package test.fixtures.stream;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -57,13 +57,13 @@ public interface PubSubStreamingService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
-        reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo);
+        reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo);
 
-        default reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo, RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>>> responseandstreamthrowsWrapper(final int foo, RpcOptions rpcOptions) {
+        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<Integer,Integer>>> responseandstreamthrowsWrapper(final int foo, RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

@@ -18,7 +18,7 @@ public class RaiserReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
-  public RaiserReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public RaiserReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new RaiserReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -34,13 +34,13 @@ public class RaiserReactiveBlockingWrapper
 
   @java.lang.Override
   public void doBland(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.doBland().block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> doBlandWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+  public com.facebook.thrift.client.ResponseWrapper<Void> doBlandWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.doBlandWrapper(rpcOptions).block();
   }
   @java.lang.Override
@@ -50,13 +50,13 @@ public class RaiserReactiveBlockingWrapper
 
   @java.lang.Override
   public void doRaise(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       _delegate.doRaise().block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> doRaiseWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+  public com.facebook.thrift.client.ResponseWrapper<Void> doRaiseWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       return _delegate.doRaiseWrapper(rpcOptions).block();
   }
   @java.lang.Override
@@ -66,13 +66,13 @@ public class RaiserReactiveBlockingWrapper
 
   @java.lang.Override
   public String get200(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.get200().block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<String> get200Wrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+  public com.facebook.thrift.client.ResponseWrapper<String> get200Wrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.get200Wrapper(rpcOptions).block();
   }
   @java.lang.Override
@@ -82,13 +82,13 @@ public class RaiserReactiveBlockingWrapper
 
   @java.lang.Override
   public String get500(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       return _delegate.get500().block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<String> get500Wrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+  public com.facebook.thrift.client.ResponseWrapper<String> get500Wrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       return _delegate.get500Wrapper(rpcOptions).block();
   }
 

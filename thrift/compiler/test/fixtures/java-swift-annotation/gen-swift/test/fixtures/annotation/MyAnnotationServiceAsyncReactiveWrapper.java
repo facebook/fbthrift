@@ -25,7 +25,7 @@ public class MyAnnotationServiceAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> ping() {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.ping());
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.ping());
     }
 
 }

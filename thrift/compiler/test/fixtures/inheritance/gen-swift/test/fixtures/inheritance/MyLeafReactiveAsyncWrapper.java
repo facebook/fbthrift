@@ -18,7 +18,7 @@ public class MyLeafReactiveAsyncWrapper  extends test.fixtures.inheritance.MyNod
     this._delegate = _delegate;
   }
 
-  public MyLeafReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyLeafReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyLeafReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,19 +29,19 @@ public class MyLeafReactiveAsyncWrapper  extends test.fixtures.inheritance.MyNod
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doLeaf() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doLeaf());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doLeaf());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doLeaf(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doLeaf( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doLeaf( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> doLeafWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doLeafWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> doLeafWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doLeafWrapper( rpcOptions));
   }
 
 }

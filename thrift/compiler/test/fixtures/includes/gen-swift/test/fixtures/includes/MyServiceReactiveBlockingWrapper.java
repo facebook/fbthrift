@@ -18,7 +18,7 @@ public class MyServiceReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
-  public MyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -36,15 +36,15 @@ public class MyServiceReactiveBlockingWrapper
   public void query(
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.query(s, i).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> queryWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> queryWrapper(
     final test.fixtures.includes.MyStruct s,
     final test.fixtures.includes.includes.Included i,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.queryWrapper(s, i, rpcOptions).block();
   }
   @java.lang.Override
@@ -56,15 +56,15 @@ public class MyServiceReactiveBlockingWrapper
   public void hasArgDocs(
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.hasArgDocs(s, i).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> hasArgDocsWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> hasArgDocsWrapper(
     final test.fixtures.includes.MyStruct s,
     final test.fixtures.includes.includes.Included i,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.hasArgDocsWrapper(s, i, rpcOptions).block();
   }
 

@@ -18,7 +18,7 @@ public class ServiceReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
-  public ServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public ServiceReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new ServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -36,15 +36,15 @@ public class ServiceReactiveBlockingWrapper
   public int func(
         final String arg1,
         final test.fixtures.adapter.Foo arg2,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.func(arg1, arg2).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Integer> funcWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Integer> funcWrapper(
     final String arg1,
     final test.fixtures.adapter.Foo arg2,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.funcWrapper(arg1, arg2, rpcOptions).block();
   }
 

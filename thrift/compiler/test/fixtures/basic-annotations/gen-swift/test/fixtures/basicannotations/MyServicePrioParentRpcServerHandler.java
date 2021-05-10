@@ -11,14 +11,14 @@ import java.util.*;
 import org.apache.thrift.protocol.*;
 
 public class MyServicePrioParentRpcServerHandler 
-  implements com.facebook.swift.transport.server.RpcServerHandler {
+  implements com.facebook.thrift.server.RpcServerHandler {
 
-  private final java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> _methodMap;
+  private final java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _methodMap;
 
   private final MyServicePrioParent.Reactive _delegate;
 
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _pingReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _pongReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _pingReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _pongReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -48,25 +48,25 @@ public class MyServicePrioParentRpcServerHandler
 
   }
 
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createpingReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createpingReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createpingWriter(
+  private static com.facebook.thrift.payload.Writer _createpingWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("ping", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -81,12 +81,12 @@ public class MyServicePrioParentRpcServerHandler
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doping(
     MyServicePrioParent.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -100,44 +100,44 @@ public class MyServicePrioParentRpcServerHandler
             .ping()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createpingWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createpongReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createpongReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createpongWriter(
+  private static com.facebook.thrift.payload.Writer _createpongWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("pong", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -152,12 +152,12 @@ public class MyServicePrioParentRpcServerHandler
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dopong(
     MyServicePrioParent.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -171,19 +171,19 @@ public class MyServicePrioParentRpcServerHandler
             .pong()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createpongWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
@@ -192,10 +192,10 @@ public class MyServicePrioParentRpcServerHandler
   }
 
   @Override
-  public reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.swift.transport.payload.ServerRequestPayload _payload) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 
-    reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> _result;
+    reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
         case "ping":
@@ -215,7 +215,7 @@ public class MyServicePrioParentRpcServerHandler
     return _result;
   }
 
-  public java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> getMethodMap() {
+  public java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> getMethodMap() {
       return _methodMap;
   }
 

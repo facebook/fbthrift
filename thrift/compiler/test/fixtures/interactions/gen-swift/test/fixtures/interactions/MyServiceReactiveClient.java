@@ -9,21 +9,21 @@ package test.fixtures.interactions;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
-import com.facebook.swift.transport.client.ResponseWrapper;
+import com.facebook.thrift.client.ResponseWrapper;
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
 
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
   }
 
-  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
+  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -31,7 +31,7 @@ public class MyServiceReactiveClient
     this._persistentHeaders = java.util.Collections.emptyMap();
   }
 
-  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -42,7 +42,7 @@ public class MyServiceReactiveClient
   @java.lang.Override
   public void dispose() {}
 
-  private com.facebook.swift.transport.payload.Writer _createfooWriter() {
+  private com.facebook.thrift.payload.Writer _createfooWriter() {
     return oprot -> {
       try {
 
@@ -52,7 +52,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _foo_READER =
+  private static final com.facebook.thrift.payload.Reader _foo_READER =
     oprot -> {
               try {
 
@@ -65,7 +65,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Void>> fooWrapper( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> fooWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -75,8 +75,8 @@ public class MyServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<Void> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createfooWriter(),
                     _foo_READER,
                     _foo_EXCEPTION_READERS,
@@ -89,17 +89,17 @@ public class MyServiceReactiveClient
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> foo( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<Void> foo( final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return fooWrapper( rpcOptions).then();
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> foo() {
-    return foo( com.facebook.swift.transport.client.RpcOptions.EMPTY);
+    return foo( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
 
-  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> headers = new HashMap<>();
       if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
           headers.putAll(rpcOptions.getRequestHeaders());

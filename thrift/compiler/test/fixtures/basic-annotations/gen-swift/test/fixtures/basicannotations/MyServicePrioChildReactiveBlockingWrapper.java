@@ -18,7 +18,7 @@ public class MyServicePrioChildReactiveBlockingWrapper  extends test.fixtures.ba
     this._delegate = _delegate;
   }
 
-  public MyServicePrioChildReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServicePrioChildReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyServicePrioChildReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -34,13 +34,13 @@ public class MyServicePrioChildReactiveBlockingWrapper  extends test.fixtures.ba
 
   @java.lang.Override
   public void pang(
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.pang().block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> pangWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+  public com.facebook.thrift.client.ResponseWrapper<Void> pangWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.pangWrapper(rpcOptions).block();
   }
 

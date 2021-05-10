@@ -31,7 +31,7 @@ public class SinkServiceBlockingReactiveWrapper
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
         throw new UnsupportedOperationException();
     }
 

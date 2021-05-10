@@ -41,7 +41,7 @@ public class PubSubStreamingServiceBlockingReactiveWrapper
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo) {
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo) {
         throw new UnsupportedOperationException();
     }
 

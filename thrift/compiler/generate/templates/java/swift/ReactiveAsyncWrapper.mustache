@@ -30,7 +30,7 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
     this._delegate = _delegate;
   }
 
-  public {{service:javaCapitalName}}ReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public {{service:javaCapitalName}}ReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new {{service:javaCapitalName}}ReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -42,21 +42,21 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
   {{#service:supportedFunctions}}
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
     final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
     final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
   }
 
   {{/service:supportedFunctions}}

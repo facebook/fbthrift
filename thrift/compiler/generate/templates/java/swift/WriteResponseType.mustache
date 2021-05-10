@@ -20,7 +20,7 @@
     }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteResponseType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.SET_FIELD);{{/function:isNested?}}
+}}{{#type:set?}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.SET_FIELD);{{/function:isNested?}}
       oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{> TType}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
@@ -35,7 +35,7 @@
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.LIST_FIELD);{{/function:isNested?}}
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.LIST_FIELD);{{/function:isNested?}}
 oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
@@ -50,7 +50,7 @@ oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.MAP_FIELD);{{/function:isNested?}}
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.MAP_FIELD);{{/function:isNested?}}
 oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type}}, TType.{{#type:value_type}}{{> TType}}{{/type:value_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
           {{function:setIsNested}}{{!
@@ -75,7 +75,7 @@ oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type
 }}{{#type:struct?}}{{!
 }}{{#function:isNested?}}_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.write0(oprot);
 {{/function:isNested?}}{{!
-}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRUCT_FIELD);
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRUCT_FIELD);
 {{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.write0(oprot);{{/function:isNested?}}{{!
 }}{{/type:struct?}}{{!
 
@@ -83,7 +83,7 @@ oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type
 }}{{#function:isNested?}}oprot.writeI32(_iter{{function:nestedDepth}} == null ? 0 : _iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.getValue());
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I32_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.I32_FIELD);
 oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0 == null ? 0 : {{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.getValue());{{/function:isNested?}}{{!
 }}{{/type:enum?}}{{!
 
@@ -91,7 +91,7 @@ oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0 == null ? 0 : {{^s
 }}{{#function:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}));
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRING_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0));{{/function:isNested?}}{{!
 }}{{/type:binary?}}{{!
 
@@ -99,7 +99,7 @@ oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({
 }}{{#function:isNested?}}oprot.writeString(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRING_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:string?}}{{!
 
@@ -107,7 +107,7 @@ oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:is
 }}{{#function:isNested?}}oprot.writeBool(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.BOOL_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.BOOL_FIELD);
 oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:bool?}}{{!
 
@@ -115,7 +115,7 @@ oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNe
 }}{{#function:isNested?}}oprot.writeByte(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.BYTE_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.BYTE_FIELD);
 oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:byte?}}{{!
 
@@ -123,7 +123,7 @@ oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNe
 }}{{#function:isNested?}}oprot.writeI16(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I16_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.I16_FIELD);
 oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i16?}}{{!
 
@@ -131,7 +131,7 @@ oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 }}{{#function:isNested?}}oprot.writeI32(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I32_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.I32_FIELD);
 oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i32?}}{{!
 
@@ -139,7 +139,7 @@ oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 }}{{#function:isNested?}}oprot.writeI64(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I64_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.I64_FIELD);
 oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
@@ -147,7 +147,7 @@ oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 }}{{#function:isNested?}}oprot.writeFloat(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.FLOAT_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.FLOAT_FIELD);
 oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:float?}}{{!
 
@@ -155,7 +155,7 @@ oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isN
 }}{{#function:isNested?}}oprot.writeDouble(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
-oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.DOUBLE_FIELD);
+oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.DOUBLE_FIELD);
 oprot.writeDouble({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:double?}}{{!
 

@@ -18,7 +18,7 @@ public class LegacyServiceReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
-  public LegacyServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public LegacyServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new LegacyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,23 +29,23 @@ public class LegacyServiceReactiveAsyncWrapper
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getPoints(key, legacyStuff));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getPoints(key, legacyStuff));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Map<String, List<Integer>>> getPoints(
     final Set<String> key,
     final long legacyStuff,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getPoints(key,legacyStuff, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getPoints(key,legacyStuff, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(
     final Set<String> key,
     final long legacyStuff,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getPointsWrapper(key,legacyStuff, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getPointsWrapper(key,legacyStuff, rpcOptions));
   }
 
 }

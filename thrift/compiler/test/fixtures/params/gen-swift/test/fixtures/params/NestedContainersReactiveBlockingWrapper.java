@@ -18,7 +18,7 @@ public class NestedContainersReactiveBlockingWrapper
     this._delegate = _delegate;
   }
 
-  public NestedContainersReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public NestedContainersReactiveBlockingWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new NestedContainersReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -35,14 +35,14 @@ public class NestedContainersReactiveBlockingWrapper
   @java.lang.Override
   public void mapList(
         final Map<Integer, List<Integer>> foo,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.mapList(foo).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> mapListWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> mapListWrapper(
     final Map<Integer, List<Integer>> foo,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.mapListWrapper(foo, rpcOptions).block();
   }
   @java.lang.Override
@@ -53,14 +53,14 @@ public class NestedContainersReactiveBlockingWrapper
   @java.lang.Override
   public void mapSet(
         final Map<Integer, Set<Integer>> foo,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.mapSet(foo).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> mapSetWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> mapSetWrapper(
     final Map<Integer, Set<Integer>> foo,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.mapSetWrapper(foo, rpcOptions).block();
   }
   @java.lang.Override
@@ -71,14 +71,14 @@ public class NestedContainersReactiveBlockingWrapper
   @java.lang.Override
   public void listMap(
         final List<Map<Integer, Integer>> foo,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.listMap(foo).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> listMapWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> listMapWrapper(
     final List<Map<Integer, Integer>> foo,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.listMapWrapper(foo, rpcOptions).block();
   }
   @java.lang.Override
@@ -89,14 +89,14 @@ public class NestedContainersReactiveBlockingWrapper
   @java.lang.Override
   public void listSet(
         final List<Set<Integer>> foo,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.listSet(foo).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> listSetWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> listSetWrapper(
     final List<Set<Integer>> foo,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.listSetWrapper(foo, rpcOptions).block();
   }
   @java.lang.Override
@@ -107,14 +107,14 @@ public class NestedContainersReactiveBlockingWrapper
   @java.lang.Override
   public void turtles(
         final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
-        com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       _delegate.turtles(foo).block();
   }
 
   @java.lang.Override
-  public com.facebook.swift.transport.client.ResponseWrapper<Void> turtlesWrapper(
+  public com.facebook.thrift.client.ResponseWrapper<Void> turtlesWrapper(
     final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
       return _delegate.turtlesWrapper(foo, rpcOptions).block();
   }
 

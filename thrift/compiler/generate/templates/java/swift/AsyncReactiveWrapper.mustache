@@ -38,7 +38,7 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
     {{#service:supportedFunctions}}
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     }
 
     {{/service:supportedFunctions}}

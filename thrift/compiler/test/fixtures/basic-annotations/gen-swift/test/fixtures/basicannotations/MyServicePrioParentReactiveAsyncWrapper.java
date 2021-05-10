@@ -18,7 +18,7 @@ public class MyServicePrioParentReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
-  public MyServicePrioParentReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServicePrioParentReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyServicePrioParentReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,36 +29,36 @@ public class MyServicePrioParentReactiveAsyncWrapper
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> ping() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.ping());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.ping());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> ping(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.ping( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.ping( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> pingWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pingWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pingWrapper( rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> pong() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pong());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pong());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> pong(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pong( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pong( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> pongWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pongWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pongWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pongWrapper( rpcOptions));
   }
 
 }

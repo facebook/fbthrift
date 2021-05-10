@@ -9,25 +9,25 @@ package test.fixtures.sink;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
-import com.facebook.swift.transport.client.ResponseWrapper;
+import com.facebook.thrift.client.ResponseWrapper;
 
 public class SinkServiceReactiveClient 
   implements SinkService.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
 
   private static final TField _method_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _method_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _method_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _method_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final TField _methodAndReponse_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodAndReponse_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodAndReponse_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodAndReponse_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final TField _methodThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_EXCEPTION_READERS = new HashMap<>();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final com.facebook.swift.transport.payload.Reader _methodThrow_EXCEPTION_READER0 =
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodThrow_EXCEPTION_READERS = new HashMap<>();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final com.facebook.thrift.payload.Reader _methodThrow_EXCEPTION_READER0 =
   oprot -> {
             try {
               test.fixtures.sink.InitialException _r = test.fixtures.sink.InitialException.read0(oprot);
@@ -38,12 +38,12 @@ public class SinkServiceReactiveClient
           };
 
   private static final TField _methodSinkThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodSinkThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodSinkThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodSinkThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final TField _methodFinalThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFinalThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.swift.transport.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 =
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFinalThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFinalThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 =
   oprot -> {
             try {
               test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
@@ -54,9 +54,9 @@ public class SinkServiceReactiveClient
           };
 
   private static final TField _methodBothThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodBothThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.swift.transport.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 =
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodBothThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodBothThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.thrift.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 =
   oprot -> {
             try {
               test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
@@ -67,8 +67,8 @@ public class SinkServiceReactiveClient
           };
 
   private static final TField _methodFast_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _methodFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
     _methodThrow_EXCEPTION_READERS.put((short)1, _methodThrow_EXCEPTION_READER0);
@@ -76,7 +76,7 @@ public class SinkServiceReactiveClient
     _methodBothThrow_STREAM_EXCEPTION_READERS.put((short)1, _methodBothThrow_STREAM_EXCEPTION_READER0);
   }
 
-  public SinkServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
+  public SinkServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -84,7 +84,7 @@ public class SinkServiceReactiveClient
     this._persistentHeaders = java.util.Collections.emptyMap();
   }
 
-  public SinkServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public SinkServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -96,7 +96,7 @@ public class SinkServiceReactiveClient
   public void dispose() {}
 
 
-  private com.facebook.swift.transport.payload.Writer _createmethodWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodWriter() {
     return oprot -> {
       try {
 
@@ -106,7 +106,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_method_SINK_TFIELD);
@@ -119,7 +119,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _method_READER =
+  private static final com.facebook.thrift.payload.Reader _method_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -132,7 +132,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -142,8 +142,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodWriter(),
                     _method_READER,
                     _method_EXCEPTION_READERS,
@@ -151,9 +151,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodSinkWriter(_p),
                     _method_READER,
                     _method_EXCEPTION_READERS,
@@ -165,22 +165,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> method( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return method( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return method( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodAndReponseWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodAndReponseWriter() {
     return oprot -> {
       try {
 
@@ -190,7 +190,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodAndReponse_SINK_TFIELD);
@@ -203,7 +203,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodAndReponse_READER =
+  private static final com.facebook.thrift.payload.Reader _methodAndReponse_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -215,7 +215,7 @@ public class SinkServiceReactiveClient
               }
             };
 
-    private static final com.facebook.swift.transport.payload.Reader _methodAndReponse_FIRST_READER =
+    private static final com.facebook.thrift.payload.Reader _methodAndReponse_FIRST_READER =
     oprot -> {
               try {
                 test.fixtures.sink.InitialResponse _r = test.fixtures.sink.InitialResponse.read0(oprot);
@@ -228,7 +228,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<ResponseWrapper<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>>> methodAndReponseWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>>> methodAndReponseWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -238,8 +238,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodAndReponseWriter(),
                     _methodAndReponse_READER,
                     _methodAndReponse_FIRST_READER,
@@ -248,9 +248,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodAndReponseSinkWriter(_p),
                     _methodAndReponse_READER,
                     _methodAndReponse_FIRST_READER,
@@ -263,21 +263,21 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders()));
       });
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodAndReponseWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodAndReponse( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
+      return methodAndReponse( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodThrowWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodThrowWriter() {
     return oprot -> {
       try {
 
@@ -287,7 +287,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodThrow_SINK_TFIELD);
@@ -300,7 +300,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodThrow_READER =
+  private static final com.facebook.thrift.payload.Reader _methodThrow_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -313,7 +313,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -323,8 +323,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodThrowWriter(),
                     _methodThrow_READER,
                     _methodThrow_EXCEPTION_READERS,
@@ -332,9 +332,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodThrowSinkWriter(_p),
                     _methodThrow_READER,
                     _methodThrow_EXCEPTION_READERS,
@@ -346,22 +346,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodThrowWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return methodThrow( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodSinkThrowWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodSinkThrowWriter() {
     return oprot -> {
       try {
 
@@ -371,7 +371,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodSinkThrow_SINK_TFIELD);
@@ -384,7 +384,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodSinkThrow_READER =
+  private static final com.facebook.thrift.payload.Reader _methodSinkThrow_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -397,7 +397,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodSinkThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodSinkThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -407,8 +407,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodSinkThrowWriter(),
                     _methodSinkThrow_READER,
                     _methodSinkThrow_EXCEPTION_READERS,
@@ -416,9 +416,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodSinkThrowSinkWriter(_p),
                     _methodSinkThrow_READER,
                     _methodSinkThrow_EXCEPTION_READERS,
@@ -430,22 +430,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodSinkThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodSinkThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodSinkThrowWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodSinkThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodSinkThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return methodSinkThrow( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodFinalThrowWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodFinalThrowWriter() {
     return oprot -> {
       try {
 
@@ -455,7 +455,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodFinalThrow_SINK_TFIELD);
@@ -468,7 +468,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodFinalThrow_READER =
+  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -481,7 +481,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFinalThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFinalThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -491,8 +491,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodFinalThrowWriter(),
                     _methodFinalThrow_READER,
                     _methodFinalThrow_EXCEPTION_READERS,
@@ -500,9 +500,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodFinalThrowSinkWriter(_p),
                     _methodFinalThrow_READER,
                     _methodFinalThrow_EXCEPTION_READERS,
@@ -514,22 +514,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFinalThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFinalThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodFinalThrowWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFinalThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodFinalThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return methodFinalThrow( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodBothThrowWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodBothThrowWriter() {
     return oprot -> {
       try {
 
@@ -539,7 +539,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodBothThrow_SINK_TFIELD);
@@ -552,7 +552,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodBothThrow_READER =
+  private static final com.facebook.thrift.payload.Reader _methodBothThrow_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -565,7 +565,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodBothThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodBothThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -575,8 +575,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodBothThrowWriter(),
                     _methodBothThrow_READER,
                     _methodBothThrow_EXCEPTION_READERS,
@@ -584,9 +584,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodBothThrowSinkWriter(_p),
                     _methodBothThrow_READER,
                     _methodBothThrow_EXCEPTION_READERS,
@@ -598,22 +598,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodBothThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodBothThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodBothThrowWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodBothThrow( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodBothThrow( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return methodBothThrow( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodFastWriter() {
+  private com.facebook.thrift.payload.Writer _createmethodFastWriter() {
     return oprot -> {
       try {
 
@@ -623,7 +623,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.swift.transport.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _p) {
+  private com.facebook.thrift.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _p) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodFast_SINK_TFIELD);
@@ -636,7 +636,7 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _methodFast_READER =
+  private static final com.facebook.thrift.payload.Reader _methodFast_READER =
     oprot -> {
               try {
                 test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
@@ -649,7 +649,7 @@ public class SinkServiceReactiveClient
             };
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFastWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFastWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -659,8 +659,8 @@ public class SinkServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodFastWriter(),
                     _methodFast_READER,
                     _methodFast_EXCEPTION_READERS,
@@ -668,9 +668,9 @@ public class SinkServiceReactiveClient
                     _metadata,
                     java.util.Collections.emptyMap());
 
-            reactor.core.publisher.Flux<com.facebook.swift.transport.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
+            reactor.core.publisher.Flux<com.facebook.thrift.payload.ClientRequestPayload<test.fixtures.sink.FinalResponse>> _sink =
               reactor.core.publisher.Mono.just(_crp).concatWith(reactor.core.publisher.Flux.from(payloads)
-                .map(_p -> com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                .map(_p -> com.facebook.thrift.payload.ClientRequestPayload.create(
                     _createmethodFastSinkWriter(_p),
                     _methodFast_READER,
                     _methodFast_EXCEPTION_READERS,
@@ -682,22 +682,22 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.swift.transport.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
       }).single();
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodFastWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
-      return methodFast( payloads, com.facebook.swift.transport.client.RpcOptions.EMPTY);
+      return methodFast( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> headers = new HashMap<>();
       if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
           headers.putAll(rpcOptions.getRequestHeaders());

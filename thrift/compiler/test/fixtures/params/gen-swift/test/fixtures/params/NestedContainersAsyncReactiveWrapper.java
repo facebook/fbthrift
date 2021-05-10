@@ -25,27 +25,27 @@ public class NestedContainersAsyncReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.mapList(foo));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.mapList(foo));
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.mapSet(foo));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.mapSet(foo));
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.listMap(foo));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.listMap(foo));
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.listSet(foo));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.listSet(foo));
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.turtles(foo));
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.turtles(foo));
     }
 
 }

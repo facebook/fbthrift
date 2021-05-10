@@ -11,17 +11,17 @@ import java.util.*;
 import org.apache.thrift.protocol.*;
 
 public class NestedContainersRpcServerHandler 
-  implements com.facebook.swift.transport.server.RpcServerHandler {
+  implements com.facebook.thrift.server.RpcServerHandler {
 
-  private final java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> _methodMap;
+  private final java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _methodMap;
 
   private final NestedContainers.Reactive _delegate;
 
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _mapListReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _mapSetReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _listMapReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _listSetReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _turtlesReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _mapListReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _mapSetReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _listMapReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _listSetReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _turtlesReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -60,8 +60,8 @@ public class NestedContainersRpcServerHandler
 
   }
 
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createmapListReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createmapListReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -103,18 +103,18 @@ public class NestedContainersRpcServerHandler
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createmapListWriter(
+  private static com.facebook.thrift.payload.Writer _createmapListWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("mapList", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -129,12 +129,12 @@ public class NestedContainersRpcServerHandler
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _domapList(
     NestedContainers.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -149,27 +149,27 @@ public class NestedContainersRpcServerHandler
             .mapList(foo)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createmapListWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createmapSetReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createmapSetReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -211,18 +211,18 @@ public class NestedContainersRpcServerHandler
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createmapSetWriter(
+  private static com.facebook.thrift.payload.Writer _createmapSetWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("mapSet", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -237,12 +237,12 @@ public class NestedContainersRpcServerHandler
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _domapSet(
     NestedContainers.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -257,27 +257,27 @@ public class NestedContainersRpcServerHandler
             .mapSet(foo)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createmapSetWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createlistMapReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createlistMapReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -322,18 +322,18 @@ _r.add(_value1);
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createlistMapWriter(
+  private static com.facebook.thrift.payload.Writer _createlistMapWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("listMap", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -348,12 +348,12 @@ _r.add(_value1);
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dolistMap(
     NestedContainers.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -368,27 +368,27 @@ _r.add(_value1);
             .listMap(foo)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createlistMapWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createlistSetReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createlistSetReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -429,18 +429,18 @@ _r.add(_value1);
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createlistSetWriter(
+  private static com.facebook.thrift.payload.Writer _createlistSetWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("listSet", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -455,12 +455,12 @@ _r.add(_value1);
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dolistSet(
     NestedContainers.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -475,27 +475,27 @@ _r.add(_value1);
             .listSet(foo)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createlistSetWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createturtlesReaders() {
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+  private static java.util.List<com.facebook.thrift.payload.Reader> _createturtlesReaders() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
     _readerList.add(oprot -> {
@@ -583,18 +583,18 @@ _r.add(_value1);
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createturtlesWriter(
+  private static com.facebook.thrift.payload.Writer _createturtlesWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
         oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("turtles", TMessageType.REPLY, _seqId));
-        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
-        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
 
 
         oprot.writeFieldEnd();
@@ -609,12 +609,12 @@ _r.add(_value1);
     };
   }
 
-  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doturtles(
     NestedContainers.Reactive _delegate,
     String _name,
-    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
-    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
@@ -629,19 +629,19 @@ _r.add(_value1);
             .turtles(foo)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _createturtlesWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
-            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+                com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _exceptionWriter);
 
@@ -650,10 +650,10 @@ _r.add(_value1);
   }
 
   @Override
-  public reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.swift.transport.payload.ServerRequestPayload _payload) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
 
-    reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload> _result;
+    reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
         case "mapList":
@@ -682,7 +682,7 @@ _r.add(_value1);
     return _result;
   }
 
-  public java.util.Map<String, com.facebook.swift.transport.server.RpcServerHandler> getMethodMap() {
+  public java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> getMethodMap() {
       return _methodMap;
   }
 

@@ -18,7 +18,7 @@ public class MyServiceReactiveAsyncWrapper
     this._delegate = _delegate;
   }
 
-  public MyServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServiceReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyServiceReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,133 +29,133 @@ public class MyServiceReactiveAsyncWrapper
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> ping() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.ping());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.ping());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> ping(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.ping( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.ping( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> pingWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pingWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pingWrapper( rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<String> getRandomData() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getRandomData());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getRandomData());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<String> getRandomData(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getRandomData( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getRandomData( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<String>> getRandomDataWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getRandomDataWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<String>> getRandomDataWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getRandomDataWrapper( rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Boolean> hasDataById(final long id) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.hasDataById(id));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.hasDataById(id));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Boolean> hasDataById(
     final long id,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.hasDataById(id, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.hasDataById(id, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Boolean>> hasDataByIdWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Boolean>> hasDataByIdWrapper(
     final long id,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.hasDataByIdWrapper(id, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.hasDataByIdWrapper(id, rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<String> getDataById(final long id) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getDataById(id));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getDataById(id));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<String> getDataById(
     final long id,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getDataById(id, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getDataById(id, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<String>> getDataByIdWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<String>> getDataByIdWrapper(
     final long id,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.getDataByIdWrapper(id, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.getDataByIdWrapper(id, rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> putDataById(final long id, final String data) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.putDataById(id, data));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.putDataById(id, data));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> putDataById(
     final long id,
     final String data,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.putDataById(id,data, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.putDataById(id,data, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> putDataByIdWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> putDataByIdWrapper(
     final long id,
     final String data,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.putDataByIdWrapper(id,data, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.putDataByIdWrapper(id,data, rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> lobDataById(final long id, final String data) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.lobDataById(id, data));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.lobDataById(id, data));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> lobDataById(
     final long id,
     final String data,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.lobDataById(id,data, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.lobDataById(id,data, rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> lobDataByIdWrapper(
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> lobDataByIdWrapper(
     final long id,
     final String data,
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.lobDataByIdWrapper(id,data, rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.lobDataByIdWrapper(id,data, rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doNothing() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doNothing());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doNothing());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> doNothing(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doNothing( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doNothing( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> doNothingWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.doNothingWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> doNothingWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.doNothingWrapper( rpcOptions));
   }
 
 }

@@ -9,23 +9,23 @@ package test.fixtures.basic_swift_bean;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
-import com.facebook.swift.transport.client.ResponseWrapper;
+import com.facebook.thrift.client.ResponseWrapper;
 
 public class LegacyServiceReactiveClient 
   implements LegacyService.Reactive {
   private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
+  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
 
   private static final TField _getPoints_KEY_FIELD_DESC = new TField("key", TType.SET, (short)1);
   private static final TField _getPoints_LEGACY_STUFF_FIELD_DESC = new TField("legacyStuff", TType.I64, (short)-1);
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getPoints_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getPoints_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
   }
 
-  public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
+  public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -33,7 +33,7 @@ public class LegacyServiceReactiveClient
     this._persistentHeaders = java.util.Collections.emptyMap();
   }
 
-  public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public LegacyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
@@ -44,7 +44,7 @@ public class LegacyServiceReactiveClient
   @java.lang.Override
   public void dispose() {}
 
-  private com.facebook.swift.transport.payload.Writer _creategetPointsWriter(final Set<String> key, final long legacyStuff) {
+  private com.facebook.thrift.payload.Writer _creategetPointsWriter(final Set<String> key, final long legacyStuff) {
     return oprot -> {
       try {
         {
@@ -76,7 +76,7 @@ public class LegacyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _getPoints_READER =
+  private static final com.facebook.thrift.payload.Reader _getPoints_READER =
     oprot -> {
               try {
                 Map<String, List<Integer>> _r;
@@ -116,7 +116,7 @@ public class LegacyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<com.facebook.swift.transport.client.ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(final Set<String> key, final long legacyStuff,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(final Set<String> key, final long legacyStuff,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -126,8 +126,8 @@ public class LegacyServiceReactiveClient
                 .setProtocol(_protocolId)
                 .build();
 
-            com.facebook.swift.transport.payload.ClientRequestPayload<Map<String, List<Integer>>> _crp =
-                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+            com.facebook.thrift.payload.ClientRequestPayload<Map<String, List<Integer>>> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
                     _creategetPointsWriter(key, legacyStuff),
                     _getPoints_READER,
                     _getPoints_EXCEPTION_READERS,
@@ -140,17 +140,17 @@ public class LegacyServiceReactiveClient
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return getPointsWrapper(key, legacyStuff,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
   public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff) {
-    return getPoints(key, legacyStuff,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
+    return getPoints(key, legacyStuff,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
 
-  private Map<String, String> getHeaders(com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+  private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> headers = new HashMap<>();
       if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {
           headers.putAll(rpcOptions.getRequestHeaders());

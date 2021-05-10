@@ -18,7 +18,7 @@ public class MyServicePrioChildReactiveAsyncWrapper  extends test.fixtures.basic
     this._delegate = _delegate;
   }
 
-  public MyServicePrioChildReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+  public MyServicePrioChildReactiveAsyncWrapper(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
     this(new MyServicePrioChildReactiveClient(_protocolId, _rpcClient, _headers, _persistentHeaders));
   }
 
@@ -29,19 +29,19 @@ public class MyServicePrioChildReactiveAsyncWrapper  extends test.fixtures.basic
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> pang() {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pang());
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pang());
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Void> pang(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pang( rpcOptions));
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pang( rpcOptions));
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<com.facebook.swift.transport.client.ResponseWrapper<Void>> pangWrapper(
-    com.facebook.swift.transport.client.RpcOptions rpcOptions) {
-    return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.pangWrapper( rpcOptions));
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pangWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.pangWrapper( rpcOptions));
   }
 
 }

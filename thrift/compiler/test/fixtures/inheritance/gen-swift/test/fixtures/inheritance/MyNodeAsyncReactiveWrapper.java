@@ -25,7 +25,7 @@ public class MyNodeAsyncReactiveWrapper  extends test.fixtures.inheritance.MyRoo
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> doMid() {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.doMid());
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.doMid());
     }
 
 }
