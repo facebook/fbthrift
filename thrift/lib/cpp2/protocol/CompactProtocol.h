@@ -321,7 +321,6 @@ class CompactProtocolReader {
   inline void readStringBody(StrType& str, int32_t size);
 
   inline TType getType(int8_t type);
-  inline bool tryFastSkip(TType type);
 
   inline void readStructBeginWithState(StructReadState& state);
   inline void readFieldBeginWithState(StructReadState& state);
