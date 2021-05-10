@@ -27,6 +27,18 @@ type WritableStruct interface {
 	Write(p Protocol) error
 }
 
+// WritableException is an interface used to encapsulate an exception that can be written to a protocol
+type WritableException interface {
+	WritableStruct
+	Exception
+}
+
+// WritableResult is an interface used to encapsulate a result struct that can be written to a protocol
+type WritableResult interface {
+	WritableStruct
+	Exception() WritableException
+}
+
 // Struct is the interface used to encapsulate a message that can be read and written to a protocol
 type Struct interface {
 	Write(p Protocol) error

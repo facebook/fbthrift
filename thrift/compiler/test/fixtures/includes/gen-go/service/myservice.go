@@ -301,6 +301,11 @@ type myServiceProcessorQuery struct {
   handler MyService
 }
 
+func (p *MyServiceQueryResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myServiceProcessorQuery) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyServiceQueryArgs{}
   if err := args.Read(iprot); err != nil {
@@ -347,6 +352,11 @@ func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableS
 
 type myServiceProcessorHasArgDocs struct {
   handler MyService
+}
+
+func (p *MyServiceHasArgDocsResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServiceProcessorHasArgDocs) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

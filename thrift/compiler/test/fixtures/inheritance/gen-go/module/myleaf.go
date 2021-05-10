@@ -170,6 +170,11 @@ type myLeafProcessorDoLeaf struct {
   handler MyLeaf
 }
 
+func (p *MyLeafDoLeafResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myLeafProcessorDoLeaf) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyLeafDoLeafArgs{}
   if err := args.Read(iprot); err != nil {

@@ -344,6 +344,11 @@ type finderProcessorByPlate struct {
   handler Finder
 }
 
+func (p *FinderByPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *finderProcessorByPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := FinderByPlateArgs{}
   if err := args.Read(iprot); err != nil {
@@ -394,6 +399,11 @@ type finderProcessorAliasByPlate struct {
   handler Finder
 }
 
+func (p *FinderAliasByPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *finderProcessorAliasByPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := FinderAliasByPlateArgs{}
   if err := args.Read(iprot); err != nil {
@@ -442,6 +452,11 @@ func (p *finderProcessorAliasByPlate) Run(argStruct thrift.Struct) (thrift.Writa
 
 type finderProcessorPreviousPlate struct {
   handler Finder
+}
+
+func (p *FinderPreviousPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *finderProcessorPreviousPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

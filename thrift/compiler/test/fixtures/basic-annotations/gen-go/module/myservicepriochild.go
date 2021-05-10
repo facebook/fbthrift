@@ -170,6 +170,11 @@ type myServicePrioChildProcessorPang struct {
   handler MyServicePrioChild
 }
 
+func (p *MyServicePrioChildPangResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myServicePrioChildProcessorPang) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyServicePrioChildPangArgs{}
   if err := args.Read(iprot); err != nil {

@@ -223,6 +223,11 @@ type serviceProcessorFunc struct {
   handler Service
 }
 
+func (p *ServiceFuncResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *serviceProcessorFunc) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := ServiceFuncArgs{}
   if err := args.Read(iprot); err != nil {

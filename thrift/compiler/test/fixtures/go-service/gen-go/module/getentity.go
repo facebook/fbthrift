@@ -822,6 +822,11 @@ type getEntityProcessorGetEntity struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetEntityResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetEntity) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetEntityArgs{}
   if err := args.Read(iprot); err != nil {
@@ -870,6 +875,11 @@ func (p *getEntityProcessorGetEntity) Run(argStruct thrift.Struct) (thrift.Writa
 
 type getEntityProcessorGetBool struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetBoolResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetBool) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -921,6 +931,11 @@ type getEntityProcessorGetByte struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetByteResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetByte) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetByteArgs{}
   if err := args.Read(iprot); err != nil {
@@ -968,6 +983,11 @@ func (p *getEntityProcessorGetByte) Run(argStruct thrift.Struct) (thrift.Writabl
 
 type getEntityProcessorGetI16 struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetI16Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetI16) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1019,6 +1039,11 @@ type getEntityProcessorGetI32 struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetI32Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetI32) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetI32Args{}
   if err := args.Read(iprot); err != nil {
@@ -1066,6 +1091,11 @@ func (p *getEntityProcessorGetI32) Run(argStruct thrift.Struct) (thrift.Writable
 
 type getEntityProcessorGetI64 struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetI64Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetI64) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1117,6 +1147,11 @@ type getEntityProcessorGetDouble struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetDoubleResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetDouble) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetDoubleArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1164,6 +1199,11 @@ func (p *getEntityProcessorGetDouble) Run(argStruct thrift.Struct) (thrift.Writa
 
 type getEntityProcessorGetString struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetStringResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetString) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1215,6 +1255,11 @@ type getEntityProcessorGetBinary struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetBinaryResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetBinary) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetBinaryArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1262,6 +1307,11 @@ func (p *getEntityProcessorGetBinary) Run(argStruct thrift.Struct) (thrift.Writa
 
 type getEntityProcessorGetMap struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1313,6 +1363,11 @@ type getEntityProcessorGetSet struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetSetArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1362,6 +1417,11 @@ type getEntityProcessorGetList struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetListResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetList) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetListArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1409,6 +1469,11 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
 
 type getEntityProcessorGetLegacyStuff struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetLegacyStuffResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetLegacyStuff) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

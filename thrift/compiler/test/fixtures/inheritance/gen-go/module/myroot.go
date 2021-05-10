@@ -194,6 +194,11 @@ type myRootProcessorDoRoot struct {
   handler MyRoot
 }
 
+func (p *MyRootDoRootResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myRootProcessorDoRoot) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyRootDoRootArgs{}
   if err := args.Read(iprot); err != nil {

@@ -205,6 +205,8 @@ class t_go_generator : public t_concat_generator {
       const t_service* tservice, const t_function* tfunction);
   void generate_write_function(
       const t_service* tservice, const t_function* tfunction);
+  void generate_struct_error_result_fn(
+      const t_service* tservice, const t_function* tfunction);
 
   /**
    * Serialization constructs
@@ -3314,6 +3316,7 @@ void t_go_generator::generate_service_server(const t_service* tservice) {
   // Generate the process subfunctions
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     generate_process_function_type(tservice, *f_iter);
+    generate_struct_error_result_fn(tservice, *f_iter);
     generate_read_function(tservice, *f_iter);
     generate_write_function(tservice, *f_iter);
     generate_run_function(tservice, *f_iter);
@@ -3351,6 +3354,39 @@ void t_go_generator::generate_read_function(
   f_service_ << indent() << "}" << endl;
   f_service_ << indent() << "iprot.ReadMessageEnd()" << endl;
   f_service_ << indent() << "return &args, nil" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+}
+
+void t_go_generator::generate_struct_error_result_fn(
+    const t_service* tservice, const t_function* tfunction) {
+  // Open function
+  string processorName = privatize(tservice->get_name()) + "Processor" +
+      publicize(tfunction->get_name());
+  string argsname = publicize(tfunction->get_name() + "_args", true);
+  string resultname = publicize(tfunction->get_name() + "_result", true);
+
+  if (tfunction->is_oneway()) {
+    return;
+  }
+
+  f_service_ << indent() << "func (p *" << resultname
+             << ") Exception() thrift.WritableException {" << endl;
+  indent_up();
+  f_service_ << indent() << "if p == nil { return nil }" << endl;
+  const t_struct* exceptions = tfunction->get_xceptions();
+  const vector<t_field*>& x_fields = exceptions->get_members();
+  vector<t_field*>::const_iterator xf_iter;
+  for (xf_iter = x_fields.begin(); xf_iter != x_fields.end(); ++xf_iter) {
+    indent(f_service_) << "if p." << publicize((*xf_iter)->get_name())
+                       << " != nil {" << endl;
+    indent_up();
+    indent(f_service_) << "return p." << publicize((*xf_iter)->get_name())
+                       << endl;
+    indent_down();
+    f_service_ << indent() << "}" << endl;
+  }
+  f_service_ << indent() << "return nil" << endl;
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
 }

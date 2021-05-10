@@ -170,6 +170,11 @@ type myNodeProcessorDoMid struct {
   handler MyNode
 }
 
+func (p *MyNodeDoMidResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myNodeProcessorDoMid) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyNodeDoMidArgs{}
   if err := args.Read(iprot); err != nil {

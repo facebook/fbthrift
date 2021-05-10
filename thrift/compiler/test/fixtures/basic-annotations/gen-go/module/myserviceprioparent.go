@@ -236,6 +236,11 @@ type myServicePrioParentProcessorPing struct {
   handler MyServicePrioParent
 }
 
+func (p *MyServicePrioParentPingResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *myServicePrioParentProcessorPing) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyServicePrioParentPingArgs{}
   if err := args.Read(iprot); err != nil {
@@ -281,6 +286,11 @@ func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.
 
 type myServicePrioParentProcessorPong struct {
   handler MyServicePrioParent
+}
+
+func (p *MyServicePrioParentPongResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServicePrioParentProcessorPong) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

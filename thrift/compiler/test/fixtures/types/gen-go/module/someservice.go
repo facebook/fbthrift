@@ -281,6 +281,11 @@ type someServiceProcessorBounceMap struct {
   handler SomeService
 }
 
+func (p *SomeServiceBounceMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *someServiceProcessorBounceMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := SomeServiceBounceMapArgs{}
   if err := args.Read(iprot); err != nil {
@@ -329,6 +334,11 @@ func (p *someServiceProcessorBounceMap) Run(argStruct thrift.Struct) (thrift.Wri
 
 type someServiceProcessorBinaryKeyedMap struct {
   handler SomeService
+}
+
+func (p *SomeServiceBinaryKeyedMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *someServiceProcessorBinaryKeyedMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

@@ -278,6 +278,11 @@ type dbMixedStackArgumentsProcessorGetDataByKey0 struct {
   handler DbMixedStackArguments
 }
 
+func (p *DbMixedStackArgumentsGetDataByKey0Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := DbMixedStackArgumentsGetDataByKey0Args{}
   if err := args.Read(iprot); err != nil {
@@ -326,6 +331,11 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Run(argStruct thrift.Struc
 
 type dbMixedStackArgumentsProcessorGetDataByKey1 struct {
   handler DbMixedStackArguments
+}
+
+func (p *DbMixedStackArgumentsGetDataByKey1Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *dbMixedStackArgumentsProcessorGetDataByKey1) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {

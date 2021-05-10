@@ -437,6 +437,11 @@ type nestedContainersProcessorMapList struct {
   handler NestedContainers
 }
 
+func (p *NestedContainersMapListResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *nestedContainersProcessorMapList) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := NestedContainersMapListArgs{}
   if err := args.Read(iprot); err != nil {
@@ -483,6 +488,11 @@ func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.
 
 type nestedContainersProcessorMapSet struct {
   handler NestedContainers
+}
+
+func (p *NestedContainersMapSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *nestedContainersProcessorMapSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -533,6 +543,11 @@ type nestedContainersProcessorListMap struct {
   handler NestedContainers
 }
 
+func (p *NestedContainersListMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *nestedContainersProcessorListMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := NestedContainersListMapArgs{}
   if err := args.Read(iprot); err != nil {
@@ -581,6 +596,11 @@ type nestedContainersProcessorListSet struct {
   handler NestedContainers
 }
 
+func (p *NestedContainersListSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *nestedContainersProcessorListSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := NestedContainersListSetArgs{}
   if err := args.Read(iprot); err != nil {
@@ -627,6 +647,11 @@ func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.
 
 type nestedContainersProcessorTurtles struct {
   handler NestedContainers
+}
+
+func (p *NestedContainersTurtlesResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *nestedContainersProcessorTurtles) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
