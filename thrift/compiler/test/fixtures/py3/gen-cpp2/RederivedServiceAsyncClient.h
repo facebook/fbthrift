@@ -31,7 +31,7 @@ class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncCli
   virtual void get_seven(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get_seven(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void get_sevenImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
+  void get_sevenImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual ::std::int32_t sync_get_seven();
@@ -62,15 +62,15 @@ class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncCli
     apache::thrift::ClientReceiveState returnState;
     apache::thrift::ClientSyncCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-    auto ctx = get_sevenCtx(rpcOptions);
+    auto [ctx, header] = get_sevenCtx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
     auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
     static const apache::thrift::RpcOptions defaultRpcOptions;
     auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
     if constexpr (hasRpcOptions) {
-      get_sevenImpl(*rpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
+      get_sevenImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
     } else {
-      get_sevenImpl(defaultRpcOptions, ctx, ctx->ctx.get(), std::move(wrappedCallback));
+      get_sevenImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
     }
     if (cancellable) {
       folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
@@ -82,7 +82,7 @@ class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncCli
       co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
     returnState.resetProtocolId(protocolId);
-    returnState.resetCtx(std::move(ctx->ctx));
+    returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
         rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
@@ -107,8 +107,8 @@ class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncCli
   virtual folly::exception_wrapper recv_instance_wrapped_get_seven(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void get_sevenT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> get_sevenCtx(apache::thrift::RpcOptions* rpcOptions);
+  void get_sevenT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> get_sevenCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 

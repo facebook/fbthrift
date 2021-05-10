@@ -101,6 +101,7 @@ target_link_libraries(
     transport
     ${Boost_LIBRARIES}
     Folly::folly
+    wangle::wangle
     ${GLOG_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )

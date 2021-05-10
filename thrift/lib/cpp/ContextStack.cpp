@@ -18,20 +18,10 @@
 
 #include <folly/tracing/StaticTracepoint.h>
 
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+
 namespace apache {
 namespace thrift {
-
-ContextStack::ContextStack(
-    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
-        handlers,
-    const char* method,
-    TConnectionContext* connectionContext)
-    : handlers_(handlers), serviceName_(""), method_(method) {
-  CHECK(handlers_ && !handlers_->empty());
-  for (size_t i = 0; i < handlers_->size(); ++i) {
-    contextAt(i) = (*handlers_)[i]->getContext(method_, connectionContext);
-  }
-}
 
 ContextStack::ContextStack(
     const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
@@ -47,28 +37,28 @@ ContextStack::ContextStack(
   }
 }
 
+ContextStack::ContextStack(
+    WithEmbeddedClientRequestContext,
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* serviceName,
+    const char* method,
+    TConnectionContext* connectionContext)
+    : handlers_(handlers),
+      serviceName_(serviceName),
+      method_(method),
+      hasClientRequestContext_(true) {
+  CHECK(handlers_ && !handlers_->empty());
+  for (size_t i = 0; i < handlers_->size(); ++i) {
+    contextAt(i) = (*handlers_)[i]->getServiceContext(
+        serviceName_, method_, connectionContext);
+  }
+}
+
 ContextStack::~ContextStack() {
   for (size_t i = 0; i < handlers_->size(); i++) {
     (*handlers_)[i]->freeContext(contextAt(i), method_);
   }
-}
-
-std::unique_ptr<ContextStack> ContextStack::create(
-    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
-        handlers,
-    const char* method,
-    TConnectionContext* connectionContext) {
-  if (!handlers || handlers->empty()) {
-    return {};
-  }
-
-  const size_t nbytes = sizeof(ContextStack) + handlers->size() * sizeof(void*);
-  auto* storage = static_cast<ContextStack*>(operator new (
-      nbytes, std::align_val_t{alignof(ContextStack)}));
-  auto* object =
-      new (storage) ContextStack(handlers, method, connectionContext);
-
-  return std::unique_ptr<ContextStack>(object);
 }
 
 std::unique_ptr<ContextStack> ContextStack::create(
@@ -86,6 +76,33 @@ std::unique_ptr<ContextStack> ContextStack::create(
       nbytes, std::align_val_t{alignof(ContextStack)}));
   auto* object = new (storage)
       ContextStack(handlers, serviceName, method, connectionContext);
+
+  return std::unique_ptr<ContextStack>(object);
+}
+
+std::unique_ptr<ContextStack> ContextStack::createWithClientContext(
+    const std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>&
+        handlers,
+    const char* serviceName,
+    const char* method,
+    transport::THeader& header) {
+  if (!handlers || handlers->empty()) {
+    return {};
+  }
+
+  const size_t nbytes = sizeof(ContextStack) +
+      sizeof(Cpp2ClientRequestContext) + handlers->size() * sizeof(void*);
+  auto* storage = static_cast<ContextStack*>(operator new (
+      nbytes, std::align_val_t{alignof(ContextStack)}));
+
+  auto* connectionContext = new (storage + 1) Cpp2ClientRequestContext(&header);
+
+  auto* object = new (storage) ContextStack(
+      WithEmbeddedClientRequestContext(),
+      handlers,
+      serviceName,
+      method,
+      connectionContext);
 
   return std::unique_ptr<ContextStack>(object);
 }
@@ -168,5 +185,49 @@ void ContextStack::userExceptionWrapped(
   }
 }
 
+void ContextStack::resetClientRequestContextHeader() {
+  if (!hasClientRequestContext_) {
+    return;
+  }
+
+  auto* connectionContext =
+      reinterpret_cast<Cpp2ClientRequestContext*>(this + 1);
+  connectionContext->setRequestHeader(nullptr);
+}
+
+void*& ContextStack::contextAt(size_t i) {
+  void** start = reinterpret_cast<void**>(this + 1);
+  if (hasClientRequestContext_) {
+    start = reinterpret_cast<void**>(
+        reinterpret_cast<Cpp2ClientRequestContext*>(start) + 1);
+  }
+  return start[i];
+}
+
 } // namespace thrift
 } // namespace apache
+
+namespace std {
+void default_delete<apache::thrift::ContextStack>::operator()(
+    apache::thrift::ContextStack* cs) const {
+  if (cs) {
+    const size_t nbytes = sizeof(apache::thrift::ContextStack) +
+        (cs->hasClientRequestContext_
+             ? sizeof(apache::thrift::Cpp2ClientRequestContext)
+             : 0) +
+        cs->handlers_->size() * sizeof(void*);
+
+    auto* connectionContext = cs->hasClientRequestContext_
+        ? reinterpret_cast<apache::thrift::Cpp2ClientRequestContext*>(cs + 1)
+        : nullptr;
+
+    cs->~ContextStack();
+    if (connectionContext) {
+      connectionContext->~Cpp2ClientRequestContext();
+    }
+
+    operator delete (
+        cs, nbytes, std::align_val_t{alignof(apache::thrift::ContextStack)});
+  }
+}
+} // namespace std

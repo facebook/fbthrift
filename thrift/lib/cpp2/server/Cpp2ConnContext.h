@@ -397,7 +397,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 class Cpp2ClientRequestContext
     : public apache::thrift::server::TConnectionContext {
  public:
-  Cpp2ClientRequestContext() = default;
+  explicit Cpp2ClientRequestContext(transport::THeader* header)
+      : TConnectionContext(header) {}
+
   void setRequestHeader(transport::THeader* header) { header_ = header; }
 };
 

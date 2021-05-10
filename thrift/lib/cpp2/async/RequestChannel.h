@@ -327,6 +327,7 @@ SerializedRequest preprocessSendT(
       if (ctx) {
         ctx->onWriteData(smsg);
         ctx->postWrite(folly::to_narrow(queue.chainLength()));
+        ctx->resetClientRequestContextHeader();
       }
     } catch (const apache::thrift::TException& ex) {
       if (ctx) {

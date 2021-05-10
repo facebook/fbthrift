@@ -34,15 +34,16 @@ class ContextStack {
   static std::unique_ptr<ContextStack> create(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
       const char* method,
       TConnectionContext* connectionContext);
 
-  static std::unique_ptr<ContextStack> create(
+  static std::unique_ptr<ContextStack> createWithClientContext(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
       const char* serviceName,
       const char* method,
-      TConnectionContext* connectionContext);
+      transport::THeader& header);
 
   ContextStack(ContextStack&&) = delete;
   ContextStack& operator=(ContextStack&&) = delete;
@@ -66,19 +67,18 @@ class ContextStack {
   void handlerErrorWrapped(const folly::exception_wrapper& ew);
   void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew);
 
+  void resetClientRequestContextHeader();
+
  private:
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
   const char* const serviceName_;
   const char* const method_;
+  const bool hasClientRequestContext_{false};
 
   friend struct std::default_delete<apache::thrift::ContextStack>;
 
-  ContextStack(
-      const std::shared_ptr<
-          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
-      const char* method,
-      TConnectionContext* connectionContext);
+  struct WithEmbeddedClientRequestContext {};
 
   ContextStack(
       const std::shared_ptr<
@@ -87,10 +87,15 @@ class ContextStack {
       const char* method,
       TConnectionContext* connectionContext);
 
-  void*& contextAt(size_t i) {
-    void** start = reinterpret_cast<void**>(this + 1);
-    return start[i];
-  }
+  ContextStack(
+      WithEmbeddedClientRequestContext,
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
+      const char* method,
+      TConnectionContext* connectionContext);
+
+  void*& contextAt(size_t i);
 };
 
 } // namespace thrift
@@ -99,14 +104,6 @@ class ContextStack {
 namespace std {
 template <>
 struct default_delete<apache::thrift::ContextStack> {
-  void operator()(apache::thrift::ContextStack* cs) const {
-    if (cs) {
-      const size_t nbytes = sizeof(apache::thrift::ContextStack) +
-          cs->handlers_->size() * sizeof(void*);
-      cs->~ContextStack();
-      operator delete (
-          cs, nbytes, std::align_val_t{alignof(apache::thrift::ContextStack)});
-    }
-  }
+  void operator()(apache::thrift::ContextStack* cs) const;
 };
 } // namespace std

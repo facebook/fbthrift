@@ -16,12 +16,11 @@
 
 %><%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 template <typename Protocol_>
-void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%#service:interaction?%>
   setInteraction(rpcOptions);
   <%/service:interaction?%>
 
-  std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
@@ -37,7 +36,6 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* 
   auto writer = [&](Protocol_* p) { args.write(p); };
   static constexpr std::string_view methodName = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
   apache::thrift::clientSendT<<% > types/function_kind%>, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
-  ctx->reqContext.setRequestHeader(nullptr);
 }
 
 <%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
