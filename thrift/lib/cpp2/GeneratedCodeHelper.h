@@ -792,44 +792,42 @@ template <typename ProtocolWriter>
 using helper_w = helper<reader_of<ProtocolWriter>, ProtocolWriter>;
 
 template <typename T>
-using is_root_async_processor = std::is_void<typename T::BaseAsyncProcessor>;
+inline constexpr bool is_root_async_processor =
+    std::is_void_v<typename T::BaseAsyncProcessor>;
 
 template <class ProtocolReader, class Processor>
-typename std::enable_if<is_root_async_processor<Processor>::value>::type
-process_missing(
-    Processor*,
-    const std::string& fname,
-    ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedCompressedRequest&&,
-    Cpp2RequestContext*,
-    folly::EventBase* eb,
-    concurrency::ThreadManager*) {
-  if (req) {
-    eb->runInEventBaseThread([request = move(req),
-                              msg = fmt::format(
-                                  "Method name {} not found", fname)]() {
-      request->sendErrorWrapped(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
-              msg),
-          kMethodUnknownErrorCode);
-    });
-  }
-}
-
-template <class ProtocolReader, class Processor>
-typename std::enable_if<!is_root_async_processor<Processor>::value>::type
-process_missing(
+void process_missing(
     Processor* processor,
-    const std::string& /*fname*/,
+    const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
-  auto protType = ProtocolReader::protocolType();
-  processor->Processor::BaseAsyncProcessor::processSerializedCompressedRequest(
-      std::move(req), std::move(serializedRequest), protType, ctx, eb, tm);
+  if constexpr (is_root_async_processor<Processor>) {
+    if (req) {
+      eb->runInEventBaseThread(
+          [request = move(req),
+           msg = fmt::format("Method name {} not found", fname)]() {
+            request->sendErrorWrapped(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::TApplicationExceptionType::
+                        UNKNOWN_METHOD,
+                    msg),
+                kMethodUnknownErrorCode);
+          });
+    }
+  } else {
+    auto protType = ProtocolReader::protocolType();
+    processor
+        ->Processor::BaseAsyncProcessor::processSerializedCompressedRequest(
+            std::move(req),
+            std::move(serializedRequest),
+            protType,
+            ctx,
+            eb,
+            tm);
+  }
 }
 
 struct MessageBegin {
