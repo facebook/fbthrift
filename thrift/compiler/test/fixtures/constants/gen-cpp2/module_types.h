@@ -1512,12 +1512,16 @@ class union1 final  {
   }
 
   ::std::int32_t const& get_i() const {
-    assert(type_ == Type::i);
+    if (type_ != Type::i) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.i;
   }
 
   double const& get_d() const {
-    assert(type_ == Type::d);
+    if (type_ != Type::d) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.d;
   }
 
@@ -1859,22 +1863,30 @@ class union2 final  {
   }
 
   ::std::int32_t const& get_i() const {
-    assert(type_ == Type::i);
+    if (type_ != Type::i) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.i;
   }
 
   double const& get_d() const {
-    assert(type_ == Type::d);
+    if (type_ != Type::d) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.d;
   }
 
   ::cpp2::struct1 const& get_s() const {
-    assert(type_ == Type::s);
+    if (type_ != Type::s) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.s;
   }
 
   ::cpp2::union1 const& get_u() const {
-    assert(type_ == Type::u);
+    if (type_ != Type::u) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.u;
   }
 

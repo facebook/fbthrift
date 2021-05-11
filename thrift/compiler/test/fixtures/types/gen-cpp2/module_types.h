@@ -3749,12 +3749,16 @@ class NoExceptMoveUnion final  {
   }
 
   ::std::string const& get_string_field() const {
-    assert(type_ == Type::string_field);
+    if (type_ != Type::string_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.string_field;
   }
 
   ::std::int32_t const& get_i32_field() const {
-    assert(type_ == Type::i32_field);
+    if (type_ != Type::i32_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.i32_field;
   }
 

@@ -1267,22 +1267,30 @@ class union1 final  {
   }
 
   ::std::int32_t const& get_ui() const {
-    assert(type_ == Type::ui);
+    if (type_ != Type::ui) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ui;
   }
 
   double const& get_ud() const {
-    assert(type_ == Type::ud);
+    if (type_ != Type::ud) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ud;
   }
 
   ::std::string const& get_us() const {
-    assert(type_ == Type::us);
+    if (type_ != Type::us) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.us;
   }
 
   ::test_cpp2::cpp_reflection::enum1 const& get_ue() const {
-    assert(type_ == Type::ue);
+    if (type_ != Type::ue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ue;
   }
 
@@ -1668,22 +1676,30 @@ class union2 final  {
   }
 
   ::std::int32_t const& get_ui_2() const {
-    assert(type_ == Type::ui_2);
+    if (type_ != Type::ui_2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ui_2;
   }
 
   double const& get_ud_2() const {
-    assert(type_ == Type::ud_2);
+    if (type_ != Type::ud_2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ud_2;
   }
 
   ::std::string const& get_us_2() const {
-    assert(type_ == Type::us_2);
+    if (type_ != Type::us_2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.us_2;
   }
 
   ::test_cpp2::cpp_reflection::enum1 const& get_ue_2() const {
-    assert(type_ == Type::ue_2);
+    if (type_ != Type::ue_2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ue_2;
   }
 
@@ -2069,22 +2085,30 @@ class union3 final  {
   }
 
   ::std::int32_t const& get_ui_3() const {
-    assert(type_ == Type::ui_3);
+    if (type_ != Type::ui_3) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ui_3;
   }
 
   double const& get_ud_3() const {
-    assert(type_ == Type::ud_3);
+    if (type_ != Type::ud_3) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ud_3;
   }
 
   ::std::string const& get_us_3() const {
-    assert(type_ == Type::us_3);
+    if (type_ != Type::us_3) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.us_3;
   }
 
   ::test_cpp2::cpp_reflection::enum1 const& get_ue_3() const {
-    assert(type_ == Type::ue_3);
+    if (type_ != Type::ue_3) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ue_3;
   }
 
@@ -2658,27 +2682,37 @@ class unionA final  {
   }
 
   ::std::int32_t const& get_i() const {
-    assert(type_ == Type::i);
+    if (type_ != Type::i) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.i;
   }
 
   double const& get_d() const {
-    assert(type_ == Type::d);
+    if (type_ != Type::d) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.d;
   }
 
   ::std::string const& get_s() const {
-    assert(type_ == Type::s);
+    if (type_ != Type::s) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.s;
   }
 
   ::test_cpp2::cpp_reflection::enum1 const& get_e() const {
-    assert(type_ == Type::e);
+    if (type_ != Type::e) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.e;
   }
 
   ::test_cpp2::cpp_reflection::structA const& get_a() const {
-    assert(type_ == Type::a);
+    if (type_ != Type::a) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.a;
   }
 
@@ -7206,142 +7240,198 @@ class union_with_special_names final  {
   }
 
   ::std::int32_t const& get_get() const {
-    assert(type_ == Type::get);
+    if (type_ != Type::get) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.get;
   }
 
   ::std::int32_t const& get_getter() const {
-    assert(type_ == Type::getter);
+    if (type_ != Type::getter) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.getter;
   }
 
   ::std::int32_t const& get_lists() const {
-    assert(type_ == Type::lists);
+    if (type_ != Type::lists) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.lists;
   }
 
   ::std::int32_t const& get_maps() const {
-    assert(type_ == Type::maps);
+    if (type_ != Type::maps) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.maps;
   }
 
   ::std::int32_t const& get_name() const {
-    assert(type_ == Type::name);
+    if (type_ != Type::name) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.name;
   }
 
   ::std::int32_t const& get_name_to_value() const {
-    assert(type_ == Type::name_to_value);
+    if (type_ != Type::name_to_value) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.name_to_value;
   }
 
   ::std::int32_t const& get_names() const {
-    assert(type_ == Type::names);
+    if (type_ != Type::names) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.names;
   }
 
   ::std::int32_t const& get_prefix_tree() const {
-    assert(type_ == Type::prefix_tree);
+    if (type_ != Type::prefix_tree) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.prefix_tree;
   }
 
   ::std::int32_t const& get_sets() const {
-    assert(type_ == Type::sets);
+    if (type_ != Type::sets) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.sets;
   }
 
   ::std::int32_t const& get_setter() const {
-    assert(type_ == Type::setter);
+    if (type_ != Type::setter) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.setter;
   }
 
   ::std::int32_t const& get_str() const {
-    assert(type_ == Type::str);
+    if (type_ != Type::str) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.str;
   }
 
   ::std::int32_t const& get_strings() const {
-    assert(type_ == Type::strings);
+    if (type_ != Type::strings) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.strings;
   }
 
   ::std::int32_t const& get_type() const {
-    assert(type_ == Type::type);
+    if (type_ != Type::type) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.type;
   }
 
   ::std::int32_t const& get_value() const {
-    assert(type_ == Type::value);
+    if (type_ != Type::value) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.value;
   }
 
   ::std::int32_t const& get_value_to_name() const {
-    assert(type_ == Type::value_to_name);
+    if (type_ != Type::value_to_name) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.value_to_name;
   }
 
   ::std::int32_t const& get_values() const {
-    assert(type_ == Type::values);
+    if (type_ != Type::values) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.values;
   }
 
   ::std::int32_t const& get_id() const {
-    assert(type_ == Type::id);
+    if (type_ != Type::id) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.id;
   }
 
   ::std::int32_t const& get_ids() const {
-    assert(type_ == Type::ids);
+    if (type_ != Type::ids) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.ids;
   }
 
   ::std::int32_t const& get_descriptor() const {
-    assert(type_ == Type::descriptor);
+    if (type_ != Type::descriptor) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.descriptor;
   }
 
   ::std::int32_t const& get_descriptors() const {
-    assert(type_ == Type::descriptors);
+    if (type_ != Type::descriptors) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.descriptors;
   }
 
   ::std::int32_t const& get_key() const {
-    assert(type_ == Type::key);
+    if (type_ != Type::key) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.key;
   }
 
   ::std::int32_t const& get_keys() const {
-    assert(type_ == Type::keys);
+    if (type_ != Type::keys) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.keys;
   }
 
   ::std::int32_t const& get_annotation() const {
-    assert(type_ == Type::annotation);
+    if (type_ != Type::annotation) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.annotation;
   }
 
   ::std::int32_t const& get_annotations() const {
-    assert(type_ == Type::annotations);
+    if (type_ != Type::annotations) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.annotations;
   }
 
   ::std::int32_t const& get_member() const {
-    assert(type_ == Type::member);
+    if (type_ != Type::member) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.member;
   }
 
   ::std::int32_t const& get_members() const {
-    assert(type_ == Type::members);
+    if (type_ != Type::members) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.members;
   }
 
   ::std::int32_t const& get_field() const {
-    assert(type_ == Type::field);
+    if (type_ != Type::field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.field;
   }
 
   ::std::int32_t const& get_fields() const {
-    assert(type_ == Type::fields);
+    if (type_ != Type::fields) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.fields;
   }
 

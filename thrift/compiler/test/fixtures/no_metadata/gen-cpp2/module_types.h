@@ -614,17 +614,23 @@ class MyUnion final  {
   }
 
   ::cpp2::MyEnum const& get_myEnum() const {
-    assert(type_ == Type::myEnum);
+    if (type_ != Type::myEnum) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct const& get_myStruct() const {
-    assert(type_ == Type::myStruct);
+    if (type_ != Type::myStruct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem const& get_myDataItem() const {
-    assert(type_ == Type::myDataItem);
+    if (type_ != Type::myDataItem) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myDataItem;
   }
 

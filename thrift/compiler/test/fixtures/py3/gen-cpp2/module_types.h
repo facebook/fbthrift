@@ -1346,7 +1346,9 @@ class BinaryUnion final  {
   }
 
   ::py3::simple::IOBuf const& get_iobuf_val() const {
-    assert(type_ == Type::iobuf_val);
+    if (type_ != Type::iobuf_val) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.iobuf_val;
   }
 

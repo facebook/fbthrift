@@ -16,7 +16,9 @@
 
 %><%#struct:fields%>
   <%field:cpp_deprecated_accessor_type%> const& get_<%field:cpp_name%>() const {
-    assert(type_ == Type::<%field:cpp_name%>);
+    if (type_ != Type::<%field:cpp_name%>) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.<%field:cpp_name%>;
   }
 

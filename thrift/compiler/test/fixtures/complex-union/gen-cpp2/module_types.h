@@ -483,32 +483,44 @@ class ComplexUnion final  {
   }
 
   ::std::int64_t const& get_intValue() const {
-    assert(type_ == Type::intValue);
+    if (type_ != Type::intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.intValue;
   }
 
   ::std::string const& get_stringValue() const {
-    assert(type_ == Type::stringValue);
+    if (type_ != Type::stringValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringValue;
   }
 
   ::std::vector<::std::int64_t> const& get_intListValue() const {
-    assert(type_ == Type::intListValue);
+    if (type_ != Type::intListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.intListValue;
   }
 
   ::std::vector<::std::string> const& get_stringListValue() const {
-    assert(type_ == Type::stringListValue);
+    if (type_ != Type::stringListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringListValue;
   }
 
   ::cpp2::containerTypedef const& get_typedefValue() const {
-    assert(type_ == Type::typedefValue);
+    if (type_ != Type::typedefValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.typedefValue;
   }
 
   ::std::unique_ptr<::std::string> const& get_stringRef() const {
-    assert(type_ == Type::stringRef);
+    if (type_ != Type::stringRef) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringRef;
   }
 
@@ -908,12 +920,16 @@ class ListUnion final  {
   }
 
   ::std::vector<::std::int64_t> const& get_intListValue() const {
-    assert(type_ == Type::intListValue);
+    if (type_ != Type::intListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.intListValue;
   }
 
   ::std::vector<::std::string> const& get_stringListValue() const {
-    assert(type_ == Type::stringListValue);
+    if (type_ != Type::stringListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringListValue;
   }
 
@@ -1197,12 +1213,16 @@ class DataUnion final  {
   }
 
   ::std::string const& get_binaryData() const {
-    assert(type_ == Type::binaryData);
+    if (type_ != Type::binaryData) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.binaryData;
   }
 
   ::std::string const& get_stringData() const {
-    assert(type_ == Type::stringData);
+    if (type_ != Type::stringData) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringData;
   }
 
@@ -1663,12 +1683,16 @@ class ValUnion final  {
   }
 
   ::cpp2::Val const& get_v1() const {
-    assert(type_ == Type::v1);
+    if (type_ != Type::v1) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.v1;
   }
 
   ::cpp2::Val const& get_v2() const {
-    assert(type_ == Type::v2);
+    if (type_ != Type::v2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.v2;
   }
 
@@ -1953,12 +1977,16 @@ class VirtualComplexUnion  {
   }
 
   ::std::string const& get_thingOne() const {
-    assert(type_ == Type::thingOne);
+    if (type_ != Type::thingOne) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.thingOne;
   }
 
   ::std::string const& get_thingTwo() const {
-    assert(type_ == Type::thingTwo);
+    if (type_ != Type::thingTwo) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.thingTwo;
   }
 
@@ -2260,7 +2288,9 @@ class NonCopyableUnion final  {
   }
 
   ::cpp2::NonCopyableStruct const& get_s() const {
-    assert(type_ == Type::s);
+    if (type_ != Type::s) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.s;
   }
 

@@ -3172,32 +3172,44 @@ class MyUnion final  {
   }
 
   ::cpp2::MyEnum const& get_myEnum() const {
-    assert(type_ == Type::myEnum);
+    if (type_ != Type::myEnum) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct const& get_myStruct() const {
-    assert(type_ == Type::myStruct);
+    if (type_ != Type::myStruct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem const& get_myDataItem() const {
-    assert(type_ == Type::myDataItem);
+    if (type_ != Type::myDataItem) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct const& get_complexNestedStruct() const {
-    assert(type_ == Type::complexNestedStruct);
+    if (type_ != Type::complexNestedStruct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.complexNestedStruct;
   }
 
   ::std::int64_t const& get_longValue() const {
-    assert(type_ == Type::longValue);
+    if (type_ != Type::longValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.longValue;
   }
 
   ::std::int32_t const& get_intValue() const {
-    assert(type_ == Type::intValue);
+    if (type_ != Type::intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.intValue;
   }
 
@@ -4848,22 +4860,30 @@ class MyUnionFloatFieldThrowExp final  {
   }
 
   ::cpp2::MyEnum const& get_myEnum() const {
-    assert(type_ == Type::myEnum);
+    if (type_ != Type::myEnum) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myEnum;
   }
 
   ::std::vector<::std::vector<float>> const& get_setFloat() const {
-    assert(type_ == Type::setFloat);
+    if (type_ != Type::setFloat) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.setFloat;
   }
 
   ::cpp2::MyDataItem const& get_myDataItem() const {
-    assert(type_ == Type::myDataItem);
+    if (type_ != Type::myDataItem) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct const& get_complexNestedStruct() const {
-    assert(type_ == Type::complexNestedStruct);
+    if (type_ != Type::complexNestedStruct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.complexNestedStruct;
   }
 

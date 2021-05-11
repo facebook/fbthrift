@@ -307,7 +307,9 @@ class MyUnion final  {
   }
 
   ::std::string const& get_myString() const {
-    assert(type_ == Type::myString);
+    if (type_ != Type::myString) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.myString;
   }
 

@@ -1373,12 +1373,16 @@ class MyUnion final  {
   }
 
   ::cpp2::annotated_inline_string const& get_first() const {
-    assert(type_ == Type::first);
+    if (type_ != Type::first) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.first;
   }
 
   ::cpp2::annotated_inline_i64 const& get_second() const {
-    assert(type_ == Type::second);
+    if (type_ != Type::second) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.second;
   }
 

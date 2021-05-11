@@ -947,12 +947,16 @@ class ExampleUnion final  {
   }
 
   ::test::fixtures::tablebased::ContainerStruct const& get_fieldA() const {
-    assert(type_ == Type::fieldA);
+    if (type_ != Type::fieldA) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct const& get_fieldB() const {
-    assert(type_ == Type::fieldB);
+    if (type_ != Type::fieldB) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.fieldB;
   }
 

@@ -484,12 +484,16 @@ class MyUnion final  {
   }
 
   ::std::unique_ptr<::std::int32_t> const& get_anInteger() const {
-    assert(type_ == Type::anInteger);
+    if (type_ != Type::anInteger) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.anInteger;
   }
 
   ::std::unique_ptr<::std::string> const& get_aString() const {
-    assert(type_ == Type::aString);
+    if (type_ != Type::aString) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.aString;
   }
 
