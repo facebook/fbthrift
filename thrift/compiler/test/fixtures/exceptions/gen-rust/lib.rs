@@ -1442,7 +1442,7 @@ pub mod server {
                         "doRaise",
                     )
                 }
-                ::std::result::Result::Err(exn) => { 
+                ::std::result::Result::Err(exn) => {
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
@@ -1570,7 +1570,7 @@ pub mod server {
                         "get500",
                     )
                 }
-                ::std::result::Result::Err(exn) => { 
+                ::std::result::Result::Err(exn) => {
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }

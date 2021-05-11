@@ -234,7 +234,7 @@ mod r#impl {
         P: ::fbthrift::ProtocolReader,
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
-        Ok(value.0)
+        ::std::result::Result::Ok(value.0)
     }
 
     impl<P> ::fbthrift::Serialize<P> for LocalImpl<::smallvec::SmallVec<[u8; 16]>>
@@ -353,7 +353,7 @@ mod r#impl {
                 }
             }
             p.read_map_end()?;
-            Ok(LocalImpl(map))
+            ::std::result::Result::Ok(LocalImpl(map))
         }
     }
 }

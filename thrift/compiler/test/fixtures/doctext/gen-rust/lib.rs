@@ -1195,7 +1195,7 @@ pub mod server {
                         "thing",
                     )
                 }
-                ::std::result::Result::Err(exn) => { 
+                ::std::result::Result::Err(exn) => {
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }

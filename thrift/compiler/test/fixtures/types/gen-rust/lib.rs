@@ -3377,7 +3377,7 @@ mod r#impl {
         P: ::fbthrift::ProtocolReader,
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
-        Ok(value.0)
+        ::std::result::Result::Ok(value.0)
     }
 
     impl<P> ::fbthrift::Serialize<P> for LocalImpl<::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>
@@ -3430,7 +3430,7 @@ mod r#impl {
                 }
             }
             p.read_map_end()?;
-            Ok(LocalImpl(map))
+            ::std::result::Result::Ok(LocalImpl(map))
         }
     }
 
@@ -3479,7 +3479,7 @@ mod r#impl {
                 }
             }
             p.read_set_end()?;
-            Ok(LocalImpl(set))
+            ::std::result::Result::Ok(LocalImpl(set))
         }
     }
 }

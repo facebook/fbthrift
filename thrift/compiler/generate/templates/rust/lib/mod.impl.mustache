@@ -38,7 +38,7 @@
         P: ::fbthrift::ProtocolReader,
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
-        Ok(value.0)
+        ::std::result::Result::Ok(value.0)
     }{{!
 
 }}{{#program:nonstandardTypes}}{{!
@@ -89,7 +89,7 @@
                 }
             }
             p.read_set_end()?;
-            Ok(LocalImpl(set))
+            ::std::result::Result::Ok(LocalImpl(set))
         }
     }{{!
     }}{{/type:set?}}{{!
@@ -146,7 +146,7 @@
                 }
             }
             p.read_map_end()?;
-            Ok(LocalImpl(map))
+            ::std::result::Result::Ok(LocalImpl(map))
         }
     }{{!
     }}{{/type:map?}}{{!
