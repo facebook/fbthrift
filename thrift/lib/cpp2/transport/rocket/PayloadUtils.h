@@ -85,6 +85,9 @@ folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
 
 template <typename T>
 size_t unpackCompact(T& output, const folly::IOBuf* buffer) {
+  if (!buffer) {
+    folly::throw_exception<std::runtime_error>("Underflow");
+  }
   CompactProtocolReader reader;
   reader.setInput(buffer);
   output.read(&reader);
