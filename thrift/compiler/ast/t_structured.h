@@ -66,7 +66,7 @@ class t_structured : public t_type {
   }
 
  protected:
-  std::vector<std::unique_ptr<t_field>> fields_;
+  t_field_list fields_;
   std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
   std::map<std::string, const t_field*> fields_by_name_;

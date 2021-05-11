@@ -37,15 +37,14 @@ class t_interface : public t_type {
   t_interface(t_program* program, std::string name)
       : t_type(program, std::move(name)) {}
 
-  const std::vector<const t_function*>& functions() const {
-    return functions_raw_;
-  }
-  void set_functions(std::vector<std::unique_ptr<t_function>> functions);
+  node_list_view<t_function> functions() { return functions_; }
+  node_list_view<const t_function> functions() const { return functions_; }
+
+  void set_functions(t_function_list functions);
   void add_function(std::unique_ptr<t_function> func);
 
  private:
-  std::vector<std::unique_ptr<t_function>> functions_;
-  std::vector<const t_function*> functions_raw_;
+  t_function_list functions_;
 
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.

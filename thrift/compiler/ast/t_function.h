@@ -126,6 +126,8 @@ class t_function final : public t_named {
   bool returns_sink() const { return return_type_.type()->is_sink(); }
 };
 
+using t_function_list = node_list<t_function>;
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

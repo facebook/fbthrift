@@ -238,7 +238,7 @@ class t_program : public t_node {
 
  private:
   // All the elements owned by this program.
-  std::vector<std::unique_ptr<t_node>> nodes_;
+  node_list<t_node> nodes_;
 
   /**
    * Components to generate code for

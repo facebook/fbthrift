@@ -73,8 +73,7 @@ enum class LineType {
 };
 
 // Parsing only representations.
-using t_struct_annotations = std::vector<std::unique_ptr<t_const>>;
-using t_field_list = std::vector<std::unique_ptr<t_field>>;
+using t_struct_annotations = node_list<t_const>;
 struct t_annotations {
   std::map<std::string, std::string> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
@@ -85,8 +84,6 @@ struct t_def_attrs {
   t_doc doc;
   std::unique_ptr<t_struct_annotations> struct_annotations;
 };
-using t_function_list = std::vector<std::unique_ptr<t_function>>;
-using t_enum_value_list = std::vector<std::unique_ptr<t_enum_value>>;
 
 // A const pointer to an AST node.
 //

@@ -419,17 +419,17 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Mutate it!
   try {
-    mutator::mutate(program->get_root_program());
+    mutator::mutate(program->root_program());
   } catch (MutatorException& e) {
     result.diagnostics.emplace_back(std::move(e.message));
     return result;
   }
 
-  program->get_root_program()->set_include_prefix(
+  program->root_program()->set_include_prefix(
       get_include_path(gparams.targets, input_filename));
 
   // Validate it!
-  auto diagnostics = validator::validate(program->get_root_program());
+  auto diagnostics = validator::validate(program->root_program());
   bool has_failure = false;
   for (const auto& d : diagnostics) {
     has_failure = has_failure || (d.level() == diagnostic_level::failure);
@@ -443,14 +443,12 @@ compile_result compile(const std::vector<std::string>& arguments) {
   // Generate it!
   g_stage = "generation";
   try {
-    if (generate(gparams, program->get_root_program())) {
+    if (generate(gparams, program->root_program())) {
       result.retcode = compile_retcode::SUCCESS;
     }
   } catch (const std::exception& e) {
     result.diagnostics.emplace_back(
-        diagnostic_level::failure,
-        e.what(),
-        program->get_root_program()->path());
+        diagnostic_level::failure, e.what(), program->root_program()->path());
   }
   return result;
 }

@@ -30,26 +30,31 @@ namespace compiler {
  */
 class t_program_bundle {
  public:
-  t_program_bundle(std::unique_ptr<t_program> root_program)
-      : root_program_(root_program.get()) {
+  explicit t_program_bundle(std::unique_ptr<t_program> root_program) {
     add_program(std::move(root_program));
   }
 
+  const t_program* root_program() const { return programs_[0].get(); }
+  t_program* root_program() { return programs_[0].get(); }
+
+  node_list_view<t_program> programs() { return programs_; }
+  node_list_view<const t_program> programs() const { return programs_; }
   void add_program(std::unique_ptr<t_program> program) {
     programs_raw_.push_back(program.get());
-    programs_.push_back(std::move(program));
+    programs_.emplace_back(std::move(program));
   }
 
-  t_program* get_root_program() const { return root_program_; }
-
-  const std::vector<t_program*>& get_programs() const { return programs_raw_; }
-
  private:
-  std::vector<std::unique_ptr<t_program>> programs_;
+  node_list<t_program> programs_;
+
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
 
   std::vector<t_program*> programs_raw_;
 
-  t_program* root_program_;
+ public:
+  const std::vector<t_program*>& get_programs() const { return programs_raw_; }
+  t_program* get_root_program() const { return programs_raw_[0]; }
 };
 
 } // namespace compiler

@@ -39,9 +39,8 @@ class t_enum : public t_type {
   t_enum(t_program* program, std::string name)
       : t_type(program, std::move(name)) {}
 
-  void set_values(std::vector<std::unique_ptr<t_enum_value>> values) {
+  void set_values(t_enum_value_list values) {
     enum_values_raw_.clear();
-    raw_constants_.clear();
     enum_values_.clear();
     constants_.clear();
     for (auto& value : values) {
@@ -71,9 +70,11 @@ class t_enum : public t_type {
     append(std::move(enum_value), std::move(tconst));
   }
 
-  const std::vector<const t_const*>& enum_values() const {
-    return raw_constants_;
+  node_list_view<t_enum_value> enum_values() { return enum_values_; }
+  node_list_view<const t_enum_value> enum_values() const {
+    return enum_values_;
   }
+  node_list_view<const t_const> enum_consts() const { return constants_; }
 
   const t_enum_value* find_value(const int32_t enum_value) const {
     for (auto const& it : enum_values_) {
@@ -87,9 +88,8 @@ class t_enum : public t_type {
   std::string get_full_name() const override { return make_full_name("enum"); }
 
  private:
-  std::vector<std::unique_ptr<t_enum_value>> enum_values_;
-  std::vector<std::unique_ptr<t_const>> constants_;
-  std::vector<const t_const*> raw_constants_;
+  t_enum_value_list enum_values_;
+  node_list<t_const> constants_;
 
   // TODO(afuller): These methods are only provided for backwards
   // compatibility. Update all references and remove everything below.
@@ -98,7 +98,6 @@ class t_enum : public t_type {
       std::unique_ptr<t_enum_value> enum_value,
       std::unique_ptr<t_const> constant) {
     enum_values_raw_.push_back(enum_value.get());
-    raw_constants_.push_back(constant.get());
     enum_values_.push_back(std::move(enum_value));
     constants_.push_back(std::move(constant));
   }

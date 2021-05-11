@@ -156,6 +156,8 @@ class t_field final : public t_named {
   const t_field* get_prev() const { return prev(); }
 };
 
+using t_field_list = node_list<t_field>;
+
 /**
  * A simple struct for the parser to use to store a field ID, and whether or
  * not it was specified by the user or automatically chosen.

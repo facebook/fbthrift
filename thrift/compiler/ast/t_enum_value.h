@@ -61,6 +61,8 @@ class t_enum_value : public t_named {
   bool has_value_{false};
 };
 
+using t_enum_value_list = node_list<t_enum_value>;
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

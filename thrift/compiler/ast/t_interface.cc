@@ -22,21 +22,17 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-void t_interface::set_functions(
-    std::vector<std::unique_ptr<t_function>> functions) {
+void t_interface::set_functions(t_function_list functions) {
   functions_ = std::move(functions);
-  functions_raw_.clear();
   old_functions_raw_.clear();
   for (const auto& func : functions_) {
     assert(func != nullptr);
-    functions_raw_.push_back(func.get());
     old_functions_raw_.push_back(func.get());
   }
 }
 
 void t_interface::add_function(std::unique_ptr<t_function> func) {
   assert(func != nullptr);
-  functions_raw_.push_back(func.get());
   old_functions_raw_.push_back(func.get());
   functions_.push_back(std::move(func));
 }
