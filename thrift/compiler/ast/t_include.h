@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/compiler/ast/t_node.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
