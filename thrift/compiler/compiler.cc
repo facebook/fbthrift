@@ -431,10 +431,9 @@ compile_result compile(const std::vector<std::string>& arguments) {
   // Validate it!
   auto diagnostics = validator::validate(program->root_program());
   bool has_failure = false;
-  for (const auto& d : diagnostics) {
+  for (auto& d : diagnostics) {
     has_failure = has_failure || (d.level() == diagnostic_level::failure);
-    // TODO(afuller): Add them to result.diagnostics instead.
-    std::cerr << d << std::endl;
+    result.diagnostics.emplace_back(std::move(d));
   }
   if (has_failure) {
     return result;

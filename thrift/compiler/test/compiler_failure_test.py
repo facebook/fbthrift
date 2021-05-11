@@ -622,12 +622,10 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("foo.thrift", "\n".join(lines))
 
         expected_error = [
-            f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"
-        ] + [
             f"[WARNING:foo.thrift:{i+3}] No field key specified for field_{i}, "
             "resulting protocol may have conflicts or not be backwards compatible!"
             for i in range(id_count)
-        ] * 2
+        ] * 2 + [f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"]
         expected_error = "\n".join(expected_error) + "\n"
 
         ret, out, err = self.run_thrift("foo.thrift")
@@ -777,7 +775,5 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            textwrap.dedent(
-                "[FAILURE:foo.thrift:3] field `foo` does not exist.\n"
-            ),
+            textwrap.dedent("[FAILURE:foo.thrift:3] field `foo` does not exist.\n"),
         )
