@@ -163,6 +163,13 @@ unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
       std::move(transport), make_unique<TestFramingHandler>());
 }
 
+template <>
+HeaderClientChannel::LegacyPtr createChannel(
+    folly::AsyncTransport::UniquePtr transport) {
+  return HeaderClientChannel::newChannel(
+      HeaderClientChannel::WithoutRocketUpgrade{}, std::move(transport));
+}
+
 template <typename Channel1, typename Channel2>
 class SocketPairTest {
  public:

@@ -88,7 +88,7 @@ HeaderClientChannel::HeaderClientChannel(
 }
 
 HeaderClientChannel::HeaderClientChannel(
-    WithRocketUpgrade rocketUpgrade,
+    bool rocketUpgrade,
     folly::AsyncTransport::UniquePtr transport,
     Options options)
     : HeaderClientChannel(
@@ -96,7 +96,7 @@ HeaderClientChannel::HeaderClientChannel(
               toReleasable(std::move(transport)),
               make_unique<ClientFramingHandler>(*this))),
           std::move(options)) {
-  upgradeToRocket_ = rocketUpgrade.enabled;
+  upgradeToRocket_ = rocketUpgrade;
 }
 
 HeaderClientChannel::HeaderClientChannel(

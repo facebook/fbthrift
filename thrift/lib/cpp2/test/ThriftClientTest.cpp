@@ -131,9 +131,8 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
-  const std::shared_ptr<HeaderClientChannel> channel =
-      HeaderClientChannel::newChannel(
-          folly::AsyncSocket::newSocket(&eb, runner.getAddress()));
+  auto channel = folly::to_shared_ptr(HeaderClientChannel::newChannel(
+      folly::AsyncSocket::newSocket(&eb, runner.getAddress())));
   channel->setTimeout(channelTimeout.count());
   auto client = std::make_unique<TestServiceAsyncClient>(channel);
 

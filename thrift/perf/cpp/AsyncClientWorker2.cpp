@@ -177,11 +177,8 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   if (!config->useHeaderProtocol()) {
     options.setClientType(THRIFT_FRAMED_DEPRECATED);
   }
-  std::unique_ptr<
-      apache::thrift::HeaderClientChannel,
-      folly::DelayedDestruction::Destructor>
-      channel(HeaderClientChannel::newChannel(
-          std::move(socket), std::move(options)));
+  auto channel =
+      HeaderClientChannel::newChannel(std::move(socket), std::move(options));
   channel->setTimeout(kTimeout);
   // For testing equality, make sure to use binary
   if (config->zlib()) {

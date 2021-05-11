@@ -106,23 +106,14 @@ class HeaderClientChannel : public ClientChannel,
     std::unique_ptr<RequestSetupMetadata> rocketUpgradeSetupMetadata;
   };
 
-  struct WithRocketUpgrade {
-    bool enabled{true};
-  };
-  struct WithoutRocketUpgrade {
-    /* implicit */ operator WithRocketUpgrade() const {
-      return WithRocketUpgrade{false};
-    }
-  };
+  struct WithRocketUpgrade {};
+  struct WithoutRocketUpgrade {};
 
-  HeaderClientChannel(
-      WithRocketUpgrade rocketUpgrade,
-      folly::AsyncTransport::UniquePtr transport,
-      Options options = Options());
-
+  typedef std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor>
+      Ptr;
   typedef std::
       unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
-          Ptr;
+          LegacyPtr;
 
   static Ptr newChannel(
       folly::AsyncTransport::UniquePtr transport, Options options = Options()) {
@@ -131,11 +122,19 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   static Ptr newChannel(
-      WithRocketUpgrade rocketUpgrade,
+      WithRocketUpgrade,
       folly::AsyncTransport::UniquePtr transport,
       Options options = Options()) {
     return Ptr(new HeaderClientChannel(
-        std::move(rocketUpgrade), std::move(transport), std::move(options)));
+        true, std::move(transport), std::move(options)));
+  }
+
+  static LegacyPtr newChannel(
+      WithoutRocketUpgrade,
+      folly::AsyncTransport::UniquePtr transport,
+      Options options = Options()) {
+    return LegacyPtr(new HeaderClientChannel(
+        false, std::move(transport), std::move(options)));
   }
 
   virtual void sendMessage(
@@ -281,6 +280,11 @@ class HeaderClientChannel : public ClientChannel,
   bool clientSupportHeader() override;
 
  private:
+  HeaderClientChannel(
+      bool rocketUpgrade,
+      folly::AsyncTransport::UniquePtr transport,
+      Options options = Options());
+
   HeaderClientChannel(
       folly::AsyncTransport::UniquePtr transport, Options options);
 
