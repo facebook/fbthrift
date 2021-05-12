@@ -181,8 +181,8 @@ void H2ClientConnection::attachEventBase(EventBase* evb) {
 
 void H2ClientConnection::detachEventBase() {
   DCHECK(evb_->isInEventBaseThread());
+  DCHECK(isDetachable());
   if (httpSession_) {
-    httpSession_->detachTransactions();
     httpSession_->detachThreadLocals();
   }
   evb_ = nullptr;
