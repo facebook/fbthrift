@@ -117,6 +117,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[vector[Bar]] fieldO_ref()
         __field_ref[vector[Baz]] fieldP_ref()
         __field_ref[cMyEnumA] fieldQ_ref()
+        unique_ptr[cmap[string,cbool]] fieldR_ref()
+        unique_ptr[cSmallStruct] fieldS_ref()
+        shared_ptr[cSmallStruct] fieldT_ref()
+        shared_ptr[const cSmallStruct] fieldU_ref()
+        unique_ptr[cSmallStruct] fieldX_ref()
         cbool fieldA
         cmap[string,cbool] fieldB
         cset[cint32_t] fieldC

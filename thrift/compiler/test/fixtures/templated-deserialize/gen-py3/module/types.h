@@ -99,19 +99,19 @@ void reset_field<::cpp2::containerStruct>(
       obj.fieldQ_ref().copy_from(default_inst<::cpp2::containerStruct>().fieldQ_ref());
       return;
     case 17:
-      obj.fieldR.reset();
+      obj.fieldR_ref().reset();
       return;
     case 18:
-      obj.fieldS.reset();
+      obj.fieldS_ref().reset();
       return;
     case 19:
-      obj.fieldT.reset();
+      obj.fieldT_ref().reset();
       return;
     case 20:
-      obj.fieldU.reset();
+      obj.fieldU_ref().reset();
       return;
     case 21:
-      obj.fieldX.reset();
+      obj.fieldX_ref().reset();
       return;
   }
 }

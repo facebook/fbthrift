@@ -278,7 +278,7 @@ void reset_field<::apache::thrift::fixtures::types::ForwardUsageRoot>(
       obj.ForwardUsageStruct_ref().copy_from(default_inst<::apache::thrift::fixtures::types::ForwardUsageRoot>().ForwardUsageStruct_ref());
       return;
     case 1:
-      obj.ForwardUsageByRef.reset();
+      obj.ForwardUsageByRef_ref().reset();
       return;
   }
 }

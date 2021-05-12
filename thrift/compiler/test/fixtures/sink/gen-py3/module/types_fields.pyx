@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (

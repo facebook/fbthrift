@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -227,7 +228,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_module_types.ccontainerStruct](deref(self._struct_cpp_obj), 17)
             return
-        deref(self._struct_cpp_obj).fieldR = make_unique[cmap[string,cbool]](deref(_module_types.Map__string_bool(_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[cmap[string,cbool]](deref(self._struct_cpp_obj).fieldR_ref(), make_unique[cmap[string,cbool]](deref(_module_types.Map__string_bool(_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_18(self, _fbthrift_value) except *:
         # for field fieldS
@@ -236,7 +237,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.SmallStruct):
             raise TypeError(f'fieldS is not a { _module_types.SmallStruct !r}.')
-        deref(self._struct_cpp_obj).fieldS = make_unique[_module_types.cSmallStruct](deref((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.cSmallStruct](deref(self._struct_cpp_obj).fieldS_ref(), make_unique[_module_types.cSmallStruct](deref((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_19(self, _fbthrift_value) except *:
         # for field fieldT
@@ -245,7 +246,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.SmallStruct):
             raise TypeError(f'fieldT is not a { _module_types.SmallStruct !r}.')
-        deref(self._struct_cpp_obj).fieldT = (<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj
+        assign_shared_ptr[_module_types.cSmallStruct](deref(self._struct_cpp_obj).fieldT_ref(), (<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj)
 
     cdef void _set_field_20(self, _fbthrift_value) except *:
         # for field fieldU
@@ -254,7 +255,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.SmallStruct):
             raise TypeError(f'fieldU is not a { _module_types.SmallStruct !r}.')
-        deref(self._struct_cpp_obj).fieldU = const_pointer_cast((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj)
+        assign_shared_const_ptr[_module_types.cSmallStruct](deref(self._struct_cpp_obj).fieldU_ref(), const_pointer_cast((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_21(self, _fbthrift_value) except *:
         # for field fieldX
@@ -263,5 +264,5 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.SmallStruct):
             raise TypeError(f'fieldX is not a { _module_types.SmallStruct !r}.')
-        deref(self._struct_cpp_obj).fieldX = make_unique[_module_types.cSmallStruct](deref((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.cSmallStruct](deref(self._struct_cpp_obj).fieldX_ref(), make_unique[_module_types.cSmallStruct](deref((<_module_types.SmallStruct?>_fbthrift_value)._cpp_obj)))
 

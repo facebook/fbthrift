@@ -356,45 +356,45 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldR(self):
 
         if self.__fbthrift_cached_fieldR is None:
-            if not deref(self._cpp_obj).fieldR:
+            if not deref(self._cpp_obj).fieldR_ref():
                 return None
-            self.__fbthrift_cached_fieldR = Map__string_bool.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldR), self._cpp_obj))
+            self.__fbthrift_cached_fieldR = Map__string_bool.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldR_ref()), self._cpp_obj))
         return self.__fbthrift_cached_fieldR
 
     @property
     def fieldS(self):
 
         if self.__fbthrift_cached_fieldS is None:
-            if not deref(self._cpp_obj).fieldS:
+            if not deref(self._cpp_obj).fieldS_ref():
                 return None
-            self.__fbthrift_cached_fieldS = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldS), self._cpp_obj))
+            self.__fbthrift_cached_fieldS = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldS_ref()), self._cpp_obj))
         return self.__fbthrift_cached_fieldS
 
     @property
     def fieldT(self):
 
         if self.__fbthrift_cached_fieldT is None:
-            if not deref(self._cpp_obj).fieldT:
+            if not deref(self._cpp_obj).fieldT_ref():
                 return None
-            self.__fbthrift_cached_fieldT = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldT), self._cpp_obj))
+            self.__fbthrift_cached_fieldT = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldT_ref()), self._cpp_obj))
         return self.__fbthrift_cached_fieldT
 
     @property
     def fieldU(self):
 
         if self.__fbthrift_cached_fieldU is None:
-            if not deref(self._cpp_obj).fieldU:
+            if not deref(self._cpp_obj).fieldU_ref():
                 return None
-            self.__fbthrift_cached_fieldU = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldU), self._cpp_obj))
+            self.__fbthrift_cached_fieldU = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldU_ref()), self._cpp_obj))
         return self.__fbthrift_cached_fieldU
 
     @property
     def fieldX(self):
 
         if self.__fbthrift_cached_fieldX is None:
-            if not deref(self._cpp_obj).fieldX:
+            if not deref(self._cpp_obj).fieldX_ref():
                 return None
-            self.__fbthrift_cached_fieldX = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldX), self._cpp_obj))
+            self.__fbthrift_cached_fieldX = SmallStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).fieldX_ref()), self._cpp_obj))
         return self.__fbthrift_cached_fieldX
 
 

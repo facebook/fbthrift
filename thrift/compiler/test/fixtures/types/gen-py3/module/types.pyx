@@ -1671,9 +1671,9 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
     def ForwardUsageByRef(self):
 
         if self.__fbthrift_cached_ForwardUsageByRef is None:
-            if not deref(self._cpp_obj).ForwardUsageByRef:
+            if not deref(self._cpp_obj).ForwardUsageByRef_ref():
                 return None
-            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ForwardUsageByRef), self._cpp_obj))
+            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ForwardUsageByRef_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ForwardUsageByRef
 
 

@@ -57,6 +57,9 @@ cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
         REVSUB
     shared_ptr[T] constant_shared_ptr[T](T)
     shared_ptr[T] reference_shared_ptr[T](const T& ref, ...)
+    void assign_unique_ptr[T](unique_ptr[T]& x, unique_ptr[T] y)
+    void assign_shared_ptr[T](shared_ptr[T]& x, shared_ptr[T] y)
+    void assign_shared_const_ptr[T](shared_ptr[const T]& x, shared_ptr[const T] y)
     const T& default_inst[T]()
     bint richcmp[T](const shared_ptr[T]& a, const shared_ptr[T]& b, int op)
     bint setcmp[T](const shared_ptr[T]& a, const shared_ptr[T]& b, int op)

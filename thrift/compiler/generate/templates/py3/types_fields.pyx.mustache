@@ -19,6 +19,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -77,7 +78,10 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         deref(self._struct_cpp_obj).{{field:py_name}}_ref().assign({{> CythonFieldValueForAssignment}})
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
-        deref(self._struct_cpp_obj).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
+        assign_{{#field:unique_ref?}}unique{{/field:unique_ref?}}{{!
+           }}{{#field:shared_ref?}}shared{{/field:shared_ref?}}{{!
+           }}{{#field:shared_const_ref?}}shared_const{{/field:shared_const_ref?}}{{!
+           }}_ptr[{{> types/CythonCppType}}](deref(self._struct_cpp_obj).{{field:py_name}}_ref(), {{> CythonFieldValueForAssignment}})
         {{/field:has_ref_accessor?}}
     {{/field:type}}
     {{/struct:py3_fields}}

@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -69,5 +70,5 @@ cdef class __AStructB_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _includes_types.AStruct):
             raise TypeError(f'FieldA is not a { _includes_types.AStruct !r}.')
-        deref(self._struct_cpp_obj).FieldA = const_pointer_cast((<_includes_types.AStruct?>_fbthrift_value)._cpp_obj)
+        assign_shared_const_ptr[_includes_types.cAStruct](deref(self._struct_cpp_obj).FieldA_ref(), const_pointer_cast((<_includes_types.AStruct?>_fbthrift_value)._cpp_obj))
 

@@ -353,5 +353,24 @@ std::string_view get_field_name_by_index(size_t idx) {
   return found == map.end() ? name : found->second;
 }
 
+// This is workaround of cython's limitation that function return isn't C++
+// left-values. e.g. `foo.bar_ref() = make_unique[T]()` isn't valid cython code
+// We need to write `assign_unique_ptr(foo.bar_ref(), make_unique[T]())` instead
+template <typename T>
+void assign_unique_ptr(std::unique_ptr<T>& x, std::unique_ptr<T> y) {
+  x = std::move(y);
+}
+
+template <typename T>
+void assign_shared_ptr(std::shared_ptr<T>& x, std::shared_ptr<T> y) {
+  x = std::move(y);
+}
+
+template <typename T>
+void assign_shared_const_ptr(
+    std::shared_ptr<const T>& x, std::shared_ptr<const T> y) {
+  x = std::move(y);
+}
+
 } // namespace py3
 } // namespace thrift

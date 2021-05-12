@@ -222,9 +222,9 @@ cdef class AStructB(thrift.py3.types.Struct):
     def FieldA(self):
 
         if self.__fbthrift_cached_FieldA is None:
-            if not deref(self._cpp_obj).FieldA:
+            if not deref(self._cpp_obj).FieldA_ref():
                 return None
-            self.__fbthrift_cached_FieldA = AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA), self._cpp_obj))
+            self.__fbthrift_cached_FieldA = AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA_ref()), self._cpp_obj))
         return self.__fbthrift_cached_FieldA
 
 

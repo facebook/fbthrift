@@ -80,7 +80,7 @@ void reset_field<{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}
       obj.{{field:cppName}}_ref().copy_from(default_inst<{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{struct:name}}>().{{field:cppName}}_ref());
       {{/field:reference?}}
       {{#field:reference?}}
-      obj.{{field:cppName}}.reset();
+      obj.{{field:cppName}}{{^field:iobuf_ref?}}_ref(){{/field:iobuf_ref?}}.reset();
       {{/field:reference?}}
       return;
     {{/struct:py3_fields}}

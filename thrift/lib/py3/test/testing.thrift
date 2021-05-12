@@ -144,6 +144,16 @@ struct easy {
   4: Integers an_int;
 } (anno1 = "foo", bar)
 
+struct PrivateCppRefField {
+  # (cpp.experimental.lazy) field is always private
+  1: optional easy field1 (cpp.ref, cpp.experimental.lazy);
+  2: optional easy field2 (cpp.ref_type = "shared", cpp.experimental.lazy);
+  3: optional easy field3 (
+    cpp.ref_type = "shared_const",
+    cpp.experimental.lazy,
+  );
+}
+
 struct Nested3 {
   1: easy c;
 }

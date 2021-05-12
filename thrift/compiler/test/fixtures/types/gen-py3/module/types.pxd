@@ -604,6 +604,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cForwardUsageRoot&)
         bint operator>=(cForwardUsageRoot&)
         __optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref()
+        unique_ptr[cForwardUsageByRef] ForwardUsageByRef_ref()
         cForwardUsageStruct ForwardUsageStruct
         unique_ptr[cForwardUsageByRef] ForwardUsageByRef
 

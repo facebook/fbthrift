@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -608,7 +609,7 @@ cdef class __ForwardUsageRoot_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.ForwardUsageByRef):
             raise TypeError(f'ForwardUsageByRef is not a { _module_types.ForwardUsageByRef !r}.')
-        deref(self._struct_cpp_obj).ForwardUsageByRef = make_unique[_module_types.cForwardUsageByRef](deref((<_module_types.ForwardUsageByRef?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.cForwardUsageByRef](deref(self._struct_cpp_obj).ForwardUsageByRef_ref(), make_unique[_module_types.cForwardUsageByRef](deref((<_module_types.ForwardUsageByRef?>_fbthrift_value)._cpp_obj)))
 
 
 @__cython.auto_pickle(False)

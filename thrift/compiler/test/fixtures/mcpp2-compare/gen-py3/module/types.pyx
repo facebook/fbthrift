@@ -2243,9 +2243,9 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     def ARefField(self):
 
         if self.__fbthrift_cached_ARefField is None:
-            if not deref(self._cpp_obj).ARefField:
+            if not deref(self._cpp_obj).ARefField_ref():
                 return None
-            self.__fbthrift_cached_ARefField = _includes_types.AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ARefField), self._cpp_obj))
+            self.__fbthrift_cached_ARefField = _includes_types.AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ARefField_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ARefField
 
     @property
@@ -2360,162 +2360,162 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def cpp_unique_ref(self):
 
         if self.__fbthrift_cached_cpp_unique_ref is None:
-            if not deref(self._cpp_obj).cpp_unique_ref:
+            if not deref(self._cpp_obj).cpp_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_cpp_unique_ref
 
     @property
     def cpp2_unique_ref(self):
 
         if self.__fbthrift_cached_cpp2_unique_ref is None:
-            if not deref(self._cpp_obj).cpp2_unique_ref:
+            if not deref(self._cpp_obj).cpp2_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp2_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp2_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_cpp2_unique_ref
 
     @property
     def container_with_ref(self):
 
         if self.__fbthrift_cached_container_with_ref is None:
-            if not deref(self._cpp_obj).container_with_ref:
+            if not deref(self._cpp_obj).container_with_ref_ref():
                 return None
-            self.__fbthrift_cached_container_with_ref = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).container_with_ref), self._cpp_obj))
+            self.__fbthrift_cached_container_with_ref = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).container_with_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_container_with_ref
 
     @property
     def req_cpp_unique_ref(self):
 
         if self.__fbthrift_cached_req_cpp_unique_ref is None:
-            if not deref(self._cpp_obj).req_cpp_unique_ref:
+            if not deref(self._cpp_obj).req_cpp_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_req_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_req_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_cpp_unique_ref
 
     @property
     def req_cpp2_unique_ref(self):
 
         if self.__fbthrift_cached_req_cpp2_unique_ref is None:
-            if not deref(self._cpp_obj).req_cpp2_unique_ref:
+            if not deref(self._cpp_obj).req_cpp2_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_req_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp2_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_req_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp2_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_cpp2_unique_ref
 
     @property
     def req_container_with_ref(self):
 
         if self.__fbthrift_cached_req_container_with_ref is None:
-            if not deref(self._cpp_obj).req_container_with_ref:
+            if not deref(self._cpp_obj).req_container_with_ref_ref():
                 return None
-            self.__fbthrift_cached_req_container_with_ref = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_container_with_ref), self._cpp_obj))
+            self.__fbthrift_cached_req_container_with_ref = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_container_with_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_container_with_ref
 
     @property
     def opt_cpp_unique_ref(self):
 
         if self.__fbthrift_cached_opt_cpp_unique_ref is None:
-            if not deref(self._cpp_obj).opt_cpp_unique_ref:
+            if not deref(self._cpp_obj).opt_cpp_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_opt_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_opt_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_cpp_unique_ref
 
     @property
     def opt_cpp2_unique_ref(self):
 
         if self.__fbthrift_cached_opt_cpp2_unique_ref is None:
-            if not deref(self._cpp_obj).opt_cpp2_unique_ref:
+            if not deref(self._cpp_obj).opt_cpp2_unique_ref_ref():
                 return None
-            self.__fbthrift_cached_opt_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp2_unique_ref), self._cpp_obj))
+            self.__fbthrift_cached_opt_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp2_unique_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_cpp2_unique_ref
 
     @property
     def opt_container_with_ref(self):
 
         if self.__fbthrift_cached_opt_container_with_ref is None:
-            if not deref(self._cpp_obj).opt_container_with_ref:
+            if not deref(self._cpp_obj).opt_container_with_ref_ref():
                 return None
-            self.__fbthrift_cached_opt_container_with_ref = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_container_with_ref), self._cpp_obj))
+            self.__fbthrift_cached_opt_container_with_ref = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_container_with_ref_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_container_with_ref
 
     @property
     def ref_type_unique(self):
 
         if self.__fbthrift_cached_ref_type_unique is None:
-            if not deref(self._cpp_obj).ref_type_unique:
+            if not deref(self._cpp_obj).ref_type_unique_ref():
                 return None
-            self.__fbthrift_cached_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_unique), self._cpp_obj))
+            self.__fbthrift_cached_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_unique_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ref_type_unique
 
     @property
     def ref_type_shared(self):
 
         if self.__fbthrift_cached_ref_type_shared is None:
-            if not deref(self._cpp_obj).ref_type_shared:
+            if not deref(self._cpp_obj).ref_type_shared_ref():
                 return None
-            self.__fbthrift_cached_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_shared), self._cpp_obj))
+            self.__fbthrift_cached_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_shared_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ref_type_shared
 
     @property
     def ref_type_const(self):
 
         if self.__fbthrift_cached_ref_type_const is None:
-            if not deref(self._cpp_obj).ref_type_const:
+            if not deref(self._cpp_obj).ref_type_const_ref():
                 return None
-            self.__fbthrift_cached_ref_type_const = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_const), self._cpp_obj))
+            self.__fbthrift_cached_ref_type_const = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_const_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ref_type_const
 
     @property
     def req_ref_type_shared(self):
 
         if self.__fbthrift_cached_req_ref_type_shared is None:
-            if not deref(self._cpp_obj).req_ref_type_shared:
+            if not deref(self._cpp_obj).req_ref_type_shared_ref():
                 return None
-            self.__fbthrift_cached_req_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_shared), self._cpp_obj))
+            self.__fbthrift_cached_req_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_shared_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_ref_type_shared
 
     @property
     def req_ref_type_const(self):
 
         if self.__fbthrift_cached_req_ref_type_const is None:
-            if not deref(self._cpp_obj).req_ref_type_const:
+            if not deref(self._cpp_obj).req_ref_type_const_ref():
                 return None
-            self.__fbthrift_cached_req_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_const), self._cpp_obj))
+            self.__fbthrift_cached_req_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_const_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_ref_type_const
 
     @property
     def req_ref_type_unique(self):
 
         if self.__fbthrift_cached_req_ref_type_unique is None:
-            if not deref(self._cpp_obj).req_ref_type_unique:
+            if not deref(self._cpp_obj).req_ref_type_unique_ref():
                 return None
-            self.__fbthrift_cached_req_ref_type_unique = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_unique), self._cpp_obj))
+            self.__fbthrift_cached_req_ref_type_unique = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_unique_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_ref_type_unique
 
     @property
     def opt_ref_type_const(self):
 
         if self.__fbthrift_cached_opt_ref_type_const is None:
-            if not deref(self._cpp_obj).opt_ref_type_const:
+            if not deref(self._cpp_obj).opt_ref_type_const_ref():
                 return None
-            self.__fbthrift_cached_opt_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_const), self._cpp_obj))
+            self.__fbthrift_cached_opt_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_const_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_ref_type_const
 
     @property
     def opt_ref_type_unique(self):
 
         if self.__fbthrift_cached_opt_ref_type_unique is None:
-            if not deref(self._cpp_obj).opt_ref_type_unique:
+            if not deref(self._cpp_obj).opt_ref_type_unique_ref():
                 return None
-            self.__fbthrift_cached_opt_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_unique), self._cpp_obj))
+            self.__fbthrift_cached_opt_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_unique_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_ref_type_unique
 
     @property
     def opt_ref_type_shared(self):
 
         if self.__fbthrift_cached_opt_ref_type_shared is None:
-            if not deref(self._cpp_obj).opt_ref_type_shared:
+            if not deref(self._cpp_obj).opt_ref_type_shared_ref():
                 return None
-            self.__fbthrift_cached_opt_ref_type_shared = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_shared), self._cpp_obj))
+            self.__fbthrift_cached_opt_ref_type_shared = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_shared_ref()), self._cpp_obj))
         return self.__fbthrift_cached_opt_ref_type_shared
 
     @property

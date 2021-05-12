@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -872,7 +873,7 @@ cdef class __MyIncludedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _includes_types.AStruct):
             raise TypeError(f'ARefField is not a { _includes_types.AStruct !r}.')
-        deref(self._struct_cpp_obj).ARefField = make_unique[_includes_types.cAStruct](deref((<_includes_types.AStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_includes_types.cAStruct](deref(self._struct_cpp_obj).ARefField_ref(), make_unique[_includes_types.cAStruct](deref((<_includes_types.AStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field ARequiredField
@@ -956,7 +957,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'cpp_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).cpp_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).cpp_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field cpp2_unique_ref
@@ -965,14 +966,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'cpp2_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).cpp2_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).cpp2_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field container_with_ref
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 3)
             return
-        deref(self._struct_cpp_obj).container_with_ref = make_unique[cmap[cint32_t,vector[string]]](deref(_module_types.Map__i32_List__string(_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[cmap[cint32_t,vector[string]]](deref(self._struct_cpp_obj).container_with_ref_ref(), make_unique[cmap[cint32_t,vector[string]]](deref(_module_types.Map__i32_List__string(_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field req_cpp_unique_ref
@@ -981,7 +982,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'req_cpp_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).req_cpp_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).req_cpp_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_5(self, _fbthrift_value) except *:
         # for field req_cpp2_unique_ref
@@ -990,14 +991,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'req_cpp2_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).req_cpp2_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).req_cpp2_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_6(self, _fbthrift_value) except *:
         # for field req_container_with_ref
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 6)
             return
-        deref(self._struct_cpp_obj).req_container_with_ref = make_unique[vector[string]](deref(_module_types.List__string(_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[vector[string]](deref(self._struct_cpp_obj).req_container_with_ref_ref(), make_unique[vector[string]](deref(_module_types.List__string(_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field opt_cpp_unique_ref
@@ -1006,7 +1007,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'opt_cpp_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).opt_cpp_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).opt_cpp_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_8(self, _fbthrift_value) except *:
         # for field opt_cpp2_unique_ref
@@ -1015,14 +1016,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'opt_cpp2_unique_ref is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).opt_cpp2_unique_ref = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).opt_cpp2_unique_ref_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_9(self, _fbthrift_value) except *:
         # for field opt_container_with_ref
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 9)
             return
-        deref(self._struct_cpp_obj).opt_container_with_ref = make_unique[cset[cint32_t]](deref(_module_types.Set__i32(_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[cset[cint32_t]](deref(self._struct_cpp_obj).opt_container_with_ref_ref(), make_unique[cset[cint32_t]](deref(_module_types.Set__i32(_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_10(self, _fbthrift_value) except *:
         # for field ref_type_unique
@@ -1031,7 +1032,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'ref_type_unique is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).ref_type_unique = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).ref_type_unique_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_11(self, _fbthrift_value) except *:
         # for field ref_type_shared
@@ -1040,14 +1041,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'ref_type_shared is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).ref_type_shared = (<_module_types.containerStruct?>_fbthrift_value)._cpp_obj
+        assign_shared_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).ref_type_shared_ref(), (<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)
 
     cdef void _set_field_12(self, _fbthrift_value) except *:
         # for field ref_type_const
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 12)
             return
-        deref(self._struct_cpp_obj).ref_type_const = const_pointer_cast(_module_types.Map__i32_List__string(_fbthrift_value)._cpp_obj)
+        assign_shared_const_ptr[cmap[cint32_t,vector[string]]](deref(self._struct_cpp_obj).ref_type_const_ref(), const_pointer_cast(_module_types.Map__i32_List__string(_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_13(self, _fbthrift_value) except *:
         # for field req_ref_type_shared
@@ -1056,7 +1057,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'req_ref_type_shared is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).req_ref_type_shared = (<_module_types.containerStruct?>_fbthrift_value)._cpp_obj
+        assign_shared_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).req_ref_type_shared_ref(), (<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)
 
     cdef void _set_field_14(self, _fbthrift_value) except *:
         # for field req_ref_type_const
@@ -1065,14 +1066,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'req_ref_type_const is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).req_ref_type_const = const_pointer_cast((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)
+        assign_shared_const_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).req_ref_type_const_ref(), const_pointer_cast((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_15(self, _fbthrift_value) except *:
         # for field req_ref_type_unique
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 15)
             return
-        deref(self._struct_cpp_obj).req_ref_type_unique = make_unique[vector[string]](deref(_module_types.List__string(_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[vector[string]](deref(self._struct_cpp_obj).req_ref_type_unique_ref(), make_unique[vector[string]](deref(_module_types.List__string(_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_16(self, _fbthrift_value) except *:
         # for field opt_ref_type_const
@@ -1081,7 +1082,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'opt_ref_type_const is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).opt_ref_type_const = const_pointer_cast((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)
+        assign_shared_const_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).opt_ref_type_const_ref(), const_pointer_cast((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
 
     cdef void _set_field_17(self, _fbthrift_value) except *:
         # for field opt_ref_type_unique
@@ -1090,14 +1091,14 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
             return
         if not isinstance(_fbthrift_value, _module_types.containerStruct):
             raise TypeError(f'opt_ref_type_unique is not a { _module_types.containerStruct !r}.')
-        deref(self._struct_cpp_obj).opt_ref_type_unique = make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj))
+        assign_unique_ptr[_module_types.ccontainerStruct](deref(self._struct_cpp_obj).opt_ref_type_unique_ref(), make_unique[_module_types.ccontainerStruct](deref((<_module_types.containerStruct?>_fbthrift_value)._cpp_obj)))
 
     cdef void _set_field_18(self, _fbthrift_value) except *:
         # for field opt_ref_type_shared
         if _fbthrift_value is None:
             __reset_field[_module_types.cAnnotatedStruct](deref(self._struct_cpp_obj), 18)
             return
-        deref(self._struct_cpp_obj).opt_ref_type_shared = _module_types.Set__i32(_fbthrift_value)._cpp_obj
+        assign_shared_ptr[cset[cint32_t]](deref(self._struct_cpp_obj).opt_ref_type_shared_ref(), _module_types.Set__i32(_fbthrift_value)._cpp_obj)
 
     cdef void _set_field_19(self, _fbthrift_value) except *:
         # for field base_type

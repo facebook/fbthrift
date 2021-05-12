@@ -94,6 +94,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStructB&)
         bint operator<=(cAStructB&)
         bint operator>=(cAStructB&)
+        shared_ptr[const cAStruct] FieldA_ref()
         shared_ptr[const cAStruct] FieldA
 
 

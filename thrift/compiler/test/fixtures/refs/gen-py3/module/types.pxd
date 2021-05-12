@@ -106,6 +106,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
+        unique_ptr[cint64_t] opt_value_ref()
+        unique_ptr[cint64_t] value_ref()
+        unique_ptr[cint64_t] req_value_ref()
+        unique_ptr[cMyEnum] opt_enum_value_ref()
+        unique_ptr[cMyEnum] enum_value_ref()
+        unique_ptr[cMyEnum] req_enum_value_ref()
         unique_ptr[cint64_t] opt_value
         unique_ptr[cint64_t] value
         unique_ptr[cint64_t] req_value
@@ -123,6 +129,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
+        unique_ptr[cMyField] opt_ref_ref()
+        unique_ptr[cMyField] ref_ref()
+        unique_ptr[cMyField] req_ref_ref()
         unique_ptr[cMyField] opt_ref
         unique_ptr[cMyField] ref
         unique_ptr[cMyField] req_ref
@@ -137,6 +146,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithUnion&)
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
+        unique_ptr[cMyUnion] u_ref()
+        unique_ptr[double] aDouble_ref()
         __field_ref[cMyField] f_ref()
         unique_ptr[cMyUnion] u
         unique_ptr[double] aDouble
@@ -165,6 +176,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithContainers&)
         bint operator<=(cStructWithContainers&)
         bint operator>=(cStructWithContainers&)
+        unique_ptr[vector[cint32_t]] list_ref_ref()
+        unique_ptr[cset[cint32_t]] set_ref_ref()
+        unique_ptr[cmap[cint32_t,cint32_t]] map_ref_ref()
+        unique_ptr[vector[cint32_t]] list_ref_unique_ref()
+        shared_ptr[cset[cint32_t]] set_ref_shared_ref()
+        shared_ptr[const vector[cint32_t]] list_ref_shared_const_ref()
         unique_ptr[vector[cint32_t]] list_ref
         unique_ptr[cset[cint32_t]] set_ref
         unique_ptr[cmap[cint32_t,cint32_t]] map_ref
@@ -182,6 +199,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithSharedConst&)
         bint operator<=(cStructWithSharedConst&)
         bint operator>=(cStructWithSharedConst&)
+        shared_ptr[const cMyField] opt_shared_const_ref()
+        shared_ptr[const cMyField] shared_const_ref()
+        shared_ptr[const cMyField] req_shared_const_ref()
         shared_ptr[const cMyField] opt_shared_const
         shared_ptr[const cMyField] shared_const
         shared_ptr[const cMyField] req_shared_const
@@ -207,6 +227,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRef&)
         bint operator<=(cStructWithRef&)
         bint operator>=(cStructWithRef&)
+        unique_ptr[cEmpty] def_field_ref()
+        unique_ptr[cEmpty] opt_field_ref()
+        unique_ptr[cEmpty] req_field_ref()
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
@@ -221,6 +244,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeUnique&)
         bint operator<=(cStructWithRefTypeUnique&)
         bint operator>=(cStructWithRefTypeUnique&)
+        unique_ptr[cEmpty] def_field_ref()
+        unique_ptr[cEmpty] opt_field_ref()
+        unique_ptr[cEmpty] req_field_ref()
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
@@ -235,6 +261,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeShared&)
         bint operator<=(cStructWithRefTypeShared&)
         bint operator>=(cStructWithRefTypeShared&)
+        shared_ptr[cEmpty] def_field_ref()
+        shared_ptr[cEmpty] opt_field_ref()
+        shared_ptr[cEmpty] req_field_ref()
         shared_ptr[cEmpty] def_field
         shared_ptr[cEmpty] opt_field
         shared_ptr[cEmpty] req_field
@@ -249,6 +278,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeSharedConst&)
         bint operator<=(cStructWithRefTypeSharedConst&)
         bint operator>=(cStructWithRefTypeSharedConst&)
+        shared_ptr[const cEmpty] def_field_ref()
+        shared_ptr[const cEmpty] opt_field_ref()
+        shared_ptr[const cEmpty] req_field_ref()
         shared_ptr[const cEmpty] def_field
         shared_ptr[const cEmpty] opt_field
         shared_ptr[const cEmpty] req_field
@@ -263,6 +295,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] def_field
 
 

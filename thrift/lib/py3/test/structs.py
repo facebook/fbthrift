@@ -33,6 +33,7 @@ from testing.types import (
     easy,
     hard,
     numerical,
+    PrivateCppRefField,
 )
 from thrift.py3.common import Protocol
 from thrift.py3.serializer import deserialize
@@ -313,3 +314,22 @@ class NumericalConversionsTests(unittest.TestCase):
                 #  param but got `List[float]`.
                 int_list=[math.pi, math.e],
             )
+
+    def test_private_cpp_ref_field(self) -> None:
+        x = PrivateCppRefField(
+            field1=easy(val=1, name="11"),
+            field2=easy(val=2, name="22"),
+            field3=easy(val=3, name="33"),
+        )
+        field1 = x.field1
+        field2 = x.field2
+        field3 = x.field3
+        if field1:
+            self.assertEqual(field1.val, 1)
+            self.assertEqual(field1.name, "11")
+        if field2:
+            self.assertEqual(field2.val, 2)
+            self.assertEqual(field2.name, "22")
+        if field3:
+            self.assertEqual(field3.val, 3)
+            self.assertEqual(field3.name, "33")
