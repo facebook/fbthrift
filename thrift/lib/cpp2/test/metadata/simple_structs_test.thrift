@@ -31,11 +31,11 @@ struct Country {
   10: double population;
 }
 
-@Nat {data = "struct"}
+@Nat{data = "struct"}
 struct City {
-  @Map {value = {0: "0", 1: "1"}}
+  @Map{value = {0: "0", 1: "1"}}
   1: string name;
-  @Nat {data = "2", next = Nat {data = "1", next = Nat {data = "0"}}}
+  @Nat{data = "2", next = Nat{data = "1", next = Nat{data = "0"}}}
   2: string country;
   3: double population;
 }

@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "constants" : {
     "MyConst" : {
-      "lineno" : 125,
+      "lineno" : 124,
       "value" : { "ENUMERATOR" : "enum", "CONST" : "const" },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
@@ -14,7 +14,7 @@
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 115,
+      "lineno" : 114,
       "structured_annotations" : {
         "structured_annotation_inline" : { "count" : 4 }
       },
@@ -34,7 +34,7 @@
       }
     },
     "annotated_inline_string" : {
-      "lineno" : 50,
+      "lineno" : 49,
       "type_enum" : "STRING",
       "spec_args" : null,
       "structured_annotations" : {
@@ -43,7 +43,7 @@
       }
     },
     "annotated_inline_i64" : {
-      "lineno" : 53,
+      "lineno" : 52,
       "type_enum" : "I64",
       "spec_args" : null,
       "structured_annotations" : {
@@ -140,7 +140,7 @@
       "annotation_last_lineno" : -1
     },
     "MyStruct" : {
-      "lineno" : 63,
+      "lineno" : 62,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -184,7 +184,7 @@
       "annotation_last_lineno" : -1
     },
     "MyException" : {
-      "lineno" : 83,
+      "lineno" : 82,
       "is_exception" : true,
       "is_union" : false,
       "structured_annotations" : {
@@ -203,7 +203,7 @@
       "annotation_last_lineno" : -1
     },
     "MyUnion" : {
-      "lineno" : 92,
+      "lineno" : 91,
       "is_exception" : false,
       "is_union" : true,
       "structured_annotations" : {
@@ -232,7 +232,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 102,
+      "lineno" : 101,
       "structured_annotations" : {
         "structured_annotation_inline" : { "count" : 3 }
       },

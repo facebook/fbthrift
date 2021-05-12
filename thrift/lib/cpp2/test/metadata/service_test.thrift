@@ -23,9 +23,9 @@ exception CutoffException {
   1: string reason;
 }
 
-@simple_structs_test.Nat {data = "service"}
+@simple_structs_test.Nat{data = "service"}
 service ParentService {
-  @simple_structs_test.Nat {data = "function"}
+  @simple_structs_test.Nat{data = "function"}
   i32 parentFun();
 }
 
