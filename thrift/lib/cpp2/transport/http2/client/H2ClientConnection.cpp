@@ -26,12 +26,18 @@
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <wangle/acceptor/TransportInfo.h>
 
 #include <algorithm>
+
+// If true, H2ClientConnection::isDetachable() relies on
+// HTTPSession::isDetachable() implementation; otherwise original implementation
+// is used
+THRIFT_FLAG_DEFINE_bool(thrift_http2_detachable_via_httpsession, true);
 
 namespace apache {
 namespace thrift {
@@ -183,6 +189,10 @@ void H2ClientConnection::detachEventBase() {
 }
 
 bool H2ClientConnection::isDetachable() {
+  if (THRIFT_FLAG(thrift_http2_detachable_via_httpsession)) {
+    return !httpSession_ || httpSession_->isDetachable(true);
+  }
+
   // MultiRpcChannel will always have at least one open stream.
   // This is used to leverage multiple rpcs in one stream. We should
   // still enable detaching if MultiRpc doesn't have any outstanding
