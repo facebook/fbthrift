@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 apache.thrift.test
-namespace py3 apache.thrift.test
+namespace py3 thrift.test.lazy_deserialization
 
 struct Foo {
   1: list<double> field1; // fast to skip in CompactProtocol
