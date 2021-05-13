@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 DECLARE_bool(use_ssl);
 DECLARE_string(transport);
@@ -789,7 +790,7 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
       REQUESTS = 1,
       RESPONSES = 2,
     };
-    EXPECT_CALL(*handler_.get(), echo_(_)).Times(2);
+    EXPECT_CALL(*handler_.get(), echo_(_)).Times(4);
 
     auto setCorruption = [&](CorruptionType corruptionType) {
       auto channel = static_cast<ClientChannel*>(client->getChannel());
@@ -797,9 +798,19 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
         auto p = std::make_shared<TAsyncSocketIntercepted::Params>();
         p->corruptLastWriteByte_ = corruptionType == CorruptionType::REQUESTS;
         p->corruptLastReadByte_ = corruptionType == CorruptionType::RESPONSES;
-        p->corruptLastReadByteMinSize_ = 1 << 10;
         dynamic_cast<TAsyncSocketIntercepted*>(channel->getTransport())
             ->setParams(p);
+      });
+    };
+
+    auto setCompression = [&](bool compression) {
+      auto channel = static_cast<ClientChannel*>(client->getChannel());
+      channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
+        CompressionConfig compressionConfig;
+        if (compression) {
+          compressionConfig.codecConfig_ref().ensure().set_zstdConfig();
+        }
+        channel->setDesiredCompressionConfig(compressionConfig);
       });
     };
 
@@ -807,27 +818,41 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
          {CorruptionType::NONE,
           CorruptionType::REQUESTS,
           CorruptionType::RESPONSES}) {
-      static const int kSize = 32 << 10;
-      std::string asString(kSize, 'a');
-      std::unique_ptr<folly::IOBuf> payload =
-          folly::IOBuf::copyBuffer(asString);
-      setCorruption(testType);
+      for (auto compression : {false, true}) {
+        static const int kSize = 32 << 10;
+        std::string asString(kSize, 'a');
+        std::unique_ptr<folly::IOBuf> payload =
+            folly::IOBuf::copyBuffer(asString);
+        setCorruption(testType);
+        setCompression(compression);
 
-      auto future =
-          client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
+        server_->observer_->taskKilled_ = 0;
+        auto future =
+            client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
 
-      if (testType == CorruptionType::NONE) {
-        EXPECT_EQ(asString, std::move(future).get());
-      } else {
-        bool didThrow = false;
-        try {
-          auto res = std::move(future).get();
-        } catch (TApplicationException& ex) {
-          EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
-          didThrow = true;
-          EXPECT_EQ(1, server_->observer_->taskKilled_);
+        if (testType == CorruptionType::NONE) {
+          EXPECT_EQ(asString, std::move(future).get());
+        } else {
+          bool didThrow = false;
+          try {
+            auto res = std::move(future).get();
+          } catch (TApplicationException& ex) {
+            EXPECT_EQ(
+                compression
+                    ? ((testType == CorruptionType::RESPONSES)
+                           ? TApplicationException::INVALID_TRANSFORM
+                           : TApplicationException::UNSUPPORTED_CLIENT_TYPE)
+                    : TApplicationException::CHECKSUM_MISMATCH,
+                ex.getType());
+            didThrow = true;
+          }
+          EXPECT_TRUE(didThrow)
+              << "Expected an exception with corruption type: " << (int)testType
+              << ", compression: " << compression;
         }
-        EXPECT_TRUE(didThrow);
+        EXPECT_EQ(
+            testType == CorruptionType::REQUESTS ? 1 : 0,
+            server_->observer_->taskKilled_);
       }
     }
     setCorruption(CorruptionType::NONE);

@@ -374,6 +374,20 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
+  if (metadata.crc32c_ref()) {
+    try {
+      if (auto compression = metadata.compression_ref()) {
+        data = uncompressBuffer(std::move(data), *compression);
+      }
+    } catch (...) {
+      handleDecompressionFailure(
+          makeActiveRequest(
+              std::move(metadata), rocket::Payload{}, std::move(reqCtx)),
+          folly::exceptionStr(std::current_exception()).toStdString());
+      return;
+    }
+  }
+
   // check the checksum
   const bool badChecksum = metadata.crc32c_ref() &&
       (*metadata.crc32c_ref() != checksum::crc32c(*data));
@@ -463,7 +477,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
         std::move(request),
         SerializedCompressedRequest(
             std::move(data),
-            metadata.compression_ref().value_or(CompressionAlgorithm::NONE)),
+            metadata.crc32c_ref() ? CompressionAlgorithm::NONE
+                                  : metadata.compression_ref().value_or(
+                                        CompressionAlgorithm::NONE)),
         protocolId,
         cpp2ReqCtx,
         eventBase_,
