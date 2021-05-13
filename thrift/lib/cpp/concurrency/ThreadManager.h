@@ -428,12 +428,12 @@ class ThreadManagerExecutorAdapter : public ThreadManager,
   void addWorker(size_t value = 1) override;
   void removeWorker(size_t value = 1) override;
 
-  size_t idleWorkerCount() const override { return 0; }
-  size_t workerCount() const override { return 0; }
-  size_t pendingUpstreamTaskCount() const override { return 0; }
-  size_t pendingTaskCount() const override { return 0; }
-  size_t totalTaskCount() const override { return 0; }
-  size_t expiredTaskCount() override { return 0; }
+  size_t idleWorkerCount() const override;
+  size_t workerCount() const override;
+  size_t pendingUpstreamTaskCount() const override;
+  size_t pendingTaskCount() const override;
+  size_t totalTaskCount() const override;
+  size_t expiredTaskCount() override;
 
   void add(
       std::shared_ptr<Runnable> task,
