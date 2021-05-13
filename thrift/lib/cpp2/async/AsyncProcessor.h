@@ -400,7 +400,7 @@ class ServerInterface : public virtual AsyncProcessorFactory,
     return folly::makeSemiFuture();
   }
 
-  std::vector<ServiceHandler*> getServiceHandlers() final { return {this}; }
+  std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
 
  protected:
   folly::Executor::KeepAlive<> getInternalKeepAlive();
