@@ -116,25 +116,19 @@ class HeaderClientChannel : public ClientChannel,
           LegacyPtr;
 
   static Ptr newChannel(
-      folly::AsyncTransport::UniquePtr transport, Options options = Options()) {
-    return Ptr(
-        new HeaderClientChannel(std::move(transport), std::move(options)));
-  }
+      folly::AsyncTransport::UniquePtr transport, Options options = Options());
 
   static Ptr newChannel(
       WithRocketUpgrade,
       folly::AsyncTransport::UniquePtr transport,
-      Options options = Options()) {
-    return Ptr(new HeaderClientChannel(
-        true, std::move(transport), std::move(options)));
-  }
+      Options options = Options());
 
   static LegacyPtr newChannel(
       WithoutRocketUpgrade,
       folly::AsyncTransport::UniquePtr transport,
       Options options = Options()) {
-    return LegacyPtr(new HeaderClientChannel(
-        false, std::move(transport), std::move(options)));
+    return LegacyPtr(
+        new HeaderClientChannel(std::move(transport), std::move(options)));
   }
 
   virtual void sendMessage(
@@ -150,9 +144,6 @@ class HeaderClientChannel : public ClientChannel,
   void destroy() override;
 
   folly::AsyncTransport* getTransport() override {
-    if (isUpgradedToRocket()) {
-      return rocketChannel_->getTransport();
-    }
     return cpp2Channel_->getTransport();
   }
 
@@ -193,17 +184,9 @@ class HeaderClientChannel : public ClientChannel,
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
   void setTimeout(uint32_t ms) override;
-  uint32_t getTimeout() override {
-    if (isUpgradedToRocket()) {
-      return rocketChannel_->getTimeout();
-    }
-    return getTransport()->getSendTimeout();
-  }
+  uint32_t getTimeout() override { return getTransport()->getSendTimeout(); }
 
   folly::EventBase* getEventBase() const override {
-    if (isUpgradedToRocket()) {
-      return rocketChannel_->getEventBase();
-    }
     return cpp2Channel_->getEventBase();
   }
 
@@ -216,9 +199,6 @@ class HeaderClientChannel : public ClientChannel,
   bool good() override;
 
   SaturationStatus getSaturationStatus() override {
-    if (isUpgradedToRocket()) {
-      return rocketChannel_->getSaturationStatus();
-    }
     return SaturationStatus(0, std::numeric_limits<uint32_t>::max());
   }
 
@@ -229,27 +209,7 @@ class HeaderClientChannel : public ClientChannel,
 
   uint16_t getProtocolId() override;
 
-  CLIENT_TYPE getClientType() override {
-    if (isUpgradedToRocket()) {
-      return rocketChannel_->getClientType();
-    }
-    return clientType_;
-  }
-
-  void setOnDetachable(folly::Function<void()> onDetachable) override {
-    if (isUpgradedToRocket()) {
-      rocketChannel_->setOnDetachable(std::move(onDetachable));
-    } else {
-      ClientChannel::setOnDetachable(std::move(onDetachable));
-    }
-  }
-  void unsetOnDetachable() override {
-    if (isUpgradedToRocket()) {
-      rocketChannel_->unsetOnDetachable();
-    } else {
-      ClientChannel::unsetOnDetachable();
-    }
-  }
+  CLIENT_TYPE getClientType() override { return clientType_; }
 
   class ClientFramingHandler : public FramingHandler {
    public:
@@ -280,11 +240,6 @@ class HeaderClientChannel : public ClientChannel,
   bool clientSupportHeader() override;
 
  private:
-  HeaderClientChannel(
-      bool rocketUpgrade,
-      folly::AsyncTransport::UniquePtr transport,
-      Options options = Options());
-
   HeaderClientChannel(
       folly::AsyncTransport::UniquePtr transport, Options options);
 
@@ -320,73 +275,113 @@ class HeaderClientChannel : public ClientChannel,
   const std::string agentName_;
   bool firstRequest_{true};
 
-  // If true, on first request this HeaderClientChannel will try to upgrade to
-  // use rocket transport.
-  bool upgradeToRocket_;
-  // If rocket transport upgrade is enabled, HeaderClientChannel manages a
-  // rocket channel internally and uses this rocket channel for all
-  // requests/response handling.
-  RocketClientChannel::Ptr rocketChannel_;
-  // The metadata that will be passed to the RocketClientChannel during
-  // transport upgrade.
-  std::unique_ptr<RequestSetupMetadata> rocketRequestSetupMetadata_;
-
-  enum class RocketUpgradeState {
-    NO_UPGRADE = 0,
-    INIT = 1,
-    IN_PROGRESS = 2,
-    DONE = 3
-  };
-  std::atomic<RocketUpgradeState> upgradeState_;
-
-  bool isUpgradedToRocket() const {
-    return upgradeState_.load(std::memory_order_acquire) ==
-        RocketUpgradeState::DONE &&
-        rocketChannel_;
-  }
-
-  // A class to hold the necessary data for a header request
-  // (SerializedRequest, THeader, RpcOptions, callback, etc.) so that the
-  // request can be queued and sent at a later point.
-  class HeaderRequestContext {
-   public:
-    HeaderRequestContext(
-        const RpcOptions& rpcOptions,
-        ManagedStringView&& methodName,
-        SerializedRequest&& serializedRequest,
-        std::shared_ptr<apache::thrift::transport::THeader> header,
-        RequestClientCallback::Ptr cb,
-        bool oneWay)
-        : rpcOptions_(rpcOptions),
-          methodName_(std::move(methodName)),
-          serializedRequest_(std::move(serializedRequest)),
-          header_(std::move(header)),
-          callback_(std::move(cb)),
-          oneWay_(oneWay) {}
-
-    const RpcOptions rpcOptions_;
-    ManagedStringView methodName_;
-    SerializedRequest serializedRequest_;
-    std::shared_ptr<apache::thrift::transport::THeader> header_;
-    RequestClientCallback::Ptr callback_;
-    bool oneWay_;
-  };
-
-  /**
-   * A container to hold the header requests that come in while transport
-   * upgrade from header to rocket is in progress.
-   *
-   * If transport upgrade for raw client is enabled, this HeaderClientChannel
-   * tries to upgrade the transport from header to rocket upon first request
-   * by sending a special request (upgradeToRocket). If upgrade succeeds, all
-   * requests on the channel (including the ones that come in while upgrade
-   * was in progress) should be sent using rocket transport.
-   */
-  std::deque<HeaderRequestContext> pendingRequests_;
-
   transport::THeader::StringToStringMap persistentReadHeaders_;
 
-  class RocketUpgradeCallback;
+  class RocketUpgradeChannel : public ClientChannel {
+   public:
+    RocketUpgradeChannel(
+        HeaderClientChannel::LegacyPtr headerChannel,
+        bool enabled,
+        std::unique_ptr<RequestSetupMetadata>);
+
+    void sendRequestResponse(
+        const RpcOptions&,
+        apache::thrift::ManagedStringView&& methodName,
+        SerializedRequest&&,
+        std::shared_ptr<apache::thrift::transport::THeader>,
+        RequestClientCallback::Ptr) override;
+
+    void sendRequestNoResponse(
+        const RpcOptions&,
+        apache::thrift::ManagedStringView&& methodName,
+        SerializedRequest&&,
+        std::shared_ptr<apache::thrift::transport::THeader>,
+        RequestClientCallback::Ptr) override;
+
+    void setCloseCallback(CloseCallback*) override;
+
+    folly::EventBase* getEventBase() const override;
+
+    uint16_t getProtocolId() override;
+
+    folly::AsyncTransport* getTransport() override;
+
+    bool good() override;
+
+    SaturationStatus getSaturationStatus() override;
+
+    void attachEventBase(folly::EventBase*) override;
+    void detachEventBase() override;
+    bool isDetachable() override;
+
+    uint32_t getTimeout() override;
+    void setTimeout(uint32_t ms) override;
+
+    void closeNow() override;
+    CLIENT_TYPE getClientType() override;
+
+    void setOnDetachable(folly::Function<void()> onDetachable) override;
+
+    void unsetOnDetachable() override;
+
+   private:
+    void initUpgradeIfNeeded();
+    void upgradeComplete(folly::exception_wrapper ew);
+
+    ClientChannel& getImpl() const;
+
+    // Set until the upgrade is complete
+    HeaderClientChannel::LegacyPtr headerChannel_;
+    // Set only when upgrade was successful
+    RocketClientChannel::Ptr rocketChannel_;
+    // The metadata that will be passed to the RocketClientChannel during
+    // transport upgrade.
+    std::unique_ptr<RequestSetupMetadata> rocketUpgradeSetupMetadata_;
+
+    const protocol::PROTOCOL_TYPES protocolId_{headerChannel_->getProtocolId()};
+    folly::EventBase* evb_{headerChannel_->getEventBase()};
+
+    enum class State { INIT = 0, UPGRADE_IN_PROGRESS = 1, DONE = 2 };
+    State state_;
+
+    class RocketUpgradeCallback;
+
+    class BufferedRequest {
+     public:
+      BufferedRequest(
+          const RpcOptions& rpcOptions,
+          ManagedStringView&& methodName,
+          SerializedRequest&& serializedRequest,
+          std::shared_ptr<apache::thrift::transport::THeader> header,
+          RequestClientCallback::Ptr cb,
+          bool oneWay)
+          : rpcOptions_(rpcOptions),
+            methodName_(std::move(methodName)),
+            serializedRequest_(std::move(serializedRequest)),
+            header_(std::move(header)),
+            callback_(std::move(cb)),
+            oneWay_(oneWay) {}
+
+      void send(ClientChannel& channel) &&;
+      void fail(folly::exception_wrapper ew) &&;
+
+     private:
+      const RpcOptions rpcOptions_;
+      ManagedStringView methodName_;
+      SerializedRequest serializedRequest_;
+      std::shared_ptr<apache::thrift::transport::THeader> header_;
+      RequestClientCallback::Ptr callback_;
+      const bool oneWay_;
+    };
+
+    std::queue<BufferedRequest> bufferedRequests_;
+
+    friend class TransportUpgradeTest;
+    friend class TransportUpgradeTest_RawClientRocketUpgradeOneway_Test;
+    friend class TransportUpgradeTest_RawClientNoUpgrade_Test;
+    friend class TransportUpgradeTest_RawClientRocketUpgradeTimeout_Test;
+  };
+
   friend class TransportUpgradeTest;
   friend class TransportUpgradeTest_RawClientRocketUpgradeOneway_Test;
   friend class TransportUpgradeTest_RawClientNoUpgrade_Test;

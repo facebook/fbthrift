@@ -145,7 +145,7 @@ TEST_P(TransportUpgradeCompatibilityTest, RequestResponse_Connection_CloseNow) {
       EXPECT_TRUE(false) << "future_add should have thrown";
     } catch (TTransportException& ex) {
       EXPECT_EQ(TTransportException::UNKNOWN, ex.getType());
-      EXPECT_STREQ("Channel is !good()", ex.what());
+      EXPECT_PRED_FORMAT2(IsSubstring, "Channel is !good()", ex.what());
     }
   });
 }
