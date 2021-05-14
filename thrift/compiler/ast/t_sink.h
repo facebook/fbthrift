@@ -105,7 +105,8 @@ class t_sink : public t_type {
   t_throws* get_sink_xceptions() const { return sink_exceptions_.get(); }
   const t_type* get_sink_type() const { return sink_type()->type(); }
   const t_type* get_first_response_type() const {
-    return first_response_type_->type();
+    return first_response_type_ == nullptr ? nullptr
+                                           : first_response_type_->type();
   }
   const t_type* get_final_response_type() const {
     return final_response_type()->type();
