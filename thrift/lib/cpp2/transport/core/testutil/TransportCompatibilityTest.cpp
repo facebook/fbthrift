@@ -678,13 +678,7 @@ void TransportCompatibilityTest::TestRequestResponse_IsOverloaded() {
     } catch (TApplicationException& ex) {
       EXPECT_EQ(TApplicationException::LOADSHEDDING, ex.getType());
       EXPECT_EQ(0, server_->observer_->taskKilled_);
-      if (!upgradeToRocket_) {
-        EXPECT_EQ(1, server_->observer_->serverOverloaded_);
-      } else {
-        // for transport upgrade, upgrade request and original request both hit
-        // the server
-        EXPECT_EQ(2, server_->observer_->serverOverloaded_);
-      }
+      EXPECT_EQ(1, server_->observer_->serverOverloaded_);
     }
   });
 }

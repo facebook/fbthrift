@@ -311,39 +311,6 @@ void Cpp2Connection::requestReceived(
     readEnd = std::chrono::steady_clock::now();
   }
 
-  auto baseReqCtx = processor_->getBaseContextForRequest();
-  auto rootid = worker_->getRequestsRegistry()->genRootId();
-  auto reqCtx = baseReqCtx
-      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
-      : std::make_shared<folly::RequestContext>(rootid);
-
-  folly::RequestContextScopeGuard rctx(reqCtx);
-
-  auto server = worker_->getServer();
-  auto* observer = server->getObserver();
-
-  server->touchRequestTimestamp();
-
-  auto injectedFailure = server->maybeInjectFailure();
-  switch (injectedFailure) {
-    case ThriftServer::InjectedFailure::NONE:
-      break;
-    case ThriftServer::InjectedFailure::ERROR:
-      killRequest(
-          std::move(hreq),
-          TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
-          kInjectedFailureErrorCode,
-          "injected failure");
-      return;
-    case ThriftServer::InjectedFailure::DROP:
-      VLOG(1) << "ERROR: injected drop: "
-              << context_.getPeerAddress()->getAddressStr();
-      return;
-    case ThriftServer::InjectedFailure::DISCONNECT:
-      disconnect("injected failure");
-      return;
-  }
-
   bool useHttpHandler = false;
   // Any POST not for / should go to the status handler
   if (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
@@ -382,16 +349,88 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  if (worker_->getServer()->getGetHeaderHandler()) {
-    worker_->getServer()->getGetHeaderHandler()(
-        hreq->getHeader(), context_.getPeerAddress());
-  }
-
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       hreq->getHeader()->getProtocolId());
   const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
       *hreq->getBuf(), protoId);
   const std::string& methodName = msgBegin.methodName;
+
+  // Transport upgrade: check if client requested transport upgrade from header
+  // to rocket. If yes, reply immediately and upgrade the transport after
+  // sending the reply.
+  if (THRIFT_FLAG(server_rocket_upgrade_enabled) &&
+      methodName == "upgradeToRocket") {
+    folly::IOBufQueue queue;
+    switch (protoId) {
+      case apache::thrift::protocol::T_BINARY_PROTOCOL:
+        queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
+            msgBegin.seqId);
+        break;
+      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+        queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
+            msgBegin.seqId);
+        break;
+      default:
+        LOG(DFATAL) << "Unsupported protocol found";
+        // if protocol is neither binary or compact, we want to kill the request
+        // and abort upgrade
+        killRequest(
+            std::move(hreq),
+            TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL,
+            kUnknownErrorCode,
+            "invalid protocol used");
+        return;
+    }
+
+    hreq->sendReply(
+        queue.move(),
+        new TransportUpgradeSendCallback(
+            transport_,
+            context_.getPeerAddress(),
+            getWorker(),
+            this,
+            channel_.get()));
+    return;
+  }
+
+  auto baseReqCtx = processor_->getBaseContextForRequest();
+  auto rootid = worker_->getRequestsRegistry()->genRootId();
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
+
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
+  auto server = worker_->getServer();
+  auto* observer = server->getObserver();
+
+  server->touchRequestTimestamp();
+
+  auto injectedFailure = server->maybeInjectFailure();
+  switch (injectedFailure) {
+    case ThriftServer::InjectedFailure::NONE:
+      break;
+    case ThriftServer::InjectedFailure::ERROR:
+      killRequest(
+          std::move(hreq),
+          TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
+          kInjectedFailureErrorCode,
+          "injected failure");
+      return;
+    case ThriftServer::InjectedFailure::DROP:
+      VLOG(1) << "ERROR: injected drop: "
+              << context_.getPeerAddress()->getAddressStr();
+      return;
+    case ThriftServer::InjectedFailure::DISCONNECT:
+      disconnect("injected failure");
+      return;
+  }
+
+  if (worker_->getServer()->getGetHeaderHandler()) {
+    worker_->getServer()->getGetHeaderHandler()(
+        hreq->getHeader(), context_.getPeerAddress());
+  }
+
   if (auto overloadResult = server->checkOverload(
           &hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
@@ -435,44 +474,6 @@ void Cpp2Connection::requestReceived(
         TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
         kQueueOverloadedErrorCode,
         "server shutting down");
-    return;
-  }
-
-  // Transport upgrade: check if client requested transport upgrade from header
-  // to rocket. If yes, reply immediately and upgrade the transport after
-  // sending the reply.
-  if (THRIFT_FLAG(server_rocket_upgrade_enabled) &&
-      methodName == "upgradeToRocket") {
-    folly::IOBufQueue queue;
-    switch (protoId) {
-      case apache::thrift::protocol::T_BINARY_PROTOCOL:
-        queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
-            msgBegin.seqId);
-        break;
-      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
-            msgBegin.seqId);
-        break;
-      default:
-        LOG(DFATAL) << "Unsupported protocol found";
-        // if protocol is neither binary or compact, we want to kill the request
-        // and abort upgrade
-        killRequest(
-            std::move(hreq),
-            TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL,
-            kUnknownErrorCode,
-            "invalid protocol used");
-        return;
-    }
-
-    hreq->sendReply(
-        queue.move(),
-        new TransportUpgradeSendCallback(
-            transport_,
-            context_.getPeerAddress(),
-            getWorker(),
-            this,
-            channel_.get()));
     return;
   }
 
