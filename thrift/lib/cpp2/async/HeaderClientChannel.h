@@ -247,11 +247,6 @@ class HeaderClientChannel : public ClientChannel,
       apache::thrift::transport::THeader* header, ssize_t payloadSize);
   void attachMetadataOnce(apache::thrift::transport::THeader* header);
 
-  // Transport upgrade from header to rocket for raw header client. If
-  // successful, this HeaderClientChannel will manage a RocketClientChannel
-  // internally and send/receive messages through the rocket channel.
-  void tryUpgradeTransportToRocket(std::chrono::milliseconds timeout);
-
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   // Set the base class callback based on current state.
@@ -283,6 +278,8 @@ class HeaderClientChannel : public ClientChannel,
         HeaderClientChannel::LegacyPtr headerChannel,
         bool enabled,
         std::unique_ptr<RequestSetupMetadata>);
+
+    ~RocketUpgradeChannel() override;
 
     void sendRequestResponse(
         const RpcOptions&,
@@ -319,10 +316,6 @@ class HeaderClientChannel : public ClientChannel,
 
     void closeNow() override;
     CLIENT_TYPE getClientType() override;
-
-    void setOnDetachable(folly::Function<void()> onDetachable) override;
-
-    void unsetOnDetachable() override;
 
    private:
     void initUpgradeIfNeeded();

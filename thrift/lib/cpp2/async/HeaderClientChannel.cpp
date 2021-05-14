@@ -487,6 +487,12 @@ HeaderClientChannel::RocketUpgradeChannel::RocketUpgradeChannel(
       rocketUpgradeSetupMetadata_(std::move(rocketUpgradeSetupMetadata)),
       state_(enabled ? State::INIT : State::DONE) {}
 
+HeaderClientChannel::RocketUpgradeChannel::~RocketUpgradeChannel() {
+  if (rocketChannel_) {
+    rocketChannel_->unsetOnDetachable();
+  }
+}
+
 void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
     apache::thrift::ManagedStringView&& methodName,
@@ -612,15 +618,6 @@ CLIENT_TYPE HeaderClientChannel::RocketUpgradeChannel::getClientType() {
   return getImpl().getClientType();
 }
 
-void HeaderClientChannel::RocketUpgradeChannel::setOnDetachable(
-    folly::Function<void()> onDetachable) {
-  getImpl().setOnDetachable(std::move(onDetachable));
-}
-
-void HeaderClientChannel::RocketUpgradeChannel::unsetOnDetachable() {
-  getImpl().unsetOnDetachable();
-}
-
 void HeaderClientChannel::RocketUpgradeChannel::initUpgradeIfNeeded() {
   if (state_ != State::INIT) {
     return;
@@ -676,6 +673,11 @@ void HeaderClientChannel::RocketUpgradeChannel::upgradeComplete(
         rocketChannel_->getTransport()->getSendTimeout();
     rocketChannel_->setTimeout(headerChannel_->timeout_);
     rocketChannel_->getTransport()->setSendTimeout(transportSendTimeout);
+    rocketChannel_->setOnDetachable([&] {
+      if (isDetachable()) {
+        notifyDetachable();
+      }
+    });
 
     headerChannel_.reset();
   }
