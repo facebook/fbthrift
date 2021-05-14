@@ -455,23 +455,20 @@ class HeaderClientChannel::RocketUpgradeChannel::RocketUpgradeCallback
   void requestSent() override {}
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
-    auto exception =
-        RocketUpgradeAsyncClient::recv_wrapped_upgradeToRocket(state);
+    if (auto ew =
+            RocketUpgradeAsyncClient::recv_wrapped_upgradeToRocket(state)) {
+      upgradeChannel_->upgradeComplete(std::move(ew));
+      return;
+    }
     upgradeChannel_->getEventBase()->runInEventBaseThread(
         [dg = std::move(upgradeChannelDestructorGuard_),
-         upgradeChannel = upgradeChannel_,
-         ew = std::move(exception)]() mutable {
-          upgradeChannel->upgradeComplete(std::move(ew));
+         upgradeChannel = upgradeChannel_]() mutable {
+          upgradeChannel->upgradeComplete({});
         });
   }
 
   void requestError(apache::thrift::ClientReceiveState&& state) override {
-    upgradeChannel_->getEventBase()->runInEventBaseThread(
-        [dg = std::move(upgradeChannelDestructorGuard_),
-         upgradeChannel = upgradeChannel_,
-         ew = std::move(state.exception())]() mutable {
-          upgradeChannel->upgradeComplete(std::move(ew));
-        });
+    upgradeChannel_->upgradeComplete(std::move(state.exception()));
   }
 
   bool isInlineSafe() const override { return true; }
@@ -601,6 +598,13 @@ void HeaderClientChannel::RocketUpgradeChannel::setTimeout(uint32_t ms) {
 }
 
 void HeaderClientChannel::RocketUpgradeChannel::closeNow() {
+  if (state_ == State::UPGRADE_IN_PROGRESS) {
+    auto ex = TTransportException("Channel closed");
+    for (; !bufferedRequests_.empty(); bufferedRequests_.pop()) {
+      std::move(bufferedRequests_.front()).fail(ex);
+    }
+  }
+  state_ = State::DONE;
   getImpl().closeNow();
 }
 
@@ -637,17 +641,22 @@ void HeaderClientChannel::RocketUpgradeChannel::initUpgradeIfNeeded() {
 
 void HeaderClientChannel::RocketUpgradeChannel::upgradeComplete(
     folly::exception_wrapper ew) {
+  if (state_ == State::DONE) {
+    return;
+  }
+
+  DCHECK(state_ == State::UPGRADE_IN_PROGRESS);
+
   if (ew) {
     VLOG(4) << "Unable to upgrade transport from header to rocket! "
             << "Exception : " << folly::exceptionStr(ew);
     ew.with_exception<TTransportException>([&](const auto& tex) {
       // In case we hit a transport error (e.g. a timeout), we don't know if the
       // server is using header or rocket, so we have to close the connection.
+      auto upgradeEx = TTransportException(
+          tex.getType(), std::string("Rocket upgrade failed: ") + tex.what());
       for (; !bufferedRequests_.empty(); bufferedRequests_.pop()) {
-        std::move(bufferedRequests_.front())
-            .fail(TTransportException(
-                tex.getType(),
-                std::string("Rocket upgrade failed: ") + tex.what()));
+        std::move(bufferedRequests_.front()).fail(upgradeEx);
       }
       headerChannel_->closeNow();
     });
@@ -670,10 +679,12 @@ void HeaderClientChannel::RocketUpgradeChannel::upgradeComplete(
 
     headerChannel_.reset();
   }
-  state_ = State::DONE;
+
   for (; !bufferedRequests_.empty(); bufferedRequests_.pop()) {
     std::move(bufferedRequests_.front()).send(getImpl());
   }
+
+  state_ = State::DONE;
 }
 
 ClientChannel& HeaderClientChannel::RocketUpgradeChannel::getImpl() const {
