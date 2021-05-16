@@ -155,13 +155,13 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey0(
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        ::std::string rv;
-        recv_getDataByKey0(rv, returnState);
-        return rv;
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      return recv_wrapped_getDataByKey0(tryResponse->response.value(), returnState);
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }
@@ -372,13 +372,13 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey1(
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        ::std::string rv;
-        recv_getDataByKey1(rv, returnState);
-        return rv;
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      return recv_wrapped_getDataByKey1(tryResponse->response.value(), returnState);
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }

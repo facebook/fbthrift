@@ -182,11 +182,13 @@ MyServiceAsyncClient::sync_complete_hasDataById(
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        return recv_hasDataById(returnState);
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      return recv_wrapped_hasDataById(tryResponse->response.value(), returnState);
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }
@@ -399,13 +401,13 @@ MyServiceAsyncClient::sync_complete_getDataById(
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        ::std::string rv;
-        recv_getDataById(rv, returnState);
-        return rv;
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      return recv_wrapped_getDataById(tryResponse->response.value(), returnState);
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }
@@ -616,11 +618,13 @@ MyServiceAsyncClient::sync_complete_putDataById(
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        return recv_putDataById(returnState);
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      return recv_wrapped_putDataById(returnState);
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }

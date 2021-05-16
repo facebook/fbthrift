@@ -119,18 +119,18 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
         tryResponse->responseContext.serverLoad = *load;
       }
     }
-    tryResponse->response = folly::makeTryWith([&] {
-      return folly::fibers::runInMainContext([&] {
-        <%^type:resolves_to_complex_return?%>
-        return recv_<%function:cpp_name%>(returnState);
-        <%/type:resolves_to_complex_return?%>
-        <%#type:resolves_to_complex_return?%>
-        <% > types/semi_type%> rv;
-        recv_<%function:cpp_name%>(rv, returnState);
-        return rv;
-        <%/type:resolves_to_complex_return?%>
-      });
+    tryResponse->response.emplace();
+    auto ew = folly::fibers::runInMainContext([&] {
+      <%#type:void?%>
+      return recv_wrapped_<%function:cpp_name%>(returnState);
+      <%/type:void?%>
+      <%^type:void?%>
+      return recv_wrapped_<%function:cpp_name%>(tryResponse->response.value(), returnState);
+      <%/type:void?%>
     });
+    if (ew) {
+      tryResponse->response.emplaceException(std::move(ew));
+    }
   }
   return tryResponse;
 }
