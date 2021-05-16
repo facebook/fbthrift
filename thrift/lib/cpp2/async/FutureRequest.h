@@ -58,7 +58,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
 
   void replyReceived(ClientReceiveState&& state) {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     Result result;
     auto ew = processor_(result, state);
@@ -96,7 +96,7 @@ class HeaderFutureCallback
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     Result result;
     auto ew = processor_(result, state);
@@ -132,7 +132,7 @@ class HeaderFutureCallback<folly::Unit>
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     auto ew = processor_(state);
 
@@ -172,7 +172,7 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     auto ew = processor_(state);
 
@@ -250,7 +250,7 @@ makeSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.buf());
+        CHECK(state.hasResponseBuffer());
 
         Result result;
         auto ew = processor(result, state);
@@ -275,7 +275,7 @@ inline std::
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.buf());
+        CHECK(state.hasResponseBuffer());
 
         auto ew = processor(state);
 
@@ -301,7 +301,7 @@ makeHeaderSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.buf());
+        CHECK(state.hasResponseBuffer());
 
         Result result;
         auto ew = processor(result, state);
@@ -329,7 +329,7 @@ makeHeaderSemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future).deferValue([processor](ClientReceiveState&& state) {
         CHECK(!state.isException());
-        CHECK(state.buf());
+        CHECK(state.hasResponseBuffer());
 
         auto ew = processor(state);
 

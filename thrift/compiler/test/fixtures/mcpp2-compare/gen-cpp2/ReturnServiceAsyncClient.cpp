@@ -404,24 +404,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturn(::apach
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_noReturn_presult;
-  constexpr auto const fname = "noReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state);
+          &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state);
+          &reader, state);
     }
     default:
     {
@@ -582,24 +581,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturn(bool&
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_boolReturn_presult;
-  constexpr auto const fname = "boolReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -762,24 +760,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16Return(::std:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_i16Return_presult;
-  constexpr auto const fname = "i16Return";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -942,24 +939,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32Return(::std:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_i32Return_presult;
-  constexpr auto const fname = "i32Return";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -1122,24 +1118,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64Return(::std:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_i64Return_presult;
-  constexpr auto const fname = "i64Return";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -1302,24 +1297,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturn(floa
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_floatReturn_presult;
-  constexpr auto const fname = "floatReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -1482,24 +1476,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturn(dou
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_doubleReturn_presult;
-  constexpr auto const fname = "doubleReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -1662,24 +1655,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturn(::s
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_stringReturn_presult;
-  constexpr auto const fname = "stringReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -1840,24 +1832,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturn(::s
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_binaryReturn_presult;
-  constexpr auto const fname = "binaryReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2018,24 +2009,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturn(::std:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_mapReturn_presult;
-  constexpr auto const fname = "mapReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2196,24 +2186,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefRet
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_simpleTypedefReturn_presult;
-  constexpr auto const fname = "simpleTypedefReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2376,24 +2365,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefRe
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_complexTypedefReturn_presult;
-  constexpr auto const fname = "complexTypedefReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2554,24 +2542,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplex
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_list_mostComplexTypedefReturn_presult;
-  constexpr auto const fname = "list_mostComplexTypedefReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2732,24 +2719,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturn(::som
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_enumReturn_presult;
-  constexpr auto const fname = "enumReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -2912,24 +2898,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturn(
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_list_EnumReturn_presult;
-  constexpr auto const fname = "list_EnumReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3090,24 +3075,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturn(::s
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_structReturn_presult;
-  constexpr auto const fname = "structReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3268,24 +3252,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturn
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_set_StructReturn_presult;
-  constexpr auto const fname = "set_StructReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3446,24 +3429,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturn(::so
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_unionReturn_presult;
-  constexpr auto const fname = "unionReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3624,24 +3606,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturn
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_list_UnionReturn_presult;
-  constexpr auto const fname = "list_UnionReturn";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3802,24 +3783,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEb(::som
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_readDataEb_presult;
-  constexpr auto const fname = "readDataEb";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -3980,24 +3960,23 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readData(::some:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = ReturnService_readData_presult;
-  constexpr auto const fname = "readData";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {

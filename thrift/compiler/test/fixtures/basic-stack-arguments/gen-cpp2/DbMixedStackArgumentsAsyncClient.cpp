@@ -141,7 +141,7 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey0(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
@@ -216,24 +216,23 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = DbMixedStackArguments_getDataByKey0_presult;
-  constexpr auto const fname = "getDataByKey0";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -359,7 +358,7 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey1(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
@@ -434,24 +433,23 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = DbMixedStackArguments_getDataByKey1_presult;
-  constexpr auto const fname = "getDataByKey1";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {

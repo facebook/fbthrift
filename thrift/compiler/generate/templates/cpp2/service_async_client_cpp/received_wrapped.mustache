@@ -23,12 +23,11 @@ folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
-  constexpr auto const fname = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
   <%#type:sink?%>
   <%^function:sink_exceptions?%>
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
@@ -55,11 +54,11 @@ folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<
       apache::thrift::BinaryProtocolReader reader;
       <%#type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>);
+          &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>);
       <%/type:sink?%>
       <%^type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
+          &reader, state<%^type:void?%>, _return<%/type:void?%>);
       <%/type:sink?%>
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
@@ -67,11 +66,11 @@ folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<
       apache::thrift::CompactProtocolReader reader;
       <%#type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>);
+          &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>);
       <%/type:sink?%>
       <%^type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
+          &reader, state<%^type:void?%>, _return<%/type:void?%>);
       <%/type:sink?%>
     }
     default:

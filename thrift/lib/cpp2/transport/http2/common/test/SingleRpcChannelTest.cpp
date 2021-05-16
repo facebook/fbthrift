@@ -22,6 +22,7 @@
 #include <proxygen/httpserver/ScopedHTTPServer.h>
 
 #include <folly/io/async/AsyncSocket.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
@@ -211,16 +212,24 @@ void httpHandler(
     proxygen::HTTPMessage message,
     std::unique_ptr<folly::IOBuf> /* data */,
     proxygen::ResponseBuilder& builder) {
+  auto generateResponse = [](std::string value) {
+    auto resp = LegacySerializedResponse(
+        protocol::T_COMPACT_PROTOCOL,
+        "FooBar",
+        SerializedResponse(folly::IOBuf::copyBuffer(value)));
+    return std::move(resp.buffer);
+  };
   if (message.getURL() == "internal_error") {
-    builder.status(500, "Internal Server Error").body("internal error");
+    builder.status(500, "Internal Server Error")
+        .body(generateResponse("internal error"));
   } else if (message.getURL() == "thrift_serialized_internal_error") {
     builder.status(500, "OOM")
         .header(proxygen::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift")
-        .body("oom");
+        .body(generateResponse("oom"));
   } else if (message.getURL() == "eof") {
     builder.status(200, "OK");
   } else {
-    builder.status(200, "OK").body("(y)");
+    builder.status(200, "OK").body(generateResponse("(y)"));
   }
 }
 
@@ -232,7 +241,7 @@ folly::Future<RequestState> sendRequest(
   auto f = promise.getFuture();
 
   apache::thrift::RequestCallback::Context context;
-  context.protocolId = apache::thrift::detail::compact::PROTOCOL_ID;
+  context.protocolId = protocol::T_COMPACT_PROTOCOL;
 
   auto cb = std::make_unique<ThriftClientCallback>(
       &evb,
@@ -309,7 +318,10 @@ TEST(SingleRpcChannel, ClientExceptions) {
   EXPECT_FALSE(rstate.error);
   EXPECT_TRUE(rstate.reply);
   ASSERT_FALSE(rstate.receiveState.isException());
-  EXPECT_EQ("oom", folly::StringPiece(rstate.receiveState.buf()->coalesce()));
+  EXPECT_EQ(
+      "oom",
+      folly::StringPiece(
+          rstate.receiveState.serializedResponse().buffer->coalesce()));
 
   // The connection should be still good!
   EXPECT_TRUE(conn->good());

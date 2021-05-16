@@ -35,7 +35,8 @@ class MockCallback : public RequestCallback {
     EXPECT_FALSE(crs.isException());
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(clientError_);
-    auto reply = crs.buf()->cloneAsValue().moveToFbString();
+    auto reply =
+        crs.serializedResponse().buffer->cloneAsValue().moveToFbString();
     bool expired = (reply.find("Task expired") != folly::fbstring::npos) ||
         (reply.find("Queue Timeout") != folly::fbstring::npos);
     EXPECT_EQ(serverError_, expired);

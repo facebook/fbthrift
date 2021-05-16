@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/RpcTypes.h>
+#include "thrift/lib/cpp2/protocol/Protocol.h"
 
 #include <folly/io/IOBufQueue.h>
 
@@ -126,12 +127,12 @@ LegacySerializedResponse::LegacySerializedResponse(
     int32_t seqid,
     folly::StringPiece methodName,
     SerializedResponse&& serializedResponse)
-    : buffer(addEnvelope(
+    : LegacySerializedResponse(
           protocolId,
-          T_REPLY,
           seqid,
+          T_REPLY,
           methodName,
-          std::move(serializedResponse.buffer))) {}
+          std::move(serializedResponse)) {}
 
 LegacySerializedResponse::LegacySerializedResponse(
     uint16_t protocolId,
@@ -152,5 +153,18 @@ LegacySerializedResponse::LegacySerializedResponse(
     folly::StringPiece methodName,
     const TApplicationException& ex)
     : LegacySerializedResponse(protocolId, 0, methodName, ex) {}
+
+LegacySerializedResponse::LegacySerializedResponse(
+    uint16_t protocolId,
+    int32_t seqid,
+    MessageType mtype,
+    folly::StringPiece methodName,
+    SerializedResponse&& serializedResponse)
+    : buffer(addEnvelope(
+          protocolId,
+          mtype,
+          seqid,
+          methodName,
+          std::move(serializedResponse.buffer))) {}
 } // namespace thrift
 } // namespace apache

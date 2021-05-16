@@ -19,6 +19,7 @@
 #include <folly/experimental/coro/DetachOnCancel.h>
 #include <folly/init/Init.h>
 #include <folly/synchronization/Baton.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -51,18 +52,23 @@ class DummyChannel : public apache::thrift::RequestChannel {
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr cb) override {
     cb->onRequestSent();
-    static std::unique_ptr<folly::IOBuf> buf = [&] {
+    static ClientReceiveState staticState = [&] {
       ClientReceiveState state;
       folly::Baton<> baton;
       auto client = makeTestClient<TestServiceAsyncClient>(
           std::make_shared<TestServiceSvNull>());
       client->echoInt(std::make_unique<DummyCallback>(state, baton), 0);
       baton.wait();
-      state.buf()->coalesce();
-      return state.extractBuf();
+      state.serializedResponse().buffer->coalesce();
+      return state;
     }();
-    cb.release()->onResponse(
-        ClientReceiveState(getProtocolId(), buf->clone(), nullptr, nullptr));
+    cb.release()->onResponse(ClientReceiveState(
+        staticState.protocolId(),
+        staticState.messageType(),
+        SerializedResponse(staticState.serializedResponse().buffer->clone()),
+        nullptr,
+        nullptr,
+        RpcSizeStats()));
   }
   void sendRequestNoResponse(
       const RpcOptions&,

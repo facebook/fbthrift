@@ -41,7 +41,7 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     Result result;
     auto ew = processor_(result, state);
@@ -82,7 +82,7 @@ class FutureCallback<folly::Unit>
 
   void replyReceived(apache::thrift::ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     auto ew = processor_(state);
 

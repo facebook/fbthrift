@@ -77,7 +77,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_failure) {
     EXPECT_EQ(TTransportException::UNKNOWN, ex.getType());
     EXPECT_STREQ("transport is closed in write()", ex.what());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_success) {
@@ -85,7 +85,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_success) {
   client->noResponse(newCallback(), 68 /* a random number */);
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_send_failure) {
@@ -95,7 +95,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_send_failure) {
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::NOT_OPEN, ex.getType());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
@@ -114,7 +114,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
@@ -127,7 +127,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
   EXPECT_FALSE(bool(ew));
   ew = std::move(state.exception());
   EXPECT_FALSE(bool(ew));
-  EXPECT_NE(nullptr, state.buf());
+  EXPECT_TRUE(state.hasResponseBuffer());
 }
 
 class FunctionSendCallbackTest : public Test {

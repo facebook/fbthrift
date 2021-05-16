@@ -228,7 +228,7 @@ class ClientSyncCallback : public RequestClientCallback {
     }
   }
   void onResponse(ClientReceiveState&& rs) noexcept override {
-    assert(rs.buf());
+    assert(rs.hasResponseBuffer());
     assert(!oneWay);
     *rs_ = std::move(rs);
     doneBaton_.post();

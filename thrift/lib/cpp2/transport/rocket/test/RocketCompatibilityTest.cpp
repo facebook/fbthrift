@@ -16,6 +16,7 @@
 
 #include <folly/portability/GFlags.h>
 #include <folly/portability/GTest.h>
+#include <folly/test/TestUtils.h>
 
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -168,7 +169,8 @@ TEST_F(RocketCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_F(RocketCompatibilityTest, RequestResponse_Checksumming) {
+// TODO(T90625074)
+TEST_F(RocketCompatibilityTest, DISABLED_RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 

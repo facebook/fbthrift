@@ -195,25 +195,24 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_method(apache::thr
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_method_presult;
-  constexpr auto const fname = "method";
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -309,25 +308,24 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodAndReponse(a
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodAndReponse_presult;
-  constexpr auto const fname = "methodAndReponse";
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -423,25 +421,24 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodThrow(apache
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodThrow_presult;
-  constexpr auto const fname = "methodThrow";
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -537,12 +534,11 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodSinkThrow(ap
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodSinkThrow_presult;
-  constexpr auto const fname = "methodSinkThrow";
   struct ExMapType {
     bool operator()(typename result::SinkPResultType& res, folly::exception_wrapper ew) {
       if (ew.with_exception([&]( ::cpp2::SinkException1& e) {
@@ -559,13 +555,13 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodSinkThrow(ap
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -661,25 +657,24 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodFinalThrow(a
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodFinalThrow_presult;
-  constexpr auto const fname = "methodFinalThrow";
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -775,12 +770,11 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodBothThrow(ap
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodBothThrow_presult;
-  constexpr auto const fname = "methodBothThrow";
   struct ExMapType {
     bool operator()(typename result::SinkPResultType& res, folly::exception_wrapper ew) {
       if (ew.with_exception([&]( ::cpp2::SinkException1& e) {
@@ -797,13 +791,13 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodBothThrow(ap
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -899,25 +893,24 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodFast(apache:
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = SinkService_methodFast_presult;
-  constexpr auto const fname = "methodFast";
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return);
+          &reader, state, state.extractSink(), _return);
     }
     default:
     {

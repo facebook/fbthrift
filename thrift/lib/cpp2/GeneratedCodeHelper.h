@@ -479,58 +479,43 @@ folly::exception_wrapper extract_exn(PResult& result) {
 
 template <typename Protocol, typename PResult>
 folly::exception_wrapper recv_wrapped_helper(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    PResult& result) {
+    Protocol* prot, ClientReceiveState& state, PResult& result) {
   ContextStack* ctx = state.ctx();
-  std::string fname;
-  int32_t protoSeqId = 0;
-  MessageType mtype;
+  MessageType mtype = state.messageType();
   if (ctx) {
     ctx->preRead();
   }
   try {
-    if (state.header() && state.header()->getCrc32c().has_value() &&
-        checksum::crc32c(*state.buf()) != *state.header()->getCrc32c()) {
-      return folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
-          "corrupted response");
-    }
-    prot->readMessageBegin(fname, mtype, protoSeqId);
+    const folly::IOBuf& buffer = *state.serializedResponse().buffer;
+    // TODO: re-enable checksumming after we properly adjust checksum on the
+    // server to exclude the envelope.
+    // if (state.header() && state.header()->getCrc32c().has_value() &&
+    //     checksum::crc32c(buffer) != *state.header()->getCrc32c()) {
+    //   return folly::make_exception_wrapper<TApplicationException>(
+    //       TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
+    //       "corrupted response");
+    // }
     if (mtype == T_EXCEPTION) {
       TApplicationException x;
       apache::thrift::detail::deserializeExceptionBody(prot, &x);
-      prot->readMessageEnd();
       return folly::exception_wrapper(std::move(x));
     }
     if (mtype != T_REPLY) {
       prot->skip(protocol::T_STRUCT);
-      prot->readMessageEnd();
       return folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::TApplicationExceptionType::
               INVALID_MESSAGE_TYPE);
     }
-    if (fname.compare(method) != 0) {
-      prot->skip(protocol::T_STRUCT);
-      prot->readMessageEnd();
-      return folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME,
-          folly::to<std::string>(
-              "expected method: ", method, ", actual method: ", fname));
-    }
     SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
+    smsg.buffer = &buffer;
     if (ctx) {
       ctx->onReadData(smsg);
     }
     apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
     if (ctx) {
       ctx->postRead(
-          state.header(),
-          folly::to_narrow(state.buf()->computeChainDataLength()));
+          state.header(), folly::to_narrow(buffer.computeChainDataLength()));
     }
     return folly::exception_wrapper();
   } catch (std::exception const& e) {
@@ -542,11 +527,8 @@ folly::exception_wrapper recv_wrapped_helper(
 
 template <typename PResult, typename Protocol, typename... ReturnTs>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    ReturnTs&... _returns) {
-  prot->setInput(state.buf());
+    Protocol* prot, ClientReceiveState& state, ReturnTs&... _returns) {
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
   PResult result;
@@ -555,7 +537,7 @@ folly::exception_wrapper recv_wrapped(
         result.template get<index.value>().value = &obj;
       },
       _returns...);
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     constexpr auto const kHasReturnType = sizeof...(_returns) != 0;
     ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
@@ -568,18 +550,17 @@ folly::exception_wrapper recv_wrapped(
 
 template <typename PResult, typename Protocol, typename Response, typename Item>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     Protocol* prot,
     ClientReceiveState& state,
     apache::thrift::ResponseAndClientBufferedStream<Response, Item>& _return) {
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
   result.template get<0>().value = &_return.response;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
@@ -598,17 +579,16 @@ folly::exception_wrapper recv_wrapped(
 
 template <typename PResult, typename Protocol, typename Item>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     Protocol* prot,
     ClientReceiveState& state,
     apache::thrift::ClientBufferedStream<Item>& _return) {
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
@@ -660,21 +640,20 @@ template <
     typename Item,
     typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
         _return) {
 #if FOLLY_HAS_COROUTINES
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
   result.template get<0>().value = &_return.response;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
@@ -694,7 +673,6 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
-  (void)method;
   (void)prot;
   (void)state;
   (void)impl;
@@ -711,19 +689,18 @@ template <
     typename Item,
     typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ClientSink<Item, FinalResponse>& _return) {
 #if FOLLY_HAS_COROUTINES
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
@@ -743,7 +720,6 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
-  (void)method;
   (void)prot;
   (void)state;
   (void)impl;

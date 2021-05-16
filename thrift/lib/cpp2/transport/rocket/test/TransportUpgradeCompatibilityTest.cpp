@@ -158,7 +158,9 @@ TEST_P(TransportUpgradeCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_P(TransportUpgradeCompatibilityTest, RequestResponse_Checksumming) {
+// TODO(T90625074)
+TEST_P(
+    TransportUpgradeCompatibilityTest, DISABLED_RequestResponse_Checksumming) {
   SKIP_IF(GetParam() == false)
       << "Checksum not implemented for header transport";
   compatibilityTest_->TestRequestResponse_Checksumming();

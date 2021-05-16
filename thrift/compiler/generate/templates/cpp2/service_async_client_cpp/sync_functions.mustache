@@ -105,7 +105,7 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {

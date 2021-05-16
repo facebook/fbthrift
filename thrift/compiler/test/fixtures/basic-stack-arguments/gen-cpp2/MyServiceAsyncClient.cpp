@@ -168,7 +168,7 @@ MyServiceAsyncClient::sync_complete_hasDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<bool>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
@@ -241,24 +241,23 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_hasDataById(bool& _r
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = MyService_hasDataById_presult;
-  constexpr auto const fname = "hasDataById";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -386,7 +385,7 @@ MyServiceAsyncClient::sync_complete_getDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
@@ -461,24 +460,23 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataById(::std::s
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = MyService_getDataById_presult;
-  constexpr auto const fname = "getDataById";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          &reader, state, _return);
     }
     default:
     {
@@ -604,7 +602,7 @@ MyServiceAsyncClient::sync_complete_putDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
+  if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
   } else {
@@ -677,24 +675,23 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataById(::apache
   if (state.isException()) {
     return std::move(state.exception());
   }
-  if (!state.buf()) {
+  if (!state.hasResponseBuffer()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
   using result = MyService_putDataById_presult;
-  constexpr auto const fname = "putDataById";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state);
+          &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state);
+          &reader, state);
     }
     default:
     {

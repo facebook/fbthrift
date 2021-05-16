@@ -147,6 +147,7 @@ add_library(
   async/Interaction.cpp
   async/PooledRequestChannel.cpp
   async/ReconnectingRequestChannel.cpp
+  async/RequestCallback.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
   async/RetryingRequestChannel.cpp

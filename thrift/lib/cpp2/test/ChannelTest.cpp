@@ -34,8 +34,10 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;
@@ -79,6 +81,16 @@ SerializedRequest makeTestSerializedRequest(size_t len) {
   }
   LOG(FATAL) << "Can't generate valid serialized request of given length: "
              << len;
+}
+
+size_t lengthWithEnvelope(const ClientReceiveState& state) {
+  return LegacySerializedResponse(
+             state.protocolId(),
+             0,
+             state.messageType(),
+             "test",
+             SerializedResponse(state.serializedResponse().buffer->clone()))
+      .buffer->computeChainDataLength();
 }
 
 class EventBaseAborter : public folly::AsyncTimeout {
@@ -293,7 +305,7 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
 
   void onResponse(ClientReceiveState&& state) noexcept override {
     reply_++;
-    replyBytes_ += state.buf()->computeChainDataLength();
+    replyBytes_ += lengthWithEnvelope(state);
     delete this;
   }
 
@@ -606,7 +618,7 @@ class InOrderTest
       if (reply_ == 1) {
         c_->channel1_->setCallback(nullptr);
         // Verify that they came back in the same order
-        EXPECT_EQ(state.buf()->computeChainDataLength(), c_->len_ + 1);
+        EXPECT_EQ(lengthWithEnvelope(state), c_->len_ + 1);
       }
       TestRequestCallback::onResponse(std::move(state));
     }
