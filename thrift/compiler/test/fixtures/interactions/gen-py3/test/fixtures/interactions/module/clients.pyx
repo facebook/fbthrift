@@ -51,6 +51,7 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 import test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
+from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
 
 cimport test.fixtures.interactions.module.services_reflection as _services_reflection
 
@@ -108,7 +109,7 @@ cdef void MyService_MyInteraction_truthify_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__.create(result.value(), options))
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -147,7 +148,7 @@ cdef void MyService_MyInteractionFast_truthify_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__.create(result.value(), options))
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 

@@ -14,8 +14,17 @@ from typing_extensions import Final
 
 import sys
 import itertools
+import thrift.py3.stream
 
 
 __property__ = property
 
+
+
+class ClientBufferedStream__bool(thrift.py3.stream.ClientBufferedStream[bool]):
+    def __aiter__(self) -> _typing.AsyncIterator[bool]: ...
+    async def __anext__(self) -> bool: ...
+
+class ServerStream__bool(thrift.py3.stream.ServerStream[bool]):
+    pass
 

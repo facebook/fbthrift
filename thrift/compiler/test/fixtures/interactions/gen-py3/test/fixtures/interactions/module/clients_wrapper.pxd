@@ -25,6 +25,7 @@ from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
 
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
+from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
 
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":

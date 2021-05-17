@@ -27,6 +27,7 @@ interaction Addition {
   i32 getPrimitive();
   Point getPoint();
   oneway void noop();
+  list<string> func();
 }
 
 service Calculator {

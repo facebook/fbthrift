@@ -38,6 +38,13 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+from folly cimport cFollyTry
+from cpython.ref cimport PyObject
+from thrift.py3.stream cimport (
+    ClientBufferedStream, cClientBufferedStream, cClientBufferedStreamWrapper,
+    ResponseAndClientBufferedStream, cResponseAndClientBufferedStream,
+    ServerStream, cServerStream, ResponseAndServerStream
+)
 
 cimport test.fixtures.interactions.module.types_fields as _fbthrift_types_fields
 
@@ -50,4 +57,20 @@ cdef extern from "src/gen-py3/module/types.h":
 
 
 
+
+
+cdef class ClientBufferedStream__bool(ClientBufferedStream):
+    cdef unique_ptr[cClientBufferedStreamWrapper[cbool]] _gen
+
+    @staticmethod
+    cdef create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options)
+
+    @staticmethod
+    cdef void callback(
+        cFollyTry[__cOptional[cbool]]&& res,
+        PyObject* userdata,
+    )
+
+cdef class ServerStream__bool(ServerStream):
+    pass
 

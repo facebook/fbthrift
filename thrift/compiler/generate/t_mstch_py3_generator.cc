@@ -18,6 +18,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -371,7 +372,7 @@ class mstch_py3_program : public mstch_program {
              &mstch_py3_program::getStreamExceptions},
         });
     gather_included_program_namespaces();
-    visit_types_for_services();
+    visit_types_for_services_and_interactions();
     visit_types_for_objects();
     visit_types_for_constants();
     visit_types_for_typedefs();
@@ -511,21 +512,28 @@ class mstch_py3_program : public mstch_program {
     }
   }
 
-  void visit_types_for_services() {
-    for (const auto* service : program_->services()) {
-      for (const auto* function : service->get_functions()) {
-        for (const auto* field : function->get_paramlist()->fields()) {
-          visit_type(field->get_type());
-        }
-        for (const auto* field : function->get_stream_xceptions()->fields()) {
-          const t_type* exType = field->get_type();
-          streamExceptions_.emplace(visit_type(field->get_type()), exType);
-        }
-        const t_type* return_type = function->get_returntype();
-        auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
-        uniqueFunctionsByReturnType_.insert(
-            {{visit_type(return_type), sa}, function});
+  void visit_type_single_service(const t_service* service) {
+    for (const auto* function : service->get_functions()) {
+      for (const auto* field : function->get_paramlist()->fields()) {
+        visit_type(field->get_type());
       }
+      for (const auto* field : function->get_stream_xceptions()->fields()) {
+        const t_type* exType = field->get_type();
+        streamExceptions_.emplace(visit_type(field->get_type()), exType);
+      }
+      const t_type* return_type = function->get_returntype();
+      auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
+      uniqueFunctionsByReturnType_.insert(
+          {{visit_type(return_type), sa}, function});
+    }
+  }
+
+  void visit_types_for_services_and_interactions() {
+    for (const auto* service : program_->services()) {
+      visit_type_single_service(service);
+    }
+    for (const auto* interaction : program_->interactions()) {
+      visit_type_single_service(interaction);
     }
   }
 

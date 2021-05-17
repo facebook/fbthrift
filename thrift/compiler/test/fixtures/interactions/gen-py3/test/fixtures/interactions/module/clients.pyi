@@ -47,7 +47,7 @@ class MyService_MyInteraction(thrift.py3.client.Client):
     async def truthify(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__: ...
+    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__bool: ...
 
 
 _MyService_MyInteractionFast = _typing.TypeVar('_MyService_MyInteractionFast', bound='MyService_MyInteractionFast')
@@ -68,7 +68,7 @@ class MyService_MyInteractionFast(thrift.py3.client.Client):
     async def truthify(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__: ...
+    ) -> _test_fixtures_interactions_module_types.ClientBufferedStream__bool: ...
 
 
 _MyService_SerialInteraction = _typing.TypeVar('_MyService_SerialInteraction', bound='MyService_SerialInteraction')

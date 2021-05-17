@@ -52,6 +52,7 @@ import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createEmptyResponseAndServerStream
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 import test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 
@@ -66,6 +67,36 @@ import types as _py_types
 from test.fixtures.interactions.module.services_wrapper cimport cMyServiceInterface
 
 
+
+@cython.auto_pickle(False)
+cdef class Promise_:
+    cdef cFollyPromise[] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[] cPromise):
+        cdef Promise_ inst = Promise_.__new__(Promise_)
+        inst.cPromise = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cServerStream__cbool:
+    cdef cFollyPromise[cServerStream[cbool]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[cServerStream[cbool]] cPromise):
+        cdef Promise_cServerStream__cbool inst = Promise_cServerStream__cbool.__new__(Promise_cServerStream__cbool)
+        inst.cPromise = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cint32_t:
+    cdef cFollyPromise[cint32_t] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[cint32_t] cPromise):
+        cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
+        inst.cPromise = cmove(cPromise)
+        return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
