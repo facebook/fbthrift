@@ -56,6 +56,8 @@ class InteractionHandle : public GeneratedAsyncClient {
   InteractionHandle(InteractionHandle&&) noexcept = default;
   InteractionHandle& operator=(InteractionHandle&&);
 
+  const InteractionId& getInteractionId();
+
  protected:
   void setInteraction(RpcOptions& rpcOptions);
 

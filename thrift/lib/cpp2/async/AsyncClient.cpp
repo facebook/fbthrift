@@ -64,6 +64,11 @@ void InteractionHandle::setInteraction(RpcOptions& rpcOptions) {
   rpcOptions.setInteractionId(interactionId_);
 }
 
+const InteractionId& InteractionHandle::getInteractionId() {
+  DCHECK(interactionId_);
+  return interactionId_;
+}
+
 void InteractionHandle::terminate() {
   if (!channel_ || !interactionId_) {
     return;
