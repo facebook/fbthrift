@@ -50,8 +50,57 @@ struct struct_traits_metadata_tag {};
 
 namespace reflection_impl {
 
-template <typename, typename>
-struct isset;
+// FIXME: There is a bug that is_set(...) always return `true` for cpp.ref field
+// We need to investigate how to fix this since it's breaking change.
+struct is_set_fn {
+  template <class T, class D>
+  bool operator()(const std::unique_ptr<T, D>&) const {
+    return true;
+  }
+
+  template <class T>
+  bool operator()(const std::shared_ptr<T>&) const {
+    return true;
+  }
+
+  template <class T>
+  bool operator()(T ref) const {
+    return ref.has_value();
+  }
+};
+
+constexpr is_set_fn is_set;
+
+struct mark_set_fn {
+  template <class T>
+  void operator()(required_field_ref<T>, bool) const {}
+
+  template <class T>
+  void operator()(field_ref<T> ref, bool b) const {
+    if (b) {
+      ref.ensure();
+    } else {
+      ::apache::thrift::unset_unsafe_deprecated(ref);
+    }
+  }
+
+  template <class T>
+  void operator()(optional_field_ref<T> ref, bool b) const {
+    if (b) {
+      ::apache::thrift::ensure_isset_unsafe_deprecated(ref);
+    } else {
+      ::apache::thrift::unset_unsafe_deprecated(ref);
+    }
+  }
+
+  template <class T, class D>
+  void operator()(std::unique_ptr<T, D>&, bool) const {}
+
+  template <class T>
+  void operator()(std::shared_ptr<T>&, bool) const {}
+};
+
+constexpr mark_set_fn mark_set;
 
 struct variant_member_name {
   template <typename Descriptor>

@@ -39,52 +39,6 @@ struct no_annotations {
 
 using reflected_no_annotations = reflected_annotations<no_annotations>;
 
-template <typename, typename T, typename Getter>
-struct has_isset_field_ : std::false_type {};
-template <typename T, typename Getter>
-struct has_isset_field_<
-    folly::void_t<decltype(Getter{}(std::declval<T>().__isset))>,
-    T,
-    Getter> : std::true_type {};
-template <typename T, typename Getter>
-using has_isset_field = has_isset_field_<void, T, Getter>;
-
-template <typename Owner, typename Getter>
-struct isset {
-  template <int I>
-  struct kind {};
-
-  template <typename T>
-  using kind_of =
-      std::conditional_t<has_isset_field<T, Getter>::value, kind<1>, kind<2>>;
-
-  template <typename T>
-  static constexpr bool check(kind<1>, T const& owner) {
-    return Getter{}(owner.__isset);
-  }
-  template <typename T>
-  static constexpr bool check(kind<2>, T const&) {
-    return true;
-  }
-  template <typename T>
-  static constexpr bool check(T const& owner) {
-    return check(kind_of<T>{}, owner);
-  }
-
-  template <typename T>
-  static constexpr bool mark(kind<1>, T& owner, bool set) {
-    return Getter{}(owner.__isset) = set;
-  }
-  template <typename T>
-  static constexpr bool mark(kind<2>, T&, bool set) {
-    return set;
-  }
-  template <typename T>
-  static constexpr bool mark(T& owner, bool set) {
-    return mark(kind_of<T>{}, owner, set);
-  }
-};
-
 } // namespace reflection_impl
 
 template <typename Module, typename Annotations, legacy_type_id_t LegacyTypeId>

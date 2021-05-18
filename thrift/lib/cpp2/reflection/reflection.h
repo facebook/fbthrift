@@ -38,6 +38,7 @@
 #include <folly/CppAttributes.h>
 #include <folly/Traits.h>
 #include <folly/functional/Invoke.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <thrift/lib/cpp2/reflection/internal/reflection-inl-pre.h>
@@ -1240,8 +1241,7 @@ struct reflected_struct_data_member {
   template <typename T>
   static constexpr inline bool is_set(T const& owner) {
     namespace impl = apache::thrift::detail::reflection_impl;
-    using direct_getter = impl::getter_direct_getter_t<getter>;
-    return impl::isset<typename Traits::owner, direct_getter>::check(owner);
+    return impl::is_set(field_ref_getter{}(owner));
   }
 
   /**
@@ -1273,8 +1273,8 @@ struct reflected_struct_data_member {
   template <typename T>
   static constexpr inline bool mark_set(T& owner, bool set) {
     namespace impl = apache::thrift::detail::reflection_impl;
-    using direct_getter = impl::getter_direct_getter_t<getter>;
-    return impl::isset<typename Traits::owner, direct_getter>::mark(owner, set);
+    impl::mark_set(field_ref_getter{}(owner), set);
+    return set;
   }
 };
 
