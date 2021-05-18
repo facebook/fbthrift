@@ -59,21 +59,21 @@ class ReconnectingRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       const RpcOptions& options,
-      ManagedStringView&& methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      ManagedStringView&& methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestStream(
       const RpcOptions&,
-      ManagedStringView&& methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,
       StreamClientCallback*) override;

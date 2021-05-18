@@ -19,8 +19,14 @@ void DerivedServiceAsyncClient::get_sixT(Protocol_* prot, apache::thrift::RpcOpt
   DerivedService_get_six_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "get_six";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "get_six",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 

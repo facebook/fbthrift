@@ -22,8 +22,14 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0T(Protocol_* prot, apache::t
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "getDataByKey0";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "getDataByKey0",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -33,8 +39,14 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1T(Protocol_* prot, apache::t
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "getDataByKey1";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "getDataByKey1",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 

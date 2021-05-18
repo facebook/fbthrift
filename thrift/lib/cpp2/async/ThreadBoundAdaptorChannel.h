@@ -34,28 +34,28 @@ class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
   // RequestChannel
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,
-      ManagedStringView&&,
+      MethodMetadata&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const apache::thrift::RpcOptions& options,
-      ManagedStringView&&,
+      MethodMetadata&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
       const apache::thrift::RpcOptions& options,
-      ManagedStringView&&,
+      MethodMetadata&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::StreamClientCallback* cob) override;
 
   void sendRequestSink(
       const apache::thrift::RpcOptions& options,
-      ManagedStringView&&,
+      MethodMetadata&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::SinkClientCallback* cob) override;

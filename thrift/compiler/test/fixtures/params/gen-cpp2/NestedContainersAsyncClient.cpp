@@ -28,8 +28,14 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, apache::thrift::RpcO
   args.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "mapList";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "mapList",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -39,8 +45,14 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, apache::thrift::RpcOp
   args.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::set<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "mapSet";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "mapSet",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -50,8 +62,14 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, apache::thrift::RpcO
   args.get<0>().value = const_cast<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "listMap";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "listMap",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -61,8 +79,14 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, apache::thrift::RpcO
   args.get<0>().value = const_cast<::std::vector<::std::set<::std::int32_t>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "listSet";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "listSet",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -72,8 +96,14 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, apache::thrift::RpcO
   args.get<0>().value = const_cast<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>*>(&p_foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "turtles";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "turtles",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 

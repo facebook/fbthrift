@@ -73,8 +73,14 @@ void service_with_special_namesAsyncClient::getT(Protocol_* prot, apache::thrift
   service_with_special_names_get_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "get";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "get",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -83,8 +89,14 @@ void service_with_special_namesAsyncClient::getterT(Protocol_* prot, apache::thr
   service_with_special_names_getter_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "getter";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "getter",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -93,8 +105,14 @@ void service_with_special_namesAsyncClient::listsT(Protocol_* prot, apache::thri
   service_with_special_names_lists_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "lists";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "lists",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -103,8 +121,14 @@ void service_with_special_namesAsyncClient::mapsT(Protocol_* prot, apache::thrif
   service_with_special_names_maps_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "maps";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "maps",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -113,8 +137,14 @@ void service_with_special_namesAsyncClient::nameT(Protocol_* prot, apache::thrif
   service_with_special_names_name_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "name";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "name",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -123,8 +153,14 @@ void service_with_special_namesAsyncClient::name_to_valueT(Protocol_* prot, apac
   service_with_special_names_name_to_value_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "name_to_value";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "name_to_value",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -133,8 +169,14 @@ void service_with_special_namesAsyncClient::namesT(Protocol_* prot, apache::thri
   service_with_special_names_names_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "names";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "names",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -143,8 +185,14 @@ void service_with_special_namesAsyncClient::prefix_treeT(Protocol_* prot, apache
   service_with_special_names_prefix_tree_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "prefix_tree";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "prefix_tree",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -153,8 +201,14 @@ void service_with_special_namesAsyncClient::setsT(Protocol_* prot, apache::thrif
   service_with_special_names_sets_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "sets";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "sets",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -163,8 +217,14 @@ void service_with_special_namesAsyncClient::setterT(Protocol_* prot, apache::thr
   service_with_special_names_setter_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "setter";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "setter",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -173,8 +233,14 @@ void service_with_special_namesAsyncClient::strT(Protocol_* prot, apache::thrift
   service_with_special_names_str_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "str";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "str",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -183,8 +249,14 @@ void service_with_special_namesAsyncClient::stringsT(Protocol_* prot, apache::th
   service_with_special_names_strings_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "strings";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "strings",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -193,8 +265,14 @@ void service_with_special_namesAsyncClient::typeT(Protocol_* prot, apache::thrif
   service_with_special_names_type_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "type";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "type",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -203,8 +281,14 @@ void service_with_special_namesAsyncClient::valueT(Protocol_* prot, apache::thri
   service_with_special_names_value_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "value";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "value",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -213,8 +297,14 @@ void service_with_special_namesAsyncClient::value_to_nameT(Protocol_* prot, apac
   service_with_special_names_value_to_name_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "value_to_name";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "value_to_name",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -223,8 +313,14 @@ void service_with_special_namesAsyncClient::valuesT(Protocol_* prot, apache::thr
   service_with_special_names_values_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "values";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "values",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -233,8 +329,14 @@ void service_with_special_namesAsyncClient::idT(Protocol_* prot, apache::thrift:
   service_with_special_names_id_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "id";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "id",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -243,8 +345,14 @@ void service_with_special_namesAsyncClient::idsT(Protocol_* prot, apache::thrift
   service_with_special_names_ids_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "ids";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "ids",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -253,8 +361,14 @@ void service_with_special_namesAsyncClient::descriptorT(Protocol_* prot, apache:
   service_with_special_names_descriptor_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "descriptor";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "descriptor",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -263,8 +377,14 @@ void service_with_special_namesAsyncClient::descriptorsT(Protocol_* prot, apache
   service_with_special_names_descriptors_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "descriptors";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "descriptors",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -273,8 +393,14 @@ void service_with_special_namesAsyncClient::keyT(Protocol_* prot, apache::thrift
   service_with_special_names_key_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "key";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "key",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -283,8 +409,14 @@ void service_with_special_namesAsyncClient::keysT(Protocol_* prot, apache::thrif
   service_with_special_names_keys_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "keys";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "keys",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -293,8 +425,14 @@ void service_with_special_namesAsyncClient::annotationT(Protocol_* prot, apache:
   service_with_special_names_annotation_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "annotation";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "annotation",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -303,8 +441,14 @@ void service_with_special_namesAsyncClient::annotationsT(Protocol_* prot, apache
   service_with_special_names_annotations_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "annotations";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "annotations",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -313,8 +457,14 @@ void service_with_special_namesAsyncClient::memberT(Protocol_* prot, apache::thr
   service_with_special_names_member_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "member";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "member",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -323,8 +473,14 @@ void service_with_special_namesAsyncClient::membersT(Protocol_* prot, apache::th
   service_with_special_names_members_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "members";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "members",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -333,8 +489,14 @@ void service_with_special_namesAsyncClient::fieldT(Protocol_* prot, apache::thri
   service_with_special_names_field_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "field";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "field",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 template <typename Protocol_>
@@ -343,8 +505,14 @@ void service_with_special_namesAsyncClient::fieldsT(Protocol_* prot, apache::thr
   service_with_special_names_fields_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  static constexpr std::string_view methodName = "fields";
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), apache::thrift::ManagedStringView::from_static(methodName), writer, sizer);
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata = 
+        new ::apache::thrift::MethodMetadata::Data(
+                "fields",
+                ::apache::thrift::FunctionQualifier::None);
+  
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);  
+
 }
 
 

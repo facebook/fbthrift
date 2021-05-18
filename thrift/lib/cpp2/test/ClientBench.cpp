@@ -47,7 +47,7 @@ class DummyCallback : public RequestCallback {
 class DummyChannel : public apache::thrift::RequestChannel {
   void sendRequestResponse(
       const RpcOptions&,
-      apache::thrift::ManagedStringView&&,
+      apache::thrift::MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr cb) override {
@@ -72,7 +72,7 @@ class DummyChannel : public apache::thrift::RequestChannel {
   }
   void sendRequestNoResponse(
       const RpcOptions&,
-      apache::thrift::ManagedStringView&&,
+      apache::thrift::MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr cb) override {

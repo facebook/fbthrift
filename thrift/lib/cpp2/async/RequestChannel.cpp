@@ -25,7 +25,7 @@ namespace thrift {
 template <typename CallbackPtr>
 using SendFunc = void (RequestChannel::*)(
     const RpcOptions&,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     CallbackPtr);
@@ -36,14 +36,14 @@ void maybeRunInEb(
     RequestChannel* channel,
     SendFunc<CallbackPtr> send,
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader>&& header,
     CallbackPtr callback) {
   if (!eb || eb->isInEventBaseThread()) {
     (channel->*send)(
         rpcOptions,
-        std::move(methodName),
+        std::move(methodMetadata),
         std::move(request),
         std::move(header),
         std::move(callback));
@@ -51,13 +51,13 @@ void maybeRunInEb(
     eb->runInEventBaseThread([channel,
                               send,
                               rpcOptions = rpcOptions,
-                              methodName = std::move(methodName),
+                              methodMetadata = std::move(methodMetadata),
                               request = std::move(request),
                               header = std::move(header),
                               callback = std::move(callback)]() mutable {
       (channel->*send)(
           rpcOptions,
-          std::move(methodName),
+          std::move(methodMetadata),
           std::move(request),
           std::move(header),
           std::move(callback));
@@ -68,7 +68,7 @@ void maybeRunInEb(
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback) {
@@ -77,15 +77,16 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
       this,
       &RequestChannel::sendRequestNoResponse,
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(callback));
 }
+
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback) {
@@ -94,16 +95,17 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
       this,
       &RequestChannel::sendRequestResponse,
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(callback));
 }
+
 template <>
 void RequestChannel::sendRequestAsync<
     RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     StreamClientCallback* callback) {
@@ -112,7 +114,7 @@ void RequestChannel::sendRequestAsync<
       this,
       &RequestChannel::sendRequestStream,
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       callback);
@@ -121,7 +123,7 @@ void RequestChannel::sendRequestAsync<
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINK>(
     apache::thrift::RpcOptions&& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     SinkClientCallback* callback) {
@@ -130,7 +132,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
       this,
       &RequestChannel::sendRequestSink,
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       callback);
@@ -138,7 +140,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
 
 void RequestChannel::sendRequestStream(
     const RpcOptions&,
-    ManagedStringView&&,
+    MethodMetadata&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     StreamClientCallback* clientCallback) {
@@ -149,7 +151,7 @@ void RequestChannel::sendRequestStream(
 
 void RequestChannel::sendRequestSink(
     const RpcOptions&,
-    ManagedStringView&&,
+    MethodMetadata&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     SinkClientCallback* clientCallback) {

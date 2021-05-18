@@ -177,7 +177,7 @@ bool HeaderClientChannel::clientSupportHeader() {
 // Client Interface
 void HeaderClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    ManagedStringView&& methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -185,7 +185,7 @@ void HeaderClientChannel::sendRequestNoResponse(
 
   auto buf = LegacySerializedRequest(
                  header->getProtocolId(),
-                 methodName.view(),
+                 methodMetadata.name_view(),
                  std::move(serializedRequest))
                  .buffer;
 
@@ -265,7 +265,7 @@ uint16_t HeaderClientChannel::getProtocolId() {
 
 void HeaderClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    ManagedStringView&& methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -273,7 +273,7 @@ void HeaderClientChannel::sendRequestResponse(
 
   auto buf = LegacySerializedRequest(
                  header->getProtocolId(),
-                 methodName.view(),
+                 methodMetadata.name_view(),
                  std::move(serializedRequest))
                  .buffer;
 
@@ -495,7 +495,7 @@ HeaderClientChannel::RocketUpgradeChannel::~RocketUpgradeChannel() {
 
 void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -505,7 +505,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
   if (state_ == State::UPGRADE_IN_PROGRESS) {
     bufferedRequests_.emplace(
         rpcOptions,
-        std::move(methodName),
+        std::move(methodMetadata),
         std::move(serializedRequest),
         std::move(header),
         std::move(cb),
@@ -517,7 +517,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
 
   getImpl().sendRequestResponse(
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(serializedRequest),
       std::move(header),
       std::move(cb));
@@ -525,7 +525,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
 
 void HeaderClientChannel::RocketUpgradeChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -535,7 +535,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestNoResponse(
   if (state_ == State::UPGRADE_IN_PROGRESS) {
     bufferedRequests_.emplace(
         rpcOptions,
-        std::move(methodName),
+        std::move(methodMetadata),
         std::move(serializedRequest),
         std::move(header),
         std::move(cb),
@@ -547,7 +547,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestNoResponse(
 
   getImpl().sendRequestNoResponse(
       rpcOptions,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(serializedRequest),
       std::move(header),
       std::move(cb));
@@ -701,14 +701,14 @@ void HeaderClientChannel::RocketUpgradeChannel::BufferedRequest::send(
   if (oneWay_) {
     channel.sendRequestNoResponse(
         rpcOptions_,
-        std::move(methodName_),
+        std::move(methodMetadata_),
         std::move(serializedRequest_),
         std::move(header_),
         std::move(callback_));
   } else {
     channel.sendRequestResponse(
         rpcOptions_,
-        std::move(methodName_),
+        std::move(methodMetadata_),
         std::move(serializedRequest_),
         std::move(header_),
         std::move(callback_));

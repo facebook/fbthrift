@@ -160,14 +160,14 @@ class HeaderClientChannel : public ClientChannel,
 
   void sendRequestResponse(
       const RpcOptions&,
-      ManagedStringView&&,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      ManagedStringView&&,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
@@ -283,14 +283,14 @@ class HeaderClientChannel : public ClientChannel,
 
     void sendRequestResponse(
         const RpcOptions&,
-        apache::thrift::ManagedStringView&& methodName,
+        apache::thrift::MethodMetadata&& methodMetadata,
         SerializedRequest&&,
         std::shared_ptr<apache::thrift::transport::THeader>,
         RequestClientCallback::Ptr) override;
 
     void sendRequestNoResponse(
         const RpcOptions&,
-        apache::thrift::ManagedStringView&& methodName,
+        apache::thrift::MethodMetadata&& methodMetadata,
         SerializedRequest&&,
         std::shared_ptr<apache::thrift::transport::THeader>,
         RequestClientCallback::Ptr) override;
@@ -343,13 +343,13 @@ class HeaderClientChannel : public ClientChannel,
      public:
       BufferedRequest(
           const RpcOptions& rpcOptions,
-          ManagedStringView&& methodName,
+          MethodMetadata&& methodMetadata,
           SerializedRequest&& serializedRequest,
           std::shared_ptr<apache::thrift::transport::THeader> header,
           RequestClientCallback::Ptr cb,
           bool oneWay)
           : rpcOptions_(rpcOptions),
-            methodName_(std::move(methodName)),
+            methodMetadata_(std::move(methodMetadata)),
             serializedRequest_(std::move(serializedRequest)),
             header_(std::move(header)),
             callback_(std::move(cb)),
@@ -360,7 +360,7 @@ class HeaderClientChannel : public ClientChannel,
 
      private:
       const RpcOptions rpcOptions_;
-      ManagedStringView methodName_;
+      MethodMetadata methodMetadata_;
       SerializedRequest serializedRequest_;
       std::shared_ptr<apache::thrift::transport::THeader> header_;
       RequestClientCallback::Ptr callback_;

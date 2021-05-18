@@ -28,11 +28,6 @@ TEST(MethodMetadataTest, Operations) {
   EXPECT_EQ(a.name_str(), "123");
   EXPECT_EQ(a.name_view(), "123");
 
-  MethodMetadata b = a.getCopy();
-  EXPECT_FALSE(b.isOwning());
-  EXPECT_EQ(b.name_str(), "123");
-  EXPECT_EQ(b.name_view(), "123");
-
   data = MethodMetadata::Data("234", FunctionQualifier::None);
   EXPECT_FALSE(a.isOwning());
   EXPECT_EQ(a.name_str(), "234");
@@ -74,8 +69,27 @@ TEST(MethodMetadataTest, Operations) {
   EXPECT_EQ(a.name_str(), "here");
   EXPECT_EQ(a.name_view(), "here");
 
-  MethodMetadata c(a.getCopy());
-  EXPECT_TRUE(c.isOwning());
-  EXPECT_EQ(c.name_str(), "here");
-  EXPECT_EQ(c.name_view(), "here");
+  {
+    const char* tmp = "there";
+    MethodMetadata aa(tmp);
+    a = aa;
+    EXPECT_TRUE(a.isOwning());
+    EXPECT_EQ(a.name_str(), "there");
+    EXPECT_EQ(a.name_view(), "there");
+
+    EXPECT_TRUE(aa.isOwning());
+    EXPECT_EQ(aa.name_str(), "there");
+    EXPECT_EQ(aa.name_view(), "there");
+  }
+  EXPECT_TRUE(a.isOwning());
+  EXPECT_EQ(a.name_str(), "there");
+  EXPECT_EQ(a.name_view(), "there");
+
+  {
+    MethodMetadata aa = MethodMetadata::from_static(&data);
+    a = aa;
+  }
+  EXPECT_FALSE(a.isOwning());
+  EXPECT_EQ(a.name_str(), "234");
+  EXPECT_EQ(a.name_view(), "234");
 }

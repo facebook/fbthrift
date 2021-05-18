@@ -69,28 +69,28 @@ class RocketClientChannel final : public ClientChannel {
 
   void sendRequestResponse(
       const RpcOptions& rpcOptions,
-      apache::thrift::ManagedStringView&& methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
       const RpcOptions& rpcOptions,
-      apache::thrift::ManagedStringView&& methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestStream(
       const RpcOptions& rpcOptions,
-      apache::thrift::ManagedStringView&& methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
   void sendRequestSink(
       const RpcOptions& rpcOptions,
-      apache::thrift::ManagedStringView&& methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override;

@@ -46,7 +46,7 @@ class HibernatingRequestChannel::RequestCallback
 
 void HibernatingRequestChannel::sendRequestResponse(
     const RpcOptions& options,
-    ManagedStringView&& methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     apache::thrift::RequestClientCallback::Ptr cob) {
@@ -56,7 +56,7 @@ void HibernatingRequestChannel::sendRequestResponse(
       new RequestCallback(std::move(cob), std::move(implPtr)));
   implRef.sendRequestResponse(
       options,
-      std::move(methodName),
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));

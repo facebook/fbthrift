@@ -663,14 +663,14 @@ RocketClientChannel::Ptr RocketClientChannel::newChannelWithMetadata(
 
 void RocketClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      std::move(methodName),
+      std::move(methodMetadata).name_managed(),
       std::move(request),
       std::move(header),
       std::move(cb));
@@ -678,14 +678,14 @@ void RocketClientChannel::sendRequestResponse(
 
 void RocketClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      std::move(methodName),
+      std::move(methodMetadata).name_managed(),
       std::move(request),
       std::move(header),
       std::move(cb));
@@ -693,7 +693,7 @@ void RocketClientChannel::sendRequestNoResponse(
 
 void RocketClientChannel::sendRequestStream(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<THeader> header,
     StreamClientCallback* clientCallback) {
@@ -705,7 +705,7 @@ void RocketClientChannel::sendRequestStream(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       static_cast<ProtocolId>(protocolId_),
-      folly::copy(methodName),
+      methodMetadata.name_managed(),
       timeout_,
       *header,
       getServerVersion());
@@ -732,7 +732,7 @@ void RocketClientChannel::sendRequestStream(
 
 void RocketClientChannel::sendRequestSink(
     const RpcOptions& rpcOptions,
-    apache::thrift::ManagedStringView&& methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* clientCallback) {
@@ -744,7 +744,7 @@ void RocketClientChannel::sendRequestSink(
       rpcOptions,
       RpcKind::SINK,
       static_cast<ProtocolId>(protocolId_),
-      folly::copy(methodName),
+      methodMetadata.name_managed(),
       timeout_,
       *header,
       getServerVersion());

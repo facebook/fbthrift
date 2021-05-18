@@ -46,14 +46,14 @@ class HibernatingRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       const RpcOptions& options,
-      ManagedStringView&&,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      ManagedStringView&&,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override {

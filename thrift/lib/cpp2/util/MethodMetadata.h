@@ -20,6 +20,7 @@
 #include <string>
 #include <string_view>
 #include <folly/Range.h>
+#include <thrift/lib/cpp2/util/ManagedStringView.h>
 
 namespace apache::thrift {
 
@@ -47,8 +48,36 @@ class MethodMetadata {
   };
 
   MethodMetadata() = delete;
-  MethodMetadata(const MethodMetadata&) = delete;
-  MethodMetadata& operator=(const MethodMetadata&) = delete;
+
+  MethodMetadata(const MethodMetadata& that) {
+    if (that.isOwning()) {
+      isOwning_ = true;
+      data_ = new Data(*that.data_);
+    } else {
+      isOwning_ = false;
+      data_ = that.data_;
+    }
+  }
+
+  MethodMetadata& operator=(const MethodMetadata& that) {
+    if (that.isOwning()) {
+      if (isOwning()) {
+        *data_ = *that.data_;
+      } else {
+        isOwning_ = true;
+        data_ = new Data(*that.data_);
+      }
+    } else {
+      if (isOwning()) {
+        delete data_;
+        data_ = that.data_;
+        isOwning_ = false;
+      } else {
+        data_ = that.data_;
+      }
+    }
+    return *this;
+  }
 
   MethodMetadata(MethodMetadata&& that) noexcept
       : isOwning_(std::exchange(that.isOwning_, false)),
@@ -88,6 +117,22 @@ class MethodMetadata {
     return MethodMetadata(mPtr, NonOwningTag{});
   }
 
+  ManagedStringView name_managed() const& {
+    if (isOwning()) {
+      return ManagedStringView(name_view());
+    } else {
+      return ManagedStringView::from_static(name_view());
+    }
+  }
+
+  ManagedStringView name_managed() && {
+    if (isOwning()) {
+      return ManagedStringView(std::move(data_->methodName));
+    } else {
+      return ManagedStringView::from_static(name_view());
+    }
+  }
+
   std::string name_str() const& { return data_->methodName; }
 
   std::string name_str() && {
@@ -101,14 +146,6 @@ class MethodMetadata {
   FunctionQualifier qualifier() const { return data_->functionQualifier; }
 
   bool isOwning() const { return isOwning_; }
-
-  MethodMetadata getCopy() const {
-    if (isOwning()) {
-      return MethodMetadata(data_, OwningTag{});
-    } else {
-      return MethodMetadata(data_, NonOwningTag{});
-    }
-  }
 
  private:
   struct NonOwningTag {};
