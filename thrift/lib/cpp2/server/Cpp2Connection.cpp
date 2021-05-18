@@ -149,15 +149,13 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  auto handler = worker_->getServer()->getEventHandlerUnsafe();
-  if (handler) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->newConnection(&context_);
   }
 }
 
 Cpp2Connection::~Cpp2Connection() {
-  auto handler = worker_->getServer()->getEventHandlerUnsafe();
-  if (handler) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->connectionDestroyed(&context_);
   }
 

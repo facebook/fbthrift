@@ -46,6 +46,7 @@
 
 #include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
@@ -317,6 +318,64 @@ TEST(ThriftServer, OnStartStopServingTest) {
   EXPECT_TRUE(testIf->stopEnter.try_wait_for(2s));
   client->semifuture_voidResponse().get();
   testIf->stopExit.post();
+}
+
+TEST(ThriftServer, ServerEventHandlerTest) {
+  class TestInterface : public TestServiceSvIf {
+   public:
+    void voidResponse() override {}
+  };
+
+  class TestEventHandler : public server::TServerEventHandler {
+   public:
+    void preServe(const folly::SocketAddress*) { ++preServeCalls; }
+    void newConnection(TConnectionContext*) { ++newConnectionCalls; }
+    void connectionDestroyed(TConnectionContext*) {
+      ++connectionDestroyedCalls;
+    }
+
+    ssize_t preServeCalls{0};
+    ssize_t newConnectionCalls{0};
+    ssize_t connectionDestroyedCalls{0};
+  };
+  auto eh1 = std::make_shared<TestEventHandler>();
+  auto eh2 = std::make_shared<TestEventHandler>();
+  auto eh3 = std::make_shared<TestEventHandler>();
+  auto eh4 = std::make_shared<TestEventHandler>();
+
+  auto testIf = std::make_shared<TestInterface>();
+
+  auto runner = std::make_unique<ScopedServerInterfaceThread>(
+      testIf, "::1", 0, [&](auto& ts) {
+        ts.setServerEventHandler(eh1);
+        ts.addServerEventHandler(eh2);
+        ts.addServerEventHandler(eh3);
+        ts.setServerEventHandler(eh4);
+      });
+
+  EXPECT_EQ(0, eh1->preServeCalls);
+  EXPECT_EQ(1, eh2->preServeCalls);
+  EXPECT_EQ(1, eh3->preServeCalls);
+  EXPECT_EQ(1, eh4->preServeCalls);
+
+  auto client = runner->newClient<TestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  client->semifuture_voidResponse().get();
+
+  EXPECT_EQ(0, eh1->newConnectionCalls);
+  EXPECT_EQ(1, eh2->newConnectionCalls);
+  EXPECT_EQ(1, eh3->newConnectionCalls);
+  EXPECT_EQ(1, eh4->newConnectionCalls);
+
+  runner.reset();
+
+  EXPECT_EQ(0, eh1->connectionDestroyedCalls);
+  EXPECT_EQ(1, eh2->connectionDestroyedCalls);
+  EXPECT_EQ(1, eh3->connectionDestroyedCalls);
+  EXPECT_EQ(1, eh4->connectionDestroyedCalls);
 }
 
 namespace {

@@ -88,13 +88,13 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
       version_(static_cast<int32_t>(std::min(
           kRocketServerMaxVersion, THRIFT_FLAG(rocket_server_max_version)))) {
   connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
-  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->newConnection(&connContext_);
   }
 }
 
 ThriftRocketServerHandler::~ThriftRocketServerHandler() {
-  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->connectionDestroyed(&connContext_);
   }
   // Ensure each connAccepted() call has a matching connClosed()

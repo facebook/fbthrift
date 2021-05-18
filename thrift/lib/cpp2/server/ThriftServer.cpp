@@ -374,8 +374,8 @@ void ThriftServer::setup() {
       }
 
       // Notify handler of the preServe event
-      if (eventHandler_ != nullptr) {
-        eventHandler_->preServe(&addresses_.at(0));
+      for (const auto& eventHandler : getEventHandlersUnsafe()) {
+        eventHandler->preServe(&addresses_.at(0));
       }
     } else {
       startDuplex();
