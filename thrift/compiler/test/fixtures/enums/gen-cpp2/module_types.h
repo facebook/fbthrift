@@ -250,6 +250,7 @@ class SomeStruct final  {
     return reasonable;
   }
 
+  [[deprecated]]
   ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
     reasonable = reasonable_;
     __isset.reasonable = true;
@@ -260,6 +261,7 @@ class SomeStruct final  {
     return fine;
   }
 
+  [[deprecated]]
   ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
     fine = fine_;
     __isset.fine = true;
@@ -270,6 +272,7 @@ class SomeStruct final  {
     return questionable;
   }
 
+  [[deprecated]]
   ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
     questionable = questionable_;
     __isset.questionable = true;
@@ -279,6 +282,7 @@ class SomeStruct final  {
   ::std::set<::std::int32_t> get_tags() &&;
 
   template <typename T_SomeStruct_tags_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated]]
   ::std::set<::std::int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
     __isset.tags = true;

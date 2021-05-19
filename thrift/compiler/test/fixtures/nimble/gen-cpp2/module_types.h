@@ -201,6 +201,7 @@ class BasicTypes final  {
     return first;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_first(::std::int32_t first_) {
     first = first_;
     return first;
@@ -215,6 +216,7 @@ class BasicTypes final  {
   }
   ::std::int32_t* get_second() && = delete;
 
+  [[deprecated]]
   ::std::int32_t& set_second(::std::int32_t second_) {
     second = second_;
     __isset.second = true;
@@ -230,6 +232,7 @@ class BasicTypes final  {
   }
   ::std::int64_t* get_third() && = delete;
 
+  [[deprecated]]
   ::std::int64_t& set_third(::std::int64_t third_) {
     third = third_;
     __isset.third = true;
@@ -240,6 +243,7 @@ class BasicTypes final  {
     return isTrue;
   }
 
+  [[deprecated]]
   bool& set_isTrue(bool isTrue_) {
     isTrue = isTrue_;
     __isset.isTrue = true;

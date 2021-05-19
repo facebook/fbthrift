@@ -333,6 +333,7 @@ class MyStruct final  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -348,6 +349,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -357,6 +359,7 @@ class MyStruct final  {
   ::cpp2::MyDataItem get_MyDataField() &&;
 
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
+  [[deprecated]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     __isset.MyDataField = true;
@@ -367,6 +370,7 @@ class MyStruct final  {
     return myEnum;
   }
 
+  [[deprecated]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
     __isset.myEnum = true;

@@ -1446,6 +1446,7 @@ class Val final  {
   }
 
   template <typename T_Val_strVal_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
     strVal = std::forward<T_Val_strVal_struct_setter>(strVal_);
     __isset.strVal = true;
@@ -1456,6 +1457,7 @@ class Val final  {
     return intVal;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_intVal(::std::int32_t intVal_) {
     intVal = intVal_;
     __isset.intVal = true;
@@ -1465,6 +1467,7 @@ class Val final  {
   ::cpp2::containerTypedef get_typedefValue() &&;
 
   template <typename T_Val_typedefValue_struct_setter = ::cpp2::containerTypedef>
+  [[deprecated]]
   ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
     typedefValue = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
     __isset.typedefValue = true;
@@ -2156,6 +2159,7 @@ class NonCopyableStruct final  {
     return num;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_num(::std::int64_t num_) {
     num = num_;
     __isset.num = true;

@@ -173,6 +173,7 @@ class AStruct final  {
     return FieldA;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
     __isset.FieldA = true;

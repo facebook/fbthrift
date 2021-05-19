@@ -153,6 +153,7 @@ class Struct final  {
   ::module0::Struct get_first() &&;
 
   template <typename T_Struct_first_struct_setter = ::module0::Struct>
+  [[deprecated]]
   ::module0::Struct& set_first(T_Struct_first_struct_setter&& first_) {
     first = std::forward<T_Struct_first_struct_setter>(first_);
     __isset.first = true;
@@ -162,6 +163,7 @@ class Struct final  {
   ::module1::Struct get_second() &&;
 
   template <typename T_Struct_second_struct_setter = ::module1::Struct>
+  [[deprecated]]
   ::module1::Struct& set_second(T_Struct_second_struct_setter&& second_) {
     second = std::forward<T_Struct_second_struct_setter>(second_);
     __isset.second = true;
@@ -291,6 +293,7 @@ class BigStruct final  {
   ::module2::Struct get_s() &&;
 
   template <typename T_BigStruct_s_struct_setter = ::module2::Struct>
+  [[deprecated]]
   ::module2::Struct& set_s(T_BigStruct_s_struct_setter&& s_) {
     s = std::forward<T_BigStruct_s_struct_setter>(s_);
     __isset.s = true;
@@ -301,6 +304,7 @@ class BigStruct final  {
     return id;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_id(::std::int32_t id_) {
     id = id_;
     __isset.id = true;

@@ -2362,6 +2362,7 @@ class structA final  {
     return a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
     __isset.a = true;
@@ -2377,6 +2378,7 @@ class structA final  {
   }
 
   template <typename T_structA_b_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_b(T_structA_b_struct_setter&& b_) {
     b = std::forward<T_structA_b_struct_setter>(b_);
     __isset.b = true;
@@ -2997,6 +2999,7 @@ class structB final  {
     return c;
   }
 
+  [[deprecated]]
   double& set_c(double c_) {
     c = c_;
     __isset.c = true;
@@ -3007,6 +3010,7 @@ class structB final  {
     return d;
   }
 
+  [[deprecated]]
   bool& set_d(bool d_) {
     d = d_;
     __isset.d = true;
@@ -3783,6 +3787,7 @@ class structC final  {
     return a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
     __isset.a = true;
@@ -3798,6 +3803,7 @@ class structC final  {
   }
 
   template <typename T_structC_b_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_b(T_structC_b_struct_setter&& b_) {
     b = std::forward<T_structC_b_struct_setter>(b_);
     __isset.b = true;
@@ -3808,6 +3814,7 @@ class structC final  {
     return c;
   }
 
+  [[deprecated]]
   double& set_c(double c_) {
     c = c_;
     __isset.c = true;
@@ -3818,6 +3825,7 @@ class structC final  {
     return d;
   }
 
+  [[deprecated]]
   bool& set_d(bool d_) {
     d = d_;
     __isset.d = true;
@@ -3828,6 +3836,7 @@ class structC final  {
     return e;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_e(::test_cpp2::cpp_reflection::enum1 e_) {
     e = e_;
     __isset.e = true;
@@ -3838,6 +3847,7 @@ class structC final  {
     return f;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum2& set_f(::test_cpp2::cpp_reflection::enum2 f_) {
     f = f_;
     __isset.f = true;
@@ -3847,6 +3857,7 @@ class structC final  {
   ::test_cpp2::cpp_reflection::union1 get_g() &&;
 
   template <typename T_structC_g_struct_setter = ::test_cpp2::cpp_reflection::union1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union1& set_g(T_structC_g_struct_setter&& g_) {
     g = std::forward<T_structC_g_struct_setter>(g_);
     __isset.g = true;
@@ -3856,6 +3867,7 @@ class structC final  {
   ::test_cpp2::cpp_reflection::unionA get_h() &&;
 
   template <typename T_structC_h_struct_setter = ::test_cpp2::cpp_reflection::unionA>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::unionA& set_h(T_structC_h_struct_setter&& h_) {
     h = std::forward<T_structC_h_struct_setter>(h_);
     __isset.h = true;
@@ -3865,6 +3877,7 @@ class structC final  {
   ::test_cpp2::cpp_reflection::unionA get_i() &&;
 
   template <typename T_structC_i_struct_setter = ::test_cpp2::cpp_reflection::unionA>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::unionA& set_i(T_structC_i_struct_setter&& i_) {
     i = std::forward<T_structC_i_struct_setter>(i_);
     __isset.i = true;
@@ -3874,6 +3887,7 @@ class structC final  {
   ::std::vector<::std::int32_t> get_j() &&;
 
   template <typename T_structC_j_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_j(T_structC_j_struct_setter&& j_) {
     j = std::forward<T_structC_j_struct_setter>(j_);
     __isset.j = true;
@@ -3883,6 +3897,7 @@ class structC final  {
   ::std::vector<::std::int32_t> get_j1() &&;
 
   template <typename T_structC_j1_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_j1(T_structC_j1_struct_setter&& j1_) {
     j1 = std::forward<T_structC_j1_struct_setter>(j1_);
     __isset.j1 = true;
@@ -3892,6 +3907,7 @@ class structC final  {
   ::std::vector<::test_cpp2::cpp_reflection::enum1> get_j2() &&;
 
   template <typename T_structC_j2_struct_setter = ::std::vector<::test_cpp2::cpp_reflection::enum1>>
+  [[deprecated]]
   ::std::vector<::test_cpp2::cpp_reflection::enum1>& set_j2(T_structC_j2_struct_setter&& j2_) {
     j2 = std::forward<T_structC_j2_struct_setter>(j2_);
     __isset.j2 = true;
@@ -3901,6 +3917,7 @@ class structC final  {
   ::std::vector<::test_cpp2::cpp_reflection::structA> get_j3() &&;
 
   template <typename T_structC_j3_struct_setter = ::std::vector<::test_cpp2::cpp_reflection::structA>>
+  [[deprecated]]
   ::std::vector<::test_cpp2::cpp_reflection::structA>& set_j3(T_structC_j3_struct_setter&& j3_) {
     j3 = std::forward<T_structC_j3_struct_setter>(j3_);
     __isset.j3 = true;
@@ -3910,6 +3927,7 @@ class structC final  {
   ::std::set<::std::int32_t> get_k() &&;
 
   template <typename T_structC_k_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated]]
   ::std::set<::std::int32_t>& set_k(T_structC_k_struct_setter&& k_) {
     k = std::forward<T_structC_k_struct_setter>(k_);
     __isset.k = true;
@@ -3919,6 +3937,7 @@ class structC final  {
   ::std::set<::std::int32_t> get_k1() &&;
 
   template <typename T_structC_k1_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated]]
   ::std::set<::std::int32_t>& set_k1(T_structC_k1_struct_setter&& k1_) {
     k1 = std::forward<T_structC_k1_struct_setter>(k1_);
     __isset.k1 = true;
@@ -3928,6 +3947,7 @@ class structC final  {
   ::std::set<::test_cpp2::cpp_reflection::enum2> get_k2() &&;
 
   template <typename T_structC_k2_struct_setter = ::std::set<::test_cpp2::cpp_reflection::enum2>>
+  [[deprecated]]
   ::std::set<::test_cpp2::cpp_reflection::enum2>& set_k2(T_structC_k2_struct_setter&& k2_) {
     k2 = std::forward<T_structC_k2_struct_setter>(k2_);
     __isset.k2 = true;
@@ -3937,6 +3957,7 @@ class structC final  {
   ::std::set<::test_cpp2::cpp_reflection::structB> get_k3() &&;
 
   template <typename T_structC_k3_struct_setter = ::std::set<::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::set<::test_cpp2::cpp_reflection::structB>& set_k3(T_structC_k3_struct_setter&& k3_) {
     k3 = std::forward<T_structC_k3_struct_setter>(k3_);
     __isset.k3 = true;
@@ -3946,6 +3967,7 @@ class structC final  {
   ::std::map<::std::int32_t, ::std::int32_t> get_l() &&;
 
   template <typename T_structC_l_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_l(T_structC_l_struct_setter&& l_) {
     l = std::forward<T_structC_l_struct_setter>(l_);
     __isset.l = true;
@@ -3955,6 +3977,7 @@ class structC final  {
   ::std::map<::std::int32_t, ::std::int32_t> get_l1() &&;
 
   template <typename T_structC_l1_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_l1(T_structC_l1_struct_setter&& l1_) {
     l1 = std::forward<T_structC_l1_struct_setter>(l1_);
     __isset.l1 = true;
@@ -3964,6 +3987,7 @@ class structC final  {
   ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> get_l2() &&;
 
   template <typename T_structC_l2_struct_setter = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>& set_l2(T_structC_l2_struct_setter&& l2_) {
     l2 = std::forward<T_structC_l2_struct_setter>(l2_);
     __isset.l2 = true;
@@ -3973,6 +3997,7 @@ class structC final  {
   ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> get_l3() &&;
 
   template <typename T_structC_l3_struct_setter = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>& set_l3(T_structC_l3_struct_setter&& l3_) {
     l3 = std::forward<T_structC_l3_struct_setter>(l3_);
     __isset.l3 = true;
@@ -3982,6 +4007,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> get_m1() &&;
 
   template <typename T_structC_m1_struct_setter = ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>& set_m1(T_structC_m1_struct_setter&& m1_) {
     m1 = std::forward<T_structC_m1_struct_setter>(m1_);
     __isset.m1 = true;
@@ -3991,6 +4017,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> get_m2() &&;
 
   template <typename T_structC_m2_struct_setter = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>& set_m2(T_structC_m2_struct_setter&& m2_) {
     m2 = std::forward<T_structC_m2_struct_setter>(m2_);
     __isset.m2 = true;
@@ -4000,6 +4027,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> get_m3() &&;
 
   template <typename T_structC_m3_struct_setter = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>& set_m3(T_structC_m3_struct_setter&& m3_) {
     m3 = std::forward<T_structC_m3_struct_setter>(m3_);
     __isset.m3 = true;
@@ -4009,6 +4037,7 @@ class structC final  {
   ::std::map<::std::string, ::std::int32_t> get_n1() &&;
 
   template <typename T_structC_n1_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::string, ::std::int32_t>& set_n1(T_structC_n1_struct_setter&& n1_) {
     n1 = std::forward<T_structC_n1_struct_setter>(n1_);
     __isset.n1 = true;
@@ -4018,6 +4047,7 @@ class structC final  {
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> get_n2() &&;
 
   template <typename T_structC_n2_struct_setter = ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>>
+  [[deprecated]]
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>& set_n2(T_structC_n2_struct_setter&& n2_) {
     n2 = std::forward<T_structC_n2_struct_setter>(n2_);
     __isset.n2 = true;
@@ -4027,6 +4057,7 @@ class structC final  {
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> get_n3() &&;
 
   template <typename T_structC_n3_struct_setter = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& set_n3(T_structC_n3_struct_setter&& n3_) {
     n3 = std::forward<T_structC_n3_struct_setter>(n3_);
     __isset.n3 = true;
@@ -4036,6 +4067,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> get_o1() &&;
 
   template <typename T_structC_o1_struct_setter = ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>& set_o1(T_structC_o1_struct_setter&& o1_) {
     o1 = std::forward<T_structC_o1_struct_setter>(o1_);
     __isset.o1 = true;
@@ -4045,6 +4077,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> get_o2() &&;
 
   template <typename T_structC_o2_struct_setter = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>& set_o2(T_structC_o2_struct_setter&& o2_) {
     o2 = std::forward<T_structC_o2_struct_setter>(o2_);
     __isset.o2 = true;
@@ -4054,6 +4087,7 @@ class structC final  {
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> get_o3() &&;
 
   template <typename T_structC_o3_struct_setter = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>& set_o3(T_structC_o3_struct_setter&& o3_) {
     o3 = std::forward<T_structC_o3_struct_setter>(o3_);
     __isset.o3 = true;
@@ -4276,6 +4310,7 @@ class struct1 final  {
     return field0;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0 = field0_;
     return field0;
@@ -4291,6 +4326,7 @@ class struct1 final  {
   ::std::string* get_field1() && = delete;
 
   template <typename T_struct1_field1_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field1(T_struct1_field1_struct_setter&& field1_) {
     field1 = std::forward<T_struct1_field1_struct_setter>(field1_);
     __isset.field1 = true;
@@ -4301,6 +4337,7 @@ class struct1 final  {
     return field2;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_field2(::test_cpp2::cpp_reflection::enum1 field2_) {
     field2 = field2_;
     __isset.field2 = true;
@@ -4311,6 +4348,7 @@ class struct1 final  {
     return field3;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum2& set_field3(::test_cpp2::cpp_reflection::enum2 field3_) {
     field3 = field3_;
     return field3;
@@ -4320,6 +4358,7 @@ class struct1 final  {
   ::test_cpp2::cpp_reflection::union1* get_field4() && = delete;
 
   template <typename T_struct1_field4_struct_setter = ::test_cpp2::cpp_reflection::union1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union1& set_field4(T_struct1_field4_struct_setter&& field4_) {
     field4 = std::forward<T_struct1_field4_struct_setter>(field4_);
     __isset.field4 = true;
@@ -4329,6 +4368,7 @@ class struct1 final  {
   ::test_cpp2::cpp_reflection::union2 get_field5() &&;
 
   template <typename T_struct1_field5_struct_setter = ::test_cpp2::cpp_reflection::union2>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union2& set_field5(T_struct1_field5_struct_setter&& field5_) {
     field5 = std::forward<T_struct1_field5_struct_setter>(field5_);
     __isset.field5 = true;
@@ -4576,6 +4616,7 @@ class struct2 final  {
     return fieldA;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;
@@ -4591,6 +4632,7 @@ class struct2 final  {
   }
 
   template <typename T_struct2_fieldB_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_fieldB(T_struct2_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_struct2_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -4601,6 +4643,7 @@ class struct2 final  {
     return fieldC;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_fieldC(::test_cpp2::cpp_reflection::enum1 fieldC_) {
     fieldC = fieldC_;
     __isset.fieldC = true;
@@ -4611,6 +4654,7 @@ class struct2 final  {
     return fieldD;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum2& set_fieldD(::test_cpp2::cpp_reflection::enum2 fieldD_) {
     fieldD = fieldD_;
     __isset.fieldD = true;
@@ -4620,6 +4664,7 @@ class struct2 final  {
   ::test_cpp2::cpp_reflection::union1 get_fieldE() &&;
 
   template <typename T_struct2_fieldE_struct_setter = ::test_cpp2::cpp_reflection::union1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct2_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_struct2_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -4629,6 +4674,7 @@ class struct2 final  {
   ::test_cpp2::cpp_reflection::union2 get_fieldF() &&;
 
   template <typename T_struct2_fieldF_struct_setter = ::test_cpp2::cpp_reflection::union2>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct2_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_struct2_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -4638,6 +4684,7 @@ class struct2 final  {
   ::test_cpp2::cpp_reflection::struct1 get_fieldG() &&;
 
   template <typename T_struct2_fieldG_struct_setter = ::test_cpp2::cpp_reflection::struct1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct2_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_struct2_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -5138,6 +5185,7 @@ class struct3 final  {
     return fieldA;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;
@@ -5153,6 +5201,7 @@ class struct3 final  {
   }
 
   template <typename T_struct3_fieldB_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_fieldB(T_struct3_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_struct3_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -5163,6 +5212,7 @@ class struct3 final  {
     return fieldC;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_fieldC(::test_cpp2::cpp_reflection::enum1 fieldC_) {
     fieldC = fieldC_;
     __isset.fieldC = true;
@@ -5173,6 +5223,7 @@ class struct3 final  {
     return fieldD;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum2& set_fieldD(::test_cpp2::cpp_reflection::enum2 fieldD_) {
     fieldD = fieldD_;
     __isset.fieldD = true;
@@ -5182,6 +5233,7 @@ class struct3 final  {
   ::test_cpp2::cpp_reflection::union1 get_fieldE() &&;
 
   template <typename T_struct3_fieldE_struct_setter = ::test_cpp2::cpp_reflection::union1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct3_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_struct3_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -5191,6 +5243,7 @@ class struct3 final  {
   ::test_cpp2::cpp_reflection::union2 get_fieldF() &&;
 
   template <typename T_struct3_fieldF_struct_setter = ::test_cpp2::cpp_reflection::union2>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct3_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_struct3_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -5200,6 +5253,7 @@ class struct3 final  {
   ::test_cpp2::cpp_reflection::struct1 get_fieldG() &&;
 
   template <typename T_struct3_fieldG_struct_setter = ::test_cpp2::cpp_reflection::struct1>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct3_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_struct3_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -5209,6 +5263,7 @@ class struct3 final  {
   ::test_cpp2::cpp_reflection::union2 get_fieldH() &&;
 
   template <typename T_struct3_fieldH_struct_setter = ::test_cpp2::cpp_reflection::union2>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::union2& set_fieldH(T_struct3_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_struct3_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
@@ -5218,6 +5273,7 @@ class struct3 final  {
   ::std::vector<::std::int32_t> get_fieldI() &&;
 
   template <typename T_struct3_fieldI_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_fieldI(T_struct3_fieldI_struct_setter&& fieldI_) {
     fieldI = std::forward<T_struct3_fieldI_struct_setter>(fieldI_);
     __isset.fieldI = true;
@@ -5227,6 +5283,7 @@ class struct3 final  {
   ::std::vector<::std::string> get_fieldJ() &&;
 
   template <typename T_struct3_fieldJ_struct_setter = ::std::vector<::std::string>>
+  [[deprecated]]
   ::std::vector<::std::string>& set_fieldJ(T_struct3_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_struct3_fieldJ_struct_setter>(fieldJ_);
     __isset.fieldJ = true;
@@ -5236,6 +5293,7 @@ class struct3 final  {
   ::std::vector<::std::string> get_fieldK() &&;
 
   template <typename T_struct3_fieldK_struct_setter = ::std::vector<::std::string>>
+  [[deprecated]]
   ::std::vector<::std::string>& set_fieldK(T_struct3_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_struct3_fieldK_struct_setter>(fieldK_);
     __isset.fieldK = true;
@@ -5245,6 +5303,7 @@ class struct3 final  {
   ::std::vector<::test_cpp2::cpp_reflection::structA> get_fieldL() &&;
 
   template <typename T_struct3_fieldL_struct_setter = ::std::vector<::test_cpp2::cpp_reflection::structA>>
+  [[deprecated]]
   ::std::vector<::test_cpp2::cpp_reflection::structA>& set_fieldL(T_struct3_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_struct3_fieldL_struct_setter>(fieldL_);
     __isset.fieldL = true;
@@ -5254,6 +5313,7 @@ class struct3 final  {
   ::std::set<::std::int32_t> get_fieldM() &&;
 
   template <typename T_struct3_fieldM_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated]]
   ::std::set<::std::int32_t>& set_fieldM(T_struct3_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_struct3_fieldM_struct_setter>(fieldM_);
     __isset.fieldM = true;
@@ -5263,6 +5323,7 @@ class struct3 final  {
   ::std::set<::std::string> get_fieldN() &&;
 
   template <typename T_struct3_fieldN_struct_setter = ::std::set<::std::string>>
+  [[deprecated]]
   ::std::set<::std::string>& set_fieldN(T_struct3_fieldN_struct_setter&& fieldN_) {
     fieldN = std::forward<T_struct3_fieldN_struct_setter>(fieldN_);
     __isset.fieldN = true;
@@ -5272,6 +5333,7 @@ class struct3 final  {
   ::std::set<::std::string> get_fieldO() &&;
 
   template <typename T_struct3_fieldO_struct_setter = ::std::set<::std::string>>
+  [[deprecated]]
   ::std::set<::std::string>& set_fieldO(T_struct3_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_struct3_fieldO_struct_setter>(fieldO_);
     __isset.fieldO = true;
@@ -5281,6 +5343,7 @@ class struct3 final  {
   ::std::set<::test_cpp2::cpp_reflection::structB> get_fieldP() &&;
 
   template <typename T_struct3_fieldP_struct_setter = ::std::set<::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::set<::test_cpp2::cpp_reflection::structB>& set_fieldP(T_struct3_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_struct3_fieldP_struct_setter>(fieldP_);
     __isset.fieldP = true;
@@ -5290,6 +5353,7 @@ class struct3 final  {
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> get_fieldQ() &&;
 
   template <typename T_struct3_fieldQ_struct_setter = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>
+  [[deprecated]]
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>& set_fieldQ(T_struct3_fieldQ_struct_setter&& fieldQ_) {
     fieldQ = std::forward<T_struct3_fieldQ_struct_setter>(fieldQ_);
     __isset.fieldQ = true;
@@ -5299,6 +5363,7 @@ class struct3 final  {
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> get_fieldR() &&;
 
   template <typename T_struct3_fieldR_struct_setter = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
+  [[deprecated]]
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& set_fieldR(T_struct3_fieldR_struct_setter&& fieldR_) {
     fieldR = std::forward<T_struct3_fieldR_struct_setter>(fieldR_);
     __isset.fieldR = true;
@@ -5465,6 +5530,7 @@ class struct4 final  {
     return field0;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0 = field0_;
     return field0;
@@ -5480,6 +5546,7 @@ class struct4 final  {
   ::std::string* get_field1() && = delete;
 
   template <typename T_struct4_field1_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field1(T_struct4_field1_struct_setter&& field1_) {
     field1 = std::forward<T_struct4_field1_struct_setter>(field1_);
     __isset.field1 = true;
@@ -5490,6 +5557,7 @@ class struct4 final  {
     return field2;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_field2(::test_cpp2::cpp_reflection::enum1 field2_) {
     field2 = field2_;
     __isset.field2 = true;
@@ -5690,6 +5758,7 @@ class struct5 final  {
     return field0;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0 = field0_;
     return field0;
@@ -5705,6 +5774,7 @@ class struct5 final  {
   ::std::string* get_field1() && = delete;
 
   template <typename T_struct5_field1_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field1(T_struct5_field1_struct_setter&& field1_) {
     field1 = std::forward<T_struct5_field1_struct_setter>(field1_);
     __isset.field1 = true;
@@ -5715,6 +5785,7 @@ class struct5 final  {
     return field2;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::enum1& set_field2(::test_cpp2::cpp_reflection::enum1 field2_) {
     field2 = field2_;
     __isset.field2 = true;
@@ -5724,6 +5795,7 @@ class struct5 final  {
   ::test_cpp2::cpp_reflection::structA get_field3() &&;
 
   template <typename T_struct5_field3_struct_setter = ::test_cpp2::cpp_reflection::structA>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::structA& set_field3(T_struct5_field3_struct_setter&& field3_) {
     field3 = std::forward<T_struct5_field3_struct_setter>(field3_);
     __isset.field3 = true;
@@ -5733,6 +5805,7 @@ class struct5 final  {
   ::test_cpp2::cpp_reflection::structB get_field4() &&;
 
   template <typename T_struct5_field4_struct_setter = ::test_cpp2::cpp_reflection::structB>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::structB& set_field4(T_struct5_field4_struct_setter&& field4_) {
     field4 = std::forward<T_struct5_field4_struct_setter>(field4_);
     __isset.field4 = true;
@@ -5844,6 +5917,7 @@ class struct_binary final  {
   }
 
   template <typename T_struct_binary_bi_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_bi(T_struct_binary_bi_struct_setter&& bi_) {
     bi = std::forward<T_struct_binary_bi_struct_setter>(bi_);
     __isset.bi = true;
@@ -5997,6 +6071,7 @@ class dep_A_struct final  {
   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
 
   template <typename T_dep_A_struct_b_struct_setter = ::test_cpp2::cpp_reflection::dep_B_struct>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::dep_B_struct& set_b(T_dep_A_struct_b_struct_setter&& b_) {
     b = std::forward<T_dep_A_struct_b_struct_setter>(b_);
     __isset.b = true;
@@ -6006,6 +6081,7 @@ class dep_A_struct final  {
   ::test_cpp2::cpp_reflection::dep_C_struct get_c() &&;
 
   template <typename T_dep_A_struct_c_struct_setter = ::test_cpp2::cpp_reflection::dep_C_struct>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::dep_C_struct& set_c(T_dep_A_struct_c_struct_setter&& c_) {
     c = std::forward<T_dep_A_struct_c_struct_setter>(c_);
     __isset.c = true;
@@ -6016,6 +6092,7 @@ class dep_A_struct final  {
     return i_a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_i_a(::std::int32_t i_a_) {
     i_a = i_a_;
     __isset.i_a = true;
@@ -6169,6 +6246,7 @@ class dep_B_struct final  {
   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
 
   template <typename T_dep_B_struct_b_struct_setter = ::test_cpp2::cpp_reflection::dep_B_struct>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::dep_B_struct& set_b(T_dep_B_struct_b_struct_setter&& b_) {
     b = std::forward<T_dep_B_struct_b_struct_setter>(b_);
     __isset.b = true;
@@ -6178,6 +6256,7 @@ class dep_B_struct final  {
   ::test_cpp2::cpp_reflection::dep_C_struct get_c() &&;
 
   template <typename T_dep_B_struct_c_struct_setter = ::test_cpp2::cpp_reflection::dep_C_struct>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::dep_C_struct& set_c(T_dep_B_struct_c_struct_setter&& c_) {
     c = std::forward<T_dep_B_struct_c_struct_setter>(c_);
     __isset.c = true;
@@ -6188,6 +6267,7 @@ class dep_B_struct final  {
     return i_a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_i_a(::std::int32_t i_a_) {
     i_a = i_a_;
     __isset.i_a = true;
@@ -6296,6 +6376,7 @@ class annotated final  {
     return a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
     __isset.a = true;
@@ -9007,6 +9088,7 @@ class struct_with_special_names final  {
     return get;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_get(::std::int32_t get_) {
     get = get_;
     __isset.get = true;
@@ -9017,6 +9099,7 @@ class struct_with_special_names final  {
     return getter;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_getter(::std::int32_t getter_) {
     getter = getter_;
     __isset.getter = true;
@@ -9027,6 +9110,7 @@ class struct_with_special_names final  {
     return lists;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_lists(::std::int32_t lists_) {
     lists = lists_;
     __isset.lists = true;
@@ -9037,6 +9121,7 @@ class struct_with_special_names final  {
     return maps;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_maps(::std::int32_t maps_) {
     maps = maps_;
     __isset.maps = true;
@@ -9047,6 +9132,7 @@ class struct_with_special_names final  {
     return name;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_name(::std::int32_t name_) {
     name = name_;
     __isset.name = true;
@@ -9057,6 +9143,7 @@ class struct_with_special_names final  {
     return name_to_value;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_name_to_value(::std::int32_t name_to_value_) {
     name_to_value = name_to_value_;
     __isset.name_to_value = true;
@@ -9067,6 +9154,7 @@ class struct_with_special_names final  {
     return names;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_names(::std::int32_t names_) {
     names = names_;
     __isset.names = true;
@@ -9077,6 +9165,7 @@ class struct_with_special_names final  {
     return prefix_tree;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_prefix_tree(::std::int32_t prefix_tree_) {
     prefix_tree = prefix_tree_;
     __isset.prefix_tree = true;
@@ -9087,6 +9176,7 @@ class struct_with_special_names final  {
     return sets;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_sets(::std::int32_t sets_) {
     sets = sets_;
     __isset.sets = true;
@@ -9097,6 +9187,7 @@ class struct_with_special_names final  {
     return setter;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_setter(::std::int32_t setter_) {
     setter = setter_;
     __isset.setter = true;
@@ -9107,6 +9198,7 @@ class struct_with_special_names final  {
     return str;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_str(::std::int32_t str_) {
     str = str_;
     __isset.str = true;
@@ -9117,6 +9209,7 @@ class struct_with_special_names final  {
     return strings;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_strings(::std::int32_t strings_) {
     strings = strings_;
     __isset.strings = true;
@@ -9127,6 +9220,7 @@ class struct_with_special_names final  {
     return type;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_type(::std::int32_t type_) {
     type = type_;
     __isset.type = true;
@@ -9137,6 +9231,7 @@ class struct_with_special_names final  {
     return value;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_value(::std::int32_t value_) {
     value = value_;
     __isset.value = true;
@@ -9147,6 +9242,7 @@ class struct_with_special_names final  {
     return value_to_name;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_value_to_name(::std::int32_t value_to_name_) {
     value_to_name = value_to_name_;
     __isset.value_to_name = true;
@@ -9157,6 +9253,7 @@ class struct_with_special_names final  {
     return values;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_values(::std::int32_t values_) {
     values = values_;
     __isset.values = true;
@@ -9167,6 +9264,7 @@ class struct_with_special_names final  {
     return id;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_id(::std::int32_t id_) {
     id = id_;
     __isset.id = true;
@@ -9177,6 +9275,7 @@ class struct_with_special_names final  {
     return ids;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_ids(::std::int32_t ids_) {
     ids = ids_;
     __isset.ids = true;
@@ -9187,6 +9286,7 @@ class struct_with_special_names final  {
     return descriptor;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_descriptor(::std::int32_t descriptor_) {
     descriptor = descriptor_;
     __isset.descriptor = true;
@@ -9197,6 +9297,7 @@ class struct_with_special_names final  {
     return descriptors;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_descriptors(::std::int32_t descriptors_) {
     descriptors = descriptors_;
     __isset.descriptors = true;
@@ -9207,6 +9308,7 @@ class struct_with_special_names final  {
     return key;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_key(::std::int32_t key_) {
     key = key_;
     __isset.key = true;
@@ -9217,6 +9319,7 @@ class struct_with_special_names final  {
     return keys;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_keys(::std::int32_t keys_) {
     keys = keys_;
     __isset.keys = true;
@@ -9227,6 +9330,7 @@ class struct_with_special_names final  {
     return annotation;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_annotation(::std::int32_t annotation_) {
     annotation = annotation_;
     __isset.annotation = true;
@@ -9237,6 +9341,7 @@ class struct_with_special_names final  {
     return annotations;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_annotations(::std::int32_t annotations_) {
     annotations = annotations_;
     __isset.annotations = true;
@@ -9247,6 +9352,7 @@ class struct_with_special_names final  {
     return member;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_member(::std::int32_t member_) {
     member = member_;
     __isset.member = true;
@@ -9257,6 +9363,7 @@ class struct_with_special_names final  {
     return members;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_members(::std::int32_t members_) {
     members = members_;
     __isset.members = true;
@@ -9267,6 +9374,7 @@ class struct_with_special_names final  {
     return field;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_field(::std::int32_t field_) {
     field = field_;
     __isset.field = true;
@@ -9277,6 +9385,7 @@ class struct_with_special_names final  {
     return fields;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_fields(::std::int32_t fields_) {
     fields = fields_;
     __isset.fields = true;
@@ -9478,6 +9587,7 @@ class struct_with_indirections final  {
     return real;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_real(::std::int32_t real_) {
     real = real_;
     __isset.real = true;
@@ -9488,6 +9598,7 @@ class struct_with_indirections final  {
     return fake;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::FakeI32& set_fake(::test_cpp2::cpp_reflection::FakeI32 fake_) {
     fake = fake_;
     __isset.fake = true;
@@ -9498,6 +9609,7 @@ class struct_with_indirections final  {
     return number;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::HasANumber& set_number(::test_cpp2::cpp_reflection::HasANumber number_) {
     number = number_;
     __isset.number = true;
@@ -9508,6 +9620,7 @@ class struct_with_indirections final  {
     return result;
   }
 
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::HasAResult& set_result(::test_cpp2::cpp_reflection::HasAResult result_) {
     result = result_;
     __isset.result = true;
@@ -9523,6 +9636,7 @@ class struct_with_indirections final  {
   }
 
   template <typename T_struct_with_indirections_phrase_struct_setter = ::test_cpp2::cpp_reflection::HasAPhrase>
+  [[deprecated]]
   ::test_cpp2::cpp_reflection::HasAPhrase& set_phrase(T_struct_with_indirections_phrase_struct_setter&& phrase_) {
     phrase = std::forward<T_struct_with_indirections_phrase_struct_setter>(phrase_);
     __isset.phrase = true;

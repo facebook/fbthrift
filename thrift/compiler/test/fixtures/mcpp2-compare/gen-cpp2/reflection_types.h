@@ -115,6 +115,7 @@ class ReflectionStruct final  {
     return fieldA;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;

@@ -209,6 +209,7 @@ class MyStructNestedAnnotation final  {
   }
 
   template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
     __isset.name = true;
@@ -439,6 +440,7 @@ class MyStruct final  {
     return majorVer;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
     __isset.majorVer = true;
@@ -454,6 +456,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_package_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
     __isset.package = true;
@@ -469,6 +472,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
     __isset.annotation_with_quote = true;
@@ -484,6 +488,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_class__struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
     class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
     __isset.class_ = true;
@@ -499,6 +504,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_annotation_with_trailing_comma_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
     annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
     __isset.annotation_with_trailing_comma = true;
@@ -514,6 +520,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_empty_annotations_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
     __isset.empty_annotations = true;
@@ -644,6 +651,7 @@ class SecretStruct final  {
     return id;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_id(::std::int64_t id_) {
     id = id_;
     __isset.id = true;
@@ -659,6 +667,7 @@ class SecretStruct final  {
   }
 
   template <typename T_SecretStruct_password_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
     password = std::forward<T_SecretStruct_password_struct_setter>(password_);
     __isset.password = true;

@@ -154,6 +154,7 @@ class InitialResponse final  {
   }
 
   template <typename T_InitialResponse_content_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
     content = std::forward<T_InitialResponse_content_struct_setter>(content_);
     __isset.content = true;
@@ -265,6 +266,7 @@ class FinalResponse final  {
   }
 
   template <typename T_FinalResponse_content_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
     content = std::forward<T_FinalResponse_content_struct_setter>(content_);
     __isset.content = true;
@@ -376,6 +378,7 @@ class SinkPayload final  {
   }
 
   template <typename T_SinkPayload_content_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
     content = std::forward<T_SinkPayload_content_struct_setter>(content_);
     __isset.content = true;
@@ -487,6 +490,7 @@ class CompatibleWithKeywordSink final  {
   }
 
   template <typename T_CompatibleWithKeywordSink_sink_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
     sink = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
     __isset.sink = true;
@@ -607,6 +611,7 @@ class InitialException final : public apache::thrift::TException {
   }
 
   template <typename T_InitialException_reason_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
     reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
     __isset.reason = true;
@@ -731,6 +736,7 @@ class SinkException1 final : public apache::thrift::TException {
   }
 
   template <typename T_SinkException1_reason_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
     reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
     __isset.reason = true;
@@ -850,6 +856,7 @@ class SinkException2 final : public apache::thrift::TException {
     return reason;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_reason(::std::int64_t reason_) {
     reason = reason_;
     __isset.reason = true;

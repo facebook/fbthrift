@@ -111,6 +111,7 @@ class Foo final  {
     return bar;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
     return bar;

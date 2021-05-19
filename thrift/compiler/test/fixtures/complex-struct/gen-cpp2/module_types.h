@@ -798,6 +798,7 @@ class MyStructFloatFieldThrowExp final  {
     return myLongField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
     __isset.myLongField = true;
@@ -808,6 +809,7 @@ class MyStructFloatFieldThrowExp final  {
     return MyByteField;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_MyByteField(::std::int8_t MyByteField_) {
     MyByteField = MyByteField_;
     __isset.MyByteField = true;
@@ -823,6 +825,7 @@ class MyStructFloatFieldThrowExp final  {
   }
 
   template <typename T_MyStructFloatFieldThrowExp_myStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_myStringField(T_MyStructFloatFieldThrowExp_myStringField_struct_setter&& myStringField_) {
     myStringField = std::forward<T_MyStructFloatFieldThrowExp_myStringField_struct_setter>(myStringField_);
     __isset.myStringField = true;
@@ -833,6 +836,7 @@ class MyStructFloatFieldThrowExp final  {
     return myFloatField;
   }
 
+  [[deprecated]]
   float& set_myFloatField(float myFloatField_) {
     myFloatField = myFloatField_;
     __isset.myFloatField = true;
@@ -963,6 +967,7 @@ class MyStructMapFloatThrowExp final  {
     return myLongField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
     __isset.myLongField = true;
@@ -972,6 +977,7 @@ class MyStructMapFloatThrowExp final  {
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> get_mapListOfFloats() &&;
 
   template <typename T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>& set_mapListOfFloats(T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter&& mapListOfFloats_) {
     mapListOfFloats = std::forward<T_MyStructMapFloatThrowExp_mapListOfFloats_struct_setter>(mapListOfFloats_);
     __isset.mapListOfFloats = true;
@@ -1771,6 +1777,7 @@ class MyStruct final  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -1786,6 +1793,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -1795,6 +1803,7 @@ class MyStruct final  {
   ::cpp2::MyDataItem get_MyDataField() &&;
 
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
+  [[deprecated]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     __isset.MyDataField = true;
@@ -1805,6 +1814,7 @@ class MyStruct final  {
     return myEnum;
   }
 
+  [[deprecated]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
     __isset.myEnum = true;
@@ -1815,6 +1825,7 @@ class MyStruct final  {
     return MyBoolField;
   }
 
+  [[deprecated]]
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField = MyBoolField_;
     __isset.MyBoolField = true;
@@ -1825,6 +1836,7 @@ class MyStruct final  {
     return MyByteField;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_MyByteField(::std::int8_t MyByteField_) {
     MyByteField = MyByteField_;
     __isset.MyByteField = true;
@@ -1835,6 +1847,7 @@ class MyStruct final  {
     return MyShortField;
   }
 
+  [[deprecated]]
   ::std::int16_t& set_MyShortField(::std::int16_t MyShortField_) {
     MyShortField = MyShortField_;
     __isset.MyShortField = true;
@@ -1845,6 +1858,7 @@ class MyStruct final  {
     return MyLongField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyLongField(::std::int64_t MyLongField_) {
     MyLongField = MyLongField_;
     __isset.MyLongField = true;
@@ -1855,6 +1869,7 @@ class MyStruct final  {
     return MyDoubleField;
   }
 
+  [[deprecated]]
   double& set_MyDoubleField(double MyDoubleField_) {
     MyDoubleField = MyDoubleField_;
     __isset.MyDoubleField = true;
@@ -1864,6 +1879,7 @@ class MyStruct final  {
   ::std::vector<double> get_lDouble() &&;
 
   template <typename T_MyStruct_lDouble_struct_setter = ::std::vector<double>>
+  [[deprecated]]
   ::std::vector<double>& set_lDouble(T_MyStruct_lDouble_struct_setter&& lDouble_) {
     lDouble = std::forward<T_MyStruct_lDouble_struct_setter>(lDouble_);
     __isset.lDouble = true;
@@ -1873,6 +1889,7 @@ class MyStruct final  {
   ::std::vector<::std::int16_t> get_lShort() &&;
 
   template <typename T_MyStruct_lShort_struct_setter = ::std::vector<::std::int16_t>>
+  [[deprecated]]
   ::std::vector<::std::int16_t>& set_lShort(T_MyStruct_lShort_struct_setter&& lShort_) {
     lShort = std::forward<T_MyStruct_lShort_struct_setter>(lShort_);
     __isset.lShort = true;
@@ -1882,6 +1899,7 @@ class MyStruct final  {
   ::std::vector<::std::int32_t> get_lInteger() &&;
 
   template <typename T_MyStruct_lInteger_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_lInteger(T_MyStruct_lInteger_struct_setter&& lInteger_) {
     lInteger = std::forward<T_MyStruct_lInteger_struct_setter>(lInteger_);
     __isset.lInteger = true;
@@ -1891,6 +1909,7 @@ class MyStruct final  {
   ::std::vector<::std::int64_t> get_lLong() &&;
 
   template <typename T_MyStruct_lLong_struct_setter = ::std::vector<::std::int64_t>>
+  [[deprecated]]
   ::std::vector<::std::int64_t>& set_lLong(T_MyStruct_lLong_struct_setter&& lLong_) {
     lLong = std::forward<T_MyStruct_lLong_struct_setter>(lLong_);
     __isset.lLong = true;
@@ -1900,6 +1919,7 @@ class MyStruct final  {
   ::std::vector<::std::string> get_lString() &&;
 
   template <typename T_MyStruct_lString_struct_setter = ::std::vector<::std::string>>
+  [[deprecated]]
   ::std::vector<::std::string>& set_lString(T_MyStruct_lString_struct_setter&& lString_) {
     lString = std::forward<T_MyStruct_lString_struct_setter>(lString_);
     __isset.lString = true;
@@ -1909,6 +1929,7 @@ class MyStruct final  {
   ::std::vector<bool> get_lBool() &&;
 
   template <typename T_MyStruct_lBool_struct_setter = ::std::vector<bool>>
+  [[deprecated]]
   ::std::vector<bool>& set_lBool(T_MyStruct_lBool_struct_setter&& lBool_) {
     lBool = std::forward<T_MyStruct_lBool_struct_setter>(lBool_);
     __isset.lBool = true;
@@ -1918,6 +1939,7 @@ class MyStruct final  {
   ::std::vector<::std::int8_t> get_lByte() &&;
 
   template <typename T_MyStruct_lByte_struct_setter = ::std::vector<::std::int8_t>>
+  [[deprecated]]
   ::std::vector<::std::int8_t>& set_lByte(T_MyStruct_lByte_struct_setter&& lByte_) {
     lByte = std::forward<T_MyStruct_lByte_struct_setter>(lByte_);
     __isset.lByte = true;
@@ -1927,6 +1949,7 @@ class MyStruct final  {
   ::std::map<::std::int16_t, ::std::string> get_mShortString() &&;
 
   template <typename T_MyStruct_mShortString_struct_setter = ::std::map<::std::int16_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int16_t, ::std::string>& set_mShortString(T_MyStruct_mShortString_struct_setter&& mShortString_) {
     mShortString = std::forward<T_MyStruct_mShortString_struct_setter>(mShortString_);
     __isset.mShortString = true;
@@ -1936,6 +1959,7 @@ class MyStruct final  {
   ::std::map<::std::int32_t, ::std::string> get_mIntegerString() &&;
 
   template <typename T_MyStruct_mIntegerString_struct_setter = ::std::map<::std::int32_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::string>& set_mIntegerString(T_MyStruct_mIntegerString_struct_setter&& mIntegerString_) {
     mIntegerString = std::forward<T_MyStruct_mIntegerString_struct_setter>(mIntegerString_);
     __isset.mIntegerString = true;
@@ -1945,6 +1969,7 @@ class MyStruct final  {
   ::std::map<::std::string, ::cpp2::MyStruct> get_mStringMyStruct() &&;
 
   template <typename T_MyStruct_mStringMyStruct_struct_setter = ::std::map<::std::string, ::cpp2::MyStruct>>
+  [[deprecated]]
   ::std::map<::std::string, ::cpp2::MyStruct>& set_mStringMyStruct(T_MyStruct_mStringMyStruct_struct_setter&& mStringMyStruct_) {
     mStringMyStruct = std::forward<T_MyStruct_mStringMyStruct_struct_setter>(mStringMyStruct_);
     __isset.mStringMyStruct = true;
@@ -1954,6 +1979,7 @@ class MyStruct final  {
   ::std::map<::std::string, bool> get_mStringBool() &&;
 
   template <typename T_MyStruct_mStringBool_struct_setter = ::std::map<::std::string, bool>>
+  [[deprecated]]
   ::std::map<::std::string, bool>& set_mStringBool(T_MyStruct_mStringBool_struct_setter&& mStringBool_) {
     mStringBool = std::forward<T_MyStruct_mStringBool_struct_setter>(mStringBool_);
     __isset.mStringBool = true;
@@ -1963,6 +1989,7 @@ class MyStruct final  {
   ::std::map<::std::int32_t, ::std::int32_t> get_mIntegerInteger() &&;
 
   template <typename T_MyStruct_mIntegerInteger_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_mIntegerInteger(T_MyStruct_mIntegerInteger_struct_setter&& mIntegerInteger_) {
     mIntegerInteger = std::forward<T_MyStruct_mIntegerInteger_struct_setter>(mIntegerInteger_);
     __isset.mIntegerInteger = true;
@@ -1972,6 +1999,7 @@ class MyStruct final  {
   ::std::map<::std::int32_t, bool> get_mIntegerBool() &&;
 
   template <typename T_MyStruct_mIntegerBool_struct_setter = ::std::map<::std::int32_t, bool>>
+  [[deprecated]]
   ::std::map<::std::int32_t, bool>& set_mIntegerBool(T_MyStruct_mIntegerBool_struct_setter&& mIntegerBool_) {
     mIntegerBool = std::forward<T_MyStruct_mIntegerBool_struct_setter>(mIntegerBool_);
     __isset.mIntegerBool = true;
@@ -1981,6 +2009,7 @@ class MyStruct final  {
   ::std::set<::std::int16_t> get_sShort() &&;
 
   template <typename T_MyStruct_sShort_struct_setter = ::std::set<::std::int16_t>>
+  [[deprecated]]
   ::std::set<::std::int16_t>& set_sShort(T_MyStruct_sShort_struct_setter&& sShort_) {
     sShort = std::forward<T_MyStruct_sShort_struct_setter>(sShort_);
     __isset.sShort = true;
@@ -1990,6 +2019,7 @@ class MyStruct final  {
   ::std::set<::cpp2::MyStruct> get_sMyStruct() &&;
 
   template <typename T_MyStruct_sMyStruct_struct_setter = ::std::set<::cpp2::MyStruct>>
+  [[deprecated]]
   ::std::set<::cpp2::MyStruct>& set_sMyStruct(T_MyStruct_sMyStruct_struct_setter&& sMyStruct_) {
     sMyStruct = std::forward<T_MyStruct_sMyStruct_struct_setter>(sMyStruct_);
     __isset.sMyStruct = true;
@@ -1999,6 +2029,7 @@ class MyStruct final  {
   ::std::set<::std::int64_t> get_sLong() &&;
 
   template <typename T_MyStruct_sLong_struct_setter = ::std::set<::std::int64_t>>
+  [[deprecated]]
   ::std::set<::std::int64_t>& set_sLong(T_MyStruct_sLong_struct_setter&& sLong_) {
     sLong = std::forward<T_MyStruct_sLong_struct_setter>(sLong_);
     __isset.sLong = true;
@@ -2008,6 +2039,7 @@ class MyStruct final  {
   ::std::set<::std::string> get_sString() &&;
 
   template <typename T_MyStruct_sString_struct_setter = ::std::set<::std::string>>
+  [[deprecated]]
   ::std::set<::std::string>& set_sString(T_MyStruct_sString_struct_setter&& sString_) {
     sString = std::forward<T_MyStruct_sString_struct_setter>(sString_);
     __isset.sString = true;
@@ -2017,6 +2049,7 @@ class MyStruct final  {
   ::std::set<::std::int8_t> get_sByte() &&;
 
   template <typename T_MyStruct_sByte_struct_setter = ::std::set<::std::int8_t>>
+  [[deprecated]]
   ::std::set<::std::int8_t>& set_sByte(T_MyStruct_sByte_struct_setter&& sByte_) {
     sByte = std::forward<T_MyStruct_sByte_struct_setter>(sByte_);
     __isset.sByte = true;
@@ -2026,6 +2059,7 @@ class MyStruct final  {
   ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> get_mListList() &&;
 
   template <typename T_MyStruct_mListList_struct_setter = ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>>
+  [[deprecated]]
   ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& set_mListList(T_MyStruct_mListList_struct_setter&& mListList_) {
     mListList = std::forward<T_MyStruct_mListList_struct_setter>(mListList_);
     __isset.mListList = true;
@@ -2157,6 +2191,7 @@ class SimpleStruct final  {
     return age;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_age(::std::int64_t age_) {
     age = age_;
     __isset.age = true;
@@ -2172,6 +2207,7 @@ class SimpleStruct final  {
   }
 
   template <typename T_SimpleStruct_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_SimpleStruct_name_struct_setter&& name_) {
     name = std::forward<T_SimpleStruct_name_struct_setter>(name_);
     __isset.name = true;
@@ -2671,6 +2707,7 @@ class ComplexNestedStruct final  {
   ::std::set<::std::set<::std::int32_t>> get_setOfSetOfInt() &&;
 
   template <typename T_ComplexNestedStruct_setOfSetOfInt_struct_setter = ::std::set<::std::set<::std::int32_t>>>
+  [[deprecated]]
   ::std::set<::std::set<::std::int32_t>>& set_setOfSetOfInt(T_ComplexNestedStruct_setOfSetOfInt_struct_setter&& setOfSetOfInt_) {
     setOfSetOfInt = std::forward<T_ComplexNestedStruct_setOfSetOfInt_struct_setter>(setOfSetOfInt_);
     __isset.setOfSetOfInt = true;
@@ -2680,6 +2717,7 @@ class ComplexNestedStruct final  {
   ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> get_listofListOfListOfListOfEnum() &&;
 
   template <typename T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>>
+  [[deprecated]]
   ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>& set_listofListOfListOfListOfEnum(T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter&& listofListOfListOfListOfEnum_) {
     listofListOfListOfListOfEnum = std::forward<T_ComplexNestedStruct_listofListOfListOfListOfEnum_struct_setter>(listofListOfListOfListOfEnum_);
     __isset.listofListOfListOfListOfEnum = true;
@@ -2689,6 +2727,7 @@ class ComplexNestedStruct final  {
   ::std::vector<::std::vector<::cpp2::MyStruct>> get_listOfListOfMyStruct() &&;
 
   template <typename T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter = ::std::vector<::std::vector<::cpp2::MyStruct>>>
+  [[deprecated]]
   ::std::vector<::std::vector<::cpp2::MyStruct>>& set_listOfListOfMyStruct(T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter&& listOfListOfMyStruct_) {
     listOfListOfMyStruct = std::forward<T_ComplexNestedStruct_listOfListOfMyStruct_struct_setter>(listOfListOfMyStruct_);
     __isset.listOfListOfMyStruct = true;
@@ -2698,6 +2737,7 @@ class ComplexNestedStruct final  {
   ::std::set<::std::vector<::std::vector<::std::int64_t>>> get_setOfListOfListOfLong() &&;
 
   template <typename T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter = ::std::set<::std::vector<::std::vector<::std::int64_t>>>>
+  [[deprecated]]
   ::std::set<::std::vector<::std::vector<::std::int64_t>>>& set_setOfListOfListOfLong(T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter&& setOfListOfListOfLong_) {
     setOfListOfListOfLong = std::forward<T_ComplexNestedStruct_setOfListOfListOfLong_struct_setter>(setOfListOfListOfLong_);
     __isset.setOfListOfListOfLong = true;
@@ -2707,6 +2747,7 @@ class ComplexNestedStruct final  {
   ::std::set<::std::set<::std::set<::std::int64_t>>> get_setOfSetOfsetOfLong() &&;
 
   template <typename T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter = ::std::set<::std::set<::std::set<::std::int64_t>>>>
+  [[deprecated]]
   ::std::set<::std::set<::std::set<::std::int64_t>>>& set_setOfSetOfsetOfLong(T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter&& setOfSetOfsetOfLong_) {
     setOfSetOfsetOfLong = std::forward<T_ComplexNestedStruct_setOfSetOfsetOfLong_struct_setter>(setOfSetOfsetOfLong_);
     __isset.setOfSetOfsetOfLong = true;
@@ -2716,6 +2757,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> get_mapStructListOfListOfLong() &&;
 
   template <typename T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter = ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>& set_mapStructListOfListOfLong(T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter&& mapStructListOfListOfLong_) {
     mapStructListOfListOfLong = std::forward<T_ComplexNestedStruct_mapStructListOfListOfLong_struct_setter>(mapStructListOfListOfLong_);
     __isset.mapStructListOfListOfLong = true;
@@ -2725,6 +2767,7 @@ class ComplexNestedStruct final  {
   ::std::map<::cpp2::MyStruct, ::std::int32_t> get_mKeyStructValInt() &&;
 
   template <typename T_ComplexNestedStruct_mKeyStructValInt_struct_setter = ::std::map<::cpp2::MyStruct, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::cpp2::MyStruct, ::std::int32_t>& set_mKeyStructValInt(T_ComplexNestedStruct_mKeyStructValInt_struct_setter&& mKeyStructValInt_) {
     mKeyStructValInt = std::forward<T_ComplexNestedStruct_mKeyStructValInt_struct_setter>(mKeyStructValInt_);
     __isset.mKeyStructValInt = true;
@@ -2734,6 +2777,7 @@ class ComplexNestedStruct final  {
   ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> get_listOfMapKeyIntValInt() &&;
 
   template <typename T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter = ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>
+  [[deprecated]]
   ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& set_listOfMapKeyIntValInt(T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter&& listOfMapKeyIntValInt_) {
     listOfMapKeyIntValInt = std::forward<T_ComplexNestedStruct_listOfMapKeyIntValInt_struct_setter>(listOfMapKeyIntValInt_);
     __isset.listOfMapKeyIntValInt = true;
@@ -2743,6 +2787,7 @@ class ComplexNestedStruct final  {
   ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> get_listOfMapKeyStrValList() &&;
 
   template <typename T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter = ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>
+  [[deprecated]]
   ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>& set_listOfMapKeyStrValList(T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter&& listOfMapKeyStrValList_) {
     listOfMapKeyStrValList = std::forward<T_ComplexNestedStruct_listOfMapKeyStrValList_struct_setter>(listOfMapKeyStrValList_);
     __isset.listOfMapKeyStrValList = true;
@@ -2752,6 +2797,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::set<::std::int32_t>, ::std::int64_t> get_mapKeySetValLong() &&;
 
   template <typename T_ComplexNestedStruct_mapKeySetValLong_struct_setter = ::std::map<::std::set<::std::int32_t>, ::std::int64_t>>
+  [[deprecated]]
   ::std::map<::std::set<::std::int32_t>, ::std::int64_t>& set_mapKeySetValLong(T_ComplexNestedStruct_mapKeySetValLong_struct_setter&& mapKeySetValLong_) {
     mapKeySetValLong = std::forward<T_ComplexNestedStruct_mapKeySetValLong_struct_setter>(mapKeySetValLong_);
     __isset.mapKeySetValLong = true;
@@ -2761,6 +2807,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::vector<::std::string>, ::std::int32_t> get_mapKeyListValLong() &&;
 
   template <typename T_ComplexNestedStruct_mapKeyListValLong_struct_setter = ::std::map<::std::vector<::std::string>, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::vector<::std::string>, ::std::int32_t>& set_mapKeyListValLong(T_ComplexNestedStruct_mapKeyListValLong_struct_setter&& mapKeyListValLong_) {
     mapKeyListValLong = std::forward<T_ComplexNestedStruct_mapKeyListValLong_struct_setter>(mapKeyListValLong_);
     __isset.mapKeyListValLong = true;
@@ -2770,6 +2817,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> get_mapKeyMapValMap() &&;
 
   template <typename T_ComplexNestedStruct_mapKeyMapValMap_struct_setter = ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
+  [[deprecated]]
   ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& set_mapKeyMapValMap(T_ComplexNestedStruct_mapKeyMapValMap_struct_setter&& mapKeyMapValMap_) {
     mapKeyMapValMap = std::forward<T_ComplexNestedStruct_mapKeyMapValMap_struct_setter>(mapKeyMapValMap_);
     __isset.mapKeyMapValMap = true;
@@ -2779,6 +2827,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_mapKeySetValMap() &&;
 
   template <typename T_ComplexNestedStruct_mapKeySetValMap_struct_setter = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  [[deprecated]]
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_mapKeySetValMap(T_ComplexNestedStruct_mapKeySetValMap_struct_setter&& mapKeySetValMap_) {
     mapKeySetValMap = std::forward<T_ComplexNestedStruct_mapKeySetValMap_struct_setter>(mapKeySetValMap_);
     __isset.mapKeySetValMap = true;
@@ -2788,6 +2837,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> get_NestedMaps() &&;
 
   template <typename T_ComplexNestedStruct_NestedMaps_struct_setter = ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>>
+  [[deprecated]]
   ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& set_NestedMaps(T_ComplexNestedStruct_NestedMaps_struct_setter&& NestedMaps_) {
     NestedMaps = std::forward<T_ComplexNestedStruct_NestedMaps_struct_setter>(NestedMaps_);
     __isset.NestedMaps = true;
@@ -2797,6 +2847,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> get_mapKeyIntValList() &&;
 
   template <typename T_ComplexNestedStruct_mapKeyIntValList_struct_setter = ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>& set_mapKeyIntValList(T_ComplexNestedStruct_mapKeyIntValList_struct_setter&& mapKeyIntValList_) {
     mapKeyIntValList = std::forward<T_ComplexNestedStruct_mapKeyIntValList_struct_setter>(mapKeyIntValList_);
     __isset.mapKeyIntValList = true;
@@ -2806,6 +2857,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::int32_t, ::std::set<bool>> get_mapKeyIntValSet() &&;
 
   template <typename T_ComplexNestedStruct_mapKeyIntValSet_struct_setter = ::std::map<::std::int32_t, ::std::set<bool>>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::set<bool>>& set_mapKeyIntValSet(T_ComplexNestedStruct_mapKeyIntValSet_struct_setter&& mapKeyIntValSet_) {
     mapKeyIntValSet = std::forward<T_ComplexNestedStruct_mapKeyIntValSet_struct_setter>(mapKeyIntValSet_);
     __isset.mapKeyIntValSet = true;
@@ -2815,6 +2867,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::set<bool>, ::cpp2::MyEnum> get_mapKeySetValInt() &&;
 
   template <typename T_ComplexNestedStruct_mapKeySetValInt_struct_setter = ::std::map<::std::set<bool>, ::cpp2::MyEnum>>
+  [[deprecated]]
   ::std::map<::std::set<bool>, ::cpp2::MyEnum>& set_mapKeySetValInt(T_ComplexNestedStruct_mapKeySetValInt_struct_setter&& mapKeySetValInt_) {
     mapKeySetValInt = std::forward<T_ComplexNestedStruct_mapKeySetValInt_struct_setter>(mapKeySetValInt_);
     __isset.mapKeySetValInt = true;
@@ -2824,6 +2877,7 @@ class ComplexNestedStruct final  {
   ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> get_mapKeyListValSet() &&;
 
   template <typename T_ComplexNestedStruct_mapKeyListValSet_struct_setter = ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>>
+  [[deprecated]]
   ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>& set_mapKeyListValSet(T_ComplexNestedStruct_mapKeyListValSet_struct_setter&& mapKeyListValSet_) {
     mapKeyListValSet = std::forward<T_ComplexNestedStruct_mapKeyListValSet_struct_setter>(mapKeyListValSet_);
     __isset.mapKeyListValSet = true;
@@ -3983,6 +4037,7 @@ class defaultStruct final  {
     return myLongDFset;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_myLongDFset(::std::int64_t myLongDFset_) {
     myLongDFset = myLongDFset_;
     __isset.myLongDFset = true;
@@ -3993,6 +4048,7 @@ class defaultStruct final  {
     return myLongDF;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_myLongDF(::std::int64_t myLongDF_) {
     myLongDF = myLongDF_;
     __isset.myLongDF = true;
@@ -4003,6 +4059,7 @@ class defaultStruct final  {
     return portDFset;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_portDFset(::std::int32_t portDFset_) {
     portDFset = portDFset_;
     __isset.portDFset = true;
@@ -4013,6 +4070,7 @@ class defaultStruct final  {
     return portNum;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_portNum(::std::int32_t portNum_) {
     portNum = portNum_;
     __isset.portNum = true;
@@ -4028,6 +4086,7 @@ class defaultStruct final  {
   }
 
   template <typename T_defaultStruct_myBinaryDFset_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_myBinaryDFset(T_defaultStruct_myBinaryDFset_struct_setter&& myBinaryDFset_) {
     myBinaryDFset = std::forward<T_defaultStruct_myBinaryDFset_struct_setter>(myBinaryDFset_);
     __isset.myBinaryDFset = true;
@@ -4043,6 +4102,7 @@ class defaultStruct final  {
   }
 
   template <typename T_defaultStruct_myBinary_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_myBinary(T_defaultStruct_myBinary_struct_setter&& myBinary_) {
     myBinary = std::forward<T_defaultStruct_myBinary_struct_setter>(myBinary_);
     __isset.myBinary = true;
@@ -4053,6 +4113,7 @@ class defaultStruct final  {
     return myByteDFSet;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_myByteDFSet(::std::int8_t myByteDFSet_) {
     myByteDFSet = myByteDFSet_;
     __isset.myByteDFSet = true;
@@ -4063,6 +4124,7 @@ class defaultStruct final  {
     return myByte;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_myByte(::std::int8_t myByte_) {
     myByte = myByte_;
     __isset.myByte = true;
@@ -4073,6 +4135,7 @@ class defaultStruct final  {
     return myDoubleDFset;
   }
 
+  [[deprecated]]
   double& set_myDoubleDFset(double myDoubleDFset_) {
     myDoubleDFset = myDoubleDFset_;
     __isset.myDoubleDFset = true;
@@ -4083,6 +4146,7 @@ class defaultStruct final  {
     return myDoubleDFZero;
   }
 
+  [[deprecated]]
   double& set_myDoubleDFZero(double myDoubleDFZero_) {
     myDoubleDFZero = myDoubleDFZero_;
     __isset.myDoubleDFZero = true;
@@ -4093,6 +4157,7 @@ class defaultStruct final  {
     return myDouble;
   }
 
+  [[deprecated]]
   double& set_myDouble(double myDouble_) {
     myDouble = myDouble_;
     __isset.myDouble = true;
@@ -4102,6 +4167,7 @@ class defaultStruct final  {
   ::std::map<::std::int32_t, ::std::string> get_field3() &&;
 
   template <typename T_defaultStruct_field3_struct_setter = ::std::map<::std::int32_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::string>& set_field3(T_defaultStruct_field3_struct_setter&& field3_) {
     field3 = std::forward<T_defaultStruct_field3_struct_setter>(field3_);
     __isset.field3 = true;
@@ -4111,6 +4177,7 @@ class defaultStruct final  {
   ::std::vector<::cpp2::MyEnum> get_myList() &&;
 
   template <typename T_defaultStruct_myList_struct_setter = ::std::vector<::cpp2::MyEnum>>
+  [[deprecated]]
   ::std::vector<::cpp2::MyEnum>& set_myList(T_defaultStruct_myList_struct_setter&& myList_) {
     myList = std::forward<T_defaultStruct_myList_struct_setter>(myList_);
     __isset.myList = true;
@@ -4120,6 +4187,7 @@ class defaultStruct final  {
   ::std::set<::std::string> get_mySet() &&;
 
   template <typename T_defaultStruct_mySet_struct_setter = ::std::set<::std::string>>
+  [[deprecated]]
   ::std::set<::std::string>& set_mySet(T_defaultStruct_mySet_struct_setter&& mySet_) {
     mySet = std::forward<T_defaultStruct_mySet_struct_setter>(mySet_);
     __isset.mySet = true;
@@ -4129,6 +4197,7 @@ class defaultStruct final  {
   ::cpp2::SimpleStruct get_simpleStruct() &&;
 
   template <typename T_defaultStruct_simpleStruct_struct_setter = ::cpp2::SimpleStruct>
+  [[deprecated]]
   ::cpp2::SimpleStruct& set_simpleStruct(T_defaultStruct_simpleStruct_struct_setter&& simpleStruct_) {
     simpleStruct = std::forward<T_defaultStruct_simpleStruct_struct_setter>(simpleStruct_);
     __isset.simpleStruct = true;
@@ -4138,6 +4207,7 @@ class defaultStruct final  {
   ::std::vector<::cpp2::SimpleStruct> get_listStructDFset() &&;
 
   template <typename T_defaultStruct_listStructDFset_struct_setter = ::std::vector<::cpp2::SimpleStruct>>
+  [[deprecated]]
   ::std::vector<::cpp2::SimpleStruct>& set_listStructDFset(T_defaultStruct_listStructDFset_struct_setter&& listStructDFset_) {
     listStructDFset = std::forward<T_defaultStruct_listStructDFset_struct_setter>(listStructDFset_);
     __isset.listStructDFset = true;
@@ -4147,6 +4217,7 @@ class defaultStruct final  {
   ::cpp2::MyUnion get_myUnion() &&;
 
   template <typename T_defaultStruct_myUnion_struct_setter = ::cpp2::MyUnion>
+  [[deprecated]]
   ::cpp2::MyUnion& set_myUnion(T_defaultStruct_myUnion_struct_setter&& myUnion_) {
     myUnion = std::forward<T_defaultStruct_myUnion_struct_setter>(myUnion_);
     __isset.myUnion = true;
@@ -4156,6 +4227,7 @@ class defaultStruct final  {
   ::std::vector<::cpp2::MyUnion> get_listUnionDFset() &&;
 
   template <typename T_defaultStruct_listUnionDFset_struct_setter = ::std::vector<::cpp2::MyUnion>>
+  [[deprecated]]
   ::std::vector<::cpp2::MyUnion>& set_listUnionDFset(T_defaultStruct_listUnionDFset_struct_setter&& listUnionDFset_) {
     listUnionDFset = std::forward<T_defaultStruct_listUnionDFset_struct_setter>(listUnionDFset_);
     __isset.listUnionDFset = true;
@@ -4165,6 +4237,7 @@ class defaultStruct final  {
   ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> get_mapNestlistStructDfSet() &&;
 
   template <typename T_defaultStruct_mapNestlistStructDfSet_struct_setter = ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>& set_mapNestlistStructDfSet(T_defaultStruct_mapNestlistStructDfSet_struct_setter&& mapNestlistStructDfSet_) {
     mapNestlistStructDfSet = std::forward<T_defaultStruct_mapNestlistStructDfSet_struct_setter>(mapNestlistStructDfSet_);
     __isset.mapNestlistStructDfSet = true;
@@ -4174,6 +4247,7 @@ class defaultStruct final  {
   ::std::map<::std::int64_t, ::std::string> get_mapJavaTypeDFset() &&;
 
   template <typename T_defaultStruct_mapJavaTypeDFset_struct_setter = ::std::map<::std::int64_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int64_t, ::std::string>& set_mapJavaTypeDFset(T_defaultStruct_mapJavaTypeDFset_struct_setter&& mapJavaTypeDFset_) {
     mapJavaTypeDFset = std::forward<T_defaultStruct_mapJavaTypeDFset_struct_setter>(mapJavaTypeDFset_);
     __isset.mapJavaTypeDFset = true;
@@ -4183,6 +4257,7 @@ class defaultStruct final  {
   ::std::map<::std::int64_t, ::std::int32_t> get_emptyMap() &&;
 
   template <typename T_defaultStruct_emptyMap_struct_setter = ::std::map<::std::int64_t, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::int64_t, ::std::int32_t>& set_emptyMap(T_defaultStruct_emptyMap_struct_setter&& emptyMap_) {
     emptyMap = std::forward<T_defaultStruct_emptyMap_struct_setter>(emptyMap_);
     __isset.emptyMap = true;
@@ -4192,6 +4267,7 @@ class defaultStruct final  {
   ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> get_enumMapDFset() &&;
 
   template <typename T_defaultStruct_enumMapDFset_struct_setter = ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>
+  [[deprecated]]
   ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& set_enumMapDFset(T_defaultStruct_enumMapDFset_struct_setter&& enumMapDFset_) {
     enumMapDFset = std::forward<T_defaultStruct_enumMapDFset_struct_setter>(enumMapDFset_);
     __isset.enumMapDFset = true;
@@ -4485,6 +4561,7 @@ class MyStructTypeDef final  {
     return myLongField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_myLongField(::std::int64_t myLongField_) {
     myLongField = myLongField_;
     __isset.myLongField = true;
@@ -4495,6 +4572,7 @@ class MyStructTypeDef final  {
     return myLongTypeDef;
   }
 
+  [[deprecated]]
   ::cpp2::longTypeDef& set_myLongTypeDef(::cpp2::longTypeDef myLongTypeDef_) {
     myLongTypeDef = myLongTypeDef_;
     __isset.myLongTypeDef = true;
@@ -4510,6 +4588,7 @@ class MyStructTypeDef final  {
   }
 
   template <typename T_MyStructTypeDef_myStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_myStringField(T_MyStructTypeDef_myStringField_struct_setter&& myStringField_) {
     myStringField = std::forward<T_MyStructTypeDef_myStringField_struct_setter>(myStringField_);
     __isset.myStringField = true;
@@ -4525,6 +4604,7 @@ class MyStructTypeDef final  {
   }
 
   template <typename T_MyStructTypeDef_myStringTypedef_struct_setter = ::cpp2::stringTypedef>
+  [[deprecated]]
   ::cpp2::stringTypedef& set_myStringTypedef(T_MyStructTypeDef_myStringTypedef_struct_setter&& myStringTypedef_) {
     myStringTypedef = std::forward<T_MyStructTypeDef_myStringTypedef_struct_setter>(myStringTypedef_);
     __isset.myStringTypedef = true;
@@ -4534,6 +4614,7 @@ class MyStructTypeDef final  {
   ::std::map<::std::int16_t, ::std::string> get_myMapField() &&;
 
   template <typename T_MyStructTypeDef_myMapField_struct_setter = ::std::map<::std::int16_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int16_t, ::std::string>& set_myMapField(T_MyStructTypeDef_myMapField_struct_setter&& myMapField_) {
     myMapField = std::forward<T_MyStructTypeDef_myMapField_struct_setter>(myMapField_);
     __isset.myMapField = true;
@@ -4543,6 +4624,7 @@ class MyStructTypeDef final  {
   ::cpp2::mapTypedef get_myMapTypedef() &&;
 
   template <typename T_MyStructTypeDef_myMapTypedef_struct_setter = ::cpp2::mapTypedef>
+  [[deprecated]]
   ::cpp2::mapTypedef& set_myMapTypedef(T_MyStructTypeDef_myMapTypedef_struct_setter&& myMapTypedef_) {
     myMapTypedef = std::forward<T_MyStructTypeDef_myMapTypedef_struct_setter>(myMapTypedef_);
     __isset.myMapTypedef = true;
@@ -4552,6 +4634,7 @@ class MyStructTypeDef final  {
   ::std::vector<double> get_myListField() &&;
 
   template <typename T_MyStructTypeDef_myListField_struct_setter = ::std::vector<double>>
+  [[deprecated]]
   ::std::vector<double>& set_myListField(T_MyStructTypeDef_myListField_struct_setter&& myListField_) {
     myListField = std::forward<T_MyStructTypeDef_myListField_struct_setter>(myListField_);
     __isset.myListField = true;
@@ -4561,6 +4644,7 @@ class MyStructTypeDef final  {
   ::cpp2::listTypedef get_myListTypedef() &&;
 
   template <typename T_MyStructTypeDef_myListTypedef_struct_setter = ::cpp2::listTypedef>
+  [[deprecated]]
   ::cpp2::listTypedef& set_myListTypedef(T_MyStructTypeDef_myListTypedef_struct_setter&& myListTypedef_) {
     myListTypedef = std::forward<T_MyStructTypeDef_myListTypedef_struct_setter>(myListTypedef_);
     __isset.myListTypedef = true;
@@ -4570,6 +4654,7 @@ class MyStructTypeDef final  {
   ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> get_myMapListOfTypeDef() &&;
 
   template <typename T_MyStructTypeDef_myMapListOfTypeDef_struct_setter = ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>>
+  [[deprecated]]
   ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& set_myMapListOfTypeDef(T_MyStructTypeDef_myMapListOfTypeDef_struct_setter&& myMapListOfTypeDef_) {
     myMapListOfTypeDef = std::forward<T_MyStructTypeDef_myMapListOfTypeDef_struct_setter>(myMapListOfTypeDef_);
     __isset.myMapListOfTypeDef = true;
@@ -5182,6 +5267,7 @@ class TypeRemapped final  {
   ::std::map<::std::int64_t, ::std::string> get_lsMap() &&;
 
   template <typename T_TypeRemapped_lsMap_struct_setter = ::std::map<::std::int64_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int64_t, ::std::string>& set_lsMap(T_TypeRemapped_lsMap_struct_setter&& lsMap_) {
     lsMap = std::forward<T_TypeRemapped_lsMap_struct_setter>(lsMap_);
     __isset.lsMap = true;
@@ -5191,6 +5277,7 @@ class TypeRemapped final  {
   ::std::map<::std::int32_t, ::cpp2::FMap> get_ioMap() &&;
 
   template <typename T_TypeRemapped_ioMap_struct_setter = ::std::map<::std::int32_t, ::cpp2::FMap>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::cpp2::FMap>& set_ioMap(T_TypeRemapped_ioMap_struct_setter&& ioMap_) {
     ioMap = std::forward<T_TypeRemapped_ioMap_struct_setter>(ioMap_);
     __isset.ioMap = true;
@@ -5201,6 +5288,7 @@ class TypeRemapped final  {
     return BigInteger;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_BigInteger(::std::int32_t BigInteger_) {
     BigInteger = BigInteger_;
     __isset.BigInteger = true;
@@ -5216,6 +5304,7 @@ class TypeRemapped final  {
   }
 
   template <typename T_TypeRemapped_binaryTestBuffer_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_binaryTestBuffer(T_TypeRemapped_binaryTestBuffer_struct_setter&& binaryTestBuffer_) {
     binaryTestBuffer = std::forward<T_TypeRemapped_binaryTestBuffer_struct_setter>(binaryTestBuffer_);
     __isset.binaryTestBuffer = true;
@@ -5435,6 +5524,7 @@ class reqXcep final : public apache::thrift::TException {
   }
 
   template <typename T_reqXcep_message_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_message(T_reqXcep_message_struct_setter&& message_) {
     message = std::forward<T_reqXcep_message_struct_setter>(message_);
     return message;
@@ -5444,6 +5534,7 @@ class reqXcep final : public apache::thrift::TException {
     return errorCode;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_errorCode(::std::int32_t errorCode_) {
     errorCode = errorCode_;
     return errorCode;
@@ -5591,6 +5682,7 @@ class optXcep final : public apache::thrift::TException {
   ::std::string* get_message() && = delete;
 
   template <typename T_optXcep_message_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_message(T_optXcep_message_struct_setter&& message_) {
     message = std::forward<T_optXcep_message_struct_setter>(message_);
     __isset.message = true;
@@ -5606,6 +5698,7 @@ class optXcep final : public apache::thrift::TException {
   }
   ::std::int32_t* get_errorCode() && = delete;
 
+  [[deprecated]]
   ::std::int32_t& set_errorCode(::std::int32_t errorCode_) {
     errorCode = errorCode_;
     __isset.errorCode = true;
@@ -5845,6 +5938,7 @@ class complexException final : public apache::thrift::TException {
   }
 
   template <typename T_complexException_message_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_message(T_complexException_message_struct_setter&& message_) {
     message = std::forward<T_complexException_message_struct_setter>(message_);
     __isset.message = true;
@@ -5854,6 +5948,7 @@ class complexException final : public apache::thrift::TException {
   ::std::vector<::std::string> get_listStrings() &&;
 
   template <typename T_complexException_listStrings_struct_setter = ::std::vector<::std::string>>
+  [[deprecated]]
   ::std::vector<::std::string>& set_listStrings(T_complexException_listStrings_struct_setter&& listStrings_) {
     listStrings = std::forward<T_complexException_listStrings_struct_setter>(listStrings_);
     __isset.listStrings = true;
@@ -5864,6 +5959,7 @@ class complexException final : public apache::thrift::TException {
     return errorEnum;
   }
 
+  [[deprecated]]
   ::cpp2::MyEnum& set_errorEnum(::cpp2::MyEnum errorEnum_) {
     errorEnum = errorEnum_;
     __isset.errorEnum = true;
@@ -5874,6 +5970,7 @@ class complexException final : public apache::thrift::TException {
   ::cpp2::MyUnion* get_unionError() && = delete;
 
   template <typename T_complexException_unionError_struct_setter = ::cpp2::MyUnion>
+  [[deprecated]]
   ::cpp2::MyUnion& set_unionError(T_complexException_unionError_struct_setter&& unionError_) {
     unionError = std::forward<T_complexException_unionError_struct_setter>(unionError_);
     __isset.unionError = true;
@@ -5883,6 +5980,7 @@ class complexException final : public apache::thrift::TException {
   ::cpp2::MyStruct get_structError() &&;
 
   template <typename T_complexException_structError_struct_setter = ::cpp2::MyStruct>
+  [[deprecated]]
   ::cpp2::MyStruct& set_structError(T_complexException_structError_struct_setter&& structError_) {
     structError = std::forward<T_complexException_structError_struct_setter>(structError_);
     __isset.structError = true;
@@ -5892,6 +5990,7 @@ class complexException final : public apache::thrift::TException {
   ::std::map<::std::int64_t, ::std::string> get_lsMap() &&;
 
   template <typename T_complexException_lsMap_struct_setter = ::std::map<::std::int64_t, ::std::string>>
+  [[deprecated]]
   ::std::map<::std::int64_t, ::std::string>& set_lsMap(T_complexException_lsMap_struct_setter&& lsMap_) {
     lsMap = std::forward<T_complexException_lsMap_struct_setter>(lsMap_);
     __isset.lsMap = true;

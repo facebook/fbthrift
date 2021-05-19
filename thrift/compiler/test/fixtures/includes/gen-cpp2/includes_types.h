@@ -149,6 +149,7 @@ class Included final  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -158,6 +159,7 @@ class Included final  {
   ::cpp2::Foo get_MyTransitiveField() &&;
 
   template <typename T_Included_MyTransitiveField_struct_setter = ::cpp2::Foo>
+  [[deprecated]]
   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
     __isset.MyTransitiveField = true;

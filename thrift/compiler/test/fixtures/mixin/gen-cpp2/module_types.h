@@ -154,6 +154,7 @@ class Mixin1 final  {
   }
 
   template <typename T_Mixin1_field1_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field1(T_Mixin1_field1_struct_setter&& field1_) {
     field1 = std::forward<T_Mixin1_field1_struct_setter>(field1_);
     __isset.field1 = true;
@@ -286,6 +287,7 @@ class Mixin2 final  {
   ::cpp2::Mixin1 get_m1() &&;
 
   template <typename T_Mixin2_m1_struct_setter = ::cpp2::Mixin1>
+  [[deprecated]]
   ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
     m1 = std::forward<T_Mixin2_m1_struct_setter>(m1_);
     __isset.m1 = true;
@@ -302,6 +304,7 @@ class Mixin2 final  {
   ::std::string* get_field2() && = delete;
 
   template <typename T_Mixin2_field2_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field2(T_Mixin2_field2_struct_setter&& field2_) {
     field2 = std::forward<T_Mixin2_field2_struct_setter>(field2_);
     __isset.field2 = true;
@@ -413,6 +416,7 @@ class Mixin3Base final  {
   }
 
   template <typename T_Mixin3Base_field3_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field3(T_Mixin3Base_field3_struct_setter&& field3_) {
     field3 = std::forward<T_Mixin3Base_field3_struct_setter>(field3_);
     __isset.field3 = true;
@@ -586,6 +590,7 @@ class Foo final  {
   }
 
   template <typename T_Foo_field4_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field4(T_Foo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
     __isset.field4 = true;
@@ -595,6 +600,7 @@ class Foo final  {
   ::cpp2::Mixin2 get_m2() &&;
 
   template <typename T_Foo_m2_struct_setter = ::cpp2::Mixin2>
+  [[deprecated]]
   ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
     m2 = std::forward<T_Foo_m2_struct_setter>(m2_);
     __isset.m2 = true;
@@ -604,6 +610,7 @@ class Foo final  {
   ::cpp2::Mixin3 get_m3() &&;
 
   template <typename T_Foo_m3_struct_setter = ::cpp2::Mixin3>
+  [[deprecated]]
   ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
     m3 = std::forward<T_Foo_m3_struct_setter>(m3_);
     __isset.m3 = true;

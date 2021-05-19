@@ -629,6 +629,7 @@ class decorated_struct final  {
   }
 
   template <typename T_decorated_struct_field_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
     field = std::forward<T_decorated_struct_field_struct_setter>(field_);
     __isset.field = true;
@@ -898,6 +899,7 @@ class ContainerStruct final  {
   ::std::vector<::std::int32_t> get_fieldA() &&;
 
   template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
@@ -907,6 +909,7 @@ class ContainerStruct final  {
   std::list<::std::int32_t> get_fieldB() &&;
 
   template <typename T_ContainerStruct_fieldB_struct_setter = std::list<::std::int32_t>>
+  [[deprecated]]
   std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -916,6 +919,7 @@ class ContainerStruct final  {
   std::deque<::std::int32_t> get_fieldC() &&;
 
   template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<::std::int32_t>>
+  [[deprecated]]
   std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
@@ -925,6 +929,7 @@ class ContainerStruct final  {
   folly::fbvector<::std::int32_t> get_fieldD() &&;
 
   template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<::std::int32_t>>
+  [[deprecated]]
   folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
@@ -934,6 +939,7 @@ class ContainerStruct final  {
   folly::small_vector<::std::int32_t> get_fieldE() &&;
 
   template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<::std::int32_t>>
+  [[deprecated]]
   folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -943,6 +949,7 @@ class ContainerStruct final  {
   folly::sorted_vector_set<::std::int32_t> get_fieldF() &&;
 
   template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<::std::int32_t>>
+  [[deprecated]]
   folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -952,6 +959,7 @@ class ContainerStruct final  {
   folly::sorted_vector_map<::std::int32_t, ::std::string> get_fieldG() &&;
 
   template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  [[deprecated]]
   folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -961,6 +969,7 @@ class ContainerStruct final  {
   ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
 
   template <typename T_ContainerStruct_fieldH_struct_setter = ::apache::thrift::fixtures::types::SomeMap>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
@@ -1066,6 +1075,7 @@ class CppTypeStruct final  {
   std::list<int32_t> get_fieldA() &&;
 
   template <typename T_CppTypeStruct_fieldA_struct_setter = std::list<int32_t>>
+  [[deprecated]]
   std::list<int32_t>& set_fieldA(T_CppTypeStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_CppTypeStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
@@ -1176,6 +1186,7 @@ class VirtualStruct  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -1307,6 +1318,7 @@ class MyStructWithForwardRefEnum final  {
     return a;
   }
 
+  [[deprecated]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_a(::apache::thrift::fixtures::types::MyForwardRefEnum a_) {
     a = a_;
     __isset.a = true;
@@ -1317,6 +1329,7 @@ class MyStructWithForwardRefEnum final  {
     return b;
   }
 
+  [[deprecated]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_b(::apache::thrift::fixtures::types::MyForwardRefEnum b_) {
     b = b_;
     __isset.b = true;
@@ -1449,6 +1462,7 @@ class TrivialNumeric final  {
     return a;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
     __isset.a = true;
@@ -1459,6 +1473,7 @@ class TrivialNumeric final  {
     return b;
   }
 
+  [[deprecated]]
   bool& set_b(bool b_) {
     b = b_;
     __isset.b = true;
@@ -1591,6 +1606,7 @@ class TrivialNestedWithDefault final  {
     return z;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_z(::std::int32_t z_) {
     z = z_;
     __isset.z = true;
@@ -1600,6 +1616,7 @@ class TrivialNestedWithDefault final  {
   ::apache::thrift::fixtures::types::TrivialNumeric get_n() &&;
 
   template <typename T_TrivialNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::TrivialNumeric>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
     n = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
     __isset.n = true;
@@ -1734,6 +1751,7 @@ class ComplexString final  {
   }
 
   template <typename T_ComplexString_a_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
     a = std::forward<T_ComplexString_a_struct_setter>(a_);
     __isset.a = true;
@@ -1743,6 +1761,7 @@ class ComplexString final  {
   ::std::map<::std::string, ::std::int32_t> get_b() &&;
 
   template <typename T_ComplexString_b_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::string, ::std::int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
     b = std::forward<T_ComplexString_b_struct_setter>(b_);
     __isset.b = true;
@@ -1879,6 +1898,7 @@ class ComplexNestedWithDefault final  {
   }
 
   template <typename T_ComplexNestedWithDefault_z_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
     z = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
     __isset.z = true;
@@ -1888,6 +1908,7 @@ class ComplexNestedWithDefault final  {
   ::apache::thrift::fixtures::types::ComplexString get_n() &&;
 
   template <typename T_ComplexNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::ComplexString>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
     n = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
     __isset.n = true;
@@ -2083,6 +2104,7 @@ class MinPadding final  {
     return small;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_small(::std::int8_t small_) {
     small = small_;
     return small;
@@ -2092,6 +2114,7 @@ class MinPadding final  {
     return big;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_big(::std::int64_t big_) {
     big = big_;
     return big;
@@ -2101,6 +2124,7 @@ class MinPadding final  {
     return medium;
   }
 
+  [[deprecated]]
   ::std::int16_t& set_medium(::std::int16_t medium_) {
     medium = medium_;
     return medium;
@@ -2110,6 +2134,7 @@ class MinPadding final  {
     return biggish;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_biggish(::std::int32_t biggish_) {
     biggish = biggish_;
     return biggish;
@@ -2119,6 +2144,7 @@ class MinPadding final  {
     return tiny;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_tiny(::std::int8_t tiny_) {
     tiny = tiny_;
     return tiny;
@@ -2358,6 +2384,7 @@ class MyStruct final  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -2373,6 +2400,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -2383,6 +2411,7 @@ class MyStruct final  {
     return majorVer;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
     __isset.majorVer = true;
@@ -2392,6 +2421,7 @@ class MyStruct final  {
   ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
 
   template <typename T_MyStruct_data_struct_setter = ::apache::thrift::fixtures::types::MyDataItem>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
     data = std::forward<T_MyStruct_data_struct_setter>(data_);
     __isset.data = true;
@@ -2500,6 +2530,7 @@ class Renaming final  {
     return bar;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_bar(::std::int64_t bar_) {
     bar = bar_;
     __isset.bar = true;
@@ -2634,6 +2665,7 @@ class AnnotatedTypes final  {
   }
 
   template <typename T_AnnotatedTypes_binary_field_struct_setter = ::apache::thrift::fixtures::types::TBinary>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
     binary_field = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
     __isset.binary_field = true;
@@ -2643,6 +2675,7 @@ class AnnotatedTypes final  {
   ::apache::thrift::fixtures::types::SomeListOfTypeMap get_list_field() &&;
 
   template <typename T_AnnotatedTypes_list_field_struct_setter = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
     list_field = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
     __isset.list_field = true;
@@ -2749,6 +2782,7 @@ class ForwardUsageStruct final  {
   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
 
   template <typename T_ForwardUsageStruct_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
     foo = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
     __isset.foo = true;
@@ -2867,6 +2901,7 @@ class ForwardUsageRoot final  {
   ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() && = delete;
 
   template <typename T_ForwardUsageRoot_ForwardUsageStruct_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::ForwardUsageStruct& set_ForwardUsageStruct(T_ForwardUsageRoot_ForwardUsageStruct_struct_setter&& ForwardUsageStruct_) {
     ForwardUsageStruct = std::forward<T_ForwardUsageRoot_ForwardUsageStruct_struct_setter>(ForwardUsageStruct_);
     __isset.ForwardUsageStruct = true;
@@ -2973,6 +3008,7 @@ class ForwardUsageByRef final  {
   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
 
   template <typename T_ForwardUsageByRef_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  [[deprecated]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageByRef_foo_struct_setter&& foo_) {
     foo = std::forward<T_ForwardUsageByRef_foo_struct_setter>(foo_);
     __isset.foo = true;
@@ -3150,6 +3186,7 @@ class NoexceptMoveSimpleStruct final  {
     return boolField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
     __isset.boolField = true;
@@ -3442,6 +3479,7 @@ class NoexceptMoveComplexStruct final  {
     return MyBoolField;
   }
 
+  [[deprecated]]
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField = MyBoolField_;
     __isset.MyBoolField = true;
@@ -3452,6 +3490,7 @@ class NoexceptMoveComplexStruct final  {
     return MyIntField;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -3467,6 +3506,7 @@ class NoexceptMoveComplexStruct final  {
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyStringField(T_NoexceptMoveComplexStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_NoexceptMoveComplexStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -3482,6 +3522,7 @@ class NoexceptMoveComplexStruct final  {
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyStringField2_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyStringField2(T_NoexceptMoveComplexStruct_MyStringField2_struct_setter&& MyStringField2_) {
     MyStringField2 = std::forward<T_NoexceptMoveComplexStruct_MyStringField2_struct_setter>(MyStringField2_);
     __isset.MyStringField2 = true;
@@ -3497,6 +3538,7 @@ class NoexceptMoveComplexStruct final  {
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyBinaryField(T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
     MyBinaryField = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter>(MyBinaryField_);
     __isset.MyBinaryField = true;
@@ -3513,6 +3555,7 @@ class NoexceptMoveComplexStruct final  {
   ::std::string* get_MyBinaryField2() && = delete;
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyBinaryField2(T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
     MyBinaryField2 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
     __isset.MyBinaryField2 = true;
@@ -3528,6 +3571,7 @@ class NoexceptMoveComplexStruct final  {
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_MyBinaryField3(T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
     MyBinaryField3 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
     return MyBinaryField3;
@@ -3536,6 +3580,7 @@ class NoexceptMoveComplexStruct final  {
   ::std::vector<::std::string> get_MyBinaryListField4() &&;
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter = ::std::vector<::std::string>>
+  [[deprecated]]
   ::std::vector<::std::string>& set_MyBinaryListField4(T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
     MyBinaryListField4 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
     __isset.MyBinaryListField4 = true;
@@ -3545,6 +3590,7 @@ class NoexceptMoveComplexStruct final  {
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
 
   template <typename T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  [[deprecated]]
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
     __isset.MyMapEnumAndInt = true;
@@ -4056,6 +4102,7 @@ class AllocatorAware final  {
   ::std::vector<::std::int32_t> get_aa_list() &&;
 
   template <typename T_AllocatorAware_aa_list_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated]]
   ::std::vector<::std::int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
     aa_list = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
     __isset.aa_list = true;
@@ -4065,6 +4112,7 @@ class AllocatorAware final  {
   ::std::set<::std::int32_t> get_aa_set() &&;
 
   template <typename T_AllocatorAware_aa_set_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated]]
   ::std::set<::std::int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
     aa_set = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
     __isset.aa_set = true;
@@ -4074,6 +4122,7 @@ class AllocatorAware final  {
   ::std::map<::std::int32_t, ::std::int32_t> get_aa_map() &&;
 
   template <typename T_AllocatorAware_aa_map_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
+  [[deprecated]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
     aa_map = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
     __isset.aa_map = true;
@@ -4089,6 +4138,7 @@ class AllocatorAware final  {
   }
 
   template <typename T_AllocatorAware_aa_string_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_aa_string(T_AllocatorAware_aa_string_struct_setter&& aa_string_) {
     aa_string = std::forward<T_AllocatorAware_aa_string_struct_setter>(aa_string_);
     __isset.aa_string = true;
@@ -4099,6 +4149,7 @@ class AllocatorAware final  {
     return not_a_container;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container = not_a_container_;
     __isset.not_a_container = true;
@@ -4226,6 +4277,7 @@ class AllocatorAware2 final  {
     return not_a_container;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container = not_a_container_;
     __isset.not_a_container = true;
@@ -4381,6 +4433,7 @@ class TypedefStruct final  {
     return i32_field;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_i32_field(::std::int32_t i32_field_) {
     i32_field = i32_field_;
     __isset.i32_field = true;
@@ -4391,6 +4444,7 @@ class TypedefStruct final  {
     return IntTypedef_field;
   }
 
+  [[deprecated]]
   ::apache::thrift::fixtures::types::IntTypedef& set_IntTypedef_field(::apache::thrift::fixtures::types::IntTypedef IntTypedef_field_) {
     IntTypedef_field = IntTypedef_field_;
     __isset.IntTypedef_field = true;
@@ -4401,6 +4455,7 @@ class TypedefStruct final  {
     return UintTypedef_field;
   }
 
+  [[deprecated]]
   std::uint32_t& set_UintTypedef_field(std::uint32_t UintTypedef_field_) {
     UintTypedef_field = UintTypedef_field_;
     __isset.UintTypedef_field = true;
@@ -4509,6 +4564,7 @@ class StructWithDoubleUnderscores final  {
     return __field;
   }
 
+  [[deprecated]]
   ::std::int32_t& set___field(::std::int32_t __field_) {
     __field = __field_;
     __isset.__field = true;

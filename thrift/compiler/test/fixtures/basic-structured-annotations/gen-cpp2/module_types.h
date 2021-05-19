@@ -275,6 +275,7 @@ class structured_annotation_inline final  {
     return count;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
     __isset.count = true;
@@ -290,6 +291,7 @@ class structured_annotation_inline final  {
   }
 
   template <typename T_structured_annotation_inline_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_structured_annotation_inline_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
     __isset.name = true;
@@ -402,6 +404,7 @@ class structured_annotation_with_default final  {
   }
 
   template <typename T_structured_annotation_with_default_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_structured_annotation_with_default_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
     __isset.name = true;
@@ -510,6 +513,7 @@ class structured_annotation_forward final  {
     return count;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
     __isset.count = true;
@@ -667,6 +671,7 @@ class structured_annotation_recursive final  {
   }
 
   template <typename T_structured_annotation_recursive_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_structured_annotation_recursive_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
     __isset.name = true;
@@ -676,6 +681,7 @@ class structured_annotation_recursive final  {
   ::cpp2::structured_annotation_recursive get_recurse() &&;
 
   template <typename T_structured_annotation_recursive_recurse_struct_setter = ::cpp2::structured_annotation_recursive>
+  [[deprecated]]
   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
     __isset.recurse = true;
@@ -685,6 +691,7 @@ class structured_annotation_recursive final  {
   ::cpp2::structured_annotation_forward get_forward() &&;
 
   template <typename T_structured_annotation_recursive_forward_struct_setter = ::cpp2::structured_annotation_forward>
+  [[deprecated]]
   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
     __isset.forward = true;
@@ -819,6 +826,7 @@ class structured_annotation_nested final  {
   }
 
   template <typename T_structured_annotation_nested_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_structured_annotation_nested_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
     __isset.name = true;
@@ -828,6 +836,7 @@ class structured_annotation_nested final  {
   ::cpp2::structured_annotation_with_default get_nest() &&;
 
   template <typename T_structured_annotation_nested_nest_struct_setter = ::cpp2::structured_annotation_with_default>
+  [[deprecated]]
   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
     __isset.nest = true;
@@ -1005,6 +1014,7 @@ class MyStruct final  {
     return annotated_field;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
     annotated_field = annotated_field_;
     __isset.annotated_field = true;
@@ -1020,6 +1030,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
+  [[deprecated]]
   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
     __isset.annotated_type = true;
@@ -1035,6 +1046,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_annotated_recursive_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_annotated_recursive(T_MyStruct_annotated_recursive_struct_setter&& annotated_recursive_) {
     annotated_recursive = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
     __isset.annotated_recursive = true;
@@ -1045,6 +1057,7 @@ class MyStruct final  {
     return annotated_nested;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
     annotated_nested = annotated_nested_;
     __isset.annotated_nested = true;
@@ -1165,6 +1178,7 @@ class MyException final : public apache::thrift::TException {
   }
 
   template <typename T_MyException_context_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_context(T_MyException_context_struct_setter&& context_) {
     context = std::forward<T_MyException_context_struct_setter>(context_);
     __isset.context = true;

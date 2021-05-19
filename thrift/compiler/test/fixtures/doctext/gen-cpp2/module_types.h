@@ -183,6 +183,7 @@ class A final  {
     return useless_field;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
     useless_field = useless_field_;
     __isset.useless_field = true;
@@ -582,6 +583,7 @@ class Bang final : public apache::thrift::TException {
   }
 
   template <typename T_Bang_message_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_message(T_Bang_message_struct_setter&& message_) {
     message = std::forward<T_Bang_message_struct_setter>(message_);
     __isset.message = true;

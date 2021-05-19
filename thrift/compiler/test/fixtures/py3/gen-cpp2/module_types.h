@@ -318,6 +318,7 @@ class SimpleException final : public apache::thrift::TException {
     return err_code;
   }
 
+  [[deprecated]]
   ::std::int16_t& set_err_code(::std::int16_t err_code_) {
     err_code = err_code_;
     __isset.err_code = true;
@@ -433,6 +434,7 @@ class OptionalRefStruct final  {
   ::py3::simple::IOBufPtr* get_optional_blob() && = delete;
 
   template <typename T_OptionalRefStruct_optional_blob_struct_setter = ::py3::simple::IOBufPtr>
+  [[deprecated]]
   ::py3::simple::IOBufPtr& set_optional_blob(T_OptionalRefStruct_optional_blob_struct_setter&& optional_blob_) {
     optional_blob = std::forward<T_OptionalRefStruct_optional_blob_struct_setter>(optional_blob_);
     __isset.optional_blob = true;
@@ -708,6 +710,7 @@ class SimpleStruct final  {
     return is_on;
   }
 
+  [[deprecated]]
   bool& set_is_on(bool is_on_) {
     is_on = is_on_;
     __isset.is_on = true;
@@ -718,6 +721,7 @@ class SimpleStruct final  {
     return tiny_int;
   }
 
+  [[deprecated]]
   ::std::int8_t& set_tiny_int(::std::int8_t tiny_int_) {
     tiny_int = tiny_int_;
     __isset.tiny_int = true;
@@ -728,6 +732,7 @@ class SimpleStruct final  {
     return small_int;
   }
 
+  [[deprecated]]
   ::std::int16_t& set_small_int(::std::int16_t small_int_) {
     small_int = small_int_;
     __isset.small_int = true;
@@ -738,6 +743,7 @@ class SimpleStruct final  {
     return nice_sized_int;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_nice_sized_int(::std::int32_t nice_sized_int_) {
     nice_sized_int = nice_sized_int_;
     __isset.nice_sized_int = true;
@@ -748,6 +754,7 @@ class SimpleStruct final  {
     return big_int;
   }
 
+  [[deprecated]]
   ::std::int64_t& set_big_int(::std::int64_t big_int_) {
     big_int = big_int_;
     __isset.big_int = true;
@@ -758,6 +765,7 @@ class SimpleStruct final  {
     return real;
   }
 
+  [[deprecated]]
   double& set_real(double real_) {
     real = real_;
     __isset.real = true;
@@ -768,6 +776,7 @@ class SimpleStruct final  {
     return smaller_real;
   }
 
+  [[deprecated]]
   float& set_smaller_real(float smaller_real_) {
     smaller_real = smaller_real_;
     __isset.smaller_real = true;
@@ -778,6 +787,7 @@ class SimpleStruct final  {
     return hidden_field;
   }
 
+  [[deprecated]]
   ::std::int16_t& set_hidden_field(::std::int16_t hidden_field_) {
     hidden_field = hidden_field_;
     __isset.hidden_field = true;
@@ -1070,6 +1080,7 @@ class ComplexStruct final  {
   ::py3::simple::SimpleStruct get_structOne() &&;
 
   template <typename T_ComplexStruct_structOne_struct_setter = ::py3::simple::SimpleStruct>
+  [[deprecated]]
   ::py3::simple::SimpleStruct& set_structOne(T_ComplexStruct_structOne_struct_setter&& structOne_) {
     structOne = std::forward<T_ComplexStruct_structOne_struct_setter>(structOne_);
     __isset.structOne = true;
@@ -1079,6 +1090,7 @@ class ComplexStruct final  {
   ::py3::simple::SimpleStruct get_structTwo() &&;
 
   template <typename T_ComplexStruct_structTwo_struct_setter = ::py3::simple::SimpleStruct>
+  [[deprecated]]
   ::py3::simple::SimpleStruct& set_structTwo(T_ComplexStruct_structTwo_struct_setter&& structTwo_) {
     structTwo = std::forward<T_ComplexStruct_structTwo_struct_setter>(structTwo_);
     __isset.structTwo = true;
@@ -1089,6 +1101,7 @@ class ComplexStruct final  {
     return an_integer;
   }
 
+  [[deprecated]]
   ::std::int32_t& set_an_integer(::std::int32_t an_integer_) {
     an_integer = an_integer_;
     __isset.an_integer = true;
@@ -1104,6 +1117,7 @@ class ComplexStruct final  {
   }
 
   template <typename T_ComplexStruct_name_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_name(T_ComplexStruct_name_struct_setter&& name_) {
     name = std::forward<T_ComplexStruct_name_struct_setter>(name_);
     __isset.name = true;
@@ -1114,6 +1128,7 @@ class ComplexStruct final  {
     return an_enum;
   }
 
+  [[deprecated]]
   ::py3::simple::AnEnum& set_an_enum(::py3::simple::AnEnum an_enum_) {
     an_enum = an_enum_;
     __isset.an_enum = true;
@@ -1129,6 +1144,7 @@ class ComplexStruct final  {
   }
 
   template <typename T_ComplexStruct_some_bytes_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_some_bytes(T_ComplexStruct_some_bytes_struct_setter&& some_bytes_) {
     some_bytes = std::forward<T_ComplexStruct_some_bytes_struct_setter>(some_bytes_);
     __isset.some_bytes = true;
@@ -1144,6 +1160,7 @@ class ComplexStruct final  {
   }
 
   template <typename T_ComplexStruct_from_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_from(T_ComplexStruct_from_struct_setter&& from_) {
     from = std::forward<T_ComplexStruct_from_struct_setter>(from_);
     __isset.from = true;
@@ -1159,6 +1176,7 @@ class ComplexStruct final  {
   }
 
   template <typename T_ComplexStruct_cdef_struct_setter = ::std::string>
+  [[deprecated]]
   ::std::string& set_cdef(T_ComplexStruct_cdef_struct_setter&& cdef_) {
     cdef = std::forward<T_ComplexStruct_cdef_struct_setter>(cdef_);
     __isset.cdef = true;
@@ -1174,6 +1192,7 @@ class ComplexStruct final  {
   }
 
   template <typename T_ComplexStruct_bytes_with_cpp_type_struct_setter = ::py3::simple::foo_bar>
+  [[deprecated]]
   ::py3::simple::foo_bar& set_bytes_with_cpp_type(T_ComplexStruct_bytes_with_cpp_type_struct_setter&& bytes_with_cpp_type_) {
     bytes_with_cpp_type = std::forward<T_ComplexStruct_bytes_with_cpp_type_struct_setter>(bytes_with_cpp_type_);
     __isset.bytes_with_cpp_type = true;
@@ -1487,6 +1506,7 @@ class BinaryUnionStruct final  {
   ::py3::simple::BinaryUnion get_u() &&;
 
   template <typename T_BinaryUnionStruct_u_struct_setter = ::py3::simple::BinaryUnion>
+  [[deprecated]]
   ::py3::simple::BinaryUnion& set_u(T_BinaryUnionStruct_u_struct_setter&& u_) {
     u = std::forward<T_BinaryUnionStruct_u_struct_setter>(u_);
     __isset.u = true;

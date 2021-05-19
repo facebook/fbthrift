@@ -272,6 +272,7 @@ class MyStruct final  {
     return myEnum;
   }
 
+  [[deprecated]]
   ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
     __isset.myEnum = true;
@@ -282,6 +283,7 @@ class MyStruct final  {
     return myBigEnum;
   }
 
+  [[deprecated]]
   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
     __isset.myBigEnum = true;
