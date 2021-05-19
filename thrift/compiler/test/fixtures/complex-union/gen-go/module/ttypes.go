@@ -33,15 +33,15 @@ func ContainerTypedefPtr(v ContainerTypedef) *ContainerTypedef { return &v }
 //  - TypedefValue
 //  - StringRef
 type ComplexUnion struct {
-  IntValue *int64 `thrift:"intValue,1" db:"intValue" json:"intValue,omitempty"`
-  IntListValue []int64 `thrift:"intListValue,2" db:"intListValue" json:"intListValue,omitempty"`
-  StringListValue []string `thrift:"stringListValue,3" db:"stringListValue" json:"stringListValue,omitempty"`
+  IntValue *int64 `thrift:"intValue,1,optional" db:"intValue" json:"intValue,omitempty"`
+  IntListValue []int64 `thrift:"intListValue,2,optional" db:"intListValue" json:"intListValue,omitempty"`
+  StringListValue []string `thrift:"stringListValue,3,optional" db:"stringListValue" json:"stringListValue,omitempty"`
   // unused field # 4
-  StringValue *string `thrift:"stringValue,5" db:"stringValue" json:"stringValue,omitempty"`
+  StringValue *string `thrift:"stringValue,5,optional" db:"stringValue" json:"stringValue,omitempty"`
   // unused fields # 6 to 8
-  TypedefValue ContainerTypedef `thrift:"typedefValue,9" db:"typedefValue" json:"typedefValue,omitempty"`
+  TypedefValue ContainerTypedef `thrift:"typedefValue,9,optional" db:"typedefValue" json:"typedefValue,omitempty"`
   // unused fields # 10 to 13
-  StringRef *string `thrift:"stringRef,14" db:"stringRef" json:"stringRef,omitempty"`
+  StringRef *string `thrift:"stringRef,14,optional" db:"stringRef" json:"stringRef,omitempty"`
 }
 
 func NewComplexUnion() *ComplexUnion {
@@ -515,8 +515,8 @@ func (p *ComplexUnion) String() string {
 //  - StringListValue
 type ListUnion struct {
   // unused field # 1
-  IntListValue []int64 `thrift:"intListValue,2" db:"intListValue" json:"intListValue,omitempty"`
-  StringListValue []string `thrift:"stringListValue,3" db:"stringListValue" json:"stringListValue,omitempty"`
+  IntListValue []int64 `thrift:"intListValue,2,optional" db:"intListValue" json:"intListValue,omitempty"`
+  StringListValue []string `thrift:"stringListValue,3,optional" db:"stringListValue" json:"stringListValue,omitempty"`
 }
 
 func NewListUnion() *ListUnion {
@@ -724,8 +724,8 @@ func (p *ListUnion) String() string {
 //  - BinaryData
 //  - StringData
 type DataUnion struct {
-  BinaryData []byte `thrift:"binaryData,1" db:"binaryData" json:"binaryData,omitempty"`
-  StringData *string `thrift:"stringData,2" db:"stringData" json:"stringData,omitempty"`
+  BinaryData []byte `thrift:"binaryData,1,optional" db:"binaryData" json:"binaryData,omitempty"`
+  StringData *string `thrift:"stringData,2,optional" db:"stringData" json:"stringData,omitempty"`
 }
 
 func NewDataUnion() *DataUnion {
@@ -1138,8 +1138,8 @@ func (p *Val) String() string {
 //  - V1
 //  - V2
 type ValUnion struct {
-  V1 *Val `thrift:"v1,1" db:"v1" json:"v1,omitempty"`
-  V2 *Val `thrift:"v2,2" db:"v2" json:"v2,omitempty"`
+  V1 *Val `thrift:"v1,1,optional" db:"v1" json:"v1,omitempty"`
+  V2 *Val `thrift:"v2,2,optional" db:"v2" json:"v2,omitempty"`
 }
 
 func NewValUnion() *ValUnion {
@@ -1334,8 +1334,8 @@ func (p *ValUnion) String() string {
 //  - ThingOne
 //  - ThingTwo
 type VirtualComplexUnion struct {
-  ThingOne *string `thrift:"thingOne,1" db:"thingOne" json:"thingOne,omitempty"`
-  ThingTwo *string `thrift:"thingTwo,2" db:"thingTwo" json:"thingTwo,omitempty"`
+  ThingOne *string `thrift:"thingOne,1,optional" db:"thingOne" json:"thingOne,omitempty"`
+  ThingTwo *string `thrift:"thingTwo,2,optional" db:"thingTwo" json:"thingTwo,omitempty"`
 }
 
 func NewVirtualComplexUnion() *VirtualComplexUnion {
@@ -1640,7 +1640,7 @@ func (p *NonCopyableStruct) String() string {
 // Attributes:
 //  - S
 type NonCopyableUnion struct {
-  S *NonCopyableStruct `thrift:"s,1" db:"s" json:"s,omitempty"`
+  S *NonCopyableStruct `thrift:"s,1,optional" db:"s" json:"s,omitempty"`
 }
 
 func NewNonCopyableUnion() *NonCopyableUnion {

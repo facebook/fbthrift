@@ -68,8 +68,8 @@ func NewCar() *Car { return NewAutomobile() }
 //  - PartNames
 type Automobile struct {
   Plate Plate `thrift:"plate,1" db:"plate" json:"plate"`
-  PreviousPlate *Plate `thrift:"previous_plate,2" db:"previous_plate" json:"previous_plate,omitempty"`
-  FirstPlate Plate `thrift:"first_plate,3" db:"first_plate" json:"first_plate,omitempty"`
+  PreviousPlate *Plate `thrift:"previous_plate,2,optional" db:"previous_plate" json:"previous_plate,omitempty"`
+  FirstPlate Plate `thrift:"first_plate,3,optional" db:"first_plate" json:"first_plate,omitempty"`
   Year Year `thrift:"year,4" db:"year" json:"year"`
   Drivers Drivers `thrift:"drivers,5" db:"drivers" json:"drivers"`
   Accessories []*Accessory `thrift:"Accessories,6" db:"Accessories" json:"Accessories"`

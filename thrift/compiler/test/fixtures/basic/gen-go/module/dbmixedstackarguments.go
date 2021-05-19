@@ -503,7 +503,7 @@ func (p *DbMixedStackArgumentsGetDataByKey0Args) String() string {
 //  - Success
 type DbMixedStackArgumentsGetDataByKey0Result struct {
   thrift.IResponse
-  Success []byte `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []byte `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewDbMixedStackArgumentsGetDataByKey0Result() *DbMixedStackArgumentsGetDataByKey0Result {
@@ -734,7 +734,7 @@ func (p *DbMixedStackArgumentsGetDataByKey1Args) String() string {
 //  - Success
 type DbMixedStackArgumentsGetDataByKey1Result struct {
   thrift.IResponse
-  Success []byte `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []byte `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewDbMixedStackArgumentsGetDataByKey1Result() *DbMixedStackArgumentsGetDataByKey1Result {

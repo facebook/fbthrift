@@ -1222,7 +1222,7 @@ func (p *MyServiceGetRandomDataArgs) String() string {
 //  - Success
 type MyServiceGetRandomDataResult struct {
   thrift.IResponse
-  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceGetRandomDataResult() *MyServiceGetRandomDataResult {
@@ -1858,7 +1858,7 @@ func (p *MyServiceHasDataByIdArgs) String() string {
 //  - Success
 type MyServiceHasDataByIdResult struct {
   thrift.IResponse
-  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *bool `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceHasDataByIdResult() *MyServiceHasDataByIdResult {
@@ -2096,7 +2096,7 @@ func (p *MyServiceGetDataByIdArgs) String() string {
 //  - Success
 type MyServiceGetDataByIdResult struct {
   thrift.IResponse
-  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceGetDataByIdResult() *MyServiceGetDataByIdResult {

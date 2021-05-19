@@ -317,10 +317,10 @@ func (p *Color) String() string {
 //  - HasAC
 type Vehicle struct {
   Color *Color `thrift:"color,1" db:"color" json:"color"`
-  LicensePlate *string `thrift:"licensePlate,2" db:"licensePlate" json:"licensePlate,omitempty"`
-  Description *string `thrift:"description,3" db:"description" json:"description,omitempty"`
-  Name *string `thrift:"name,4" db:"name" json:"name,omitempty"`
-  HasAC bool `thrift:"hasAC,5" db:"hasAC" json:"hasAC,omitempty"`
+  LicensePlate *string `thrift:"licensePlate,2,optional" db:"licensePlate" json:"licensePlate,omitempty"`
+  Description *string `thrift:"description,3,optional" db:"description" json:"description,omitempty"`
+  Name *string `thrift:"name,4,optional" db:"name" json:"name,omitempty"`
+  HasAC bool `thrift:"hasAC,5,optional" db:"hasAC" json:"hasAC,omitempty"`
 }
 
 func NewVehicle() *Vehicle {
@@ -665,14 +665,14 @@ func (p *Vehicle) String() string {
 type Person struct {
   Id PersonID `thrift:"id,1" db:"id" json:"id"`
   Name string `thrift:"name,2" db:"name" json:"name"`
-  Age *int16 `thrift:"age,3" db:"age" json:"age,omitempty"`
-  Address *string `thrift:"address,4" db:"address" json:"address,omitempty"`
-  FavoriteColor *Color `thrift:"favoriteColor,5" db:"favoriteColor" json:"favoriteColor,omitempty"`
-  Friends []PersonID `thrift:"friends,6" db:"friends" json:"friends,omitempty"`
-  BestFriend *PersonID `thrift:"bestFriend,7" db:"bestFriend" json:"bestFriend,omitempty"`
-  PetNames map[Animal]string `thrift:"petNames,8" db:"petNames" json:"petNames,omitempty"`
-  AfraidOfAnimal *Animal `thrift:"afraidOfAnimal,9" db:"afraidOfAnimal" json:"afraidOfAnimal,omitempty"`
-  Vehicles []*Vehicle `thrift:"vehicles,10" db:"vehicles" json:"vehicles,omitempty"`
+  Age *int16 `thrift:"age,3,optional" db:"age" json:"age,omitempty"`
+  Address *string `thrift:"address,4,optional" db:"address" json:"address,omitempty"`
+  FavoriteColor *Color `thrift:"favoriteColor,5,optional" db:"favoriteColor" json:"favoriteColor,omitempty"`
+  Friends []PersonID `thrift:"friends,6,optional" db:"friends" json:"friends,omitempty"`
+  BestFriend *PersonID `thrift:"bestFriend,7,optional" db:"bestFriend" json:"bestFriend,omitempty"`
+  PetNames map[Animal]string `thrift:"petNames,8,optional" db:"petNames" json:"petNames,omitempty"`
+  AfraidOfAnimal *Animal `thrift:"afraidOfAnimal,9,optional" db:"afraidOfAnimal" json:"afraidOfAnimal,omitempty"`
+  Vehicles []*Vehicle `thrift:"vehicles,10,optional" db:"vehicles" json:"vehicles,omitempty"`
 }
 
 func NewPerson() *Person {

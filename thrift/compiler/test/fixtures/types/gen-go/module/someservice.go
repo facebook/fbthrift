@@ -535,7 +535,7 @@ func (p *SomeServiceBounceMapArgs) String() string {
 //  - Success
 type SomeServiceBounceMapResult struct {
   thrift.IResponse
-  Success include0.SomeMap `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success include0.SomeMap `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewSomeServiceBounceMapResult() *SomeServiceBounceMapResult {
@@ -816,7 +816,7 @@ func (p *SomeServiceBinaryKeyedMapArgs) String() string {
 //  - Success
 type SomeServiceBinaryKeyedMapResult struct {
   thrift.IResponse
-  Success map[string]int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success map[string]int64 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewSomeServiceBinaryKeyedMapResult() *SomeServiceBinaryKeyedMapResult {

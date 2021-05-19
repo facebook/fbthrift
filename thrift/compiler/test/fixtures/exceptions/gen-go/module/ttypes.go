@@ -144,7 +144,7 @@ func (p *Fiery) Error() string {
 // Attributes:
 //  - Sonnet
 type Serious struct {
-  Sonnet *string `thrift:"sonnet,1" db:"sonnet" json:"sonnet,omitempty"`
+  Sonnet *string `thrift:"sonnet,1,optional" db:"sonnet" json:"sonnet,omitempty"`
 }
 
 func NewSerious() *Serious {

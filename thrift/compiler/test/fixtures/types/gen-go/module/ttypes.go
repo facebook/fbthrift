@@ -2953,8 +2953,8 @@ func (p *AnnotatedTypes) String() string {
 //  - ForwardUsageStruct
 //  - ForwardUsageByRef
 type ForwardUsageRoot struct {
-  ForwardUsageStruct *ForwardUsageStruct `thrift:"ForwardUsageStruct,1" db:"ForwardUsageStruct" json:"ForwardUsageStruct,omitempty"`
-  ForwardUsageByRef *ForwardUsageByRef `thrift:"ForwardUsageByRef,2" db:"ForwardUsageByRef" json:"ForwardUsageByRef,omitempty"`
+  ForwardUsageStruct *ForwardUsageStruct `thrift:"ForwardUsageStruct,1,optional" db:"ForwardUsageStruct" json:"ForwardUsageStruct,omitempty"`
+  ForwardUsageByRef *ForwardUsageByRef `thrift:"ForwardUsageByRef,2,optional" db:"ForwardUsageByRef" json:"ForwardUsageByRef,omitempty"`
 }
 
 func NewForwardUsageRoot() *ForwardUsageRoot {
@@ -3133,7 +3133,7 @@ func (p *ForwardUsageRoot) String() string {
 // Attributes:
 //  - Foo
 type ForwardUsageStruct struct {
-  Foo *ForwardUsageRoot `thrift:"foo,1" db:"foo" json:"foo,omitempty"`
+  Foo *ForwardUsageRoot `thrift:"foo,1,optional" db:"foo" json:"foo,omitempty"`
 }
 
 func NewForwardUsageStruct() *ForwardUsageStruct {
@@ -3258,7 +3258,7 @@ func (p *ForwardUsageStruct) String() string {
 // Attributes:
 //  - Foo
 type ForwardUsageByRef struct {
-  Foo *ForwardUsageRoot `thrift:"foo,1" db:"foo" json:"foo,omitempty"`
+  Foo *ForwardUsageRoot `thrift:"foo,1,optional" db:"foo" json:"foo,omitempty"`
 }
 
 func NewForwardUsageByRef() *ForwardUsageByRef {
@@ -3572,7 +3572,7 @@ type NoexceptMoveComplexStruct struct {
   MyStringField string `thrift:"MyStringField,3" db:"MyStringField" json:"MyStringField"`
   MyStringField2 string `thrift:"MyStringField2,4" db:"MyStringField2" json:"MyStringField2"`
   MyBinaryField []byte `thrift:"MyBinaryField,5" db:"MyBinaryField" json:"MyBinaryField"`
-  MyBinaryField2 []byte `thrift:"MyBinaryField2,6" db:"MyBinaryField2" json:"MyBinaryField2,omitempty"`
+  MyBinaryField2 []byte `thrift:"MyBinaryField2,6,optional" db:"MyBinaryField2" json:"MyBinaryField2,omitempty"`
   MyBinaryField3 []byte `thrift:"MyBinaryField3,7,required" db:"MyBinaryField3" json:"MyBinaryField3"`
   MyBinaryListField4 [][]byte `thrift:"MyBinaryListField4,8" db:"MyBinaryListField4" json:"MyBinaryListField4"`
   MyMapEnumAndInt map[MyEnumA]string `thrift:"MyMapEnumAndInt,9" db:"MyMapEnumAndInt" json:"MyMapEnumAndInt"`
@@ -4077,8 +4077,8 @@ func (p *NoexceptMoveComplexStruct) String() string {
 //  - StringField
 //  - I32Field
 type NoExceptMoveUnion struct {
-  StringField *string `thrift:"string_field,1" db:"string_field" json:"string_field,omitempty"`
-  I32Field *int32 `thrift:"i32_field,2" db:"i32_field" json:"i32_field,omitempty"`
+  StringField *string `thrift:"string_field,1,optional" db:"string_field" json:"string_field,omitempty"`
+  I32Field *int32 `thrift:"i32_field,2,optional" db:"i32_field" json:"i32_field,omitempty"`
 }
 
 func NewNoExceptMoveUnion() *NoExceptMoveUnion {

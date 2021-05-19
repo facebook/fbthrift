@@ -511,9 +511,9 @@ func (p *MyDataItem) String() string {
 //  - MyStruct
 //  - MyDataItem
 type MyUnion struct {
-  MyEnum *MyEnum `thrift:"myEnum,1" db:"myEnum" json:"myEnum,omitempty"`
-  MyStruct *MyStruct `thrift:"myStruct,2" db:"myStruct" json:"myStruct,omitempty"`
-  MyDataItem *MyDataItem `thrift:"myDataItem,3" db:"myDataItem" json:"myDataItem,omitempty"`
+  MyEnum *MyEnum `thrift:"myEnum,1,optional" db:"myEnum" json:"myEnum,omitempty"`
+  MyStruct *MyStruct `thrift:"myStruct,2,optional" db:"myStruct" json:"myStruct,omitempty"`
+  MyDataItem *MyDataItem `thrift:"myDataItem,3,optional" db:"myDataItem" json:"myDataItem,omitempty"`
 }
 
 func NewMyUnion() *MyUnion {

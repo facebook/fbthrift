@@ -449,7 +449,7 @@ func (p *ServiceFuncArgs) String() string {
 //  - Success
 type ServiceFuncResult struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewServiceFuncResult() *ServiceFuncResult {

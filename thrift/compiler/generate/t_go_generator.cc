@@ -1467,6 +1467,8 @@ void t_go_generator::generate_go_struct_definition(
 
       if ((*m_iter)->get_req() == t_field::e_req::required) {
         out << ",required";
+      } else if (((*m_iter)->get_req() == t_field::e_req::optional)) {
+        out << ",optional";
       }
 
       out << "\" " << gotag << "`" << endl;

@@ -45,12 +45,12 @@ func NewStructWithAdapter() StructWithAdapter { return NewBar() }
 //  - OptionalMapField
 type Foo struct {
   IntField int32 `thrift:"intField,1" db:"intField" json:"intField"`
-  OptionalIntField *int32 `thrift:"optionalIntField,2" db:"optionalIntField" json:"optionalIntField,omitempty"`
+  OptionalIntField *int32 `thrift:"optionalIntField,2,optional" db:"optionalIntField" json:"optionalIntField,omitempty"`
   IntFieldWithDefault int32 `thrift:"intFieldWithDefault,3" db:"intFieldWithDefault" json:"intFieldWithDefault"`
   SetField SetWithAdapter `thrift:"setField,4" db:"setField" json:"setField"`
-  OptionalSetField SetWithAdapter `thrift:"optionalSetField,5" db:"optionalSetField" json:"optionalSetField,omitempty"`
+  OptionalSetField SetWithAdapter `thrift:"optionalSetField,5,optional" db:"optionalSetField" json:"optionalSetField,omitempty"`
   MapField map[string]ListWithElemAdapter `thrift:"mapField,6" db:"mapField" json:"mapField"`
-  OptionalMapField map[string]ListWithElemAdapter `thrift:"optionalMapField,7" db:"optionalMapField" json:"optionalMapField,omitempty"`
+  OptionalMapField map[string]ListWithElemAdapter `thrift:"optionalMapField,7,optional" db:"optionalMapField" json:"optionalMapField,omitempty"`
 }
 
 func NewFoo() *Foo {
@@ -589,9 +589,9 @@ func (p *Foo) String() string {
 //  - OptionalStructListField
 type Bar struct {
   StructField *Foo `thrift:"structField,1" db:"structField" json:"structField"`
-  OptionalStructField *Foo `thrift:"optionalStructField,2" db:"optionalStructField" json:"optionalStructField,omitempty"`
+  OptionalStructField *Foo `thrift:"optionalStructField,2,optional" db:"optionalStructField" json:"optionalStructField,omitempty"`
   StructListField []*Foo `thrift:"structListField,3" db:"structListField" json:"structListField"`
-  OptionalStructListField []*Foo `thrift:"optionalStructListField,4" db:"optionalStructListField" json:"optionalStructListField,omitempty"`
+  OptionalStructListField []*Foo `thrift:"optionalStructListField,4,optional" db:"optionalStructListField" json:"optionalStructListField,omitempty"`
 }
 
 func NewBar() *Bar {

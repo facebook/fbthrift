@@ -181,8 +181,8 @@ func MyMapIdentifierPtr(v MyMapIdentifier) *MyMapIdentifier { return &v }
 type Internship struct {
   Weeks int32 `thrift:"weeks,1,required" db:"weeks" json:"weeks"`
   Title string `thrift:"title,2" db:"title" json:"title"`
-  Employer *Company `thrift:"employer,3" db:"employer" json:"employer,omitempty"`
-  Compensation *float64 `thrift:"compensation,4" db:"compensation" json:"compensation,omitempty"`
+  Employer *Company `thrift:"employer,3,optional" db:"employer" json:"employer,omitempty"`
+  Compensation *float64 `thrift:"compensation,4,optional" db:"compensation" json:"compensation,omitempty"`
 }
 
 func NewInternship() *Internship {
@@ -1250,8 +1250,8 @@ func (p *Struct3) String() string {
 //  - C
 type Struct4 struct {
   A int32 `thrift:"a,1" db:"a" json:"a"`
-  B *float64 `thrift:"b,2" db:"b" json:"b,omitempty"`
-  C *int8 `thrift:"c,3" db:"c" json:"c,omitempty"`
+  B *float64 `thrift:"b,2,optional" db:"b" json:"b,omitempty"`
+  C *int8 `thrift:"c,3,optional" db:"c" json:"c,omitempty"`
 }
 
 func NewStruct4() *Struct4 {
@@ -1472,8 +1472,8 @@ func (p *Struct4) String() string {
 //  - I
 //  - D
 type Union1 struct {
-  I *int32 `thrift:"i,1" db:"i" json:"i,omitempty"`
-  D *float64 `thrift:"d,2" db:"d" json:"d,omitempty"`
+  I *int32 `thrift:"i,1,optional" db:"i" json:"i,omitempty"`
+  D *float64 `thrift:"d,2,optional" db:"d" json:"d,omitempty"`
 }
 
 func NewUnion1() *Union1 {
@@ -1670,10 +1670,10 @@ func (p *Union1) String() string {
 //  - S
 //  - U
 type Union2 struct {
-  I *int32 `thrift:"i,1" db:"i" json:"i,omitempty"`
-  D *float64 `thrift:"d,2" db:"d" json:"d,omitempty"`
-  S *Struct1 `thrift:"s,3" db:"s" json:"s,omitempty"`
-  U *Union1 `thrift:"u,4" db:"u" json:"u,omitempty"`
+  I *int32 `thrift:"i,1,optional" db:"i" json:"i,omitempty"`
+  D *float64 `thrift:"d,2,optional" db:"d" json:"d,omitempty"`
+  S *Struct1 `thrift:"s,3,optional" db:"s" json:"s,omitempty"`
+  U *Union1 `thrift:"u,4,optional" db:"u" json:"u,omitempty"`
 }
 
 func NewUnion2() *Union2 {

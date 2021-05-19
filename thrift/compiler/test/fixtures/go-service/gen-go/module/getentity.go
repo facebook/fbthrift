@@ -1655,7 +1655,7 @@ func (p *GetEntityGetEntityArgs) String() string {
 //  - Success
 type GetEntityGetEntityResult struct {
   thrift.IResponse
-  Success *GetEntityResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *GetEntityResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetEntityResult() *GetEntityGetEntityResult {
@@ -1847,7 +1847,7 @@ func (p *GetEntityGetBoolArgs) String() string {
 //  - Success
 type GetEntityGetBoolResult struct {
   thrift.IResponse
-  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *bool `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetBoolResult() *GetEntityGetBoolResult {
@@ -2039,7 +2039,7 @@ func (p *GetEntityGetByteArgs) String() string {
 //  - Success
 type GetEntityGetByteResult struct {
   thrift.IResponse
-  Success *int8 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int8 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetByteResult() *GetEntityGetByteResult {
@@ -2232,7 +2232,7 @@ func (p *GetEntityGetI16Args) String() string {
 //  - Success
 type GetEntityGetI16Result struct {
   thrift.IResponse
-  Success *int16 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int16 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI16Result() *GetEntityGetI16Result {
@@ -2424,7 +2424,7 @@ func (p *GetEntityGetI32Args) String() string {
 //  - Success
 type GetEntityGetI32Result struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI32Result() *GetEntityGetI32Result {
@@ -2616,7 +2616,7 @@ func (p *GetEntityGetI64Args) String() string {
 //  - Success
 type GetEntityGetI64Result struct {
   thrift.IResponse
-  Success *int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int64 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI64Result() *GetEntityGetI64Result {
@@ -2808,7 +2808,7 @@ func (p *GetEntityGetDoubleArgs) String() string {
 //  - Success
 type GetEntityGetDoubleResult struct {
   thrift.IResponse
-  Success *float64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *float64 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetDoubleResult() *GetEntityGetDoubleResult {
@@ -3000,7 +3000,7 @@ func (p *GetEntityGetStringArgs) String() string {
 //  - Success
 type GetEntityGetStringResult struct {
   thrift.IResponse
-  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetStringResult() *GetEntityGetStringResult {
@@ -3192,7 +3192,7 @@ func (p *GetEntityGetBinaryArgs) String() string {
 //  - Success
 type GetEntityGetBinaryResult struct {
   thrift.IResponse
-  Success []byte `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []byte `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetBinaryResult() *GetEntityGetBinaryResult {
@@ -3377,7 +3377,7 @@ func (p *GetEntityGetMapArgs) String() string {
 //  - Success
 type GetEntityGetMapResult struct {
   thrift.IResponse
-  Success map[string]string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success map[string]string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetMapResult() *GetEntityGetMapResult {
@@ -3591,7 +3591,7 @@ func (p *GetEntityGetSetArgs) String() string {
 //  - Success
 type GetEntityGetSetResult struct {
   thrift.IResponse
-  Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetSetResult() *GetEntityGetSetResult {
@@ -3804,7 +3804,7 @@ func (p *GetEntityGetListArgs) String() string {
 //  - Success
 type GetEntityGetListResult struct {
   thrift.IResponse
-  Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetListResult() *GetEntityGetListResult {
@@ -4140,7 +4140,7 @@ func (p *GetEntityGetLegacyStuffArgs) String() string {
 //  - Success
 type GetEntityGetLegacyStuffResult struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetLegacyStuffResult() *GetEntityGetLegacyStuffResult {

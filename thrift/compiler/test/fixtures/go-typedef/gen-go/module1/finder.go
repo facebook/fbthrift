@@ -625,7 +625,7 @@ func (p *FinderByPlateArgs) String() string {
 //  - Success
 type FinderByPlateResult struct {
   thrift.IResponse
-  Success *Automobile `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Automobile `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderByPlateResult() *FinderByPlateResult {
@@ -864,7 +864,7 @@ func (p *FinderAliasByPlateArgs) String() string {
 //  - Success
 type FinderAliasByPlateResult struct {
   thrift.IResponse
-  Success *Car `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Car `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderAliasByPlateResult() *FinderAliasByPlateResult {
@@ -1103,7 +1103,7 @@ func (p *FinderPreviousPlateArgs) String() string {
 //  - Success
 type FinderPreviousPlateResult struct {
   thrift.IResponse
-  Success *Plate `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Plate `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderPreviousPlateResult() *FinderPreviousPlateResult {
