@@ -115,7 +115,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_ping(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static apache::thrift::LegacySerializedResponse return_ping(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_ping(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -123,7 +123,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getRandomData(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_getRandomData(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
+  static apache::thrift::LegacySerializedResponse return_getRandomData(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getRandomData(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -131,7 +131,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_hasDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return);
+  static apache::thrift::LegacySerializedResponse return_hasDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -139,7 +139,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
+  static apache::thrift::LegacySerializedResponse return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -147,7 +147,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_putDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static apache::thrift::LegacySerializedResponse return_putDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

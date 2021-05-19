@@ -96,7 +96,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_f(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_f(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static apache::thrift::LegacySerializedResponse return_f(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_f(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -112,7 +112,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_thing(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_thing(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
+  static apache::thrift::LegacySerializedResponse return_thing(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_thing(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

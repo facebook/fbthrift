@@ -83,7 +83,7 @@ apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProces
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse("returnstream", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("returnstream", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -154,7 +154,7 @@ apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProces
     }
   };
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse("streamthrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("streamthrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -225,7 +225,7 @@ apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProces
     }
   };
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse("boththrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("boththrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -251,9 +251,9 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(apache::thri
     return;
   }
   ProtocolOut_ prot;
-  auto queue = serializeResponse("boththrows", &prot, protoSeqId, ctx, result.fields);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
-  std::ignore = req->sendStreamReply(queue.move(), apache::thrift::StreamServerCallbackPtr(nullptr));
+  auto response = serializeLegacyResponse("boththrows", &prot, protoSeqId, ctx, result.fields);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  std::ignore = req->sendStreamReply(std::move(response.buffer), apache::thrift::StreamServerCallbackPtr(nullptr));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -313,7 +313,7 @@ apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProces
     }
   };
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -339,9 +339,9 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
     return;
   }
   ProtocolOut_ prot;
-  auto queue = serializeResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result.fields);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
-  std::ignore = req->sendStreamReply(queue.move(), apache::thrift::StreamServerCallbackPtr(nullptr));
+  auto response = serializeLegacyResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result.fields);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  std::ignore = req->sendStreamReply(std::move(response.buffer), apache::thrift::StreamServerCallbackPtr(nullptr));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -389,7 +389,7 @@ apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProces
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse("returnstreamFast", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("returnstreamFast", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

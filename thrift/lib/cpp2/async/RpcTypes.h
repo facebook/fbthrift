@@ -80,7 +80,8 @@ struct SerializedResponse {
 };
 
 struct LegacySerializedResponse {
-  /* implicit */ LegacySerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
+  explicit LegacySerializedResponse(
+      std::unique_ptr<folly::IOBuf> buffer_ = std::unique_ptr<folly::IOBuf>{})
       : buffer(std::move(buffer_)) {}
 
   LegacySerializedResponse(

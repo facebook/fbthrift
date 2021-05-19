@@ -22,17 +22,17 @@
 <%^function:oneway?%>
   template <class ProtocolIn_, class ProtocolOut_>
 <%#type:void?%>
-  static folly::IOBufQueue return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static apache::thrift::LegacySerializedResponse return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
   <%^type:streamresponse?%><%^type:sink?%>
-  static folly::IOBufQueue return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return);
+  static apache::thrift::LegacySerializedResponse return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return);
   <%/type:sink?%><%/type:streamresponse?%>
   <%#type:streamresponse?%>
   static apache::thrift::ResponseAndServerStreamFactory return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <%type:cpp_type%>&& _return);
   <%/type:streamresponse?%>
   <%#type:sink?%>
-  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor);
+  static std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor);
   <%/type:sink?%>
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>

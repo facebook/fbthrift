@@ -88,7 +88,7 @@ void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRe
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_method(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_method(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_method_presult::FieldsType result;
   using SinkPResultType = SinkService_method_presult::SinkPResultType;
@@ -105,7 +105,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("method", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("method", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -156,7 +156,7 @@ void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::Respons
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodAndReponse(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodAndReponse(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodAndReponse_presult::FieldsType result;
   using SinkPResultType = SinkService_methodAndReponse_presult::SinkPResultType;
@@ -175,7 +175,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return.sinkConsumer),
       std::move(executor));
 
-  return {serializeResponse("methodAndReponse", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodAndReponse", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -226,7 +226,7 @@ void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChan
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodThrow_presult::SinkPResultType;
@@ -243,7 +243,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("methodThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -269,9 +269,9 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(apache::thrift::Respon
     return;
   }
   ProtocolOut_ prot;
-  auto queue = serializeResponse("methodThrow", &prot, protoSeqId, ctx, result.fields);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
-  req->sendSinkReply(queue.move(), {});
+  auto response = serializeLegacyResponse("methodThrow", &prot, protoSeqId, ctx, result.fields);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  req->sendSinkReply(std::move(response.buffer), {});
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -309,7 +309,7 @@ void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodSinkThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodSinkThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodSinkThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodSinkThrow_presult::SinkPResultType;
@@ -326,7 +326,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("methodSinkThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodSinkThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -377,7 +377,7 @@ void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::Respons
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodFinalThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodFinalThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodFinalThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodFinalThrow_presult::SinkPResultType;
@@ -404,7 +404,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("methodFinalThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodFinalThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -455,7 +455,7 @@ void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodBothThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodBothThrow(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodBothThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodBothThrow_presult::SinkPResultType;
@@ -482,7 +482,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("methodBothThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodBothThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -531,7 +531,7 @@ void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodFast(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodFast(apache::thrift::ContextStack* ctx, ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   SinkService_methodFast_presult::FieldsType result;
   using SinkPResultType = SinkService_methodFast_presult::SinkPResultType;
@@ -548,7 +548,7 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
       std::move(_return),
       std::move(executor));
 
-  return {serializeResponse("methodFast", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("methodFast", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

@@ -48,10 +48,10 @@ void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChan
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServicePrioChildAsyncProcessor::return_pang(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyServicePrioChildAsyncProcessor::return_pang(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyServicePrioChild_pang_presult result;
-  return serializeResponse("pang", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("pang", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

@@ -50,12 +50,12 @@ void MyServiceAsyncProcessor::process_first(apache::thrift::ResponseChannelReque
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return) {
+apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_first(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return) {
   ProtocolOut_ prot;
   MyService_first_presult result;
   result.get<0>().value = const_cast<::cpp2::annotated_inline_string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("first", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("first", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -108,12 +108,12 @@ void MyServiceAsyncProcessor::process_second(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_second(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
+apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_second(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
   MyService_second_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("second", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("second", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/Portability.h>
 #include <folly/String.h>
@@ -204,7 +206,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ContextStack* c);
 
   template <typename ProtocolOut, typename Result>
-  static folly::IOBufQueue serializeResponse(
+  static LegacySerializedResponse serializeLegacyResponse(
       const char* method,
       ProtocolOut* prot,
       int32_t protoSeqId,
@@ -546,9 +548,10 @@ class HandlerCallbackBase {
   // pre- / post-processing).
   void forward(const HandlerCallbackBase& other);
 
-  folly::Optional<uint32_t> checksumIfNeeded(folly::IOBufQueue& queue);
+  folly::Optional<uint32_t> checksumIfNeeded(
+      LegacySerializedResponse& response);
 
-  virtual void transform(folly::IOBufQueue& queue);
+  virtual void transform(LegacySerializedResponse& reponse);
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
@@ -564,7 +567,7 @@ class HandlerCallbackBase {
   template <typename Reply, typename... A>
   void putMessageInReplyQueue(std::in_place_type_t<Reply> tag, A&&... a);
 
-  void sendReply(folly::IOBufQueue queue);
+  void sendReply(LegacySerializedResponse response);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
   // Must be called from IO thread
@@ -577,7 +580,7 @@ class HandlerCallbackBase {
   void
   sendReply(
       FOLLY_MAYBE_UNUSED std::pair<
-          folly::IOBufQueue,
+          apache::thrift::LegacySerializedResponse,
           apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer);
 
   // Required for this call
@@ -634,7 +637,8 @@ class HandlerCallback : public HandlerCallbackBase {
 
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
-  using cob_ptr = folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*);
+  using cob_ptr =
+      LegacySerializedResponse (*)(int32_t protoSeqId, ContextStack*);
 
  public:
   using ResultType = void;
@@ -700,7 +704,7 @@ void GeneratedAsyncProcessor::deserializeRequest(
 }
 
 template <typename ProtocolOut, typename Result>
-folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
+LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
     const char* method,
     ProtocolOut* prot,
     int32_t protoSeqId,
@@ -736,7 +740,7 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   if (ctx) {
     ctx->postWrite(folly::to_narrow(queue.chainLength()));
   }
-  return queue;
+  return LegacySerializedResponse{queue.move()};
 }
 
 template <typename ChildType>
@@ -953,9 +957,9 @@ struct inner_type<std::unique_ptr<S>> {
 template <typename T>
 struct HandlerCallbackHelper {
   using InputType = const typename apache::thrift::detail::inner_type<T>::type&;
-  using CobPtr =
-      folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*, InputType);
-  static folly::IOBufQueue call(
+  using CobPtr = apache::thrift::LegacySerializedResponse (*)(
+      int32_t protoSeqId, ContextStack*, InputType);
+  static apache::thrift::LegacySerializedResponse call(
       CobPtr cob,
       int32_t protoSeqId,
       ContextStack* ctx,
@@ -995,9 +999,11 @@ struct HandlerCallbackHelper<ServerStream<StreamItem>>
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType&&;
-  using CobPtr = std::pair<folly::IOBufQueue, SinkConsumerImpl> (*)(
-      ContextStack*, InputType, folly::Executor::KeepAlive<>);
-  static std::pair<folly::IOBufQueue, SinkConsumerImpl> call(
+  using CobPtr =
+      std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl> (*)(
+          ContextStack*, InputType, folly::Executor::KeepAlive<>);
+  static std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl>
+  call(
       CobPtr cob,
       int32_t,
       ContextStack* ctx,

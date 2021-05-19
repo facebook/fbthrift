@@ -128,12 +128,12 @@ void SimpleServiceAsyncProcessor::process_get_five(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_five(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_five(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_five_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_five", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_five", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -186,12 +186,12 @@ void SimpleServiceAsyncProcessor::process_add_five(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_add_five(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_add_five(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_add_five_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("add_five", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("add_five", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -242,10 +242,10 @@ void SimpleServiceAsyncProcessor::process_do_nothing(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_do_nothing(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_do_nothing(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   SimpleService_do_nothing_presult result;
-  return serializeResponse("do_nothing", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("do_nothing", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -300,12 +300,12 @@ void SimpleServiceAsyncProcessor::process_concat(apache::thrift::ResponseChannel
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_concat(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_concat(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_concat_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("concat", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("concat", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -358,12 +358,12 @@ void SimpleServiceAsyncProcessor::process_get_value(apache::thrift::ResponseChan
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_value", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_value", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -416,12 +416,12 @@ void SimpleServiceAsyncProcessor::process_negate(apache::thrift::ResponseChannel
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_negate(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_negate(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
   SimpleService_negate_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("negate", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("negate", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -474,12 +474,12 @@ void SimpleServiceAsyncProcessor::process_tiny(apache::thrift::ResponseChannelRe
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_tiny(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int8_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_tiny(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int8_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_tiny_presult result;
   result.get<0>().value = const_cast<::std::int8_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("tiny", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("tiny", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -532,12 +532,12 @@ void SimpleServiceAsyncProcessor::process_small(apache::thrift::ResponseChannelR
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_small(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_small(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_small_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("small", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("small", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -590,12 +590,12 @@ void SimpleServiceAsyncProcessor::process_big(apache::thrift::ResponseChannelReq
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_big(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_big(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_big_presult result;
   result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("big", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("big", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -648,12 +648,12 @@ void SimpleServiceAsyncProcessor::process_two(apache::thrift::ResponseChannelReq
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_two(int32_t protoSeqId, apache::thrift::ContextStack* ctx, double const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_two(int32_t protoSeqId, apache::thrift::ContextStack* ctx, double const& _return) {
   ProtocolOut_ prot;
   SimpleService_two_presult result;
   result.get<0>().value = const_cast<double*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("two", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("two", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -704,10 +704,10 @@ void SimpleServiceAsyncProcessor::process_expected_exception(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_expected_exception(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_expected_exception(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   SimpleService_expected_exception_presult result;
-  return serializeResponse("expected_exception", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("expected_exception", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -733,9 +733,9 @@ void SimpleServiceAsyncProcessor::throw_wrapped_expected_exception(apache::thrif
     return;
   }
   ProtocolOut_ prot;
-  auto queue = serializeResponse("expected_exception", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms()));
-  return req->sendReply(queue.move());
+  auto response = serializeLegacyResponse("expected_exception", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -773,12 +773,12 @@ void SimpleServiceAsyncProcessor::process_unexpected_exception(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_unexpected_exception(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_unexpected_exception(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_unexpected_exception_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("unexpected_exception", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("unexpected_exception", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -831,12 +831,12 @@ void SimpleServiceAsyncProcessor::process_sum_i16_list(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_sum_i16_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_sum_i16_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_sum_i16_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("sum_i16_list", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("sum_i16_list", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -889,12 +889,12 @@ void SimpleServiceAsyncProcessor::process_sum_i32_list(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_sum_i32_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_sum_i32_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_sum_i32_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("sum_i32_list", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("sum_i32_list", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -947,12 +947,12 @@ void SimpleServiceAsyncProcessor::process_sum_i64_list(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_sum_i64_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_sum_i64_list(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_sum_i64_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("sum_i64_list", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("sum_i64_list", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1005,12 +1005,12 @@ void SimpleServiceAsyncProcessor::process_concat_many(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_concat_many(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_concat_many(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_concat_many_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("concat_many", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("concat_many", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1063,12 +1063,12 @@ void SimpleServiceAsyncProcessor::process_count_structs(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_count_structs(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_count_structs(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_count_structs_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("count_structs", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("count_structs", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1121,12 +1121,12 @@ void SimpleServiceAsyncProcessor::process_sum_set(apache::thrift::ResponseChanne
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_sum_set(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_sum_set(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_sum_set_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("sum_set", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("sum_set", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1181,12 +1181,12 @@ void SimpleServiceAsyncProcessor::process_contains_word(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_contains_word(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_contains_word(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
   SimpleService_contains_word_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("contains_word", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("contains_word", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1241,12 +1241,12 @@ void SimpleServiceAsyncProcessor::process_get_map_value(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_map_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_map_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_map_value_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_map_value", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_map_value", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1299,12 +1299,12 @@ void SimpleServiceAsyncProcessor::process_map_length(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_map_length(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_map_length(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_map_length_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("map_length", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("map_length", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1357,12 +1357,12 @@ void SimpleServiceAsyncProcessor::process_sum_map_values(apache::thrift::Respons
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_sum_map_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_sum_map_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_sum_map_values_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("sum_map_values", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("sum_map_values", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1415,12 +1415,12 @@ void SimpleServiceAsyncProcessor::process_complex_sum_i32(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_complex_sum_i32(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_complex_sum_i32(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_complex_sum_i32_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("complex_sum_i32", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("complex_sum_i32", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1473,12 +1473,12 @@ void SimpleServiceAsyncProcessor::process_repeat_name(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_repeat_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_repeat_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_repeat_name_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("repeat_name", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("repeat_name", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1529,12 +1529,12 @@ void SimpleServiceAsyncProcessor::process_get_struct(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_struct(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::SimpleStruct const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_struct(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::SimpleStruct const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_struct_presult result;
   result.get<0>().value = const_cast<::py3::simple::SimpleStruct*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_struct", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_struct", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1587,12 +1587,12 @@ void SimpleServiceAsyncProcessor::process_fib(apache::thrift::ResponseChannelReq
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_fib(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::int32_t> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_fib(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::int32_t> const& _return) {
   ProtocolOut_ prot;
   SimpleService_fib_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("fib", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("fib", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1645,12 +1645,12 @@ void SimpleServiceAsyncProcessor::process_unique_words(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_unique_words(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_unique_words(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
   SimpleService_unique_words_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("unique_words", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("unique_words", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1703,12 +1703,12 @@ void SimpleServiceAsyncProcessor::process_words_count(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_words_count(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int16_t> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_words_count(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int16_t> const& _return) {
   ProtocolOut_ prot;
   SimpleService_words_count_presult result;
   result.get<0>().value = const_cast<::std::map<::std::string, ::std::int16_t>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("words_count", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("words_count", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1761,12 +1761,12 @@ void SimpleServiceAsyncProcessor::process_set_enum(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_set_enum(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::AnEnum const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_set_enum(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::AnEnum const& _return) {
   ProtocolOut_ prot;
   SimpleService_set_enum_presult result;
   result.get<0>().value = const_cast<::py3::simple::AnEnum*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("set_enum", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("set_enum", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1821,12 +1821,12 @@ void SimpleServiceAsyncProcessor::process_list_of_lists(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_list_of_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::vector<::std::int32_t>> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_list_of_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::vector<::std::int32_t>> const& _return) {
   ProtocolOut_ prot;
   SimpleService_list_of_lists_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::vector<::std::int32_t>>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("list_of_lists", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("list_of_lists", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1879,12 +1879,12 @@ void SimpleServiceAsyncProcessor::process_word_character_frequency(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_word_character_frequency(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_word_character_frequency(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>> const& _return) {
   ProtocolOut_ prot;
   SimpleService_word_character_frequency_presult result;
   result.get<0>().value = const_cast<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("word_character_frequency", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("word_character_frequency", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1937,12 +1937,12 @@ void SimpleServiceAsyncProcessor::process_list_of_sets(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_list_of_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::set<::std::string>> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_list_of_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::std::set<::std::string>> const& _return) {
   ProtocolOut_ prot;
   SimpleService_list_of_sets_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::set<::std::string>>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("list_of_sets", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("list_of_sets", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1995,12 +1995,12 @@ void SimpleServiceAsyncProcessor::process_nested_map_argument(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_nested_map_argument(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_nested_map_argument(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   SimpleService_nested_map_argument_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("nested_map_argument", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("nested_map_argument", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2053,12 +2053,12 @@ void SimpleServiceAsyncProcessor::process_make_sentence(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_make_sentence(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_make_sentence(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_make_sentence_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("make_sentence", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("make_sentence", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2111,12 +2111,12 @@ void SimpleServiceAsyncProcessor::process_get_union(apache::thrift::ResponseChan
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_union(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::int32_t> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_union(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::int32_t> const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_union_presult result;
   result.get<0>().value = const_cast<::std::set<::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_union", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_union", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2169,12 +2169,12 @@ void SimpleServiceAsyncProcessor::process_get_keys(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_keys_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_keys", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_keys", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2227,12 +2227,12 @@ void SimpleServiceAsyncProcessor::process_lookup_double(apache::thrift::Response
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_lookup_double(int32_t protoSeqId, apache::thrift::ContextStack* ctx, double const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_lookup_double(int32_t protoSeqId, apache::thrift::ContextStack* ctx, double const& _return) {
   ProtocolOut_ prot;
   SimpleService_lookup_double_presult result;
   result.get<0>().value = const_cast<double*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("lookup_double", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("lookup_double", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2285,12 +2285,12 @@ void SimpleServiceAsyncProcessor::process_retrieve_binary(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_retrieve_binary(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_retrieve_binary(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   SimpleService_retrieve_binary_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("retrieve_binary", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("retrieve_binary", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2343,12 +2343,12 @@ void SimpleServiceAsyncProcessor::process_contain_binary(apache::thrift::Respons
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_contain_binary(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_contain_binary(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
   SimpleService_contain_binary_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("contain_binary", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("contain_binary", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2401,12 +2401,12 @@ void SimpleServiceAsyncProcessor::process_contain_enum(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_contain_enum(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::py3::simple::AnEnum> const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_contain_enum(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector<::py3::simple::AnEnum> const& _return) {
   ProtocolOut_ prot;
   SimpleService_contain_enum_presult result;
   result.get<0>().value = const_cast<::std::vector<::py3::simple::AnEnum>*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("contain_enum", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("contain_enum", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2459,12 +2459,12 @@ void SimpleServiceAsyncProcessor::process_get_binary_union_struct(apache::thrift
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue SimpleServiceAsyncProcessor::return_get_binary_union_struct(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::BinaryUnionStruct const& _return) {
+apache::thrift::LegacySerializedResponse SimpleServiceAsyncProcessor::return_get_binary_union_struct(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::py3::simple::BinaryUnionStruct const& _return) {
   ProtocolOut_ prot;
   SimpleService_get_binary_union_struct_presult result;
   result.get<0>().value = const_cast<::py3::simple::BinaryUnionStruct*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("get_binary_union_struct", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("get_binary_union_struct", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

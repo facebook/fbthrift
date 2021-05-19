@@ -48,10 +48,10 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyNodeAsyncProcessor::return_do_mid(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyNodeAsyncProcessor::return_do_mid(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyNode_do_mid_presult result;
-  return serializeResponse("do_mid", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("do_mid", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

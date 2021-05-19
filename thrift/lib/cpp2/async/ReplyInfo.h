@@ -53,23 +53,23 @@ class QueueReplyInfo {
   QueueReplyInfo(
       ResponseChannelRequest::UniquePtr req,
       Tile* interaction,
-      folly::IOBufQueue queue,
+      LegacySerializedResponse response,
       folly::Optional<uint32_t> crc32c)
       : req_(std::move(req)),
         interaction_(interaction),
-        queue_(std::move(queue)),
+        response_(std::move(response)),
         crc32c_(crc32c) {}
 
   void operator()(folly::EventBase& evb) noexcept {
     if (interaction_) {
       interaction_->__fbthrift_releaseRef(evb);
     }
-    req_->sendReply(queue_.move(), nullptr, crc32c_);
+    req_->sendReply(std::move(response_.buffer), nullptr, crc32c_);
   }
 
   ResponseChannelRequest::UniquePtr req_;
   Tile* interaction_;
-  folly::IOBufQueue queue_;
+  LegacySerializedResponse response_;
   folly::Optional<uint32_t> crc32c_;
 };
 
@@ -78,20 +78,21 @@ class StreamReplyInfo {
   StreamReplyInfo(
       ResponseChannelRequest::UniquePtr req,
       apache::thrift::detail::ServerStreamFactory stream,
-      folly::IOBufQueue queue,
+      LegacySerializedResponse response,
       folly::Optional<uint32_t> crc32c)
       : req_(std::move(req)),
         stream_(std::move(stream)),
-        queue_(std::move(queue)),
+        response_(std::move(response)),
         crc32c_(crc32c) {}
 
   void operator()(folly::EventBase&) noexcept {
-    req_->sendStreamReply(queue_.move(), std::move(stream_), crc32c_);
+    req_->sendStreamReply(
+        std::move(response_.buffer), std::move(stream_), crc32c_);
   }
 
   ResponseChannelRequest::UniquePtr req_;
   apache::thrift::detail::ServerStreamFactory stream_;
-  folly::IOBufQueue queue_;
+  LegacySerializedResponse response_;
   folly::Optional<uint32_t> crc32c_;
 };
 
@@ -100,22 +101,23 @@ class SinkConsumerReplyInfo {
   SinkConsumerReplyInfo(
       ResponseChannelRequest::UniquePtr req,
       apache::thrift::detail::SinkConsumerImpl sinkConsumer,
-      folly::IOBufQueue queue,
+      LegacySerializedResponse response,
       folly::Optional<uint32_t> crc32c)
       : req_(std::move(req)),
         sinkConsumer_(std::move(sinkConsumer)),
-        queue_(std::move(queue)),
+        response_(std::move(response)),
         crc32c_(crc32c) {}
 
   void operator()(folly::EventBase&) noexcept {
 #if FOLLY_HAS_COROUTINES
-    req_->sendSinkReply(queue_.move(), std::move(sinkConsumer_), crc32c_);
+    req_->sendSinkReply(
+        std::move(response_.buffer), std::move(sinkConsumer_), crc32c_);
 #endif
   }
 
   ResponseChannelRequest::UniquePtr req_;
   apache::thrift::detail::SinkConsumerImpl sinkConsumer_;
-  folly::IOBufQueue queue_;
+  LegacySerializedResponse response_;
   folly::Optional<uint32_t> crc32c_;
 };
 

@@ -48,10 +48,10 @@ void MyRootAsyncProcessor::process_do_root(apache::thrift::ResponseChannelReques
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyRootAsyncProcessor::return_do_root(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyRootAsyncProcessor::return_do_root(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyRoot_do_root_presult result;
-  return serializeResponse("do_root", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("do_root", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

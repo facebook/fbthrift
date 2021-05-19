@@ -426,23 +426,20 @@ void HandlerCallbackBase::forward(const HandlerCallbackBase& other) {
 }
 
 folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
-    folly::IOBufQueue& queue) {
+    LegacySerializedResponse& response) {
   folly::Optional<uint32_t> crc32c;
-  if (req_->isReplyChecksumNeeded() && !queue.empty()) {
-    std::unique_ptr<folly::IOBuf> iobuf(queue.move());
-    if (iobuf) {
-      crc32c = checksum::crc32c(*iobuf);
-      queue.append(std::move(iobuf));
-    }
+  if (req_->isReplyChecksumNeeded() && response.buffer &&
+      !response.buffer->empty()) {
+    crc32c = checksum::crc32c(*response.buffer);
   }
   return crc32c;
 }
 
-void HandlerCallbackBase::transform(folly::IOBufQueue& queue) {
+void HandlerCallbackBase::transform(LegacySerializedResponse& response) {
   // Do any compression or other transforms in this thread, the same thread
   // that serialization happens on.
-  queue.append(transport::THeader::transform(
-      queue.move(), reqCtx_->getHeader()->getWriteTransforms()));
+  response.buffer = transport::THeader::transform(
+      std::move(response.buffer), reqCtx_->getHeader()->getWriteTransforms());
 }
 
 void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
@@ -468,67 +465,67 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   }
 }
 
-void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
+void HandlerCallbackBase::sendReply(LegacySerializedResponse response) {
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   if (getEventBase()->isInEventBaseThread()) {
     QueueReplyInfo(
         std::move(req_),
         std::exchange(interaction_, nullptr),
-        std::move(queue),
+        std::move(response),
         crc32c)(*getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<QueueReplyInfo>(),
         std::move(req_),
         std::exchange(interaction_, nullptr),
-        std::move(queue),
+        std::move(response),
         crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
     ResponseAndServerStreamFactory&& responseAndStream) {
-  auto& queue = responseAndStream.response;
+  auto& response = responseAndStream.response;
   auto& stream = responseAndStream.stream;
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   stream.setInteraction(std::exchange(interaction_, nullptr));
   if (getEventBase()->isInEventBaseThread()) {
     StreamReplyInfo(
-        std::move(req_), std::move(stream), std::move(queue), crc32c)(
+        std::move(req_), std::move(stream), std::move(response), crc32c)(
         *getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<StreamReplyInfo>(),
         std::move(req_),
         std::move(stream),
-        std::move(queue),
+        std::move(response),
         crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
-    FOLLY_MAYBE_UNUSED
-        std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
-            responseAndSinkConsumer) {
+    FOLLY_MAYBE_UNUSED std::pair<
+        LegacySerializedResponse,
+        apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer) {
 #if FOLLY_HAS_COROUTINES
-  auto& queue = responseAndSinkConsumer.first;
+  auto& response = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   sinkConsumer.interaction = std::exchange(interaction_, nullptr);
 
   if (getEventBase()->isInEventBaseThread()) {
     SinkConsumerReplyInfo(
-        std::move(req_), std::move(sinkConsumer), std::move(queue), crc32c)(
+        std::move(req_), std::move(sinkConsumer), std::move(response), crc32c)(
         *getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<SinkConsumerReplyInfo>(),
         std::move(req_),
         std::move(sinkConsumer),
-        std::move(queue),
+        std::move(response),
         crc32c);
   }
 #else

@@ -58,10 +58,10 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue NestedContainersAsyncProcessor::return_mapList(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse NestedContainersAsyncProcessor::return_mapList(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   NestedContainers_mapList_presult result;
-  return serializeResponse("mapList", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("mapList", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -114,10 +114,10 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue NestedContainersAsyncProcessor::return_mapSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse NestedContainersAsyncProcessor::return_mapSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   NestedContainers_mapSet_presult result;
-  return serializeResponse("mapSet", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("mapSet", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -170,10 +170,10 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue NestedContainersAsyncProcessor::return_listMap(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse NestedContainersAsyncProcessor::return_listMap(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   NestedContainers_listMap_presult result;
-  return serializeResponse("listMap", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("listMap", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -226,10 +226,10 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue NestedContainersAsyncProcessor::return_listSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse NestedContainersAsyncProcessor::return_listSet(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   NestedContainers_listSet_presult result;
-  return serializeResponse("listSet", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("listSet", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -282,10 +282,10 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue NestedContainersAsyncProcessor::return_turtles(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse NestedContainersAsyncProcessor::return_turtles(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   NestedContainers_turtles_presult result;
-  return serializeResponse("turtles", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("turtles", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

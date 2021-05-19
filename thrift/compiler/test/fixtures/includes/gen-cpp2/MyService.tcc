@@ -54,10 +54,10 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_query(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_query(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyService_query_presult result;
-  return serializeResponse("query", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("query", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -112,10 +112,10 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_has_arg_docs(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_has_arg_docs(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyService_has_arg_docs_presult result;
-  return serializeResponse("has_arg_docs", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("has_arg_docs", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

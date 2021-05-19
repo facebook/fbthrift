@@ -52,12 +52,12 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue DbMixedStackArgumentsAsyncProcessor::return_getDataByKey0(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse DbMixedStackArgumentsAsyncProcessor::return_getDataByKey0(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   DbMixedStackArguments_getDataByKey0_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("getDataByKey0", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("getDataByKey0", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -110,12 +110,12 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue DbMixedStackArgumentsAsyncProcessor::return_getDataByKey1(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse DbMixedStackArgumentsAsyncProcessor::return_getDataByKey1(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   DbMixedStackArguments_getDataByKey1_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("getDataByKey1", &prot, protoSeqId, ctx, result);
+  return serializeLegacyResponse("getDataByKey1", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
