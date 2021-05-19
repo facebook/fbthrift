@@ -15,7 +15,6 @@
  */
 
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 #include <cstdarg>
 
@@ -159,9 +158,9 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params params) {
   parsing_driver driver{path, std::move(params)};
 
-  std::vector<diagnostic> diagnostic_messages;
-  auto program = driver.parse(diagnostic_messages);
-  dump_diagnostics(diagnostic_messages);
+  diagnostic_results results;
+  auto program = driver.parse(results);
+  dump_diagnostics(results.diagnostics());
 
   return program;
 }

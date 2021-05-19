@@ -28,12 +28,11 @@
 #include <vector>
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/compiler.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 using namespace apache::thrift::compiler;
 
 int main(int argc, char** argv) {
   auto result = compile(std::vector<std::string>(argv, argv + argc));
-  dump_diagnostics(result.diagnostics);
+  dump_diagnostics(result.detail.diagnostics());
   return (int)result.retcode;
 }

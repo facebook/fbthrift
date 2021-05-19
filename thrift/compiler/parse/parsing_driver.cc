@@ -62,7 +62,7 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
 parsing_driver::~parsing_driver() = default;
 
 std::unique_ptr<t_program_bundle> parsing_driver::parse(
-    std::vector<diagnostic>& messages) {
+    diagnostic_results& results) {
   std::unique_ptr<t_program_bundle> result{};
 
   try {
@@ -81,9 +81,10 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse(
     // end the parsing process by unwinding to here.
   }
 
-  std::swap(messages, diagnostic_messages_);
+  for (auto& diag : diagnostic_messages_) {
+    results.add(std::move(diag));
+  }
   diagnostic_messages_.clear();
-
   return result;
 }
 

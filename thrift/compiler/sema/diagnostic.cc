@@ -59,6 +59,19 @@ std::ostream& operator<<(std::ostream& os, const diagnostic& e) {
   return os << e.message();
 }
 
+void diagnostic_results::add(diagnostic diag) {
+  increment(diag.level());
+  diagnostics_.emplace_back(std::move(diag));
+}
+
+diagnostic_results::diagnostic_results(
+    std::vector<diagnostic> initial_diagnostics)
+    : diagnostics_(std::move(initial_diagnostics)) {
+  for (const auto& diag : diagnostics_) {
+    increment(diag.level());
+  }
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

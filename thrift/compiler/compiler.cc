@@ -398,7 +398,7 @@ std::string get_include_path(
 
 compile_result compile(const std::vector<std::string>& arguments) {
   compile_result result;
-  result.retcode = compile_retcode::FAILURE;
+  result.retcode = compile_retcode::failure;
 
   // Parese arguments.
   g_stage = "arguments";
@@ -412,7 +412,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   // Parse it!
   g_stage = "parse";
   parsing_driver driver{input_filename, std::move(pparams)};
-  auto program = driver.parse(result.diagnostics);
+  auto program = driver.parse(result.detail);
   if (!program) {
     return result;
   }
@@ -421,7 +421,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   try {
     mutator::mutate(program->root_program());
   } catch (MutatorException& e) {
-    result.diagnostics.emplace_back(std::move(e.message));
+    result.detail.add(std::move(e.message));
     return result;
   }
 
@@ -429,13 +429,8 @@ compile_result compile(const std::vector<std::string>& arguments) {
       get_include_path(gparams.targets, input_filename));
 
   // Validate it!
-  auto diagnostics = validator::validate(program->root_program());
-  bool has_failure = false;
-  for (auto& d : diagnostics) {
-    has_failure = has_failure || (d.level() == diagnostic_level::failure);
-    result.diagnostics.emplace_back(std::move(d));
-  }
-  if (has_failure) {
+  result.detail.add_all(validator::validate(program->root_program()));
+  if (result.detail.has_failure()) {
     return result;
   }
 
@@ -443,11 +438,11 @@ compile_result compile(const std::vector<std::string>& arguments) {
   g_stage = "generation";
   try {
     if (generate(gparams, program->root_program())) {
-      result.retcode = compile_retcode::SUCCESS;
+      result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {
-    result.diagnostics.emplace_back(
-        diagnostic_level::failure, e.what(), program->root_program()->path());
+    result.detail.add(
+        {diagnostic_level::failure, e.what(), program->root_program()->path()});
   }
   return result;
 }

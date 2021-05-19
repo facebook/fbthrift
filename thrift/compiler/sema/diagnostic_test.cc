@@ -38,5 +38,28 @@ TEST_F(DiagnosticTest, Str) {
       diagnostic(diagnostic_level::warning, "m", "").str(), "[WARNING:] m");
 }
 
+class DiagnosticResultsTest : public ::testing::Test {};
+
+TEST_F(DiagnosticResultsTest, Empty) {
+  diagnostic_results results;
+  EXPECT_FALSE(results.has_failure());
+  for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
+    EXPECT_EQ(results.count(static_cast<diagnostic_level>(i)), 0);
+  }
+}
+
+TEST_F(DiagnosticResultsTest, Count) {
+  diagnostic_results results;
+  for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
+    auto level = static_cast<diagnostic_level>(i);
+    for (int j = 0; j <= i; ++j) {
+      results.add({level, "hi", "file"});
+    }
+  }
+  for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
+    EXPECT_EQ(results.count(static_cast<diagnostic_level>(i)), i + 1);
+  }
+}
+
 } // namespace
 } // namespace apache::thrift::compiler

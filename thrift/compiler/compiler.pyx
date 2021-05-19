@@ -39,8 +39,8 @@ def thrift_compile(vector[string] argv):
     result = compile(argv)
 
     py_messages = []
-    it = result.diagnostics.const_begin()
-    end = result.diagnostics.const_end()
+    it = result.detail.diagnostics().const_begin()
+    end = result.detail.diagnostics().const_end()
     while it != end:
         py_messages.append(
             DiagnosticMessage(

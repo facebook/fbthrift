@@ -28,12 +28,16 @@ cdef extern from "thrift/compiler/sema/diagnostic.h" namespace "apache::thrift::
         string message()
         string str()
 
+    cdef cppclass diagnostic_results:
+        vector[diagnostic] diagnostics()
+
+
 cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compiler":
     cdef cppclass compile_retcode:
         pass
 
     cdef struct compile_result:
         compile_retcode retcode
-        vector[diagnostic] diagnostics
+        diagnostic_results detail
 
     cdef compile_result compile(vector[string]) except +

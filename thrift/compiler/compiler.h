@@ -19,20 +19,20 @@
 #include <string>
 #include <vector>
 
+#include <thrift/compiler/sema/diagnostic.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-class diagnostic;
-
 enum class compile_retcode {
-  SUCCESS = 0,
-  FAILURE = 1,
+  success = 0,
+  failure = 1,
 };
 
 struct compile_result {
   compile_retcode retcode;
-  std::vector<diagnostic> diagnostics;
+  diagnostic_results detail;
 };
 
 /**

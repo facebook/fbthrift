@@ -248,7 +248,7 @@ class parsing_driver {
    * Diagnostic messages (warnings, debug messages, etc.) are stored in the
    * vector passed in via params.messages.
    */
-  std::unique_ptr<t_program_bundle> parse(std::vector<diagnostic>& messages);
+  std::unique_ptr<t_program_bundle> parse(diagnostic_results& results);
 
   /**
    * Diagnostic message callbacks.

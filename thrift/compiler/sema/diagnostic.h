@@ -16,8 +16,10 @@
 
 #pragma once
 
+#include <array>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
@@ -85,6 +87,43 @@ class diagnostic {
 };
 
 std::ostream& operator<<(std::ostream& os, const diagnostic& e);
+
+// A container of diagnostic results.
+class diagnostic_results {
+ public:
+  explicit diagnostic_results(std::vector<diagnostic> initial_diagnostics);
+  diagnostic_results() = default;
+  diagnostic_results(const diagnostic_results&) = default;
+  diagnostic_results(diagnostic_results&&) noexcept = default;
+
+  diagnostic_results& operator=(diagnostic_results&&) noexcept = default;
+  diagnostic_results& operator=(const diagnostic_results&) = default;
+
+  const std::vector<diagnostic>& diagnostics() const& { return diagnostics_; }
+  void add(diagnostic diag);
+  template <typename C>
+  void add_all(C&& diags);
+
+  bool has_failure() const { return count(diagnostic_level::failure) != 0; }
+  std::size_t count(diagnostic_level level) const {
+    return counts_.at(static_cast<size_t>(level));
+  }
+
+ private:
+  std::vector<diagnostic> diagnostics_;
+  std::array<int, static_cast<size_t>(diagnostic_level::debug) + 1> counts_{};
+
+  void increment(diagnostic_level level) {
+    ++counts_.at(static_cast<size_t>(level));
+  }
+};
+
+template <typename C>
+void diagnostic_results::add_all(C&& diags) {
+  for (auto&& diag : std::forward<C>(diags)) {
+    add(std::forward<decltype(diag)>(diag));
+  }
+}
 
 } // namespace compiler
 } // namespace thrift
