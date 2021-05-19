@@ -304,9 +304,7 @@ struct BinaryProtocolReader::StructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(
-      BinaryProtocolReader* /*iprot*/,
-      BinaryProtocolReader* /*indexReader*/ = nullptr) {}
+  void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
 
   void readStructEnd(BinaryProtocolReader* /*iprot*/) {}
 

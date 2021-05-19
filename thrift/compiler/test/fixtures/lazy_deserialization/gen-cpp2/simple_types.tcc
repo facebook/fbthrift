@@ -31,10 +31,9 @@ namespace apache { namespace thrift { namespace test {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
-  Protocol_ indexReader;
-  _readState.readStructBegin(iprot, &indexReader);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 

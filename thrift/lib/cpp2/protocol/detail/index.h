@@ -19,7 +19,9 @@
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
+#include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 
 namespace apache {
@@ -136,41 +138,128 @@ using IndexWriter = std::conditional_t<
     DummyIndexWriter>;
 
 template <class Protocol>
-folly::Optional<int64_t> readIndexOffsetField(Protocol& p) {
-  std::string name;
-  TType fieldType;
-  int16_t fieldId;
+class ProtocolReaderStructReadStateWithIndexImpl
+    : public ProtocolReaderStructReadState<Protocol> {
+ private:
+  using Base = ProtocolReaderStructReadState<Protocol>;
 
-  p.readFieldBegin(name, fieldType, fieldId);
-  if (fieldType != kSizeField.type || fieldId != kSizeField.id) {
+ public:
+  void readStructBegin(Protocol* iprot) {
+    readStructBeginWithIndex(iprot->getCursor());
+    Base::readStructBegin(iprot);
+  }
+
+  void readFieldEnd(Protocol* iprot) {
+    tryAdvanceIndex(Base::fieldId);
+    Base::readFieldEnd(iprot);
+  }
+
+  FOLLY_ALWAYS_INLINE bool advanceToNextField(
+      Protocol* iprot,
+      int32_t currFieldId,
+      int32_t nextFieldId,
+      TType nextFieldType) {
+    if (currFieldId == 0 && foundSizeField_) {
+      currFieldId = detail::kSizeField.id;
+    }
+    tryAdvanceIndex(currFieldId);
+    return Base::advanceToNextField(
+        iprot, currFieldId, nextFieldId, nextFieldType);
+  }
+
+  FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
+      Protocol* iprot, int16_t id, TType type, bool fixedCostSkip) {
+    if (fixedCostSkip) {
+      return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
+    }
+
+    if (foundSizeField_ && currentIndexFieldId_ == id) {
+      return tryFastSkipImpl(
+          iprot, [&] { iprot->skipBytes(currentIndexFieldSize_); });
+    }
+
     return {};
   }
 
-  double indexOffset;
-  p.readDouble(indexOffset);
-  p.readFieldEnd();
-  return indexOffset;
-}
+ private:
+  template <class Skip>
+  folly::IOBuf tryFastSkipImpl(Protocol* iprot, Skip skip) {
+    auto cursor = iprot->getCursor();
+    skip();
+    folly::IOBuf buf;
+    cursor.clone(buf, iprot->getCursor() - cursor);
+    buf.makeManaged();
+    return buf;
+  }
+
+  void readStructBeginWithIndex(folly::io::Cursor structBegin) {
+    indexReader_.setInput(std::move(structBegin));
+    if (auto serializedDataSize = readIndexOffsetField(indexReader_)) {
+      foundSizeField_ = true;
+      indexReader_.skipBytes(*serializedDataSize);
+      if (auto count = readIndexField(indexReader_)) {
+        indexFieldCount_ = *count;
+        tryAdvanceIndex(0); // Read first (field id, size) pair
+        return;
+      }
+    }
+  }
+
+  FOLLY_ALWAYS_INLINE void tryAdvanceIndex(int16_t id) {
+    if (indexFieldCount_ > 0 && id == currentIndexFieldId_) {
+      indexReader_.readI16(currentIndexFieldId_);
+      indexReader_.readI64(currentIndexFieldSize_);
+      --indexFieldCount_;
+    }
+  }
+
+  static folly::Optional<int64_t> readIndexOffsetField(Protocol& p) {
+    std::string name;
+    TType fieldType;
+    int16_t fieldId;
+
+    p.readFieldBegin(name, fieldType, fieldId);
+    if (fieldType != kSizeField.type || fieldId != kSizeField.id) {
+      return {};
+    }
+
+    double indexOffset;
+    p.readDouble(indexOffset);
+    p.readFieldEnd();
+    return indexOffset;
+  }
+
+  static folly::Optional<uint32_t> readIndexField(Protocol& p) {
+    std::string name;
+    TType fieldType;
+    int16_t fieldId;
+    p.readFieldBegin(name, fieldType, fieldId);
+    if (fieldType != kIndexField.type) {
+      return {};
+    }
+
+    TType key;
+    TType value;
+    uint32_t fieldCount;
+    p.readMapBegin(key, value, fieldCount);
+    if (key != TType::T_I16 || value != TType::T_I64) {
+      return {};
+    }
+    return fieldCount;
+  }
+
+  Protocol indexReader_;
+  bool foundSizeField_ = false;
+  uint32_t indexFieldCount_ = 0;
+  int16_t currentIndexFieldId_ = 0;
+  int64_t currentIndexFieldSize_ = 0;
+};
 
 template <class Protocol>
-folly::Optional<uint32_t> readIndexField(Protocol& p) {
-  std::string name;
-  TType fieldType;
-  int16_t fieldId;
-  p.readFieldBegin(name, fieldType, fieldId);
-  if (fieldType != kIndexField.type) {
-    return {};
-  }
-
-  TType key;
-  TType value;
-  uint32_t fieldCount;
-  p.readMapBegin(key, value, fieldCount);
-  if (key != TType::T_I16 || value != TType::T_I64) {
-    return {};
-  }
-  return fieldCount;
-}
+using ProtocolReaderStructReadStateWithIndex = std::conditional_t<
+    Protocol::ProtocolWriter::kHasIndexSupport(),
+    ProtocolReaderStructReadStateWithIndexImpl<Protocol>,
+    ProtocolReaderStructReadState<Protocol>>;
 
 } // namespace detail
 } // namespace thrift

@@ -35,9 +35,7 @@ struct ProtocolReaderStructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(Protocol* iprot, Protocol* /*indexReader*/ = nullptr) {
-    iprot->readStructBegin(fieldName_);
-  }
+  void readStructBegin(Protocol* iprot) { iprot->readStructBegin(fieldName_); }
 
   void readStructEnd(Protocol* iprot) { iprot->readStructEnd(); }
 

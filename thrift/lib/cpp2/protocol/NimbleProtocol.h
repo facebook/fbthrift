@@ -231,9 +231,7 @@ class NimbleProtocolReader {
           fieldCur - iprot->decoder_.fieldRange().begin());
     }
 
-    void readStructBegin(
-        NimbleProtocolReader* iprot,
-        NimbleProtocolReader* /*indexReader*/ = nullptr) {
+    void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");
       borrowFieldPtrs(iprot);
       decoderState = iprot->borrowState();

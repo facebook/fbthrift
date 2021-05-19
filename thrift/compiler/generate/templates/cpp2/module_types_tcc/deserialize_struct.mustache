@@ -17,15 +17,9 @@
 %><%^program:tablebased?%>
 template <class Protocol_>
 void <%struct:name%>::readNoXfer(Protocol_* iprot) {
-  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  apache::thrift::detail::ProtocolReaderStructReadState<%#struct:indexing?%>WithIndex<%/struct:indexing?%><Protocol_> _readState;
 
-<%^struct:indexing?%>
   _readState.readStructBegin(iprot);
-<%/struct:indexing?%>
-<%#struct:indexing?%>
-  Protocol_ indexReader;
-  _readState.readStructBegin(iprot, &indexReader);
-<%/struct:indexing?%>
 
   using apache::thrift::TProtocolException;
 
