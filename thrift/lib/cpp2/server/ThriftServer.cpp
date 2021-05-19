@@ -372,13 +372,21 @@ void ThriftServer::setup() {
           }
         });
       }
-
-      // Notify handler of the preServe event
-      for (const auto& eventHandler : getEventHandlersUnsafe()) {
-        eventHandler->preServe(&addresses_.at(0));
-      }
     } else {
       startDuplex();
+    }
+
+    // Notify handler of the preStart event
+    for (const auto& eventHandler : getEventHandlersUnsafe()) {
+      eventHandler->preStart(&addresses_.at(0));
+    }
+
+    // Called after setup
+    callOnStartServing();
+
+    // Notify handler of the preServe event
+    for (const auto& eventHandler : getEventHandlersUnsafe()) {
+      eventHandler->preServe(&addresses_.at(0));
     }
 
     // Do not allow setters to be called past this point until the IO worker
@@ -393,9 +401,6 @@ void ThriftServer::setup() {
     handleSetupFailure();
     throw;
   }
-
-  // Called after setup
-  callOnStartServing();
 }
 
 void ThriftServer::setupThreadManager() {

@@ -43,6 +43,13 @@ class TServerEventHandler {
   virtual ~TServerEventHandler() {}
 
   /**
+   * Called before the onStartServing is called.
+   *
+   * @param address The address on which the server is listening.
+   */
+  virtual void preStart(const folly::SocketAddress* /*address*/) {}
+
+  /**
    * Called before the server begins.
    *
    * @param address The address on which the server is listening.

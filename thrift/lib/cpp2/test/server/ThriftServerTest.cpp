@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
@@ -289,26 +290,59 @@ TEST(ThriftServer, OnStartStopServingTest) {
 
   auto testIf = std::make_shared<TestInterface>();
 
-  auto runner = std::make_unique<ScopedServerInterfaceThread>(
-      testIf, "::1", 0, [](auto& ts) {
-        auto tf =
-            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
-        // We need at least 2 threads for the test
-        auto tm = ThreadManager::newSimpleThreadManager(2, false);
-        tm->threadFactory(move(tf));
-        tm->start();
-        ts.setThreadManager(tm);
-      });
+  class TestEventHandler : public server::TServerEventHandler {
+   public:
+    void preStart(const folly::SocketAddress* address) override {
+      this->address = *address;
+      preStartEnter.post();
+      preStartExit.wait();
+    }
+    folly::Baton<> preStartEnter, preStartExit;
+    folly::SocketAddress address;
+  };
+  auto preStartHandler = std::make_shared<TestEventHandler>();
 
-  auto client = runner->newClient<TestServiceAsyncClient>(
-      nullptr, [](auto socket) mutable {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  std::unique_ptr<ScopedServerInterfaceThread> runner;
+
+  folly::Baton<> serverSetupBaton;
+  std::thread startRunnerThread([&] {
+    runner = std::make_unique<ScopedServerInterfaceThread>(
+        testIf, "::1", 0, [&](auto& ts) {
+          auto tf = std::make_shared<PosixThreadFactory>(
+              PosixThreadFactory::ATTACHED);
+          // We need at least 2 threads for the test
+          auto tm = ThreadManager::newSimpleThreadManager(2, false);
+          tm->threadFactory(move(tf));
+          tm->start();
+          ts.setThreadManager(tm);
+          ts.addServerEventHandler(preStartHandler);
+          serverSetupBaton.post();
+        });
+  });
+
+  serverSetupBaton.wait();
+
+  // Wait for preStart callback
+  EXPECT_TRUE(preStartHandler->preStartEnter.try_wait_for(2s));
+  TestServiceAsyncClient client(
+      apache::thrift::PooledRequestChannel::newSyncChannel(
+          folly::getUnsafeMutableGlobalIOExecutor(),
+          [address = preStartHandler->address](folly::EventBase& eb) mutable {
+            return RocketClientChannel::newChannel(
+                folly::AsyncSocket::UniquePtr(
+                    new folly::AsyncSocket(&eb, address)));
+          }));
+
+  client.semifuture_voidResponse().get();
+  EXPECT_FALSE(testIf->startEnter.ready());
+  preStartHandler->preStartExit.post();
 
   // Wait for onStartServing()
   EXPECT_TRUE(testIf->startEnter.try_wait_for(2s));
-  client->semifuture_voidResponse().get();
+  client.semifuture_voidResponse().get();
   testIf->startExit.post();
+
+  startRunnerThread.join();
 
   // Stop the server on a different thread
   folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(
@@ -316,7 +350,7 @@ TEST(ThriftServer, OnStartStopServingTest) {
 
   // Wait for onStopServing()
   EXPECT_TRUE(testIf->stopEnter.try_wait_for(2s));
-  client->semifuture_voidResponse().get();
+  client.semifuture_voidResponse().get();
   testIf->stopExit.post();
 }
 
