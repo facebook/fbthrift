@@ -144,9 +144,11 @@
     __VA_ARGS__;                                      \
   }
 
-#define FROZEN_THAW_FIELD(NAME)                          \
-  thawField(self, this->NAME##Field, *out.NAME##_ref()); \
-  out.__isset.NAME = !this->NAME##Field.layout.empty();
+#define FROZEN_THAW_FIELD(NAME)                                  \
+  thawField(self, this->NAME##Field, out.NAME##_ref().ensure()); \
+  if (this->NAME##Field.layout.empty()) {                        \
+    ::apache::thrift::unset_unsafe(out.NAME##_ref());            \
+  }
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME##_ref());
 #define FROZEN_THAW_FIELD_REQ(NAME) \

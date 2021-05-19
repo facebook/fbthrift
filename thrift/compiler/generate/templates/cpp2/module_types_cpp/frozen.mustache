@@ -46,7 +46,7 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
 <%/type:bool?%>
 <%^field:required?%>
 <%^field:cpp_ref?%>
-  dst.__isset.<%field:cpp_name%> = src.__isset.<%field:cpp_name%>;
+  dst.__isset.<%field:cpp_name%> = src.<%field:cpp_name%>_ref().has_value();
 <%/field:cpp_ref?%>
 <%/field:required?%>
 <%/field:type%>
@@ -60,14 +60,16 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>
-  dst.<% > module_types_cpp/field_value_ref%> = src.<%field:cpp_name%>;
+  dst.<%field:cpp_name%>_ref() = src.<%field:cpp_name%>;
 <%/type:bool?%>
 <%^type:bool?%>
-  thaw(src.<%field:cpp_name%>, dst.<% > module_types_cpp/field_value_ref%>);
+  thaw(src.<%field:cpp_name%>, dst.<%field:cpp_name%>_ref()<%^field:cpp_ref?%>.ensure()<%/field:cpp_ref?%>);
 <%/type:bool?%>
 <%^field:required?%>
 <%^field:cpp_ref?%>
-  dst.__isset.<%field:cpp_name%> = src.__isset.<%field:cpp_name%>;
+  if (!src.__isset.<%field:cpp_name%>) {
+    ::apache::thrift::unset_unsafe(dst.<%field:cpp_name%>_ref());
+  }
 <%/field:cpp_ref?%>
 <%/field:required?%>
 <%/field:type%>
