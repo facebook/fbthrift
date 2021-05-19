@@ -56,7 +56,7 @@ struct ProcessorInfo {
   std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   server::ServerConfigs& serverConfigs_;
-  RequestsRegistry* requestsRegistry_;
+  RequestsRegistry* FOLLY_NULLABLE requestsRegistry_;
 };
 
 /*

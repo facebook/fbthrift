@@ -173,7 +173,9 @@ void ThriftRocketServerHandler::handleSetupFrame(
         valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
         valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
-        valid &= !!(requestsRegistry_ = processorInfo->requestsRegistry_);
+        requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
+            ? processorInfo->requestsRegistry_
+            : worker_->getRequestsRegistry();
         if (!valid) {
           return connection.close(
               folly::make_exception_wrapper<RocketException>(
