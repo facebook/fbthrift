@@ -123,8 +123,6 @@ class AstVisitorTest : public ::testing::Test {
         overload_visitor_(&overload_mock_) {}
 
   void SetUp() override {
-    program_.set_namespace("cpp2", "path.to");
-
     // Register mock_ to verify add_* function -> nodes visited
     // relationship.
     mock_.addTo(visitor_);

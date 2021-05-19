@@ -84,6 +84,15 @@ class diagnostic {
   std::string file_;
   int line_;
   std::string token_;
+
+  friend bool operator==(const diagnostic& lhs, const diagnostic& rhs) {
+    return lhs.level_ == rhs.level_ && lhs.line_ == rhs.line_ &&
+        lhs.message_ == rhs.message_ && lhs.file_ == rhs.file_ &&
+        lhs.token_ == rhs.token_;
+  }
+  friend bool operator!=(const diagnostic& lhs, const diagnostic& rhs) {
+    return !(lhs == rhs);
+  }
 };
 
 std::ostream& operator<<(std::ostream& os, const diagnostic& e);
