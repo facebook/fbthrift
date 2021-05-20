@@ -128,8 +128,6 @@ void service_method_name_uniqueness_validator::
 
 static void fill_validators(validator_list& vs) {
   vs.add<service_method_name_uniqueness_validator>();
-  vs.add<enum_value_names_uniqueness_validator>();
-  vs.add<enum_values_uniqueness_validator>();
   vs.add<enum_values_set_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<union_no_qualified_fields_validator>();
@@ -143,63 +141,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<recursive_optional_validator>();
 
   // add more validators here ...
-}
-
-void enum_value_names_uniqueness_validator::add_validation_error(
-    int const lineno,
-    std::string const& value_name,
-    std::string const& enum_name) {
-  // [FAILURE:{}] Redefinition of value {} in enum {}
-  add_error(
-      lineno,
-      "Redefinition of value `" + value_name + "` in enum `" + enum_name +
-          "`.");
-}
-
-bool enum_value_names_uniqueness_validator::visit(t_enum* const tenum) {
-  validate(tenum);
-  return true;
-}
-
-void enum_value_names_uniqueness_validator::validate(
-    t_enum const* const tenum) {
-  std::unordered_set<std::string> enum_value_names;
-  for (auto const v : tenum->get_enum_values()) {
-    if (enum_value_names.count(v->get_name())) {
-      add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
-    }
-    enum_value_names.insert(v->get_name());
-  }
-}
-
-void enum_values_uniqueness_validator::add_validation_error(
-    int const lineno,
-    t_enum_value const& enum_value,
-    std::string const& existing_value_name,
-    std::string const& enum_name) {
-  add_error(
-      lineno,
-      "Duplicate value `" + enum_value.get_name() + "=" +
-          std::to_string(enum_value.get_value()) + "` with value `" +
-          existing_value_name + "` in enum `" + enum_name + "`.");
-}
-
-bool enum_values_uniqueness_validator::visit(t_enum* const tenum) {
-  validate(tenum);
-  return true;
-}
-
-void enum_values_uniqueness_validator::validate(t_enum const* const tenum) {
-  std::unordered_map<int32_t, t_enum_value const*> enum_values;
-  for (auto v : tenum->get_enum_values()) {
-    auto it = enum_values.find(v->get_value());
-    if (it != enum_values.end()) {
-      add_validation_error(
-          v->get_lineno(), *v, it->second->get_name(), tenum->get_name());
-    } else {
-      enum_values[v->get_value()] = v;
-    }
-  }
 }
 
 void enum_values_set_validator::add_validation_error(

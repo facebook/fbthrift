@@ -26,6 +26,9 @@ namespace compiler {
 // An AST validator is a const ast_visitor that collects diagnostics.
 using ast_validator = basic_ast_visitor<true, diagnostic_results&>;
 
+// The standard validator for Thrift.
+ast_validator standard_validator();
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

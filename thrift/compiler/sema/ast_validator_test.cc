@@ -42,5 +42,68 @@ TEST_F(AstValidatorTest, Output) {
           diagnostic(diagnostic_level::info, "test", &program, &program)));
 }
 
+class StdAstValidatorTest : public ::testing::Test {
+ protected:
+  std::vector<diagnostic> validate() {
+    diagnostic_results result;
+    standard_validator()(result, &program_);
+    return result.diagnostics();
+  }
+
+  t_program program_{"/path/to/file.thrift"};
+};
+
+TEST_F(StdAstValidatorTest, DuplicatedEnumValues) {
+  auto tenum = std::make_unique<t_enum>(&program_, "foo");
+  auto tenum_ptr = tenum.get();
+  program_.add_enum(std::move(tenum));
+
+  tenum_ptr->append(std::make_unique<t_enum_value>("bar", 1));
+  tenum_ptr->append(std::make_unique<t_enum_value>("baz", 2));
+
+  // No errors will be found.
+  EXPECT_THAT(validate(), ::testing::IsEmpty());
+
+  // Add enum_value with repeated value.
+  auto enum_value_3 = std::make_unique<t_enum_value>("foo", 1);
+  enum_value_3->set_lineno(1);
+  tenum_ptr->append(std::move(enum_value_3));
+
+  // An error will be found.
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(diagnostic{
+          diagnostic_level::failure,
+          "Duplicate value `foo=1` with value `bar` in enum `foo`.",
+          program_.path(),
+          1}));
+}
+
+TEST_F(StdAstValidatorTest, RepeatedNamesInEnumValues) {
+  auto tenum = std::make_unique<t_enum>(&program_, "foo");
+  auto tenum_ptr = tenum.get();
+  program_.add_enum(std::move(tenum));
+
+  tenum_ptr->append(std::make_unique<t_enum_value>("bar", 1));
+  tenum_ptr->append(std::make_unique<t_enum_value>("not_bar", 2));
+
+  // No errors will be found.
+  EXPECT_THAT(validate(), ::testing::IsEmpty());
+
+  // Add enum_value with repeated name.
+  auto enum_value_3 = std::make_unique<t_enum_value>("bar", 3);
+  enum_value_3->set_lineno(1);
+  tenum_ptr->append(std::move(enum_value_3));
+
+  // An error will be found.
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(diagnostic{
+          diagnostic_level::failure,
+          "Redefinition of value `bar` in enum `foo`.",
+          program_.path(),
+          1}));
+}
+
 } // namespace
 } // namespace apache::thrift::compiler

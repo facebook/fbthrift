@@ -38,12 +38,6 @@ std::unique_ptr<t_enum_value> new_enum_value(std::string name) {
   return std::make_unique<t_enum_value>(std::move(name));
 }
 
-std::unique_ptr<t_enum_value> new_enum_value(std::string name, int value) {
-  auto result = new_enum_value(std::move(name));
-  result->set_value(value);
-  return result;
-}
-
 } // namespace
 
 TEST_F(ValidatorTest, run_validator) {
@@ -136,56 +130,6 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
       "[FAILURE:/path/to/file.thrift:1] "
       "Function `qux.foo` redefines `service bar.foo`.";
   errors = run_validator<service_method_name_uniqueness_validator>(&program);
-  EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front().str());
-}
-
-TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
-  auto tenum = create_fake_enum("foo");
-  auto tenum_ptr = tenum.get();
-
-  t_program program("/path/to/file.thrift");
-  program.add_enum(std::move(tenum));
-
-  tenum_ptr->append(new_enum_value("bar", 1), nullptr);
-  tenum_ptr->append(new_enum_value("not_bar", 2), nullptr);
-
-  // No errors will be found
-  auto errors = run_validator<enum_value_names_uniqueness_validator>(&program);
-  EXPECT_TRUE(errors.empty());
-
-  // Add enum with repeated value
-  auto enum_value_3 = new_enum_value("bar", 3);
-  enum_value_3->set_lineno(1);
-  tenum_ptr->append(std::move(enum_value_3), nullptr);
-
-  // An error will be found
-  const std::string expected =
-      "[FAILURE:/path/to/file.thrift:1] "
-      "Redefinition of value `bar` in enum `foo`.";
-  errors = run_validator<enum_value_names_uniqueness_validator>(&program);
-  EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front().str());
-}
-
-TEST_F(ValidatorTest, DuplicatedEnumValues) {
-  auto tenum = create_fake_enum("foo");
-  auto tenum_ptr = tenum.get();
-
-  t_program program("/path/to/file.thrift");
-  program.add_enum(std::move(tenum));
-
-  auto enum_value_1 = new_enum_value("bar", 1);
-  auto enum_value_2 = new_enum_value("foo", 1);
-  enum_value_2->set_lineno(1);
-  tenum_ptr->append(std::move(enum_value_1), nullptr);
-  tenum_ptr->append(std::move(enum_value_2), nullptr);
-
-  // An error will be found
-  const std::string expected =
-      "[FAILURE:/path/to/file.thrift:1] "
-      "Duplicate value `foo=1` with value `bar` in enum `foo`.";
-  auto errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front().str());
 }

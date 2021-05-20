@@ -41,6 +41,7 @@
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/sema/ast_validator.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {
@@ -430,6 +431,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Validate it!
   result.detail.add_all(validator::validate(program->root_program()));
+  standard_validator()(result.detail, program->root_program());
   if (result.detail.has_failure()) {
     return result;
   }

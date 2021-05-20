@@ -35,6 +35,8 @@ namespace compiler {
 class t_enum_value : public t_named {
  public:
   explicit t_enum_value(std::string name) : t_named(std::move(name)) {}
+  t_enum_value(std::string name, int32_t value)
+      : t_named(std::move(name)), value_(value), has_value_(true) {}
 
   /**
    * t_enum_value setters
