@@ -122,8 +122,8 @@ impl<B: BufExt> BinaryProtocolDeserializer<B> {
     }
 
     fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
-        if self.buffer.bytes().len() >= len {
-            Some(&self.buffer.bytes()[..len])
+        if self.buffer.chunk().len() >= len {
+            Some(&self.buffer.chunk()[..len])
         } else {
             None
         }

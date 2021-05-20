@@ -16,8 +16,7 @@
 
 use crate::varint;
 use bufsize::SizeCounter;
-use bytes::buf::ext::Chain;
-use bytes::buf::BufExt as BufExtBytes;
+use bytes::buf::Chain;
 use bytes::{Buf, BufMut, Bytes, BytesMut};
 use std::io::Cursor;
 
@@ -25,7 +24,12 @@ pub trait BufExt: Buf {
     /// Reset buffer back to the beginning.
     fn reset(self) -> Self;
 
-    fn copy_to_bytes(&mut self, len: usize) -> Bytes;
+    /// Copy `len` Bytes from this (and advance the position), or reuse them from the underlying
+    /// buffer if possible.
+    fn copy_or_reuse_bytes(&mut self, len: usize) -> Bytes {
+        // Default is to just copy.
+        self.copy_to_bytes(len)
+    }
 }
 
 impl BufExt for Cursor<Bytes> {
@@ -33,11 +37,11 @@ impl BufExt for Cursor<Bytes> {
         Cursor::new(self.into_inner())
     }
 
-    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
-        // This is available as standard in Bytes 1.0
+    // We can get a reference to the underlying Bytes here, and reuse that.
+    fn copy_or_reuse_bytes(&mut self, len: usize) -> Bytes {
         let pos = self.position() as usize;
         let end = pos + len;
-        // Panics if len is too large (same as Bytes 1.0)
+        // Panics if len is too large (same as Bytes)
         let bytes = self.get_ref().slice(pos..end);
         self.set_position(end as u64);
         bytes
@@ -48,27 +52,12 @@ impl<T: AsRef<[u8]> + ?Sized> BufExt for Cursor<&T> {
     fn reset(self) -> Self {
         Cursor::new(self.into_inner())
     }
-
-    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
-        // This is available as standard in Bytes 1.0
-        let pos = self.position() as usize;
-        let end = pos + len;
-        // Panics if len is too large (same as Bytes 1.0)
-        let all = self.get_ref().as_ref();
-        let bytes = Bytes::copy_from_slice(&all[pos..end]);
-        self.set_position(end as u64);
-        bytes
-    }
 }
 
 impl<T: BufExt, U: BufExt> BufExt for Chain<T, U> {
     fn reset(self) -> Self {
         let (a, b) = self.into_inner();
-        Chain::new(a.reset(), b.reset())
-    }
-
-    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
-        self.take(len).to_bytes()
+        a.reset().chain(b.reset())
     }
 }
 

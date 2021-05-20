@@ -59,7 +59,7 @@ pub fn read_u64<B: Buf>(buf: &mut B) -> Result<u64> {
 
     // Operate on byte slices
     fn inner<B: Buf>(off: usize, val: u64, buf: &mut B) -> Result<Complete> {
-        let inp = buf.bytes();
+        let inp = buf.chunk();
         let mut val = val;
 
         ensure_err!(!inp.is_empty(), ProtocolError::EOF);
@@ -131,7 +131,6 @@ mod test {
     use super::*;
     use crate::bufext::BufMutExt;
     use bufsize::SizeCounter;
-    use bytes::buf::ext::Chain;
     use bytes::BytesMut;
     use quickcheck::quickcheck;
     use std::io::Cursor;
@@ -335,10 +334,9 @@ mod test {
         let data2 = [88_u8, 0x80 | 77];
         let data3 = [0x80 | 88, 99_u8];
 
-        let mut data = Chain::new(
-            Cursor::new(data1),
-            Chain::new(Cursor::new(data2), Cursor::new(data3)),
-        );
+        let mut data = Cursor::new(data1)
+            .chain(Cursor::new(data2))
+            .chain(Cursor::new(data3));
 
         const WANT1: u64 = (88 << 7) + 77;
         const WANT2: u64 = (99 << 14) + (88 << 7) + 77;

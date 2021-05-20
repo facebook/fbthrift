@@ -20,8 +20,7 @@ use super::{
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
 use crate::{CompactProtocol, Protocol, ProtocolReader, ProtocolWriter};
-use bytes::buf::BufExt;
-use bytes::Bytes;
+use bytes::{Buf, Bytes};
 use std::{convert::TryFrom, io::Cursor, u8};
 
 #[test]

@@ -46,7 +46,7 @@ impl<T: BinaryType> CopyFromBuf for T {
         let mut remaining = len;
 
         while remaining > 0 {
-            let part = buffer.bytes();
+            let part = buffer.chunk();
             let part_len = part.len().min(remaining);
             result.extend_from_slice(&part[..part_len]);
             remaining -= part_len;
@@ -74,6 +74,6 @@ impl CopyFromBuf for Discard {
 
 impl CopyFromBuf for Bytes {
     fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
-        buffer.copy_to_bytes(len)
+        buffer.copy_or_reuse_bytes(len)
     }
 }
