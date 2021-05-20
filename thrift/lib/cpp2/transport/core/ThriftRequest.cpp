@@ -66,7 +66,8 @@ MessageChannel::SendCallbackPtr ThriftRequestCore::prepareSendCallback(
   // which also implements MessageChannel::SendCallback. Callers of
   // sendReply/sendError are responsible for cleaning up their own callbacks.
   auto& timestamps = getTimestamps();
-  if (timestamps.getSamplingStatus().isEnabledByServer()) {
+  if (stateMachine_.getStartedProcessing() &&
+      timestamps.getSamplingStatus().isEnabledByServer()) {
     auto chainedCallback = cbPtr.release();
     return MessageChannel::SendCallbackPtr(
         new ThriftRequestCore::RequestTimestampSample(

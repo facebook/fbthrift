@@ -16,7 +16,9 @@
 
 #include <algorithm>
 #include <atomic>
+#include <optional>
 #include <thread>
+
 #include <folly/ThreadLocal.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -870,8 +872,8 @@ class TimestampsTest
  protected:
   bool rocket;
   bool forceTimestamps;
-  server::TServerObserver::CallTimestamps timestamps;
-  folly::Baton<> baton;
+  std::optional<server::TServerObserver::CallTimestamps> timestamps;
+  std::optional<folly::Baton<>> timestampObserverComplete;
   struct Observer : public server::TServerObserver {
     explicit Observer(folly::Function<void(const CallTimestamps&)>&& f)
         : server::TServerObserver(1), f_(std::move(f)) {}
@@ -886,7 +888,9 @@ class TimestampsTest
       if (forceTimestamps) {
         ts.setObserver(std::make_shared<Observer>([&](auto& t) {
           timestamps = t;
-          baton.post();
+          if (timestampObserverComplete) {
+            timestampObserverComplete->post();
+          }
         }));
       }
     });
@@ -915,6 +919,7 @@ void validateTimestamps(
 } // namespace
 
 TEST_P(TimestampsTest, Basic) {
+  timestampObserverComplete.emplace();
   auto client = rocket ? makeRocketClient() : makeHeaderClient();
   auto now = std::chrono::steady_clock::now();
   handler()->setCallback([&](TestInterface* ti) {
@@ -924,11 +929,43 @@ TEST_P(TimestampsTest, Basic) {
   });
   client->sync_runCallback();
   if (forceTimestamps) {
-    baton.try_wait_for(1s);
-    EXPECT_GT(timestamps.processEnd, now);
-    EXPECT_GT(timestamps.writeBegin, timestamps.processEnd);
-    EXPECT_GT(timestamps.writeEnd, timestamps.writeBegin);
+    timestampObserverComplete->try_wait_for(1s);
+    EXPECT_GT(timestamps->processEnd, now);
+    EXPECT_GT(timestamps->writeBegin, timestamps->processEnd);
+    EXPECT_GT(timestamps->writeEnd, timestamps->writeBegin);
   }
+}
+
+TEST_P(TimestampsTest, QueueTimeout) {
+  if (!forceTimestamps) {
+    return;
+  }
+  auto client = rocket ? makeRocketClient() : makeHeaderClient();
+
+  // force queue timeout by blocking CPU worker
+  folly::Baton<> receivedBlockingCall;
+  folly::Baton<> done;
+  handler()->setCallback([&](TestInterface*) {
+    receivedBlockingCall.post();
+    done.wait();
+  });
+  auto blockingCall = client->semifuture_runCallback();
+  receivedBlockingCall.wait();
+  auto guard = folly::makeGuard([&] {
+    done.post();
+    std::move(blockingCall).get();
+  });
+
+  try {
+    RpcOptions rpcOptions;
+    rpcOptions.setQueueTimeout(std::chrono::milliseconds(1));
+    client->sync_runCallback(rpcOptions);
+    FAIL() << "Expected exception to be thrown";
+  } catch (const TApplicationException& ex) {
+    ASSERT_EQ(ex.getType(), TApplicationException::TIMEOUT);
+  }
+  // callCompleted should not be called for requests which timed out the queue.
+  EXPECT_FALSE(timestamps.has_value());
 }
 
 INSTANTIATE_TEST_CASE_P(
