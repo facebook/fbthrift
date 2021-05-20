@@ -31,6 +31,7 @@
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
+#include <folly/SocketAddress.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/executors/MeteredExecutor.h>
@@ -321,6 +322,22 @@ TEST(ThriftServer, ServerEventHandlerTest) {
   EXPECT_EQ(1, eh2->connectionDestroyedCalls);
   EXPECT_EQ(1, eh3->connectionDestroyedCalls);
   EXPECT_EQ(1, eh4->connectionDestroyedCalls);
+}
+
+TEST(ThriftServer, GetPortTest) {
+  ThriftServer server;
+  EXPECT_EQ(server.getPort(), 0);
+
+  folly::SocketAddress addr;
+  addr.setFromLocalPort(8080);
+  server.setAddress(addr);
+  EXPECT_EQ(server.getPort(), 8080);
+
+  server.setPort(8090);
+  EXPECT_EQ(server.getPort(), 8090);
+
+  server.setAddress(addr);
+  EXPECT_EQ(server.getPort(), 8080);
 }
 
 namespace {
