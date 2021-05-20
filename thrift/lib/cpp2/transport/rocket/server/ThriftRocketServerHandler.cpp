@@ -414,6 +414,15 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
+  if (!serverConfigs_->getEnabled() ||
+      (serverConfigs_->getRejectRequestsUntilStarted() &&
+       !serverConfigs_->getStarted())) {
+    if (!serverConfigs_->getInternalMethods().count(name)) {
+      handleServerNotReady(std::move(request));
+      return;
+    }
+  }
+
   auto preprocessResult =
       serverConfigs_->preprocess({headers, name, connContext_, request.get()});
   if (UNLIKELY(preprocessResult.has_value())) {
@@ -552,6 +561,17 @@ void ThriftRocketServerHandler::handleAppError(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNKNOWN, std::move(message)),
       isClientError ? kAppClientErrorCode : kAppServerErrorCode);
+}
+
+void ThriftRocketServerHandler::handleServerNotReady(
+    ThriftRequestCoreUniquePtr request) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::LOADSHEDDING, "server not ready"),
+      kQueueOverloadedErrorCode);
 }
 
 void ThriftRocketServerHandler::handleServerShutdown(

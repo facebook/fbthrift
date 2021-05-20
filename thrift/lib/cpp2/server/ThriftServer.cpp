@@ -384,6 +384,8 @@ void ThriftServer::setup() {
     // Called after setup
     callOnStartServing();
 
+    started_.store(true, std::memory_order_release);
+
     // Notify handler of the preServe event
     for (const auto& eventHandler : getEventHandlersUnsafe()) {
       eventHandler->preServe(&addresses_.at(0));
@@ -609,6 +611,8 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
       }
     }
   });
+
+  started_.store(false, std::memory_order_relaxed);
 }
 
 void ThriftServer::callOnStartServing() {

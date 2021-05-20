@@ -218,6 +218,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool quickExitOnShutdownTimeout_ = false;
 
+  std::atomic<bool> started_{false};
+
  public:
   ThriftServer();
 
@@ -560,6 +562,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * Get the number of connections dropped by the AsyncServerSocket
    */
   uint64_t getNumDroppedConnections() const override;
+
+  /**
+   * Check if the server and all the handlers have started.
+   */
+  bool getStarted() const override {
+    return started_.load(std::memory_order_acquire);
+  }
 
   /**
    * Clear all the workers.

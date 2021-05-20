@@ -136,6 +136,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       bool isClientError);
   FOLLY_NOINLINE void handleDecompressionFailure(
       ThriftRequestCoreUniquePtr request, std::string&& reason);
+  FOLLY_NOINLINE void handleServerNotReady(ThriftRequestCoreUniquePtr request);
   FOLLY_NOINLINE void handleServerShutdown(ThriftRequestCoreUniquePtr request);
 };
 

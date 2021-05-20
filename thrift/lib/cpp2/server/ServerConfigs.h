@@ -124,9 +124,35 @@ class ServerConfigs {
     }
   }
 
+  virtual bool getStarted() const { return true; }
+
+  bool getEnabled() const { return enabled_.load(); }
+
+  void setEnabled(bool enabled) { enabled_ = enabled; }
+
+  const std::unordered_set<std::string>& getInternalMethods() const {
+    return internalMethods_;
+  }
+
+  void setInternalMethods(std::unordered_set<std::string> internalMethods) {
+    internalMethods_ = std::move(internalMethods);
+  }
+
+  bool getRejectRequestsUntilStarted() const {
+    return rejectRequestsUntilStarted_;
+  }
+
+  void setRejectRequestsUntilStarted(bool rejectRequestsUntilStarted) {
+    rejectRequestsUntilStarted_ = rejectRequestsUntilStarted;
+  }
+
  private:
   std::atomic<int32_t> activeRequests_{0};
+
   bool disableActiveRequestsTracking_{false};
+  bool rejectRequestsUntilStarted_{false};
+  std::atomic<bool> enabled_{true};
+  std::unordered_set<std::string> internalMethods_;
 };
 
 } // namespace server
