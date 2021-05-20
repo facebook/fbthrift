@@ -407,7 +407,7 @@ void ThriftServer::setupThreadManager() {
   if (!threadManager_) {
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
         PriorityThreadManager::newPriorityThreadManager(
-            getNumCPUWorkerThreads(), true /*stats*/));
+            getNumCPUWorkerThreads()));
     threadManager->enableCodel(getEnableCodel());
     // If a thread factory has been specified, use it.
     if (threadFactory_) {
