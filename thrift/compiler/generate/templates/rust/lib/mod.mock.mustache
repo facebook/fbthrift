@@ -30,7 +30,7 @@
         pub fn mock<'mock>() -> {{service:name}}<'mock> {
             {{service:name}} {
                 {{#service:extends}}
-                parent: {{service:package}}::client::{{service:name}}::mock(),
+                parent: <dyn {{service:package}}::client::{{service:name}}>::mock(),
                 {{/service:extends}}
                 {{#service:rustFunctions}}
                 {{function:name}}: {{!

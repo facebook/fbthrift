@@ -1813,7 +1813,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyService {
@@ -1840,7 +1840,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyService::new(protocol, transport)
+            <dyn MyService>::new(protocol, transport)
         }
     }
     pub struct MyServicePrioParentImpl<P, T> {
@@ -2027,7 +2027,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyServicePrioParent {
@@ -2055,7 +2055,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyServicePrioParent::new(protocol, transport)
+            <dyn MyServicePrioParent>::new(protocol, transport)
         }
     }
     pub struct MyServicePrioChildImpl<P, T> {
@@ -2186,7 +2186,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyServicePrioChild {
@@ -2213,7 +2213,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyServicePrioChild::new(protocol, transport)
+            <dyn MyServicePrioChild>::new(protocol, transport)
         }
     }
 }
@@ -3551,7 +3551,7 @@ pub mod server {
 ///
 /// #[test]
 /// fn test_my_client() {
-///     let mock = Arc::new(MyService::mock());
+///     let mock = Arc::new(<dyn MyService>::mock());
 ///
 ///     // directly return a success response
 ///     let resp = FunctionResponse {...};
@@ -3706,7 +3706,7 @@ pub mod mock {
     impl dyn super::client::MyServicePrioChild {
         pub fn mock<'mock>() -> MyServicePrioChild<'mock> {
             MyServicePrioChild {
-                parent: crate::client::MyServicePrioParent::mock(),
+                parent: <dyn crate::client::MyServicePrioParent>::mock(),
                 pang: r#impl::my_service_prio_child::pang::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }

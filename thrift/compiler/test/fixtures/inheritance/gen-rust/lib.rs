@@ -396,7 +396,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyRoot {
@@ -423,7 +423,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyRoot::new(protocol, transport)
+            <dyn MyRoot>::new(protocol, transport)
         }
     }
     pub struct MyNodeImpl<P, T> {
@@ -554,7 +554,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyNode {
@@ -581,7 +581,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyNode::new(protocol, transport)
+            <dyn MyNode>::new(protocol, transport)
         }
     }
     pub struct MyLeafImpl<P, T> {
@@ -726,7 +726,7 @@ pub mod client {
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
-    /// let client = BuckGraphService::new(protocol, transport);
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
     /// # };
     /// ```
     impl dyn MyLeaf {
@@ -753,7 +753,7 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
-            MyLeaf::new(protocol, transport)
+            <dyn MyLeaf>::new(protocol, transport)
         }
     }
 }
@@ -1526,7 +1526,7 @@ pub mod server {
 ///
 /// #[test]
 /// fn test_my_client() {
-///     let mock = Arc::new(MyService::mock());
+///     let mock = Arc::new(<dyn MyService>::mock());
 ///
 ///     // directly return a success response
 ///     let resp = FunctionResponse {...};
@@ -1586,7 +1586,7 @@ pub mod mock {
     impl dyn super::client::MyNode {
         pub fn mock<'mock>() -> MyNode<'mock> {
             MyNode {
-                parent: crate::client::MyRoot::mock(),
+                parent: <dyn crate::client::MyRoot>::mock(),
                 do_mid: r#impl::my_node::do_mid::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
@@ -1622,7 +1622,7 @@ pub mod mock {
     impl dyn super::client::MyLeaf {
         pub fn mock<'mock>() -> MyLeaf<'mock> {
             MyLeaf {
-                parent: crate::client::MyNode::mock(),
+                parent: <dyn crate::client::MyNode>::mock(),
                 do_leaf: r#impl::my_leaf::do_leaf::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }

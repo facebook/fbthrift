@@ -132,7 +132,7 @@ pub mod server {{>lib/block}}{{>lib/mod.server}}}
 ///
 /// #[test]
 /// fn test_my_client() {
-///     let mock = Arc::new(MyService::mock());
+///     let mock = Arc::new(<dyn MyService>::mock());
 ///
 ///     // directly return a success response
 ///     let resp = FunctionResponse {...};

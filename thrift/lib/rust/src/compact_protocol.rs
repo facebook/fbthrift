@@ -133,7 +133,7 @@ impl From<bool> for CType {
 /// ```ignore
 /// let protocol = CompactProtocol;
 /// let transport = HttpClient::new(ENDPOINT)?;
-/// let client = BuckGraphService::new(protocol, transport);
+/// let client = <dyn BuckGraphService>::new(protocol, transport);
 /// ```
 ///
 /// The type parameter is the Framing expected by the transport on which this
