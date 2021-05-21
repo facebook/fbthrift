@@ -22,6 +22,7 @@
 
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/sema/scope_validator.h>
 
 namespace apache {
 namespace thrift {
@@ -74,6 +75,7 @@ ast_validator standard_validator() {
   validator.add_enum_visitor(&enum_value_name_uniqueness);
   validator.add_enum_visitor(&enum_value_uniqueness);
   validator.add_enum_value_visitor(&enum_value_explicit);
+  validator.add_definition_visitor(&validate_annotation_scopes);
   return validator;
 }
 

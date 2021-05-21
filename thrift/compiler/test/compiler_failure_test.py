@@ -776,3 +776,77 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent("[FAILURE:foo.thrift:3] field `foo` does not exist.\n"),
         )
+
+    def test_annotation_scopes(self):
+        write_file(
+            "scope.thrift",
+            textwrap.dedent(
+                """
+                struct Struct {
+                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
+                struct Union {
+                } (thrift.uri = "facebook.com/thrift/annotation/Union")
+                struct Exception {
+                } (thrift.uri = "facebook.com/thrift/annotation/Exception")
+                struct Field {
+                } (thrift.uri = "facebook.com/thrift/annotation/Field")
+                struct Typedef {
+                } (thrift.uri = "facebook.com/thrift/annotation/Typedef")
+                struct Service {
+                } (thrift.uri = "facebook.com/thrift/annotation/Service")
+                struct Interaction {
+                } (thrift.uri = "facebook.com/thrift/annotation/Interaction")
+                struct Function {
+                } (thrift.uri = "facebook.com/thrift/annotation/Function")
+                struct Enum {
+                } (thrift.uri = "facebook.com/thrift/annotation/Enum")
+                struct EnumValue {
+                } (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
+                struct Const {
+                } (thrift.uri = "facebook.com/thrift/annotation/Const")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "scope.thrift"
+
+                struct NotAnAnnot {}
+
+                @scope.Struct
+                struct StructAnnot{}
+                @scope.Field
+                struct FieldAnnot{}
+
+                @scope.Struct
+                @scope.Field
+                struct StructOrFieldAnnot {}
+
+                @NotAnAnnot
+                @StructAnnot
+                @FieldAnnot
+                @StructOrFieldAnnot
+                struct TestStruct {
+                    @FieldAnnot
+                    @StructAnnot
+                    @StructOrFieldAnnot
+                    1: bool test_field;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("--strict", "foo.thrift")
+        self.assertEqual(
+            "\n" + err,
+            textwrap.dedent(
+                """
+                [WARNING:foo.thrift:15] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
+                [FAILURE:foo.thrift:17] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:21] `StructAnnot` cannot annotate `test_field`
+                """
+            ),
+        )

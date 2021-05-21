@@ -61,6 +61,7 @@ add_library(
   parse/parsing_driver.cc
   sema/diagnostic.cc
   sema/ast_validator.cc
+  sema/scope_validator.cc
 
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}

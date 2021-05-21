@@ -174,7 +174,7 @@ class t_node {
     last_annotation_lineno_ = last_lineno;
   }
 
-  void set_annotation(const std::string& key, std::string value) {
+  void set_annotation(const std::string& key, std::string value = {}) {
     annotations_[key] = std::move(value);
   }
 
