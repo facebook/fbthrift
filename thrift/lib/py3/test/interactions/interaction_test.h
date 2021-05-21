@@ -18,6 +18,7 @@
 
 namespace interactions {
 namespace test {
+namespace thrift {
 struct SemiCalculatorHandler : CalculatorSvIf {
   struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
     int acc_{0};
@@ -32,7 +33,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
       return folly::makeSemiFuture();
     }
     folly::SemiFuture<folly::Unit> semifuture_accumulatePoint(
-        std::unique_ptr<::interactions::test::Point> a) override {
+        std::unique_ptr<::interactions::test::thrift::Point> a) override {
       *pacc_.x_ref() += *a->x_ref();
       *pacc_.y_ref() += *a->y_ref();
       return folly::makeSemiFuture();
@@ -40,7 +41,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
       return acc_;
     }
-    folly::SemiFuture<std::unique_ptr<::interactions::test::Point>>
+    folly::SemiFuture<std::unique_ptr<::interactions::test::thrift::Point>>
     semifuture_getPoint() override {
       return folly::copy_to_unique_ptr(pacc_);
     }
@@ -55,5 +56,6 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return a + b;
   }
 };
+} // namespace thrift
 } // namespace test
 } // namespace interactions

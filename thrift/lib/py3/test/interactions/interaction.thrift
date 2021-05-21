@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace cpp2 interactions.test
+namespace cpp2 interactions.test.thrift
 
 struct Point {
   1: i32 x;

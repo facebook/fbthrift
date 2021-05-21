@@ -70,9 +70,9 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
         folly::Future<folly::Unit> frobnicate(
           apache::thrift::RpcOptions& rpcOptions);
     };
-    folly::Future<std::unique_ptr<thrift::py3::ClientWrapper>> createMyInteraction();
-    folly::Future<std::unique_ptr<thrift::py3::ClientWrapper>> createMyInteractionFast();
-    folly::Future<std::unique_ptr<thrift::py3::ClientWrapper>> createSerialInteraction();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteraction();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteractionFast();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createSerialInteraction();
 };
 
 

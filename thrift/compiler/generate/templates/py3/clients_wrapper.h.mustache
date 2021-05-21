@@ -81,7 +81,7 @@ class {{service:name}}ClientWrapper : {{!
     };
 {{/service:interactions}}
 {{#service:interactions}}
-    folly::Future<std::unique_ptr<thrift::py3::ClientWrapper>> create{{service:name}}();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> create{{service:name}}();
 {{/service:interactions}}
 };
 

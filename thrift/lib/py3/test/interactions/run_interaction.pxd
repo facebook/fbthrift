@@ -16,8 +16,8 @@ from libcpp.memory cimport make_unique, make_shared, unique_ptr, shared_ptr
 from libcpp.utility cimport move
 from libc.stdint cimport uint16_t
 
-cdef extern from "thrift/lib/py3/test/interactions/interaction_test.h" namespace "::interactions::test":
-    cdef cppclass cCalculatorHandler "::interactions::test::SemiCalculatorHandler":
+cdef extern from "thrift/lib/py3/test/interactions/interaction_test.h" namespace "::interactions::test::thrift":
+    cdef cppclass cCalculatorHandler "::interactions::test::thrift::SemiCalculatorHandler":
         cCalculatorHandler()
 
 cdef extern from "<thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>" namespace "::apache::thrift":
