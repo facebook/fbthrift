@@ -90,6 +90,39 @@ class ChannelKeepAliveStream : public StreamClientCallback {
   ReconnectingRequestChannel::ImplPtr keepAlive_;
   StreamClientCallback& clientCallback_;
 };
+
+class ChannelKeepAliveSink : public SinkClientCallback {
+ public:
+  ChannelKeepAliveSink(
+      ReconnectingRequestChannel::ImplPtr impl,
+      SinkClientCallback& clientCallback)
+      : keepAlive_(std::move(impl)), clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
+      SinkServerCallback* serverCallback) override {
+    SCOPE_EXIT { delete this; };
+    serverCallback->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(firstResponsePayload), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT { delete this; };
+    return clientCallback_.onFirstResponseError(std::move(ew));
+  }
+
+  virtual void onFinalResponse(StreamPayload&&) override { std::terminate(); }
+  virtual void onFinalResponseError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+  virtual bool onSinkRequestN(uint64_t) override { std::terminate(); }
+  void resetServerCallback(SinkServerCallback&) override { std::terminate(); }
+
+ private:
+  ReconnectingRequestChannel::ImplPtr keepAlive_;
+  SinkClientCallback& clientCallback_;
+};
 } // namespace
 
 void ReconnectingRequestChannel::sendRequestResponse(
@@ -138,6 +171,23 @@ void ReconnectingRequestChannel::sendRequestStream(
   cob = new ChannelKeepAliveStream(impl_, *cob);
 
   return impl_->sendRequestStream(
+      options,
+      std::move(methodMetadata),
+      std::move(request),
+      std::move(header),
+      cob);
+}
+
+void ReconnectingRequestChannel::sendRequestSink(
+    const RpcOptions& options,
+    MethodMetadata&& methodMetadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    SinkClientCallback* cob) {
+  reconnectIfNeeded();
+  cob = new ChannelKeepAliveSink(impl_, *cob);
+
+  return impl_->sendRequestSink(
       options,
       std::move(methodMetadata),
       std::move(request),

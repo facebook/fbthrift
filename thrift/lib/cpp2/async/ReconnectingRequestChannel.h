@@ -78,6 +78,13 @@ class ReconnectingRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader>,
       StreamClientCallback*) override;
 
+  void sendRequestSink(
+      const apache::thrift::RpcOptions& rpcOptions,
+      MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::SinkClientCallback* cb) override;
+
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
   }

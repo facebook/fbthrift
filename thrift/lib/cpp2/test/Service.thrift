@@ -78,4 +78,5 @@ service TestService {
   stream<i32> range(1: i32 from, 2: i32 to);
   void priorityHigh() (priority = "HIGH");
   void priorityBestEffort() (priority = "BEST_EFFORT", cpp.coroutine);
+  sink<i32, i32> sumSink() (cpp.coroutine);
 }

@@ -51,6 +51,13 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
+  void sendRequestSink(
+      const apache::thrift::RpcOptions& rpcOptions,
+      apache::thrift::MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::SinkClientCallback* cb) override;
+
   void sendRequestNoResponse(
       const apache::thrift::RpcOptions&,
       MethodMetadata&&,
@@ -77,6 +84,7 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
   class RequestCallbackBase;
   class RequestCallback;
   class StreamCallback;
+  class SinkCallback;
 
   ImplPtr impl_;
   int numRetries_;

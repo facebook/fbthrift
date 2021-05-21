@@ -143,11 +143,11 @@ class RetryingRequestChannel::StreamCallback
   bool onFirstResponse(
       FirstResponsePayload&& pload,
       folly::EventBase* evb,
-      StreamServerCallback* serverCallback_) noexcept override {
+      StreamServerCallback* serverCallback) noexcept override {
     SCOPE_EXIT { delete this; };
-    serverCallback_->resetClientCallback(clientCallback_);
+    serverCallback->resetClientCallback(clientCallback_);
     return clientCallback_.onFirstResponse(
-        std::move(pload), evb, serverCallback_);
+        std::move(pload), evb, serverCallback);
   }
 
   void onFirstResponseError(folly::exception_wrapper ex) noexcept override {
@@ -186,6 +186,75 @@ class RetryingRequestChannel::StreamCallback
   StreamClientCallback& clientCallback_;
 };
 
+class RetryingRequestChannel::SinkCallback
+    : public RetryingRequestChannel::RequestCallbackBase,
+      public apache::thrift::SinkClientCallback {
+ public:
+  SinkCallback(
+      folly::Executor::KeepAlive<> ka,
+      RetryingRequestChannel::ImplPtr impl,
+      int retries,
+      const apache::thrift::RpcOptions& options,
+      apache::thrift::SinkClientCallback& clientCallback,
+      folly::StringPiece methodName,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header)
+      : RequestCallbackBase(
+            std::move(ka),
+            std::move(impl),
+            retries,
+            options,
+            methodName,
+            std::move(request),
+            header),
+        clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& pload,
+      folly::EventBase* evb,
+      SinkServerCallback* serverCallback) noexcept override {
+    SCOPE_EXIT { delete this; };
+    serverCallback->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(pload), evb, serverCallback);
+  }
+
+  void onFirstResponseError(folly::exception_wrapper ex) noexcept override {
+    if (shouldRetry(ex)) {
+      retry();
+    } else {
+      clientCallback_.onFirstResponseError(std::move(ex));
+      delete this;
+    }
+  }
+
+  void onFinalResponse(StreamPayload&&) override { std::terminate(); }
+
+  void onFinalResponseError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+
+  bool onSinkRequestN(uint64_t) override { std::terminate(); }
+
+  void resetServerCallback(SinkServerCallback&) override { std::terminate(); }
+
+ private:
+  void retry() {
+    if (!--retriesLeft_) {
+      ka_.reset();
+    }
+
+    impl_->sendRequestSink(
+        options_,
+        methodName_,
+        SerializedRequest(request_.buffer->clone()),
+        header_,
+        this);
+  }
+
+  SinkClientCallback& clientCallback_;
+};
+
 void RetryingRequestChannel::sendRequestStream(
     const apache::thrift::RpcOptions& rpcOptions,
     MethodMetadata&& methodMetadata,
@@ -208,6 +277,30 @@ void RetryingRequestChannel::sendRequestStream(
       std::move(request),
       std::move(header),
       streamCallback);
+}
+
+void RetryingRequestChannel::sendRequestSink(
+    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::MethodMetadata&& methodMetadata,
+    apache::thrift::SerializedRequest&& request,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    apache::thrift::SinkClientCallback* clientCallback) {
+  apache::thrift::SinkClientCallback* sinkCallback = new SinkCallback(
+      folly::getKeepAliveToken(evb_),
+      impl_,
+      numRetries_,
+      rpcOptions,
+      *clientCallback,
+      methodMetadata.name_view(),
+      SerializedRequest(request.buffer->clone()),
+      header);
+
+  return impl_->sendRequestSink(
+      rpcOptions,
+      std::move(methodMetadata),
+      std::move(request),
+      std::move(header),
+      sinkCallback);
 }
 
 void RetryingRequestChannel::sendRequestResponse(
