@@ -250,7 +250,7 @@ class SomeStruct final  {
     return reasonable;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.reasonable_ref() = BAR;` instead of `FOO.set_reasonable(BAR);`")]]
   ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
     reasonable = reasonable_;
     __isset.reasonable = true;
@@ -261,7 +261,7 @@ class SomeStruct final  {
     return fine;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fine_ref() = BAR;` instead of `FOO.set_fine(BAR);`")]]
   ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
     fine = fine_;
     __isset.fine = true;
@@ -272,7 +272,7 @@ class SomeStruct final  {
     return questionable;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.questionable_ref() = BAR;` instead of `FOO.set_questionable(BAR);`")]]
   ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
     questionable = questionable_;
     __isset.questionable = true;
@@ -282,7 +282,7 @@ class SomeStruct final  {
   ::std::set<::std::int32_t> get_tags() &&;
 
   template <typename T_SomeStruct_tags_struct_setter = ::std::set<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.tags_ref() = BAR;` instead of `FOO.set_tags(BAR);`")]]
   ::std::set<::std::int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
     __isset.tags = true;

@@ -164,7 +164,7 @@ class Fiery final : public apache::thrift::TException {
   }
 
   template <typename T_Fiery_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_Fiery_message_struct_setter&& message_) {
     message = std::forward<T_Fiery_message_struct_setter>(message_);
     return message;
@@ -290,7 +290,7 @@ class Serious final : public apache::thrift::TException {
   ::std::string* get_sonnet() && = delete;
 
   template <typename T_Serious_sonnet_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.sonnet_ref() = BAR;` instead of `FOO.set_sonnet(BAR);`")]]
   ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
     sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
     __isset.sonnet = true;
@@ -439,7 +439,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   }
 
   template <typename T_ComplexFieldNames_error_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_ComplexFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
     __isset.error_message = true;
@@ -455,7 +455,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
   }
 
   template <typename T_ComplexFieldNames_internal_error_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_ComplexFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
     __isset.internal_error_message = true;
@@ -604,7 +604,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   }
 
   template <typename T_CustomFieldNames_error_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_CustomFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
     __isset.error_message = true;
@@ -620,7 +620,7 @@ class CustomFieldNames final : public apache::thrift::TException {
   }
 
   template <typename T_CustomFieldNames_internal_error_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_CustomFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
     __isset.internal_error_message = true;
@@ -769,7 +769,7 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
   }
 
   template <typename T_ExceptionWithPrimitiveField_message_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_ExceptionWithPrimitiveField_message_struct_setter&& message_) {
     message = std::forward<T_ExceptionWithPrimitiveField_message_struct_setter>(message_);
     __isset.message = true;
@@ -780,7 +780,7 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
     return error_code;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.error_code_ref() = BAR;` instead of `FOO.set_error_code(BAR);`")]]
   ::std::int32_t& set_error_code(::std::int32_t error_code_) {
     error_code = error_code_;
     __isset.error_code = true;

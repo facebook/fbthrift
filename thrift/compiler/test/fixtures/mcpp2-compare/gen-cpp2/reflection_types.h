@@ -115,7 +115,7 @@ class ReflectionStruct final  {
     return fieldA;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;

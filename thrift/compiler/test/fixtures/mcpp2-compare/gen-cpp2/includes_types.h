@@ -173,7 +173,7 @@ class AStruct final  {
     return FieldA;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.FieldA_ref() = BAR;` instead of `FOO.set_FieldA(BAR);`")]]
   ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
     __isset.FieldA = true;

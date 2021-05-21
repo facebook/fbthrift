@@ -142,7 +142,7 @@ class IncludedB final  {
     return i32Field;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
     __isset.i32Field = true;
@@ -158,7 +158,7 @@ class IncludedB final  {
   }
 
   template <typename T_IncludedB_strField_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.strField_ref() = BAR;` instead of `FOO.set_strField(BAR);`")]]
   ::std::string& set_strField(T_IncludedB_strField_struct_setter&& strField_) {
     strField = std::forward<T_IncludedB_strField_struct_setter>(strField_);
     __isset.strField = true;

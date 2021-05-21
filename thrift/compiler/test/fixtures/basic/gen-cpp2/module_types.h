@@ -418,7 +418,7 @@ class MyStruct final  {
     return MyIntField;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
@@ -434,7 +434,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -444,7 +444,7 @@ class MyStruct final  {
   ::cpp2::MyDataItem get_MyDataField() &&;
 
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
-  [[deprecated]]
+  [[deprecated("Use `FOO.MyDataField_ref() = BAR;` instead of `FOO.set_MyDataField(BAR);`")]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     __isset.MyDataField = true;
@@ -455,7 +455,7 @@ class MyStruct final  {
     return myEnum;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
     __isset.myEnum = true;
@@ -466,7 +466,7 @@ class MyStruct final  {
     return oneway;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.oneway_ref() = BAR;` instead of `FOO.set_oneway(BAR);`")]]
   bool& set_oneway(bool oneway_) {
     oneway = oneway_;
     __isset.oneway = true;
@@ -477,7 +477,7 @@ class MyStruct final  {
     return readonly;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.readonly_ref() = BAR;` instead of `FOO.set_readonly(BAR);`")]]
   bool& set_readonly(bool readonly_) {
     readonly = readonly_;
     __isset.readonly = true;
@@ -488,7 +488,7 @@ class MyStruct final  {
     return idempotent;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.idempotent_ref() = BAR;` instead of `FOO.set_idempotent(BAR);`")]]
   bool& set_idempotent(bool idempotent_) {
     idempotent = idempotent_;
     __isset.idempotent = true;

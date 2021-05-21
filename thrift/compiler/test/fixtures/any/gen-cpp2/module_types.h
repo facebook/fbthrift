@@ -131,7 +131,7 @@ class MyStruct final  {
   }
 
   template <typename T_MyStruct_myString_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyStruct_myString_struct_setter>(myString_);
     __isset.myString = true;
@@ -468,7 +468,7 @@ class MyException final : public apache::thrift::TException {
   }
 
   template <typename T_MyException_myString_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyException_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyException_myString_struct_setter>(myString_);
     __isset.myString = true;

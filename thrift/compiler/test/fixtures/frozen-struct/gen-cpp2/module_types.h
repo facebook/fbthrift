@@ -316,7 +316,7 @@ class ModuleA final  {
     return i32Field;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
     __isset.i32Field = true;
@@ -332,7 +332,7 @@ class ModuleA final  {
   }
 
   template <typename T_ModuleA_strField_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.strField_ref() = BAR;` instead of `FOO.set_strField(BAR);`")]]
   ::std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
     strField = std::forward<T_ModuleA_strField_struct_setter>(strField_);
     __isset.strField = true;
@@ -342,7 +342,7 @@ class ModuleA final  {
   ::std::vector<::std::int16_t> get_listField() &&;
 
   template <typename T_ModuleA_listField_struct_setter = ::std::vector<::std::int16_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.listField_ref() = BAR;` instead of `FOO.set_listField(BAR);`")]]
   ::std::vector<::std::int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
     __isset.listField = true;
@@ -352,7 +352,7 @@ class ModuleA final  {
   ::std::map<::std::string, ::std::int32_t> get_mapField() &&;
 
   template <typename T_ModuleA_mapField_struct_setter = ::std::map<::std::string, ::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.mapField_ref() = BAR;` instead of `FOO.set_mapField(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
     __isset.mapField = true;
@@ -362,7 +362,7 @@ class ModuleA final  {
   ::some::ns::IncludedA get_inclAField() &&;
 
   template <typename T_ModuleA_inclAField_struct_setter = ::some::ns::IncludedA>
-  [[deprecated]]
+  [[deprecated("Use `FOO.inclAField_ref() = BAR;` instead of `FOO.set_inclAField(BAR);`")]]
   ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
     inclAField = std::forward<T_ModuleA_inclAField_struct_setter>(inclAField_);
     __isset.inclAField = true;
@@ -372,7 +372,7 @@ class ModuleA final  {
   ::some::ns::IncludedB get_inclBField() &&;
 
   template <typename T_ModuleA_inclBField_struct_setter = ::some::ns::IncludedB>
-  [[deprecated]]
+  [[deprecated("Use `FOO.inclBField_ref() = BAR;` instead of `FOO.set_inclBField(BAR);`")]]
   ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
     inclBField = std::forward<T_ModuleA_inclBField_struct_setter>(inclBField_);
     __isset.inclBField = true;
@@ -505,7 +505,7 @@ class ModuleB final  {
     return i32Field;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
     __isset.i32Field = true;
@@ -516,7 +516,7 @@ class ModuleB final  {
     return inclEnumB;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.inclEnumB_ref() = BAR;` instead of `FOO.set_inclEnumB(BAR);`")]]
   ::some::ns::EnumB& set_inclEnumB(::some::ns::EnumB inclEnumB_) {
     inclEnumB = inclEnumB_;
     __isset.inclEnumB = true;

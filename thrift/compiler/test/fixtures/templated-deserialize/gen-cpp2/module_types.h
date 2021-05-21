@@ -309,7 +309,7 @@ class SmallStruct final  {
     return small_A;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.small_A_ref() = BAR;` instead of `FOO.set_small_A(BAR);`")]]
   bool& set_small_A(bool small_A_) {
     small_A = small_A_;
     __isset.small_A = true;
@@ -320,7 +320,7 @@ class SmallStruct final  {
     return small_B;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.small_B_ref() = BAR;` instead of `FOO.set_small_B(BAR);`")]]
   ::std::int32_t& set_small_B(::std::int32_t small_B_) {
     small_B = small_B_;
     __isset.small_B = true;
@@ -862,7 +862,7 @@ class containerStruct final  {
     return fieldA;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   bool& set_fieldA(bool fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;
@@ -872,7 +872,7 @@ class containerStruct final  {
   ::std::map<::std::string, bool> get_fieldB() &&;
 
   template <typename T_containerStruct_fieldB_struct_setter = ::std::map<::std::string, bool>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -882,7 +882,7 @@ class containerStruct final  {
   ::std::set<::std::int32_t> get_fieldC() &&;
 
   template <typename T_containerStruct_fieldC_struct_setter = ::std::set<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
@@ -898,7 +898,7 @@ class containerStruct final  {
   }
 
   template <typename T_containerStruct_fieldD_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
@@ -914,7 +914,7 @@ class containerStruct final  {
   }
 
   template <typename T_containerStruct_fieldE_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -924,7 +924,7 @@ class containerStruct final  {
   ::std::vector<::std::vector<::std::vector<::std::int32_t>>> get_fieldF() &&;
 
   template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
   ::std::vector<::std::vector<::std::vector<::std::int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -934,7 +934,7 @@ class containerStruct final  {
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> get_fieldG() &&;
 
   template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -944,7 +944,7 @@ class containerStruct final  {
   ::std::vector<::std::set<::std::int32_t>> get_fieldH() &&;
 
   template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<::std::int32_t>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
   ::std::vector<::std::set<::std::int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
@@ -955,7 +955,7 @@ class containerStruct final  {
     return fieldI;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldI_ref() = BAR;` instead of `FOO.set_fieldI(BAR);`")]]
   bool& set_fieldI(bool fieldI_) {
     fieldI = fieldI_;
     __isset.fieldI = true;
@@ -965,7 +965,7 @@ class containerStruct final  {
   ::std::map<::std::string, ::std::vector<::std::int32_t>> get_fieldJ() &&;
 
   template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldJ_ref() = BAR;` instead of `FOO.set_fieldJ(BAR);`")]]
   ::std::map<::std::string, ::std::vector<::std::int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
     __isset.fieldJ = true;
@@ -975,7 +975,7 @@ class containerStruct final  {
   ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> get_fieldK() &&;
 
   template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldK_ref() = BAR;` instead of `FOO.set_fieldK(BAR);`")]]
   ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
     __isset.fieldK = true;
@@ -985,7 +985,7 @@ class containerStruct final  {
   ::std::set<::std::set<::std::set<bool>>> get_fieldL() &&;
 
   template <typename T_containerStruct_fieldL_struct_setter = ::std::set<::std::set<::std::set<bool>>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldL_ref() = BAR;` instead of `FOO.set_fieldL(BAR);`")]]
   ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
     __isset.fieldL = true;
@@ -995,7 +995,7 @@ class containerStruct final  {
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
 
   template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldM_ref() = BAR;` instead of `FOO.set_fieldM(BAR);`")]]
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
     __isset.fieldM = true;
@@ -1005,7 +1005,7 @@ class containerStruct final  {
   ::std::vector<::cpp2::IndirectionA> get_fieldN() &&;
 
   template <typename T_containerStruct_fieldN_struct_setter = ::std::vector<::cpp2::IndirectionA>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldN_ref() = BAR;` instead of `FOO.set_fieldN(BAR);`")]]
   ::std::vector<::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
     fieldN = std::forward<T_containerStruct_fieldN_struct_setter>(fieldN_);
     __isset.fieldN = true;
@@ -1015,7 +1015,7 @@ class containerStruct final  {
   ::std::vector<::cpp2::IndirectionB> get_fieldO() &&;
 
   template <typename T_containerStruct_fieldO_struct_setter = ::std::vector<::cpp2::IndirectionB>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldO_ref() = BAR;` instead of `FOO.set_fieldO(BAR);`")]]
   ::std::vector<::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
     __isset.fieldO = true;
@@ -1025,7 +1025,7 @@ class containerStruct final  {
   ::std::vector<::cpp2::IndirectionC> get_fieldP() &&;
 
   template <typename T_containerStruct_fieldP_struct_setter = ::std::vector<::cpp2::IndirectionC>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldP_ref() = BAR;` instead of `FOO.set_fieldP(BAR);`")]]
   ::std::vector<::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
     __isset.fieldP = true;
@@ -1036,7 +1036,7 @@ class containerStruct final  {
     return fieldQ;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldQ_ref() = BAR;` instead of `FOO.set_fieldQ(BAR);`")]]
   ::cpp2::MyEnumA& set_fieldQ(::cpp2::MyEnumA fieldQ_) {
     fieldQ = fieldQ_;
     __isset.fieldQ = true;

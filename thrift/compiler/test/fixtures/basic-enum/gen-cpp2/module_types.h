@@ -272,7 +272,7 @@ class MyStruct final  {
     return myEnum;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
     __isset.myEnum = true;
@@ -283,7 +283,7 @@ class MyStruct final  {
     return myBigEnum;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.myBigEnum_ref() = BAR;` instead of `FOO.set_myBigEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
     __isset.myBigEnum = true;

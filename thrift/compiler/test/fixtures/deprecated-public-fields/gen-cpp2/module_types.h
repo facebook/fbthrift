@@ -120,7 +120,7 @@ class Foo final  {
   }
   ::std::int32_t* get_bar() && = delete;
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
     __isset.bar = true;

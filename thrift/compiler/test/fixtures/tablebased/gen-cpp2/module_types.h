@@ -335,7 +335,7 @@ class TrivialTypesStruct final  {
   }
   ::std::int32_t* get_fieldA() && = delete;
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
     __isset.fieldA = true;
@@ -352,7 +352,7 @@ class TrivialTypesStruct final  {
   ::std::string* get_fieldB() && = delete;
 
   template <typename T_TrivialTypesStruct_fieldB_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::string& set_fieldB(T_TrivialTypesStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_TrivialTypesStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -369,7 +369,7 @@ class TrivialTypesStruct final  {
   ::std::string* get_fieldC() && = delete;
 
   template <typename T_TrivialTypesStruct_fieldC_struct_setter = ::std::string>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::string& set_fieldC(T_TrivialTypesStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_TrivialTypesStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
@@ -386,7 +386,7 @@ class TrivialTypesStruct final  {
   ::test::fixtures::tablebased::IOBufPtr* get_fieldD() && = delete;
 
   template <typename T_TrivialTypesStruct_fieldD_struct_setter = ::test::fixtures::tablebased::IOBufPtr>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::test::fixtures::tablebased::IOBufPtr& set_fieldD(T_TrivialTypesStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_TrivialTypesStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
@@ -397,7 +397,7 @@ class TrivialTypesStruct final  {
     return fieldE;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::test::fixtures::tablebased::ExampleEnum& set_fieldE(::test::fixtures::tablebased::ExampleEnum fieldE_) {
     fieldE = fieldE_;
     __isset.fieldE = true;
@@ -669,7 +669,7 @@ class ContainerStruct final  {
   ::std::vector<::std::int32_t> get_fieldA() &&;
 
   template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
@@ -679,7 +679,7 @@ class ContainerStruct final  {
   std::list<::std::int32_t> get_fieldB() &&;
 
   template <typename T_ContainerStruct_fieldB_struct_setter = std::list<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -689,7 +689,7 @@ class ContainerStruct final  {
   std::deque<::std::int32_t> get_fieldC() &&;
 
   template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
@@ -699,7 +699,7 @@ class ContainerStruct final  {
   folly::fbvector<::std::int32_t> get_fieldD() &&;
 
   template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
@@ -709,7 +709,7 @@ class ContainerStruct final  {
   folly::small_vector<::std::int32_t> get_fieldE() &&;
 
   template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -719,7 +719,7 @@ class ContainerStruct final  {
   folly::sorted_vector_set<::std::int32_t> get_fieldF() &&;
 
   template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<::std::int32_t>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
   folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -729,7 +729,7 @@ class ContainerStruct final  {
   folly::sorted_vector_map<::std::int32_t, ::std::string> get_fieldG() &&;
 
   template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<::std::int32_t, ::std::string>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
   folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -739,7 +739,7 @@ class ContainerStruct final  {
   ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> get_fieldH() &&;
 
   template <typename T_ContainerStruct_fieldH_struct_setter = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
-  [[deprecated]]
+  [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
   ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;

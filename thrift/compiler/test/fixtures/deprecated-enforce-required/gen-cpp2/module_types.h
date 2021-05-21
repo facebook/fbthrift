@@ -111,7 +111,7 @@ class Foo final  {
     return bar;
   }
 
-  [[deprecated]]
+  [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
     return bar;
