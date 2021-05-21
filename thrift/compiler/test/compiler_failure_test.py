@@ -162,7 +162,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Function `MyS.meh` redefines `MyS.meh`.\n"
+            err, "[FAILURE:foo.thrift:3] Function `meh` is already defined in `MyS`.\n"
         )
 
     def test_duplicate_method_name_base_base(self):

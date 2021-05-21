@@ -94,8 +94,8 @@ class service_method_name_uniqueness_validator : virtual public validator {
   using validator::visit;
 
   /**
-   * Enforces that there are no duplicate method names either within this
-   * service or between this service and any of its ancestors.
+   * Enforces that there are no duplicate method names between this service and
+   * any of its ancestors.
    */
   bool visit(t_service* service) override;
 

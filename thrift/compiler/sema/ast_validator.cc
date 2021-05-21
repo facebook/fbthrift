@@ -22,6 +22,7 @@
 
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_interface.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
 namespace apache {
@@ -29,6 +30,21 @@ namespace thrift {
 namespace compiler {
 
 namespace {
+
+void interface_function_name_uniqueness(
+    diagnostic_context& ctx, const t_interface* node) {
+  // Check for a redefinition of a function in the same interface.
+  std::unordered_set<std::string> seen;
+  for (const auto* function : node->functions()) {
+    if (!seen.emplace(function->name()).second) {
+      ctx.failure(
+          function,
+          "Function `%s` is already defined in `%s`.",
+          function->name().c_str(),
+          node->name().c_str());
+    }
+  }
+}
 
 void enum_value_name_uniqueness(diagnostic_context& ctx, const t_enum* node) {
   std::unordered_set<std::string> names;
@@ -72,6 +88,7 @@ void enum_value_explicit(diagnostic_context& ctx, const t_enum_value* node) {
 
 ast_validator standard_validator() {
   ast_validator validator;
+  validator.add_interface_visitor(&interface_function_name_uniqueness);
   validator.add_enum_visitor(&enum_value_name_uniqueness);
   validator.add_enum_visitor(&enum_value_uniqueness);
   validator.add_enum_value_visitor(&enum_value_explicit);

@@ -16,8 +16,18 @@
 
 #include <thrift/compiler/sema/ast_validator.h>
 
+#include <memory>
+
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_interaction.h>
+#include <thrift/compiler/ast/t_paramlist.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/sema/diagnostic.h>
 #include <thrift/compiler/sema/diagnostic_context.h>
 
@@ -57,6 +67,100 @@ class StdAstValidatorTest : public ::testing::Test {
 
   t_program program_{"/path/to/file.thrift"};
 };
+
+TEST_F(StdAstValidatorTest, InterfaceNamesUniqueNoError) {
+  // Create interfaces with non-overlapping functions.
+  {
+    auto service = std::make_unique<t_service>(&program_, "Service");
+    service->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "bar",
+        std::make_unique<t_paramlist>(&program_)));
+    service->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "baz",
+        std::make_unique<t_paramlist>(&program_)));
+    program_.add_service(std::move(service));
+  }
+
+  {
+    auto interaction =
+        std::make_unique<t_interaction>(&program_, "Interaction");
+    interaction->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "bar",
+        std::make_unique<t_paramlist>(&program_)));
+    interaction->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "baz",
+        std::make_unique<t_paramlist>(&program_)));
+    program_.add_interaction(std::move(interaction));
+  }
+
+  // No errors will be found
+  EXPECT_THAT(validate(), ::testing::IsEmpty());
+}
+
+TEST_F(StdAstValidatorTest, ReapeatedNamesInService) {
+  // Create interfaces with overlapping functions.
+  {
+    auto service = std::make_unique<t_service>(&program_, "Service");
+    auto fn1 = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "foo",
+        std::make_unique<t_paramlist>(&program_));
+    fn1->set_lineno(1);
+    auto fn2 = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "foo",
+        std::make_unique<t_paramlist>(&program_));
+    fn2->set_lineno(2);
+    service->add_function(std::move(fn1));
+    service->add_function(std::move(fn2));
+    service->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "bar",
+        std::make_unique<t_paramlist>(&program_)));
+    program_.add_service(std::move(service));
+  }
+
+  {
+    auto interaction =
+        std::make_unique<t_interaction>(&program_, "Interaction");
+    auto fn1 = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "bar",
+        std::make_unique<t_paramlist>(&program_));
+    fn1->set_lineno(3);
+    auto fn2 = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "bar",
+        std::make_unique<t_paramlist>(&program_));
+    fn2->set_lineno(4);
+
+    interaction->add_function(std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "foo",
+        std::make_unique<t_paramlist>(&program_)));
+    interaction->add_function(std::move(fn1));
+    interaction->add_function(std::move(fn2));
+    program_.add_interaction(std::move(interaction));
+  }
+
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(
+          diagnostic{
+              diagnostic_level::failure,
+              "Function `foo` is already defined in `Service`.",
+              "/path/to/file.thrift",
+              2},
+          diagnostic{
+              diagnostic_level::failure,
+              "Function `bar` is already defined in `Interaction`.",
+              "/path/to/file.thrift",
+              4}));
+}
 
 TEST_F(StdAstValidatorTest, DuplicatedEnumValues) {
   auto tenum = std::make_unique<t_enum>(&program_, "foo");

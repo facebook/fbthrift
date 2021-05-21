@@ -105,19 +105,6 @@ void service_method_name_uniqueness_validator::
           fnc->get_name());
     }
   }
-
-  // Check for a redefinition of a function in the same service.
-  std::unordered_set<std::string> function_names;
-  for (auto const fnc : service->get_functions()) {
-    if (function_names.count(fnc->get_name())) {
-      add_error_service_method_names(
-          fnc->get_lineno(),
-          service->get_name(),
-          service->get_name(),
-          fnc->get_name());
-    }
-    function_names.insert(fnc->get_name());
-  }
 }
 
 /**

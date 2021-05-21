@@ -70,28 +70,6 @@ TEST_F(ValidatorTest, ServiceNamesUniqueNoError) {
   EXPECT_TRUE(errors.empty());
 }
 
-TEST_F(ValidatorTest, ReapeatedNamesInService) {
-  // Create a service with two overlapping functions
-  auto service = create_fake_service("bar");
-  auto fn1 = create_fake_function<void(int, int)>("foo");
-  auto fn2 = create_fake_function<int(double)>("foo");
-  fn2->set_lineno(1);
-  service->add_function(std::move(fn1));
-  service->add_function(std::move(fn2));
-
-  t_program program("/path/to/file.thrift");
-  program.add_service(std::move(service));
-
-  // An error will be found
-  const std::string expected =
-      "[FAILURE:/path/to/file.thrift:1] "
-      "Function `bar.foo` redefines `bar.foo`.";
-  auto errors =
-      run_validator<service_method_name_uniqueness_validator>(&program);
-  EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front().str());
-}
-
 TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   // Create first service with two non repeated functions
   auto service_1 = create_fake_service("bar");
