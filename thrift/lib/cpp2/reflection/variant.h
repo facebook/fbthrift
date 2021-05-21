@@ -87,9 +87,9 @@ using variant_helper =
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_get(V&& variant) -> decltype(
-    apache::thrift::detail::variant_helper<T, V>::by_type ::template get<T>(
-        std::forward<V>(variant))) {
+auto variant_get(V&& variant)
+    -> decltype(apache::thrift::detail::variant_helper<T, V>::by_type ::
+                    template get<T>(std::forward<V>(variant))) {
   using traits = apache::thrift::detail::variant_helper<T, V>;
   assert(traits::get_id(variant) == traits::by_type::template id<T>::value);
   return traits::by_type::template get<T>(std::forward<V>(variant));
@@ -126,9 +126,9 @@ auto variant_get(V&& variant) -> decltype(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_checked_get(V&& variant) -> decltype(
-    apache::thrift::detail::variant_helper<T, V>::by_type ::template get<T>(
-        std::forward<V>(variant))) {
+auto variant_checked_get(V&& variant)
+    -> decltype(apache::thrift::detail::variant_helper<T, V>::by_type ::
+                    template get<T>(std::forward<V>(variant))) {
   using traits = apache::thrift::detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {

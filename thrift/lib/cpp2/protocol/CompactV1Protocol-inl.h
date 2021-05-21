@@ -66,9 +66,8 @@ inline void CompactV1ProtocolReader::readMessageBegin(
         TProtocolException::BAD_VERSION, "Bad protocol version");
   }
 
-  messageType = (MessageType)(
-      (versionAndType & apache::thrift::detail::compact::TYPE_MASK) >>
-      apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
+  messageType =
+      (MessageType)((versionAndType & apache::thrift::detail::compact::TYPE_MASK) >> apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }

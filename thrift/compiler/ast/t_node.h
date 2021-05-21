@@ -105,8 +105,8 @@ class alias_span : public detail::base_span<alias_span, const std::string> {
       : alias_span(&name, 1) {}
   template <
       typename C = std::vector<std::string>,
-      typename = decltype(
-          std::declval<const C&>().data() + std::declval<const C&>().size())>
+      typename =
+          decltype(std::declval<const C&>().data() + std::declval<const C&>().size())>
   /* implicit */ alias_span(const C& list)
       : alias_span(list.data(), list.size()) {}
   constexpr alias_span(const alias_span&) noexcept = default;

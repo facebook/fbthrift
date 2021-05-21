@@ -217,8 +217,8 @@ FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
     FOLLY_ERASE constexpr auto operator()(__fbthrift_t&& __fbthrift_v) const \
         noexcept(                                                            \
             noexcept(static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) \
-            -> decltype(                                                     \
-                (static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) {   \
+            -> decltype((                                                    \
+                static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) {    \
       return static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__;          \
     }                                                                        \
   }
