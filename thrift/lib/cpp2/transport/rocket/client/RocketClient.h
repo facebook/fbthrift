@@ -18,16 +18,9 @@
 
 #include <chrono>
 #include <memory>
-#include <string>
-#include <unordered_map>
 #include <utility>
 
-#include <glog/logging.h>
-
 #include <folly/ExceptionWrapper.h>
-#include <folly/Overload.h>
-#include <folly/ScopeGuard.h>
-#include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/container/F14Set.h>
 #include <folly/io/async/AsyncSocket.h>
