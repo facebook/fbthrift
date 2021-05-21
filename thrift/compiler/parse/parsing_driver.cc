@@ -42,13 +42,15 @@ class parsing_terminator : public std::runtime_error {
 
 } // namespace
 
-parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
+parsing_driver::parsing_driver(
+    diagnostic_context& ctx, std::string path, parsing_params parse_params)
     : params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
-      mode(parsing_mode::INCLUDES) {
+      mode(parsing_mode::INCLUDES),
+      ctx_(ctx) {
   auto root_program = std::make_unique<t_program>(path);
-  program = root_program.get();
+  ctx_.start_program(program = root_program.get());
   program_bundle = std::make_unique<t_program_bundle>(std::move(root_program));
 
   scope_cache = program->scope();
@@ -61,10 +63,8 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
  */
 parsing_driver::~parsing_driver() = default;
 
-std::unique_ptr<t_program_bundle> parsing_driver::parse(
-    diagnostic_results& results) {
+std::unique_ptr<t_program_bundle> parsing_driver::parse() {
   std::unique_ptr<t_program_bundle> result{};
-
   try {
     scanner = std::make_unique<yy_scanner>();
   } catch (std::system_error const&) {
@@ -80,17 +80,12 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse(
     // No need to do anything here. The purpose of the exception is simply to
     // end the parsing process by unwinding to here.
   }
-
-  for (auto& diag : diagnostic_messages_) {
-    results.add(std::move(diag));
-  }
-  diagnostic_messages_.clear();
   return result;
 }
 
 void parsing_driver::parse_file() {
   // Get scope file path
-  std::string path = program->path();
+  const std::string& path = program->path();
 
   // Skip on already parsed files
   if (already_parsed_paths_.count(path)) {
@@ -136,10 +131,11 @@ void parsing_driver::parse_file() {
 
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
-    program = included_program;
     params.allow_neg_enum_vals = true;
     params.allow_neg_field_keys = true;
+    ctx_.start_program(program = included_program);
     parse_file();
+    ctx_.end_program(program);
 
     size_t num_removed = circular_deps_.erase(path);
     (void)num_removed;
@@ -295,7 +291,6 @@ void parsing_driver::validate_const_rec(
     const auto enum_val = as_enum->find_value(value->get_integer());
     if (enum_val == nullptr) {
       warning(
-          0,
           "type error: const `%s` was declared as enum `%s` with a value"
           " not of that enum.",
           name.c_str(),
@@ -400,12 +395,12 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
     if (!possible_enums.empty()) {
       msg += (" Possible options: " + possible_enums);
     }
-    warning(1, msg.c_str());
+    warning(msg.c_str());
   }
 }
 void parsing_driver::clear_doctext() {
   if (doctext) {
-    warning(2, "Uncaptured doctext at on line %d.", doctext_lineno);
+    warning_strict("Uncaptured doctext at on line %d.", doctext_lineno);
   }
 
   doctext = boost::none;
@@ -551,7 +546,7 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   assert(feature != std::string("all"));
   if (params.allow_experimental_features.count("all") ||
       params.allow_experimental_features.count(feature)) {
-    warning(2, "'%s' is an experimental feature.", feature);
+    warning_strict("'%s' is an experimental feature.", feature);
     return true;
   }
   failure("'%s' is an experimental feature.", feature);

@@ -588,7 +588,7 @@ EnumValue:
     {
       driver.debug("EnumValue -> Identifier = tok_int_constant");
       if ($3 < 0 && !driver.params.allow_neg_enum_vals) {
-        driver.warning(1, "Negative value supplied for enum %s.", $1.c_str());
+        driver.warning("Negative value supplied for enum %s.", $1.c_str());
       }
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
@@ -645,7 +645,7 @@ ConstValue:
       $$->set_integer($1);
       if (driver.mode == parsing_mode::PROGRAM) {
         if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
-          driver.warning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
+          driver.warning("64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
         }
       }
     }
@@ -683,7 +683,7 @@ ConstValue:
         $$->set_enum_value(nullptr);
       } else {
         if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning(1, "Constant strings should be quoted: %s", $1.c_str());
+          driver.warning("Constant strings should be quoted: %s", $1.c_str());
         }
         $$ = new t_const_value($1);
       }
@@ -848,7 +848,7 @@ Exception:
             && $$->get_field_by_name(annotation) != nullptr
             && $$->has_annotation(annotation)
             && strcmp(annotation, $$->get_annotation(annotation).c_str()) != 0) {
-          driver.warning(1, "Some generators (e.g. PHP) will ignore annotation '%s' "
+          driver.warning("Some generators (e.g. PHP) will ignore annotation '%s' "
                          "as it is also used as field", annotation);
         }
       }
@@ -1136,7 +1136,7 @@ Field:
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
       if ($2.auto_assigned) {
-        driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts "
+        driver.warning("No field key specified for %s, resulting protocol may have conflicts "
           "or not be backwards compatible!", $5.c_str());
         if (driver.params.strict >= 192) {
           driver.failure("Implicit field keys are deprecated and not allowed with -strict");
@@ -1152,7 +1152,7 @@ Field:
       driver.finish_node($$, LineType::Field, own($1), own($8));
 
       if ($3 != t_field_qualifier::optional && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
-        driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
+        driver.warning("`cpp.ref` field must be optional if it is recursive.");
       }
     }
 
@@ -1171,7 +1171,7 @@ FieldIdentifier:
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
-            driver.warning(1, "Negative field key (%d) differs from what would be "
+            driver.warning("Negative field key (%d) differs from what would be "
                            "auto-assigned by thrift (%d).", $1, y_field_val);
           }
           /*
@@ -1182,8 +1182,7 @@ FieldIdentifier:
           $$.value = $1;
           $$.auto_assigned = false;
         } else {
-          driver.warning(1, "Nonpositive value (%d) not allowed as a field key.",
-                         $1);
+          driver.warning("Nonpositive value (%d) not allowed as a field key.", $1);
           $$.value = y_field_val--;
           $$.auto_assigned = true;
         }
@@ -1203,7 +1202,7 @@ FieldQualifier:
     {
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning(1, "required keyword is ignored in argument lists.");
+          driver.warning("required keyword is ignored in argument lists.");
         }
         $$ = {};
       } else {
@@ -1214,7 +1213,7 @@ FieldQualifier:
     {
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning(1, "optional keyword is ignored in argument lists.");
+          driver.warning("optional keyword is ignored in argument lists.");
         }
         $$ = {};
       } else {

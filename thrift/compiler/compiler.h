@@ -31,7 +31,7 @@ enum class compile_retcode {
 };
 
 struct compile_result {
-  compile_retcode retcode;
+  compile_retcode retcode = compile_retcode::failure;
   diagnostic_results detail;
 };
 

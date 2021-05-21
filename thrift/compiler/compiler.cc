@@ -42,6 +42,8 @@
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/sema/ast_validator.h>
+#include <thrift/compiler/sema/diagnostic.h>
+#include <thrift/compiler/sema/diagnostic_context.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {
@@ -129,7 +131,8 @@ bool isComma(const char& c) {
 std::string parseArgs(
     const std::vector<std::string>& arguments,
     parsing_params& pparams,
-    gen_params& gparams) {
+    gen_params& gparams,
+    diagnostic_params& dparams) {
   // Check for necessary arguments, you gotta have at least a filename and
   // an output language flag.
   if (arguments.size() < 2) {
@@ -180,18 +183,18 @@ std::string parseArgs(
       boost::algorithm::split(
           pparams.allow_experimental_features, *arg, isComma);
     } else if (flag == "debug") {
-      pparams.debug = true;
+      dparams.debug = true;
       g_debug = 1;
     } else if (flag == "nowarn") {
-      pparams.warn = g_warn = 0;
+      dparams.warn_level = g_warn = 0;
       nowarn = true;
     } else if (flag == "strict") {
       pparams.strict = 255;
       if (!nowarn) { // Don't override nowarn.
-        pparams.warn = g_warn = 2;
+        dparams.warn_level = g_warn = 2;
       }
     } else if (flag == "v" || flag == "verbose") {
-      pparams.verbose = true;
+      dparams.info = true;
       g_verbose = 1;
     } else if (flag == "r" || flag == "recurse") {
       gparams.gen_recurse = true;
@@ -399,21 +402,22 @@ std::string get_include_path(
 
 compile_result compile(const std::vector<std::string>& arguments) {
   compile_result result;
-  result.retcode = compile_retcode::failure;
 
   // Parese arguments.
   g_stage = "arguments";
   parsing_params pparams{};
   gen_params gparams{};
-  std::string input_filename = parseArgs(arguments, pparams, gparams);
+  diagnostic_params dparams{};
+  std::string input_filename = parseArgs(arguments, pparams, gparams, dparams);
   if (input_filename.empty()) {
     return result;
   }
+  diagnostic_context ctx{result.detail, std::move(dparams)};
 
   // Parse it!
   g_stage = "parse";
-  parsing_driver driver{input_filename, std::move(pparams)};
-  auto program = driver.parse(result.detail);
+  parsing_driver driver{ctx, input_filename, std::move(pparams)};
+  auto program = driver.parse();
   if (!program) {
     return result;
   }
@@ -422,7 +426,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   try {
     mutator::mutate(program->root_program());
   } catch (MutatorException& e) {
-    result.detail.add(std::move(e.message));
+    ctx.report(std::move(e.message));
     return result;
   }
 
@@ -430,8 +434,8 @@ compile_result compile(const std::vector<std::string>& arguments) {
       get_include_path(gparams.targets, input_filename));
 
   // Validate it!
-  result.detail.add_all(validator::validate(program->root_program()));
-  standard_validator()(result.detail, program->root_program());
+  ctx.report_all(validator::validate(program->root_program()));
+  standard_validator()(ctx, program->root_program());
   if (result.detail.has_failure()) {
     return result;
   }
@@ -443,8 +447,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
       result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {
-    result.detail.add(
-        {diagnostic_level::failure, e.what(), program->root_program()->path()});
+    ctx.failure(program->root_program(), e.what());
   }
   return result;
 }

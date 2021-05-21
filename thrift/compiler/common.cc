@@ -20,6 +20,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/sema/diagnostic_context.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -155,13 +157,12 @@ void dump_docstrings(t_program* program) {
 }
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
-    std::string path, parsing_params params) {
-  parsing_driver driver{path, std::move(params)};
-
+    std::string path, parsing_params pparams, diagnostic_params dparams) {
   diagnostic_results results;
-  auto program = driver.parse(results);
+  diagnostic_context ctx{results, std::move(dparams)};
+  parsing_driver driver{ctx, std::move(path), std::move(pparams)};
+  auto program = driver.parse();
   dump_diagnostics(results.diagnostics());
-
   return program;
 }
 

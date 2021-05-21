@@ -19,6 +19,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/sema/diagnostic.h>
+#include <thrift/compiler/sema/diagnostic_context.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -28,14 +29,16 @@ class AstValidatorTest : public ::testing::Test {};
 TEST_F(AstValidatorTest, Output) {
   ast_validator validator;
   validator.add_program_visitor(
-      [](diagnostic_results& results, const t_program* program) {
-        results.add({diagnostic_level::info, "test", program, program});
+      [](diagnostic_context& ctx, const t_program* program) {
+        ctx.info(program, "test");
       });
 
-  diagnostic_results results;
   t_program program("path/to/program.thrift");
   const t_program* cprogram = &program;
-  validator(results, cprogram);
+  diagnostic_results results;
+  diagnostic_context ctx{results, diagnostic_params::keep_all()};
+  ctx.start_program(&program);
+  validator(ctx, cprogram);
   EXPECT_THAT(
       results.diagnostics(),
       ::testing::ElementsAre(
@@ -45,9 +48,11 @@ TEST_F(AstValidatorTest, Output) {
 class StdAstValidatorTest : public ::testing::Test {
  protected:
   std::vector<diagnostic> validate() {
-    diagnostic_results result;
-    standard_validator()(result, &program_);
-    return result.diagnostics();
+    diagnostic_results results;
+    diagnostic_context ctx{results, diagnostic_params::keep_all()};
+    ctx.start_program(&program_);
+    standard_validator()(ctx, &program_);
+    return std::move(results).diagnostics();
   }
 
   t_program program_{"/path/to/file.thrift"};

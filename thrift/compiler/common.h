@@ -108,7 +108,7 @@ void dump_docstrings(t_program* program);
  * If the parsing fails, nullptr is returned.
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
-    std::string path, parsing_params params);
+    std::string path, parsing_params pparams, diagnostic_params dparams = {});
 
 /**
  * Dump the diagnostic messages to stderr.

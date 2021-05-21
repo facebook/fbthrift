@@ -31,6 +31,7 @@ namespace compiler {
 // Diagnostic level.
 enum class diagnostic_level {
   failure,
+  // TODO(afuller): Merge parse_error into failure.
   parse_error,
   warning,
   info,
@@ -109,6 +110,7 @@ class diagnostic_results {
   diagnostic_results& operator=(const diagnostic_results&) = default;
 
   const std::vector<diagnostic>& diagnostics() const& { return diagnostics_; }
+  std::vector<diagnostic>&& diagnostics() && { return std::move(diagnostics_); }
   void add(diagnostic diag);
   template <typename C>
   void add_all(C&& diags);
