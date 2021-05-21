@@ -485,6 +485,13 @@ class CppServerWrapper : public ThriftServer {
     getServeEventBase()->loopForever();
   }
 
+  void setup() {
+    PyThreadState* save_state = PyEval_SaveThread();
+    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
+
+    ThriftServer::setup();
+  }
+
   void setCppSSLConfig(object sslConfig) {
     auto certPath = getStringAttrSafe(sslConfig, "cert_path");
     auto keyPath = getStringAttrSafe(sslConfig, "key_path");
@@ -764,6 +771,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("stop", &CppServerWrapper::stop)
       .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
       .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
+      .def("setEnabled", &CppServerWrapper::setEnabled)
 
       .def("getLoad", &CppServerWrapper::getLoad)
       .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
