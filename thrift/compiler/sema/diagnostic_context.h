@@ -22,6 +22,7 @@
 #include <stack>
 #include <string>
 #include <system_error>
+#include <typeindex>
 #include <utility>
 
 #include <thrift/compiler/ast/t_node.h>
@@ -54,6 +55,50 @@ struct diagnostic_params {
   static diagnostic_params only_failures() { return {false, false, 0}; }
   static diagnostic_params strict() { return {false, false, 2}; }
   static diagnostic_params keep_all() { return {true, true, 2}; }
+};
+
+// A cache for metadata associated with an AST node.
+//
+// Useful for avoiding re-computation during a traversal of an AST.
+class node_metadata_cache {
+  template <typename N, typename F>
+  using element_type = typename decltype(std::declval<F>()(
+      std::declval<const N*>()))::element_type;
+
+ public:
+  // Gets or creates a cache entry of the given type T for the specified node.
+  //
+  // Uses the default constructor to initialize the entry, if it is not already
+  // present in the cache.
+  template <typename T>
+  T& get(const t_node* node) {
+    return get(node, [](const t_node*) { return std::make_unique<T>(); });
+  }
+
+  // Same as above, except uses the given loader to initialize the entry,
+  // if it is not already present in the cache.
+  //
+  // The loader must be invocable via signature `std::unique_ptr<T>(const N*)`.
+  template <typename..., typename N, typename F>
+  element_type<N, F>& get(const N* node, const F& loader) {
+    using T = element_type<N, F>;
+    std::pair<const t_node*, std::type_index> key{node, typeid(T)};
+    auto itr = data.find(key);
+    if (itr == data.end()) {
+      itr = data.emplace(
+                    std::move(key),
+                    any_data{
+                        loader(node).release(),
+                        [](void* ptr) { delete static_cast<T*>(ptr); }})
+                .first;
+    }
+    return *static_cast<T*>(itr->second.get());
+  }
+
+ private:
+  // TODO(afuller): Use std::any when c++17 can be used.
+  using any_data = std::unique_ptr<void, void (*const)(void*)>;
+  std::map<std::pair<const t_node*, std::type_index>, any_data> data;
 };
 
 // A context aware reporter for diagnostic results.
@@ -102,6 +147,9 @@ class diagnostic_context {
     }
   }
 
+  // A cache for traversal-specific metadata.
+  node_metadata_cache& cache() { return cache_; }
+
   // Helpers for adding diagnostic results.
   // TODO(afuller): The variadic template doesn't actually provide additional
   // type safety. Update this function to use varargs with the format attribute
@@ -149,6 +197,7 @@ class diagnostic_context {
 
  private:
   std::function<void(diagnostic)> report_cb_;
+  node_metadata_cache cache_;
 
   std::stack<const t_program*> programs_;
   diagnostic_params params_;

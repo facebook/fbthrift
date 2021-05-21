@@ -16,16 +16,20 @@
 
 #include <thrift/compiler/sema/diagnostic_context.h>
 
+#include <memory>
+
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache::thrift::compiler {
 namespace {
 
-class DiagnosticReporterTest : public ::testing::Test {
+class DiagnosticContextTest : public ::testing::Test {
  public:
-  DiagnosticReporterTest() : ctx_{results_}, program_{"path/to/file.thrift"} {}
+  DiagnosticContextTest() : ctx_{results_}, program_{"path/to/file.thrift"} {}
 
   void SetUp() override { ctx_.start_program(&program_); }
   void TearDown() override { ctx_.end_program(&program_); }
@@ -36,7 +40,7 @@ class DiagnosticReporterTest : public ::testing::Test {
   t_program program_;
 };
 
-TEST_F(DiagnosticReporterTest, KeepDebug) {
+TEST_F(DiagnosticContextTest, KeepDebug) {
   ctx_.debug(0, "", "hi");
   // Not reported by default.
   EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
@@ -48,7 +52,7 @@ TEST_F(DiagnosticReporterTest, KeepDebug) {
           diagnostic{diagnostic_level::debug, "hi", "path/to/file.thrift"}));
 }
 
-TEST_F(DiagnosticReporterTest, KeepInfo) {
+TEST_F(DiagnosticContextTest, KeepInfo) {
   ctx_.info(0, "", "hi");
   // Not reported by default.
   EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
@@ -60,7 +64,7 @@ TEST_F(DiagnosticReporterTest, KeepInfo) {
           diagnostic{diagnostic_level::info, "hi", "path/to/file.thrift"}));
 }
 
-TEST_F(DiagnosticReporterTest, WarningLevel) {
+TEST_F(DiagnosticContextTest, WarningLevel) {
   // Strict not reported by default.
   ctx_.warning(0, "", "hi");
   ctx_.warning_strict(0, "", "bye");
@@ -85,6 +89,28 @@ TEST_F(DiagnosticReporterTest, WarningLevel) {
       ::testing::ElementsAre(
           diagnostic{diagnostic_level::warning, "hi", "path/to/file.thrift"},
           diagnostic{diagnostic_level::warning, "bye", "path/to/file.thrift"}));
+}
+
+class NodeMetadataCacheTest : public ::testing::Test {};
+
+TEST_F(NodeMetadataCacheTest, Cache) {
+  node_metadata_cache cache;
+  EXPECT_EQ(cache.get<int>(&t_base_type::t_bool()), 0);
+  EXPECT_EQ(
+      &cache.get<int>(&t_base_type::t_bool()),
+      &cache.get<int>(&t_base_type::t_bool()));
+  EXPECT_EQ(
+      cache.get(
+          &t_base_type::t_i32(),
+          [](const t_node*) { return std::make_unique<int>(1); }),
+      1);
+  EXPECT_NE(
+      &cache.get<int>(&t_base_type::t_bool()),
+      &cache.get<int>(&t_base_type::t_i32()));
+  cache.get<int>(&t_base_type::t_bool()) = 2;
+  EXPECT_EQ(cache.get<int>(&t_base_type::t_bool()), 2);
+  EXPECT_EQ(cache.get<int>(&t_base_type::t_i32()), 1);
+  EXPECT_EQ(cache.get<float>(&t_base_type::t_i32()), 0.0);
 }
 
 } // namespace

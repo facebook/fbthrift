@@ -16,9 +16,10 @@
 
 #include <thrift/compiler/sema/scope_validator.h>
 
-#include <set>
+#include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <unordered_set>
 
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_service.h>
@@ -30,7 +31,9 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
+namespace {
+
+const std::unordered_map<std::string, std::type_index>& uri_map() {
   static const std::unordered_map<std::string, std::type_index> kUriMap = {
       {"facebook.com/thrift/annotation/Struct", typeid(t_struct)},
       {"facebook.com/thrift/annotation/Union", typeid(t_union)},
@@ -44,31 +47,45 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
       {"facebook.com/thrift/annotation/EnumValue", typeid(t_enum_value)},
       {"facebook.com/thrift/annotation/Const", typeid(t_const)},
   };
+  return kUriMap;
+}
 
+struct allowed_scopes {
+  std::unordered_set<std::type_index> types;
+};
+
+std::unique_ptr<allowed_scopes> compute_scopes(const t_const* annot) {
+  auto result = std::make_unique<allowed_scopes>();
+  for (const auto* meta_annot : annot->get_type()->structured_annotations()) {
+    const auto& uri = meta_annot->get_type()->get_annotation("thrift.uri");
+    auto itr = uri_map().find(uri);
+    if (itr != uri_map().end()) {
+      result->types.emplace(itr->second);
+    }
+  }
+  return result;
+}
+
+} // namespace
+
+void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
   for (const auto* annot : node->structured_annotations()) {
     // Ignore scoping annotations themselves.
-    if (kUriMap.find(annot->get_type()->get_annotation("thrift.uri")) !=
-        kUriMap.end()) {
+    if (uri_map().find(annot->get_type()->get_annotation("thrift.uri")) !=
+        uri_map().end()) {
       continue;
     }
 
-    // Compute allowed set of node types.
-    std::set<std::type_index> allowed;
-    for (const auto* meta_annot : annot->get_type()->structured_annotations()) {
-      const auto& uri = meta_annot->get_type()->get_annotation("thrift.uri");
-      auto itr = kUriMap.find(uri);
-      if (itr != kUriMap.end()) {
-        allowed.insert(itr->second);
-      }
-    }
+    // Get the allowed set of node types.
+    const auto& allowed = ctx.cache().get(annot, &compute_scopes);
 
-    if (allowed.empty()) {
+    if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
       ctx.warning_strict(
           annot,
           "Using `%s` as an annotation, even though it has not been enabled for any annotation scope.",
           annot->get_type()->name().c_str());
-    } else if (allowed.find(typeid(*node)) == allowed.end()) {
+    } else if (allowed.types.find(typeid(*node)) == allowed.types.end()) {
       // Type mismatch.
       ctx.failure(
           annot,
