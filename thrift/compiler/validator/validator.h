@@ -125,16 +125,6 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   static bool validate_throws(const t_throws* throws);
 };
 
-class union_no_qualified_fields_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  /**
-   * Enforces that there are no qualified fields in a union.
-   */
-  bool visit(t_struct* s) override;
-};
-
 class mixin_type_correctness_validator : virtual public validator {
  public:
   using validator::visit;

@@ -23,6 +23,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_paramlist.h>
@@ -241,6 +242,44 @@ TEST_F(StdAstValidatorTest, UnsetEnumValues) {
           diagnostic{
               diagnostic_level::failure,
               "The enum value, `Baz`, must have an explicitly assigned value.",
+              "/path/to/file.thrift",
+              3}));
+}
+
+TEST_F(StdAstValidatorTest, QualifiedInUnion) {
+  auto tunion = std::make_unique<t_union>(&program_, "Union");
+  tunion->set_lineno(1);
+  {
+    auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "req", 1);
+    field->set_lineno(2);
+    field->set_qualifier(t_field_qualifier::required);
+    tunion->append(std::move(field));
+  }
+  {
+    auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "op", 2);
+    field->set_lineno(3);
+    field->set_qualifier(t_field_qualifier::optional);
+    tunion->append(std::move(field));
+  }
+  {
+    auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "non", 3);
+    field->set_lineno(4);
+    tunion->append(std::move(field));
+  }
+  program_.add_struct(std::move(tunion));
+
+  // Qualified fields will have errors.
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(
+          diagnostic{
+              diagnostic_level::failure,
+              "Unions cannot contain qualified fields. Remove `required` qualifier from field `req`.",
+              "/path/to/file.thrift",
+              2},
+          diagnostic{
+              diagnostic_level::failure,
+              "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`.",
               "/path/to/file.thrift",
               3}));
 }

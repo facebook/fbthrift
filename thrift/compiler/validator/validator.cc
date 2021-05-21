@@ -116,7 +116,6 @@ void service_method_name_uniqueness_validator::
 static void fill_validators(validator_list& vs) {
   vs.add<service_method_name_uniqueness_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
-  vs.add<union_no_qualified_fields_validator>();
   vs.add<mixin_type_correctness_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
@@ -164,24 +163,6 @@ bool exception_list_is_all_exceptions_validator::validate_throws(
   for (const auto* ex : throws->fields()) {
     if (!ex->get_type()->get_true_type()->is_exception()) {
       return false;
-    }
-  }
-  return true;
-}
-
-bool union_no_qualified_fields_validator::visit(t_struct* s) {
-  if (!s->is_union()) {
-    return true;
-  }
-
-  for (const auto* field : s->fields()) {
-    if (field->get_req() != t_field::e_req::opt_in_req_out) {
-      add_error(
-          field->get_lineno(),
-          std::string("Unions cannot contain qualified fields. Remove ") +
-              (field->get_req() == t_field::e_req::required ? "required"
-                                                            : "optional") +
-              " qualifier from field `" + field->get_name() + "`.");
     }
   }
   return true;

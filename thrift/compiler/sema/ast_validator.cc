@@ -22,7 +22,9 @@
 
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_interface.h>
+#include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
 namespace apache {
@@ -42,6 +44,19 @@ void interface_function_name_uniqueness(
           "Function `%s` is already defined in `%s`.",
           function->name().c_str(),
           node->name().c_str());
+    }
+  }
+}
+
+void union_field_qualification(diagnostic_context& ctx, const t_union* node) {
+  for (const auto* field : node->fields()) {
+    if (field->qualifier() != t_field_qualifier::unspecified) {
+      ctx.failure(
+          field,
+          "Unions cannot contain qualified fields. Remove `%s` qualifier from field `%s`.",
+          field->qualifier() == t_field_qualifier::required ? "required"
+                                                            : "optional",
+          field->name().c_str());
     }
   }
 }
@@ -89,6 +104,7 @@ void enum_value_explicit(diagnostic_context& ctx, const t_enum_value* node) {
 ast_validator standard_validator() {
   ast_validator validator;
   validator.add_interface_visitor(&interface_function_name_uniqueness);
+  validator.add_union_visitor(&union_field_qualification);
   validator.add_enum_visitor(&enum_value_name_uniqueness);
   validator.add_enum_visitor(&enum_value_uniqueness);
   validator.add_enum_value_visitor(&enum_value_explicit);

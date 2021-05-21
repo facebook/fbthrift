@@ -108,40 +108,6 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   EXPECT_EQ(expected, errors.front().str());
 }
 
-TEST_F(ValidatorTest, QualifiedInUnion) {
-  t_program program("/path/to/file.thrift");
-
-  auto field = std::make_unique<t_field>(&t_base_type::t_i64(), "foo", 1);
-  field->set_lineno(5);
-  field->set_req(t_field::e_req::required);
-
-  auto struct_union = std::make_unique<t_union>(&program, "Bar");
-
-  struct_union->append(std::move(field));
-
-  field = std::make_unique<t_field>(&t_base_type::t_i64(), "baz", 2);
-  field->set_lineno(6);
-  field->set_req(t_field::e_req::optional);
-  struct_union->append(std::move(field));
-
-  field = std::make_unique<t_field>(&t_base_type::t_i64(), "qux", 3);
-  field->set_lineno(7);
-  struct_union->append(std::move(field));
-
-  program.add_struct(std::move(struct_union));
-
-  auto errors = run_validator<union_no_qualified_fields_validator>(&program);
-  EXPECT_EQ(2, errors.size());
-  EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:5] Unions cannot contain qualified fields. "
-      "Remove required qualifier from field `foo`.",
-      errors.front().str());
-  EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:6] Unions cannot contain qualified fields. "
-      "Remove optional qualifier from field `baz`.",
-      errors.at(1).str());
-}
-
 TEST_F(ValidatorTest, DuplicatedStructNames) {
   t_program program("/path/to/file.thrift");
 
