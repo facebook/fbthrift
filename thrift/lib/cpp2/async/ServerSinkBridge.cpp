@@ -85,7 +85,8 @@ folly::coro::Task<void> ServerSinkBridge::startImpl(ServerSinkBridge& self) {
     if (self.consumer_.interaction) {
       self.evb_->add(
           [interaction = self.consumer_.interaction, evb = self.evb_] {
-            interaction->__fbthrift_releaseRef(*evb);
+            interaction->__fbthrift_releaseRef(
+                *evb, InteractionReleaseEvent::STREAM_END);
           });
     }
   };

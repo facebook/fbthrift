@@ -702,6 +702,16 @@ TEST(InteractionCodegenTest, SerialInteraction) {
         co_await baton3_;
         co_return acc_;
       }
+      folly::coro::Task<apache::thrift::ServerStream<int32_t>>
+      co_waitForCancel() override {
+        co_return []() -> folly::coro::AsyncGenerator<int32_t&&> {
+          folly::coro::Baton b;
+          folly::CancellationCallback cb{
+              co_await folly::coro::co_current_cancellation_token,
+              [&] { b.post(); }};
+          co_await b;
+        }();
+      }
     };
 
     std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
@@ -722,6 +732,8 @@ TEST(InteractionCodegenTest, SerialInteraction) {
 
   auto adder = client->createSerialAddition();
   folly::EventBase eb;
+  // keep a stream alive for the rest of the test (0th serial method)
+  auto stream = adder.semifuture_waitForCancel();
   auto accSemi = adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
   auto getSemi = adder.co_getPrimitive().scheduleOn(&eb).start();
 

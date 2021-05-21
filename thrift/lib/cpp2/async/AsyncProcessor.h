@@ -823,12 +823,7 @@ void GeneratedAsyncProcessor::processInThread(
       childClass,
       tile);
 
-  if (auto promise = dynamic_cast<TilePromise*>(tile)) {
-    promise->addContinuation(std::move(task));
-    return;
-  } else if (auto serial = dynamic_cast<SerialInteractionTile*>(tile);
-             serial && serial->refCount_ > 2) {
-    serial->taskQueue_.push(std::move(task));
+  if (tile && tile->__fbthrift_maybeEnqueue(std::move(task))) {
     return;
   }
 

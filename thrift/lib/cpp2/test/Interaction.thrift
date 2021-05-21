@@ -40,6 +40,7 @@ interaction AdditionFast {
 interaction SerialAddition {
   void accumulatePrimitive(1: i32 a);
   i32 getPrimitive();
+  stream<i32> waitForCancel();
 } (serial)
 
 service Calculator {

@@ -58,6 +58,12 @@ class InteractionId {
   friend class RequestChannel;
 };
 
+enum class InteractionReleaseEvent {
+  NORMAL,
+  STREAM_TRANSFER,
+  STREAM_END,
+};
+
 class Tile {
  public:
   virtual ~Tile() = default;
@@ -66,7 +72,13 @@ class Tile {
     eb.dcheckIsInEventBaseThread();
     ++refCount_;
   }
-  void __fbthrift_releaseRef(folly::EventBase& eb);
+  void __fbthrift_releaseRef(
+      folly::EventBase& eb,
+      InteractionReleaseEvent event = InteractionReleaseEvent::NORMAL);
+
+  // Only moves in arg when it returns true
+  virtual bool __fbthrift_maybeEnqueue(
+      std::unique_ptr<concurrency::Runnable>&& task);
 
  private:
   size_t refCount_{1};
@@ -76,36 +88,35 @@ class Tile {
 };
 
 class SerialInteractionTile : public Tile {
+ public:
+  bool __fbthrift_maybeEnqueue(
+      std::unique_ptr<concurrency::Runnable>&& task) override;
+
+ private:
   std::queue<std::shared_ptr<concurrency::Runnable>> taskQueue_;
-  friend class GeneratedAsyncProcessor;
+  bool hasActiveRequest_{false};
   friend class Tile;
-  friend class TilePromise;
 };
 
 class TilePromise final : public Tile {
  public:
-  void addContinuation(std::unique_ptr<concurrency::Runnable> task) {
-    continuations_.push_back(std::move(task));
-  }
+  bool __fbthrift_maybeEnqueue(
+      std::unique_ptr<concurrency::Runnable>&& task) override;
 
   template <typename InteractionEventTask>
   void fulfill(
       Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
     DCHECK(!continuations_.empty());
 
-    bool isSerial = dynamic_cast<SerialInteractionTile*>(this), first = true;
     auto ka = tm.getKeepAlive(
         concurrency::PRIORITY::NORMAL,
         concurrency::ThreadManager::Source::EXISTING_INTERACTION);
     for (auto& task : continuations_) {
-      if (!isSerial || std::exchange(first, false)) {
-        tile.__fbthrift_acquireRef(eb);
-        dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
-        --refCount_;
+      dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
+      tile.__fbthrift_acquireRef(eb);
+      --refCount_;
+      if (!tile.__fbthrift_maybeEnqueue(std::move(task))) {
         ka->add([task = std::move(task)]() mutable { task->run(); });
-      } else {
-        static_cast<SerialInteractionTile&>(tile).taskQueue_.push(
-            std::move(task));
       }
     }
     continuations_.clear();

@@ -33,6 +33,10 @@ struct ServerStreamFactory {
       FirstResponsePayload&& payload,
       StreamClientCallback* cb,
       folly::EventBase* eb) {
+    if (interaction_) {
+      interaction_->__fbthrift_releaseRef(
+          *eb, InteractionReleaseEvent::STREAM_TRANSFER);
+    }
     fn_(std::move(payload), cb, eb, interaction_);
   }
 

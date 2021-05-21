@@ -196,7 +196,8 @@ class ServerPublisherStream : private StreamServerCallback {
     if (interaction_) {
       clientEventBase_->add(
           [interaction = interaction_, eb = clientEventBase_] {
-            interaction->__fbthrift_releaseRef(*eb);
+            interaction->__fbthrift_releaseRef(
+                *eb, InteractionReleaseEvent::STREAM_END);
           });
     }
   }

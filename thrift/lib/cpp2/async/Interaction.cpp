@@ -19,26 +19,54 @@
 namespace apache {
 namespace thrift {
 
-void Tile::__fbthrift_releaseRef(folly::EventBase& eb) {
+bool Tile::__fbthrift_maybeEnqueue(std::unique_ptr<concurrency::Runnable>&&) {
+  return false;
+}
+
+void Tile::__fbthrift_releaseRef(
+    folly::EventBase& eb, InteractionReleaseEvent event) {
   eb.dcheckIsInEventBaseThread();
   DCHECK_GT(refCount_, 0u);
 
-  if (auto serial = dynamic_cast<SerialInteractionTile*>(this)) {
-    auto& queue = serial->taskQueue_;
-    if (!queue.empty()) {
-      DCHECK_GT(refCount_, queue.size());
-      dynamic_cast<concurrency::ThreadManager&>(*destructionExecutor_)
-          .getKeepAlive(
-              concurrency::PRIORITY::NORMAL,
-              concurrency::ThreadManager::Source::INTERNAL)
-          ->add([task = std::move(queue.front())]() mutable { task->run(); });
-      queue.pop();
+  if (event != InteractionReleaseEvent::STREAM_END) {
+    if (auto serial = dynamic_cast<SerialInteractionTile*>(this)) {
+      auto& queue = serial->taskQueue_;
+      if (!queue.empty()) {
+        DCHECK_GT(
+            refCount_ + (event == InteractionReleaseEvent::STREAM_TRANSFER),
+            queue.size());
+        dynamic_cast<concurrency::ThreadManager&>(*destructionExecutor_)
+            .getKeepAlive(
+                concurrency::PRIORITY::NORMAL,
+                concurrency::ThreadManager::Source::INTERNAL)
+            ->add([task = std::move(queue.front())]() { task->run(); });
+        queue.pop();
+      } else {
+        serial->hasActiveRequest_ = false;
+      }
     }
   }
 
-  if (--refCount_ == 0) {
+  if (event != InteractionReleaseEvent::STREAM_TRANSFER && --refCount_ == 0) {
     std::move(destructionExecutor_).add([this](auto) { delete this; });
   }
+}
+
+bool TilePromise::__fbthrift_maybeEnqueue(
+    std::unique_ptr<concurrency::Runnable>&& task) {
+  continuations_.push_back(std::move(task));
+  return true;
+}
+
+bool SerialInteractionTile::__fbthrift_maybeEnqueue(
+    std::unique_ptr<concurrency::Runnable>&& task) {
+  if (hasActiveRequest_) {
+    taskQueue_.push(std::move(task));
+    return true;
+  }
+
+  hasActiveRequest_ = true;
+  return false;
 }
 
 } // namespace thrift

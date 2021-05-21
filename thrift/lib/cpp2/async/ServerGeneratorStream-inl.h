@@ -56,7 +56,8 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
               if (interaction) {
                 stream->clientEventBase_->add(
                     [interaction, eb = stream->clientEventBase_] {
-                      interaction->__fbthrift_releaseRef(*eb);
+                      interaction->__fbthrift_releaseRef(
+                          *eb, InteractionReleaseEvent::STREAM_END);
                     });
               }
               stream->serverClose();
