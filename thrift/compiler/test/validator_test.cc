@@ -34,10 +34,6 @@ namespace {
 
 class ValidatorTest : public testing::Test {};
 
-std::unique_ptr<t_enum_value> new_enum_value(std::string name) {
-  return std::make_unique<t_enum_value>(std::move(name));
-}
-
 } // namespace
 
 TEST_F(ValidatorTest, run_validator) {
@@ -132,33 +128,6 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   errors = run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front().str());
-}
-
-TEST_F(ValidatorTest, UnsetEnumValues) {
-  auto tenum = create_fake_enum("Foo");
-  auto tenum_ptr = tenum.get();
-
-  t_program program("/path/to/file.thrift");
-  program.add_enum(std::move(tenum));
-
-  auto enum_value_1 = new_enum_value("Bar");
-  auto enum_value_2 = new_enum_value("Baz");
-  enum_value_1->set_lineno(2);
-  enum_value_2->set_lineno(3);
-  tenum_ptr->append(std::move(enum_value_1), nullptr);
-  tenum_ptr->append(std::move(enum_value_2), nullptr);
-
-  // An error will be found
-  auto errors = run_validator<enum_values_set_validator>(&program);
-  EXPECT_EQ(2, errors.size());
-  EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:2] Unset enum value `Bar` in enum `Foo`. "
-      "Add an explicit value to suppress this error.",
-      errors.at(0).str());
-  EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:3] Unset enum value `Baz` in enum `Foo`. "
-      "Add an explicit value to suppress this error.",
-      errors.at(1).str());
 }
 
 TEST_F(ValidatorTest, QualifiedInUnion) {

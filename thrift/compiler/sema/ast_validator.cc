@@ -20,13 +20,16 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_enum_value.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 namespace {
 
-void enum_value_name_are_unique(diagnostic_context& ctx, const t_enum* node) {
+void enum_value_name_uniqueness(diagnostic_context& ctx, const t_enum* node) {
   std::unordered_set<std::string> names;
   for (const auto* value : node->enum_values()) {
     if (!names.insert(value->name()).second) {
@@ -39,7 +42,7 @@ void enum_value_name_are_unique(diagnostic_context& ctx, const t_enum* node) {
   }
 }
 
-void enum_values_are_unique(diagnostic_context& ctx, const t_enum* node) {
+void enum_value_uniqueness(diagnostic_context& ctx, const t_enum* node) {
   std::unordered_map<int32_t, const t_enum_value*> values;
   for (const auto* value : node->enum_values()) {
     auto prev = values.emplace(value->get_value(), value);
@@ -55,12 +58,22 @@ void enum_values_are_unique(diagnostic_context& ctx, const t_enum* node) {
   }
 }
 
+void enum_value_explicit(diagnostic_context& ctx, const t_enum_value* node) {
+  if (!node->has_value()) {
+    ctx.failure(
+        node,
+        "The enum value, `%s`, must have an explicitly assigned value.",
+        node->name().c_str());
+  }
+}
+
 } // namespace
 
 ast_validator standard_validator() {
   ast_validator validator;
-  validator.add_enum_visitor(&enum_values_are_unique);
-  validator.add_enum_visitor(&enum_value_name_are_unique);
+  validator.add_enum_visitor(&enum_value_name_uniqueness);
+  validator.add_enum_visitor(&enum_value_uniqueness);
+  validator.add_enum_value_visitor(&enum_value_explicit);
   return validator;
 }
 

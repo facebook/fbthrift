@@ -249,6 +249,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 enum Foo {
+                    Foo = 1,
                     Bar,
                     Baz,
                 }
@@ -258,10 +259,8 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] Unset enum value `Bar` in enum `Foo`. "
-            "Add an explicit value to suppress this error.\n"
-            "[FAILURE:foo.thrift:3] Unset enum value `Baz` in enum `Foo`. "
-            "Add an explicit value to suppress this error.\n",
+            "[FAILURE:foo.thrift:3] The enum value, `Bar`, must have an explicitly assigned value.\n"
+            "[FAILURE:foo.thrift:4] The enum value, `Baz`, must have an explicitly assigned value.\n",
         )
 
     def test_circular_include_dependencies(self):

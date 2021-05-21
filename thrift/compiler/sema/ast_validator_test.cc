@@ -110,5 +110,36 @@ TEST_F(StdAstValidatorTest, RepeatedNamesInEnumValues) {
           1}));
 }
 
+TEST_F(StdAstValidatorTest, UnsetEnumValues) {
+  auto tenum = std::make_unique<t_enum>(&program_, "foo");
+  auto tenum_ptr = tenum.get();
+  program_.add_enum(std::move(tenum));
+
+  auto enum_value_1 = std::make_unique<t_enum_value>("Foo", 1);
+  auto enum_value_2 = std::make_unique<t_enum_value>("Bar");
+  auto enum_value_3 = std::make_unique<t_enum_value>("Baz");
+  enum_value_1->set_lineno(1);
+  enum_value_2->set_lineno(2);
+  enum_value_3->set_lineno(3);
+  tenum_ptr->append(std::move(enum_value_1));
+  tenum_ptr->append(std::move(enum_value_2));
+  tenum_ptr->append(std::move(enum_value_3));
+
+  // Bar and Baz will have errors.
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(
+          diagnostic{
+              diagnostic_level::failure,
+              "The enum value, `Bar`, must have an explicitly assigned value.",
+              "/path/to/file.thrift",
+              2},
+          diagnostic{
+              diagnostic_level::failure,
+              "The enum value, `Baz`, must have an explicitly assigned value.",
+              "/path/to/file.thrift",
+              3}));
+}
+
 } // namespace
 } // namespace apache::thrift::compiler

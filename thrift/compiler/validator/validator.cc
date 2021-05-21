@@ -128,7 +128,6 @@ void service_method_name_uniqueness_validator::
 
 static void fill_validators(validator_list& vs) {
   vs.add<service_method_name_uniqueness_validator>();
-  vs.add<enum_values_set_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<union_no_qualified_fields_validator>();
   vs.add<mixin_type_correctness_validator>();
@@ -141,29 +140,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<recursive_optional_validator>();
 
   // add more validators here ...
-}
-
-void enum_values_set_validator::add_validation_error(
-    int const lineno,
-    std::string const& enum_value_name,
-    std::string const& enum_name) {
-  add_error(
-      lineno,
-      "Unset enum value `" + enum_value_name + "` in enum `" + enum_name +
-          "`. Add an explicit value to suppress this error.");
-}
-
-bool enum_values_set_validator::visit(t_enum* const tenum) {
-  validate(tenum);
-  return true;
-}
-
-void enum_values_set_validator::validate(t_enum const* const tenum) {
-  for (auto v : tenum->get_enum_values()) {
-    if (!v->has_value()) {
-      add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
-    }
-  }
 }
 
 bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
