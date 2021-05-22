@@ -125,16 +125,6 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   static bool validate_throws(const t_throws* throws);
 };
 
-class mixin_type_correctness_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  /**
-   * Enforces that all mixin fields are struct.
-   */
-  bool visit(t_struct* s) override;
-};
-
 class field_names_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;

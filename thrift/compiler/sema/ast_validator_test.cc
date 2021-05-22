@@ -23,6 +23,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_interaction.h>
@@ -34,6 +35,8 @@
 
 namespace apache::thrift::compiler {
 namespace {
+
+using ::testing::UnorderedElementsAre;
 
 class AstValidatorTest : public ::testing::Test {};
 
@@ -52,18 +55,33 @@ TEST_F(AstValidatorTest, Output) {
   validator(ctx, cprogram);
   EXPECT_THAT(
       results.diagnostics(),
-      ::testing::ElementsAre(
+      UnorderedElementsAre(
           diagnostic(diagnostic_level::info, "test", &program, &program)));
 }
 
 class StdAstValidatorTest : public ::testing::Test {
  protected:
-  std::vector<diagnostic> validate() {
+  std::vector<diagnostic> validate(
+      diagnostic_params params = diagnostic_params::keep_all()) {
     diagnostic_results results;
-    diagnostic_context ctx{results, diagnostic_params::keep_all()};
+    diagnostic_context ctx{results, params};
     ctx.start_program(&program_);
     standard_validator()(ctx, &program_);
     return std::move(results).diagnostics();
+  }
+
+  std::unique_ptr<t_const> inst(const t_struct* ttype, int lineno) {
+    auto value = std::make_unique<t_const_value>();
+    value->set_map();
+    value->set_ttype(std::make_unique<t_type_ref>(ttype));
+    auto result =
+        std::make_unique<t_const>(&program_, ttype, "", std::move(value));
+    result->set_lineno(lineno);
+    return result;
+  }
+
+  diagnostic failure(int lineno, const std::string& msg) {
+    return {diagnostic_level::failure, msg, "/path/to/file.thrift", lineno};
   }
 
   t_program program_{"/path/to/file.thrift"};
@@ -151,16 +169,8 @@ TEST_F(StdAstValidatorTest, ReapeatedNamesInService) {
   EXPECT_THAT(
       validate(),
       ::testing::UnorderedElementsAre(
-          diagnostic{
-              diagnostic_level::failure,
-              "Function `foo` is already defined in `Service`.",
-              "/path/to/file.thrift",
-              2},
-          diagnostic{
-              diagnostic_level::failure,
-              "Function `bar` is already defined in `Interaction`.",
-              "/path/to/file.thrift",
-              4}));
+          failure(2, "Function `foo` is already defined in `Service`."),
+          failure(4, "Function `bar` is already defined in `Interaction`.")));
 }
 
 TEST_F(StdAstValidatorTest, DuplicatedEnumValues) {
@@ -182,11 +192,8 @@ TEST_F(StdAstValidatorTest, DuplicatedEnumValues) {
   // An error will be found.
   EXPECT_THAT(
       validate(),
-      ::testing::UnorderedElementsAre(diagnostic{
-          diagnostic_level::failure,
-          "Duplicate value `foo=1` with value `bar` in enum `foo`.",
-          program_.path(),
-          1}));
+      UnorderedElementsAre(failure(
+          1, "Duplicate value `foo=1` with value `bar` in enum `foo`.")));
 }
 
 TEST_F(StdAstValidatorTest, RepeatedNamesInEnumValues) {
@@ -208,11 +215,8 @@ TEST_F(StdAstValidatorTest, RepeatedNamesInEnumValues) {
   // An error will be found.
   EXPECT_THAT(
       validate(),
-      ::testing::UnorderedElementsAre(diagnostic{
-          diagnostic_level::failure,
-          "Redefinition of value `bar` in enum `foo`.",
-          program_.path(),
-          1}));
+      UnorderedElementsAre(
+          failure(1, "Redefinition of value `bar` in enum `foo`.")));
 }
 
 TEST_F(StdAstValidatorTest, UnsetEnumValues) {
@@ -233,20 +237,17 @@ TEST_F(StdAstValidatorTest, UnsetEnumValues) {
   // Bar and Baz will have errors.
   EXPECT_THAT(
       validate(),
-      ::testing::UnorderedElementsAre(
-          diagnostic{
-              diagnostic_level::failure,
-              "The enum value, `Bar`, must have an explicitly assigned value.",
-              "/path/to/file.thrift",
-              2},
-          diagnostic{
-              diagnostic_level::failure,
-              "The enum value, `Baz`, must have an explicitly assigned value.",
-              "/path/to/file.thrift",
-              3}));
+      UnorderedElementsAre(
+          failure(
+              2,
+              "The enum value, `Bar`, must have an explicitly assigned value."),
+          failure(
+              3,
+              "The enum value, `Baz`, must have an explicitly assigned value.")));
 }
 
-TEST_F(StdAstValidatorTest, QualifiedInUnion) {
+TEST_F(StdAstValidatorTest, UnionFieldAttributes) {
+  auto tstruct = std::make_unique<t_struct>(&program_, "Struct");
   auto tunion = std::make_unique<t_union>(&program_, "Union");
   tunion->set_lineno(1);
   {
@@ -266,22 +267,78 @@ TEST_F(StdAstValidatorTest, QualifiedInUnion) {
     field->set_lineno(4);
     tunion->append(std::move(field));
   }
+  {
+    auto field = std::make_unique<t_field>(tstruct.get(), "mixin", 4);
+    field->set_lineno(5);
+    field->set_annotation("cpp.mixin");
+    tunion->append(std::move(field));
+  }
+  program_.add_struct(std::move(tstruct));
   program_.add_struct(std::move(tunion));
 
-  // Qualified fields will have errors.
   EXPECT_THAT(
       validate(),
-      ::testing::UnorderedElementsAre(
-          diagnostic{
-              diagnostic_level::failure,
-              "Unions cannot contain qualified fields. Remove `required` qualifier from field `req`.",
-              "/path/to/file.thrift",
-              2},
-          diagnostic{
-              diagnostic_level::failure,
-              "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`.",
-              "/path/to/file.thrift",
-              3}));
+      UnorderedElementsAre(
+          // Qualified fields will have errors.
+          failure(
+              2,
+              "Unions cannot contain qualified fields. Remove `required` qualifier from field `req`."),
+          failure(
+              3,
+              "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`."),
+          // Fields with cpp.mixing have errors.
+          failure(5, "Union `Union` cannot contain mixin field `mixin`.")));
+}
+
+TEST_F(StdAstValidatorTest, MixinFieldType) {
+  auto tstruct = std::make_unique<t_struct>(&program_, "Struct");
+  auto tunion = std::make_unique<t_union>(&program_, "Union");
+  auto texception = std::make_unique<t_exception>(&program_, "Exception");
+
+  auto foo = std::make_unique<t_struct>(&program_, "Foo");
+  {
+    auto field = std::make_unique<t_field>(tstruct.get(), "struct_field", 1);
+    field->set_lineno(1);
+    field->set_annotation("cpp.mixin");
+    field->set_qualifier(t_field_qualifier::optional);
+    foo->append(std::move(field));
+  }
+  {
+    auto field = std::make_unique<t_field>(tunion.get(), "union_field", 2);
+    field->set_lineno(2);
+    field->set_annotation("cpp.mixin");
+    field->set_qualifier(t_field_qualifier::required);
+    foo->append(std::move(field));
+  }
+  {
+    auto field = std::make_unique<t_field>(texception.get(), "except_field", 3);
+    field->set_lineno(3);
+    field->set_annotation("cpp.mixin");
+    foo->append(std::move(field));
+  }
+  {
+    auto field =
+        std::make_unique<t_field>(&t_base_type::t_i32(), "other_field", 4);
+    field->set_lineno(4);
+    field->set_annotation("cpp.mixin");
+    foo->append(std::move(field));
+  }
+
+  program_.add_struct(std::move(tstruct));
+  program_.add_struct(std::move(tunion));
+  program_.add_exception(std::move(texception));
+  program_.add_struct(std::move(foo));
+
+  EXPECT_THAT(
+      validate(diagnostic_params::only_failures()),
+      UnorderedElementsAre(
+          failure(1, "Mixin field `struct_field` cannot be optional."),
+          failure(
+              3,
+              "Mixin field `except_field` type must be a struct or union. Found `Exception`."),
+          failure(
+              4,
+              "Mixin field `other_field` type must be a struct or union. Found `i32`.")));
 }
 
 } // namespace

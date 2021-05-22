@@ -395,7 +395,8 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:2] Mixin field `i` is not a struct but `i32`.\n"
+            err,
+            "[FAILURE:foo.thrift:2] Mixin field `i` type must be a struct or union. Found `i32`.\n",
         )
 
     def test_mixin_in_union(self):
@@ -415,7 +416,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:2] Union `B` can not have mixin field `a`.\n"
+            err, "[FAILURE:foo.thrift:3] Union `B` cannot contain mixin field `a`.\n"
         )
 
     def test_mixin_with_cpp_ref(self):
@@ -517,7 +518,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:3] Mixin field `a` can not be optional.\n"
+                "[FAILURE:foo.thrift:3] Mixin field `a` cannot be optional.\n"
             ),
         )
 

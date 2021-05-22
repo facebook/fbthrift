@@ -116,7 +116,6 @@ void service_method_name_uniqueness_validator::
 static void fill_validators(validator_list& vs) {
   vs.add<service_method_name_uniqueness_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
-  vs.add<mixin_type_correctness_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
   vs.add<structured_annotation_uniqueness_validator>();
@@ -163,35 +162,6 @@ bool exception_list_is_all_exceptions_validator::validate_throws(
   for (const auto* ex : throws->fields()) {
     if (!ex->get_type()->get_true_type()->is_exception()) {
       return false;
-    }
-  }
-  return true;
-}
-
-bool mixin_type_correctness_validator::visit(t_struct* s) {
-  for (auto* field : s->fields()) {
-    if (cpp2::is_mixin(*field)) {
-      auto* member_type = field->get_type()->get_true_type();
-      const auto& name = field->get_name();
-      if (s->is_union()) {
-        add_error(
-            s->get_lineno(),
-            "Union `" + s->get_name() + "` can not have mixin field `" + name +
-                "`.");
-      } else if (!member_type->is_struct()) {
-        add_error(
-            field->get_lineno(),
-            "Mixin field `" + name + "` is not a struct but `" +
-                field->get_type()->get_name() + "`.");
-      } else if (field->get_req() == t_field::e_req::optional) {
-        // Nothing technically stops us from marking optional field mixin.
-        // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
-        // might throw `bad_field_access` if `bar` is inside optional mixin
-        // field.
-        add_error(
-            field->get_lineno(),
-            "Mixin field `" + name + "` can not be optional.");
-      }
     }
   }
   return true;

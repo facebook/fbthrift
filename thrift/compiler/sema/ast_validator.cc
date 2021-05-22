@@ -24,7 +24,9 @@
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_interface.h>
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
 namespace apache {
@@ -33,7 +35,7 @@ namespace compiler {
 
 namespace {
 
-void interface_function_name_uniqueness(
+void validate_interface_function_name_uniqueness(
     diagnostic_context& ctx, const t_interface* node) {
   // Check for a redefinition of a function in the same interface.
   std::unordered_set<std::string> seen;
@@ -48,7 +50,8 @@ void interface_function_name_uniqueness(
   }
 }
 
-void union_field_qualification(diagnostic_context& ctx, const t_union* node) {
+void validate_union_field_attributes(
+    diagnostic_context& ctx, const t_union* node) {
   for (const auto* field : node->fields()) {
     if (field->qualifier() != t_field_qualifier::unspecified) {
       ctx.failure(
@@ -58,10 +61,43 @@ void union_field_qualification(diagnostic_context& ctx, const t_union* node) {
                                                             : "optional",
           field->name().c_str());
     }
+    if (cpp2::is_mixin(*field)) {
+      ctx.failure(
+          field,
+          "Union `%s` cannot contain mixin field `%s`.",
+          node->name().c_str(),
+          field->name().c_str());
+    }
   }
 }
 
-void enum_value_name_uniqueness(diagnostic_context& ctx, const t_enum* node) {
+void validate_mixin_field_attributes(
+    diagnostic_context& ctx, const t_field* field) {
+  if (!cpp2::is_mixin(*field)) {
+    return;
+  }
+
+  auto* ttype = field->type()->type()->get_true_type();
+  if (typeid(*ttype) != typeid(t_struct) && typeid(*ttype) != typeid(t_union)) {
+    ctx.failure(
+        field,
+        "Mixin field `%s` type must be a struct or union. Found `%s`.",
+        field->name().c_str(),
+        ttype->get_name().c_str());
+  }
+
+  if (field->qualifier() == t_field_qualifier::optional) {
+    // Nothing technically stops us from marking optional field mixin.
+    // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
+    // might throw `bad_field_access` if `bar` is inside optional mixin
+    // field.
+    ctx.failure(
+        field, "Mixin field `%s` cannot be optional.", field->name().c_str());
+  }
+}
+
+void validate_enum_value_name_uniqueness(
+    diagnostic_context& ctx, const t_enum* node) {
   std::unordered_set<std::string> names;
   for (const auto* value : node->enum_values()) {
     if (!names.insert(value->name()).second) {
@@ -74,7 +110,8 @@ void enum_value_name_uniqueness(diagnostic_context& ctx, const t_enum* node) {
   }
 }
 
-void enum_value_uniqueness(diagnostic_context& ctx, const t_enum* node) {
+void validate_enum_value_uniqueness(
+    diagnostic_context& ctx, const t_enum* node) {
   std::unordered_map<int32_t, const t_enum_value*> values;
   for (const auto* value : node->enum_values()) {
     auto prev = values.emplace(value->get_value(), value);
@@ -90,7 +127,8 @@ void enum_value_uniqueness(diagnostic_context& ctx, const t_enum* node) {
   }
 }
 
-void enum_value_explicit(diagnostic_context& ctx, const t_enum_value* node) {
+void validate_enum_value_explicit(
+    diagnostic_context& ctx, const t_enum_value* node) {
   if (!node->has_value()) {
     ctx.failure(
         node,
@@ -103,11 +141,14 @@ void enum_value_explicit(diagnostic_context& ctx, const t_enum_value* node) {
 
 ast_validator standard_validator() {
   ast_validator validator;
-  validator.add_interface_visitor(&interface_function_name_uniqueness);
-  validator.add_union_visitor(&union_field_qualification);
-  validator.add_enum_visitor(&enum_value_name_uniqueness);
-  validator.add_enum_visitor(&enum_value_uniqueness);
-  validator.add_enum_value_visitor(&enum_value_explicit);
+  validator.add_interface_visitor(&validate_interface_function_name_uniqueness);
+  validator.add_union_visitor(&validate_union_field_attributes);
+  validator.add_field_visitor(&validate_mixin_field_attributes);
+
+  validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
+  validator.add_enum_visitor(&validate_enum_value_uniqueness);
+  validator.add_enum_value_visitor(&validate_enum_value_explicit);
+
   validator.add_definition_visitor(&validate_annotation_scopes);
   return validator;
 }
