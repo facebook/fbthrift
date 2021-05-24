@@ -203,7 +203,7 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
  *
  */
 void HeaderServerChannel::HeaderRequest::sendReply(
-    unique_ptr<IOBuf>&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t>) {
   // timeoutHeader_ is set in ::sendTimeoutResponse below
@@ -213,13 +213,14 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-          std::make_tuple(cb, std::move(buf), std::move(header));
+          std::make_tuple(cb, std::move(response).buffer(), std::move(header));
     } else {
       // Send it now, and send any subsequent requests in order.
-      channel_->sendCatchupRequests(std::move(buf), cb, header.get());
+      channel_->sendCatchupRequests(
+          std::move(response).buffer(), cb, header.get());
     }
   } else {
-    if (!buf) {
+    if (!response) {
       if (cb) {
         cb->messageSent();
       }
@@ -227,7 +228,7 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     }
     try {
       // out of order, send as soon as it is done.
-      channel_->sendMessage(cb, std::move(buf), header.get());
+      channel_->sendMessage(cb, std::move(response).buffer(), header.get());
     } catch (const std::exception& e) {
       LOG(ERROR) << "Failed to send message: " << e.what();
     }

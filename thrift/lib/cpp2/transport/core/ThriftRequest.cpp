@@ -89,7 +89,7 @@ void ThriftRequestCore::sendReplyInternal(
 }
 
 void ThriftRequestCore::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t> crc32c) {
   auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
@@ -111,7 +111,9 @@ void ThriftRequestCore::sendReply(
         metadata.crc32c_ref() = *crc32c;
       }
       sendReplyInternal(
-          std::move(metadata), std::move(buf), std::move(cbWrapper));
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(cbWrapper));
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }

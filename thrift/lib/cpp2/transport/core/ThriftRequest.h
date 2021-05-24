@@ -168,12 +168,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
   };
 
   void sendReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& buf,
       apache::thrift::MessageChannel::SendCallback* cb,
       folly::Optional<uint32_t> crc32c) override final;
 
   bool sendStreamReply(
-      std::unique_ptr<folly::IOBuf> response,
+      ResponsePayload response,
       StreamServerCallbackPtr stream,
       folly::Optional<uint32_t> crc32c) override final {
     if (tryCancel()) {
@@ -183,7 +183,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         metadata.crc32c_ref() = *crc32c;
       }
       auto alive = sendReplyInternal(
-          std::move(metadata), std::move(response), std::move(stream));
+          std::move(metadata), std::move(response).buffer(), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -194,7 +194,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void sendStreamReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& response,
       apache::thrift::detail::ServerStreamFactory&& stream,
       folly::Optional<uint32_t> crc32c) override final {
     if (tryCancel()) {
@@ -203,7 +203,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
-      sendReplyInternal(std::move(metadata), std::move(buf), std::move(stream));
+      sendReplyInternal(
+          std::move(metadata), std::move(response).buffer(), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -213,7 +214,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
 #if FOLLY_HAS_COROUTINES
   void sendSinkReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& response,
       apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
       folly::Optional<uint32_t> crc32c) override final {
     if (tryCancel()) {
@@ -223,7 +224,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
         metadata.crc32c_ref() = *crc32c;
       }
       sendReplyInternal(
-          std::move(metadata), std::move(buf), std::move(consumerImpl));
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(consumerImpl));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();

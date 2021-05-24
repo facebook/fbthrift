@@ -650,7 +650,7 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    ResponsePayload&& buf,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
   if (tryCancel()) {
@@ -659,8 +659,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
     auto* observer = connection_->getWorker()->getServer()->getObserver();
     auto maxResponseSize =
         connection_->getWorker()->getServer()->getMaxResponseSize();
-    if (maxResponseSize != 0 &&
-        buf->computeChainDataLength() > maxResponseSize) {
+    if (maxResponseSize != 0 && buf.length() > maxResponseSize) {
       req_->sendErrorWrapped(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,

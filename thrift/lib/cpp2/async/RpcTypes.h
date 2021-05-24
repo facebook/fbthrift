@@ -72,6 +72,22 @@ struct LegacySerializedRequest {
   std::unique_ptr<folly::IOBuf> buffer;
 };
 
+struct ResponsePayload {
+  ResponsePayload() = default;
+  /* implicit */ ResponsePayload(std::unique_ptr<folly::IOBuf> buffer)
+      : buffer_(std::move(buffer)) {}
+
+  std::unique_ptr<folly::IOBuf> buffer() && { return std::move(buffer_); }
+
+  const folly::IOBuf* buffer() const& { return buffer_.get(); }
+
+  explicit operator bool() const { return static_cast<bool>(buffer_); }
+  std::size_t length() const { return buffer_->computeChainDataLength(); }
+
+ private:
+  std::unique_ptr<folly::IOBuf> buffer_;
+};
+
 struct SerializedResponse {
   explicit SerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
       : buffer(std::move(buffer_)) {}

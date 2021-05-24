@@ -1220,7 +1220,7 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
     bool isOneway() const override { return req_->isOneway(); }
 
     void sendReply(
-        std::unique_ptr<folly::IOBuf>&& buf,
+        ResponsePayload&& buf,
         MessageChannel::SendCallback* cb,
         folly::Optional<uint32_t> crc32) override {
       req_->sendReply(std::move(buf), new TestSendCallback(cb), crc32);

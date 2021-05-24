@@ -758,7 +758,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MOCK_METHOD3(
         sendReply,
         void(
-            std::unique_ptr<folly::IOBuf>&&,
+            ResponsePayload&&,
             MessageChannel::SendCallback*,
             folly::Optional<uint32_t>));
     MOCK_METHOD2(sendErrorWrapped, void(folly::exception_wrapper, std::string));

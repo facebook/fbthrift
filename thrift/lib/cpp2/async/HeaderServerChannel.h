@@ -116,7 +116,7 @@ class HeaderServerChannel : public ServerChannel,
     apache::thrift::transport::THeader* getHeader() { return header_.get(); }
 
     void sendReply(
-        std::unique_ptr<folly::IOBuf>&&,
+        ResponsePayload&&,
         MessageChannel::SendCallback* cb = nullptr,
         folly::Optional<uint32_t> crc32 = folly::none) override;
 

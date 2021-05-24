@@ -103,19 +103,19 @@ class ResponseChannelRequest {
   virtual bool isReplyChecksumNeeded() const { return false; }
 
   virtual void sendReply(
-      std::unique_ptr<folly::IOBuf>&&,
+      ResponsePayload&&,
       MessageChannel::SendCallback* cb = nullptr,
       folly::Optional<uint32_t> crc32 = folly::none) = 0;
 
   virtual void sendStreamReply(
-      std::unique_ptr<folly::IOBuf>&&,
+      ResponsePayload&&,
       apache::thrift::detail::ServerStreamFactory&&,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }
 
   FOLLY_NODISCARD virtual bool sendStreamReply(
-      std::unique_ptr<folly::IOBuf>,
+      ResponsePayload,
       StreamServerCallbackPtr,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
@@ -123,7 +123,7 @@ class ResponseChannelRequest {
 
 #if FOLLY_HAS_COROUTINES
   virtual void sendSinkReply(
-      std::unique_ptr<folly::IOBuf>&&,
+      ResponsePayload&&,
       apache::thrift::detail::SinkConsumerImpl&&,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");

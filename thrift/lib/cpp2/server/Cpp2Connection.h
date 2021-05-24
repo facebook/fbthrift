@@ -164,7 +164,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     bool isStream() const override { return req_->isStream(); }
 
     void sendReply(
-        std::unique_ptr<folly::IOBuf>&& buf,
+        ResponsePayload&& buf,
         MessageChannel::SendCallback* notUsed = nullptr,
         folly::Optional<uint32_t> crc32c = folly::none) override;
     void sendErrorWrapped(
