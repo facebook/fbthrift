@@ -38,7 +38,7 @@ using namespace apache::thrift::concurrency;
 
 class ThreadManagerTest : public testing::Test {
  public:
-  ~ThreadManagerTest() override { ThreadManager::setObserver(nullptr); }
+  ~ThreadManagerTest() override { ThreadManager::setGlobalObserver(nullptr); }
 
  private:
   gflags::FlagSaver flagsaver_;
@@ -698,7 +698,7 @@ TEST_F(ThreadManagerTest, ThreadStartFailureTest) {
 
 TEST_F(ThreadManagerTest, ObserverTest) {
   auto observer = std::make_shared<TestObserver>(1000, "foo");
-  ThreadManager::setObserver(observer);
+  ThreadManager::setGlobalObserver(observer);
 
   std::mutex mutex;
   std::condition_variable cond;
@@ -742,7 +742,7 @@ TEST_F(ThreadManagerTest, ObserverAssignedAfterStart) {
   tm->start();
   // set the observer w/ observable side-effect
   auto tgt = std::make_shared<std::string>();
-  ThreadManager::setObserver(std::make_shared<MyObserver>("bar", tgt));
+  ThreadManager::setGlobalObserver(std::make_shared<MyObserver>("bar", tgt));
   // add a task - observable side-effect should trigger
   tm->add(std::make_shared<MyTask>());
   tm->join();

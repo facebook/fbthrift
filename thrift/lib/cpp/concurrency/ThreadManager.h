@@ -281,7 +281,7 @@ class ThreadManager : public virtual folly::Executor {
     virtual void postRun(folly::RequestContext*, const RunStats&) = 0;
   };
 
-  static void setObserver(std::shared_ptr<Observer> observer);
+  static void setGlobalObserver(std::shared_ptr<Observer> observer);
 
   virtual void enableCodel(bool) = 0;
 

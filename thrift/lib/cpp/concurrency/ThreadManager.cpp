@@ -1600,7 +1600,7 @@ size_t ThreadManagerExecutorAdapter::expiredTaskCount() {
       executors_, &ThreadManager::expiredTaskCount);
 }
 
-void ThreadManager::setObserver(
+void ThreadManager::setGlobalObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
   getThreadManagerObserverSingleton().set(std::move(observer));
 }
