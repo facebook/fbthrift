@@ -717,7 +717,10 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
   class_<CallbackWrapper, boost::noncopyable>("CallbackWrapper")
       .def("call", &CallbackWrapper::call);
 
-  class_<CppServerWrapper, boost::noncopyable>("CppServerWrapper")
+  class_<ThriftServer, boost::noncopyable>("ThriftServer");
+
+  class_<CppServerWrapper, bases<ThriftServer>, boost::noncopyable>(
+      "CppServerWrapper")
       // methods added or customized for the python implementation
       .def("setAdapter", &CppServerWrapper::setAdapter)
       .def(
@@ -729,6 +732,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
       .def("setTaskExpireTime", &CppServerWrapper::setTaskExpireTime)
       .def("getAddress", &CppServerWrapper::getAddress)
+      .def("getPort", &CppServerWrapper::getPort)
       .def("loop", &CppServerWrapper::loop)
       .def("cleanUp", &CppServerWrapper::cleanUp)
       .def(
