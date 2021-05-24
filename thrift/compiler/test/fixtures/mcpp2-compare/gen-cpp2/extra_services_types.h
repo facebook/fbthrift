@@ -168,7 +168,7 @@ class containerStruct2 final  {
  private:
   ::std::string opt_fieldE;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -181,6 +181,8 @@ class containerStruct2 final  {
     bool fieldE;
     bool opt_fieldE;
   } __isset = {};
+
+ public:
 
   bool operator==(const containerStruct2&) const;
   bool operator<(const containerStruct2&) const;

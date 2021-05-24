@@ -88,12 +88,14 @@ class IncludedA final  {
  private:
   ::std::string strField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32Field;
     bool strField;
   } __isset = {};
+
+ public:
 
   bool operator==(const IncludedA&) const;
   bool operator<(const IncludedA&) const;

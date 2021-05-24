@@ -116,11 +116,13 @@ class Mixin1 final  {
  private:
   ::std::string field1;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
   } __isset = {};
+
+ public:
 
   bool operator==(const Mixin1&) const;
   bool operator<(const Mixin1&) const;
@@ -230,12 +232,14 @@ class Mixin2 final  {
  private:
   ::std::string field2;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool m1;
     bool field2;
   } __isset = {};
+
+ public:
 
   bool operator==(const Mixin2&) const;
   bool operator<(const Mixin2&) const;
@@ -378,11 +382,13 @@ class Mixin3Base final  {
  private:
   ::std::string field3;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field3;
   } __isset = {};
+
+ public:
 
   bool operator==(const Mixin3Base&) const;
   bool operator<(const Mixin3Base&) const;
@@ -494,13 +500,15 @@ class Foo final  {
  private:
   ::cpp2::Mixin3 m3;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field4;
     bool m2;
     bool m3;
   } __isset = {};
+
+ public:
 
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;

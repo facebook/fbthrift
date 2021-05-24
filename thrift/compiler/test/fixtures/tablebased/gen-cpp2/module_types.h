@@ -213,7 +213,7 @@ class TrivialTypesStruct final  {
  private:
   ::test::fixtures::tablebased::ExampleEnum fieldE;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -222,6 +222,8 @@ class TrivialTypesStruct final  {
     bool fieldD;
     bool fieldE;
   } __isset = {};
+
+ public:
 
   bool operator==(const TrivialTypesStruct&) const;
   bool operator<(const TrivialTypesStruct&) const;
@@ -490,7 +492,7 @@ class ContainerStruct final  {
  private:
   ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -502,6 +504,8 @@ class ContainerStruct final  {
     bool fieldG;
     bool fieldH;
   } __isset = {};
+
+ public:
 
   bool operator==(const ContainerStruct&) const;
   bool operator<(const ContainerStruct&) const;

@@ -82,6 +82,8 @@ class Foo final  {
  public:
   ::std::int32_t bar;
 
+ private:
+
  public:
 
   bool operator==(const Foo&) const;

@@ -97,13 +97,15 @@ class MyStruct final  {
  private:
   ::cpp2::IncludedInt64 MyIncludedInt;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIncludedField;
     bool MyOtherIncludedField;
     bool MyIncludedInt;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;

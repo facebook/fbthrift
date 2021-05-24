@@ -116,11 +116,13 @@ class InitialResponse final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
+
+ public:
 
   bool operator==(const InitialResponse&) const;
   bool operator<(const InitialResponse&) const;
@@ -228,11 +230,13 @@ class FinalResponse final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
+
+ public:
 
   bool operator==(const FinalResponse&) const;
   bool operator<(const FinalResponse&) const;
@@ -340,11 +344,13 @@ class SinkPayload final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
   } __isset = {};
+
+ public:
 
   bool operator==(const SinkPayload&) const;
   bool operator<(const SinkPayload&) const;
@@ -452,11 +458,13 @@ class CompatibleWithKeywordSink final  {
  private:
   ::std::string sink;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sink;
   } __isset = {};
+
+ public:
 
   bool operator==(const CompatibleWithKeywordSink&) const;
   bool operator<(const CompatibleWithKeywordSink&) const;
@@ -573,11 +581,13 @@ class InitialException final : public apache::thrift::TException {
  private:
   ::std::string reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
+
+ public:
 
   bool operator==(const InitialException&) const;
   bool operator<(const InitialException&) const;
@@ -698,11 +708,13 @@ class SinkException1 final : public apache::thrift::TException {
  private:
   ::std::string reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
+
+ public:
 
   bool operator==(const SinkException1&) const;
   bool operator<(const SinkException1&) const;
@@ -823,11 +835,13 @@ class SinkException2 final : public apache::thrift::TException {
  private:
   ::std::int64_t reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
   } __isset = {};
+
+ public:
 
   bool operator==(const SinkException2&) const;
   bool operator<(const SinkException2&) const;

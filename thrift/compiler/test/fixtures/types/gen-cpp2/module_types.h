@@ -591,11 +591,13 @@ class decorated_struct final  {
  private:
   ::std::string field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field;
   } __isset = {};
+
+ public:
 
   bool operator==(const decorated_struct&) const;
   bool operator<(const decorated_struct&) const;
@@ -720,7 +722,7 @@ class ContainerStruct final  {
  private:
   ::apache::thrift::fixtures::types::SomeMap fieldH;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -732,6 +734,8 @@ class ContainerStruct final  {
     bool fieldG;
     bool fieldH;
   } __isset = {};
+
+ public:
 
   bool operator==(const ContainerStruct&) const;
   bool operator<(const ContainerStruct&) const;
@@ -1043,11 +1047,13 @@ class CppTypeStruct final  {
  private:
   std::list<int32_t> fieldA;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
   } __isset = {};
+
+ public:
 
   bool operator==(const CppTypeStruct&) const;
   bool operator<(const CppTypeStruct&) const;
@@ -1153,11 +1159,13 @@ class VirtualStruct  {
  private:
   ::std::int64_t MyIntField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
   } __isset = {};
+
+ public:
 
   bool operator==(const VirtualStruct&) const;
   bool operator<(const VirtualStruct&) const;
@@ -1264,12 +1272,14 @@ class MyStructWithForwardRefEnum final  {
  private:
   ::apache::thrift::fixtures::types::MyForwardRefEnum b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStructWithForwardRefEnum&) const;
   bool operator<(const MyStructWithForwardRefEnum&) const;
@@ -1408,12 +1418,14 @@ class TrivialNumeric final  {
  private:
   bool b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
   } __isset = {};
+
+ public:
 
   bool operator==(const TrivialNumeric&) const;
   bool operator<(const TrivialNumeric&) const;
@@ -1552,12 +1564,14 @@ class TrivialNestedWithDefault final  {
  private:
   ::apache::thrift::fixtures::types::TrivialNumeric n;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool z;
     bool n;
   } __isset = {};
+
+ public:
 
   bool operator==(const TrivialNestedWithDefault&) const;
   bool operator<(const TrivialNestedWithDefault&) const;
@@ -1692,12 +1706,14 @@ class ComplexString final  {
  private:
   ::std::map<::std::string, ::std::int32_t> b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexString&) const;
   bool operator<(const ComplexString&) const;
@@ -1839,12 +1855,14 @@ class ComplexNestedWithDefault final  {
  private:
   ::apache::thrift::fixtures::types::ComplexString n;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool z;
     bool n;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexNestedWithDefault&) const;
   bool operator<(const ComplexNestedWithDefault&) const;
@@ -1994,6 +2012,8 @@ class MinPadding final  {
   ::std::int8_t small;
  public:
   ::std::int8_t tiny;
+
+ private:
 
  public:
 
@@ -2216,6 +2236,8 @@ class MyDataItem final  {
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
 
+ public:
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -2291,7 +2313,7 @@ class MyStruct final  {
  private:
   ::apache::thrift::fixtures::types::MyDataItem data;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
@@ -2299,6 +2321,8 @@ class MyStruct final  {
     bool majorVer;
     bool data;
   } __isset = {};
+
+ public:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
@@ -2497,11 +2521,13 @@ class Renaming final  {
  private:
   ::std::int64_t bar;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool bar;
   } __isset = {};
+
+ public:
 
   bool operator==(const Renaming&) const;
   bool operator<(const Renaming&) const;
@@ -2606,12 +2632,14 @@ class AnnotatedTypes final  {
  private:
   ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool binary_field;
     bool list_field;
   } __isset = {};
+
+ public:
 
   bool operator==(const AnnotatedTypes&) const;
   bool operator<(const AnnotatedTypes&) const;
@@ -2749,11 +2777,13 @@ class ForwardUsageStruct final  {
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool foo;
   } __isset = {};
+
+ public:
 
   bool operator==(const ForwardUsageStruct&) const;
   bool operator<(const ForwardUsageStruct&) const;
@@ -2857,11 +2887,13 @@ class ForwardUsageRoot final  {
  public:
   ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool ForwardUsageStruct;
   } __isset = {};
+
+ public:
 
   bool operator==(const ForwardUsageRoot&) const;
   bool operator<(const ForwardUsageRoot&) const;
@@ -2975,11 +3007,13 @@ class ForwardUsageByRef final  {
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool foo;
   } __isset = {};
+
+ public:
 
   bool operator==(const ForwardUsageByRef&) const;
   bool operator<(const ForwardUsageByRef&) const;
@@ -3081,6 +3115,8 @@ class NoexceptMoveEmpty final  {
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const NoexceptMoveEmpty&) const;
   bool operator<(const NoexceptMoveEmpty&) const;
 
@@ -3153,11 +3189,13 @@ class NoexceptMoveSimpleStruct final  {
  private:
   ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
   } __isset = {};
+
+ public:
 
   bool operator==(const NoexceptMoveSimpleStruct&) const;
   bool operator<(const NoexceptMoveSimpleStruct&) const;
@@ -3279,7 +3317,7 @@ class NoexceptMoveComplexStruct final  {
  private:
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyBoolField;
@@ -3291,6 +3329,8 @@ class NoexceptMoveComplexStruct final  {
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
   } __isset = {};
+
+ public:
 
   bool operator==(const NoexceptMoveComplexStruct&) const;
   bool operator<(const NoexceptMoveComplexStruct&) const;
@@ -3986,7 +4026,7 @@ class AllocatorAware final  {
  private:
   ::std::int32_t not_a_container;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool aa_list;
@@ -3995,6 +4035,8 @@ class AllocatorAware final  {
     bool aa_string;
     bool not_a_container;
   } __isset = {};
+
+ public:
 
   bool operator==(const AllocatorAware&) const;
   bool operator<(const AllocatorAware&) const;
@@ -4244,11 +4286,13 @@ class AllocatorAware2 final  {
  private:
   ::std::int32_t not_a_container;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool not_a_container;
   } __isset = {};
+
+ public:
 
   bool operator==(const AllocatorAware2&) const;
   bool operator<(const AllocatorAware2&) const;
@@ -4358,13 +4402,15 @@ class TypedefStruct final  {
  private:
   std::uint32_t UintTypedef_field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32_field;
     bool IntTypedef_field;
     bool UintTypedef_field;
   } __isset = {};
+
+ public:
 
   bool operator==(const TypedefStruct&) const;
   bool operator<(const TypedefStruct&) const;
@@ -4531,11 +4577,13 @@ class StructWithDoubleUnderscores final  {
  private:
   ::std::int32_t __field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool __field;
   } __isset = {};
+
+ public:
 
   bool operator==(const StructWithDoubleUnderscores&) const;
   bool operator<(const StructWithDoubleUnderscores&) const;

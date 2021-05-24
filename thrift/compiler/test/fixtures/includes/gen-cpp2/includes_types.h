@@ -95,12 +95,14 @@ class Included final  {
  private:
   ::cpp2::Foo MyTransitiveField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
     bool MyTransitiveField;
   } __isset = {};
+
+ public:
 
   bool operator==(const Included&) const;
   bool operator<(const Included&) const;

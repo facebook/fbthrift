@@ -235,7 +235,7 @@ class Color final  {
  private:
   double alpha;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool red;
@@ -243,6 +243,8 @@ class Color final  {
     bool blue;
     bool alpha;
   } __isset = {};
+
+ public:
 
   bool operator==(const Color&) const;
   bool operator<(const Color&) const;
@@ -449,7 +451,7 @@ class Vehicle final  {
  private:
   bool hasAC;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool color;
@@ -458,6 +460,8 @@ class Vehicle final  {
     bool name;
     bool hasAC;
   } __isset = {};
+
+ public:
 
   bool operator==(const Vehicle&) const;
   bool operator<(const Vehicle&) const;
@@ -727,7 +731,7 @@ class Person final  {
  private:
   ::std::vector<::cpp2::Vehicle> vehicles;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool id;
@@ -741,6 +745,8 @@ class Person final  {
     bool afraidOfAnimal;
     bool vehicles;
   } __isset = {};
+
+ public:
 
   bool operator==(const Person&) const;
   bool operator<(const Person&) const;

@@ -93,11 +93,13 @@ class MyStruct final  {
  private:
   ::std::string myString;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myString;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
@@ -430,11 +432,13 @@ class MyException final : public apache::thrift::TException {
  private:
   ::std::string myString;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myString;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyException&) const;
   bool operator<(const MyException&) const;

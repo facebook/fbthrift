@@ -2308,12 +2308,14 @@ class structA final  {
  private:
   ::std::string b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
   } __isset = {};
+
+ public:
 
   bool operator==(const structA&) const;
   bool operator<(const structA&) const;
@@ -2945,12 +2947,14 @@ class structB final  {
  private:
   bool d;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool c;
     bool d;
   } __isset = {};
+
+ public:
 
   bool operator==(const structB&) const;
   bool operator<(const structB&) const;
@@ -3145,7 +3149,7 @@ class structC final  {
  private:
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> o3;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -3179,6 +3183,8 @@ class structC final  {
     bool o2;
     bool o3;
   } __isset = {};
+
+ public:
 
   bool operator==(const structC&) const;
   bool operator<(const structC&) const;
@@ -4174,7 +4180,7 @@ class struct1 final  {
  private:
   ::test_cpp2::cpp_reflection::union2 field5;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -4182,6 +4188,8 @@ class struct1 final  {
     bool field4;
     bool field5;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct1&) const;
   bool operator<(const struct1&) const;
@@ -4457,7 +4465,7 @@ class struct2 final  {
  private:
   ::test_cpp2::cpp_reflection::struct1 fieldG;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -4468,6 +4476,8 @@ class struct2 final  {
     bool fieldF;
     bool fieldG;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct2&) const;
   bool operator<(const struct2&) const;
@@ -4795,7 +4805,7 @@ class struct3 final  {
  private:
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> fieldR;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -4817,6 +4827,8 @@ class struct3 final  {
     bool fieldQ;
     bool fieldR;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct3&) const;
   bool operator<(const struct3&) const;
@@ -5445,12 +5457,14 @@ class struct4 final  {
  public:
   ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
     bool field2;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct4&) const;
   bool operator<(const struct4&) const;
@@ -5642,7 +5656,7 @@ class struct5 final  {
  private:
   ::test_cpp2::cpp_reflection::structB field4;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -5650,6 +5664,8 @@ class struct5 final  {
     bool field3;
     bool field4;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct5&) const;
   bool operator<(const struct5&) const;
@@ -5879,11 +5895,13 @@ class struct_binary final  {
  private:
   ::std::string bi;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool bi;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct_binary&) const;
   bool operator<(const struct_binary&) const;
@@ -5997,13 +6015,15 @@ class dep_A_struct final  {
  private:
   ::std::int32_t i_a;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool b;
     bool c;
     bool i_a;
   } __isset = {};
+
+ public:
 
   bool operator==(const dep_A_struct&) const;
   bool operator<(const dep_A_struct&) const;
@@ -6172,13 +6192,15 @@ class dep_B_struct final  {
  private:
   ::std::int32_t i_a;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool b;
     bool c;
     bool i_a;
   } __isset = {};
+
+ public:
 
   bool operator==(const dep_B_struct&) const;
   bool operator<(const dep_B_struct&) const;
@@ -6343,11 +6365,13 @@ class annotated final  {
  private:
   ::std::int32_t a;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
   } __isset = {};
+
+ public:
 
   bool operator==(const annotated&) const;
   bool operator<(const annotated&) const;
@@ -8488,7 +8512,7 @@ class struct_with_special_names final  {
  private:
   ::std::int32_t fields;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool get;
@@ -8520,6 +8544,8 @@ class struct_with_special_names final  {
     bool field;
     bool fields;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct_with_special_names&) const;
   bool operator<(const struct_with_special_names&) const;
@@ -9470,7 +9496,7 @@ class struct_with_indirections final  {
  private:
   ::test_cpp2::cpp_reflection::HasAPhrase phrase;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool real;
@@ -9479,6 +9505,8 @@ class struct_with_indirections final  {
     bool result;
     bool phrase;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct_with_indirections&) const;
   bool operator<(const struct_with_indirections&) const;

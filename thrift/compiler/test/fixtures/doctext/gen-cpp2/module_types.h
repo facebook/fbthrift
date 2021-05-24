@@ -150,11 +150,13 @@ class A final  {
  private:
   ::std::int32_t useless_field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool useless_field;
   } __isset = {};
+
+ public:
 
   bool operator==(const A&) const;
   bool operator<(const A&) const;
@@ -545,11 +547,13 @@ class Bang final : public apache::thrift::TException {
  private:
   ::std::string message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
   } __isset = {};
+
+ public:
 
   bool operator==(const Bang&) const;
   bool operator<(const Bang&) const;

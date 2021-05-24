@@ -82,11 +82,13 @@ class MyStruct final  {
  private:
   ::matching_module_name::OtherStruct OtherStructField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool OtherStructField;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;

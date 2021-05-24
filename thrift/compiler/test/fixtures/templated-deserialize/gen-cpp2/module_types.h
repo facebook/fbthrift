@@ -255,12 +255,14 @@ class SmallStruct final  {
  private:
   ::std::int32_t small_B;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool small_A;
     bool small_B;
   } __isset = {};
+
+ public:
 
   bool operator==(const SmallStruct&) const;
   bool operator<(const SmallStruct&) const;
@@ -438,7 +440,7 @@ class containerStruct final  {
  public:
   ::std::unique_ptr<::cpp2::SmallStruct> fieldX;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -459,6 +461,8 @@ class containerStruct final  {
     bool fieldP;
     bool fieldQ;
   } __isset = {};
+
+ public:
 
   bool operator==(const containerStruct&) const;
   bool operator<(const containerStruct&) const;

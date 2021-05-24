@@ -262,6 +262,8 @@ class <%struct:name%> <%!
 <%#struct:fields?%>
 <% > module_types_h/declare_members%>
 <%/struct:fields?%>
+
+ public:
 <%^struct:cpp_noncomparable%>
 
   bool operator==(const <%struct:name%>&) const;

@@ -130,6 +130,8 @@ class Fiery final : public apache::thrift::TException {
  public:
   ::std::string message;
 
+ private:
+
  public:
 
   bool operator==(const Fiery&) const;
@@ -251,11 +253,13 @@ class Serious final : public apache::thrift::TException {
  private:
   ::std::string sonnet;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sonnet;
   } __isset = {};
+
+ public:
 
   bool operator==(const Serious&) const;
   bool operator<(const Serious&) const;
@@ -380,12 +384,14 @@ class ComplexFieldNames final : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool error_message;
     bool internal_error_message;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexFieldNames&) const;
   bool operator<(const ComplexFieldNames&) const;
@@ -545,12 +551,14 @@ class CustomFieldNames final : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool error_message;
     bool internal_error_message;
   } __isset = {};
+
+ public:
 
   bool operator==(const CustomFieldNames&) const;
   bool operator<(const CustomFieldNames&) const;
@@ -710,12 +718,14 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
  private:
   ::std::int32_t error_code;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
     bool error_code;
   } __isset = {};
+
+ public:
 
   bool operator==(const ExceptionWithPrimitiveField&) const;
   bool operator<(const ExceptionWithPrimitiveField&) const;
@@ -864,6 +874,8 @@ class Banal final : public apache::thrift::TException {
 
   ~Banal() override;
 
+
+ public:
 
   bool operator==(const Banal&) const;
   bool operator<(const Banal&) const;

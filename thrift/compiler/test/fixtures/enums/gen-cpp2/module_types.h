@@ -154,7 +154,7 @@ class SomeStruct final  {
  private:
   ::std::set<::std::int32_t> tags;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reasonable;
@@ -162,6 +162,8 @@ class SomeStruct final  {
     bool questionable;
     bool tags;
   } __isset = {};
+
+ public:
 
   bool operator==(const SomeStruct&) const;
   bool operator<(const SomeStruct&) const;

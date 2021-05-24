@@ -100,12 +100,14 @@ class Struct final  {
  private:
   ::module1::Struct second;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool first;
     bool second;
   } __isset = {};
+
+ public:
 
   bool operator==(const Struct&) const;
   bool operator<(const Struct&) const;
@@ -240,12 +242,14 @@ class BigStruct final  {
  private:
   ::std::int32_t id;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool s;
     bool id;
   } __isset = {};
+
+ public:
 
   bool operator==(const BigStruct&) const;
   bool operator<(const BigStruct&) const;

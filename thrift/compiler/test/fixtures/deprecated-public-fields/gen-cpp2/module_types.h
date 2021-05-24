@@ -82,11 +82,13 @@ class Foo final  {
  private:
   ::std::int32_t bar;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool bar;
   } __isset = {};
+
+ public:
 
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;

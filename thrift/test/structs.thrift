@@ -78,3 +78,7 @@ struct NoexceptMoveStruct {
 struct CppDataMethod {
   1: i32 foo;
 } (cpp.internal.deprecated._data.method)
+
+struct PublicIsset {
+  1: i32 foo;
+} (cpp.deprecated_public_isset)

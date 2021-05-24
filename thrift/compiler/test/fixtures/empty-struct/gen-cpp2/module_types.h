@@ -75,6 +75,8 @@ class Empty final  {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const Empty&) const;
   bool operator<(const Empty&) const;
 

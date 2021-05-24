@@ -745,6 +745,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
+            {"struct:isset_visibility", &mstch_cpp2_struct::isset_visibility},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:indexing?", &mstch_cpp2_struct::indexing},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
@@ -1081,6 +1082,11 @@ class mstch_cpp2_struct : public mstch_struct {
 
   mstch::node fields_in_key_order() {
     return generate_fields(get_members_in_key_order());
+  }
+  mstch::node isset_visibility() {
+    return std::string(
+        strct_->has_annotation("cpp.deprecated_public_isset") ? "public"
+                                                              : "private");
   }
 
   std::shared_ptr<cpp2_generator_context> context_;

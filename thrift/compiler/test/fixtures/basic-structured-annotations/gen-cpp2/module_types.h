@@ -221,12 +221,14 @@ class structured_annotation_inline final  {
  private:
   ::std::string name;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
     bool name;
   } __isset = {};
+
+ public:
 
   bool operator==(const structured_annotation_inline&) const;
   bool operator<(const structured_annotation_inline&) const;
@@ -366,11 +368,13 @@ class structured_annotation_with_default final  {
  private:
   ::std::string name;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
   } __isset = {};
+
+ public:
 
   bool operator==(const structured_annotation_with_default&) const;
   bool operator<(const structured_annotation_with_default&) const;
@@ -480,11 +484,13 @@ class structured_annotation_forward final  {
  private:
   ::std::int64_t count;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
   } __isset = {};
+
+ public:
 
   bool operator==(const structured_annotation_forward&) const;
   bool operator<(const structured_annotation_forward&) const;
@@ -591,13 +597,15 @@ class structured_annotation_recursive final  {
  private:
   ::cpp2::structured_annotation_forward forward;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
     bool recurse;
     bool forward;
   } __isset = {};
+
+ public:
 
   bool operator==(const structured_annotation_recursive&) const;
   bool operator<(const structured_annotation_recursive&) const;
@@ -767,12 +775,14 @@ class structured_annotation_nested final  {
  private:
   ::cpp2::structured_annotation_with_default nest;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
     bool nest;
   } __isset = {};
+
+ public:
 
   bool operator==(const structured_annotation_nested&) const;
   bool operator<(const structured_annotation_nested&) const;
@@ -918,7 +928,7 @@ class MyStruct final  {
  private:
   ::std::int64_t annotated_nested;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool annotated_field;
@@ -926,6 +936,8 @@ class MyStruct final  {
     bool annotated_recursive;
     bool annotated_nested;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
@@ -1140,11 +1152,13 @@ class MyException final : public apache::thrift::TException {
  private:
   ::std::string context;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool context;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyException&) const;
   bool operator<(const MyException&) const;

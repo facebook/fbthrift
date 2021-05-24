@@ -19,7 +19,7 @@
   <%#field:lazy?%>mutable <%/field:lazy?%><%field:cpp_storage_type%> <%field:cpp_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
 
- public:
+ <%struct:isset_visibility%>:
 <%#struct:isset_fields?%>
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {

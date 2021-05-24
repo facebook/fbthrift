@@ -82,6 +82,8 @@ class FooEx final : public apache::thrift::TException {
   ~FooEx() override;
 
 
+ public:
+
   bool operator==(const FooEx&) const;
   bool operator<(const FooEx&) const;
 

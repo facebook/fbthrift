@@ -644,6 +644,8 @@ class MyField final  {
  public:
   ::std::unique_ptr<::cpp2::MyEnum> req_enum_value;
 
+ private:
+
  public:
 
   bool operator==(const MyField&) const;
@@ -787,6 +789,8 @@ class MyStruct final  {
  public:
   ::std::unique_ptr<::cpp2::MyField> req_ref;
 
+ private:
+
  public:
 
   bool operator==(const MyStruct&) const;
@@ -897,11 +901,13 @@ class StructWithUnion final  {
  private:
   ::cpp2::MyField f;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool f;
   } __isset = {};
+
+ public:
 
   bool operator==(const StructWithUnion&) const;
   bool operator<(const StructWithUnion&) const;
@@ -1025,11 +1031,13 @@ class RecursiveStruct final  {
  private:
   ::std::vector<::cpp2::RecursiveStruct> mes;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool mes;
   } __isset = {};
+
+ public:
 
   bool operator==(const RecursiveStruct&) const;
   bool operator<(const RecursiveStruct&) const;
@@ -1143,6 +1151,8 @@ class StructWithContainers final  {
   ::std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared;
  public:
   ::std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const;
+
+ private:
 
  public:
 
@@ -1288,6 +1298,8 @@ class StructWithSharedConst final  {
  public:
   ::std::shared_ptr<const ::cpp2::MyField> req_shared_const;
 
+ private:
+
  public:
 
   bool operator==(const StructWithSharedConst&) const;
@@ -1392,6 +1404,8 @@ class Empty final  {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const Empty&) const;
   bool operator<(const Empty&) const;
 
@@ -1466,6 +1480,8 @@ class StructWithRef final  {
   ::std::unique_ptr<::cpp2::Empty> opt_field;
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
+
+ private:
 
  public:
 
@@ -1576,6 +1592,8 @@ class StructWithRefTypeUnique final  {
   ::std::unique_ptr<::cpp2::Empty> opt_field;
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
+
+ private:
 
  public:
 
@@ -1688,6 +1706,8 @@ class StructWithRefTypeShared final  {
  public:
   ::std::shared_ptr<::cpp2::Empty> req_field;
 
+ private:
+
  public:
 
   bool operator==(const StructWithRefTypeShared&) const;
@@ -1799,6 +1819,8 @@ class StructWithRefTypeSharedConst final  {
  public:
   ::std::shared_ptr<const ::cpp2::Empty> req_field;
 
+ private:
+
  public:
 
   bool operator==(const StructWithRefTypeSharedConst&) const;
@@ -1903,6 +1925,8 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
   void __clear();
  public:
   ::std::unique_ptr<::cpp2::Empty> def_field;
+
+ private:
 
  public:
 

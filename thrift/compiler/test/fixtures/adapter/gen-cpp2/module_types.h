@@ -151,7 +151,7 @@ class Foo final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool intField;
@@ -162,6 +162,8 @@ class Foo final  {
     bool mapField;
     bool optionalMapField;
   } __isset = {};
+
+ public:
 
   bool operator==(const Foo&) const;
   bool operator<(const Foo&) const;
@@ -459,7 +461,7 @@ class Bar final  {
  private:
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> optionalStructListField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool structField;
@@ -467,6 +469,8 @@ class Bar final  {
     bool structListField;
     bool optionalStructListField;
   } __isset = {};
+
+ public:
 
   bool operator==(const Bar&) const;
   bool operator<(const Bar&) const;

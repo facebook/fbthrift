@@ -285,11 +285,13 @@ class SimpleException final : public apache::thrift::TException {
  private:
   ::std::int16_t err_code;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool err_code;
   } __isset = {};
+
+ public:
 
   bool operator==(const SimpleException&) const;
   bool operator<(const SimpleException&) const;
@@ -395,11 +397,13 @@ class OptionalRefStruct final  {
  public:
   ::py3::simple::IOBufPtr optional_blob;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool optional_blob;
   } __isset = {};
+
+ public:
 
   bool operator==(const OptionalRefStruct&) const;
   bool operator<(const OptionalRefStruct&) const;
@@ -530,7 +534,7 @@ class SimpleStruct final  {
  private:
   ::std::int16_t hidden_field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool is_on;
@@ -542,6 +546,8 @@ class SimpleStruct final  {
     bool smaller_real;
     bool hidden_field;
   } __isset = {};
+
+ public:
 
   bool operator==(const SimpleStruct&) const;
   bool operator<(const SimpleStruct&) const;
@@ -880,7 +886,7 @@ class ComplexStruct final  {
  private:
   ::py3::simple::foo_bar bytes_with_cpp_type;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool structOne;
@@ -893,6 +899,8 @@ class ComplexStruct final  {
     bool cdef;
     bool bytes_with_cpp_type;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexStruct&) const;
   bool operator<(const ComplexStruct&) const;
@@ -1477,11 +1485,13 @@ class BinaryUnionStruct final  {
  private:
   ::py3::simple::BinaryUnion u;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool u;
   } __isset = {};
+
+ public:
 
   template <typename..., typename T = ::py3::simple::BinaryUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> u_ref() const& {

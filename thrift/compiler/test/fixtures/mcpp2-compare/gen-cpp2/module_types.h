@@ -1118,6 +1118,8 @@ class Empty final  {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const Empty&) const;
   bool operator<(const Empty&) const;
 
@@ -1190,11 +1192,13 @@ class ASimpleStruct final  {
  private:
   ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
   } __isset = {};
+
+ public:
 
   bool operator==(const ASimpleStruct&) const;
   bool operator<(const ASimpleStruct&) const;
@@ -1299,11 +1303,13 @@ class ASimpleStructNoexcept final  {
  private:
   ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
   } __isset = {};
+
+ public:
 
   bool operator==(const ASimpleStructNoexcept&) const;
   bool operator<(const ASimpleStructNoexcept&) const;
@@ -1425,7 +1431,7 @@ class MyStruct final  {
  private:
   ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyBoolField;
@@ -1437,6 +1443,8 @@ class MyStruct final  {
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
@@ -4278,7 +4286,7 @@ class AnException final : public apache::thrift::TException {
  private:
   ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
@@ -4294,6 +4302,8 @@ class AnException final : public apache::thrift::TException {
     bool union_typedef;
     bool a_union_typedef_list;
   } __isset = {};
+
+ public:
 
   bool operator==(const AnException&) const;
   bool operator<(const AnException&) const;
@@ -4844,12 +4854,14 @@ class AnotherException : public apache::thrift::TException {
  private:
   ::std::string message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
     bool message;
   } __isset = {};
+
+ public:
 
   bool operator==(const AnotherException&) const;
   bool operator<(const AnotherException&) const;
@@ -5112,7 +5124,7 @@ class containerStruct final  {
  private:
   ::some::valid::ns::IndirectionD fieldSD;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -5155,6 +5167,8 @@ class containerStruct final  {
     bool fieldAE;
     bool fieldSD;
   } __isset = {};
+
+ public:
 
   bool operator==(const containerStruct&) const;
   bool operator<(const containerStruct&) const;
@@ -6665,12 +6679,14 @@ class MyIncludedStruct final  {
  public:
   ::some::valid::ns::AStruct ARequiredField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIncludedInt;
     bool MyIncludedStruct;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyIncludedStruct&) const;
   bool operator<(const MyIncludedStruct&) const;
@@ -6921,7 +6937,7 @@ class AnnotatedStruct  {
  private:
   ::some::valid::ns::containerStruct struct_struct;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool no_annotation;
@@ -6947,6 +6963,8 @@ class AnnotatedStruct  {
     bool iobuf_ptr_val;
     bool struct_struct;
   } __isset = {};
+
+ public:
 
   bool operator==(const AnnotatedStruct&) const;
   bool operator<(const AnnotatedStruct&) const;
@@ -7905,12 +7923,14 @@ class ComplexContainerStruct final  {
  private:
   ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool map_of_iobufs;
     bool map_of_iobuf_ptrs;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexContainerStruct&) const;
   bool operator<(const ComplexContainerStruct&) const;
@@ -8047,12 +8067,14 @@ class FloatStruct final  {
  private:
   double doubleField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool floatField;
     bool doubleField;
   } __isset = {};
+
+ public:
 
   bool operator==(const FloatStruct&) const;
   bool operator<(const FloatStruct&) const;
@@ -8452,6 +8474,8 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   void __clear();
  public:
   ::std::int64_t intField;
+
+ private:
 
  public:
 

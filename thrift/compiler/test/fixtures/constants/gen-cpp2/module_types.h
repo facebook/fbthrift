@@ -331,13 +331,15 @@ class Internship final  {
  private:
   double compensation;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool title;
     bool employer;
     bool compensation;
   } __isset = {};
+
+ public:
 
   bool operator==(const Internship&) const;
   bool operator<(const Internship&) const;
@@ -552,6 +554,8 @@ class Range final  {
  public:
   ::std::int32_t max;
 
+ private:
+
  public:
 
   bool operator==(const Range&) const;
@@ -688,12 +692,14 @@ class struct1 final  {
  private:
   ::std::string b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct1&) const;
   bool operator<(const struct1&) const;
@@ -839,7 +845,7 @@ class struct2 final  {
  private:
   ::std::vector<::std::int32_t> d;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -847,6 +853,8 @@ class struct2 final  {
     bool c;
     bool d;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct2&) const;
   bool operator<(const struct2&) const;
@@ -1050,13 +1058,15 @@ class struct3 final  {
  private:
   ::cpp2::struct2 c;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
     bool c;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct3&) const;
   bool operator<(const struct3&) const;
@@ -1232,13 +1242,15 @@ class struct4 final  {
  private:
   ::std::int8_t c;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
     bool b;
     bool c;
   } __isset = {};
+
+ public:
 
   bool operator==(const struct4&) const;
   bool operator<(const struct4&) const;

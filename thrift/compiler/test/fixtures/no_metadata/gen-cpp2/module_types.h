@@ -159,6 +159,8 @@ class MyDataItem final  {
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const MyDataItem&) const;
   bool operator<(const MyDataItem&) const;
 
@@ -237,7 +239,7 @@ class MyStruct final  {
  private:
   ::cpp2::MyEnum myEnum;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
@@ -245,6 +247,8 @@ class MyStruct final  {
     bool MyDataField;
     bool myEnum;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;

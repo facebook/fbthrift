@@ -702,7 +702,7 @@ class MyStructFloatFieldThrowExp final  {
  private:
   float myFloatField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myLongField;
@@ -710,6 +710,8 @@ class MyStructFloatFieldThrowExp final  {
     bool myStringField;
     bool myFloatField;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStructFloatFieldThrowExp&) const;
   bool operator<(const MyStructFloatFieldThrowExp&) const;
@@ -913,12 +915,14 @@ class MyStructMapFloatThrowExp final  {
  private:
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myLongField;
     bool mapListOfFloats;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStructMapFloatThrowExp&) const;
   bool operator<(const MyStructMapFloatThrowExp&) const;
@@ -1050,6 +1054,8 @@ class MyDataItem final  {
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
 
+ public:
+
   bool operator==(const MyDataItem&) const;
   bool operator<(const MyDataItem&) const;
 
@@ -1177,7 +1183,7 @@ class MyStruct final  {
  private:
   ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> mListList;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
@@ -1209,6 +1215,8 @@ class MyStruct final  {
     bool sByte;
     bool mListList;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
@@ -2137,12 +2145,14 @@ class SimpleStruct final  {
  private:
   ::std::string name;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool age;
     bool name;
   } __isset = {};
+
+ public:
 
   bool operator==(const SimpleStruct&) const;
   bool operator<(const SimpleStruct&) const;
@@ -2318,7 +2328,7 @@ class ComplexNestedStruct final  {
  private:
   ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool setOfSetOfInt;
@@ -2340,6 +2350,8 @@ class ComplexNestedStruct final  {
     bool mapKeySetValInt;
     bool mapKeyListValSet;
   } __isset = {};
+
+ public:
 
   bool operator==(const ComplexNestedStruct&) const;
   bool operator<(const ComplexNestedStruct&) const;
@@ -3563,7 +3575,7 @@ class defaultStruct final  {
  private:
   ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> enumMapDFset;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myLongDFset;
@@ -3589,6 +3601,8 @@ class defaultStruct final  {
     bool emptyMap;
     bool enumMapDFset;
   } __isset = {};
+
+ public:
 
   bool operator==(const defaultStruct&) const;
   bool operator<(const defaultStruct&) const;
@@ -4360,7 +4374,7 @@ class MyStructTypeDef final  {
  private:
   ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> myMapListOfTypeDef;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myLongField;
@@ -4373,6 +4387,8 @@ class MyStructTypeDef final  {
     bool myListTypedef;
     bool myMapListOfTypeDef;
   } __isset = {};
+
+ public:
 
   bool operator==(const MyStructTypeDef&) const;
   bool operator<(const MyStructTypeDef&) const;
@@ -5172,7 +5188,7 @@ class TypeRemapped final  {
  private:
   ::std::string binaryTestBuffer;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool lsMap;
@@ -5180,6 +5196,8 @@ class TypeRemapped final  {
     bool BigInteger;
     bool binaryTestBuffer;
   } __isset = {};
+
+ public:
 
   bool operator==(const TypeRemapped&) const;
   bool operator<(const TypeRemapped&) const;
@@ -5385,6 +5403,8 @@ class emptyXcep final : public apache::thrift::TException {
   ~emptyXcep() override;
 
 
+ public:
+
   bool operator==(const emptyXcep&) const;
   bool operator<(const emptyXcep&) const;
 
@@ -5469,6 +5489,8 @@ class reqXcep final : public apache::thrift::TException {
   ::std::string message;
  public:
   ::std::int32_t errorCode;
+
+ private:
 
  public:
 
@@ -5622,12 +5644,14 @@ class optXcep final : public apache::thrift::TException {
  private:
   ::std::int32_t errorCode;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
     bool errorCode;
   } __isset = {};
+
+ public:
 
   bool operator==(const optXcep&) const;
   bool operator<(const optXcep&) const;
@@ -5795,7 +5819,7 @@ class complexException final : public apache::thrift::TException {
  private:
   ::std::map<::std::int64_t, ::std::string> lsMap;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
@@ -5805,6 +5829,8 @@ class complexException final : public apache::thrift::TException {
     bool structError;
     bool lsMap;
   } __isset = {};
+
+ public:
 
   bool operator==(const complexException&) const;
   bool operator<(const complexException&) const;
