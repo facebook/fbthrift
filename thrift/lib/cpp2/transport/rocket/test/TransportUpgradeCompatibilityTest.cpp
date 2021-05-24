@@ -161,8 +161,10 @@ TEST_P(TransportUpgradeCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
 // TODO(T90625074)
 TEST_P(
     TransportUpgradeCompatibilityTest, DISABLED_RequestResponse_Checksumming) {
-  SKIP_IF(GetParam() == false)
-      << "Checksum not implemented for header transport";
+  // Checksum not implemented for header transport
+  if (!GetParam()) {
+    return;
+  }
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
@@ -187,8 +189,10 @@ TEST_P(TransportUpgradeCompatibilityTest, Oneway_ServerQueueTimeout) {
 }
 
 TEST_P(TransportUpgradeCompatibilityTest, Oneway_Checksumming) {
-  SKIP_IF(GetParam() == false)
-      << "Checksum not implemented for header transport";
+  // Checksum not implemented for header transport
+  if (!GetParam()) {
+    return;
+  }
   compatibilityTest_->TestOneway_Checksumming();
 }
 
