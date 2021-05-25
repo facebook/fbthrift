@@ -390,7 +390,7 @@ void t_cocoa_generator::close_generator() {
  */
 void t_cocoa_generator::generate_typedef(const t_typedef* ttypedef) {
   f_header_ << indent() << "typedef " << type_name(ttypedef->get_type()) << " "
-            << cocoa_prefix_ << ttypedef->get_symbolic() << ";" << std::endl
+            << cocoa_prefix_ << ttypedef->name() << ";" << std::endl
             << std::endl;
 }
 

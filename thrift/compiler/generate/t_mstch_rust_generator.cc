@@ -1261,7 +1261,7 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:docs", &mstch_rust_typedef::rust_docs},
         });
   }
-  mstch::node rust_name() { return mangle_type(typedf_->get_symbolic()); }
+  mstch::node rust_name() { return mangle_type(typedf_->name()); }
   mstch::node rust_newtype() { return typedf_->has_annotation("rust.newtype"); }
   mstch::node rust_type() {
     const std::string& rust_type = typedf_->get_annotation("rust.type");

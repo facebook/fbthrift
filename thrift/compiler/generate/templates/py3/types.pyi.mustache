@@ -155,7 +155,7 @@ class {{> types/CythonPythonType}}({{> types/PEP484Containers}}, _typing.Hashabl
 {{/constant:type}}
 {{/program:constants}}
 {{#program:typedefs}}
-{{typedef:symbolic}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
+{{typedef:name}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
 {{/program:typedefs}}
 {{#program:has_stream?}}
 

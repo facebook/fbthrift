@@ -27,32 +27,21 @@ namespace thrift {
 namespace compiler {
 
 /**
- * A typedef is a mapping from a symbolic name to another type. In dymanically
- * typed languages (i.e. php/python) the code generator can actually usually
- * ignore typedefs and just use the underlying type directly, though in C++
- * the symbolic naming can be quite useful for code clarity.
- *
+ * A typedef is a mapping from a name to another type.
  */
 class t_typedef : public t_type {
  public:
-  t_typedef(
-      t_program* program, t_type_ref type, std::string symbolic, t_scope* scope)
-      : t_type(program, symbolic),
-        type_(std::move(type)),
-        symbolic_(std::move(symbolic)),
-        scope_(scope),
-        defined_(true) {}
+  t_typedef(t_program* program, std::string name, t_type_ref type)
+      : t_type(program, std::move(name)), type_(std::move(type)) {}
 
   /**
    * This constructor is used to refer to a type that is lazily
    * resolved at a later time, like for forward declarations or
    * recursive types.
    */
-  t_typedef(t_program* program, const std::string& symbolic, t_scope* scope)
-      : t_type(program, symbolic),
-        symbolic_(symbolic),
-        scope_(scope),
-        defined_(false) {}
+  // TODO(afuller): Split this case out into is own subclass.
+  t_typedef(t_program* program, std::string name, t_scope* scope)
+      : t_type(program, std::move(name)), scope_(scope) {}
 
   /**
    * For placeholder typedef only, resolve and find the actual type that the
@@ -62,13 +51,11 @@ class t_typedef : public t_type {
 
   const t_type* get_type() const { return type_.type(); }
 
-  const std::string& get_symbolic() const { return symbolic_; }
-
   std::string get_full_name() const override {
     return get_type()->get_full_name();
   }
 
-  bool is_defined() const { return defined_; }
+  bool is_defined() const { return scope_ == nullptr; }
 
   // Returns the first type, in the typedef type hierarchy, matching the
   // given predicate or nullptr.
@@ -103,25 +90,22 @@ class t_typedef : public t_type {
 
  private:
   t_type_ref type_;
-  std::string symbolic_;
-  t_scope* scope_;
-  bool defined_{true};
+  t_scope* scope_ = nullptr;
 
  public:
   // TODO(afuller): Remove everything below here, as it is just provided for
   // backwards compatibility.
 
   t_typedef(
-      t_program* program,
-      const t_type* type,
-      std::string symbolic,
-      t_scope* scope)
-      : t_typedef(program, t_type_ref(type), std::move(symbolic), scope) {}
+      t_program* program, const t_type* type, std::string symbolic, t_scope*)
+      : t_typedef(program, std::move(symbolic), t_type_ref(type)) {}
 
   bool is_typedef() const override { return true; }
   type get_type_value() const override { return get_type()->get_type_value(); }
 
   uint64_t get_type_id() const override { return get_type()->get_type_id(); }
+
+  const std::string& get_symbolic() const { return name(); }
 };
 
 } // namespace compiler

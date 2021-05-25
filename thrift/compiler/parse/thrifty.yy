@@ -524,7 +524,7 @@ Typedef:
     {
       driver.debug("TypeDef => DefinitionAttrs tok_typedef FieldType "
           "Identifier TypeAnnotations");
-      $$ = new t_typedef(driver.program, consume($3), std::move($4), driver.scope_cache);
+      $$ = new t_typedef(driver.program, std::move($4), consume($3));
       driver.finish_node($$, LineType::Typedef, own($1), own($6));
     }
 

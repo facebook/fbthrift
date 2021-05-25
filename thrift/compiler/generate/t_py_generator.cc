@@ -810,7 +810,7 @@ string t_py_generator::render_ttype_declarations(const char* delimiter) {
         << delimiter;
   }
   for (const auto& td : program_->typedefs()) {
-    out << ", " << delimiter << rename_reserved_keywords(td->get_symbolic())
+    out << ", " << delimiter << rename_reserved_keywords(td->name())
         << delimiter;
   }
   return out.str();
@@ -970,7 +970,7 @@ void t_py_generator::close_generator() {
  * Unsupported types get `UnimplementedTypedef()` as the l-value.
  */
 void t_py_generator::generate_typedef(const t_typedef* ttypedef) {
-  const auto varname = rename_reserved_keywords(ttypedef->get_symbolic());
+  const auto varname = rename_reserved_keywords(ttypedef->name());
   const auto* type = ttypedef->get_type();
   // Typedefs of user-defined types are useful as aliases.  On the other
   // hand, base types are implicit, so it is not as helpful to support

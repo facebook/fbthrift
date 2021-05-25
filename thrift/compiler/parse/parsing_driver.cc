@@ -164,7 +164,7 @@ void parsing_driver::parse_file() {
 
   for (auto td : program->placeholder_typedefs()) {
     if (!td->resolve_placeholder()) {
-      failure("Type `%s` not defined.", td->get_symbolic().c_str());
+      failure("Type `%s` not defined.", td->name().c_str());
     }
   }
 }

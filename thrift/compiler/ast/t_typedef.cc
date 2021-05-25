@@ -24,8 +24,8 @@ namespace compiler {
 
 bool t_typedef::resolve_placeholder() {
   assert(type_.type() == nullptr);
-  assert(!defined_);
-  type_.set_type(scope_->get_type(program()->name() + "." + symbolic_));
+  assert(scope_ != nullptr);
+  type_.set_type(scope_->get_type(program()->name() + "." + name()));
   return type_.type() != nullptr;
 }
 

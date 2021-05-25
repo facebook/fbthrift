@@ -766,7 +766,7 @@ Mapping.register({{> types/CythonPythonType}})
 }}{{#program:constants}}
 {{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/program:constants}}{{!
 }}{{#program:typedefs}}
-{{typedef:symbolic}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
+{{typedef:name}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
 {{/program:typedefs}}
 {{#program:has_stream?}}
 

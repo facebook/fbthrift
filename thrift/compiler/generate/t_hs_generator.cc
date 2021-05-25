@@ -368,7 +368,7 @@ void t_hs_generator::close_generator() {
  * @param ttypedef The type definition
  */
 void t_hs_generator::generate_typedef(const t_typedef* ttypedef) {
-  string tname = capitalize(ttypedef->get_symbolic());
+  string tname = capitalize(ttypedef->name());
   string tdef = render_hs_type(ttypedef->get_type(), false);
   indent(f_types_) << "type " << tname << " = " << tdef << nl;
   f_types_ << nl;

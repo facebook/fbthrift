@@ -948,7 +948,7 @@ void t_go_generator::close_generator() {
  */
 void t_go_generator::generate_typedef(const t_typedef* ttypedef) {
   generate_go_docstring(f_types_, ttypedef);
-  string new_type_name(publicize(ttypedef->get_symbolic()));
+  string new_type_name(publicize(ttypedef->name()));
   const t_type* tbasetype(ttypedef->get_type());
   const t_type* true_type(ttypedef->get_true_type());
   string base_type(type_to_go_type_with_opt(tbasetype, false, true));
