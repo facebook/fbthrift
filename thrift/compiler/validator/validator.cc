@@ -118,7 +118,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
-  vs.add<structured_annotation_uniqueness_validator>();
   vs.add<reserved_field_id_validator>();
   vs.add<recursive_union_validator>();
   vs.add<recursive_ref_validator>();
@@ -262,50 +261,6 @@ bool interactions_validator::visit(t_service* s) {
     }
   }
   return true;
-}
-
-bool structured_annotation_validator::visit(t_service* service) {
-  validate_annotations(service, service->get_full_name());
-  return true;
-}
-
-bool structured_annotation_validator::visit(t_enum* tenum) {
-  validate_annotations(tenum, tenum->get_full_name());
-  return true;
-}
-
-bool structured_annotation_validator::visit(t_struct* tstruct) {
-  validate_annotations(tstruct, tstruct->get_full_name());
-  return true;
-}
-
-bool structured_annotation_validator::visit(t_const* tconst) {
-  validate_annotations(tconst, "const " + tconst->get_name());
-  return true;
-}
-
-bool structured_annotation_validator::visit(t_field* tfield) {
-  validate_annotations(tfield, "field " + tfield->get_name());
-  // TODO(afuller): Switch to checking typedefs directly.
-  // Type references cannot have structured annotations, so this
-  // will only catch typedefs, which should be checked independently.
-  validate_annotations(
-      tfield->get_type(), "type of the field " + tfield->get_name());
-  return true;
-}
-
-void structured_annotation_uniqueness_validator::validate_annotations(
-    const t_named* tnamed, const std::string& full_name) {
-  std::unordered_set<std::string> type_names;
-  for (const auto& it : tnamed->structured_annotations()) {
-    std::string type_name = it->get_type()->get_full_name();
-    if (!type_names.insert(type_name).second) {
-      add_error(
-          it->get_lineno(),
-          "Duplicate structured annotation `" + type_name + "` on `" +
-              full_name + "`.");
-    }
-  }
 }
 
 bool reserved_field_id_validator::visit(t_struct* s) {

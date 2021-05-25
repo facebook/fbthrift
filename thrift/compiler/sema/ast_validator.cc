@@ -137,6 +137,20 @@ void validate_enum_value_explicit(
   }
 }
 
+void validate_structured_annotation_type_uniqueness(
+    diagnostic_context& ctx, const t_named* node) {
+  std::unordered_set<const t_type*> seen;
+  for (const auto& annot : node->structured_annotations()) {
+    if (!seen.emplace(annot->type()->type()).second) {
+      ctx.failure(
+          annot,
+          "Duplicate structured annotation `%s` on `%s`.",
+          annot->type()->type()->name().c_str(),
+          node->name().c_str());
+    }
+  }
+}
+
 } // namespace
 
 ast_validator standard_validator() {
@@ -149,6 +163,8 @@ ast_validator standard_validator() {
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
   validator.add_enum_value_visitor(&validate_enum_value_explicit);
 
+  validator.add_definition_visitor(
+      &validate_structured_annotation_type_uniqueness);
   validator.add_definition_visitor(&validate_annotation_scopes);
   return validator;
 }

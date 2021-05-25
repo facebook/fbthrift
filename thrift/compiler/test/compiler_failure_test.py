@@ -46,6 +46,8 @@ def read_file(path):
 
 
 def write_file(path, content):
+    if d := os.path.dirname(path):
+        os.makedirs(d)
     with open(path, "w") as f:
         f.write(content)
 
@@ -524,18 +526,26 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_structured_annotations_uniqueness(self):
         write_file(
+            "other/foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {}
+                """
+            ),
+        )
+        write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
+                include "other/foo.thrift"
                 struct Foo {
                     1: i32 count;
                 }
 
+                @foo.Foo
                 @Foo{count=1}
                 @Foo{count=2}
-                struct Annotated {
-                    1: string name;
-                }
+                typedef i32 Annotated
                 """
             ),
         )
@@ -545,8 +555,10 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Duplicate structured "
-            "annotation `struct foo.Foo` on `struct foo.Annotated`.\n",
+            # TODO(afuller): Fix t_scope to not include the locally defined Foo as
+            # `foo.Foo`, which override the included foo.Foo definition.
+            "[FAILURE:foo.thrift:7] Duplicate structured annotation `Foo` on `Annotated`.\n"
+            + "[FAILURE:foo.thrift:8] Duplicate structured annotation `Foo` on `Annotated`.\n",
         )
 
     def test_structured_annotations_type_resolved(self):

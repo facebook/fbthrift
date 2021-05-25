@@ -30,6 +30,8 @@
 #include <thrift/compiler/ast/t_paramlist.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/sema/diagnostic.h>
 #include <thrift/compiler/sema/diagnostic_context.h>
 
@@ -64,7 +66,7 @@ class StdAstValidatorTest : public ::testing::Test {
   std::vector<diagnostic> validate(
       diagnostic_params params = diagnostic_params::keep_all()) {
     diagnostic_results results;
-    diagnostic_context ctx{results, params};
+    diagnostic_context ctx{results, std::move(params)};
     ctx.start_program(&program_);
     standard_validator()(ctx, &program_);
     return std::move(results).diagnostics();
@@ -339,6 +341,32 @@ TEST_F(StdAstValidatorTest, MixinFieldType) {
           failure(
               4,
               "Mixin field `other_field` type must be a struct or union. Found `i32`.")));
+}
+
+TEST_F(StdAstValidatorTest, RepeatedStructuredAnnotation) {
+  auto foo = std::make_unique<t_struct>(&program_, "Foo");
+  // A different program with the same name.
+  t_program other_program("/path/to/other/file.thrift");
+  // A different foo with the same file.name
+  auto other_foo = std::make_unique<t_struct>(&other_program, "Foo");
+  EXPECT_EQ(foo->get_full_name(), other_foo->get_full_name());
+
+  t_scope scope;
+  auto bar = std::make_unique<t_typedef>(
+      &program_, &t_base_type::t_i32(), "Bar", &scope);
+  bar->add_structured_annotation(inst(other_foo.get(), 1));
+  bar->add_structured_annotation(inst(foo.get(), 2));
+  bar->add_structured_annotation(inst(foo.get(), 3));
+
+  program_.add_struct(std::move(foo));
+  program_.add_typedef(std::move(bar));
+  other_program.add_struct(std::move(other_foo));
+
+  // Only the third annotation is a duplicate.
+  EXPECT_THAT(
+      validate(diagnostic_params::only_failures()),
+      UnorderedElementsAre(
+          failure(3, "Duplicate structured annotation `Foo` on `Bar`.")));
 }
 
 } // namespace
