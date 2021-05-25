@@ -518,6 +518,8 @@ class ThriftRequest final : public ThriftRequestCore {
     scheduleTimeouts();
   }
 
+  bool includeEnvelope() const override { return true; }
+
   ~ThriftRequest() { serverConfigs_.decActiveRequests(); }
 
  private:

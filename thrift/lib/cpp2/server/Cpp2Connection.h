@@ -163,6 +163,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
     bool isStream() const override { return req_->isStream(); }
 
+    bool includeEnvelope() const override { return req_->includeEnvelope(); }
+
     void sendReply(
         ResponsePayload&& buf,
         MessageChannel::SendCallback* notUsed = nullptr,

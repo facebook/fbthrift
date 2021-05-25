@@ -87,6 +87,8 @@ class ResponseChannelRequest {
 
   virtual bool isSink() const { return false; }
 
+  virtual bool includeEnvelope() const = 0;
+
   apache::thrift::RpcKind rpcKind() const {
     if (isStream()) {
       return apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE;

@@ -60,6 +60,8 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       RocketServerFrameContext&& context,
       int32_t version);
 
+  bool includeEnvelope() const override { return true; }
+
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
@@ -99,6 +101,8 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
 
   ~ThriftServerRequestFnf() override;
 
+  bool includeEnvelope() const override { return true; }
+
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
@@ -135,6 +139,8 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       int32_t version,
       RocketStreamClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
+
+  bool includeEnvelope() const override { return true; }
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -189,6 +195,8 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       int32_t version,
       RocketSinkClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
+
+  bool includeEnvelope() const override { return true; }
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,

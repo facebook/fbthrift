@@ -111,6 +111,8 @@ class HeaderServerChannel : public ServerChannel,
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
 
+    bool includeEnvelope() const override { return true; }
+
     void setInOrderRecvSequenceId(uint32_t seqId) { InOrderRecvSeqId_ = seqId; }
 
     apache::thrift::transport::THeader* getHeader() { return header_.get(); }

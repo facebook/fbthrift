@@ -1219,6 +1219,8 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
 
     bool isOneway() const override { return req_->isOneway(); }
 
+    bool includeEnvelope() const override { return req_->includeEnvelope(); }
+
     void sendReply(
         ResponsePayload&& buf,
         MessageChannel::SendCallback* cb,

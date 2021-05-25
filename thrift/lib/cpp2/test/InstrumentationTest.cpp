@@ -754,6 +754,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MOCK_CONST_METHOD0(isActive, bool());
     MOCK_METHOD0(cancel, void());
     MOCK_CONST_METHOD0(isOneway, bool());
+    MOCK_CONST_METHOD0(includeEnvelope, bool());
     MOCK_METHOD0(tryStartProcessing, bool());
     MOCK_METHOD3(
         sendReply,
