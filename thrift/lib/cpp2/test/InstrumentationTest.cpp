@@ -261,13 +261,14 @@ class RequestInstrumentationTest : public testing::Test {
     return thriftServer()->getServerSnapshot().get();
   }
 
-  std::vector<ThriftServer::RequestSnapshot> getRequestSnapshots(
-      size_t reqNum) {
+  ThriftServer::ServerSnapshot waitForRequestsThenSnapshot(size_t reqNum) {
     SCOPE_EXIT { handler()->stopRequests(); };
     handler()->waitForRequests(reqNum);
+    return getServerSnapshot();
+  }
 
-    auto serverReqSnapshots = std::move(getServerSnapshot().second);
-
+  ThriftServer::RequestSnapshots getRequestSnapshots(size_t reqNum) {
+    auto serverReqSnapshots = waitForRequestsThenSnapshot(reqNum).requests;
     EXPECT_EQ(serverReqSnapshots.size(), reqNum);
     return serverReqSnapshots;
   }
@@ -302,6 +303,26 @@ class RequestInstrumentationTest : public testing::Test {
           return apache::thrift::RocketClientChannel::newChannelWithMetadata(
               std::move(socket), std::move(meta));
         });
+  }
+
+  auto makeSingleSocketRocketClient(folly::EventBase* eventBase) {
+    struct ViaEventBaseDeleter {
+      folly::EventBase* eventBase_;
+
+      void operator()(InstrumentationTestServiceAsyncClient* client) const {
+        eventBase_->runInEventBaseThread([client] { delete client; });
+      }
+    };
+    RocketClientChannel::Ptr channel;
+    eventBase->runInEventBaseThreadAndWait([&] {
+      auto socket =
+          folly::AsyncSocket::newSocket(eventBase, server().getAddress());
+      channel = RocketClientChannel::newChannel(std::move(socket));
+    });
+    return std::
+        unique_ptr<InstrumentationTestServiceAsyncClient, ViaEventBaseDeleter>{
+            new InstrumentationTestServiceAsyncClient(std::move(channel)),
+            {eventBase}};
   }
 
   auto rpcOptionsFromHeaders(
@@ -474,6 +495,53 @@ TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
   }
 }
 
+TEST_F(RequestInstrumentationTest, ConnectionSnapshotsTest) {
+  auto getLocalAddressOf = [&](auto& client) {
+    auto& clientChannel = dynamic_cast<ClientChannel&>(*client.getChannel());
+    auto transport = clientChannel.getTransport();
+    EXPECT_NE(transport, nullptr);
+    return transport->getLocalAddress();
+  };
+
+  folly::ScopedEventBaseThread eventBaseThread;
+  auto evb = eventBaseThread.getEventBase();
+  auto client1 = makeSingleSocketRocketClient(evb);
+  auto client2 = makeSingleSocketRocketClient(evb);
+  auto client3 = makeSingleSocketRocketClient(evb);
+  auto headerClient = makeHeaderClient();
+
+  for (size_t i = 0; i < 10; ++i) {
+    client1->semifuture_sendRequest();
+  }
+  for (size_t i = 0; i < 20; ++i) {
+    client2->semifuture_sendRequest();
+  }
+  client3->semifuture_sendStreamingRequest();
+  // Header connections are not counted towards connection snapshots
+  headerClient->semifuture_sendRequest();
+
+  auto serverSnapshot = waitForRequestsThenSnapshot(32);
+  EXPECT_EQ(serverSnapshot.requests.size(), 32);
+  auto& connections = serverSnapshot.connections;
+  EXPECT_EQ(connections.size(), 3);
+
+  auto client1Snapshot = connections.find(getLocalAddressOf(*client1));
+  ASSERT_NE(client1Snapshot, connections.end());
+  EXPECT_EQ(client1Snapshot->second.getNumActiveRequests(), 10);
+
+  auto client2Snapshot = connections.find(getLocalAddressOf(*client2));
+  ASSERT_NE(client2Snapshot, connections.end());
+  EXPECT_EQ(client2Snapshot->second.getNumActiveRequests(), 20);
+
+  auto client3Snapshot = connections.find(getLocalAddressOf(*client3));
+  ASSERT_NE(client3Snapshot, connections.end());
+  EXPECT_EQ(client3Snapshot->second.getNumActiveRequests(), 1);
+
+  handler()->stopRequests();
+
+  EXPECT_TRUE(getServerSnapshot().connections.empty());
+}
+
 class RequestInstrumentationTestP
     : public RequestInstrumentationTest,
       public ::testing::WithParamInterface<std::tuple<int, int, bool>> {
@@ -581,8 +649,8 @@ TEST_F(RequestInstrumentationTest, snapshotRecentRequestCountsTest) {
 
   auto snapshot = getServerSnapshot();
   // arrived requests
-  EXPECT_EQ(snapshot.first[0].first, 1);
-  EXPECT_EQ(snapshot.first[100].first, 1);
+  EXPECT_EQ(snapshot.recentCounters[0].first, 1);
+  EXPECT_EQ(snapshot.recentCounters[100].first, 1);
 }
 
 class RequestInstrumentationTestWithFinishedDebugPayload
@@ -624,7 +692,7 @@ TEST_F(
   }
 
   // record and sort snapshots
-  auto reqSnapshots = getServerSnapshot().second;
+  auto reqSnapshots = getServerSnapshot().requests;
   baton3.post();
   std::vector<int> idxs;
   idxs.resize(reqSnapshots.size());
@@ -688,7 +756,7 @@ TEST_P(RequestInstrumentationTestP, FinishedRequests) {
     size_t expected = std::min(reqNum, finishedRequestsLimit);
     int i = 0;
     while (i < 5 &&
-           thriftServer()->getServerSnapshot().get().second.size() !=
+           thriftServer()->getServerSnapshot().get().requests.size() !=
                expected) {
       sleep(1);
       i++;
@@ -697,7 +765,7 @@ TEST_P(RequestInstrumentationTestP, FinishedRequests) {
   }
 
   auto serverSnapshot = thriftServer()->getServerSnapshot().get();
-  auto serverReqSnapshots = serverSnapshot.second;
+  auto serverReqSnapshots = serverSnapshot.requests;
   EXPECT_EQ(serverReqSnapshots.size(), std::min(reqNum, finishedRequestsLimit));
   for (auto& req : serverReqSnapshots) {
     EXPECT_EQ(req.getMethodName(), "sendRequest");

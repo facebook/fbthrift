@@ -37,7 +37,9 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
+#include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <wangle/acceptor/FizzConfigUtil.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
 
@@ -795,8 +797,8 @@ void ThriftServer::replaceShutdownSocketSet(
 
 folly::SemiFuture<ThriftServer::ServerSnapshot>
 ThriftServer::getServerSnapshot() {
-  using WorkerSnapshot =
-      std::pair<RecentRequestCounter::Values, std::vector<RequestSnapshot>>;
+  // WorkerSnapshots look the same as the server, except they are unaggregated
+  using WorkerSnapshot = ServerSnapshot;
   std::vector<folly::SemiFuture<WorkerSnapshot>> tasks;
 
   forEachWorker([&tasks](wangle::Acceptor* acceptor) {
@@ -807,7 +809,7 @@ ThriftServer::getServerSnapshot() {
     auto fut = folly::via(worker->getEventBase(), [worker]() {
       auto reqRegistry = worker->getRequestsRegistry();
       DCHECK(reqRegistry);
-      std::vector<RequestSnapshot> requestSnapshots;
+      RequestSnapshots requestSnapshots;
       if (reqRegistry != nullptr) {
         for (const auto& stub : reqRegistry->getActive()) {
           requestSnapshots.emplace_back(stub);
@@ -816,9 +818,27 @@ ThriftServer::getServerSnapshot() {
           requestSnapshots.emplace_back(stub);
         }
       }
-      return std::make_pair(
+
+      std::unordered_map<folly::SocketAddress, ConnectionSnapshot>
+          connectionSnapshots;
+      worker->getConnectionManager()->forEachConnection(
+          [&](wangle::ManagedConnection* wangleConnection) {
+            if (auto managedConnection =
+                    dynamic_cast<ManagedConnectionIf*>(wangleConnection)) {
+              auto numActiveRequests =
+                  managedConnection->getNumActiveRequests();
+              if (numActiveRequests > 0) {
+                connectionSnapshots.emplace(
+                    std::piecewise_construct,
+                    std::forward_as_tuple(managedConnection->getPeerAddress()),
+                    std::forward_as_tuple(numActiveRequests));
+              }
+            }
+          });
+      return WorkerSnapshot{
           worker->getRequestsRegistry()->getRequestCounter().get(),
-          std::move(requestSnapshots));
+          std::move(requestSnapshots),
+          std::move(connectionSnapshots)};
     });
     tasks.emplace_back(std::move(fut));
   });
@@ -828,24 +848,36 @@ ThriftServer::getServerSnapshot() {
           [](std::vector<WorkerSnapshot> workerSnapshots) -> ServerSnapshot {
             ServerSnapshot ret{};
 
-            // Sum all request counts
+            // Sum all request and connection counts
             size_t numRequests = 0;
+            size_t numConnections = 0;
             for (const auto& workerSnapshot : workerSnapshots) {
-              for (uint64_t i = 0; i < ret.first.size(); ++i) {
-                ret.first[i].first += workerSnapshot.first[i].first;
-                ret.first[i].second += workerSnapshot.first[i].second;
+              for (uint64_t i = 0; i < ret.recentCounters.size(); ++i) {
+                ret.recentCounters[i].first +=
+                    workerSnapshot.recentCounters[i].first;
+                ret.recentCounters[i].second +=
+                    workerSnapshot.recentCounters[i].second;
               }
-              numRequests += workerSnapshot.second.size();
+              numRequests += workerSnapshot.requests.size();
+              numConnections += workerSnapshot.connections.size();
             }
 
-            // Move all RequestSnapshots to ServerSnapshot
-            ret.second.reserve(numRequests);
+            // Move all RequestSnapshots and ConnectionSnapshots to
+            // ServerSnapshot
+            ret.requests.reserve(numRequests);
+            ret.connections.reserve(numConnections);
             for (auto& workerSnapshot : workerSnapshots) {
-              auto& requests = workerSnapshot.second;
+              auto& requests = workerSnapshot.requests;
               std::move(
                   requests.begin(),
                   requests.end(),
-                  std::back_inserter(ret.second));
+                  std::back_inserter(ret.requests));
+
+              auto& connections = workerSnapshot.connections;
+              std::move(
+                  connections.begin(),
+                  connections.end(),
+                  std::inserter(ret.connections, ret.connections.end()));
             }
             return ret;
           });

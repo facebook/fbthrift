@@ -24,6 +24,7 @@
 #include <map>
 #include <mutex>
 #include <optional>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -830,9 +831,25 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     bool startedProcessing_;
   };
 
-  using ServerSnapshot =
-      std::pair<RecentRequestCounter::Values, std::vector<RequestSnapshot>>;
+  class ConnectionSnapshot {
+   public:
+    explicit ConnectionSnapshot(size_t numActiveRequests)
+        : numActiveRequests_(numActiveRequests) {}
 
+    size_t getNumActiveRequests() const { return numActiveRequests_; }
+
+   private:
+    size_t numActiveRequests_;
+  };
+
+  using RequestSnapshots = std::vector<RequestSnapshot>;
+  using ConnectionSnapshots =
+      std::unordered_map<folly::SocketAddress, ConnectionSnapshot>;
+  struct ServerSnapshot {
+    RecentRequestCounter::Values recentCounters;
+    RequestSnapshots requests;
+    ConnectionSnapshots connections;
+  };
   folly::SemiFuture<ServerSnapshot> getServerSnapshot();
 };
 
