@@ -37,6 +37,7 @@
 #include <wangle/acceptor/ManagedConnection.h>
 
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
@@ -53,7 +54,7 @@ class RocketStreamClientCallback;
 namespace rocket {
 
 class RocketServerConnection final
-    : public wangle::ManagedConnection,
+    : public ManagedConnectionIf,
       private folly::AsyncTransport::WriteCallback,
       private folly::AsyncTransport::BufferCallback {
  public:
@@ -241,6 +242,12 @@ class RocketServerConnection final
   int32_t getVersion() const { return frameHandler_->getVersion(); }
 
   bool areStreamsPaused() const noexcept { return streamsPaused_; }
+
+  size_t getNumActiveRequests() const final { return inflightRequests_; }
+
+  folly::SocketAddress getPeerAddress() const final {
+    return socket_->getPeerAddress();
+  }
 
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
