@@ -75,7 +75,7 @@ class ClientSink {
     auto finalResponse =
         co_await std::exchange(impl_, nullptr)
             ->sink(
-                [this, &sinkThrew](auto _generator)
+                [this, &sinkThrew](folly::coro::AsyncGenerator<T&&> _generator)
                     -> folly::coro::AsyncGenerator<
                         folly::Try<StreamPayload>&&> {
                   while (true) {
@@ -87,6 +87,7 @@ class ClientSink {
                     sinkThrew = item.hasException();
                     co_yield serializer_(std::move(item));
                   }
+                  co_return;
                 }(std::move(generator)));
 
     if (sinkThrew) {

@@ -1151,8 +1151,11 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
           ap::encode_stream_payload<ProtocolWriter, FinalResponsePResult>(
               std::move(finalResponse)),
           {}));
+// This causes clang internal error on Windows.
+#if !(defined(_WIN32) && defined(__clang__))
     } catch (std::exception& e) {
       ew = folly::exception_wrapper(std::current_exception(), e);
+#endif
     } catch (...) {
       ew = folly::exception_wrapper(std::current_exception());
     }
