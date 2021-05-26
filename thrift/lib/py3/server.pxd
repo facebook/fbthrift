@@ -86,6 +86,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
     cdef cppclass cThriftServer "apache::thrift::ThriftServer":
         ThriftServer() nogil except +
         void setPort(uint16_t port) nogil
+        uint16_t getPort() nogil
         void setAddress(cfollySocketAddress& addr) nogil
         void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
