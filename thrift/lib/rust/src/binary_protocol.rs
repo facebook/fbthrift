@@ -435,7 +435,7 @@ impl<B: BufExt> ProtocolReader for BinaryProtocolDeserializer<B> {
         Ok(String::from_utf8(vec)?)
     }
 
-    fn read_binary<V: CopyFromBuf + From<Vec<u8>>>(&mut self) -> Result<V> {
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V> {
         let received_len = self.read_i32()?;
         ensure_err!(received_len >= 0, ProtocolError::InvalidDataLength);
 

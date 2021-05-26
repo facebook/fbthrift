@@ -255,18 +255,15 @@ mod r#impl {
         }
     }
 
-    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<::smallvec::SmallVec<[u8; 16]>> {
-        fn from(v: ::std::vec::Vec<u8>) -> Self {
-            LocalImpl(v.into())
-        }
-    }
-
     impl ::fbthrift::binary_type::BinaryType for LocalImpl<::smallvec::SmallVec<[u8; 16]>> {
         fn with_capacity(capacity: usize) -> Self {
             LocalImpl(<::smallvec::SmallVec<[u8; 16]>>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[u8]) {
             self.0.extend_from_slice(other)
+        }
+        fn from_vec(vec: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(::std::convert::Into::into(vec))
         }
     }
 
@@ -288,18 +285,15 @@ mod r#impl {
         }
     }
 
-    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<::smallvec::SmallVec<[u8; 32]>> {
-        fn from(v: ::std::vec::Vec<u8>) -> Self {
-            LocalImpl(v.into())
-        }
-    }
-
     impl ::fbthrift::binary_type::BinaryType for LocalImpl<::smallvec::SmallVec<[u8; 32]>> {
         fn with_capacity(capacity: usize) -> Self {
             LocalImpl(<::smallvec::SmallVec<[u8; 32]>>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[u8]) {
             self.0.extend_from_slice(other)
+        }
+        fn from_vec(vec: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(::std::convert::Into::into(vec))
         }
     }
 

@@ -806,7 +806,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
         }
     }
 
-    fn read_binary<V: CopyFromBuf + From<Vec<u8>>>(&mut self) -> Result<V> {
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V> {
         self.eat(b"\"")?;
         let mut ret = Vec::new();
         loop {
@@ -823,7 +823,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
             }
         }
         let bin = base64::decode_config(&ret, base64::STANDARD_NO_PAD)?;
-        Ok(V::from(bin))
+        Ok(V::from_vec(bin))
     }
 
     /// Override the default skip impl to handle random JSON noise

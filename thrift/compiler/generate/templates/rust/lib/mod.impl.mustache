@@ -171,18 +171,15 @@
         }
     }
 
-    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<{{>lib/rawtype}}> {
-        fn from(v: ::std::vec::Vec<u8>) -> Self {
-            LocalImpl(v.into())
-        }
-    }
-
     impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{>lib/rawtype}}> {
         fn with_capacity(capacity: usize) -> Self {
             LocalImpl(<{{>lib/rawtype}}>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[u8]) {
             self.0.extend_from_slice(other)
+        }
+        fn from_vec(vec: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(::std::convert::Into::into(vec))
         }
     }{{!
     }}{{/type:binary?}}{{!

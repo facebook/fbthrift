@@ -16,18 +16,27 @@
 
 use crate::bufext::BufExt;
 use bytes::Bytes;
+use std::io::Cursor;
 
 /// Trait implemented on types that can be used as `binary` types in
 /// thrift.  These types copy data from the Thrift buffer.
-pub trait BinaryType {
+pub trait BinaryType: Sized {
     fn with_capacity(capacity: usize) -> Self;
     fn extend_from_slice(&mut self, other: &[u8]);
+    fn from_vec(vec: Vec<u8>) -> Self {
+        let mut binary = Self::with_capacity(vec.len());
+        binary.extend_from_slice(&vec);
+        binary
+    }
 }
 
 /// Trait for copying from the Thrift buffer.  Special implementations
 /// may do this without actually copying.
-pub trait CopyFromBuf {
+pub trait CopyFromBuf: Sized {
     fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self;
+    fn from_vec(vec: Vec<u8>) -> Self {
+        Self::copy_from_buf(&mut Cursor::new(&vec), vec.len())
+    }
 }
 
 impl BinaryType for Vec<u8> {
@@ -36,6 +45,9 @@ impl BinaryType for Vec<u8> {
     }
     fn extend_from_slice(&mut self, other: &[u8]) {
         Vec::extend_from_slice(self, other);
+    }
+    fn from_vec(vec: Vec<u8>) -> Self {
+        vec
     }
 }
 
@@ -55,15 +67,12 @@ impl<T: BinaryType> CopyFromBuf for T {
 
         result
     }
+    fn from_vec(vec: Vec<u8>) -> Self {
+        BinaryType::from_vec(vec)
+    }
 }
 
 pub(crate) struct Discard;
-
-impl From<Vec<u8>> for Discard {
-    fn from(_v: Vec<u8>) -> Discard {
-        Discard
-    }
-}
 
 impl CopyFromBuf for Discard {
     fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
@@ -75,5 +84,8 @@ impl CopyFromBuf for Discard {
 impl CopyFromBuf for Bytes {
     fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
         buffer.copy_or_reuse_bytes(len)
+    }
+    fn from_vec(vec: Vec<u8>) -> Self {
+        vec.into()
     }
 }

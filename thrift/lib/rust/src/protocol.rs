@@ -256,7 +256,7 @@ pub trait ProtocolReader {
     fn read_double(&mut self) -> Result<f64>;
     fn read_float(&mut self) -> Result<f32>;
     fn read_string(&mut self) -> Result<String>;
-    fn read_binary<V: CopyFromBuf + From<Vec<u8>>>(&mut self) -> Result<V>;
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V>;
 
     /// Skip over the next data element from the provided input Protocol object
     fn skip(&mut self, field_type: TType) -> Result<()> {
