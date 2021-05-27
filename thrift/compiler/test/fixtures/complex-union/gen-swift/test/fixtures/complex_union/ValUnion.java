@@ -160,10 +160,10 @@ public final class ValUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _V1: {
         oprot.writeFieldBegin(V1_FIELD_DESC);
