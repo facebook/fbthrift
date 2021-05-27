@@ -120,7 +120,7 @@ void preprocessProxiedExceptionHeaders(
   }
 
   if (auto pexPtr = folly::get_ptr(otherMetadata, "pex")) {
-    metadata.set_proxiedPayloadMetadata(ProxiedPayloadMetadata());
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
 
     otherMetadata.insert({"ex", std::move(*pexPtr)});
     otherMetadata.erase("pex");
@@ -128,7 +128,7 @@ void preprocessProxiedExceptionHeaders(
 
   if (auto proxiedErrorPtr =
           folly::get_ptr(otherMetadata, "servicerouter:sr_error")) {
-    metadata.set_proxiedPayloadMetadata(ProxiedPayloadMetadata());
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
 
     otherMetadata.insert(
         {"servicerouter:sr_internal_error", std::move(*proxiedErrorPtr)});

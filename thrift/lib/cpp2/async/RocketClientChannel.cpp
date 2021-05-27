@@ -930,8 +930,8 @@ bool RocketClientChannel::preSendValidation(
     evb_->dcheckIsInEventBaseThread();
     if (auto* name = folly::get_ptr(pendingInteractions_, interactionId)) {
       InteractionCreate create;
-      create.set_interactionId(interactionId);
-      create.set_interactionName(std::move(*name).str());
+      create.interactionId_ref() = interactionId;
+      create.interactionName_ref() = std::move(*name).str();
       metadata.interactionCreate_ref() = std::move(create);
       pendingInteractions_.erase(interactionId);
     } else {
