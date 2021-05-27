@@ -175,6 +175,36 @@ TEST_F(StdAstValidatorTest, ReapeatedNamesInService) {
           failure(4, "Function `bar` is already defined in `Interaction`.")));
 }
 
+TEST_F(StdAstValidatorTest, RepeatedNameInExtendedService) {
+  // Create first service with non repeated functions
+  auto base = std::make_unique<t_service>(&program_, "Base");
+  base->add_function(std::make_unique<t_function>(
+      &t_base_type::t_void(), "bar", std::make_unique<t_paramlist>(&program_)));
+  base->add_function(std::make_unique<t_function>(
+      &t_base_type::t_void(), "baz", std::make_unique<t_paramlist>(&program_)));
+  auto derived = std::make_unique<t_service>(&program_, "Derived", base.get());
+  derived->add_function(std::make_unique<t_function>(
+      &t_base_type::t_void(), "foo", std::make_unique<t_paramlist>(&program_)));
+
+  auto derived_ptr = derived.get();
+  program_.add_service(std::move(base));
+  program_.add_service(std::move(derived));
+
+  EXPECT_THAT(validate(), ::testing::IsEmpty());
+
+  // Add an overlapping function in the derived service.
+  auto dupe = std::make_unique<t_function>(
+      &t_base_type::t_void(), "baz", std::make_unique<t_paramlist>(&program_));
+  dupe->set_lineno(1);
+  derived_ptr->add_function(std::move(dupe));
+
+  // An error will be found
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(failure(
+          1, "Function `Derived.baz` redefines `service file.Base.baz`.")));
+}
+
 TEST_F(StdAstValidatorTest, DuplicatedEnumValues) {
   auto tenum = std::make_unique<t_enum>(&program_, "foo");
   auto tenum_ptr = tenum.get();

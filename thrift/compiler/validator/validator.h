@@ -89,29 +89,6 @@ class validator_list {
   std::vector<std::unique_ptr<validator>> validators_;
 };
 
-class service_method_name_uniqueness_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  /**
-   * Enforces that there are no duplicate method names between this service and
-   * any of its ancestors.
-   */
-  bool visit(t_service* service) override;
-
- private:
-  /**
-   * Error messages formatters
-   */
-  void add_error_service_method_names(
-      int lineno,
-      std::string const& service_name_new,
-      std::string const& service_name_old,
-      std::string const& function_name);
-
-  void validate_service_method_names_unique(t_service const* service);
-};
-
 class exception_list_is_all_exceptions_validator : virtual public validator {
  public:
   using validator::visit;

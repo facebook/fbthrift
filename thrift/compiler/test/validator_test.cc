@@ -53,61 +53,6 @@ TEST_F(ValidatorTest, run_validator) {
   EXPECT_EQ("[FAILURE:/path/to/file.thrift:50] sadface", errors.front().str());
 }
 
-TEST_F(ValidatorTest, ServiceNamesUniqueNoError) {
-  // Create a service with non-overlapping functions
-  auto service = create_fake_service("foo");
-  auto fn1 = create_fake_function<int(int)>("bar");
-  auto fn2 = create_fake_function<void(double)>("baz");
-  service->add_function(std::move(fn1));
-  service->add_function(std::move(fn2));
-
-  t_program program("/path/to/file.thrift");
-  program.add_service(std::move(service));
-
-  // No errors will be found
-  auto errors =
-      run_validator<service_method_name_uniqueness_validator>(&program);
-  EXPECT_TRUE(errors.empty());
-}
-
-TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
-  // Create first service with two non repeated functions
-  auto service_1 = create_fake_service("bar");
-  auto fn1 = create_fake_function<void(int)>("baz");
-  auto fn2 = create_fake_function<void(int, int)>("foo");
-  service_1->add_function(std::move(fn1));
-  service_1->add_function(std::move(fn2));
-
-  // Create second service extending the first servie and no repeated function
-  auto service_2 = create_fake_service("qux");
-  auto service_2_ptr = service_2.get();
-  service_2->set_extends(service_1.get());
-  auto fn3 = create_fake_function<void()>("mos");
-  service_2->add_function(std::move(fn3));
-
-  t_program program("/path/to/file.thrift");
-  program.add_service(std::move(service_1));
-  program.add_service(std::move(service_2));
-
-  // No errors will be found
-  auto errors =
-      run_validator<service_method_name_uniqueness_validator>(&program);
-  EXPECT_TRUE(errors.empty());
-
-  // Add an overlapping function in the second service
-  auto fn4 = create_fake_function<void(double)>("foo");
-  fn4->set_lineno(1);
-  service_2_ptr->add_function(std::move(fn4));
-
-  // An error will be found
-  const std::string expected =
-      "[FAILURE:/path/to/file.thrift:1] "
-      "Function `qux.foo` redefines `service bar.foo`.";
-  errors = run_validator<service_method_name_uniqueness_validator>(&program);
-  EXPECT_EQ(1, errors.size());
-  EXPECT_EQ(expected, errors.front().str());
-}
-
 TEST_F(ValidatorTest, DuplicatedStructNames) {
   t_program program("/path/to/file.thrift");
 

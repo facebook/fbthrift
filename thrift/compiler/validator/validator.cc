@@ -64,57 +64,12 @@ void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
 }
 
 /**
- * service_method_name_uniqueness_validator
- */
-
-bool service_method_name_uniqueness_validator::visit(t_service* const service) {
-  validate_service_method_names_unique(service);
-  return true;
-}
-
-void service_method_name_uniqueness_validator::add_error_service_method_names(
-    int const lineno,
-    std::string const& service_name_new,
-    std::string const& service_name_old,
-    std::string const& function_name) {
-  //[FALIURE:{}:{}] Function {}.{} redefines {}.{}
-  add_error(
-      lineno,
-      "Function `" + service_name_new + "." + function_name + "` " +
-          "redefines `" + service_name_old + "." + function_name + "`.");
-}
-
-void service_method_name_uniqueness_validator::
-    validate_service_method_names_unique(t_service const* const service) {
-  // Check for a redefinition of a function in a base service.
-  std::unordered_map<std::string, t_service const*> base_function_names;
-  for (auto e_s = service->get_extends(); e_s; e_s = e_s->get_extends()) {
-    for (auto const ex_func : e_s->get_functions()) {
-      base_function_names[ex_func->get_name()] = e_s;
-    }
-  }
-  for (auto const fnc : service->get_functions()) {
-    auto const s_pos = base_function_names.find(fnc->get_name());
-    auto const e_s =
-        s_pos != base_function_names.end() ? s_pos->second : nullptr;
-    if (e_s) {
-      add_error_service_method_names(
-          fnc->get_lineno(),
-          service->get_name(),
-          e_s->get_full_name(),
-          fnc->get_name());
-    }
-  }
-}
-
-/**
  * fill_validators - the validator registry
  *
  * This is where all concrete validator types must be registered.
  */
 
 static void fill_validators(validator_list& vs) {
-  vs.add<service_method_name_uniqueness_validator>();
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();

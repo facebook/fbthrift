@@ -22,6 +22,7 @@
 #include <stack>
 #include <string>
 #include <system_error>
+#include <type_traits>
 #include <typeindex>
 #include <utility>
 
@@ -62,23 +63,16 @@ struct diagnostic_params {
 // Useful for avoiding re-computation during a traversal of an AST.
 class node_metadata_cache {
   template <typename N, typename F>
-  using element_type = typename decltype(std::declval<F>()(
-      std::declval<const N*>()))::element_type;
+  using element_type = typename decltype(std::declval<F>()())::element_type;
+  template <typename T, typename... Args>
+  using if_is_constructible =
+      std::enable_if_t<std::is_constructible<T, Args...>::value, T&>;
 
  public:
   // Gets or creates a cache entry of the given type T for the specified node.
   //
-  // Uses the default constructor to initialize the entry, if it is not already
-  // present in the cache.
-  template <typename T>
-  T& get(const t_node* node) {
-    return get(node, [](const t_node*) { return std::make_unique<T>(); });
-  }
-
-  // Same as above, except uses the given loader to initialize the entry,
-  // if it is not already present in the cache.
-  //
-  // The loader must be invocable via signature `std::unique_ptr<T>(const N*)`.
+  // If the entry is not already present in the cache, a new entry is created
+  // using the provided loader, which must return a std::unique_ptr<T>.
   template <typename..., typename N, typename F>
   element_type<N, F>& get(const N* node, const F& loader) {
     using T = element_type<N, F>;
@@ -88,11 +82,31 @@ class node_metadata_cache {
       itr = data.emplace(
                     std::move(key),
                     any_data{
-                        loader(node).release(),
+                        loader().release(),
                         [](void* ptr) { delete static_cast<T*>(ptr); }})
                 .first;
     }
     return *static_cast<T*>(itr->second.get());
+  }
+
+  // Gets or creates a cache entry of the given type T for the specified node.
+  //
+  // T must be constructible in exactly one of the following ways:
+  // - T()
+  // - T(const N*)
+  // - T(node_metadata_cache&, const N*)
+  template <typename T, typename N>
+  if_is_constructible<T> get(const N* node) {
+    return get(node, []() { return std::make_unique<T>(); });
+  }
+  template <typename T, typename N, typename = void>
+  if_is_constructible<T, const N*> get(const N* node) {
+    return get(node, [node]() { return std::make_unique<T>(node); });
+  }
+  template <typename T, typename N, typename = void>
+  if_is_constructible<T, node_metadata_cache&, const N*> get(const N* node) {
+    return get(
+        node, [this, node]() { return std::make_unique<T>(*this, node); });
   }
 
  private:

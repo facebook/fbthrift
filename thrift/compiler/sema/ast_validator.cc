@@ -24,6 +24,7 @@
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_interface.h>
+#include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/lib/cpp2/util.h>
@@ -34,6 +35,20 @@ namespace thrift {
 namespace compiler {
 
 namespace {
+
+struct service_metadata {
+  std::unordered_map<std::string, const t_service*> function_name_to_service;
+
+  service_metadata(node_metadata_cache& cache, const t_service* node) {
+    if (node->extends() != nullptr) {
+      function_name_to_service =
+          cache.get<service_metadata>(node->extends()).function_name_to_service;
+    }
+    for (const auto* function : node->functions()) {
+      function_name_to_service[function->name()] = node;
+    }
+  }
+};
 
 void validate_interface_function_name_uniqueness(
     diagnostic_context& ctx, const t_interface* node) {
@@ -46,6 +61,28 @@ void validate_interface_function_name_uniqueness(
           "Function `%s` is already defined in `%s`.",
           function->name().c_str(),
           node->name().c_str());
+    }
+  }
+}
+
+void validate_extends_service_function_name_uniqueness(
+    diagnostic_context& ctx, const t_service* node) {
+  if (node->extends() == nullptr) {
+    return;
+  }
+
+  const auto& extends_metadata =
+      ctx.cache().get<service_metadata>(node->extends());
+  for (const auto* function : node->functions()) {
+    auto itr = extends_metadata.function_name_to_service.find(function->name());
+    if (itr != extends_metadata.function_name_to_service.end()) {
+      ctx.failure(
+          function,
+          "Function `%s.%s` redefines `%s.%s`.",
+          node->name().c_str(),
+          function->name().c_str(),
+          itr->second->get_full_name().c_str(),
+          itr->first.c_str());
     }
   }
 }
@@ -156,6 +193,9 @@ void validate_structured_annotation_type_uniqueness(
 ast_validator standard_validator() {
   ast_validator validator;
   validator.add_interface_visitor(&validate_interface_function_name_uniqueness);
+  validator.add_service_visitor(
+      &validate_extends_service_function_name_uniqueness);
+
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_field_visitor(&validate_mixin_field_attributes);
 

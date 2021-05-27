@@ -101,8 +101,7 @@ TEST_F(NodeMetadataCacheTest, Cache) {
       &cache.get<int>(&t_base_type::t_bool()));
   EXPECT_EQ(
       cache.get(
-          &t_base_type::t_i32(),
-          [](const t_node*) { return std::make_unique<int>(1); }),
+          &t_base_type::t_i32(), []() { return std::make_unique<int>(1); }),
       1);
   EXPECT_NE(
       &cache.get<int>(&t_base_type::t_bool()),
