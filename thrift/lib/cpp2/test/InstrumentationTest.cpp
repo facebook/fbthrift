@@ -243,6 +243,13 @@ THRIFT_PLUGGABLE_FUNC_SET(
 THRIFT_PLUGGABLE_FUNC_SET(uint64_t, getCurrentServerTick) {
   return currentTick;
 }
+
+std::set<std::string> excludeFromRecentRequestsCount;
+THRIFT_PLUGGABLE_FUNC_SET(
+    bool, includeInRecentRequestsCount, const std::string_view methodName) {
+  return !excludeFromRecentRequestsCount.count(std::string{methodName});
+}
+
 } // namespace
 
 class RequestInstrumentationTest : public testing::Test {
@@ -652,6 +659,47 @@ TEST_F(RequestInstrumentationTest, snapshotRecentRequestCountsTest) {
   EXPECT_EQ(snapshot.recentCounters[0].first, 1);
   EXPECT_EQ(snapshot.recentCounters[100].first, 1);
 }
+
+class RecentRequestsTest : public RequestInstrumentationTest,
+                           public ::testing::WithParamInterface<bool> {
+ protected:
+  bool rocket;
+  void SetUp() override {
+    rocket = GetParam();
+    RequestInstrumentationTest::SetUp();
+  }
+};
+
+TEST_P(RecentRequestsTest, Exclude) {
+  auto client = rocket ? makeRocketClient() : makeHeaderClient();
+  auto debugClient = makeDebugClient();
+
+  auto g = folly::makeGuard([] { excludeFromRecentRequestsCount.clear(); });
+  excludeFromRecentRequestsCount.insert("runCallback");
+
+  client->sync_runCallback();
+  client->sync_runCallback2();
+  auto f = client->semifuture_sendRequest();
+  handler()->waitForRequests(1);
+  auto snapshot = getServerSnapshot();
+  // there were 3 requests that arrived but one should be excluded
+  // however, exclusions only work in Rocket
+  int expectedArrived = rocket ? 2 : 3;
+  EXPECT_EQ(snapshot.recentCounters.at(0).first, expectedArrived);
+  // there is one active request
+  EXPECT_EQ(snapshot.recentCounters.at(0).second, 1);
+
+  handler()->stopRequests();
+  f.wait();
+
+  snapshot = getServerSnapshot();
+  EXPECT_EQ(snapshot.recentCounters.at(0).first, expectedArrived);
+  // there are no active requests
+  EXPECT_EQ(snapshot.recentCounters.at(0).second, 0);
+}
+
+INSTANTIATE_TEST_CASE_P(
+    RecentRequestsTest, RecentRequestsTest, testing::Values(true, false));
 
 class RequestInstrumentationTestWithFinishedDebugPayload
     : public RequestInstrumentationTest {
