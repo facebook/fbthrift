@@ -809,12 +809,9 @@ void t_go_generator::init_generator() {
   f_consts_name_ = package_dir_ + "/" + "constants.go";
   f_consts_.open(f_consts_name_.c_str());
 
-  vector<t_service*> services = program_->services();
-  vector<t_service*>::iterator sv_iter;
-
-  for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
+  for (const auto* tservice : program_->services()) {
     string service_dir =
-        package_dir_ + "/" + underscore((*sv_iter)->get_name()) + "-remote";
+        package_dir_ + "/" + underscore(tservice->get_name()) + "-remote";
     boost::filesystem::create_directory(service_dir);
   }
 

@@ -125,7 +125,7 @@ void t_json_generator::generate_program() {
   if (!program_->consts().empty()) {
     f_out_ << "," << endl << indent() << "\"constants\" : {" << endl;
     indent_up();
-    vector<t_const*> consts = program_->consts();
+    auto consts = program_->consts();
     generate_consts(consts);
     f_out_ << endl;
     indent_down();
@@ -136,9 +136,8 @@ void t_json_generator::generate_program() {
     f_out_ << "," << endl << indent() << "\"enumerations\" : {" << endl;
     indent_up();
     // Generate enums
-    vector<t_enum*> enums = program_->enums();
-    vector<t_enum*>::iterator en_iter;
-    for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
+    auto enums = program_->enums();
+    for (auto en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
       if (en_iter != enums.begin()) {
         f_out_ << "," << endl;
       }
@@ -153,9 +152,9 @@ void t_json_generator::generate_program() {
     f_out_ << "," << endl << indent() << "\"typedefs\" : {" << endl;
     indent_up();
     // Generate typedefs
-    vector<t_typedef*> typedefs = program_->typedefs();
-    vector<t_typedef*>::iterator td_iter;
-    for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
+    auto typedefs = program_->typedefs();
+    for (auto td_iter = typedefs.begin(); td_iter != typedefs.end();
+         ++td_iter) {
       if (td_iter != typedefs.begin()) {
         f_out_ << "," << endl;
       }
@@ -170,9 +169,8 @@ void t_json_generator::generate_program() {
     f_out_ << "," << endl << indent() << "\"structs\" : {" << endl;
     indent_up();
     // Generate structs and exceptions in declared order
-    vector<t_struct*> objects = program_->objects();
-    vector<t_struct*>::iterator o_iter;
-    for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
+    auto objects = program_->objects();
+    for (auto o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
       if (o_iter != objects.begin()) {
         f_out_ << "," << endl;
       }
@@ -191,9 +189,9 @@ void t_json_generator::generate_program() {
     f_out_ << "," << endl << indent() << "\"services\" : {" << endl;
     indent_up();
     // Generate services
-    vector<t_service*> services = program_->services();
-    vector<t_service*>::iterator sv_iter;
-    for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
+    auto services = program_->services();
+    for (auto sv_iter = services.begin(); sv_iter != services.end();
+         ++sv_iter) {
       service_name_ = get_service_name(*sv_iter);
       if (sv_iter != services.begin()) {
         f_out_ << "," << endl;
@@ -539,8 +537,7 @@ void t_json_generator::generate_enum(const t_enum* tenum) {
  * Generate constants
  */
 void t_json_generator::generate_consts(vector<t_const*> consts) {
-  vector<t_const*>::iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
+  for (auto c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     if (c_iter != consts.begin()) {
       f_out_ << "," << endl;
     }

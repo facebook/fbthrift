@@ -770,10 +770,8 @@ void t_py_generator::init_generator() {
   f_init.open(f_init_name.c_str());
   record_genfile(f_init_name);
   f_init << py_autogen_comment() << "__all__ = ['ttypes', 'constants'";
-  vector<t_service*> services = program_->services();
-  vector<t_service*>::iterator sv_iter;
-  for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
-    f_init << ", '" << (*sv_iter)->get_name() << "'";
+  for (const auto* tservice : program_->services()) {
+    f_init << ", '" << tservice->get_name() << "'";
   }
   f_init << "]" << endl;
   f_init.close();

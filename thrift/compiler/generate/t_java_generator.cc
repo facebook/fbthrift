@@ -284,13 +284,12 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
            << endl
            << endl;
   indent_up();
-  vector<t_const*>::iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
+  for (const auto* tconst : consts) {
     print_const_value(
         f_consts,
-        (*c_iter)->get_name(),
-        (*c_iter)->get_type(),
-        (*c_iter)->get_value(),
+        tconst->get_name(),
+        tconst->get_type(),
+        tconst->get_value(),
         false);
   }
   indent_down();

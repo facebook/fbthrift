@@ -536,10 +536,9 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   scope_down(const_interface);
 
   // getter method for each constant defined.
-  std::vector<t_const*>::iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    std::string name = (*c_iter)->get_name();
-    const t_type* type = (*c_iter)->get_type();
+  for (const auto* tconst : consts) {
+    std::string name = tconst->get_name();
+    const t_type* type = tconst->get_type();
     const_interface << "+ (" << type_name(type) << ") " << name << ";"
                     << std::endl;
   }
@@ -550,13 +549,13 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   constants_declarations_ = const_interface.str();
 
   // static variables in the .m hold all constant values
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    std::string name = (*c_iter)->get_name();
-    const t_type* type = (*c_iter)->get_type();
+  for (const auto* tconst : consts) {
+    std::string name = tconst->get_name();
+    const t_type* type = tconst->get_type();
     f_impl_ << "static " << type_name(type) << " " << cocoa_prefix_ << name;
     if (!type->is_container() && !type->is_struct()) {
       f_impl_ << " = "
-              << render_const_value(f_impl_, type, (*c_iter)->get_value());
+              << render_const_value(f_impl_, type, tconst->get_value());
     }
     f_impl_ << ";" << std::endl;
   }
@@ -567,21 +566,21 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   // check if initialize method is needed to initialize complex constants
   // when the class is initialized
   bool should_have_initialize =
-      any_of(consts.begin(), consts.end(), [](const t_const* c) {
+      std::any_of(consts.begin(), consts.end(), [](const t_const* c) {
         return c->get_type()->is_container() || c->get_type()->is_struct();
       });
   if (should_have_initialize) {
     f_impl_ << "+ (void) initialize ";
     scope_up(f_impl_);
 
-    for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-      if ((*c_iter)->get_type()->is_container() ||
-          (*c_iter)->get_type()->is_struct()) {
+    for (const auto* tconst : consts) {
+      if (tconst->get_type()->is_container() ||
+          tconst->get_type()->is_struct()) {
         print_const_value(
             f_impl_,
-            cocoa_prefix_ + (*c_iter)->get_name(),
-            (*c_iter)->get_type(),
-            (*c_iter)->get_value(),
+            cocoa_prefix_ + tconst->get_name(),
+            tconst->get_type(),
+            tconst->get_value(),
             false,
             false);
         f_impl_ << ";" << std::endl;
@@ -591,9 +590,9 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   }
 
   // getter method for each constant
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    std::string name = (*c_iter)->get_name();
-    const t_type* type = (*c_iter)->get_type();
+  for (const auto* tconst : consts) {
+    std::string name = tconst->get_name();
+    const t_type* type = tconst->get_type();
     f_impl_ << "+ (" << type_name(type) << ") " << name;
     scope_up(f_impl_);
     indent(f_impl_) << "return " << cocoa_prefix_ << name << ";" << std::endl;
