@@ -18,6 +18,7 @@
 
 #include <array>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include <openssl/sha.h>
@@ -87,6 +88,16 @@ std::string t_type::make_full_name(const char* prefix) const {
 const t_type* t_type::get_true_type() const {
   return t_typedef::find_type_if(
       this, [](const t_type* type) { return !type->is_typedef(); });
+}
+
+const t_type* t_type_ref::deref() const {
+  if (type_ == nullptr) {
+    throw std::runtime_error("t_type_ref has no type.");
+  }
+  if (auto ph = dynamic_cast<const t_placeholder_typedef*>(type_)) {
+    return ph->type()->deref();
+  }
+  return type_;
 }
 
 } // namespace compiler

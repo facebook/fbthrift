@@ -182,8 +182,7 @@ TEST_F(ScopeValidatorTest, Field) {
 }
 
 TEST_F(ScopeValidatorTest, Typedef) {
-  t_scope scope;
-  runTest(t_typedef{&program, "MyTypedef", &scope}, "Typedef");
+  runTest(t_typedef{&program, "MyTypedef", &t_base_type::t_void()}, "Typedef");
 }
 
 TEST_F(ScopeValidatorTest, Service) {

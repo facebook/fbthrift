@@ -48,10 +48,10 @@ class t_stream_response : public t_type {
 
   std::string get_full_name() const override {
     if (has_first_response()) {
-      return first_response_type_->type()->get_full_name() + ", stream<" +
-          elem_type_.type()->get_full_name() + ">";
+      return first_response_type_->deref()->get_full_name() + ", stream<" +
+          elem_type_.deref()->get_full_name() + ">";
     }
-    return "stream<" + elem_type_.type()->get_full_name() + ">";
+    return "stream<" + elem_type_.deref()->get_full_name() + ">";
   }
 
  private:
@@ -69,9 +69,9 @@ class t_stream_response : public t_type {
   void set_first_response_type(const t_type* first_response_type) {
     set_first_response_type(std::make_unique<t_type_ref>(first_response_type));
   }
-  const t_type* get_elem_type() const { return elem_type()->type(); }
+  const t_type* get_elem_type() const { return elem_type()->get_type(); }
   const t_type* get_first_response_type() const {
-    return has_first_response() ? first_response_type()->type() : nullptr;
+    return has_first_response() ? first_response_type()->get_type() : nullptr;
   }
   t_throws* get_throws_struct() const { return throws_.get(); }
   bool has_throws_struct() const { return throws_ == nullptr; }

@@ -37,8 +37,8 @@ class t_map final : public t_container {
 
   type container_type() const override { return type::t_map; }
   std::string get_full_name() const override {
-    return "map<" + key_type_.type()->get_full_name() + ", " +
-        val_type_.type()->get_full_name() + ">";
+    return "map<" + key_type_.deref()->get_full_name() + ", " +
+        val_type_.deref()->get_full_name() + ">";
   }
 
  private:
@@ -50,8 +50,8 @@ class t_map final : public t_container {
  public:
   t_map(const t_type* key_type, const t_type* val_type)
       : t_map(t_type_ref(key_type), t_type_ref(val_type)) {}
-  const t_type* get_key_type() const { return key_type()->type(); }
-  const t_type* get_val_type() const { return val_type()->type(); }
+  const t_type* get_key_type() const { return key_type()->get_type(); }
+  const t_type* get_val_type() const { return val_type()->get_type(); }
 };
 
 } // namespace compiler

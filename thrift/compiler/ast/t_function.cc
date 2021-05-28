@@ -39,10 +39,11 @@ t_function::t_function(
   // Grab stream related exceptions from return type, for easy access.
   // TODO(afuller): Remove these if possible.
   if (const auto* tstream_resp =
-          dynamic_cast<const t_stream_response*>(return_type_.type())) {
+          dynamic_cast<const t_stream_response*>(return_type_.get_type())) {
     stream_exceptions_ = tstream_resp->throws();
   } else if (
-      const auto* tsink = dynamic_cast<const t_sink*>(return_type_.type())) {
+      const auto* tsink =
+          dynamic_cast<const t_sink*>(return_type_.get_type())) {
     sink_exceptions_ = tsink->sink_exceptions();
     sink_final_response_exceptions_ = tsink->final_response_exceptions();
   }
@@ -54,14 +55,15 @@ t_function::t_function(
       throw std::runtime_error("Oneway methods can't throw exceptions.");
     }
 
-    if (return_type_.type() == nullptr || !return_type_.type()->is_void()) {
+    if (return_type_.get_type() == nullptr ||
+        !return_type_.get_type()->is_void()) {
       throw std::runtime_error("Oneway methods must have void return type.");
     }
   }
 
   if (!stream_exceptions_->get_members().empty()) {
-    if (return_type_.type() == nullptr ||
-        !return_type_.type()->is_streamresponse()) {
+    if (return_type_.get_type() == nullptr ||
+        !return_type_.get_type()->is_streamresponse()) {
       throw std::runtime_error("`stream throws` only valid on stream methods");
     }
   }

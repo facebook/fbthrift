@@ -149,7 +149,7 @@ class t_field final : public t_named {
     return {};
   }
 
-  const t_type* get_type() const { return type()->type(); }
+  const t_type* get_type() const { return type()->get_type(); }
   int32_t get_key() const { return key(); }
 
   const t_field* get_next() const { return next(); }

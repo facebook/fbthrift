@@ -516,7 +516,7 @@ class parsing_driver {
   // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
   // node that can be resolved in a second passover the ast.
   const t_type* add_placeholder_typedef(
-      std::unique_ptr<t_typedef> node,
+      std::unique_ptr<t_placeholder_typedef> node,
       std::unique_ptr<t_annotations> annotations);
 
   std::string scoped_name(const t_named& node) {

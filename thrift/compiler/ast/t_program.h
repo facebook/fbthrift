@@ -108,9 +108,8 @@ class t_program : public t_node {
     nodes_.push_back(std::move(ti));
   }
 
-  void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
+  void add_placeholder_typedef(std::unique_ptr<t_placeholder_typedef> ptd) {
     assert(ptd != nullptr);
-    assert(!ptd->is_defined());
     placeholder_typedefs_.push_back(ptd.get());
     nodes_.push_back(std::move(ptd));
   }
@@ -135,7 +134,7 @@ class t_program : public t_node {
   const std::vector<t_exception*>& exceptions() const { return exceptions_; }
   const std::vector<t_struct*>& objects() const { return objects_; }
   const std::vector<t_service*>& services() const { return services_; }
-  const std::vector<t_typedef*>& placeholder_typedefs() const {
+  const std::vector<t_placeholder_typedef*>& placeholder_typedefs() const {
     return placeholder_typedefs_;
   }
   const std::vector<t_interaction*>& interactions() const {
@@ -251,7 +250,7 @@ class t_program : public t_node {
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
   std::vector<t_interaction*> interactions_;
-  std::vector<t_typedef*> placeholder_typedefs_;
+  std::vector<t_placeholder_typedef*> placeholder_typedefs_;
   std::vector<t_struct*> objects_; // structs_ + exceptions_
 
   std::string path_; // initialized in ctor init-list

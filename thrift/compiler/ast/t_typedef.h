@@ -33,29 +33,10 @@ class t_typedef : public t_type {
  public:
   t_typedef(t_program* program, std::string name, t_type_ref type)
       : t_type(program, std::move(name)), type_(std::move(type)) {}
+  t_typedef(t_program* program, std::string name, const t_type* type)
+      : t_type(program, std::move(name)), type_(type) {}
 
-  /**
-   * This constructor is used to refer to a type that is lazily
-   * resolved at a later time, like for forward declarations or
-   * recursive types.
-   */
-  // TODO(afuller): Split this case out into is own subclass.
-  t_typedef(t_program* program, std::string name, t_scope* scope)
-      : t_type(program, std::move(name)), scope_(scope) {}
-
-  /**
-   * For placeholder typedef only, resolve and find the actual type that the
-   * symbolic name refers to. Return true iff the type exists in the scope.
-   */
-  bool resolve_placeholder();
-
-  const t_type* get_type() const { return type_.type(); }
-
-  std::string get_full_name() const override {
-    return get_type()->get_full_name();
-  }
-
-  bool is_defined() const { return scope_ == nullptr; }
+  const t_type_ref* type() const { return &type_; }
 
   // Returns the first type, in the typedef type hierarchy, matching the
   // given predicate or nullptr.
@@ -88,24 +69,61 @@ class t_typedef : public t_type {
         std::forward<D>(default_value));
   }
 
- private:
+  std::string get_full_name() const override {
+    // TODO(afuller): Just return name() as, unlike a t_placeholder_typedef, the
+    // full name for a typedef is just it's name, not the name of the
+    // type it is referencing.
+    return type_.deref()->get_full_name();
+  }
+
+ protected:
   t_type_ref type_;
-  t_scope* scope_ = nullptr;
 
  public:
   // TODO(afuller): Remove everything below here, as it is just provided for
   // backwards compatibility.
 
-  t_typedef(
-      t_program* program, const t_type* type, std::string symbolic, t_scope*)
-      : t_typedef(program, std::move(symbolic), t_type_ref(type)) {}
+  t_typedef(t_program* program, const t_type* type, std::string name, t_scope*)
+      : t_typedef(program, std::move(name), t_type_ref(type)) {}
+
+  const t_type* get_type() const { return type_.get_type(); }
 
   bool is_typedef() const override { return true; }
-  type get_type_value() const override { return get_type()->get_type_value(); }
+  t_type::type get_type_value() const override {
+    return get_type()->get_type_value();
+  }
 
   uint64_t get_type_id() const override { return get_type()->get_type_id(); }
-
   const std::string& get_symbolic() const { return name(); }
+  bool is_defined() const;
+};
+
+// A placeholder for a type that can't be resolved at parse time.
+//
+// TODO(afuller): Merge this class with t_type_ref and resolve all types after
+// parsing. This class assumes that, since the type was referenced by name, it
+// is safe to create a dummy typedef to use as a proxy for the original type.
+// However, this actually breaks dynamic_cast for t_node and t_type::is_* calls,
+// resulting in a lot of subtle bugs that may or may not show up, depending on
+// the order of IDL declarations.
+class t_placeholder_typedef final : public t_typedef {
+ public:
+  t_placeholder_typedef(
+      t_program* program, const std::string& name, t_scope* scope)
+      : t_typedef(program, std::move(name), {}), scope_(scope) {}
+
+  /**
+   * Resolve and find the actual type that the symbolic name refers to.
+   * Return true iff the type exists in the scope.
+   */
+  bool resolve();
+
+  std::string get_full_name() const override {
+    return type_.deref()->get_full_name();
+  }
+
+ private:
+  t_scope* scope_;
 };
 
 } // namespace compiler

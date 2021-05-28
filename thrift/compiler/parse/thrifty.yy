@@ -1037,8 +1037,8 @@ Function:
     {
       driver.debug("Function => tok_performs FieldType");
       auto ret = own($2);
-      std::string name = ret->type()
-          ? "create" + ret->type()->get_name()
+      std::string name = ret->get_type()
+          ? "create" + ret->get_type()->get_name()
           : "<interaction placeholder>";
       $$ = new t_function(
         std::move(*ret),

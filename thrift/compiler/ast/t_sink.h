@@ -65,10 +65,10 @@ class t_sink : public t_type {
   }
 
   std::string get_full_name() const override {
-    return "sink<" + sink_type_.type()->get_full_name() + ", " +
-        final_response_type_.type()->get_full_name() + ">" +
+    return "sink<" + sink_type_.deref()->get_full_name() + ", " +
+        final_response_type_.deref()->get_full_name() + ">" +
         (sink_has_first_response()
-             ? (", " + first_response_type_->type()->get_full_name())
+             ? (", " + first_response_type_->deref()->get_full_name())
              : "");
   }
 
@@ -103,13 +103,13 @@ class t_sink : public t_type {
     return final_response_exceptions_.get();
   }
   t_throws* get_sink_xceptions() const { return sink_exceptions_.get(); }
-  const t_type* get_sink_type() const { return sink_type()->type(); }
+  const t_type* get_sink_type() const { return sink_type()->get_type(); }
   const t_type* get_first_response_type() const {
     return first_response_type_ == nullptr ? nullptr
-                                           : first_response_type_->type();
+                                           : first_response_type_->get_type();
   }
   const t_type* get_final_response_type() const {
-    return final_response_type()->type();
+    return final_response_type()->get_type();
   }
 
   bool is_sink() const override { return true; }

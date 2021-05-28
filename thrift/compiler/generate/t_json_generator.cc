@@ -733,13 +733,8 @@ void t_json_generator::generate_service(const t_service* tservice) {
 }
 
 bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
-  if (ttype->is_typedef()) {
-    // Only resolve undefined typedefs as they were used for undeclared types
-    if (!static_cast<const t_typedef*>(ttype)->is_defined()) {
-      return true;
-    }
-  }
-  return false;
+  // Only resolve undefined typedefs as they were used for undeclared types
+  return dynamic_cast<const t_placeholder_typedef*>(ttype) != nullptr;
 }
 
 THRIFT_REGISTER_GENERATOR(

@@ -4398,8 +4398,8 @@ string t_go_generator::type_to_go_type_with_opt(
     const t_type* type, bool optional_field, bool from_typedef) {
   string maybe_pointer(optional_field ? "*" : "");
 
-  if (type->is_typedef() && !((t_typedef*)type)->is_defined()) {
-    type = ((t_typedef*)type)->get_true_type();
+  if (auto ph = dynamic_cast<const t_placeholder_typedef*>(type)) {
+    type = ph->get_true_type();
   }
 
   if (type->is_base_type()) {

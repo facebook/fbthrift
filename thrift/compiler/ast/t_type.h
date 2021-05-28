@@ -201,16 +201,21 @@ class t_type_ref final {
   t_type_ref() = default;
   explicit t_type_ref(const t_type* type) : type_(type) {}
 
-  void set_type(const t_type* type) { type_ = type; }
-  const t_type* type() const { return type_; }
+  // Returns the resolved type being referenced.
+  //
+  // Throws a std::runtime_error if the type has not been set, or an unresolved
+  // t_placeholder_typedef is encountered.
+  const t_type* deref() const;
 
-  /**
-   * TODO: remove, see: T84718055
-   */
-  const t_type* get_type() const { return type_; }
+  void set_type(const t_type* type) { type_ = type; }
 
  private:
   const t_type* type_ = nullptr;
+
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
+  const t_type* get_type() const { return type_; }
 };
 
 } // namespace compiler

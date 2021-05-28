@@ -120,10 +120,10 @@ class t_function final : public t_named {
   }
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
   bool returns_stream() const {
-    return return_type_.type()->is_streamresponse();
+    return return_type_.deref()->is_streamresponse();
   }
 
-  bool returns_sink() const { return return_type_.type()->is_sink(); }
+  bool returns_sink() const { return return_type_.deref()->is_sink(); }
 };
 
 using t_function_list = node_list<t_function>;

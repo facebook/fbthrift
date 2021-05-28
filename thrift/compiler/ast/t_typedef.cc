@@ -22,13 +22,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-bool t_typedef::resolve_placeholder() {
-  assert(type_.type() == nullptr);
-  assert(scope_ != nullptr);
-  type_.set_type(scope_->get_type(program()->name() + "." + name()));
-  return type_.type() != nullptr;
-}
-
 const std::string* t_typedef::get_first_annotation_or_null(
     const t_type* type, alias_span name) {
   const std::string* result = nullptr;
@@ -36,6 +29,16 @@ const std::string* t_typedef::get_first_annotation_or_null(
     return (result = type->get_annotation_or_null(name)) != nullptr;
   });
   return result;
+}
+
+bool t_typedef::is_defined() const {
+  return dynamic_cast<const t_placeholder_typedef*>(this) == nullptr;
+}
+
+bool t_placeholder_typedef::resolve() {
+  assert(type_.get_type() == nullptr);
+  type_.set_type(scope_->get_type(program()->name() + "." + name()));
+  return type_.get_type() != nullptr;
 }
 
 } // namespace compiler

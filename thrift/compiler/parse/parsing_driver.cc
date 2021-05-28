@@ -163,7 +163,7 @@ void parsing_driver::parse_file() {
   }
 
   for (auto td : program->placeholder_typedefs()) {
-    if (!td->resolve_placeholder()) {
+    if (!td->resolve()) {
       failure("Type `%s` not defined.", td->name().c_str());
     }
   }
@@ -750,7 +750,8 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
   // However, this actually breaks dynamic casts and t_type::is_* calls.
   // TODO(afuller): Resolve *all* types in a second pass.
   return std::make_unique<t_type_ref>(add_placeholder_typedef(
-      std::make_unique<t_typedef>(program, std::move(name), scope_cache),
+      std::make_unique<t_placeholder_typedef>(
+          program, std::move(name), scope_cache),
       std::move(annotations)));
 }
 
@@ -776,7 +777,7 @@ const t_type* parsing_driver::add_unnamed_typedef(
 }
 
 const t_type* parsing_driver::add_placeholder_typedef(
-    std::unique_ptr<t_typedef> node,
+    std::unique_ptr<t_placeholder_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
   set_annotations(node.get(), std::move(annotations));
