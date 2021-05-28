@@ -174,7 +174,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $shape['MyIntField'],
       $shape['MyStringField'],
       Shapes::idx($shape, 'MyDataField') === null ? null : (MyDataItem::__fromShape($shape['MyDataField'])),
-      Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
+      Shapes::idx($shape, 'myEnum'),
       $shape['oneway'],
       $shape['readonly'],
       $shape['idempotent'],
@@ -495,7 +495,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
+      Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct') === null ? null : (MyStruct::__fromShape($shape['myStruct'])),
       Shapes::idx($shape, 'myDataItem') === null ? null : (MyDataItem::__fromShape($shape['myDataItem'])),
     );

@@ -102,7 +102,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'just_an_enum') === null ? null : ($shape['just_an_enum']),
+      Shapes::idx($shape, 'just_an_enum'),
       $shape['a'],
     );
   }
@@ -1332,7 +1332,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_A') === null ? null : (A::__fromShape($shape['just_an_A'])),
-      Shapes::idx($shape, 'just_an_enum') === null ? null : ($shape['just_an_enum']),
+      Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'optional_sef') === null ? null : (C::__fromShape($shape['optional_sef'])),
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_string'])),
       Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_i32'])),
@@ -1371,7 +1371,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ))),
       Shapes::idx($shape, 'map_of_string_to_list_of_i32') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_list_of_i32'])),
       Shapes::idx($shape, 'map_of_string_to_set_of_i32') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32'])),
-      Shapes::idx($shape, 'list_of_string') === null ? null : ($shape['list_of_string']),
+      Shapes::idx($shape, 'list_of_string'),
       Shapes::idx($shape, 'list_of_map_of_string_to_A') === null ? null : ($shape['list_of_map_of_string_to_A']
         |> Vec\map(
           $$,
@@ -1412,10 +1412,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
                 ),
             ),
         )),
-      Shapes::idx($shape, 'list_of_i32') === null ? null : ($shape['list_of_i32']),
+      Shapes::idx($shape, 'list_of_i32'),
       Shapes::idx($shape, 'map_of_string_to_list_of_string') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_list_of_string'])),
-      Shapes::idx($shape, 'set_of_i32') === null ? null : ($shape['set_of_i32']),
-      Shapes::idx($shape, 'set_of_string') === null ? null : ($shape['set_of_string']),
+      Shapes::idx($shape, 'set_of_i32'),
+      Shapes::idx($shape, 'set_of_string'),
     );
   }
 

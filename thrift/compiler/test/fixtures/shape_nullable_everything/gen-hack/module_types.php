@@ -89,7 +89,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'a') === null ? null : ($shape['a']),
+      Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
     );
   }

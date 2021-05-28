@@ -199,7 +199,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['intField'],
-      Shapes::idx($shape, 'optionalIntField') === null ? null : ($shape['optionalIntField']),
+      Shapes::idx($shape, 'optionalIntField'),
       $shape['intFieldWithDefault'],
       new Set(Keyset\keys($shape['setField'])),
       Shapes::idx($shape, 'optionalSetField') === null ? null : (new Set(Keyset\keys($shape['optionalSetField']))),

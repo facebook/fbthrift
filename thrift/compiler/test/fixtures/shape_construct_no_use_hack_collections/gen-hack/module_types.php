@@ -379,11 +379,11 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'int_value') === null ? null : ($shape['int_value']),
-      Shapes::idx($shape, 'str_value') === null ? null : ($shape['str_value']),
-      Shapes::idx($shape, 'double_value') === null ? null : ($shape['double_value']),
-      Shapes::idx($shape, 'list_of_strings') === null ? null : ($shape['list_of_strings']),
-      Shapes::idx($shape, 'map_of_string_to_ints') === null ? null : ($shape['map_of_string_to_ints']),
+      Shapes::idx($shape, 'int_value'),
+      Shapes::idx($shape, 'str_value'),
+      Shapes::idx($shape, 'double_value'),
+      Shapes::idx($shape, 'list_of_strings'),
+      Shapes::idx($shape, 'map_of_string_to_ints'),
       Shapes::idx($shape, 'struct_foo') === null ? null : (Foo::__fromShape($shape['struct_foo'])),
     );
   }
@@ -540,7 +540,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['a'],
-      Shapes::idx($shape, 'b') === null ? null : ($shape['b']),
+      Shapes::idx($shape, 'b'),
       $shape['c'],
       $shape['d'],
       $shape['str_value'],

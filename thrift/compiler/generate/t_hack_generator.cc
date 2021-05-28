@@ -2243,19 +2243,15 @@ void t_hack_generator::generate_php_struct_shape_methods(
     std::stringstream source;
     source << "$shape['" << field->get_name() << "']";
 
-    std::stringstream val;
-    indent(val);
-
-    if (tstruct->is_union() || nullable) {
-      val << "Shapes::idx($shape, '" << field->get_name()
-          << "') === null ? null : (";
-    }
+    std::stringstream inner;
+    bool is_simple_shape_index = true;
 
     if (t->is_set()) {
       if (arraysets_ || arrays_ || no_use_hack_collections_) {
-        val << source.str();
+        inner << source.str();
       } else {
-        val << "new Set(Keyset\\keys(" << source.str() << "))";
+        is_simple_shape_index = false;
+        inner << "new Set(Keyset\\keys(" << source.str() << "))";
       }
     } else if (t->is_map() || t->is_list()) {
       bool stringify_map_keys = false;
@@ -2267,30 +2263,33 @@ void t_hack_generator::generate_php_struct_shape_methods(
       }
 
       if (stringify_map_keys) {
-        val << "self::__stringifyMapKeys(";
+        is_simple_shape_index = false;
+        inner << "self::__stringifyMapKeys(";
       }
 
       if (arrays_ || no_use_hack_collections_) {
-        val << source.str();
+        inner << source.str();
         if (type_has_nested_struct(t)) {
+          is_simple_shape_index = false;
           indent_up();
-          val << std::endl;
-          indent(val) << "|> ";
-          generate_hack_array_from_shape_lambda(val, namer, t);
+          inner << std::endl;
+          indent(inner) << "|> ";
+          generate_hack_array_from_shape_lambda(inner, namer, t);
           indent_down();
         }
         if (stringify_map_keys) {
-          val << ")";
+          inner << ")";
         }
       } else {
-        val << (stringify_map_keys ? "" : "(");
+        is_simple_shape_index = false;
+        inner << (stringify_map_keys ? "" : "(");
         if (t->is_map()) {
-          val << "new Map(";
+          inner << "new Map(";
         } else {
-          val << "new Vector(";
+          inner << "new Vector(";
         }
 
-        val << source.str() << "))";
+        inner << source.str() << "))";
 
         int nest = 0;
         while (true) {
@@ -2306,12 +2305,12 @@ void t_hack_generator::generate_php_struct_shape_methods(
               val_type->is_list() || val_type->is_struct()) {
             indent_up();
             nest++;
-            val << "->map(\n";
+            inner << "->map(\n";
 
             if (val_type->is_set()) {
               std::string tmp = namer("val");
-              indent(val) << "$" << tmp << " ==> new Set(Keyset\\keys($" << tmp
-                          << ")),\n";
+              indent(inner) << "$" << tmp << " ==> new Set(Keyset\\keys($"
+                            << tmp << ")),\n";
               break;
             } else if (val_type->is_map() || val_type->is_list()) {
               std::string tmp = namer("val");
@@ -2326,47 +2325,56 @@ void t_hack_generator::generate_php_struct_shape_methods(
                 }
               }
 
-              indent(val) << "$" << tmp << " ==> "
-                          << (stringify_map_keys ? "self::__stringifyMapKeys"
-                                                 : "")
-                          << "(new ";
+              indent(inner)
+                  << "$" << tmp << " ==> "
+                  << (stringify_map_keys ? "self::__stringifyMapKeys" : "")
+                  << "(new ";
               if (val_type->is_map()) {
-                val << "Map";
+                inner << "Map";
               } else {
-                val << "Vector";
+                inner << "Vector";
               }
-              val << "($" << tmp << "))";
+              inner << "($" << tmp << "))";
               t = val_type;
             } else if (val_type->is_struct()) {
               std::string tmp = namer("val");
               std::string type = hack_name(val_type);
-              indent(val) << "$" << tmp << " ==> " << type << "::__fromShape("
-                          << "$" << tmp << "),\n";
+              indent(inner) << "$" << tmp << " ==> " << type << "::__fromShape("
+                            << "$" << tmp << "),\n";
               break;
             }
           } else {
             if (nest > 0) {
-              val << ",\n";
+              inner << ",\n";
             }
             break;
           }
         }
         while (nest-- > 0) {
           indent_down();
-          indent(val) << ")";
+          indent(inner) << ")";
           if (nest > 0) {
-            val << ",\n";
+            inner << ",\n";
           }
         }
       }
     } else if (t->is_struct()) {
+      is_simple_shape_index = false;
       std::string type = hack_name(t);
-      val << type << "::__fromShape(" << source.str() << ")";
+      inner << type << "::__fromShape(" << source.str() << ")";
     } else {
-      val << source.str();
+      inner << source.str();
     }
+
+    std::stringstream val;
+    indent(val);
     if (tstruct->is_union() || nullable) {
-      val << ")";
+      val << "Shapes::idx($shape, '" << field->get_name() << "')";
+      if (!is_simple_shape_index) {
+        val << " === null ? null : (" << inner.str() << ")";
+      }
+    } else {
+      val << inner.str();
     }
     val << ",\n";
     out << val.str();

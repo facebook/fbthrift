@@ -136,9 +136,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['a'],
-      Shapes::idx($shape, 'b') === null ? null : ($shape['b']),
+      Shapes::idx($shape, 'b'),
       $shape['c'],
-      Shapes::idx($shape, 'd') === null ? null : ($shape['d']),
+      Shapes::idx($shape, 'd'),
     );
   }
 

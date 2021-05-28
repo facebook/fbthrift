@@ -835,7 +835,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       self::__stringifyMapKeys(new Map($shape['map_of_string_to_self']))->map(
         $val15 ==> B::__fromShape($val15),
       ),
-      Shapes::idx($shape, 'just_an_enum') === null ? null : ($shape['just_an_enum']),
+      Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'optional_just_an_A') === null ? null : (A::__fromShape($shape['optional_just_an_A'])),
       Shapes::idx($shape, 'optional_set_of_i32') === null ? null : (new Set(Keyset\keys($shape['optional_set_of_i32']))),
       Shapes::idx($shape, 'optional_list_of_i32') === null ? null : ((new Vector($shape['optional_list_of_i32']))),
@@ -855,7 +855,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : (self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
         $val20 ==> new Set(Keyset\keys($val20)),
       )),
-      Shapes::idx($shape, 'optional_enum') === null ? null : ($shape['optional_enum']),
+      Shapes::idx($shape, 'optional_enum'),
     );
   }
 

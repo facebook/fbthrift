@@ -181,8 +181,8 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'intValue') === null ? null : ($shape['intValue']),
-      Shapes::idx($shape, 'stringValue') === null ? null : ($shape['stringValue']),
+      Shapes::idx($shape, 'intValue'),
+      Shapes::idx($shape, 'stringValue'),
     );
   }
 
@@ -1203,7 +1203,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       (new Map($shape['map_of_string_to_self']))->map(
         $val15 ==> \test\fixtures\B::__fromShape($val15),
       ),
-      Shapes::idx($shape, 'just_an_enum') === null ? null : ($shape['just_an_enum']),
+      Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'just_a_union') === null ? null : (\test\fixtures\Union::__fromShape($shape['just_a_union'])),
       Shapes::idx($shape, 'optional_just_an_A') === null ? null : (\test\fixtures\A::__fromShape($shape['optional_just_an_A'])),
       Shapes::idx($shape, 'optional_set_of_i32') === null ? null : (new Set(Keyset\keys($shape['optional_set_of_i32']))),
@@ -1224,12 +1224,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
         $val20 ==> new Set(Keyset\keys($val20)),
       )),
-      Shapes::idx($shape, 'optional_enum') === null ? null : ($shape['optional_enum']),
+      Shapes::idx($shape, 'optional_enum'),
       $shape['required_enum_with_default'],
       $shape['string_with_default_value'],
       $shape['i32_with_default_value'],
       $shape['double_with_default_value'],
-      Shapes::idx($shape, 'enum_with_default_value') === null ? null : ($shape['enum_with_default_value']),
+      Shapes::idx($shape, 'enum_with_default_value'),
       Shapes::idx($shape, 'A_with_default_value') === null ? null : (\test\fixtures\A::__fromShape($shape['A_with_default_value'])),
       new Set(Keyset\keys($shape['set_of_i32_with_default_value'])),
       (new Map($shape['map_of_i32_to_string_with_default_value'])),
