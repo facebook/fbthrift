@@ -368,6 +368,8 @@ class ServerInterface : public virtual AsyncProcessorFactory,
 
   folly::EventBase* getEventBase() { return requestParams_.eventBase_; }
 
+  void clearRequestParams() { requestParams_ = RequestParams(); }
+
   /**
    * Override to return a pre-initialized RequestContext.
    * Its content will be copied in the RequestContext initialized at
