@@ -136,7 +136,7 @@ void validate_mixin_field_attributes(
 void validate_enum_value_name_uniqueness(
     diagnostic_context& ctx, const t_enum* node) {
   std::unordered_set<std::string> names;
-  for (const auto* value : node->enum_values()) {
+  for (const auto* value : node->values()) {
     if (!names.insert(value->name()).second) {
       ctx.failure(
           value,
@@ -150,7 +150,7 @@ void validate_enum_value_name_uniqueness(
 void validate_enum_value_uniqueness(
     diagnostic_context& ctx, const t_enum* node) {
   std::unordered_map<int32_t, const t_enum_value*> values;
-  for (const auto* value : node->enum_values()) {
+  for (const auto* value : node->values()) {
     auto prev = values.emplace(value->get_value(), value);
     if (!prev.second) {
       ctx.failure(

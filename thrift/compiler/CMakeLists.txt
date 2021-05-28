@@ -35,6 +35,7 @@ add_library(
   compiler_ast
 
   ast/t_base_type.cc
+  ast/t_enum.cc
   ast/t_function.cc
   ast/t_interface.cc
   ast/t_named.cc

@@ -176,7 +176,7 @@ class basic_ast_visitor {
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(enum) {
     visit(enum_visitors_, node, args...);
-    visit_children(node->enum_values(), args...);
+    visit_children(node->values(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(enum_value) {
     visit(enum_value_visitors_, node, args...);

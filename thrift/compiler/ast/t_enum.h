@@ -32,85 +32,51 @@ namespace compiler {
 
 /**
  * An enumerated type. A list of constant objects with a name for the type.
- *
  */
 class t_enum : public t_type {
  public:
   t_enum(t_program* program, std::string name)
       : t_type(program, std::move(name)) {}
 
-  void set_values(t_enum_value_list values) {
-    enum_values_raw_.clear();
-    enum_values_.clear();
-    constants_.clear();
-    for (auto& value : values) {
-      append(std::move(value));
-    }
-  }
+  void set_values(t_enum_value_list values);
+  void append_value(std::unique_ptr<t_enum_value> enum_value);
+  node_list_view<t_enum_value> values() { return values_; }
+  node_list_view<const t_enum_value> values() const { return values_; }
 
-  void append(std::unique_ptr<t_enum_value> enum_value) {
-    if (!enum_value->has_value()) {
-      auto last_value =
-          enum_values_.empty() ? -1 : enum_values_.back()->get_value();
-      if (last_value == INT32_MAX) {
-        throw std::runtime_error(
-            "enum value overflow: " + enum_value->get_name());
-      }
-      enum_value->set_implicit_value(last_value + 1);
-    }
-    auto const_val = std::make_unique<t_const_value>(enum_value->get_value());
-    const_val->set_is_enum();
-    const_val->set_enum(this);
-    const_val->set_enum_value(enum_value.get());
-    auto tconst = std::make_unique<t_const>(
-        program_,
-        &t_base_type::t_i32(),
-        enum_value->get_name(),
-        std::move(const_val));
-    append(std::move(enum_value), std::move(tconst));
-  }
+  // Returns the enum_value with the given value, or nullptr.
+  const t_enum_value* find_value(int32_t enum_value) const;
 
-  node_list_view<t_enum_value> enum_values() { return enum_values_; }
-  node_list_view<const t_enum_value> enum_values() const {
-    return enum_values_;
-  }
-  node_list_view<const t_const> enum_consts() const { return constants_; }
-
-  const t_enum_value* find_value(const int32_t enum_value) const {
-    for (auto const& it : enum_values_) {
-      if (it->get_value() == enum_value) {
-        return it.get();
-      }
-    }
-    return nullptr;
-  }
+  // The t_consts associated with each value.
+  node_list_view<const t_const> consts() const { return constants_; }
 
   std::string get_full_name() const override { return make_full_name("enum"); }
 
  private:
-  t_enum_value_list enum_values_;
+  t_enum_value_list values_;
   node_list<t_const> constants_;
 
   // TODO(afuller): These methods are only provided for backwards
   // compatibility. Update all references and remove everything below.
+  std::vector<t_enum_value*> values_raw_;
+
  public:
   void append(
       std::unique_ptr<t_enum_value> enum_value,
       std::unique_ptr<t_const> constant) {
-    enum_values_raw_.push_back(enum_value.get());
-    enum_values_.push_back(std::move(enum_value));
+    values_raw_.push_back(enum_value.get());
+    values_.push_back(std::move(enum_value));
     constants_.push_back(std::move(constant));
+  }
+  void append(std::unique_ptr<t_enum_value> enum_value) {
+    append_value(std::move(enum_value));
   }
 
   const std::vector<t_enum_value*>& get_enum_values() const {
-    return enum_values_raw_;
+    return values_raw_;
   }
 
   bool is_enum() const override { return true; }
   type get_type_value() const override { return type::t_enum; }
-
- private:
-  std::vector<t_enum_value*> enum_values_raw_;
 };
 
 } // namespace compiler

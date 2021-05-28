@@ -851,7 +851,7 @@ t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
   if (should_add_type(node)) {
     // Register enum value names in scope.
     std::string type_prefix = ".";
-    for (const auto* value : node->enum_consts()) {
+    for (const auto* value : node->consts()) {
       // TODO(afuller): Remove ability to access unscoped enum values.
       scope_cache->add_constant(scoped_name(*value), value);
       scope_cache->add_constant(scoped_name(*node, *value), value);
