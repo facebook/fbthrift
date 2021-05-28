@@ -37,7 +37,6 @@
 
 #include <boost/optional.hpp>
 
-#include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/parsing_driver.h>

@@ -29,7 +29,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
@@ -1129,7 +1128,7 @@ string t_py_generator::render_const_value(
             v_iter->first->get_string());
       }
       out << indent();
-      out << render_const_value(string_type(), v_iter->first);
+      out << render_const_value(&t_base_type::t_string(), v_iter->first);
       out << " : ";
       out << render_const_value(field_type, v_iter->second);
       out << "," << endl;
@@ -3013,10 +3012,10 @@ void t_py_generator::generate_deserialize_container(
   string vtype = tmp("_vtype");
   string etype = tmp("_etype");
 
-  t_field fsize(i32_type(), size);
-  t_field fktype(byte_type(), ktype);
-  t_field fvtype(byte_type(), vtype);
-  t_field fetype(byte_type(), etype);
+  t_field fsize(&t_base_type::t_i32(), size);
+  t_field fktype(&t_base_type::t_byte(), ktype);
+  t_field fvtype(&t_base_type::t_byte(), vtype);
+  t_field fetype(&t_base_type::t_byte(), etype);
 
   // Declare variables, read header
   if (ttype->is_map()) {

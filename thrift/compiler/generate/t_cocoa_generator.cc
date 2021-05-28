@@ -25,7 +25,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
 namespace apache {
@@ -1828,7 +1827,7 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
     const std::string& funname = function->get_name();
 
     t_function send_function(
-        void_type(),
+        &t_base_type::t_void(),
         std::string("send_") + function->get_name(),
         t_struct::clone_DO_NOT_USE(function->get_paramlist()));
 

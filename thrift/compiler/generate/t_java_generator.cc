@@ -27,8 +27,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/ast/base_types.h>
-
 using namespace std;
 
 namespace apache {
@@ -2581,7 +2579,7 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
     f_service_ << endl;
 
     t_function send_function(
-        void_type(),
+        &t_base_type::t_void(),
         string("send_") + (*f_iter)->get_name(),
         t_struct::clone_DO_NOT_USE((*f_iter)->get_paramlist()));
 

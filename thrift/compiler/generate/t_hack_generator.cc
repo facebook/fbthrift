@@ -26,7 +26,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -1254,7 +1253,7 @@ std::string t_hack_generator::render_const_value(
         }
       }
       if (v != nullptr) {
-        indent(out) << render_const_value(string_type(), k) << " => "
+        indent(out) << render_const_value(&t_base_type::t_string(), k) << " => "
                     << render_const_value(field->get_type(), v) << ",\n";
       }
     }
@@ -1714,10 +1713,13 @@ const t_type* t_hack_generator::tmeta_ThriftType_type() {
   set_type.append(std::make_unique<t_field>(&type, "valueType"));
   map_type.append(std::make_unique<t_field>(&type, "keyType"));
   map_type.append(std::make_unique<t_field>(&type, "valueType"));
-  enum_type.append(std::make_unique<t_field>(string_type(), "name"));
-  struct_type.append(std::make_unique<t_field>(string_type(), "name"));
-  union_type.append(std::make_unique<t_field>(string_type(), "name"));
-  typedef_type.append(std::make_unique<t_field>(string_type(), "name"));
+  enum_type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  struct_type.append(
+      std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  union_type.append(
+      std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  typedef_type.append(
+      std::make_unique<t_field>(&t_base_type::t_string(), "name"));
   typedef_type.append(std::make_unique<t_field>(&type, "underlyingType"));
   stream_type.append(std::make_unique<t_field>(&type, "elemType"));
   stream_type.append(std::make_unique<t_field>(&type, "initialResponseType"));
@@ -1745,10 +1747,10 @@ const t_type* t_hack_generator::tmeta_ThriftField_type() {
     return &type;
   }
 
-  type.append(std::make_unique<t_field>(i64_type(), "id"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_i64(), "id"));
   type.append(std::make_unique<t_field>(tmeta_ThriftType_type(), "type"));
-  type.append(std::make_unique<t_field>(string_type(), "name"));
-  type.append(std::make_unique<t_field>(bool_type(), "is_optional"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_bool(), "is_optional"));
   return &type;
 }
 
@@ -1760,12 +1762,12 @@ const t_type* t_hack_generator::tmeta_ThriftFunction_type() {
     return &type;
   }
 
-  type.append(std::make_unique<t_field>(string_type(), "name"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
   type.append(
       std::make_unique<t_field>(tmeta_ThriftType_type(), "return_type"));
   type.append(std::make_unique<t_field>(&tlist, "arguments"));
   type.append(std::make_unique<t_field>(&tlist, "exceptions"));
-  type.append(std::make_unique<t_field>(bool_type(), "is_oneway"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_bool(), "is_oneway"));
   return &type;
 }
 
@@ -1777,9 +1779,9 @@ const t_type* t_hack_generator::tmeta_ThriftService_type() {
     return &type;
   }
 
-  type.append(std::make_unique<t_field>(string_type(), "name"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
   type.append(std::make_unique<t_field>(&tlist, "functions"));
-  type.append(std::make_unique<t_field>(string_type(), "parent"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "parent"));
   return &type;
 }
 
