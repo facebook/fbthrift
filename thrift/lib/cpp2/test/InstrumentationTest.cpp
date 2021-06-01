@@ -312,24 +312,25 @@ class RequestInstrumentationTest : public testing::Test {
         });
   }
 
-  auto makeSingleSocketRocketClient(folly::EventBase* eventBase) {
+  template <typename ClientChannelT>
+  auto makeSingleSocketClient(folly::EventBase* eventBase) {
     struct ViaEventBaseDeleter {
-      folly::EventBase* eventBase_;
+      folly::Executor::KeepAlive<folly::EventBase> ka_;
 
       void operator()(InstrumentationTestServiceAsyncClient* client) const {
-        eventBase_->runInEventBaseThread([client] { delete client; });
+        ka_->add([client] { delete client; });
       }
     };
-    RocketClientChannel::Ptr channel;
+    ClientChannel::Ptr channel;
     eventBase->runInEventBaseThreadAndWait([&] {
       auto socket =
           folly::AsyncSocket::newSocket(eventBase, server().getAddress());
-      channel = RocketClientChannel::newChannel(std::move(socket));
+      channel = ClientChannelT::newChannel(std::move(socket));
     });
     return std::
         unique_ptr<InstrumentationTestServiceAsyncClient, ViaEventBaseDeleter>{
             new InstrumentationTestServiceAsyncClient(std::move(channel)),
-            {eventBase}};
+            {folly::Executor::getKeepAliveToken(eventBase)}};
   }
 
   auto rpcOptionsFromHeaders(
@@ -512,10 +513,10 @@ TEST_F(RequestInstrumentationTest, ConnectionSnapshotsTest) {
 
   folly::ScopedEventBaseThread eventBaseThread;
   auto evb = eventBaseThread.getEventBase();
-  auto client1 = makeSingleSocketRocketClient(evb);
-  auto client2 = makeSingleSocketRocketClient(evb);
-  auto client3 = makeSingleSocketRocketClient(evb);
-  auto headerClient = makeHeaderClient();
+  auto client1 = makeSingleSocketClient<RocketClientChannel>(evb);
+  auto client2 = makeSingleSocketClient<RocketClientChannel>(evb);
+  auto client3 = makeSingleSocketClient<RocketClientChannel>(evb);
+  auto headerClient = makeSingleSocketClient<HeaderClientChannel>(evb);
 
   for (size_t i = 0; i < 10; ++i) {
     client1->semifuture_sendRequest();
@@ -545,6 +546,10 @@ TEST_F(RequestInstrumentationTest, ConnectionSnapshotsTest) {
   EXPECT_EQ(client3Snapshot->second.getNumActiveRequests(), 1);
 
   handler()->stopRequests();
+  // Wait for requests to be marked as completed
+  while (thriftServer()->getActiveRequests() > 0) {
+    std::this_thread::yield();
+  }
 
   EXPECT_TRUE(getServerSnapshot().connections.empty());
 }
