@@ -305,9 +305,9 @@ void RocketTestClient::disconnect() {
 }
 
 void RocketTestClient::verifyVersion() {
-  if (client_ && client_->getServerVersion().has_value()) {
+  if (client_ && client_->getServerVersion() != -1) {
     EXPECT_EQ(
-        std::min(kClientVersion, kServerVersion), *client_->getServerVersion());
+        std::min(kClientVersion, kServerVersion), client_->getServerVersion());
   }
 }
 

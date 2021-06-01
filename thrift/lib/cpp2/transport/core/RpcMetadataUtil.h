@@ -42,7 +42,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
-    const std::optional<int32_t>& version);
+    int32_t version);
 
 void fillTHeaderFromResponseRpcMetadata(
     ResponseRpcMetadata& responseMetadata, transport::THeader& header);

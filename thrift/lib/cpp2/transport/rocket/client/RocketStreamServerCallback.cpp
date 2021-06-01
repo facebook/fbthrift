@@ -88,8 +88,7 @@ StreamChannelStatus RocketStreamServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        auto serverVersion = client_.getServerVersion();
-        if (serverVersion && serverVersion.value() >= 8) {
+        if (client_.getServerVersion() >= 8) {
           clientCallback_->onStreamError(
               thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
         } else {
@@ -399,8 +398,7 @@ StreamChannelStatus RocketSinkServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        auto serverVersion = client_.getServerVersion();
-        if (serverVersion && serverVersion.value() >= 8) {
+        if (client_.getServerVersion() >= 8) {
           clientCallback_->onFinalResponseError(
               thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
         } else {

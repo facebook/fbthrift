@@ -76,13 +76,13 @@ RocketClient::RocketClient(
     folly::AsyncTransport::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
-      socket_(std::move(socket)),
-      setupFrame_(std::move(setupFrame)),
-      parser_(*this),
       writeLoopCallback_(*this),
+      socket_(std::move(socket)),
+      parser_(*this),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
-      eventBaseDestructionCallback_(*this) {
+      eventBaseDestructionCallback_(*this),
+      setupFrame_(std::move(setupFrame)) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
   if (auto socket = dynamic_cast<folly::AsyncSocket*>(socket_.get())) {
@@ -138,12 +138,13 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     }
     switch (serverMeta.getType()) {
       case ServerPushMetadata::setupResponse: {
-        setServerVersion(
-            serverMeta.setupResponse_ref()->version_ref().value_or(0));
+        setServerVersion(std::min(
+            serverMeta.setupResponse_ref()->version_ref().value_or(0),
+            (int32_t)std::numeric_limits<int16_t>::max()));
         break;
       }
       case ServerPushMetadata::streamHeadersPush: {
-        DCHECK(!serverVersion_ || *serverVersion_ >= 7);
+        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
         StreamId sid(
             serverMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
         auto it = streams_.find(sid);
@@ -158,7 +159,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         return;
       }
       case ServerPushMetadata::drainCompletePush: {
-        DCHECK(!serverVersion_ || *serverVersion_ >= 7);
+        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
         auto drainCode =
             serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
         if (drainCode &&
@@ -395,7 +396,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
   }
 
   if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
-    DCHECK(!serverVersion_ || *serverVersion_ < 7);
+    DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
     auto headersPayload = unpack<HeadersPayload>(std::move(extFrame.payload()));
     if (headersPayload.hasException()) {
       return serverCallback.onStreamError(
@@ -453,7 +454,7 @@ void RocketClient::handleError(RocketException&& rex) {
       return;
     }
   }
-  if (state_ == ConnectionState::ERROR) {
+  if (clientState_.connState == ConnectionState::ERROR) {
     error_ = std::move(ew);
   } else {
     close(std::move(ew));
@@ -466,7 +467,7 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
     WriteSuccessCallback* writeSuccessCallback) {
   DestructorGuard dg(this);
   auto g = makeRequestCountGuard(RequestType::CLIENT);
-  auto setupFrame = std::move(setupFrame_);
+  auto setupFrame = moveOutSetupFrame();
   RequestContext ctx(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -482,7 +483,7 @@ void RocketClient::sendRequestResponse(
     Payload&& request,
     std::chrono::milliseconds timeout,
     std::unique_ptr<RequestResponseCallback> callback) {
-  auto setupFrame = std::move(setupFrame_);
+  auto setupFrame = moveOutSetupFrame();
   auto rctx = std::make_unique<RequestContext>(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -538,7 +539,7 @@ folly::Try<void> RocketClient::sendRequestFnfSync(Payload&& request) {
   CHECK(folly::fibers::onFiber());
   DestructorGuard dg(this);
   auto g = makeRequestCountGuard(RequestType::CLIENT);
-  auto setupFrame = std::move(setupFrame_);
+  auto setupFrame = moveOutSetupFrame();
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -551,7 +552,7 @@ folly::Try<void> RocketClient::sendRequestFnfSync(Payload&& request) {
 
 void RocketClient::sendRequestFnf(
     Payload&& request, std::unique_ptr<RequestFnfCallback> callback) {
-  auto setupFrame = std::move(setupFrame_);
+  auto setupFrame = moveOutSetupFrame();
   auto rctx = std::make_unique<RequestContext>(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -752,7 +753,7 @@ void RocketClient::sendRequestStreamChannel(
       std::make_unique<Context>(
           *this,
           streamId,
-          std::move(setupFrame_),
+          moveOutSetupFrame(),
           Frame(streamId, std::move(request), initialRequestN),
           queue_,
           *serverCallbackPtr),
@@ -1000,7 +1001,7 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
         "Cannot send requests on a detached client"));
   }
 
-  if (state_ != ConnectionState::CONNECTED) {
+  if (clientState_.connState != ConnectionState::CONNECTED) {
     return folly::Try<void>(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::NOT_OPEN,
@@ -1017,11 +1018,11 @@ StreamId RocketClient::makeStreamId() {
   do {
     id = nextStreamId_;
     nextStreamId_ += 2;
-  } while (hitMaxStreamId_ && streams_.contains(id));
+  } while (clientState_.hitMaxStreamId && streams_.contains(id));
 
   if (UNLIKELY(id == StreamId::maxClientStreamId())) {
     nextStreamId_ = StreamId(1);
-    hitMaxStreamId_ = true;
+    clientState_.hitMaxStreamId = true;
   }
   return id;
 }
@@ -1048,7 +1049,7 @@ void RocketClient::scheduleWriteLoopCallback() {
 void RocketClient::writeScheduledRequestsToSocket() noexcept {
   DestructorGuard dg(this);
 
-  if (state_ == ConnectionState::CONNECTED) {
+  if (clientState_.connState == ConnectionState::CONNECTED) {
     auto buf = queue_.getNextScheduledWritesBatch();
 
     if (buf) {
@@ -1061,7 +1062,7 @@ void RocketClient::writeScheduledRequestsToSocket() noexcept {
 
 void RocketClient::writeSuccess() noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ != ConnectionState::CLOSED);
+  DCHECK(clientState_.connState != ConnectionState::CLOSED);
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
     req.onWriteSuccess();
@@ -1074,7 +1075,7 @@ void RocketClient::writeSuccess() noexcept {
 void RocketClient::writeErr(
     size_t bytesWritten, const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ != ConnectionState::CLOSED);
+  DCHECK(clientState_.connState != ConnectionState::CLOSED);
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
     if (bytesWritten == 0) {
@@ -1101,7 +1102,7 @@ void RocketClient::writeErr(
 void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   DestructorGuard dg(this);
 
-  if (state_ == ConnectionState::CLOSED) {
+  if (clientState_.connState == ConnectionState::CLOSED) {
     return;
   }
 
@@ -1113,12 +1114,12 @@ void RocketClient::closeNow(transport::TTransportException ex) noexcept {
 void RocketClient::close(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
-  if (state_ != ConnectionState::CONNECTED) {
+  if (clientState_.connState != ConnectionState::CONNECTED) {
     return;
   }
 
   error_ = std::move(ew);
-  state_ = ConnectionState::ERROR;
+  clientState_.connState = ConnectionState::ERROR;
 
   writeLoopCallback_.cancelLoopCallback();
   queue_.failAllScheduledWrites(error_);
@@ -1131,7 +1132,7 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
 
 void RocketClient::closeNowImpl() noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ == ConnectionState::ERROR);
+  DCHECK(clientState_.connState == ConnectionState::ERROR);
 
   DCHECK(socket_);
   socket_->closeNow();
@@ -1142,7 +1143,7 @@ void RocketClient::closeNowImpl() noexcept {
   socket_->setReadCB(nullptr);
   socket_.reset();
 
-  state_ = ConnectionState::CLOSED;
+  clientState_.connState = ConnectionState::CLOSED;
   if (auto closeCallback = std::move(closeCallback_)) {
     closeCallback();
   }
@@ -1367,7 +1368,7 @@ void RocketClient::onServerVersionRequired() {
   // if a version dependent frame is scheduled but server setup response has
   // not been received, buffer all other requests until server version is
   // known
-  DCHECK(!serverVersion_);
+  DCHECK(serverVersion_ == -1);
   if (!queue_.startBufferingRequests()) {
     return; // already buffering
   }
@@ -1378,13 +1379,21 @@ void RocketClient::onServerVersionRequired() {
       std::chrono::milliseconds(THRIFT_FLAG(rocket_server_version_timeout_ms)));
 }
 
-void RocketClient::setServerVersion(uint32_t serverVersion) {
+void RocketClient::setServerVersion(int32_t serverVersion) {
   // set server version, cancel timeout and resolve any buffered requests
   serverVersion_ = serverVersion;
   serverVersionTimeout_.reset();
   if (queue_.resolveWriteBuffer(serverVersion)) {
     scheduleWriteLoopCallback();
   }
+}
+
+std::unique_ptr<SetupFrame> RocketClient::moveOutSetupFrame() {
+  if (UNLIKELY(clientState_.hasPendingSetupFrame)) {
+    clientState_.hasPendingSetupFrame = false;
+    return std::move(setupFrame_);
+  }
+  return nullptr;
 }
 
 } // namespace rocket

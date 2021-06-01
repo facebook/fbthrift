@@ -38,7 +38,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
-    const std::optional<int32_t>& version) {
+    int32_t version) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
@@ -75,7 +75,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
 
   auto clientId = header.clientId();
   auto serviceTraceMeta = header.serviceTraceMeta();
-  if (!version.has_value() || version.value() < 6) {
+  if (version < 6) {
     if (clientId.has_value()) {
       writeHeaders[transport::THeader::kClientId] = std::move(*clientId);
     }

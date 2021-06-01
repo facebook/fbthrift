@@ -27,6 +27,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -53,7 +54,8 @@ namespace transport {
 class THeader;
 } // namespace transport
 
-class RocketClientChannel final : public ClientChannel {
+class RocketClientChannel final : public ClientChannel,
+                                  private rocket::RocketClient {
  public:
   using Ptr = std::
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
@@ -140,18 +142,18 @@ class RocketClientChannel final : public ClientChannel {
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
 
-  folly::EventBase* evb_{nullptr};
-  std::unique_ptr<rocket::RocketClient, folly::DelayedDestruction::Destructor>
-      rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
-
+  bool clientDestroyed_{false};
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
+  folly::EventBase* evb_{nullptr};
 
   folly::F14FastMap<int64_t, ManagedStringView> pendingInteractions_;
 
   RocketClientChannel(
-      folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta);
+      folly::EventBase* evb,
+      folly::AsyncTransport::UniquePtr socket,
+      RequestSetupMetadata meta);
 
   RocketClientChannel(const RocketClientChannel&) = delete;
   RocketClientChannel& operator=(const RocketClientChannel&) = delete;
@@ -186,7 +188,7 @@ class RocketClientChannel final : public ClientChannel {
 
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
-  const std::optional<int32_t>& getServerVersion() const;
+  int32_t getServerVersion() const;
 
   class SingleRequestSingleResponseCallback;
   class SingleRequestNoResponseCallback;

@@ -48,7 +48,7 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-class RocketClient : public folly::DelayedDestruction,
+class RocketClient : public virtual folly::DelayedDestruction,
                      private folly::AsyncTransport::WriteCallback {
  public:
   using FlushList = boost::intrusive::list<
@@ -141,7 +141,9 @@ class RocketClient : public folly::DelayedDestruction,
     closeCallback_ = std::move(closeCallback);
   }
 
-  bool isAlive() const { return state_ == ConnectionState::CONNECTED; }
+  bool isAlive() const {
+    return clientState_.connState == ConnectionState::CONNECTED;
+  }
 
   const folly::exception_wrapper& getLastError() const { return error_; }
 
@@ -219,45 +221,36 @@ class RocketClient : public folly::DelayedDestruction,
 
   void decMemoryUsage(uint32_t) {}
 
-  const std::optional<int32_t>& getServerVersion() const {
-    return serverVersion_;
-  }
+  int32_t getServerVersion() const { return serverVersion_; }
+
+  folly::EventBase* getEventBase() { return evb_; }
 
  private:
-  folly::EventBase* evb_;
-  folly::AsyncTransport::UniquePtr socket_;
-  folly::Function<void()> onDetachable_;
-  // Client requests + internal requests (requestN, cancel, etc).
-  size_t requests_{0};
-  // Client facing requests (singleRequest(Single|No)Response)
-  size_t clientRequests_{0};
-  size_t interactions_{0};
-  StreamId nextStreamId_{1};
-  bool hitMaxStreamId_{false};
-  std::unique_ptr<SetupFrame> setupFrame_;
-  FlushList* flushList_{nullptr};
   enum class ConnectionState : uint8_t {
     CONNECTED,
     CLOSED,
     ERROR,
   };
-  // Client must be constructed with an already open socket
-  ConnectionState state_{ConnectionState::CONNECTED};
-  folly::exception_wrapper error_;
 
-  RequestContextQueue queue_;
+  struct ClientState {
+    ConnectionState connState : 2;
+    bool hitMaxStreamId : 1;
+    bool hasPendingSetupFrame : 1;
 
-  class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
-   public:
-    FirstResponseTimeout(RocketClient& client, StreamId streamId)
-        : client_(client), streamId_(streamId) {}
+    ClientState() {
+      // Client must be constructed with an already open socket
+      connState = ConnectionState::CONNECTED;
+      hitMaxStreamId = false;
+      hasPendingSetupFrame = true;
+    }
+  } clientState_;
+  int16_t serverVersion_{-1};
+  StreamId nextStreamId_{1};
 
-    void timeoutExpired() noexcept override;
-
-   private:
-    RocketClient& client_;
-    StreamId streamId_;
-  };
+  // Client requests + internal requests (requestN, cancel, etc).
+  uint32_t requests_{0};
+  // Client facing requests (singleRequest(Single|No)Response)
+  uint32_t clientRequests_{0};
 
   struct ServerCallbackUniquePtr {
     explicit ServerCallbackUniquePtr(
@@ -331,14 +324,6 @@ class RocketClient : public folly::DelayedDestruction,
 
     intptr_t storage_;
   };
-  struct StreamIdResolver {
-    StreamId operator()(StreamId streamId) const { return streamId; }
-
-    StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
-      return callbackVariant.match(
-          [](const auto* callback) { return callback->streamId(); });
-    }
-  };
   struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
     template <typename K>
     size_t operator()(const K& key) const {
@@ -353,18 +338,14 @@ class RocketClient : public folly::DelayedDestruction,
       return resolver(a) == resolver(b);
     }
   };
+
   using StreamMap = folly::F14FastSet<
       ServerCallbackUniquePtr,
       folly::transparent<StreamMapHasher>,
       folly::transparent<StreamMapEquals>>;
   StreamMap streams_;
-
-  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
-  using FirstResponseTimeoutMap =
-      folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
-  FirstResponseTimeoutMap firstResponseTimeouts_;
-
-  Parser<RocketClient> parser_;
+  folly::EventBase* evb_;
+  RequestContextQueue queue_;
 
   class WriteLoopCallback : public folly::EventBase::LoopCallback {
    public:
@@ -378,6 +359,40 @@ class RocketClient : public folly::DelayedDestruction,
   };
   WriteLoopCallback writeLoopCallback_;
   void scheduleWriteLoopCallback();
+  FlushList* flushList_{nullptr};
+
+  folly::AsyncTransport::UniquePtr socket_;
+  folly::Function<void()> onDetachable_;
+  folly::exception_wrapper error_;
+
+  class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
+   public:
+    FirstResponseTimeout(RocketClient& client, StreamId streamId)
+        : client_(client), streamId_(streamId) {}
+
+    void timeoutExpired() noexcept override;
+
+   private:
+    RocketClient& client_;
+    StreamId streamId_;
+  };
+
+  struct StreamIdResolver {
+    StreamId operator()(StreamId streamId) const { return streamId; }
+
+    StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
+      return callbackVariant.match(
+          [](const auto* callback) { return callback->streamId(); });
+    }
+  };
+
+  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
+  using FirstResponseTimeoutMap =
+      folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
+  FirstResponseTimeoutMap firstResponseTimeouts_;
+
+  Parser<RocketClient> parser_;
+
   class DetachableLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit DetachableLoopCallback(RocketClient& client) : client_(client) {}
@@ -417,13 +432,17 @@ class RocketClient : public folly::DelayedDestruction,
   };
   OnEventBaseDestructionCallback eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
-  std::optional<int32_t> serverVersion_;
 
+  size_t interactions_{0};
+  std::unique_ptr<SetupFrame> setupFrame_;
+
+ protected:
   RocketClient(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
+ private:
   template <class OnError>
   class SendFrameContext;
 
@@ -521,14 +540,17 @@ class RocketClient : public folly::DelayedDestruction,
   };
   std::unique_ptr<ServerVersionTimeout> serverVersionTimeout_;
   void onServerVersionRequired();
-  void setServerVersion(uint32_t serverVersion);
+  void setServerVersion(int32_t serverVersion);
 
+ protected:
   // Close the connection and fail all the requests *inline*. This should not be
   // called inline from any of the callbacks triggered by RocketClient.
   void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
 
+ private:
   bool setError(apache::thrift::transport::TTransportException ex) noexcept;
   void closeNowImpl() noexcept;
+  std::unique_ptr<SetupFrame> moveOutSetupFrame();
 
   template <class T>
   friend class Parser;

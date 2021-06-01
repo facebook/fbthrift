@@ -630,13 +630,15 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
 }
 
 RocketClientChannel::RocketClientChannel(
-    folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta)
-    : evb_(socket->getEventBase()),
-      rclient_(rocket::RocketClient::create(
-          *evb_,
+    folly::EventBase* eventBase,
+    folly::AsyncTransport::UniquePtr socket,
+    RequestSetupMetadata meta)
+    : rocket::RocketClient(
+          *eventBase,
           std::move(socket),
           std::make_unique<rocket::SetupFrame>(
-              makeSetupFrame(std::move(meta))))) {}
+              makeSetupFrame(std::move(meta)))),
+      evb_(eventBase) {}
 
 RocketClientChannel::~RocketClientChannel() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
@@ -645,20 +647,22 @@ RocketClientChannel::~RocketClientChannel() {
 }
 
 void RocketClientChannel::setFlushList(FlushList* flushList) {
-  if (rclient_) {
-    rclient_->setFlushList(flushList);
+  if (!clientDestroyed_) {
+    rocket::RocketClient::setFlushList(flushList);
   }
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
     folly::AsyncTransport::UniquePtr socket) {
+  auto evb = socket->getEventBase();
   return RocketClientChannel::Ptr(
-      new RocketClientChannel(std::move(socket), RequestSetupMetadata()));
+      new RocketClientChannel(evb, std::move(socket), RequestSetupMetadata()));
 }
 RocketClientChannel::Ptr RocketClientChannel::newChannelWithMetadata(
     folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta) {
+  auto evb = socket->getEventBase();
   return RocketClientChannel::Ptr(
-      new RocketClientChannel(std::move(socket), std::move(meta)));
+      new RocketClientChannel(evb, std::move(socket), std::move(meta)));
 }
 
 void RocketClientChannel::sendRequestResponse(
@@ -721,7 +725,7 @@ void RocketClientChannel::sendRequestStream(
 
   auto payload = rocket::pack(metadata, std::move(buf));
   assert(metadata.name_ref());
-  return rclient_->sendRequestStream(
+  return rocket::RocketClient::sendRequestStream(
       std::move(payload),
       firstResponseTimeout,
       rpcOptions.getChunkTimeout(),
@@ -760,7 +764,7 @@ void RocketClientChannel::sendRequestSink(
 
   auto payload = rocket::pack(metadata, std::move(buf));
   assert(metadata.name_ref());
-  return rclient_->sendRequestSink(
+  return rocket::RocketClient::sendRequestSink(
       std::move(payload),
       firstResponseTimeout,
       new FirstRequestProcessorSink(
@@ -828,9 +832,10 @@ void RocketClientChannel::sendSingleRequestNoResponse(
   SingleRequestNoResponseCallback callback(std::move(cb));
 
   if (isSync && folly::fibers::onFiber()) {
-    callback.onWrite(rclient_->sendRequestFnfSync(std::move(requestPayload)));
+    callback.onWrite(
+        rocket::RocketClient::sendRequestFnfSync(std::move(requestPayload)));
   } else {
-    rclient_->sendRequestFnf(
+    rocket::RocketClient::sendRequestFnf(
         std::move(requestPayload),
         folly::copy_to_unique_ptr(std::move(callback)));
   }
@@ -855,10 +860,10 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
       requestWireSize);
 
   if (isSync && folly::fibers::onFiber()) {
-    callback.onResponsePayload(rclient_->sendRequestResponseSync(
+    callback.onResponsePayload(rocket::RocketClient::sendRequestResponseSync(
         std::move(requestPayload), timeout, &callback));
   } else {
-    rclient_->sendRequestResponse(
+    rocket::RocketClient::sendRequestResponse(
         std::move(requestPayload),
         timeout,
         folly::copy_to_unique_ptr(std::move(callback)));
@@ -887,7 +892,7 @@ bool RocketClientChannel::preSendValidation(
   metadata.seqId_ref().reset();
   DCHECK(metadata.kind_ref().has_value());
 
-  if (!rclient_) {
+  if (clientDestroyed_) {
     // Channel destroyed by explicit closeNow() call.
     onResponseError(
         cb,
@@ -897,7 +902,7 @@ bool RocketClientChannel::preSendValidation(
     return false;
   }
 
-  if (!rclient_->isAlive()) {
+  if (!isAlive()) {
     // Channel is not in connected state due to some pre-existing transport
     // exception, pass it back for some breadcrumbs.
     onResponseError(
@@ -905,7 +910,8 @@ bool RocketClientChannel::preSendValidation(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::NOT_OPEN,
             folly::sformat(
-                "Connection not open: {}", rclient_->getLastError().what())));
+                "Connection not open: {}",
+                rocket::RocketClient::getLastError().what())));
     return false;
   }
 
@@ -950,15 +956,16 @@ ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {
 
 void RocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  if (auto rclient = std::move(rclient_)) {
-    rclient->close(transport::TTransportException(
+  if (!clientDestroyed_) {
+    clientDestroyed_ = true;
+    rocket::RocketClient::closeNow(transport::TTransportException(
         transport::TTransportException::INTERRUPTED, "Client shutdown."));
   }
 }
 
 void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
-  if (rclient_) {
-    rclient_->setCloseCallback([closeCallback] {
+  if (!clientDestroyed_) {
+    rocket::RocketClient::setCloseCallback([closeCallback] {
       if (closeCallback) {
         closeCallback->channelClosed();
       }
@@ -967,11 +974,11 @@ void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
 }
 
 folly::AsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
-  if (!rclient_) {
+  if (clientDestroyed_) {
     return nullptr;
   }
 
-  auto* transportWrapper = rclient_->getTransportWrapper();
+  auto* transportWrapper = rocket::RocketClient::getTransportWrapper();
   return transportWrapper
       ? transportWrapper->getUnderlyingTransport<folly::AsyncTransport>()
       : nullptr;
@@ -979,11 +986,11 @@ folly::AsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
 
 bool RocketClientChannel::good() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  return rclient_ && rclient_->isAlive();
+  return !clientDestroyed_ && isAlive();
 }
 
 size_t RocketClientChannel::inflightRequestsAndStreams() const {
-  return (rclient_ ? rclient_->streams() + rclient_->requests() : 0);
+  return streams() + requests();
 }
 
 void RocketClientChannel::setTimeout(uint32_t timeoutMs) {
@@ -996,8 +1003,8 @@ void RocketClientChannel::setTimeout(uint32_t timeoutMs) {
 
 void RocketClientChannel::attachEventBase(folly::EventBase* evb) {
   DCHECK(evb->isInEventBaseThread());
-  if (rclient_) {
-    rclient_->attachEventBase(*evb);
+  if (!clientDestroyed_) {
+    rocket::RocketClient::attachEventBase(*evb);
   }
   evb_ = evb;
 }
@@ -1006,8 +1013,8 @@ void RocketClientChannel::detachEventBase() {
   DCHECK(isDetachable());
   DCHECK(getDestructorGuardCount() == 0);
 
-  if (rclient_) {
-    rclient_->detachEventBase();
+  if (!clientDestroyed_) {
+    rocket::RocketClient::detachEventBase();
   }
   evb_ = nullptr;
 }
@@ -1015,15 +1022,15 @@ void RocketClientChannel::detachEventBase() {
 bool RocketClientChannel::isDetachable() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   auto* transport = getTransport();
-  return !evb_ || !transport || !rclient_ ||
-      (rclient_->isDetachable() && pendingInteractions_.empty());
+  return !evb_ || !transport || clientDestroyed_ ||
+      (rocket::RocketClient::isDetachable() && pendingInteractions_.empty());
 }
 
 void RocketClientChannel::setOnDetachable(
     folly::Function<void()> onDetachable) {
-  DCHECK(rclient_);
+  DCHECK(!clientDestroyed_);
   ClientChannel::setOnDetachable(std::move(onDetachable));
-  rclient_->setOnDetachable([this] {
+  rocket::RocketClient::setOnDetachable([this] {
     if (isDetachable()) {
       notifyDetachable();
     }
@@ -1032,8 +1039,8 @@ void RocketClientChannel::setOnDetachable(
 
 void RocketClientChannel::unsetOnDetachable() {
   ClientChannel::unsetOnDetachable();
-  if (rclient_) {
-    rclient_->setOnDetachable(nullptr);
+  if (!clientDestroyed_) {
+    rocket::RocketClient::setOnDetachable(nullptr);
   }
 }
 
@@ -1045,7 +1052,7 @@ void RocketClientChannel::terminateInteraction(InteractionId id) {
     releaseInteractionId(std::move(id));
     return;
   }
-  rclient_->terminateInteraction(id);
+  rocket::RocketClient::terminateInteraction(id);
   releaseInteractionId(std::move(id));
 }
 
@@ -1058,17 +1065,13 @@ InteractionId RocketClientChannel::registerInteraction(
   auto res = pendingInteractions_.insert({id, std::move(name)});
   DCHECK(res.second);
 
-  rclient_->addInteraction();
+  rocket::RocketClient::addInteraction();
 
   return createInteractionId(id);
 }
 
-const std::optional<int32_t>& RocketClientChannel::getServerVersion() const {
-  static constexpr std::optional<int32_t> none;
-  if (UNLIKELY(!rclient_)) {
-    return none;
-  }
-  return rclient_->getServerVersion();
+int32_t RocketClientChannel::getServerVersion() const {
+  return rocket::RocketClient::getServerVersion();
 }
 
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;

@@ -73,18 +73,18 @@ class RequestContext {
   template <class InitFunc>
   RequestContext(
       InitFunc&& initFunc,
-      const std::optional<int32_t>& serverVersion,
+      int32_t serverVersion,
       StreamId streamId,
       RequestContextQueue& queue,
       WriteSuccessCallback* writeSuccessCallback = nullptr)
       : queue_(queue),
         streamId_(streamId),
         writeSuccessCallback_(writeSuccessCallback) {
-    if (UNLIKELY(!serverVersion)) {
+    if (UNLIKELY(serverVersion == -1)) {
       deferredInit_ = std::forward<InitFunc>(initFunc);
       state_ = State::DEFERRED_INIT;
     } else {
-      std::tie(serializedFrame_, frameType_) = initFunc(*serverVersion);
+      std::tie(serializedFrame_, frameType_) = initFunc(serverVersion);
     }
   }
 
