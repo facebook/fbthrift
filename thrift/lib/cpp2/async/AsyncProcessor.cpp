@@ -452,15 +452,16 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   if (eb_->inRunningEventBaseThread()) {
-    AppOverloadExceptionInfo(
+    AppOverloadExceptionInfo::send(
         std::move(req_),
-        ManagedStringView::from_static(message),
-        std::exchange(interaction_, nullptr))(*getEventBase());
+        message,
+        std::exchange(interaction_, nullptr),
+        *getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<AppOverloadExceptionInfo>(),
         std::move(req_),
-        ManagedStringView(message),
+        message,
         std::exchange(interaction_, nullptr));
   }
 }

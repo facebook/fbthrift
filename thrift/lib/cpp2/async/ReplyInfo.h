@@ -27,24 +27,31 @@ class AppOverloadExceptionInfo {
  public:
   AppOverloadExceptionInfo(
       ResponseChannelRequest::UniquePtr req,
-      ManagedStringView message,
+      std::string message,
       Tile* interaction)
       : req_(std::move(req)),
         message_(std::move(message)),
         interaction_(interaction) {}
 
-  void operator()(folly::EventBase& evb) noexcept {
-    if (interaction_) {
-      interaction_->__fbthrift_releaseRef(evb);
+  static void send(
+      ResponseChannelRequest::UniquePtr req,
+      const std::string& message,
+      Tile* interaction,
+      folly::EventBase& evb) noexcept {
+    if (interaction) {
+      interaction->__fbthrift_releaseRef(evb);
     }
-    req_->sendErrorWrapped(
+    req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::LOADSHEDDING, message_.str()),
+            TApplicationException::LOADSHEDDING, message),
         kAppOverloadedErrorCode);
+  }
+  void operator()(folly::EventBase& evb) noexcept {
+    send(std::move(req_), message_, interaction_, evb);
   }
 
   ResponseChannelRequest::UniquePtr req_;
-  ManagedStringView message_;
+  std::string message_;
   Tile* interaction_;
 };
 

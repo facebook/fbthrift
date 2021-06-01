@@ -24,14 +24,15 @@ using namespace apache::thrift;
 TEST(ManagedStringViewTest, Basic) {
   static std::string s1 = "foo";
   static folly::StringPiece s2 = "bar";
+  std::string_view sp1{s1}, sp2{s2};
 
-  ManagedStringView s = ManagedStringView::from_static(s1);
+  ManagedStringView s = ManagedStringView::from_static(sp1);
   EXPECT_EQ(s.str(), "foo");
   s1 = "qux";
   EXPECT_EQ(s.str(), "qux");
   EXPECT_EQ(s.view(), "qux");
 
-  s = ManagedStringView::from_static(s2);
+  s = ManagedStringView::from_static(sp2);
   EXPECT_EQ(s.str(), "bar");
 
   {
