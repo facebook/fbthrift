@@ -827,12 +827,13 @@ ThriftServer::getServerSnapshot() {
                     dynamic_cast<ManagedConnectionIf*>(wangleConnection)) {
               auto numActiveRequests =
                   managedConnection->getNumActiveRequests();
-              if (numActiveRequests > 0) {
+              auto numPendingWrites = managedConnection->getNumPendingWrites();
+              const bool shouldInclude =
+                  numActiveRequests > 0 || numPendingWrites > 0;
+              if (shouldInclude) {
                 connectionSnapshots.emplace(
                     managedConnection->getPeerAddress(),
-                    ConnectionSnapshot{
-                        numActiveRequests,
-                        managedConnection->getNumPendingWrites()});
+                    ConnectionSnapshot{numActiveRequests, numPendingWrites});
               }
             }
           });

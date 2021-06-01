@@ -511,46 +511,57 @@ TEST_F(RequestInstrumentationTest, ConnectionSnapshotsTest) {
     return transport->getLocalAddress();
   };
 
-  folly::ScopedEventBaseThread eventBaseThread;
-  auto evb = eventBaseThread.getEventBase();
-  auto client1 = makeSingleSocketClient<RocketClientChannel>(evb);
-  auto client2 = makeSingleSocketClient<RocketClientChannel>(evb);
-  auto client3 = makeSingleSocketClient<RocketClientChannel>(evb);
-  auto headerClient = makeSingleSocketClient<HeaderClientChannel>(evb);
+  {
+    folly::ScopedEventBaseThread eventBaseThread;
+    auto evb = eventBaseThread.getEventBase();
+    auto client1 = makeSingleSocketClient<RocketClientChannel>(evb);
+    auto client2 = makeSingleSocketClient<RocketClientChannel>(evb);
+    auto client3 = makeSingleSocketClient<RocketClientChannel>(evb);
+    auto headerClient = makeSingleSocketClient<HeaderClientChannel>(evb);
 
-  for (size_t i = 0; i < 10; ++i) {
-    client1->semifuture_sendRequest();
+    for (size_t i = 0; i < 10; ++i) {
+      client1->semifuture_sendRequest();
+    }
+    for (size_t i = 0; i < 20; ++i) {
+      client2->semifuture_sendRequest();
+    }
+    client3->semifuture_sendStreamingRequest();
+    // Header connections are not counted towards connection snapshots
+    headerClient->semifuture_sendRequest();
+
+    auto serverSnapshot = waitForRequestsThenSnapshot(32);
+    EXPECT_EQ(serverSnapshot.requests.size(), 32);
+    auto& connections = serverSnapshot.connections;
+    EXPECT_EQ(connections.size(), 3);
+
+    auto client1Snapshot = connections.find(getLocalAddressOf(*client1));
+    ASSERT_NE(client1Snapshot, connections.end());
+    EXPECT_EQ(client1Snapshot->second.numActiveRequests, 10);
+
+    auto client2Snapshot = connections.find(getLocalAddressOf(*client2));
+    ASSERT_NE(client2Snapshot, connections.end());
+    EXPECT_EQ(client2Snapshot->second.numActiveRequests, 20);
+
+    auto client3Snapshot = connections.find(getLocalAddressOf(*client3));
+    ASSERT_NE(client3Snapshot, connections.end());
+    EXPECT_EQ(client3Snapshot->second.numActiveRequests, 1);
+
+    handler()->stopRequests();
+    // Wait for requests to be marked as completed
+    while (thriftServer()->getActiveRequests() > 0) {
+      std::this_thread::yield();
+    }
   }
-  for (size_t i = 0; i < 20; ++i) {
-    client2->semifuture_sendRequest();
-  }
-  client3->semifuture_sendStreamingRequest();
-  // Header connections are not counted towards connection snapshots
-  headerClient->semifuture_sendRequest();
 
-  auto serverSnapshot = waitForRequestsThenSnapshot(32);
-  EXPECT_EQ(serverSnapshot.requests.size(), 32);
-  auto& connections = serverSnapshot.connections;
-  EXPECT_EQ(connections.size(), 3);
-
-  auto client1Snapshot = connections.find(getLocalAddressOf(*client1));
-  ASSERT_NE(client1Snapshot, connections.end());
-  EXPECT_EQ(client1Snapshot->second.numActiveRequests, 10);
-
-  auto client2Snapshot = connections.find(getLocalAddressOf(*client2));
-  ASSERT_NE(client2Snapshot, connections.end());
-  EXPECT_EQ(client2Snapshot->second.numActiveRequests, 20);
-
-  auto client3Snapshot = connections.find(getLocalAddressOf(*client3));
-  ASSERT_NE(client3Snapshot, connections.end());
-  EXPECT_EQ(client3Snapshot->second.numActiveRequests, 1);
-
-  handler()->stopRequests();
-  // Wait for requests to be marked as completed
-  while (thriftServer()->getActiveRequests() > 0) {
+  // Client-side connections are closed. The server-side sockets may not be
+  // closed yet! Let's give it some leeway.
+  auto deadline = std::chrono::steady_clock::now() + 1s;
+  while (deadline > std::chrono::steady_clock::now()) {
+    if (getServerSnapshot().connections.empty()) {
+      break;
+    }
     std::this_thread::yield();
   }
-
   EXPECT_TRUE(getServerSnapshot().connections.empty());
 }
 
