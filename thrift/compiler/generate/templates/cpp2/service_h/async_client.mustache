@@ -190,7 +190,7 @@
 <%/type:void?%>
  private:
   template <typename Protocol_>
-  void <%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
+  void <%function:cpp_name%>T(Protocol_* prot, const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> <%function:cpp_name%>Ctx(apache::thrift::RpcOptions* rpcOptions);
  public:
 <%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>

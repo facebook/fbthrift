@@ -67,10 +67,10 @@ void maybeRunInEb(
 
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-    apache::thrift::RpcOptions&& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
+    std::shared_ptr<apache::thrift::transport::THeader>&& header,
     RequestClientCallback::Ptr callback) {
   maybeRunInEb(
       getEventBase(),
@@ -85,10 +85,10 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
 
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-    apache::thrift::RpcOptions&& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
+    std::shared_ptr<apache::thrift::transport::THeader>&& header,
     RequestClientCallback::Ptr callback) {
   maybeRunInEb(
       getEventBase(),
@@ -104,10 +104,10 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
 template <>
 void RequestChannel::sendRequestAsync<
     RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
-    apache::thrift::RpcOptions&& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
+    std::shared_ptr<apache::thrift::transport::THeader>&& header,
     StreamClientCallback* callback) {
   maybeRunInEb(
       getEventBase(),
@@ -122,10 +122,10 @@ void RequestChannel::sendRequestAsync<
 
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINK>(
-    apache::thrift::RpcOptions&& rpcOptions,
+    const apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
+    std::shared_ptr<apache::thrift::transport::THeader>&& header,
     SinkClientCallback* callback) {
   maybeRunInEb(
       getEventBase(),
