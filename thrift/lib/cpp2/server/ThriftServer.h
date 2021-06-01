@@ -831,17 +831,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     bool startedProcessing_;
   };
 
-  class ConnectionSnapshot {
-   public:
-    explicit ConnectionSnapshot(size_t numActiveRequests)
-        : numActiveRequests_(numActiveRequests) {}
-
-    size_t getNumActiveRequests() const { return numActiveRequests_; }
-
-   private:
-    size_t numActiveRequests_;
+  struct ConnectionSnapshot {
+    size_t numActiveRequests{0};
+    size_t numPendingWrites{0};
   };
-
   using RequestSnapshots = std::vector<RequestSnapshot>;
   using ConnectionSnapshots =
       std::unordered_map<folly::SocketAddress, ConnectionSnapshot>;

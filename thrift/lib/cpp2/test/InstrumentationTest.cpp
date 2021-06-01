@@ -535,15 +535,15 @@ TEST_F(RequestInstrumentationTest, ConnectionSnapshotsTest) {
 
   auto client1Snapshot = connections.find(getLocalAddressOf(*client1));
   ASSERT_NE(client1Snapshot, connections.end());
-  EXPECT_EQ(client1Snapshot->second.getNumActiveRequests(), 10);
+  EXPECT_EQ(client1Snapshot->second.numActiveRequests, 10);
 
   auto client2Snapshot = connections.find(getLocalAddressOf(*client2));
   ASSERT_NE(client2Snapshot, connections.end());
-  EXPECT_EQ(client2Snapshot->second.getNumActiveRequests(), 20);
+  EXPECT_EQ(client2Snapshot->second.numActiveRequests, 20);
 
   auto client3Snapshot = connections.find(getLocalAddressOf(*client3));
   ASSERT_NE(client3Snapshot, connections.end());
-  EXPECT_EQ(client3Snapshot->second.getNumActiveRequests(), 1);
+  EXPECT_EQ(client3Snapshot->second.numActiveRequests, 1);
 
   handler()->stopRequests();
   // Wait for requests to be marked as completed

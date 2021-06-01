@@ -31,6 +31,7 @@ namespace apache::thrift {
 class ManagedConnectionIf : public wangle::ManagedConnection {
  public:
   virtual size_t getNumActiveRequests() const = 0;
+  virtual size_t getNumPendingWrites() const = 0;
   virtual folly::SocketAddress getPeerAddress() const = 0;
 
   virtual ~ManagedConnectionIf() = default;

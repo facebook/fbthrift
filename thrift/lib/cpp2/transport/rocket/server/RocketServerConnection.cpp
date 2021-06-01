@@ -682,7 +682,7 @@ void RocketServerConnection::writeSuccess() noexcept {
     cb.release()->messageSent();
   }
 
-  inflightWritesQueue_.pop();
+  inflightWritesQueue_.pop_front();
 
   if (onWriteQuiescence_ && writeBatcher_.empty() &&
       inflightWritesQueue_.empty()) {
@@ -710,7 +710,7 @@ void RocketServerConnection::writeErr(
     cb.release()->messageSendError(folly::copy(ew));
   }
 
-  inflightWritesQueue_.pop();
+  inflightWritesQueue_.pop_front();
   close(std::move(ew));
 }
 

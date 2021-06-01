@@ -17,6 +17,7 @@
 #pragma once
 
 #include <chrono>
+#include <deque>
 #include <memory>
 #include <ostream>
 #include <unordered_map>
@@ -245,6 +246,14 @@ class RocketServerConnection final
 
   size_t getNumActiveRequests() const final { return inflightRequests_; }
 
+  size_t getNumPendingWrites() const final {
+    size_t result = 0;
+    for (const WriteBatchContext& batch : inflightWritesQueue_) {
+      result += batch.requestCompleteCount;
+    }
+    return result;
+  }
+
   folly::SocketAddress getPeerAddress() const final {
     return socket_->getPeerAddress();
   }
@@ -282,7 +291,7 @@ class RocketServerConnection final
   // The size of the queue is equal to the total number of inflight writes to
   // the underlying transport, i.e., writes for which the
   // writeSuccess()/writeErr() has not yet been called.
-  std::queue<WriteBatchContext> inflightWritesQueue_;
+  std::deque<WriteBatchContext> inflightWritesQueue_;
   // Totoal number of inflight final response for sink semantic, the counter
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
@@ -442,7 +451,7 @@ class RocketServerConnection final
   void closeIfNeeded();
   void flushWrites(
       std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context) {
-    inflightWritesQueue_.push(std::move(context));
+    inflightWritesQueue_.push_back(std::move(context));
     socket_->writeChain(this, std::move(writes));
   }
 

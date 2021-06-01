@@ -829,9 +829,10 @@ ThriftServer::getServerSnapshot() {
                   managedConnection->getNumActiveRequests();
               if (numActiveRequests > 0) {
                 connectionSnapshots.emplace(
-                    std::piecewise_construct,
-                    std::forward_as_tuple(managedConnection->getPeerAddress()),
-                    std::forward_as_tuple(numActiveRequests));
+                    managedConnection->getPeerAddress(),
+                    ConnectionSnapshot{
+                        numActiveRequests,
+                        managedConnection->getNumPendingWrites()});
               }
             }
           });
