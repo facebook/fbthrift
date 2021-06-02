@@ -188,6 +188,9 @@ MyServiceAsyncClient::sync_complete_hasDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<bool>> tryResponse;
+  if (auto* header = returnState.header()) {
+    rpcOptions.setRoutingData(header->releaseRoutingData());
+  }
   if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
@@ -407,6 +410,9 @@ MyServiceAsyncClient::sync_complete_getDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
+  if (auto* header = returnState.header()) {
+    rpcOptions.setRoutingData(header->releaseRoutingData());
+  }
   if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
@@ -624,6 +630,9 @@ MyServiceAsyncClient::sync_complete_putDataById(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
+  if (auto* header = returnState.header()) {
+    rpcOptions.setRoutingData(header->releaseRoutingData());
+  }
   if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
