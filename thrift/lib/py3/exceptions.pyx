@@ -19,7 +19,6 @@ from libcpp.vector cimport vector
 from thrift.py3.common import RpcOptions
 
 from enum import Enum, Flag
-import builtins as _builtins
 import itertools
 
 class TransportErrorType(Enum):
@@ -74,7 +73,7 @@ class ProtocolErrorType(Enum):
 cdef class Error(Exception):
     """base class for all thrift exceptions (TException)"""
     def __init__(self, *args):
-        raise TypeError('Instancing Error from Python')
+        super().__init__(*args)
 
 
 cdef create_Error(shared_ptr[cTException] ex):
@@ -103,7 +102,7 @@ cdef class GeneratedError(Error):
                 self._fbthrift_set_field(name, value)
         if kwargs:  # still something left
             raise TypeError(f"{type(self).__name__}() found duplicate/undefined arguments {repr(kwargs)}")
-        _builtins.Exception.__init__(self, *(value for _, value in self))
+        super().__init__(*(value for _, value in self))
 
     cdef object _fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
@@ -150,6 +149,7 @@ cdef class ApplicationError(Error):
     def __init__(ApplicationError self, type, str message):
         assert type in ApplicationErrorType, f"{type} not in ApplicationErrorType"
         assert message, "message is empty"
+        super().__init__(type, message)
 
     @property
     def type(self):
@@ -178,7 +178,7 @@ cdef create_ApplicationError(shared_ptr[cTApplicationException] ex):
 cdef class LibraryError(Error):
     """Equivalent of a C++ TLibraryException"""
     def __init__(self, *args):
-        raise TypeError('Creating LibraryError from Python')
+        super().__init__(*args)
 
 
 cdef create_LibraryError(shared_ptr[cTLibraryException] ex):
@@ -191,8 +191,8 @@ cdef create_LibraryError(shared_ptr[cTLibraryException] ex):
 
 cdef class ProtocolError(LibraryError):
     """Equivalent of a C++ TProtocolException"""
-    def __init__(self, *args):
-        raise TypeError('Creating ProtocolError from python')
+    def __init__(self, type, str message):
+        super().__init__(type, message)
 
     @property
     def type(self):
@@ -215,8 +215,8 @@ cdef create_ProtocolError(shared_ptr[cTProtocolException] ex):
 cdef class TransportError(LibraryError):
     """All Transport Level Errors (TTransportException)"""
 
-    def __init__(self, *args):
-        raise TypeError('Creating TransportError from Python')
+    def __init__(self, type, str message, int errno, options, *args):
+        super().__init__(type, message, errno, options, *args)
 
     @property
     def type(self):

@@ -16,7 +16,16 @@
 import unittest
 
 from testing.types import Color, HardError, SimpleError, UnfriendlyError, UnusedError
-from thrift.py3.exceptions import Error
+from thrift.py3.exceptions import (
+    Error,
+    ApplicationError,
+    TransportError,
+    ProtocolError,
+    ApplicationErrorType,
+    ProtocolErrorType,
+    TransportErrorType,
+    TransportOptions,
+)
 
 from .exception_helper import simulate_HardError, simulate_UnusedError
 
@@ -113,3 +122,23 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(str(y), "Color.red")
         y2 = SimpleError(color=Color.red)
         self.assertEqual(str(y2), "Color.red")
+
+    def test_create_from_python(self) -> None:
+        a = ApplicationError(type=ApplicationErrorType.INVALID_TRANSFORM, message="abc")
+        self.assertEqual(a.type, ApplicationErrorType.INVALID_TRANSFORM)
+        self.assertEqual(a.message, "abc")
+
+        p = ProtocolError(type=ProtocolErrorType.NEGATIVE_SIZE, message="qed")
+        self.assertEqual(p.type, ProtocolErrorType.NEGATIVE_SIZE)
+        self.assertEqual(p.message, "qed")
+
+        t = TransportError(
+            type=TransportErrorType.CORRUPTED_DATA,
+            message="der",
+            errno=5,
+            options=TransportOptions.CHANNEL_IS_VALID,
+        )
+        self.assertEqual(t.type, TransportErrorType.CORRUPTED_DATA)
+        self.assertEqual(t.message, "der")
+        self.assertEqual(t.errno, 5)
+        self.assertEqual(t.options, TransportOptions.CHANNEL_IS_VALID)

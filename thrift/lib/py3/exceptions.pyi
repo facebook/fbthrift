@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from enum import Enum, Flag
+from typing import Any
 
 class TransportErrorType(Enum):
     UNKNOWN: TransportErrorType = ...
@@ -62,7 +63,8 @@ class ProtocolErrorType(Enum):
     MISSING_REQUIRED_FIELD: ProtocolErrorType = ...
     value: int
 
-class Error(Exception): ...
+class Error(Exception):
+    def __init__(self, *args: Any) -> None: ...
 
 class GeneratedError(Error):
     def __repr__(self) -> str: ...
@@ -72,13 +74,23 @@ class ApplicationError(Error):
     type: ApplicationErrorType
     message: str
 
-class LibraryError(Error): ...
+class LibraryError(Error):
+    def __init__(self, *args: Any) -> None: ...
 
 class ProtocolError(LibraryError):
+    def __init__(self, type: ProtocolErrorType, message: str) -> None: ...
     type: ProtocolErrorType
     message: str
 
 class TransportError(LibraryError):
+    def __init__(
+        self,
+        type: TransportErrorType,
+        message: str,
+        errno: int,
+        options: TransportOptions,
+        *args: Any,
+    ) -> None: ...
     type: TransportErrorType
     options: TransportOptions
     message: str
