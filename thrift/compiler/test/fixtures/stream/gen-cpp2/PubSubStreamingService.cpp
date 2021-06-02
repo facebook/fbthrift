@@ -261,10 +261,6 @@ void PubSubStreamingServiceAsyncProcessor::processSerializedCompressedRequest(ap
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> PubSubStreamingServiceAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

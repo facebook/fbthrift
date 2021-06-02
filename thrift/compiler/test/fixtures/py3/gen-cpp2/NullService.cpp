@@ -29,10 +29,6 @@ void NullServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrif
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> NullServiceAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const NullServiceAsyncProcessor::ProcessMap& NullServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

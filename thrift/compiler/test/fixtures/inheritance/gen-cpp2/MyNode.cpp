@@ -92,10 +92,6 @@ void MyNodeAsyncProcessor::processSerializedCompressedRequest(apache::thrift::Re
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> MyNodeAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

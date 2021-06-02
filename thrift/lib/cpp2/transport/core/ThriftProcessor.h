@@ -68,13 +68,15 @@ class ThriftProcessor {
   void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
     tm_ = tm;
   }
-  void setCpp2Processor(std::unique_ptr<AsyncProcessor> cpp2Processor) {
-    cpp2Processor_ = std::move(cpp2Processor);
+  void setProcessorFactory(AsyncProcessorFactory& processorFactory) {
+    processorFactory_ = std::addressof(processorFactory);
+    processor_ = processorFactory.getProcessor();
   }
 
  private:
+  AsyncProcessorFactory* processorFactory_{nullptr};
   // Object of the generated AsyncProcessor subclass.
-  std::unique_ptr<AsyncProcessor> cpp2Processor_;
+  std::unique_ptr<AsyncProcessor> processor_;
   // To access server specific fields.
   server::ServerConfigs& serverConfigs_;
   // Thread manager that is used to run thrift handlers.

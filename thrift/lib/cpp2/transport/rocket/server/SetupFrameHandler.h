@@ -16,7 +16,9 @@
 
 #pragma once
 
-#include <folly/Optional.h>
+#include <memory>
+#include <optional>
+
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace folly {
@@ -44,16 +46,16 @@ namespace rocket {
 
 struct ProcessorInfo {
   ProcessorInfo(
-      std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor,
+      apache::thrift::AsyncProcessorFactory& processorFactory,
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager,
       server::ServerConfigs& serverConfigs,
       RequestsRegistry* requestsRegistry)
-      : cpp2Processor_(std::move(cpp2Processor)),
+      : processorFactory_(processorFactory),
         threadManager_(std::move(threadManager)),
         serverConfigs_(serverConfigs),
         requestsRegistry_(std::move(requestsRegistry)) {}
 
-  std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor_;
+  apache::thrift::AsyncProcessorFactory& processorFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   server::ServerConfigs& serverConfigs_;
   RequestsRegistry* FOLLY_NULLABLE requestsRegistry_;
@@ -69,7 +71,7 @@ class SetupFrameHandler {
   virtual ~SetupFrameHandler() = default;
   SetupFrameHandler(const SetupFrameHandler&) = delete;
 
-  virtual folly::Optional<ProcessorInfo> tryHandle(
+  virtual std::optional<ProcessorInfo> tryHandle(
       const RequestSetupMetadata& meta) = 0;
 };
 

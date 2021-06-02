@@ -106,8 +106,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   const folly::SocketAddress clientAddress_;
   Cpp2ConnContext connContext_;
   const std::vector<std::unique_ptr<SetupFrameHandler>>& setupFrameHandlers_;
-
-  std::shared_ptr<AsyncProcessor> cpp2Processor_;
+  AsyncProcessorFactory* processorFactory_;
+  std::shared_ptr<AsyncProcessor> processor_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   server::ServerConfigs* serverConfigs_ = nullptr;
   RequestsRegistry* requestsRegistry_ = nullptr;

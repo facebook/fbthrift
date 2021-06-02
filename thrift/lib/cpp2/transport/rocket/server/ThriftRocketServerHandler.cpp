@@ -170,7 +170,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       auto processorInfo = h->tryHandle(meta);
       if (processorInfo) {
         bool valid = true;
-        valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
+        processorFactory_ = std::addressof(processorInfo->processorFactory_);
+        valid &= !!(processor_ = processorFactory_->getProcessor());
         valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
         requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
@@ -186,8 +187,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       }
     }
     // no custom frame handler was found, do the default
-    cpp2Processor_ =
-        worker_->getServer()->getProcessorFactory()->getProcessor();
+    processorFactory_ = worker_->getServer()->getProcessorFactory().get();
+    processor_ = processorFactory_->getProcessor();
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();
@@ -265,7 +266,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         *requestsRegistry_,
         std::move(debugPayload),
         std::move(context),
-        [keepAlive = cpp2Processor_] {});
+        [keepAlive = processor_] {});
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestFnf));
@@ -289,7 +290,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         std::move(context),
         version_,
         clientCallback,
-        cpp2Processor_);
+        processor_);
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestStream));
@@ -313,7 +314,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         std::move(context),
         version_,
         clientCallback,
-        cpp2Processor_);
+        processor_);
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestSink));
@@ -321,8 +322,8 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
 
 void ThriftRocketServerHandler::connectionClosing() {
   connContext_.connectionClosed();
-  if (cpp2Processor_) {
-    cpp2Processor_->destroyAllInteractions(connContext_, *eventBase_);
+  if (processor_) {
+    processor_->destroyAllInteractions(connContext_, *eventBase_);
   }
 }
 
@@ -336,7 +337,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     readEnd = std::chrono::steady_clock::now();
   }
 
-  auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
+  auto baseReqCtx = processorFactory_->getBaseContextForRequest();
   auto rootid = requestsRegistry_->genRootId();
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
@@ -484,7 +485,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
   }
   try {
-    cpp2Processor_->processSerializedCompressedRequest(
+    processor_->processSerializedCompressedRequest(
         std::move(request),
         SerializedCompressedRequest(
             std::move(data),
@@ -590,8 +591,8 @@ void ThriftRocketServerHandler::requestComplete() {
 }
 
 void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
-  if (cpp2Processor_) {
-    cpp2Processor_->terminateInteraction(id, connContext_, *eventBase_);
+  if (processor_) {
+    processor_->terminateInteraction(id, connContext_, *eventBase_);
   }
 }
 

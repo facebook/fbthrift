@@ -403,10 +403,6 @@ void service3AsyncProcessor::processSerializedCompressedRequest(apache::thrift::
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> service3AsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const service3AsyncProcessor::ProcessMap& service3AsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

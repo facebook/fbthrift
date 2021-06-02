@@ -118,7 +118,8 @@ Cpp2Connection::Cpp2Connection(
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processor_(worker->getServer()->getProcessorFactory()->getProcessor()),
+    : processorFactory_(*worker->getServer()->getProcessorFactory()),
+      processor_(processorFactory_.getProcessor()),
       duplexChannel_(
           worker->getServer()->isDuplex()
               ? std::make_unique<DuplexChannel>(
@@ -391,7 +392,7 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  auto baseReqCtx = processor_->getBaseContextForRequest();
+  auto baseReqCtx = processorFactory_.getBaseContextForRequest();
   auto rootid = worker_->getRequestsRegistry()->genRootId();
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)

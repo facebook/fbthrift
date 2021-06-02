@@ -90,10 +90,6 @@ void DerivedServiceAsyncProcessor::processSerializedCompressedRequest(apache::th
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> DerivedServiceAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

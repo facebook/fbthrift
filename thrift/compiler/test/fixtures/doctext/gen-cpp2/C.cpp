@@ -212,10 +212,6 @@ void CAsyncProcessor::processSerializedCompressedRequest(apache::thrift::Respons
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> CAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

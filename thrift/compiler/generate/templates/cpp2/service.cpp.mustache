@@ -46,10 +46,6 @@ void <%service:name%>AsyncProcessor::processSerializedCompressedRequest(apache::
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 <% > service_cpp/binary_processmap%>
 
 <% > service_cpp/compact_processmap%>

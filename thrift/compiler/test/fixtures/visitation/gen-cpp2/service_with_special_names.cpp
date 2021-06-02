@@ -1737,10 +1737,6 @@ void service_with_special_namesAsyncProcessor::processSerializedCompressedReques
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> service_with_special_namesAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const service_with_special_namesAsyncProcessor::ProcessMap& service_with_special_namesAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

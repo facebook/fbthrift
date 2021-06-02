@@ -344,10 +344,6 @@ void NestedContainersAsyncProcessor::processSerializedCompressedRequest(apache::
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> NestedContainersAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

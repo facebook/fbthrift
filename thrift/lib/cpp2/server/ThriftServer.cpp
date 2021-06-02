@@ -305,7 +305,7 @@ void ThriftServer::setup() {
     });
     if (thriftProcessor_) {
       thriftProcessor_->setThreadManager(threadManager_.get());
-      thriftProcessor_->setCpp2Processor(getProcessorFactory()->getProcessor());
+      thriftProcessor_->setProcessorFactory(*getProcessorFactory());
     }
 
     if (!serverChannel_) {

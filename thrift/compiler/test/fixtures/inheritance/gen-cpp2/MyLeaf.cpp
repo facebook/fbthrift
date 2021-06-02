@@ -92,10 +92,6 @@ void MyLeafAsyncProcessor::processSerializedCompressedRequest(apache::thrift::Re
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> MyLeafAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
-}
-
 const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

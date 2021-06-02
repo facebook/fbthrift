@@ -43,7 +43,8 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(payload);
   DCHECK(channel);
   DCHECK(tm_);
-  DCHECK(cpp2Processor_);
+  DCHECK(processorFactory_);
+  DCHECK(processor_);
 
   bool invalidMetadata =
       !(metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref());
@@ -77,14 +78,14 @@ void ThriftProcessor::onThriftRequest(
     return;
   }
 
-  auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
+  auto baseReqCtx = processorFactory_->getBaseContextForRequest();
   auto reqCtx = baseReqCtx ? folly::RequestContext::copyAsChild(*baseReqCtx)
                            : std::make_shared<folly::RequestContext>();
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
-  cpp2Processor_->processSerializedRequest(
+  processor_->processSerializedRequest(
       std::move(request),
       SerializedRequest(std::move(payload)),
       protoId,

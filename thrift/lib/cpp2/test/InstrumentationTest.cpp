@@ -212,15 +212,14 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
     tm_->threadFactory(move(tf));
     tm_->start();
   }
-  folly::Optional<rocket::ProcessorInfo> tryHandle(
+  std::optional<rocket::ProcessorInfo> tryHandle(
       const RequestSetupMetadata& meta) override {
     if (meta.interfaceKind_ref().has_value() &&
         meta.interfaceKind_ref().value() == InterfaceKind::DEBUGGING) {
-      auto info = rocket::ProcessorInfo{
-          debug_.getProcessor(), tm_, origServer_, reqRegistry_.get()};
-      return folly::Optional<rocket::ProcessorInfo>(std::move(info));
+      return rocket::ProcessorInfo{
+          debug_, tm_, origServer_, reqRegistry_.get()};
     }
-    return folly::Optional<rocket::ProcessorInfo>();
+    return std::nullopt;
   }
 
  private:

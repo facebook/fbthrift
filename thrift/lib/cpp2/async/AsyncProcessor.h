@@ -139,10 +139,6 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
 
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
-
   virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
 
   virtual void terminateInteraction(
@@ -279,6 +275,14 @@ class AsyncProcessorFactory {
  public:
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
   virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
+    return nullptr;
+  }
   virtual ~AsyncProcessorFactory() = default;
 };
 
@@ -369,15 +373,6 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   folly::EventBase* getEventBase() { return requestParams_.eventBase_; }
 
   void clearRequestParams() { requestParams_ = RequestParams(); }
-
-  /**
-   * Override to return a pre-initialized RequestContext.
-   * Its content will be copied in the RequestContext initialized at
-   * the beginning of each thrift request processing.
-   */
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
 
   virtual concurrency::PRIORITY getRequestPriority(
       Cpp2RequestContext* ctx, concurrency::PRIORITY prio);
