@@ -95,7 +95,8 @@ public class MyServicePrioParentRpcServerHandler
 
           _chain.postRead(_data);
 
-          return _delegate
+          reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
+            _delegate
             .ping()
             .map(_response -> {
               _chain.preWrite(_response);
@@ -117,6 +118,11 @@ public class MyServicePrioParentRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
+          return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _createpongReaders() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
@@ -166,7 +172,8 @@ public class MyServicePrioParentRpcServerHandler
 
           _chain.postRead(_data);
 
-          return _delegate
+          reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
+            _delegate
             .pong()
             .map(_response -> {
               _chain.preWrite(_response);
@@ -188,6 +195,11 @@ public class MyServicePrioParentRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
+          return _internalResponse;
   }
 
   @Override

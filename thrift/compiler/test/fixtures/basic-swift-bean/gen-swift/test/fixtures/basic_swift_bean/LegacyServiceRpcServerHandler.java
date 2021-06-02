@@ -136,7 +136,8 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
 
           _chain.postRead(_data);
 
-          return _delegate
+          reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
+            _delegate
             .getPoints(key, legacyStuff)
             .map(_response -> {
               _chain.preWrite(_response);
@@ -158,6 +159,11 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
+          return _internalResponse;
   }
 
   @Override
