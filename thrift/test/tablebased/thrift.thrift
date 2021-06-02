@@ -26,56 +26,56 @@ enum Enum {
 }
 
 struct StructA {
-  1: optional string fieldA;
-  2: optional i64 fieldB;
-  3: optional StructB fieldC;
-  5: optional list<string> fieldD;
-  10: optional map<string, i64> fieldE;
-  11: string fieldF;
-  12: Enum fieldG;
+  1: optional i64 i64_field;
+  2: optional string opt_str_field;
+  3: optional StructB struct_field;
+  5: optional list<string> list_field;
+  10: optional map<string, i64> map_field;
+  11: string str_field;
+  12: Enum enum_field;
 }
 
 struct StructWithRef {
-  1: optional StructB fieldA (cpp2.ref_type = "shared_const");
-  2: optional list<string> fieldB (cpp2.ref_type = "shared_const");
-  3: optional i16 fieldC (cpp2.ref_type = "shared_const");
-  4: optional i32 fieldD (cpp2.ref_type = "unique");
+  1: optional StructB shared_struct_field (cpp.ref_type = "shared_const");
+  2: optional list<string> shared_list_field (cpp.ref_type = "shared_const");
+  3: optional i16 shared_i16_field (cpp.ref_type = "shared_const");
+  4: optional i32 unique_i32_field (cpp.ref_type = "unique");
 }
 
 struct StructWithCppType {
   1: optional map<string, StructA> (
     cpp.type = "std::unordered_map<std::string, StructA>",
-  ) fieldA;
+  ) field;
 }
 
 struct StructB {
-  1: string fieldA;
-  2: optional i64 fieldB;
-  3: optional IOBufPtr fieldC;
-  5: optional list<i64> fieldD (cpp2.ref_type = "shared");
-  6: i32 fieldE;
-  7: i16 fieldF;
-  8: byte fieldG;
-  9: bool fieldH;
-  10: set<i32> fieldI;
-  11: string fieldJ (cpp2.type = "folly::IOBuf");
-  12: double fieldK;
-  13: float fieldL;
+  1: string str_field;
+  2: optional i64 i64_field;
+  3: optional IOBufPtr iobufptr_field;
+  5: optional list<i64> list_field (cpp.ref_type = "shared");
+  6: i32 i32_field;
+  7: i16 i16_field;
+  8: byte byte_field;
+  9: bool bool_field;
+  10: set<i32> set_field;
+  11: string iobuf_field (cpp.type = "folly::IOBuf");
+  12: double double_field;
+  13: float float_field;
 }
 
 struct StructWithInclude {
-  1: optional include.IncludedStruct fieldA;
+  1: optional include.IncludedStruct field;
 }
 
 union Union {
-  1: StructA fieldA;
-  2: StructB fieldB;
-  3: string fieldC;
+  1: StructA a_field;
+  2: StructB b_field;
+  3: string str_field;
 }
 
 union UnionWithRef {
-  1: StructA fieldA (cpp2.ref_type = "unique");
-  2: StructB fieldB;
-  3: StructA fieldC (cpp2.ref_type = "shared_const");
-  4: StructA fieldD (cpp2.ref_type = "shared");
+  1: StructB simple_field;
+  2: StructA unique_field (cpp.ref_type = "unique");
+  4: StructA shared_field (cpp2.ref_type = "shared");
+  3: StructA shared_const_field (cpp.ref_type = "shared_const");
 }
