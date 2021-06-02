@@ -26,6 +26,7 @@
 #include <folly/Conv.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -318,6 +319,10 @@ void ThriftServer::setup() {
         ServerBootstrap::socketConfig.enableTCPFastOpen = *enableTFO_;
         ServerBootstrap::socketConfig.fastOpenQueueSize = fastOpenQueueSize_;
       }
+
+      ioThreadPool_->addObserver(
+          folly::IOThreadPoolDeadlockDetectorObserver::create(
+              ioThreadPool_->getName()));
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers);
