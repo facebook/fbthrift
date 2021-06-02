@@ -153,22 +153,13 @@ void MyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift:
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
-  {"first", &MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"second", &MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
-  {"first", &MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"second", &MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMap_ {
+  {"first", {&MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_first<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"second", {&MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_second<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2

@@ -203,13 +203,11 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
  public:
   void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<ReturnServiceAsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-  static const ReturnServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const ReturnServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<ReturnServiceAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
+  static const ReturnServiceAsyncProcessor::ProcessMap& getOwnProcessMap();
  private:
-  static const ReturnServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-  static const ReturnServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const ReturnServiceAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_noReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

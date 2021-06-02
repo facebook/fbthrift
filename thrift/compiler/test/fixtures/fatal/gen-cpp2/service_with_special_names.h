@@ -309,13 +309,11 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
  public:
   void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<service_with_special_namesAsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-  static const service_with_special_namesAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const service_with_special_namesAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<service_with_special_namesAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
+  static const service_with_special_namesAsyncProcessor::ProcessMap& getOwnProcessMap();
  private:
-  static const service_with_special_namesAsyncProcessor::ProcessMap binaryProcessMap_;
-  static const service_with_special_namesAsyncProcessor::ProcessMap compactProcessMap_;
+  static const service_with_special_namesAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

@@ -160,8 +160,15 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2RequestContext* context,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
-  template <typename ProcessFunc>
-  using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
+
+  template <typename Derived>
+  struct ProcessFuncs {
+    ProcessFunc<Derived> compact;
+    ProcessFunc<Derived> binary;
+  };
+
+  template <typename ProcessFuncs>
+  using ProcessMap = folly::F14ValueMap<std::string, ProcessFuncs>;
 
   template <typename Derived>
   using InteractionConstructor = std::unique_ptr<Tile> (Derived::*)();

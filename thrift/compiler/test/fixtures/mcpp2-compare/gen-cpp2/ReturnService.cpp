@@ -984,60 +984,32 @@ void ReturnServiceAsyncProcessor::processSerializedCompressedRequest(apache::thr
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::binaryProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"boolReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i16Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i32Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"floatReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"doubleReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"binaryReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"mapReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"complexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"structReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"set_StructReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_UnionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"readDataEb", &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"readData", &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::compactProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"boolReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i16Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i32Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"floatReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"doubleReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"binaryReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"mapReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"complexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"structReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"set_StructReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_UnionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"readDataEb", &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"readData", &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::kOwnProcessMap_ {
+  {"noReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"boolReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i16Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i32Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i64Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"floatReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"doubleReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"stringReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"binaryReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"mapReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"simpleTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"complexTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_mostComplexTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"enumReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_EnumReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"structReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"set_StructReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"unionReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_UnionReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"readDataEb", {&ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"readData", {&ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }}} // some::valid::ns

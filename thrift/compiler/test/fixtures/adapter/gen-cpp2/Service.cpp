@@ -90,20 +90,12 @@ void ServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::R
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const ServiceAsyncProcessor::ProcessMap& ServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const ServiceAsyncProcessor::ProcessMap& ServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const ServiceAsyncProcessor::ProcessMap ServiceAsyncProcessor::binaryProcessMap_ {
-  {"func", &ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const ServiceAsyncProcessor::ProcessMap& ServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const ServiceAsyncProcessor::ProcessMap ServiceAsyncProcessor::compactProcessMap_ {
-  {"func", &ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const ServiceAsyncProcessor::ProcessMap ServiceAsyncProcessor::kOwnProcessMap_ {
+  {"func", {&ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2

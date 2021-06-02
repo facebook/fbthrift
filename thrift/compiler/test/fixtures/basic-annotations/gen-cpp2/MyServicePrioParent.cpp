@@ -155,22 +155,13 @@ void MyServicePrioParentAsyncProcessor::processSerializedCompressedRequest(apach
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProcessor::binaryProcessMap_ {
-  {"ping", &MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"pong", &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProcessor::compactProcessMap_ {
-  {"ping", &MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"pong", &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProcessor::kOwnProcessMap_ {
+  {"ping", {&MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"pong", {&MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2

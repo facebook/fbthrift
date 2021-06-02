@@ -155,22 +155,13 @@ void SomeServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrif
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::binaryProcessMap_ {
-  {"bounce_map", &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"binary_keyed_map", &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::compactProcessMap_ {
-  {"bounce_map", &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"binary_keyed_map", &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::kOwnProcessMap_ {
+  {"bounce_map", {&SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"binary_keyed_map", {&SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }}}} // apache::thrift::fixtures::types

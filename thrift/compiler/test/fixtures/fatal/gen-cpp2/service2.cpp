@@ -403,30 +403,17 @@ void service2AsyncProcessor::processSerializedCompressedRequest(apache::thrift::
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const service2AsyncProcessor::ProcessMap service2AsyncProcessor::binaryProcessMap_ {
-  {"methodA", &service2AsyncProcessor::setUpAndProcess_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodB", &service2AsyncProcessor::setUpAndProcess_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodC", &service2AsyncProcessor::setUpAndProcess_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodD", &service2AsyncProcessor::setUpAndProcess_methodD<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodE", &service2AsyncProcessor::setUpAndProcess_methodE<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodF", &service2AsyncProcessor::setUpAndProcess_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const service2AsyncProcessor::ProcessMap service2AsyncProcessor::compactProcessMap_ {
-  {"methodA", &service2AsyncProcessor::setUpAndProcess_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodB", &service2AsyncProcessor::setUpAndProcess_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodC", &service2AsyncProcessor::setUpAndProcess_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodD", &service2AsyncProcessor::setUpAndProcess_methodD<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodE", &service2AsyncProcessor::setUpAndProcess_methodE<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodF", &service2AsyncProcessor::setUpAndProcess_methodF<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const service2AsyncProcessor::ProcessMap service2AsyncProcessor::kOwnProcessMap_ {
+  {"methodA", {&service2AsyncProcessor::setUpAndProcess_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodB", {&service2AsyncProcessor::setUpAndProcess_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodC", {&service2AsyncProcessor::setUpAndProcess_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodD", {&service2AsyncProcessor::setUpAndProcess_methodD<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodD<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodE", {&service2AsyncProcessor::setUpAndProcess_methodE<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodE<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodF", {&service2AsyncProcessor::setUpAndProcess_methodF<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service2AsyncProcessor::setUpAndProcess_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }} // test_cpp2::cpp_reflection

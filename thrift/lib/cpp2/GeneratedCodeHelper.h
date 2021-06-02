@@ -771,8 +771,53 @@ template <typename T>
 inline constexpr bool is_root_async_processor =
     std::is_void_v<typename T::BaseAsyncProcessor>;
 
+template <typename Derived>
+GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
+    folly::tag_t<CompactProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.compact;
+}
+template <typename Derived>
+GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
+    folly::tag_t<BinaryProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.binary;
+}
+
 template <class ProtocolReader, class Processor>
-void process_missing(
+void processMissing(
+    Processor* processor,
+    const std::string& fname,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm);
+
+template <class ProtocolReader, class Processor>
+void processPmap(
+    Processor* proc,
+    const typename Processor::ProcessMap& pmap,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  const auto& fname = ctx->getMethodName();
+  auto processFuncs = pmap.find(fname);
+  if (processFuncs == pmap.end()) {
+    processMissing<ProtocolReader>(
+        proc, fname, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    return;
+  }
+
+  auto pfn = getProcessFuncFromProtocol(
+      folly::tag<ProtocolReader>, processFuncs->second);
+  (proc->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <class ProtocolReader, class Processor>
+void processMissing(
     Processor* processor,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
@@ -794,62 +839,16 @@ void process_missing(
           });
     }
   } else {
-    auto protType = ProtocolReader::protocolType();
-    processor
-        ->Processor::BaseAsyncProcessor::processSerializedCompressedRequest(
-            std::move(req),
-            std::move(serializedRequest),
-            protType,
-            ctx,
-            eb,
-            tm);
+    using BaseAsyncProcessor = typename Processor::BaseAsyncProcessor;
+    processPmap<ProtocolReader, BaseAsyncProcessor>(
+        processor,
+        BaseAsyncProcessor::getOwnProcessMap(),
+        std::move(req),
+        std::move(serializedRequest),
+        ctx,
+        eb,
+        tm);
   }
-}
-
-struct MessageBegin {
-  MessageBegin() {}
-  MessageBegin(const MessageBegin&) = delete;
-  MessageBegin& operator=(const MessageBegin&) = delete;
-  MessageBegin(MessageBegin&&) = default;
-  MessageBegin& operator=(MessageBegin&&) = default;
-  bool isValid{true};
-  size_t size{0};
-  std::string methodName;
-  MessageType msgType;
-  int32_t seqId{0};
-  std::string errMessage;
-};
-
-bool setupRequestContextWithMessageBegin(
-    const MessageBegin& msgBegin,
-    protocol::PROTOCOL_TYPES protType,
-    ResponseChannelRequest::UniquePtr& req,
-    Cpp2RequestContext* ctx,
-    folly::EventBase* eb);
-
-MessageBegin deserializeMessageBegin(
-    const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
-
-template <class ProtocolReader, class Processor>
-void process_pmap(
-    Processor* proc,
-    const typename GeneratedAsyncProcessor::ProcessMap<
-        GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
-    ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedCompressedRequest&& serializedRequest,
-    Cpp2RequestContext* ctx,
-    folly::EventBase* eb,
-    concurrency::ThreadManager* tm) {
-  const auto& fname = ctx->getMethodName();
-  auto pfn = pmap.find(fname);
-  if (pfn == pmap.end()) {
-    process_missing<ProtocolReader>(
-        proc, fname, std::move(req), std::move(serializedRequest), ctx, eb, tm);
-    return;
-  }
-
-  (proc->*(pfn->second))(
-      std::move(req), std::move(serializedRequest), ctx, eb, tm);
 }
 
 //  Generated AsyncProcessor::process just calls this.
@@ -862,10 +861,10 @@ void process(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
+  const auto& pmap = Processor::getOwnProcessMap();
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {
-      const auto& pmap = processor->getBinaryProtocolProcessMap();
-      return process_pmap<BinaryProtocolReader>(
+      return processPmap<BinaryProtocolReader>(
           processor,
           pmap,
           std::move(req),
@@ -875,8 +874,7 @@ void process(
           tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
-      const auto& pmap = processor->getCompactProtocolProcessMap();
-      return process_pmap<CompactProtocolReader>(
+      return processPmap<CompactProtocolReader>(
           processor,
           pmap,
           std::move(req),
@@ -890,6 +888,25 @@ void process(
       return;
   }
 }
+
+struct MessageBegin : folly::MoveOnly {
+  bool isValid{true};
+  size_t size{0};
+  std::string methodName;
+  MessageType msgType{};
+  int32_t seqId{0};
+  std::string errMessage;
+};
+
+bool setupRequestContextWithMessageBegin(
+    const MessageBegin& msgBegin,
+    protocol::PROTOCOL_TYPES protType,
+    ResponseChannelRequest::UniquePtr& req,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb);
+
+MessageBegin deserializeMessageBegin(
+    const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
 
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item) {

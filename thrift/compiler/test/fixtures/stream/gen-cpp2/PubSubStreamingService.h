@@ -89,13 +89,11 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
  public:
   void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<PubSubStreamingServiceAsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-  static const PubSubStreamingServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const PubSubStreamingServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<PubSubStreamingServiceAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
+  static const PubSubStreamingServiceAsyncProcessor::ProcessMap& getOwnProcessMap();
  private:
-  static const PubSubStreamingServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-  static const PubSubStreamingServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const PubSubStreamingServiceAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

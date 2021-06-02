@@ -470,36 +470,20 @@ void ExtraServiceAsyncProcessor::processSerializedCompressedRequest(apache::thri
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::binaryProcessMap_ {
-  {"simple_function", &ExtraServiceAsyncProcessor::setUpAndProcess_simple_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"throws_function", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"throws_function2", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"throws_function3", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_void_ret", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_void_ret_i32_i32_i32_i32_i32_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_void_ret_map_setlist_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_void_ret_struct_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_void_ret_listunion_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::compactProcessMap_ {
-  {"simple_function", &ExtraServiceAsyncProcessor::setUpAndProcess_simple_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"throws_function", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"throws_function2", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"throws_function3", &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_void_ret", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_void_ret_i32_i32_i32_i32_i32_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_void_ret_map_setlist_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_void_ret_struct_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_void_ret_listunion_param", &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::kOwnProcessMap_ {
+  {"simple_function", {&ExtraServiceAsyncProcessor::setUpAndProcess_simple_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_simple_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"throws_function", {&ExtraServiceAsyncProcessor::setUpAndProcess_throws_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"throws_function2", {&ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"throws_function3", {&ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"oneway_void_ret", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"oneway_void_ret_i32_i32_i32_i32_i32_param", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"oneway_void_ret_map_setlist_param", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"oneway_void_ret_struct_param", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"oneway_void_ret_listunion_param", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }} // extra::svc

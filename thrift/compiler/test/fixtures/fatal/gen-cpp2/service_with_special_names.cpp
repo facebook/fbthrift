@@ -1737,74 +1737,39 @@ void service_with_special_namesAsyncProcessor::processSerializedCompressedReques
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const service_with_special_namesAsyncProcessor::ProcessMap& service_with_special_namesAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const service_with_special_namesAsyncProcessor::ProcessMap& service_with_special_namesAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const service_with_special_namesAsyncProcessor::ProcessMap service_with_special_namesAsyncProcessor::binaryProcessMap_ {
-  {"get", &service_with_special_namesAsyncProcessor::setUpAndProcess_get<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"getter", &service_with_special_namesAsyncProcessor::setUpAndProcess_getter<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"lists", &service_with_special_namesAsyncProcessor::setUpAndProcess_lists<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"maps", &service_with_special_namesAsyncProcessor::setUpAndProcess_maps<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"name", &service_with_special_namesAsyncProcessor::setUpAndProcess_name<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"name_to_value", &service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"names", &service_with_special_namesAsyncProcessor::setUpAndProcess_names<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"prefix_tree", &service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"sets", &service_with_special_namesAsyncProcessor::setUpAndProcess_sets<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"setter", &service_with_special_namesAsyncProcessor::setUpAndProcess_setter<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"str", &service_with_special_namesAsyncProcessor::setUpAndProcess_str<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"strings", &service_with_special_namesAsyncProcessor::setUpAndProcess_strings<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"type", &service_with_special_namesAsyncProcessor::setUpAndProcess_type<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"value", &service_with_special_namesAsyncProcessor::setUpAndProcess_value<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"value_to_name", &service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"values", &service_with_special_namesAsyncProcessor::setUpAndProcess_values<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"id", &service_with_special_namesAsyncProcessor::setUpAndProcess_id<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"ids", &service_with_special_namesAsyncProcessor::setUpAndProcess_ids<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"descriptor", &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"descriptors", &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"key", &service_with_special_namesAsyncProcessor::setUpAndProcess_key<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"keys", &service_with_special_namesAsyncProcessor::setUpAndProcess_keys<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"annotation", &service_with_special_namesAsyncProcessor::setUpAndProcess_annotation<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"annotations", &service_with_special_namesAsyncProcessor::setUpAndProcess_annotations<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"member", &service_with_special_namesAsyncProcessor::setUpAndProcess_member<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"members", &service_with_special_namesAsyncProcessor::setUpAndProcess_members<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"field", &service_with_special_namesAsyncProcessor::setUpAndProcess_field<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"fields", &service_with_special_namesAsyncProcessor::setUpAndProcess_fields<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const service_with_special_namesAsyncProcessor::ProcessMap& service_with_special_namesAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const service_with_special_namesAsyncProcessor::ProcessMap service_with_special_namesAsyncProcessor::compactProcessMap_ {
-  {"get", &service_with_special_namesAsyncProcessor::setUpAndProcess_get<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"getter", &service_with_special_namesAsyncProcessor::setUpAndProcess_getter<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"lists", &service_with_special_namesAsyncProcessor::setUpAndProcess_lists<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"maps", &service_with_special_namesAsyncProcessor::setUpAndProcess_maps<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"name", &service_with_special_namesAsyncProcessor::setUpAndProcess_name<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"name_to_value", &service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"names", &service_with_special_namesAsyncProcessor::setUpAndProcess_names<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"prefix_tree", &service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"sets", &service_with_special_namesAsyncProcessor::setUpAndProcess_sets<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"setter", &service_with_special_namesAsyncProcessor::setUpAndProcess_setter<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"str", &service_with_special_namesAsyncProcessor::setUpAndProcess_str<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"strings", &service_with_special_namesAsyncProcessor::setUpAndProcess_strings<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"type", &service_with_special_namesAsyncProcessor::setUpAndProcess_type<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"value", &service_with_special_namesAsyncProcessor::setUpAndProcess_value<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"value_to_name", &service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"values", &service_with_special_namesAsyncProcessor::setUpAndProcess_values<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"id", &service_with_special_namesAsyncProcessor::setUpAndProcess_id<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"ids", &service_with_special_namesAsyncProcessor::setUpAndProcess_ids<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"descriptor", &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"descriptors", &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"key", &service_with_special_namesAsyncProcessor::setUpAndProcess_key<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"keys", &service_with_special_namesAsyncProcessor::setUpAndProcess_keys<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"annotation", &service_with_special_namesAsyncProcessor::setUpAndProcess_annotation<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"annotations", &service_with_special_namesAsyncProcessor::setUpAndProcess_annotations<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"member", &service_with_special_namesAsyncProcessor::setUpAndProcess_member<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"members", &service_with_special_namesAsyncProcessor::setUpAndProcess_members<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"field", &service_with_special_namesAsyncProcessor::setUpAndProcess_field<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"fields", &service_with_special_namesAsyncProcessor::setUpAndProcess_fields<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const service_with_special_namesAsyncProcessor::ProcessMap service_with_special_namesAsyncProcessor::kOwnProcessMap_ {
+  {"get", {&service_with_special_namesAsyncProcessor::setUpAndProcess_get<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_get<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"getter", {&service_with_special_namesAsyncProcessor::setUpAndProcess_getter<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_getter<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"lists", {&service_with_special_namesAsyncProcessor::setUpAndProcess_lists<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_lists<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"maps", {&service_with_special_namesAsyncProcessor::setUpAndProcess_maps<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_maps<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"name", {&service_with_special_namesAsyncProcessor::setUpAndProcess_name<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_name<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"name_to_value", {&service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"names", {&service_with_special_namesAsyncProcessor::setUpAndProcess_names<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_names<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"prefix_tree", {&service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"sets", {&service_with_special_namesAsyncProcessor::setUpAndProcess_sets<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_sets<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"setter", {&service_with_special_namesAsyncProcessor::setUpAndProcess_setter<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_setter<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"str", {&service_with_special_namesAsyncProcessor::setUpAndProcess_str<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_str<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"strings", {&service_with_special_namesAsyncProcessor::setUpAndProcess_strings<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_strings<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"type", {&service_with_special_namesAsyncProcessor::setUpAndProcess_type<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_type<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"value", {&service_with_special_namesAsyncProcessor::setUpAndProcess_value<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_value<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"value_to_name", {&service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"values", {&service_with_special_namesAsyncProcessor::setUpAndProcess_values<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_values<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"id", {&service_with_special_namesAsyncProcessor::setUpAndProcess_id<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_id<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"ids", {&service_with_special_namesAsyncProcessor::setUpAndProcess_ids<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_ids<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"descriptor", {&service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"descriptors", {&service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"key", {&service_with_special_namesAsyncProcessor::setUpAndProcess_key<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_key<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"keys", {&service_with_special_namesAsyncProcessor::setUpAndProcess_keys<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_keys<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"annotation", {&service_with_special_namesAsyncProcessor::setUpAndProcess_annotation<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_annotation<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"annotations", {&service_with_special_namesAsyncProcessor::setUpAndProcess_annotations<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_annotations<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"member", {&service_with_special_namesAsyncProcessor::setUpAndProcess_member<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_member<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"members", {&service_with_special_namesAsyncProcessor::setUpAndProcess_members<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_members<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"field", {&service_with_special_namesAsyncProcessor::setUpAndProcess_field<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_field<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"fields", {&service_with_special_namesAsyncProcessor::setUpAndProcess_fields<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service_with_special_namesAsyncProcessor::setUpAndProcess_fields<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }} // test_cpp2::cpp_reflection

@@ -90,20 +90,12 @@ void DerivedServiceAsyncProcessor::processSerializedCompressedRequest(apache::th
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::binaryProcessMap_ {
-  {"get_six", &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::compactProcessMap_ {
-  {"get_six", &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::kOwnProcessMap_ {
+  {"get_six", {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }} // py3::simple

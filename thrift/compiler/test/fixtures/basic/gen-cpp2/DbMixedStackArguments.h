@@ -72,13 +72,11 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
  public:
   void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<DbMixedStackArgumentsAsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<DbMixedStackArgumentsAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
+  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap& getOwnProcessMap();
  private:
-  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap binaryProcessMap_;
-  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap compactProcessMap_;
+  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_getDataByKey0(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

@@ -1602,76 +1602,40 @@ void ParamServiceAsyncProcessor::processSerializedCompressedRequest(apache::thri
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const ParamServiceAsyncProcessor::ProcessMap& ParamServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const ParamServiceAsyncProcessor::ProcessMap& ParamServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const ParamServiceAsyncProcessor::ProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
-  {"void_ret_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_map_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_enum_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_struct_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_listunion_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"bool_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"bool_ret_union_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"string_ret_string_param", &ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"binary_ret_binary_param", &ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"map_ret_bool_param", &ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"enum_ret_double_param", &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listenum_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listunion_string_param", &ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const ParamServiceAsyncProcessor::ProcessMap& ParamServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const ParamServiceAsyncProcessor::ProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
-  {"void_ret_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_map_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_enum_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_struct_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_listunion_param", &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"bool_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"bool_ret_union_param", &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"string_ret_string_param", &ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"binary_ret_binary_param", &ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"map_ret_bool_param", &ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"enum_ret_double_param", &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listenum_ret_map_param", &ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listunion_string_param", &ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const ParamServiceAsyncProcessor::ProcessMap ParamServiceAsyncProcessor::kOwnProcessMap_ {
+  {"void_ret_i16_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_byte_i16_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_map_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_map_setlist_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_map_typedef_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_enum_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_struct_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"void_ret_listunion_param", {&ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"bool_ret_i32_i64_param", {&ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"bool_ret_map_param", {&ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"bool_ret_union_param", {&ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i64_ret_float_double_param", {&ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i64_ret_string_typedef_param", {&ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i64_ret_i32_i32_i32_i32_i32_param", {&ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"double_ret_setstruct_param", {&ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"string_ret_string_param", {&ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"binary_ret_binary_param", {&ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"map_ret_bool_param", {&ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_ret_map_setlist_param", {&ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"mapsetlistmapliststring_ret_listlistlist_param", {&ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"typedef_ret_i32_param", {&ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"listtypedef_ret_typedef_param", {&ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"enum_ret_double_param", {&ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"enum_ret_double_enum_param", {&ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"listenum_ret_map_param", {&ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"struct_ret_i16_param", {&ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"setstruct_ret_set_param", {&ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"union_ret_i32_i32_param", {&ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"listunion_string_param", {&ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }}} // some::valid::ns

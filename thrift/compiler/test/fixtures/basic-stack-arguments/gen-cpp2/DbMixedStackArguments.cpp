@@ -155,22 +155,13 @@ void DbMixedStackArgumentsAsyncProcessor::processSerializedCompressedRequest(apa
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const DbMixedStackArgumentsAsyncProcessor::ProcessMap& DbMixedStackArgumentsAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const DbMixedStackArgumentsAsyncProcessor::ProcessMap& DbMixedStackArgumentsAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const DbMixedStackArgumentsAsyncProcessor::ProcessMap DbMixedStackArgumentsAsyncProcessor::binaryProcessMap_ {
-  {"getDataByKey0", &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"getDataByKey1", &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const DbMixedStackArgumentsAsyncProcessor::ProcessMap& DbMixedStackArgumentsAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const DbMixedStackArgumentsAsyncProcessor::ProcessMap DbMixedStackArgumentsAsyncProcessor::compactProcessMap_ {
-  {"getDataByKey0", &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"getDataByKey1", &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const DbMixedStackArgumentsAsyncProcessor::ProcessMap DbMixedStackArgumentsAsyncProcessor::kOwnProcessMap_ {
+  {"getDataByKey0", {&DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"getDataByKey1", {&DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2

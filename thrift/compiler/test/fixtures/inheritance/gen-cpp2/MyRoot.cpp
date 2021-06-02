@@ -92,20 +92,12 @@ void MyRootAsyncProcessor::processSerializedCompressedRequest(apache::thrift::Re
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::binaryProcessMap_ {
-  {"do_root", &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::compactProcessMap_ {
-  {"do_root", &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::kOwnProcessMap_ {
+  {"do_root", {&MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2

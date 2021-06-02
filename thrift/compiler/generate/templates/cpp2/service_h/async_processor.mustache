@@ -29,21 +29,19 @@
  public:
   void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<<%service:name%>AsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<<%service:name%>AsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
 <%#service:interactions?%>
   using InteractionConstructor = GeneratedAsyncProcessor::InteractionConstructor<<%service:name%>AsyncProcessor>;
   using InteractionConstructorMap = GeneratedAsyncProcessor::InteractionConstructorMap<InteractionConstructor>;
 <%/service:interactions?%>
-  static const <%service:name%>AsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const <%service:name%>AsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  static const <%service:name%>AsyncProcessor::ProcessMap& getOwnProcessMap();
 <%#service:interactions?%>
   static const <%service:name%>AsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
   std::unique_ptr<apache::thrift::Tile> createInteractionImpl(const std::string& name) override;
 <%/service:interactions?%>
  private:
-  static const <%service:name%>AsyncProcessor::ProcessMap binaryProcessMap_;
-  static const <%service:name%>AsyncProcessor::ProcessMap compactProcessMap_;
+  static const <%service:name%>AsyncProcessor::ProcessMap kOwnProcessMap_;
 <%#service:interactions?%>
   static const <%service:name%>AsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
 <%/service:interactions?%>

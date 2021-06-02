@@ -92,20 +92,12 @@ void MyServicePrioChildAsyncProcessor::processSerializedCompressedRequest(apache
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::binaryProcessMap_ {
-  {"pang", &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::compactProcessMap_ {
-  {"pang", &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::kOwnProcessMap_ {
+  {"pang", {&MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 } // cpp2
