@@ -23,9 +23,8 @@ public class DbMixedStackArgumentsRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public DbMixedStackArgumentsRpcServerHandler(DbMixedStackArguments _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new DbMixedStackArgumentsBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new DbMixedStackArgumentsBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public DbMixedStackArgumentsRpcServerHandler(DbMixedStackArguments.Async _delegate,

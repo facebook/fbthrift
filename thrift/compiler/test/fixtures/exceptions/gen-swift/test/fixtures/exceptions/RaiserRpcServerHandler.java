@@ -25,9 +25,8 @@ public class RaiserRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public RaiserRpcServerHandler(Raiser _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new RaiserBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new RaiserBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public RaiserRpcServerHandler(Raiser.Async _delegate,

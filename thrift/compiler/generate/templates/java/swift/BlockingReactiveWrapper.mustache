@@ -24,12 +24,10 @@ import java.util.*;
 public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}BlockingReactiveWrapper{{/service:extends}}
     implements {{service:javaCapitalName}}.Reactive {
     private final {{service:javaCapitalName}} _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public {{service:javaCapitalName}}BlockingReactiveWrapper({{service:javaCapitalName}} _delegate, reactor.core.scheduler.Scheduler _scheduler) {
-        {{#service:extends}}super(_delegate, _scheduler);{{/service:extends}}
+    public {{service:javaCapitalName}}BlockingReactiveWrapper({{service:javaCapitalName}} _delegate) {
+        {{#service:extends}}super(_delegate);{{/service:extends}}
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override
@@ -47,7 +45,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         {{/function:voidType}}
         {{^function:voidType}}
         return reactor.core.publisher.Mono.fromSupplier(() -> {
@@ -56,7 +54,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         {{/function:voidType}}
     }
 

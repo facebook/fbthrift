@@ -22,9 +22,8 @@ public class MyServicePrioChildRpcServerHandler  extends test.fixtures.basicanno
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public MyServicePrioChildRpcServerHandler(MyServicePrioChild _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new MyServicePrioChildBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new MyServicePrioChildBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public MyServicePrioChildRpcServerHandler(MyServicePrioChild.Async _delegate,

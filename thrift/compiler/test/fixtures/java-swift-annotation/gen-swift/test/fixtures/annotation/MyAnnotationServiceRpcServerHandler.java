@@ -22,9 +22,8 @@ public class MyAnnotationServiceRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public MyAnnotationServiceRpcServerHandler(MyAnnotationService _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new MyAnnotationServiceBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new MyAnnotationServiceBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public MyAnnotationServiceRpcServerHandler(MyAnnotationService.Async _delegate,

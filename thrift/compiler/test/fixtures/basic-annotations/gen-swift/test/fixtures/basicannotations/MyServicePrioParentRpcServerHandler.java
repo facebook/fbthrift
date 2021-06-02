@@ -23,9 +23,8 @@ public class MyServicePrioParentRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public MyServicePrioParentRpcServerHandler(MyServicePrioParent _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new MyServicePrioParentBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new MyServicePrioParentBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public MyServicePrioParentRpcServerHandler(MyServicePrioParent.Async _delegate,

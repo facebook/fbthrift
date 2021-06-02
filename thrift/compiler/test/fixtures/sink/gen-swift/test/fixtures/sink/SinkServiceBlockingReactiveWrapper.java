@@ -12,12 +12,10 @@ import java.util.*;
 public class SinkServiceBlockingReactiveWrapper 
     implements SinkService.Reactive {
     private final SinkService _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public SinkServiceBlockingReactiveWrapper(SinkService _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public SinkServiceBlockingReactiveWrapper(SinkService _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override

@@ -22,9 +22,8 @@ public class MyRootRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public MyRootRpcServerHandler(MyRoot _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new MyRootBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new MyRootBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public MyRootRpcServerHandler(MyRoot.Async _delegate,

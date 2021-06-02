@@ -12,12 +12,10 @@ import java.util.*;
 public class DbMixedStackArgumentsBlockingReactiveWrapper 
     implements DbMixedStackArguments.Reactive {
     private final DbMixedStackArguments _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public DbMixedStackArgumentsBlockingReactiveWrapper(DbMixedStackArguments _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public DbMixedStackArgumentsBlockingReactiveWrapper(DbMixedStackArguments _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override
@@ -33,7 +31,7 @@ public class DbMixedStackArgumentsBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
     @java.lang.Override
@@ -44,7 +42,7 @@ public class DbMixedStackArgumentsBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
 }

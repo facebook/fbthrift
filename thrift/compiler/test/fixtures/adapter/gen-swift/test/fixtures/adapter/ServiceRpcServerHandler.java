@@ -22,9 +22,8 @@ public class ServiceRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public ServiceRpcServerHandler(Service _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new ServiceBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new ServiceBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public ServiceRpcServerHandler(Service.Async _delegate,

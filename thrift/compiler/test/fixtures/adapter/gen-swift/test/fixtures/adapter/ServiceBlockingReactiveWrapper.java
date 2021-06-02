@@ -12,12 +12,10 @@ import java.util.*;
 public class ServiceBlockingReactiveWrapper 
     implements Service.Reactive {
     private final Service _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public ServiceBlockingReactiveWrapper(Service _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public ServiceBlockingReactiveWrapper(Service _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override
@@ -33,7 +31,7 @@ public class ServiceBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
 }

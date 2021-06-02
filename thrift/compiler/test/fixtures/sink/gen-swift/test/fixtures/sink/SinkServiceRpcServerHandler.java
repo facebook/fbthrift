@@ -21,9 +21,8 @@ public class SinkServiceRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public SinkServiceRpcServerHandler(SinkService _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new SinkServiceBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new SinkServiceBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public SinkServiceRpcServerHandler(SinkService.Async _delegate,

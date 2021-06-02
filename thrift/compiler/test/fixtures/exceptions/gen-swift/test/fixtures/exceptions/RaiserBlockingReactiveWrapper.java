@@ -12,12 +12,10 @@ import java.util.*;
 public class RaiserBlockingReactiveWrapper 
     implements Raiser.Reactive {
     private final Raiser _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public RaiserBlockingReactiveWrapper(Raiser _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public RaiserBlockingReactiveWrapper(Raiser _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override
@@ -33,7 +31,7 @@ public class RaiserBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
     @java.lang.Override
@@ -44,7 +42,7 @@ public class RaiserBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
     @java.lang.Override
@@ -55,7 +53,7 @@ public class RaiserBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
     @java.lang.Override
@@ -66,7 +64,7 @@ public class RaiserBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
 }

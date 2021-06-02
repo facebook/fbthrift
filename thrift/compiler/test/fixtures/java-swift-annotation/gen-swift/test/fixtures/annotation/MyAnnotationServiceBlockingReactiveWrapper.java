@@ -12,12 +12,10 @@ import java.util.*;
 public class MyAnnotationServiceBlockingReactiveWrapper 
     implements MyAnnotationService.Reactive {
     private final MyAnnotationService _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public MyAnnotationServiceBlockingReactiveWrapper(MyAnnotationService _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public MyAnnotationServiceBlockingReactiveWrapper(MyAnnotationService _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override
@@ -33,7 +31,7 @@ public class MyAnnotationServiceBlockingReactiveWrapper
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(_scheduler);
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
 }

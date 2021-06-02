@@ -22,9 +22,8 @@ public class LegacyServiceRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public LegacyServiceRpcServerHandler(LegacyService _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new LegacyServiceBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new LegacyServiceBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public LegacyServiceRpcServerHandler(LegacyService.Async _delegate,

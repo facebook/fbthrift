@@ -22,9 +22,8 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public MyNodeRpcServerHandler(MyNode _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new MyNodeBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new MyNodeBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public MyNodeRpcServerHandler(MyNode.Async _delegate,

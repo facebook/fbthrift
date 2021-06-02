@@ -26,9 +26,8 @@ public class NestedContainersRpcServerHandler
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public NestedContainersRpcServerHandler(NestedContainers _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new NestedContainersBlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new NestedContainersBlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public NestedContainersRpcServerHandler(NestedContainers.Async _delegate,

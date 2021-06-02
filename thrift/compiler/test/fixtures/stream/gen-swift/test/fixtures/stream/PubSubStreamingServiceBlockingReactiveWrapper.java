@@ -12,12 +12,10 @@ import java.util.*;
 public class PubSubStreamingServiceBlockingReactiveWrapper 
     implements PubSubStreamingService.Reactive {
     private final PubSubStreamingService _delegate;
-    private final reactor.core.scheduler.Scheduler _scheduler;
 
-    public PubSubStreamingServiceBlockingReactiveWrapper(PubSubStreamingService _delegate, reactor.core.scheduler.Scheduler _scheduler) {
+    public PubSubStreamingServiceBlockingReactiveWrapper(PubSubStreamingService _delegate) {
         
         this._delegate = _delegate;
-        this._scheduler = _scheduler;
     }
 
     @java.lang.Override

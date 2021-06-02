@@ -36,9 +36,8 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
   public {{service:javaCapitalName}}RpcServerHandler({{service:javaCapitalName}} _delegate,
-                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers,
-                                    reactor.core.scheduler.Scheduler _scheduler) {
-    this(new {{service:javaCapitalName}}BlockingReactiveWrapper(_delegate, _scheduler), _eventHandlers);
+                                    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    this(new {{service:javaCapitalName}}BlockingReactiveWrapper(_delegate), _eventHandlers);
   }
 
   public {{service:javaCapitalName}}RpcServerHandler({{service:javaCapitalName}}.Async _delegate,
