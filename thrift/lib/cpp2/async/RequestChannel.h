@@ -266,7 +266,7 @@ inline StreamClientCallback* createStreamClientCallback(
         apache::thrift::detail::ClientStreamBridge::ClientPtr
             clientStreamBridge) override {
       auto tHeader = std::make_unique<transport::THeader>();
-      tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+      tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
       apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
           firstResponse.metadata, *tHeader);
       requestCallback_.release()->onResponse(ClientReceiveState(

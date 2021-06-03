@@ -32,7 +32,7 @@ folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%
   }
 
   auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
-  tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
   apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
   apache::thrift::ClientReceiveState _returnState(
       protocolId,

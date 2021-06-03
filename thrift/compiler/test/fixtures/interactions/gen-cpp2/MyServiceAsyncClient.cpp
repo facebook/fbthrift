@@ -714,7 +714,7 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   }
 
   auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
-  tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
   apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
   apache::thrift::ClientReceiveState _returnState(
       protocolId,
@@ -1260,7 +1260,7 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   }
 
   auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
-  tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
   apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
   apache::thrift::ClientReceiveState _returnState(
       protocolId,
