@@ -138,6 +138,7 @@ class RequestsRegistry {
     }
 
     const std::string& getMethodName() const;
+    const folly::SocketAddress* getLocalAddress() const;
     const folly::SocketAddress* getPeerAddress() const;
 
     /**
@@ -166,6 +167,7 @@ class RequestsRegistry {
 
     std::string methodNameIfFinished_;
     folly::SocketAddress peerAddressIfFinished_;
+    folly::SocketAddress localAddressIfFinished_;
     ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
     std::shared_ptr<folly::RequestContext> rctx_;

@@ -210,6 +210,12 @@ const std::string& RequestsRegistry::DebugStub::getMethodName() const {
                                  : methodNameIfFinished_;
 }
 
+const folly::SocketAddress* RequestsRegistry::DebugStub::getLocalAddress()
+    const {
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getLocalAddress()
+                                 : &localAddressIfFinished_;
+}
+
 const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
     const {
   return getCpp2RequestContext() ? getCpp2RequestContext()->getPeerAddress()
@@ -221,8 +227,8 @@ void RequestsRegistry::DebugStub::prepareAsFinished() {
   rctx_.reset();
   methodNameIfFinished_ =
       const_cast<Cpp2RequestContext*>(reqContext_)->releaseMethodName();
-  peerAddressIfFinished_ =
-      *const_cast<Cpp2RequestContext*>(reqContext_)->getPeerAddress();
+  peerAddressIfFinished_ = *reqContext_->getPeerAddress();
+  localAddressIfFinished_ = *reqContext_->getLocalAddress();
   reqContext_ = nullptr;
   req_ = nullptr;
 }

@@ -761,6 +761,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           finishedTimestamp_(stub.getFinished()),
           protoId_(stub.getProtoId()),
           peerAddress_(*stub.getPeerAddress()),
+          localAddress_(*stub.getLocalAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(RequestsRegistry::getRequestId(rootRequestContextId_)),
           reqDebugLog_(collectRequestDebugLog(stub)) {
@@ -805,6 +806,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
     protocol::PROTOCOL_TYPES getProtoId() const { return protoId_; }
 
+    const folly::SocketAddress& getLocalAddress() const {
+      return localAddress_;
+    }
     const folly::SocketAddress& getPeerAddress() const { return peerAddress_; }
 
     const std::vector<std::string>& getDebugLog() const { return reqDebugLog_; }
@@ -825,6 +829,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     std::optional<std::string> clientId_;
     std::optional<std::string> serviceTraceMeta_;
     folly::SocketAddress peerAddress_;
+    folly::SocketAddress localAddress_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;
     const std::vector<std::string> reqDebugLog_;
