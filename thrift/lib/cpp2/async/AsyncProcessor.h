@@ -814,7 +814,7 @@ void GeneratedAsyncProcessor::processInThread(
       childClass,
       tile);
 
-  if (tile && tile->__fbthrift_maybeEnqueue(std::move(task))) {
+  if (tile && tile->__fbthrift_maybeEnqueue(std::move(task), scope)) {
     return;
   }
 

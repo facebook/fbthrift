@@ -24,6 +24,11 @@
 
 namespace apache {
 namespace thrift {
+namespace detail {
+using InteractionTaskQueue = std::queue<std::pair<
+    std::unique_ptr<concurrency::Runnable>,
+    concurrency::ThreadManager::ExecutionScope>>;
+}
 
 class InteractionId {
  public:
@@ -70,7 +75,8 @@ class Tile {
 
   // Only moves in arg when it returns true
   virtual bool __fbthrift_maybeEnqueue(
-      std::unique_ptr<concurrency::Runnable>&& task);
+      std::unique_ptr<concurrency::Runnable>&& task,
+      const concurrency::ThreadManager::ExecutionScope& scope);
 
  private:
   void incRef(folly::EventBase& eb) {
@@ -89,10 +95,11 @@ class Tile {
 class SerialInteractionTile : public Tile {
  public:
   bool __fbthrift_maybeEnqueue(
-      std::unique_ptr<concurrency::Runnable>&& task) override;
+      std::unique_ptr<concurrency::Runnable>&& task,
+      const concurrency::ThreadManager::ExecutionScope& scope) override;
 
  private:
-  std::queue<std::shared_ptr<concurrency::Runnable>> taskQueue_;
+  detail::InteractionTaskQueue taskQueue_;
   bool hasActiveRequest_{false};
   friend class Tile;
 };
@@ -100,7 +107,8 @@ class SerialInteractionTile : public Tile {
 class TilePromise final : public Tile {
  public:
   bool __fbthrift_maybeEnqueue(
-      std::unique_ptr<concurrency::Runnable>&& task) override;
+      std::unique_ptr<concurrency::Runnable>&& task,
+      const concurrency::ThreadManager::ExecutionScope& scope) override;
 
   void fulfill(
       Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb);
@@ -108,7 +116,7 @@ class TilePromise final : public Tile {
   void failWith(folly::exception_wrapper ew, const std::string& exCode);
 
  private:
-  std::deque<std::unique_ptr<concurrency::Runnable>> continuations_;
+  detail::InteractionTaskQueue continuations_;
 };
 
 class TilePtr {
