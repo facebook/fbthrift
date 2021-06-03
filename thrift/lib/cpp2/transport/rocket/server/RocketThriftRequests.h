@@ -212,6 +212,11 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::detail::SinkConsumerImpl&&) noexcept override;
+
+  bool sendSinkThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      SinkServerCallbackPtr) noexcept override;
 #endif
 
   folly::EventBase* getEventBase() noexcept override { return &evb_; }

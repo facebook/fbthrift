@@ -263,7 +263,7 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
   <%#function:returns_sink?%>
   auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  req->sendSinkReply(std::move(response.buffer), {});
+  std::ignore = req->sendSinkReply(std::move(response.buffer), {});
   <%/function:returns_sink?%>
 <%/function:exceptions?%>
 }

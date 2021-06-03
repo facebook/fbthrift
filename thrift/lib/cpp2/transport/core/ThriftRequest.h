@@ -233,6 +233,27 @@ class ThriftRequestCore : public ResponseChannelRequest {
       }
     }
   }
+
+  bool sendSinkReply(
+      std::unique_ptr<folly::IOBuf>&& buf,
+      SinkServerCallbackPtr callback,
+      folly::Optional<uint32_t> crc32c) override final {
+    if (tryCancel()) {
+      cancelTimeout();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      if (crc32c) {
+        metadata.crc32c_ref() = *crc32c;
+      }
+      auto alive = sendReplyInternal(
+          std::move(metadata), std::move(buf), std::move(callback));
+
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+      return alive;
+    }
+    return false;
+  }
 #endif
 
   void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode) final {
@@ -294,6 +315,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::detail::SinkConsumerImpl&&) noexcept {
+    LOG(FATAL) << "sendSinkThriftResponse not implemented";
+  }
+
+  virtual bool sendSinkThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      SinkServerCallbackPtr) noexcept {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
 #endif
@@ -375,6 +403,19 @@ class ThriftRequestCore : public ResponseChannelRequest {
           std::move(metadata), std::move(buf), std::move(sink));
     } else {
       sendResponseTooBigEx();
+    }
+  }
+
+  bool sendReplyInternal(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      SinkServerCallbackPtr serverCb) {
+    if (checkResponseSize(*buf)) {
+      return sendSinkThriftResponse(
+          std::move(metadata), std::move(buf), std::move(serverCb));
+    } else {
+      sendResponseTooBigEx();
+      return false;
     }
   }
 #endif
@@ -547,7 +588,10 @@ class ThriftRequest final : public ThriftRequestCore {
         break;
 #if FOLLY_HAS_COROUTINES
       case RpcKind::SINK:
-        sendSinkThriftResponse(std::move(metadata), std::move(exbuf), {});
+        sendSinkThriftResponse(
+            std::move(metadata),
+            std::move(exbuf),
+            SinkServerCallbackPtr(nullptr));
         break;
 #endif
       default: // Don't send error back for one-way.
@@ -557,6 +601,9 @@ class ThriftRequest final : public ThriftRequestCore {
   }
 
   // Don't allow hiding of overloaded method.
+#if FOLLY_HAS_COROUTINES
+  using ThriftRequestCore::sendSinkThriftResponse;
+#endif
   using ThriftRequestCore::sendStreamThriftResponse;
 
   folly::EventBase* getEventBase() noexcept override {

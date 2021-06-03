@@ -87,7 +87,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
                 std::move(payload), StreamServerCallbackPtr(nullptr));
           } else if (request->isSink()) {
 #if FOLLY_HAS_COROUTINES
-            request->sendSinkReply(std::move(payload), {});
+            std::ignore = request->sendSinkReply(std::move(payload), nullptr);
 #else
             DCHECK(false);
 #endif

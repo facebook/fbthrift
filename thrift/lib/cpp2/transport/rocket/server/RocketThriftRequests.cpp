@@ -728,6 +728,33 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
       .scheduleOn(executor)
       .start();
 }
+
+bool ThriftServerRequestSink::sendSinkThriftResponse(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    SinkServerCallbackPtr serverCallback) noexcept {
+  if (!serverCallback) {
+    sendSerializedError(std::move(metadata), std::move(data));
+    return false;
+  }
+  if (auto error = processFirstResponse(
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
+    error.handle(
+        [&](RocketException& ex) {
+          std::exchange(clientCallback_, nullptr)
+              ->onFirstResponseError(std::move(ex));
+        },
+        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    return false;
+  }
+  context_.unsetMarkRequestComplete();
+  serverCallback->resetClientCallback(*clientCallback_);
+  clientCallback_->setProtoId(getProtoId());
+  return clientCallback_->onFirstResponse(
+      FirstResponsePayload{std::move(data), std::move(metadata)},
+      nullptr, /* evb */
+      serverCallback.release());
+}
 #endif
 
 void ThriftServerRequestSink::closeConnection(

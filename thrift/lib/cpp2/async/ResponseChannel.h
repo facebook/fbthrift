@@ -130,6 +130,13 @@ class ResponseChannelRequest {
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }
+
+  FOLLY_NODISCARD virtual bool sendSinkReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      SinkServerCallbackPtr,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
 #endif
 
   virtual void sendErrorWrapped(

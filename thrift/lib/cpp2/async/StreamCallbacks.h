@@ -24,6 +24,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -260,6 +261,18 @@ class SinkClientCallback {
   // not terminating
   virtual void resetServerCallback(SinkServerCallback&) = 0;
 };
+
+struct SinkServerCallbackSendError {
+  void operator()(SinkServerCallback* sinkServerCallback) noexcept {
+    TApplicationException ex(
+        TApplicationException::TApplicationExceptionType::INTERRUPTION,
+        "Sink server callback canceled");
+    sinkServerCallback->onSinkError(std::move(ex));
+  }
+};
+
+using SinkServerCallbackPtr =
+    std::unique_ptr<SinkServerCallback, SinkServerCallbackSendError>;
 
 /**
  * The Channel contract is a flow-controlled bidirectional stream
