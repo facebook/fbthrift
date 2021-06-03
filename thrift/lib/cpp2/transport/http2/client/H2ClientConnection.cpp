@@ -238,7 +238,7 @@ void H2ClientConnection::closeNow() {
 }
 
 CLIENT_TYPE H2ClientConnection::getClientType() {
-  return THRIFT_HTTP_CLIENT_TYPE;
+  return THRIFT_HTTP2_CLIENT_TYPE;
 }
 
 void H2ClientConnection::onDestroy(const HTTPSessionBase&) {
