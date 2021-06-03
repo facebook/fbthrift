@@ -397,9 +397,10 @@ class parsing_driver {
   // Creates a reference to a known type.
   std::unique_ptr<t_type_ref> new_type_ref(
       const t_type* type, std::unique_ptr<t_annotations> annotations);
-  // Creates a reference to a newly created type.
+  // Creates a reference to a newly instantiated templated type.
   std::unique_ptr<t_type_ref> new_type_ref(
-      std::unique_ptr<t_type> type, std::unique_ptr<t_annotations> annotations);
+      std::unique_ptr<t_templated_type> type,
+      std::unique_ptr<t_annotations> annotations);
   // Creates a reference to a named type.
   std::unique_ptr<t_type_ref> new_type_ref(
       std::string name,
@@ -497,13 +498,6 @@ class parsing_driver {
     }
     return false;
   }
-
-  // Add a type specialization.
-  //
-  // For example `map<int, int>` or `int (annotation="value")`
-  // TODO(afuller): Cache specializations.
-  const t_type* add_unnamed_type(
-      std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations);
 
   // Adds an unnamed typedef to the program
   // TODO(afuller): Remove the need for these by an explicit t_type_ref node

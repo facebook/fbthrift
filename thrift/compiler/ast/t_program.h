@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <map>
 #include <memory>
 #include <string>
@@ -114,6 +115,12 @@ class t_program : public t_node {
     nodes_.push_back(std::move(ptd));
   }
 
+  // Adds a concrete instantiation of a templated type.
+  void add_type_instantiation(std::unique_ptr<t_templated_type> type_inst) {
+    assert(type_inst != nullptr);
+    type_insts_.emplace_back(std::move(type_inst));
+  }
+
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
     assert(td != nullptr);
     nodes_.push_back(std::move(td));
@@ -121,6 +128,12 @@ class t_program : public t_node {
 
   void add_unnamed_type(std::unique_ptr<t_type> ut) {
     assert(ut != nullptr);
+    // Should use add_type_instantiation
+    assert(dynamic_cast<t_templated_type*>(ut.get()) == nullptr);
+    // Should use add_placeholder_typedef
+    assert(dynamic_cast<t_placeholder_typedef*>(ut.get()) == nullptr);
+    // Should use add_unnamed_typedef
+    assert(dynamic_cast<t_typedef*>(ut.get()) == nullptr);
     nodes_.push_back(std::move(ut));
   }
 
@@ -139,6 +152,10 @@ class t_program : public t_node {
   }
   const std::vector<t_interaction*>& interactions() const {
     return interactions_;
+  }
+  node_list_view<t_templated_type> type_instantiations() { return type_insts_; }
+  node_list_view<const t_templated_type> type_instantiations() const {
+    return type_insts_;
   }
 
   /**
@@ -238,6 +255,7 @@ class t_program : public t_node {
  private:
   // All the elements owned by this program.
   node_list<t_node> nodes_;
+  node_list<t_templated_type> type_insts_;
 
   /**
    * Components to generate code for

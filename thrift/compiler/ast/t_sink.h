@@ -32,7 +32,7 @@ namespace compiler {
  *
  */
 
-class t_sink : public t_type {
+class t_sink : public t_templated_type {
  public:
   explicit t_sink(
       t_type_ref sink_type,

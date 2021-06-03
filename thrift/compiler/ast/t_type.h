@@ -186,6 +186,12 @@ class t_type : public t_named {
   const t_program* get_program() const { return program(); }
 };
 
+// The base class for a type that is parametrized by other types.
+class t_templated_type : public t_type {
+ protected:
+  using t_type::t_type;
+};
+
 /**
  * A reference to a thrift type.
  *

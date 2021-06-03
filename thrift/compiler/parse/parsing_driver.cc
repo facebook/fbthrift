@@ -671,8 +671,14 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
     // t_type_ref annotatable directly.
     if (const auto* tbase_type = dynamic_cast<const t_base_type*>(type)) {
       // base types can be copy constructed.
-      type = add_unnamed_type(
-          std::make_unique<t_base_type>(*tbase_type), std::move(annotations));
+      auto node = std::make_unique<t_base_type>(*tbase_type);
+      set_annotations(node.get(), std::move(annotations));
+      type = node.get();
+      if (mode == parsing_mode::INCLUDES) {
+        delete_at_the_end(node.release());
+      } else {
+        program->add_unnamed_type(std::move(node));
+      }
     } else {
       // Containers always use a new type, so should never show up here.
       assert(!type->is_container());
@@ -693,13 +699,14 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 }
 
 std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
-    std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
+    std::unique_ptr<t_templated_type> node,
+    std::unique_ptr<t_annotations> annotations) {
   const t_type* type = node.get();
   set_annotations(node.get(), std::move(annotations));
   if (mode == parsing_mode::INCLUDES) {
     delete_at_the_end(node.release());
   } else {
-    program->add_unnamed_type(std::move(node));
+    program->add_type_instantiation(std::move(node));
   }
   return std::make_unique<t_type_ref>(type);
 }
@@ -753,18 +760,6 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
       std::make_unique<t_placeholder_typedef>(
           program, std::move(name), scope_cache),
       std::move(annotations)));
-}
-
-const t_type* parsing_driver::add_unnamed_type(
-    std::unique_ptr<t_type> node, std::unique_ptr<t_annotations> annotations) {
-  const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations));
-  if (mode == parsing_mode::INCLUDES) {
-    delete_at_the_end(node.release());
-  } else {
-    program->add_unnamed_type(std::move(node));
-  }
-  return result;
 }
 
 const t_type* parsing_driver::add_unnamed_typedef(
