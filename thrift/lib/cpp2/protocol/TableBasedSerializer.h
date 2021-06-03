@@ -84,9 +84,10 @@ template <typename T>
 using maybe_get_element_type_t = typename maybe_get_element_type<T>::type;
 
 enum class StringFieldType {
+  String,
+  Binary,
   IOBuf,
   IOBufPtr,
-  String,
 };
 
 struct FieldInfo {

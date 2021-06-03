@@ -69,9 +69,9 @@ THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(string, std::string, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
     string, folly::fbstring, StringFieldType::String);
-THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, std::string, StringFieldType::String);
+THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, std::string, StringFieldType::Binary);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    binary, folly::fbstring, StringFieldType::String);
+    binary, folly::fbstring, StringFieldType::Binary);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, folly::IOBuf, StringFieldType::IOBuf);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
     binary, std::unique_ptr<folly::IOBuf>, StringFieldType::IOBufPtr);

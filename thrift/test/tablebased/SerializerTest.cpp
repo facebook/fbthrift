@@ -124,6 +124,7 @@ Type makeStructALike() {
   obj.opt_str_field_ref() = "yo";
   obj.i64_field_ref() = 123;
   obj.str_field_ref() = "unqualified";
+  obj.bin_field_ref()->push_back('\0');
   using Struct = std::remove_reference_t<decltype(*obj.struct_field_ref())>;
   obj.struct_field_ref() = makeStructBLike<Struct>();
   using Enum = std::remove_reference_t<decltype(*obj.enum_field_ref())>;

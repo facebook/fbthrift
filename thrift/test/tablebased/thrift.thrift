@@ -32,7 +32,8 @@ struct StructA {
   5: optional list<string> list_field;
   10: optional map<string, i64> map_field;
   11: string str_field;
-  12: Enum enum_field;
+  12: binary bin_field;
+  13: Enum enum_field;
 }
 
 struct StructWithRef {

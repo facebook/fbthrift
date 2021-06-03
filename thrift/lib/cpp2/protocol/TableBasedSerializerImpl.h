@@ -169,6 +169,9 @@ void read(
         case StringFieldType::String:
           iprot->readString(*static_cast<std::string*>(object));
           break;
+        case StringFieldType::Binary:
+          iprot->readBinary(*static_cast<std::string*>(object));
+          break;
         case StringFieldType::IOBuf:
           iprot->readBinary(*static_cast<folly::IOBuf*>(object));
           break;
@@ -365,6 +368,9 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, ThriftValue value) {
       switch (*static_cast<const StringFieldType*>(typeInfo.typeExt)) {
         case StringFieldType::String:
           return iprot->writeString(
+              *static_cast<const std::string*>(value.object));
+        case StringFieldType::Binary:
+          return iprot->writeBinary(
               *static_cast<const std::string*>(value.object));
         case StringFieldType::IOBuf:
           return iprot->writeBinary(
