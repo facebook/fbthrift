@@ -111,6 +111,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
+  ~Cpp2ConnContext() override { DCHECK(tiles_.empty()); }
+  Cpp2ConnContext(Cpp2ConnContext&&) = default;
+  Cpp2ConnContext& operator=(Cpp2ConnContext&&) = default;
+
   void reset() {
     peerAddress_.reset();
     localAddress_.reset();
@@ -251,31 +255,33 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  private:
   /**
    * Adds interaction to interaction map
-   * Returns false if id is in use
+   * Returns false and destroys tile if id is in use
    */
-  bool addTile(int64_t id, std::unique_ptr<Tile> tile) {
+  bool addTile(int64_t id, TilePtr tile) {
     return tiles_.try_emplace(id, std::move(tile)).second;
-  }
-  /**
-   * Updates interaction in map
-   * Returns old value
-   */
-  std::unique_ptr<Tile> resetTile(int64_t id, std::unique_ptr<Tile> tile) {
-    DCHECK(tiles_.count(id));
-    return std::exchange(tiles_[id], std::move(tile));
   }
   /**
    * Removes interaction from map
    * Returns old value
    */
-  std::unique_ptr<Tile> removeTile(int64_t id) {
+  TilePtr removeTile(int64_t id) {
     auto it = tiles_.find(id);
     if (it == tiles_.end()) {
-      return nullptr;
+      return {};
     }
     auto ret = std::move(it->second);
     tiles_.erase(it);
     return ret;
+  }
+  /**
+   * Replaces interaction if id is present in map.
+   * Destroys passed-in tile otherwise.
+   */
+  void tryReplaceTile(int64_t id, TilePtr tile) {
+    auto it = tiles_.find(id);
+    if (it != tiles_.end()) {
+      it->second = std::move(tile);
+    }
   }
   /**
    * Gets tile from map
@@ -387,7 +393,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   PeerCred peerCred_;
   // A CancellationSource that will be signaled when the connection is closed.
   folly::CancellationSource cancellationSource_;
-  folly::F14FastMap<int64_t, std::unique_ptr<Tile>> tiles_;
+  folly::F14FastMap<int64_t, TilePtr> tiles_;
   const Cpp2Worker* worker_;
   InterfaceKind interfaceKind_{InterfaceKind::USER};
   std::optional<TransportType> transportType_;
@@ -502,9 +508,13 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return timestamps_;
   }
 
-  void setTile(Tile& tile) { tile_ = &tile; }
-
-  Tile* getTile() { return tile_; }
+  // This lets us avoid having different signatures in the processor map.
+  // Should remove if we decide to split out interaction methods.
+  void setTile(TilePtr&& tile) {
+    DCHECK(tile);
+    tile_ = std::move(tile);
+  }
+  TilePtr releaseTile() { return std::move(tile_); }
 
   const std::string* clientId() const {
     if (auto header = getHeader(); header && header->clientId()) {
@@ -527,7 +537,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   int32_t protoSeqId_{0};
   int64_t interactionId_{0};
   folly::Optional<InteractionCreate> interactionCreate_;
-  Tile* tile_{nullptr};
+  TilePtr tile_;
   concurrency::ThreadManager::ExecutionScope executionScope_{
       concurrency::PRIORITY::NORMAL};
 };

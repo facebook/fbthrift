@@ -27,24 +27,25 @@ struct ServerStreamFactory {
   template <typename F>
   explicit ServerStreamFactory(F&& fn) : fn_(std::forward<F>(fn)) {}
 
-  void setInteraction(Tile* interaction) { interaction_ = interaction; }
+  void setInteraction(TilePtr&& interaction) {
+    interaction_ = std::move(interaction);
+  }
 
   void operator()(
       FirstResponsePayload&& payload,
       StreamClientCallback* cb,
       folly::EventBase* eb) {
-    if (interaction_) {
-      interaction_->__fbthrift_releaseRef(
-          *eb, InteractionReleaseEvent::STREAM_TRANSFER);
-    }
-    fn_(std::move(payload), cb, eb, interaction_);
+    fn_(std::move(payload), cb, eb, std::move(interaction_));
   }
 
  private:
   folly::Function<void(
-      FirstResponsePayload&&, StreamClientCallback*, folly::EventBase*, Tile*)>
+      FirstResponsePayload&&,
+      StreamClientCallback*,
+      folly::EventBase*,
+      TilePtr&&)>
       fn_;
-  Tile* interaction_{nullptr};
+  TilePtr interaction_;
 };
 
 template <typename T>

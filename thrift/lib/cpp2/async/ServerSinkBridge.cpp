@@ -36,6 +36,8 @@ ServerSinkBridge::ServerSinkBridge(
     : consumer_(std::move(sinkConsumer)),
       evb_(folly::getKeepAliveToken(&evb)),
       clientCallback_(callback) {
+  interaction_ =
+      TileStreamGuard::transferFrom(std::move(sinkConsumer.interaction));
   bool scheduledWait = clientWait(this);
   DCHECK(scheduledWait);
 }
@@ -81,16 +83,6 @@ void ServerSinkBridge::resetClientCallback(SinkClientCallback& clientCallback) {
 
 // start should be called on threadmanager's thread
 folly::coro::Task<void> ServerSinkBridge::startImpl(ServerSinkBridge& self) {
-  SCOPE_EXIT {
-    if (self.consumer_.interaction) {
-      self.evb_->add(
-          [interaction = self.consumer_.interaction, evb = self.evb_] {
-            interaction->__fbthrift_releaseRef(
-                *evb, InteractionReleaseEvent::STREAM_END);
-          });
-    }
-  };
-
   self.serverPush(self.consumer_.bufferSize);
   folly::Try<StreamPayload> finalResponse =
       co_await self.consumer_.consumer(makeGenerator(self));

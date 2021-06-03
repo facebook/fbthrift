@@ -61,12 +61,6 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
   }
 }
 
-void InteractionEventTask::failWith(
-    folly::exception_wrapper ex, std::string exCode) {
-  tile_ = nullptr;
-  EventTask::failWith(std::move(ex), std::move(exCode));
-}
-
 void AsyncProcessor::terminateInteraction(
     int64_t, Cpp2ConnContext&, folly::EventBase&) noexcept {
   LOG(DFATAL) << "This processor doesn't support interactions";
@@ -124,14 +118,12 @@ bool GeneratedAsyncProcessor::createInteraction(
           kInteractionConstructorErrorErrorCode);
       return true; // Not a duplicate; caller will see missing tile.
     }
-    (*tile)->destructionExecutor_ = &eb;
-    return conn.addTile(id, std::move(*tile));
+    return conn.addTile(id, {tile->release(), &eb});
   }
 
   // In the tm model we use a promise.
-  auto promise = std::make_unique<TilePromise>();
-  auto promisePtr = promise.get();
-  if (!conn.addTile(id, std::move(promise))) {
+  auto promisePtr = new TilePromise; // freed by RefGuard on next line
+  if (!conn.addTile(id, {promisePtr, &eb})) {
     return false;
   }
 
@@ -145,29 +137,19 @@ bool GeneratedAsyncProcessor::createInteraction(
       })
       .via(&eb)
       .thenTry([&conn, id, tm, &eb, promisePtr](auto&& t) {
-        auto promise = std::unique_ptr<TilePromise>(promisePtr);
-        std::unique_ptr<Tile> tile;
-        if (t.hasValue()) {
-          tile = std::move(*t);
-          tile->destructionExecutor_ = tm;
-        }
-
-        if (!tile) {
-          promise->failWith<InteractionEventTask>(
+        if (t.hasException()) {
+          promisePtr->failWith(
               folly::make_exception_wrapper<TApplicationException>(
                   "Interaction constructor failed with " +
                   t.exception().what().toStdString()),
               kInteractionConstructorErrorErrorCode);
-          conn.removeTile(id).release(); // aliases promise
-        } else if (promise->refCount_ == promise->continuations_.size() + 1) {
-          // promise and tile managed by pointer in tile map
-          promise->fulfill<InteractionEventTask>(*tile, *tm, eb);
-          conn.resetTile(id, std::move(tile)).release(); // aliases promise
-        } else {
-          // promise not in tile map, continuations will free tile
-          --tile->refCount_;
-          promise->fulfill<InteractionEventTask>(*tile.release(), *tm, eb);
+          conn.removeTile(id);
+          return;
         }
+
+        TilePtr tile{t->release(), &eb};
+        promisePtr->fulfill(*tile, *tm, eb);
+        conn.tryReplaceTile(id, std::move(tile));
       });
   return true;
 }
@@ -181,16 +163,7 @@ void GeneratedAsyncProcessor::terminateInteraction(
     int64_t id, Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
-  auto tile = conn.removeTile(id);
-  if (!tile) {
-    return;
-  } else if (tile->refCount_ > 1 || dynamic_cast<TilePromise*>(tile.get())) {
-    --tile->refCount_;
-    tile.release(); // freed by last decref
-  } else {
-    auto ex = std::move(tile->destructionExecutor_);
-    std::move(ex).add([tile = std::move(tile)](auto) {});
-  }
+  conn.removeTile(id);
 }
 
 void GeneratedAsyncProcessor::destroyAllInteractions(
@@ -292,10 +265,9 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
 
     if (interactionMetadataValid && !tm) {
       try {
-        // This is otherwise done by InteractionEventTask when dequeued.
+        // This is otherwise done while constructing InteractionEventTask.
         auto& tile = ctx->getConnectionContext()->getTile(interactionId);
-        ctx->setTile(tile);
-        tile.__fbthrift_acquireRef(*eb);
+        ctx->setTile({&tile, eb});
       } catch (const std::out_of_range&) {
         req->sendErrorWrapped(
             TApplicationException(
@@ -380,32 +352,19 @@ HandlerCallbackBase::~HandlerCallbackBase() {
       return;
     }
     assert(eb_ != nullptr);
-    releaseRequest(std::move(req_), eb_, std::exchange(interaction_, nullptr));
+    releaseRequest(std::move(req_), eb_, std::move(interaction_));
   }
 }
-
-namespace {
-void releaseInteractionInternal(Tile* interaction, folly::EventBase* eb) {
-  if (interaction) {
-    interaction->__fbthrift_releaseRef(*eb);
-  }
-}
-} // namespace
 
 void HandlerCallbackBase::releaseRequest(
     ResponseChannelRequest::UniquePtr request,
     folly::EventBase* eb,
-    Tile* interaction) {
+    TilePtr&& interaction) {
   DCHECK(request);
   DCHECK(eb != nullptr);
-  if (eb->inRunningEventBaseThread()) {
-    releaseInteractionInternal(interaction, eb);
-    request.reset();
-  } else {
+  if (!eb->inRunningEventBaseThread()) {
     eb->runInEventBaseThread(
-        [req = std::move(request), interaction = interaction, eb = eb] {
-          releaseInteractionInternal(interaction, eb);
-        });
+        [req = std::move(request), interaction = std::move(interaction)] {});
   }
 }
 
@@ -452,17 +411,12 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   if (eb_->inRunningEventBaseThread()) {
-    AppOverloadExceptionInfo::send(
-        std::move(req_),
-        message,
-        std::exchange(interaction_, nullptr),
-        *getEventBase());
+    AppOverloadExceptionInfo::send(std::move(req_), message);
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<AppOverloadExceptionInfo>(),
         std::move(req_),
-        message,
-        std::exchange(interaction_, nullptr));
+        message);
   }
 }
 
@@ -471,15 +425,11 @@ void HandlerCallbackBase::sendReply(LegacySerializedResponse response) {
   transform(response);
   if (getEventBase()->isInEventBaseThread()) {
     QueueReplyInfo(
-        std::move(req_),
-        std::exchange(interaction_, nullptr),
-        std::move(response),
-        crc32c)(*getEventBase());
+        std::move(req_), std::move(response), crc32c)(*getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<QueueReplyInfo>(),
         std::move(req_),
-        std::exchange(interaction_, nullptr),
         std::move(response),
         crc32c);
   }
@@ -491,7 +441,7 @@ void HandlerCallbackBase::sendReply(
   auto& stream = responseAndStream.stream;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
   transform(response);
-  stream.setInteraction(std::exchange(interaction_, nullptr));
+  stream.setInteraction(std::move(interaction_));
   if (getEventBase()->isInEventBaseThread()) {
     StreamReplyInfo(
         std::move(req_), std::move(stream), std::move(response), crc32c)(
@@ -515,7 +465,7 @@ void HandlerCallbackBase::sendReply(
   auto& sinkConsumer = responseAndSinkConsumer.second;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
   transform(response);
-  sinkConsumer.interaction = std::exchange(interaction_, nullptr);
+  sinkConsumer.interaction = std::move(interaction_);
 
   if (getEventBase()->isInEventBaseThread()) {
     SinkConsumerReplyInfo(
@@ -534,14 +484,6 @@ void HandlerCallbackBase::sendReply(
 #endif
 }
 
-void HandlerCallbackBase::releaseInteraction(
-    Tile* interaction, folly::EventBase* eb) {
-  releaseInteractionInternal(interaction, eb);
-}
-void HandlerCallbackBase::releaseInteractionInstance() {
-  releaseInteraction(std::exchange(interaction_, nullptr), getEventBase());
-}
-
 HandlerCallback<void>::HandlerCallback(
     ResponseChannelRequest::UniquePtr req,
     std::unique_ptr<ContextStack> ctx,
@@ -551,9 +493,15 @@ HandlerCallback<void>::HandlerCallback(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
-    Tile* interaction)
+    TilePtr&& interaction)
     : HandlerCallbackBase(
-          std::move(req), std::move(ctx), ewp, eb, tm, reqCtx, interaction),
+          std::move(req),
+          std::move(ctx),
+          ewp,
+          eb,
+          tm,
+          reqCtx,
+          std::move(interaction)),
       cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }

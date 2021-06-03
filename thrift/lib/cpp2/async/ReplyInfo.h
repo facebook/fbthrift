@@ -26,56 +26,38 @@ namespace thrift {
 class AppOverloadExceptionInfo {
  public:
   AppOverloadExceptionInfo(
-      ResponseChannelRequest::UniquePtr req,
-      std::string message,
-      Tile* interaction)
-      : req_(std::move(req)),
-        message_(std::move(message)),
-        interaction_(interaction) {}
+      ResponseChannelRequest::UniquePtr req, std::string message)
+      : req_(std::move(req)), message_(std::move(message)) {}
 
   static void send(
       ResponseChannelRequest::UniquePtr req,
-      const std::string& message,
-      Tile* interaction,
-      folly::EventBase& evb) noexcept {
-    if (interaction) {
-      interaction->__fbthrift_releaseRef(evb);
-    }
+      const std::string& message) noexcept {
     req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::LOADSHEDDING, message),
         kAppOverloadedErrorCode);
   }
-  void operator()(folly::EventBase& evb) noexcept {
-    send(std::move(req_), message_, interaction_, evb);
+  void operator()(folly::EventBase&) noexcept {
+    send(std::move(req_), message_);
   }
 
   ResponseChannelRequest::UniquePtr req_;
   std::string message_;
-  Tile* interaction_;
 };
 
 class QueueReplyInfo {
  public:
   QueueReplyInfo(
       ResponseChannelRequest::UniquePtr req,
-      Tile* interaction,
       LegacySerializedResponse response,
       folly::Optional<uint32_t> crc32c)
-      : req_(std::move(req)),
-        interaction_(interaction),
-        response_(std::move(response)),
-        crc32c_(crc32c) {}
+      : req_(std::move(req)), response_(std::move(response)), crc32c_(crc32c) {}
 
-  void operator()(folly::EventBase& evb) noexcept {
-    if (interaction_) {
-      interaction_->__fbthrift_releaseRef(evb);
-    }
+  void operator()(folly::EventBase&) noexcept {
     req_->sendReply(std::move(response_.buffer), nullptr, crc32c_);
   }
 
   ResponseChannelRequest::UniquePtr req_;
-  Tile* interaction_;
   LegacySerializedResponse response_;
   folly::Optional<uint32_t> crc32c_;
 };

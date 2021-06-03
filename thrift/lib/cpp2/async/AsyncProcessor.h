@@ -83,40 +83,36 @@ class EventTask : public virtual concurrency::Runnable {
   bool oneway_;
 };
 
-class InteractionEventTask : public EventTask {
+class InteractionEventTask : public EventTask, public InteractionTask {
  public:
+  using TaskFunc =
+      folly::Function<void(ResponseChannelRequest::UniquePtr, TilePtr&&)>;
   InteractionEventTask(
-      folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)>&&
-          taskFunc,
+      TaskFunc&& taskFunc,
       ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway,
-      Tile* tile)
+      TilePtr&& tile)
       : EventTask(
             [=](ResponseChannelRequest::UniquePtr request) {
               DCHECK(tile_);
-              DCHECK(!dynamic_cast<TilePromise*>(tile_));
-              taskFunc_(std::move(request), *std::exchange(tile_, nullptr));
+              DCHECK(!dynamic_cast<TilePromise*>(tile_.get()));
+              taskFunc_(std::move(request), std::move(tile_));
             },
             std::move(req),
             base,
             oneway),
-        tile_(tile),
+        tile_(std::move(tile)),
         taskFunc_(std::move(taskFunc)) {}
 
-  ~InteractionEventTask() {
-    if (tile_) {
-      base_->runInEventBaseThread(
-          [tile = tile_, eb = base_] { tile->__fbthrift_releaseRef(*eb); });
-    }
+  void setTile(TilePtr&& tile) override { tile_ = std::move(tile); }
+  void failWith(folly::exception_wrapper ex, std::string exCode) override {
+    EventTask::failWith(std::move(ex), std::move(exCode));
   }
 
-  void setTile(Tile& tile) { tile_ = &tile; }
-  void failWith(folly::exception_wrapper ex, std::string exCode);
-
  private:
-  Tile* tile_;
-  folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)> taskFunc_;
+  TilePtr tile_;
+  TaskFunc taskFunc_;
 };
 
 class AsyncProcessor : public TProcessorBase {
@@ -482,10 +478,10 @@ class HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
-      Tile* interaction = nullptr)
+      TilePtr&& interaction = {})
       : req_(std::move(req)),
         ctx_(std::move(ctx)),
-        interaction_(interaction),
+        interaction_(std::move(interaction)),
         ewp_(ewp),
         eb_(eb),
         tm_(tm),
@@ -497,7 +493,7 @@ class HandlerCallbackBase {
   static void releaseRequest(
       ResponseChannelRequest::UniquePtr request,
       folly::EventBase* eb,
-      Tile* interaction = nullptr);
+      TilePtr&& interaction = {});
 
   void exception(std::exception_ptr ex) { doException(ex); }
 
@@ -528,9 +524,6 @@ class HandlerCallbackBase {
   }
 
   Cpp2RequestContext* getRequestContext() { return reqCtx_; }
-
-  // pointer is valid until any of the finishing functions is called
-  Tile* getInteraction() { return interaction_; }
 
   bool isRequestActive() {
     // If req_ is nullptr probably it is not managed by this HandlerCallback
@@ -574,10 +567,6 @@ class HandlerCallbackBase {
   void sendReply(LegacySerializedResponse response);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
-  // Must be called from IO thread
-  static void releaseInteraction(Tile* interaction, folly::EventBase* eb);
-  void releaseInteractionInstance();
-
 #if !FOLLY_HAS_COROUTINES
   [[noreturn]]
 #endif
@@ -590,7 +579,7 @@ class HandlerCallbackBase {
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
   std::unique_ptr<ContextStack> ctx_;
-  Tile* interaction_{nullptr};
+  TilePtr interaction_;
 
   // May be null in a oneway call
   exnw_ptr ewp_;
@@ -625,7 +614,7 @@ class HandlerCallback : public HandlerCallbackBase {
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
       folly::Executor::KeepAlive<> streamEx = nullptr,
-      Tile* interaction = nullptr);
+      TilePtr&& interaction = {});
 
   void result(InputType r) { doResult(std::forward<InputType>(r)); }
   void result(std::unique_ptr<ResultType> r);
@@ -658,7 +647,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
-      Tile* interaction = nullptr);
+      TilePtr&& interaction = {});
 
   void done() { doDone(); }
 
@@ -780,14 +769,14 @@ GeneratedAsyncProcessor::makeEventTaskForRequest(
 
   return std::make_unique<InteractionEventTask>(
       [=, taskFn = std::move(taskFn)](
-          ResponseChannelRequest::UniquePtr rq, Tile& tileRef) mutable {
-        ctx->setTile(tileRef);
+          ResponseChannelRequest::UniquePtr rq, TilePtr&& tileRef) mutable {
+        ctx->setTile(std::move(tileRef));
         taskFn(std::move(rq));
       },
       std::move(req),
       eb,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      tile);
+      TilePtr{tile, eb});
 }
 
 template <typename ChildType>
@@ -811,8 +800,6 @@ void GeneratedAsyncProcessor::processInThread(
           kInteractionIdUnknownErrorCode);
       return;
     }
-
-    tile->__fbthrift_acquireRef(*eb);
   }
 
   auto scope = ctx->getRequestExecutionScope();
@@ -857,22 +844,19 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
     return;
   }
   if (getEventBase()->isInEventBaseThread()) {
-    releaseInteractionInstance();
     f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
     ctx_.reset();
   } else {
-    getEventBase()->runInEventBaseThread(
-        [f = std::forward<F>(f),
-         req = std::move(req_),
-         protoSeqId = protoSeqId_,
-         ctx = std::move(ctx_),
-         ex = std::forward<T>(ex),
-         reqCtx = reqCtx_,
-         interaction = std::exchange(interaction_, nullptr),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
-          f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
-        });
+    getEventBase()->runInEventBaseThread([f = std::forward<F>(f),
+                                          req = std::move(req_),
+                                          protoSeqId = protoSeqId_,
+                                          ctx = std::move(ctx_),
+                                          ex = std::forward<T>(ex),
+                                          reqCtx = reqCtx_,
+                                          interaction = std::move(interaction_),
+                                          eb = getEventBase()]() mutable {
+      f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
+    });
   }
 }
 
@@ -902,9 +886,15 @@ HandlerCallback<T>::HandlerCallback(
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
     folly::Executor::KeepAlive<> streamEx,
-    Tile* interaction)
+    TilePtr&& interaction)
     : HandlerCallbackBase(
-          std::move(req), std::move(ctx), ewp, eb, tm, reqCtx, interaction),
+          std::move(req),
+          std::move(ctx),
+          ewp,
+          eb,
+          tm,
+          reqCtx,
+          std::move(interaction)),
       cp_(cp),
       streamEx_(std::move(streamEx)) {
   this->protoSeqId_ = protoSeqId;

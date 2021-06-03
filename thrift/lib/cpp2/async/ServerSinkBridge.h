@@ -46,7 +46,7 @@ struct SinkConsumerImpl {
   uint64_t bufferSize;
   std::chrono::milliseconds chunkTimeout;
   folly::Executor::KeepAlive<> executor;
-  Tile* interaction{nullptr};
+  TilePtr interaction{};
 
   explicit operator bool() const { return (bool)consumer; }
 #endif
@@ -122,6 +122,7 @@ class ServerSinkBridge : public TwoWayBridge<
 
   // only access in evb_ thread
   bool sinkComplete_{false};
+  TileStreamGuard interaction_;
 };
 #endif
 

@@ -94,9 +94,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -104,6 +104,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.frobnicate", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -113,8 +114,8 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
         ew, std::move(req), ctx, eb, "MyInteraction.frobnicate");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_MyInteraction_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, nullptr, tile);
-  static_cast<MyServiceSvIf::MyInteractionIf*>(tile)->async_tm_frobnicate(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_MyInteraction_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, nullptr, std::move(tile));
+  iface.async_tm_frobnicate(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -151,12 +152,13 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteraction_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.ping", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -165,8 +167,8 @@ void MyServiceAsyncProcessor::process_MyInteraction_ping(apache::thrift::Respons
     eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx, tile);
-  static_cast<MyServiceSvIf::MyInteractionIf*>(tile)->async_tm_ping(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx, std::move(tile));
+  iface.async_tm_ping(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -181,9 +183,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -191,6 +193,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_truthify_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.truthify", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -200,8 +203,8 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
         ew, std::move(req), ctx, eb, "MyInteraction.truthify");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(std::move(req), std::move(ctxStack), return_MyInteraction_truthify<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), tile);
-  static_cast<MyServiceSvIf::MyInteractionIf*>(tile)->async_tm_truthify(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(std::move(req), std::move(ctxStack), return_MyInteraction_truthify<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), std::move(tile));
+  iface.async_tm_truthify(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -241,9 +244,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -251,6 +254,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_encode_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.encode", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -260,8 +264,8 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
         ew, std::move(req), ctx, eb, "MyInteraction.encode");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteraction_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), tile);
-  static_cast<MyServiceSvIf::MyInteractionIf*>(tile)->async_tm_encode(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteraction_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), std::move(tile));
+  iface.async_tm_encode(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -324,9 +328,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_frobnicate(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -334,6 +338,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate(apache::thrif
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.frobnicate", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -343,8 +348,8 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate(apache::thrif
         ew, std::move(req), ctx, eb, "MyInteractionFast.frobnicate");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, nullptr, tile);
-  static_cast<MyServiceSvIf::MyInteractionFastIf*>(tile)->async_eb_frobnicate(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, nullptr, std::move(tile));
+  iface.async_eb_frobnicate(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -379,12 +384,13 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteractionFast_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.ping", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -393,8 +399,8 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_ping(apache::thrift::Res
     eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx, tile);
-  static_cast<MyServiceSvIf::MyInteractionFastIf*>(tile)->async_eb_ping(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx, std::move(tile));
+  iface.async_eb_ping(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -407,9 +413,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -417,6 +423,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift:
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_truthify_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.truthify", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -426,8 +433,8 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift:
         ew, std::move(req), ctx, eb, "MyInteractionFast.truthify");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_truthify<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, tile);
-  static_cast<MyServiceSvIf::MyInteractionFastIf*>(tile)->async_eb_truthify(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_truthify<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, std::move(tile));
+  iface.async_eb_truthify(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -465,9 +472,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -475,6 +482,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::R
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_encode_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.encode", ctx));
+  auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -484,8 +492,8 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::R
         ew, std::move(req), ctx, eb, "MyInteractionFast.encode");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, tile);
-  static_cast<MyServiceSvIf::MyInteractionFastIf*>(tile)->async_eb_encode(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, std::move(tile));
+  iface.async_eb_encode(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -538,9 +546,9 @@ void MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto tile = ctx->getTile();
+  auto tile = ctx->releaseTile();
   if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, tile);
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb, std::move(tile));
     return;
   }
   // make sure getRequestContext is null
@@ -548,6 +556,7 @@ void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrif
   iface_->setRequestContext(nullptr);
   MyService_SerialInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.SerialInteraction.frobnicate", ctx));
+  auto& iface = static_cast<MyServiceSvIf::SerialInteractionIf&>(*tile);
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
   }
@@ -557,8 +566,8 @@ void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrif
         ew, std::move(req), ctx, eb, "SerialInteraction.frobnicate");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_SerialInteraction_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, tile);
-  static_cast<MyServiceSvIf::SerialInteractionIf*>(tile)->async_tm_frobnicate(std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_SerialInteraction_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, std::move(tile));
+  iface.async_tm_frobnicate(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
