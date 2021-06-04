@@ -414,8 +414,11 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2RequestContext(
       Cpp2ConnContext* ctx,
-      apache::thrift::transport::THeader* header = nullptr)
-      : TConnectionContext(header), ctx_(ctx) {}
+      apache::thrift::transport::THeader* header = nullptr,
+      std::string methodName = std::string{})
+      : TConnectionContext(header),
+        ctx_(ctx),
+        methodName_(std::move(methodName)) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) { ctx_ = ctx; }
 
@@ -478,10 +481,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   void setRequestTimeout(std::chrono::milliseconds requestTimeout) {
     requestTimeout_ = requestTimeout;
-  }
-
-  void setMethodName(std::string methodName) {
-    methodName_ = std::move(methodName);
   }
 
   const std::string& getMethodName() const { return methodName_; }

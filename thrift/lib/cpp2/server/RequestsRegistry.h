@@ -182,7 +182,6 @@ class RequestsRegistry {
     folly::IntrusiveListHook activeRequestsRegistryHook_;
     size_t refCount_{1};
     RequestStateMachine& stateMachine_;
-    bool includeInRecentRequests_{true};
   };
 
   class Deleter {

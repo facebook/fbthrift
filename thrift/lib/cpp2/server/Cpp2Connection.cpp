@@ -350,9 +350,10 @@ void Cpp2Connection::requestReceived(
 
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       hreq->getHeader()->getProtocolId());
-  const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
+  auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
       *hreq->getBuf(), protoId);
-  const std::string& methodName = msgBegin.methodName;
+  std::string& methodName = msgBegin.methodName;
+  const auto& meta = msgBegin.metadata;
 
   // Transport upgrade: check if client requested transport upgrade from header
   // to rocket. If yes, reply immediately and upgrade the transport after
@@ -363,11 +364,11 @@ void Cpp2Connection::requestReceived(
     switch (protoId) {
       case apache::thrift::protocol::T_BINARY_PROTOCOL:
         queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
-            msgBegin.seqId);
+            meta.seqId);
         break;
       case apache::thrift::protocol::T_COMPACT_PROTOCOL:
         queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
-            msgBegin.seqId);
+            meta.seqId);
         break;
       default:
         LOG(DFATAL) << "Unsupported protocol found";
@@ -494,7 +495,7 @@ void Cpp2Connection::requestReceived(
   auto serializedRequest = [&] {
     folly::IOBufQueue bufQueue;
     bufQueue.append(hreq->extractBuf());
-    bufQueue.trimStart(msgBegin.size);
+    bufQueue.trimStart(meta.size);
     return SerializedRequest(bufQueue.move());
   }();
 
@@ -513,13 +514,17 @@ void Cpp2Connection::requestReceived(
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
   folly::call_once(clientInfoFlag_, [&] {
-    if (const auto& meta = hreq->getHeader()->extractClientMetadata()) {
-      context_.setClientMetadata(*meta);
+    if (const auto& m = hreq->getHeader()->extractClientMetadata()) {
+      context_.setClientMetadata(*m);
     }
   });
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
-      std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
+      std::move(hreq),
+      std::move(reqCtx),
+      this_,
+      std::move(debugPayload),
+      std::move(methodName));
 
   logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
 
@@ -567,10 +572,11 @@ void Cpp2Connection::requestReceived(
   LoggingSampler monitoringLogSampler{
       THRIFT_FLAG(monitoring_over_header_logging_sample_rate)};
   if (monitoringLogSampler.isSampled()) {
-    if (isMonitoringMethodName(methodName)) {
+    if (isMonitoringMethodName(reqContext->getMethodName())) {
       THRIFT_CONNECTION_EVENT(monitoring_over_header)
           .logSampled(context_, monitoringLogSampler, [&] {
-            return folly::dynamic::object("method_name", methodName);
+            return folly::dynamic::object(
+                "method_name", reqContext->getMethodName());
           });
     }
   }
@@ -578,7 +584,7 @@ void Cpp2Connection::requestReceived(
   try {
     ResponseChannelRequest::UniquePtr req = std::move(t2r);
     if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
-            msgBegin, protoId, req, reqContext, worker_->getEventBase())) {
+            meta, protoId, req, reqContext, worker_->getEventBase())) {
       return;
     }
 
@@ -615,12 +621,15 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     std::shared_ptr<folly::RequestContext> rctx,
     std::shared_ptr<Cpp2Connection> con,
-    rocket::Payload&& debugPayload)
+    rocket::Payload&& debugPayload,
+    const std::string&& methodName)
     : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.
-      reqContext_(&connection_->context_, req_->getHeader()),
+      reqContext_(
+          &connection_->context_, req_->getHeader(), std::move(methodName)),
+      stateMachine_(util::includeInRecentRequestsCount(methodName)),
       activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
       *connection_->getWorker()->getRequestsRegistry(),

@@ -17,6 +17,7 @@
 #include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -26,6 +27,14 @@ using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
+
+namespace {
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    bool, includeInRecentRequestsCount, const std::string_view /*methodName*/) {
+  // Users of the module will override the behavior
+  return true;
+}
+} // namespace
 
 namespace apache {
 namespace thrift {
@@ -105,7 +114,7 @@ template struct helper<CompactProtocolReader, CompactProtocolWriter>;
 
 template <typename ProtocolReader>
 static bool setupRequestContextWithMessageBegin(
-    const MessageBegin& msgBegin,
+    const MessageBegin::Metadata& msgBegin,
     ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
@@ -128,13 +137,12 @@ static bool setupRequestContextWithMessageBegin(
     return false;
   }
 
-  ctx->setMethodName(msgBegin.methodName);
   ctx->setProtoSeqId(msgBegin.seqId);
   return true;
 }
 
 bool setupRequestContextWithMessageBegin(
-    const MessageBegin& msgBegin,
+    const MessageBegin::Metadata& msgBegin,
     protocol::PROTOCOL_TYPES protType,
     ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
@@ -155,30 +163,29 @@ bool setupRequestContextWithMessageBegin(
 MessageBegin deserializeMessageBegin(
     const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType) {
   MessageBegin msgBegin;
+  auto& meta = msgBegin.metadata;
   try {
     switch (protType) {
       case protocol::T_COMPACT_PROTOCOL: {
         CompactProtocolReader iprot;
         iprot.setInput(&buf);
-        iprot.readMessageBegin(
-            msgBegin.methodName, msgBegin.msgType, msgBegin.seqId);
-        msgBegin.size = iprot.getCursorPosition();
+        iprot.readMessageBegin(msgBegin.methodName, meta.msgType, meta.seqId);
+        meta.size = iprot.getCursorPosition();
         break;
       }
       case protocol::T_BINARY_PROTOCOL: {
         BinaryProtocolReader iprot;
         iprot.setInput(&buf);
-        iprot.readMessageBegin(
-            msgBegin.methodName, msgBegin.msgType, msgBegin.seqId);
-        msgBegin.size = iprot.getCursorPosition();
+        iprot.readMessageBegin(msgBegin.methodName, meta.msgType, meta.seqId);
+        meta.size = iprot.getCursorPosition();
         break;
       }
       default:
         break;
     }
   } catch (const TException& ex) {
-    msgBegin.isValid = false;
-    msgBegin.errMessage = ex.what();
+    meta.isValid = false;
+    meta.errMessage = ex.what();
     LOG(ERROR) << "received invalid message from client: " << ex.what();
   }
   return msgBegin;
@@ -267,6 +274,10 @@ TApplicationException toTApplicationException(
           std::move(msg));
     }
   }
+}
+
+bool includeInRecentRequestsCount(const std::string_view methodName) {
+  return THRIFT_PLUGGABLE_FUNC(includeInRecentRequestsCount)(methodName);
 }
 
 } // namespace util

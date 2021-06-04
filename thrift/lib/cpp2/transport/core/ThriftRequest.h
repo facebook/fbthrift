@@ -70,9 +70,15 @@ class ThriftRequestCore : public ResponseChannelRequest {
             metadata.loadMetric_ref()
                 ? folly::make_optional(std::move(*metadata.loadMetric_ref()))
                 : folly::none),
-        reqContext_(&connContext, &header_),
+        reqContext_(
+            &connContext,
+            &header_,
+            metadata.name_ref() ? std::move(*metadata.name_ref()).str()
+                                : std::string{}),
         queueTimeout_(serverConfigs_),
-        taskTimeout_(serverConfigs_) {
+        taskTimeout_(serverConfigs_),
+        stateMachine_(
+            includeInRecentRequestsCount(reqContext_.getMethodName())) {
     // Note that method name, RPC kind, and serialization protocol are validated
     // outside the ThriftRequestCore constructor.
     header_.setProtocolId(static_cast<int16_t>(
@@ -108,10 +114,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
     // response)
     if (auto compressionConfig = metadata.compressionConfig_ref()) {
       compressionConfig_ = *compressionConfig;
-    }
-
-    if (auto methodName = metadata.name_ref()) {
-      reqContext_.setMethodName(std::move(*methodName).str());
     }
 
     if (auto* observer = serverConfigs_.getObserver()) {
@@ -360,6 +362,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
  private:
+  static bool includeInRecentRequestsCount(const std::string_view);
+
   MessageChannel::SendCallbackPtr prepareSendCallback(
       MessageChannel::SendCallbackPtr&& sendCallback,
       server::TServerObserver* observer);
@@ -529,7 +533,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
  protected:
   server::ServerConfigs& serverConfigs_;
   const RpcKind kind_;
-  RequestStateMachine stateMachine_;
 
  private:
   bool checksumRequested_{false};
@@ -542,6 +545,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
   TaskTimeout taskTimeout_;
   std::chrono::milliseconds clientQueueTimeout_{0};
   std::chrono::milliseconds clientTimeout_{0};
+
+ protected:
+  RequestStateMachine stateMachine_;
 };
 
 // HTTP2 uses this

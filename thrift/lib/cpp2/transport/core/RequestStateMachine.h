@@ -25,6 +25,9 @@ namespace thrift {
 
 class RequestStateMachine {
  public:
+  explicit RequestStateMachine(bool includeInRecentRequests)
+      : includeInRecentRequests_(includeInRecentRequests) {}
+
   // Returns true if the request has not been cancelled (via tryCancel())
   //
   // Note: using this method from a thread other than that of eventBase_
@@ -77,11 +80,16 @@ class RequestStateMachine {
     return infoStartedProcessing_.load(std::memory_order_relaxed);
   }
 
+  FOLLY_NODISCARD bool includeInRecentRequests() const {
+    return includeInRecentRequests_;
+  }
+
  private:
   std::atomic<bool> startProcessingOrQueueTimeout_{false};
   std::atomic<bool> cancelled_{false};
 
   std::atomic<bool> infoStartedProcessing_{false};
+  const bool includeInRecentRequests_;
 };
 
 } // namespace thrift

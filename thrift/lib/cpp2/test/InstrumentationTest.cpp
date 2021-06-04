@@ -698,8 +698,7 @@ TEST_P(RecentRequestsTest, Exclude) {
   handler()->waitForRequests(1);
   auto snapshot = getServerSnapshot();
   // there were 3 requests that arrived but one should be excluded
-  // however, exclusions only work in Rocket
-  int expectedArrived = rocket ? 2 : 3;
+  int expectedArrived = 2;
   EXPECT_EQ(snapshot.recentCounters.at(0).first, expectedArrived);
   // there is one active request
   EXPECT_EQ(snapshot.recentCounters.at(0).second, 1);
@@ -869,7 +868,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MockRequest(
         RequestsRegistry::DebugStub& stub,
         std::shared_ptr<RequestsRegistry> registry)
-        : registry_(registry) {
+        : registry_(registry), stateMachine_(true) {
       new (&stub) RequestsRegistry::DebugStub(
           *registry,
           *this,

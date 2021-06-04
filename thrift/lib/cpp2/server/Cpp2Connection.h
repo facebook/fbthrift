@@ -152,7 +152,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
         std::shared_ptr<folly::RequestContext> rctx,
         std::shared_ptr<Cpp2Connection> con,
-        rocket::Payload&& debugPayload);
+        rocket::Payload&& debugPayload,
+        const std::string&& methodName);
 
     bool isActive() const final { return stateMachine_.isActive(); }
 

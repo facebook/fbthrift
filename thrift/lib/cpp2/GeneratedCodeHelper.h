@@ -890,16 +890,18 @@ void process(
 }
 
 struct MessageBegin : folly::MoveOnly {
-  bool isValid{true};
-  size_t size{0};
   std::string methodName;
-  MessageType msgType{};
-  int32_t seqId{0};
-  std::string errMessage;
+  struct Metadata {
+    std::string errMessage;
+    size_t size{0};
+    int32_t seqId{0};
+    MessageType msgType{};
+    bool isValid{true};
+  } metadata;
 };
 
 bool setupRequestContextWithMessageBegin(
-    const MessageBegin& msgBegin,
+    const MessageBegin::Metadata& msgBegin,
     protocol::PROTOCOL_TYPES protType,
     ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
@@ -1375,6 +1377,8 @@ void appendErrorClassificationToHeader(Cpp2RequestContext& ctx) {
 
 TApplicationException toTApplicationException(
     const folly::exception_wrapper& ew);
+
+bool includeInRecentRequestsCount(const std::string_view methodName);
 
 } // namespace util
 

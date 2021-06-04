@@ -25,12 +25,6 @@ namespace apache {
 namespace thrift {
 
 namespace {
-THRIFT_PLUGGABLE_FUNC_REGISTER(
-    bool, includeInRecentRequestsCount, const std::string_view /*methodName*/) {
-  // Users of the module will override the behavior
-  return true;
-}
-
 // RequestId storage.
 // Reserve some high bits for future use. Currently the maximum id supported
 // is 10^52, so thrift servers theoretically can generate unique request id
@@ -166,9 +160,7 @@ intptr_t RequestsRegistry::genRootId() {
 }
 
 void RequestsRegistry::registerStub(DebugStub& req) {
-  req.includeInRecentRequests_ =
-      THRIFT_PLUGGABLE_FUNC(includeInRecentRequestsCount)(req.getMethodName());
-  if (req.includeInRecentRequests_) {
+  if (req.stateMachine_.includeInRecentRequests()) {
     requestCounter_.increment();
   }
   uint64_t payloadSize = req.getPayloadSize();
@@ -183,7 +175,7 @@ void RequestsRegistry::registerStub(DebugStub& req) {
 }
 
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
-  if (stub.includeInRecentRequests_) {
+  if (stub.stateMachine_.includeInRecentRequests()) {
     requestCounter_.decrement();
   }
   if (finishedRequestsLimit_ == 0) {

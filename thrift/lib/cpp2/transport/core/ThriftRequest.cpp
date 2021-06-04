@@ -16,8 +16,15 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+
 namespace apache {
 namespace thrift {
+
+bool ThriftRequestCore::includeInRecentRequestsCount(
+    const std::string_view methodName) {
+  return util::includeInRecentRequestsCount(methodName);
+}
 
 ThriftRequestCore::RequestTimestampSample::RequestTimestampSample(
     server::TServerObserver::CallTimestamps& timestamps,
