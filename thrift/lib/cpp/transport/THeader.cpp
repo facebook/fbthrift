@@ -661,8 +661,7 @@ static void flushInfoHeaders(
     // Write key-value headers count
     pkt += writeVarint32(headerCount, pkt);
     // Write info headers
-    map<string, string>::const_iterator it;
-    for (it = headers.begin(); it != headers.end(); ++it) {
+    for (auto it = headers.begin(); it != headers.end(); ++it) {
       writeString(pkt, it->first); // key
       writeString(pkt, it->second); // value
     }

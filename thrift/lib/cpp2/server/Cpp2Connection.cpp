@@ -217,7 +217,7 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
 }
 
 void Cpp2Connection::setServerHeaders(
-    std::map<std::string, std::string>& writeHeaders) {
+    transport::THeader::StringToStringMap& writeHeaders) {
   if (getWorker()->isStopping()) {
     writeHeaders["connection"] = "goaway";
   }
@@ -712,7 +712,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     DCHECK(false);
   }
   auto* observer = connection_->getWorker()->getServer()->getObserver();
-  std::map<std::string, std::string> headers;
+  transport::THeader::StringToStringMap headers;
   connection_->setServerHeaders(headers);
   markProcessEnd(&headers);
   req_->sendTimeoutResponse(
@@ -743,7 +743,7 @@ void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
 }
 
 void Cpp2Connection::Cpp2Request::markProcessEnd(
-    std::map<std::string, std::string>* newHeaders) {
+    transport::THeader::StringToStringMap* newHeaders) {
   auto& timestamps = getTimestamps();
   auto& samplingStatus = timestamps.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
@@ -758,7 +758,7 @@ void Cpp2Connection::Cpp2Request::markProcessEnd(
 
 void Cpp2Connection::Cpp2Request::setLatencyHeaders(
     const apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
-    std::map<std::string, std::string>* newHeaders) const {
+    transport::THeader::StringToStringMap* newHeaders) const {
   if (auto v = timestamps.processDelayLatencyUsec()) {
     setLatencyHeader(
         kQueueLatencyHeader.str(), folly::to<std::string>(*v), newHeaders);
@@ -772,7 +772,7 @@ void Cpp2Connection::Cpp2Request::setLatencyHeaders(
 void Cpp2Connection::Cpp2Request::setLatencyHeader(
     const std::string& key,
     const std::string& value,
-    std::map<std::string, std::string>* newHeaders) const {
+    transport::THeader::StringToStringMap* newHeaders) const {
   // newHeaders is used timeout exceptions, where req->header cannot be mutated.
   if (newHeaders) {
     (*newHeaders)[key] = value;

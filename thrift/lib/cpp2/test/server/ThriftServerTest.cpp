@@ -602,7 +602,7 @@ enum LatencyHeaderStatus {
 };
 
 static void validateLatencyHeaders(
-    std::map<std::string, std::string> headers, LatencyHeaderStatus status) {
+    transport::THeader::StringToStringMap headers, LatencyHeaderStatus status) {
   bool isHeaderExpected = (status == LatencyHeaderStatus::EXPECTED);
   auto queueLatency = folly::get_optional(headers, kQueueLatencyHeader.str());
   ASSERT_EQ(isHeaderExpected, queueLatency.has_value());

@@ -359,7 +359,7 @@ TEST(H2ChannelTest, decodeHeaders) {
    public:
     static void decodeHeaders(
         proxygen::HTTPMessage& message,
-        std::map<std::string, std::string>& otherMetadata,
+        transport::THeader::StringToStringMap& otherMetadata,
         RequestRpcMetadata* metadata) {
       H2Channel::decodeHeaders(message, otherMetadata, metadata);
     }
@@ -378,7 +378,7 @@ TEST(H2ChannelTest, decodeHeaders) {
       proxygen::HTTP_HEADER_CONTENT_LANGUAGE,
       "Arrgh, this be pirate tongue matey");
   RequestRpcMetadata metadata;
-  std::map<std::string, std::string> otherMetadata;
+  transport::THeader::StringToStringMap otherMetadata;
   FakeChannel::decodeHeaders(req, otherMetadata, &metadata);
   EXPECT_EQ(otherMetadata.size(), 3);
   EXPECT_EQ(

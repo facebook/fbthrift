@@ -30,7 +30,8 @@ using std::map;
 using std::string;
 
 void H2Channel::encodeHeaders(
-    const map<string, string>& source, HTTPMessage& dest) noexcept {
+    const transport::THeader::StringToStringMap& source,
+    HTTPMessage& dest) noexcept {
   auto& msgHeaders = dest.getHeaders();
   for (auto it = source.begin(); it != source.end(); ++it) {
     // Keys in Thrift may not comply with HTTP key format requirements.
@@ -64,7 +65,7 @@ void H2Channel::encodeHeaders(
 
 void H2Channel::decodeHeaders(
     const HTTPMessage& source,
-    map<string, string>& dest,
+    transport::THeader::StringToStringMap& dest,
     RequestRpcMetadata* metadata) noexcept {
   auto decodeAndCopyKeyValue = [&](proxygen::HTTPHeaderCode code,
                                    const string& key,

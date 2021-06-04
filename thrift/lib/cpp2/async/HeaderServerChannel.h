@@ -151,7 +151,7 @@ class HeaderServerChannel : public ServerChannel,
         const std::string& methodName,
         int32_t protoSeqId,
         MessageChannel::SendCallback* cb,
-        const std::map<std::string, std::string>& headers,
+        const transport::THeader::StringToStringMap& headers,
         TimeoutResponseType responseType);
 
     const SamplingStatus& getSamplingStatus() const { return samplingStatus_; }

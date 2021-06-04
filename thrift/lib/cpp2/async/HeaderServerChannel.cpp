@@ -306,7 +306,7 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
     const std::string& methodName,
     int32_t protoSeqId,
     MessageChannel::SendCallback* cb,
-    const std::map<std::string, std::string>& headers,
+    const transport::THeader::StringToStringMap& headers,
     TimeoutResponseType responseType) {
   // Sending timeout response always happens on eb thread, while normal
   // request handling might still be work-in-progress on tm thread and

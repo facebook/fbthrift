@@ -139,7 +139,7 @@ void fillTHeaderFromResponseRpcMetadata(
 
 void fillResponseRpcMetadataFromTHeader(
     transport::THeader& header, ResponseRpcMetadata& responseMetadata) {
-  std::map<std::string, std::string> otherMetadata = header.releaseHeaders();
+  auto otherMetadata = header.releaseHeaders();
   {
     auto loadIt = otherMetadata.find(transport::THeader::QUERY_LOAD_HEADER);
     if (loadIt != otherMetadata.end()) {

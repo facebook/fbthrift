@@ -50,15 +50,15 @@ class TConnectionContext {
     }
   }
 
-  std::map<std::string, std::string> getHeaders() const {
+  transport::THeader::StringToStringMap getHeaders() const {
     if (header_) {
       return header_->getHeaders();
     } else {
-      return std::map<std::string, std::string>();
+      return transport::THeader::StringToStringMap();
     }
   }
 
-  const std::map<std::string, std::string>* getHeadersPtr() const {
+  const transport::THeader::StringToStringMap* getHeadersPtr() const {
     return header_ ? &header_->getHeaders() : nullptr;
   }
 

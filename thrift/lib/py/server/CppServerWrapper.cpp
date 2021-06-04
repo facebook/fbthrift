@@ -59,7 +59,7 @@ const std::string kHeaderEx = "uex";
 const std::string kHeaderExWhat = "uexw";
 
 object makePythonHeaders(
-    const std::map<std::string, std::string>& cppheaders,
+    const THeader::StringToStringMap& cppheaders,
     const Cpp2RequestContext* context) {
   object headers = dict();
   for (const auto& it : cppheaders) {

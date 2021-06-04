@@ -145,7 +145,7 @@ void SingleRpcChannel::sendThriftRequest(
         std::chrono::milliseconds(*clientTimeoutMs));
   }
 
-  auto otherMetadata = std::map<std::string, std::string>();
+  apache::thrift::transport::THeader::StringToStringMap otherMetadata;
   if (auto other = metadata.otherMetadata_ref()) {
     otherMetadata = std::move(*other);
   }
@@ -365,7 +365,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   }
   auto evb = callback_->getEventBase();
   ResponseRpcMetadata metadata;
-  map<string, string> headers;
+  transport::THeader::StringToStringMap headers;
   decodeHeaders(*headers_, headers, /*requestMetadata=*/nullptr);
   if (!headers.empty()) {
     metadata.otherMetadata_ref() = std::move(headers);
@@ -382,7 +382,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
 
 void SingleRpcChannel::extractHeaderInfo(
     RequestRpcMetadata* metadata) noexcept {
-  map<string, string> headers;
+  transport::THeader::StringToStringMap headers;
   decodeHeaders(*headers_, headers, metadata);
   if (!headers.empty()) {
     metadata->otherMetadata_ref() = std::move(headers);

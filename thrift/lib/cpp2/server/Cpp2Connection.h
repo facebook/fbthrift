@@ -221,14 +221,14 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       taskTimeout_.cancelTimeout();
     }
     void markProcessEnd(
-        std::map<std::string, std::string>* newHeaders = nullptr);
+        transport::THeader::StringToStringMap* newHeaders = nullptr);
     void setLatencyHeaders(
         const apache::thrift::server::TServerObserver::CallTimestamps&,
-        std::map<std::string, std::string>* newHeaders = nullptr) const;
+        transport::THeader::StringToStringMap* newHeaders = nullptr) const;
     void setLatencyHeader(
         const std::string& key,
         const std::string& value,
-        std::map<std::string, std::string>* newHeaders = nullptr) const;
+        transport::THeader::StringToStringMap* newHeaders = nullptr) const;
   };
 
   class Cpp2Sample : public MessageChannel::SendCallback {
@@ -267,7 +267,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
       const char* comment);
   void disconnect(const char* comment) noexcept;
 
-  void setServerHeaders(std::map<std::string, std::string>& writeHeaders);
+  void setServerHeaders(transport::THeader::StringToStringMap& writeHeaders);
   void setServerHeaders(HeaderServerChannel::HeaderRequest& request);
 
   friend class Cpp2Request;

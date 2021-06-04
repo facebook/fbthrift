@@ -805,7 +805,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
      */
     const folly::IOBuf& getPayload() const { return payload_; }
 
-    const std::map<std::string, std::string>& getHeaders() const {
+    const transport::THeader::StringToStringMap& getHeaders() const {
       return headers_;
     }
 
@@ -830,7 +830,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     const std::chrono::steady_clock::time_point finishedTimestamp_;
     const protocol::PROTOCOL_TYPES protoId_;
     folly::IOBuf payload_;
-    std::map<std::string, std::string> headers_;
+    transport::THeader::StringToStringMap headers_;
     std::optional<std::string> clientId_;
     std::optional<std::string> serviceTraceMeta_;
     folly::SocketAddress peerAddress_;

@@ -40,7 +40,7 @@ using apache::thrift::protocol::TType;
 #else
 #define FROM_LONG PyInt_FromLong
 #define AS_LONG PyInt_AsLong
-#include <cStringIO.h>
+#include <cStringIO.h> // @manual
 #endif
 
 #if PY_MAJOR_VERSION >= 3

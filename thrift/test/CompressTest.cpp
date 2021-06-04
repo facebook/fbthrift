@@ -71,7 +71,7 @@ void testMessage(
 
 void testChainedCompression(uint8_t flag, int iters) {
   THeader header;
-  std::map<std::string, std::string> persistentHeaders;
+  transport::THeader::StringToStringMap persistentHeaders;
   if (flag) {
     header.setTransform(flag);
   }
