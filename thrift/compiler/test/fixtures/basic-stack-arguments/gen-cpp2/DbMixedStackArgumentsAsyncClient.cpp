@@ -151,9 +151,6 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey0(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
-  if (auto* header = returnState.header()) {
-    rpcOptions.setRoutingData(header->releaseRoutingData());
-  }
   if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
@@ -371,9 +368,6 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey1(
   returnState.resetCtx(std::move(ctx));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
-  if (auto* header = returnState.header()) {
-    rpcOptions.setRoutingData(header->releaseRoutingData());
-  }
   if (!returnState.hasResponseBuffer()) {
     assert(returnState.isException());
   	tryResponse.emplaceException(std::move(returnState.exception()));
