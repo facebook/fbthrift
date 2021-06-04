@@ -72,6 +72,8 @@
     View() {}                                                \
     View(const LayoutSelf* layout, ViewPosition position)    \
         : ViewBase<View, LayoutSelf, T>(layout, position) {} \
+    bool operator==(const View& other) const;                \
+    bool operator<(const View& other) const;                 \
     __VA_ARGS__                                              \
   };                                                         \
   View view(ViewPosition self) const { return View(this, self); }
@@ -89,6 +91,9 @@
     void thaw(ViewPosition self, T& out) const;                              \
     void print(std::ostream& os, int level) const final;                     \
     void clear() final;                                                      \
+    struct View;                                                             \
+    static size_t hash(const TYPE&);                                         \
+    static size_t hash(const View&);                                         \
     __VA_ARGS__                                                              \
   }
 

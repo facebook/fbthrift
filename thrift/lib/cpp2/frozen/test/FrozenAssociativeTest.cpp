@@ -356,15 +356,43 @@ TEST(Frozen, SpillBug) {
 // Define hash and equal_to for User
 namespace std {
 size_t hash<User>::operator()(const User& user) const {
-  auto h = folly::hash::fnv64_buf(&(*user.uid_ref()), sizeof(*user.uid_ref()));
-  h = folly::hash::fnv64_buf(&(*user.name_ref()), sizeof(*user.name_ref()), h);
-  return h;
+  return folly::hash::hash_combine_generic(
+      folly::Hash{}, folly::StringPiece(*user.name_ref()), *user.uid_ref());
 }
 
 bool equal_to<User>::operator()(const User& lhs, const User& rhs) const {
   return *lhs.uid_ref() == *rhs.uid_ref() && *lhs.name_ref() == *rhs.name_ref();
 }
 } // namespace std
+
+namespace apache::thrift::frozen {
+
+size_t Layout<test::User>::hash(const test::User& user) {
+  return folly::hash::hash_combine_generic(
+      folly::Hash{},
+      12345,
+      folly::StringPiece(*user.name_ref()),
+      *user.uid_ref());
+}
+
+size_t Layout<test::User>::hash(const Layout<test::User>::View& user) {
+  return folly::hash::hash_combine_generic(
+      folly::Hash{}, 12345, folly::StringPiece(user.name()), user.uid());
+}
+
+bool Layout<test::User>::View::operator==(
+    const Layout<test::User>::View& rhs) const {
+  return std::make_tuple(uid(), name()) ==
+      std::make_tuple(rhs.uid(), rhs.name());
+}
+
+bool Layout<test::User>::View::operator<(
+    const Layout<test::User>::View& rhs) const {
+  return std::make_tuple(uid(), name()) <
+      std::make_tuple(rhs.uid(), rhs.name());
+}
+
+} // namespace apache::thrift::frozen
 
 TEST(FrozenMap, StructAsKey) {
   auto user = [](int64_t uid, std::string name) {
@@ -374,15 +402,40 @@ TEST(FrozenMap, StructAsKey) {
     return u;
   };
 
-  const auto u1 = user(1, "andy");
+  const auto u1 = user(1, "mike");
   const auto u2 = user(2, "jack");
-  const auto u3 = user(3, "mike");
+  const auto u3 = user(3, "andy");
+  const auto u4 = user(4, "pat");
 
-  std::unordered_map<User, int> userMap{
+  std::vector<std::pair<User, int>> entries{
       {u1, 1},
       {u1, 2},
+      {u2, 2},
       {u3, 3},
   };
+  std::map<User, int> userMap(entries.begin(), entries.end());
+  ASSERT_EQ(userMap.size(), 3);
+  ASSERT_EQ(userMap.at(u1), 1);
+  std::unordered_map<User, int> userHashMap(entries.begin(), entries.end());
+  ASSERT_EQ(userHashMap.size(), 3);
+  ASSERT_EQ(userHashMap.at(u1), 1);
 
-  EXPECT_NO_THROW(freeze(userMap));
+  auto omap = freeze(userMap);
+  auto hmap = freeze(userHashMap);
+  for (auto& [k, v] : userMap) {
+    auto fk = freeze(k);
+    {
+      auto found = omap.find(fk);
+      ASSERT_FALSE(found == omap.end());
+      EXPECT_EQ(found->second(), v);
+    }
+    {
+      auto found = hmap.find(fk);
+      ASSERT_FALSE(found == hmap.end());
+      EXPECT_EQ(found->second(), v);
+    }
+  }
+  auto fu4 = freeze(u4);
+  ASSERT_TRUE(omap.find(fu4) == omap.end());
+  ASSERT_TRUE(hmap.find(fu4) == hmap.end());
 }
