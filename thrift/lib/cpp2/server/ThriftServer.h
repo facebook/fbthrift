@@ -28,6 +28,7 @@
 #include <utility>
 #include <vector>
 
+#include <folly/CancellationToken.h>
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
@@ -201,6 +202,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void callOnStopServing();
 
   std::atomic<bool> calledOnStopServing_{false};
+
+  folly::CancellationSource backgroundCancelSource_;
+
+  void startBackgroundTasks();
 
   bool stopAcceptingAndJoinOutstandingRequestsDone_{false};
 
