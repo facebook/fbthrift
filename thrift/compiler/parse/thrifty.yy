@@ -288,7 +288,6 @@ class t_container_type;
 %type<t_paramlist*>          EmptyParamList
 %type<t_field*>              Param
 
-%type<t_throws*>             Throws
 %type<t_throws*>             MaybeThrows
 %type<t_ref<t_service>>      Extends
 %type<t_function_qualifier>  FunctionQualifier
@@ -1097,18 +1096,14 @@ FunctionQualifier:
       $$ = {};
     }
 
-Throws:
+MaybeThrows:
   tok_throws "(" FieldList ")"
     {
-      driver.debug("Throws -> tok_throws ( FieldList )");
+      driver.debug("MaybeThrows -> tok_throws ( FieldList )");
       $$ = driver.new_throws(own($3)).release();
     }
-MaybeThrows:
-  Throws
-		{
-			$$ = $1;
-		}
 |   {
+      driver.debug("MaybeThrows -> ");
       $$ = driver.new_throws().release();
 		}
 
@@ -1275,14 +1270,9 @@ ResponseAndStreamReturnType:
     }
 
 StreamReturnType:
-  tok_stream "<" FieldType ">"
+  tok_stream "<" FieldType MaybeThrows ">"
   {
-    driver.debug("StreamReturnType -> tok_stream < FieldType >");
-    $$ = new t_stream_response(consume($3));
-  }
-| tok_stream "<" FieldType Throws ">"
-  {
-    driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
+    driver.debug("StreamReturnType -> tok_stream < FieldType MaybeThrows >");
     $$ = new t_stream_response(consume($3), own($4));
   }
 
@@ -1308,11 +1298,7 @@ SinkReturnType:
         consume($5.first), own($5.second));
     }
 SinkFieldType:
-  FieldType
-    {
-      $$ = std::make_pair($1, nullptr);
-    }
-| FieldType Throws
+  FieldType MaybeThrows
     {
       $$ = std::make_pair($1, $2);
     }
