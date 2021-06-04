@@ -36,14 +36,8 @@ template <typename T>
 struct ThriftEqMatcher : testing::MatcherInterface<T> {
   constexpr explicit ThriftEqMatcher(T const* expected) : expected_(expected) {}
 
-// TODO(T69712535): Remove old googletest code
-#if defined(MOCK_METHOD)
-  using GMockT = T;
-#else
-  using GMockT = T const&;
-#endif
   bool MatchAndExplain(
-      GMockT actual, testing::MatchResultListener* listener) const override {
+      T actual, testing::MatchResultListener* listener) const override {
     return debug_equals(
         *expected_,
         actual,
