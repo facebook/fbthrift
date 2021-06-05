@@ -164,7 +164,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Function `meh` is already defined in `MyS`.\n"
+            err, "[FAILURE:foo.thrift:3] Function `meh` is already defined for `MyS`.\n"
         )
 
     def test_duplicate_method_name_base_base(self):
@@ -224,7 +224,8 @@ class CompilerFailureTest(unittest.TestCase):
         )
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Redefinition of value `Bar` in enum `Foo`.\n"
+            err,
+            "[FAILURE:foo.thrift:3] Enum value `Bar` is already defined for `Foo`.\n",
         )
 
     def test_duplicate_enum_value(self):
@@ -557,8 +558,8 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             # TODO(afuller): Fix t_scope to not include the locally defined Foo as
             # `foo.Foo`, which override the included foo.Foo definition.
-            "[FAILURE:foo.thrift:7] Duplicate structured annotation `Foo` on `Annotated`.\n"
-            + "[FAILURE:foo.thrift:8] Duplicate structured annotation `Foo` on `Annotated`.\n",
+            "[FAILURE:foo.thrift:7] Structured annotation `Foo` is already defined for `Annotated`.\n"
+            + "[FAILURE:foo.thrift:8] Structured annotation `Foo` is already defined for `Annotated`.\n",
         )
 
     def test_structured_annotations_type_resolved(self):
