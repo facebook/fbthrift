@@ -701,7 +701,7 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
-    def test_boxed_union(self):
+    def test_recursive_union(self):
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -724,7 +724,7 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
-    def test_boxed_ref(self):
+    def test_recursive_ref(self):
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -743,12 +743,12 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[FAILURE:foo.thrift:2] The `cpp.box` annotation cannot be combined "
-                "with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the "
+                "with the `ref` or `ref_type` annotations. Remove one of the "
                 "annotations from `field`.\n"
             ),
         )
 
-    def test_boxed_optional(self):
+    def test_recursive_optional(self):
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -767,7 +767,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[FAILURE:foo.thrift:2] The `cpp.box` annotation can only be used with "
-                "optional fields. Make sure `field` is optional.\n"
+                "optional fields. Make sure field is optional.\n"
             ),
         )
 
