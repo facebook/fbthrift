@@ -73,9 +73,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<struct_names_uniqueness_validator>();
   vs.add<reserved_field_id_validator>();
-  vs.add<recursive_union_validator>();
-  vs.add<recursive_ref_validator>();
-  vs.add<recursive_optional_validator>();
 
   // add more validators here ...
 }
@@ -191,63 +188,6 @@ bool reserved_field_id_validator::visit(t_struct* s) {
           field->get_lineno(), "Too many fields in `" + s->get_name() + "`");
     }
   }
-  return true;
-}
-
-static bool has_ref_annotation(const t_field* f) {
-  return f->has_annotation(
-      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
-}
-
-bool recursive_union_validator::visit(t_struct* s) {
-  if (!s->is_union()) {
-    return true;
-  }
-
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box")) {
-      add_error(
-          field->get_lineno(),
-          std::string("Unions cannot contain fields with the `cpp.box` "
-                      "annotation. Remove the annotation from `") +
-              field->get_name() + "`.");
-    }
-  }
-
-  return true;
-}
-
-bool recursive_ref_validator::visit(t_struct* s) {
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box") && has_ref_annotation(field)) {
-      add_error(
-          field->get_lineno(),
-          std::string(
-              "The `cpp.box` annotation cannot be combined with the `ref` or "
-              "`ref_type` annotations. Remove one of the annotations from `") +
-              field->get_name() + "`.");
-    }
-  }
-
-  return true;
-}
-
-bool recursive_optional_validator::visit(t_struct* s) {
-  if (s->is_union()) {
-    return true;
-  }
-
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box") &&
-        field->get_req() != t_field::e_req::optional) {
-      add_error(
-          field->get_lineno(),
-          std::string("The `cpp.box` annotation can only be used with optional "
-                      "fields. Make sure ") +
-              field->get_name() + std::string(" is optional."));
-    }
-  }
-
   return true;
 }
 
