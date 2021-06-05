@@ -335,7 +335,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:4] Field `a` is already defined for `Foo`.\n"
+            err, "[FAILURE:foo.thrift:4] Field `a` is not unique in struct `Foo`.\n"
         )
 
     def test_mixin_field_names_uniqueness(self):
@@ -358,7 +358,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:5] Field `B.i` and `A.i` can not have same name in `C`.\n",
+            "[FAILURE:foo.thrift:5] Field `a.i` and `b.i` can not have same name in struct `C`.\n",
         )
 
         write_file(
@@ -366,7 +366,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct A { 1: i32 i }
-                struct C {
+                struct B {
                 1: A a (cpp.mixin);
                 2: i64 i;
                 }
@@ -379,7 +379,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:4] Field `C.i` and `A.i` can not have same name in `C`.\n",
+            "[FAILURE:bar.thrift:3] Field `B.i` and `a.i` can not have same name in struct `B`.\n",
         )
 
     def test_mixin_nonstruct_members(self):

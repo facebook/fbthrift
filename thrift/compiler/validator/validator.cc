@@ -71,6 +71,7 @@ void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
 
 static void fill_validators(validator_list& vs) {
   vs.add<exception_list_is_all_exceptions_validator>();
+  vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
   vs.add<reserved_field_id_validator>();
   vs.add<recursive_union_validator>();
@@ -115,6 +116,39 @@ bool exception_list_is_all_exceptions_validator::validate_throws(
   for (const auto* ex : throws->fields()) {
     if (!ex->get_type()->get_true_type()->is_exception()) {
       return false;
+    }
+  }
+  return true;
+}
+
+bool field_names_uniqueness_validator::visit(t_struct* s) {
+  // If field is not struct, we couldn't extract field from mixin
+  for (auto* field : s->fields()) {
+    if (cpp2::is_mixin(*field) &&
+        !field->get_type()->get_true_type()->is_struct()) {
+      return true;
+    }
+  }
+
+  std::map<std::string, std::string> memberToParent;
+  for (auto* field : s->fields()) {
+    if (!memberToParent.emplace(field->get_name(), s->get_name()).second) {
+      add_error(
+          field->get_lineno(),
+          "Field `" + field->get_name() + "` is not unique in struct `" +
+              s->get_name() + "`.");
+    }
+  }
+
+  for (auto i : cpp2::get_mixins_and_members(*s)) {
+    auto res =
+        memberToParent.emplace(i.member->get_name(), i.mixin->get_name());
+    if (!res.second) {
+      add_error(
+          i.mixin->get_lineno(),
+          "Field `" + res.first->second + "." + i.member->get_name() +
+              "` and `" + i.mixin->get_name() + "." + i.member->get_name() +
+              "` can not have same name in struct `" + s->get_name() + "`.");
     }
   }
   return true;
