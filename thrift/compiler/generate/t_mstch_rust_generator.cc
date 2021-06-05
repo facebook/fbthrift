@@ -1673,8 +1673,13 @@ void t_mstch_rust_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
 }
 
-THRIFT_REGISTER_GENERATOR(mstch_rust, "Rust", "");
-
+THRIFT_REGISTER_GENERATOR(
+    mstch_rust,
+    "Rust",
+    "    serde:           Derive serde Serialize/Deserialize traits for types\n"
+    "    noserver:        Don't emit server code\n"
+    "    include_prefix=: Set program:include_prefix.\n"
+    "    cratemap=map:    Mapping file from services to crate names\n");
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
