@@ -24,8 +24,6 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/compiler/ast/alias_span.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -35,12 +33,12 @@ std::vector<std::string> capture_span(alias_span span) {
   return std::vector<std::string>(span.begin(), span.end());
 }
 
-TEST(AliasSpanTest, AliasSpan) {
+TEST(TNodeTest, AliasSpan) {
   // Fails to work with string literal directly
-  // Uncomment next line to produce expected compile time error
+  // Uncomment next line to produce expectd compile time error
   // EXPECT_THAT(capture_span("hi"), ::testing::ElementsAre("hi"));
 
-  // Works with string literal if wrapped in {}, via a conversion to a string
+  // Works with string litteral if wrapped in {}, via a conversion to a string
   // temporary.
   EXPECT_THAT(capture_span({"hi"}), ::testing::ElementsAre("hi"));
 

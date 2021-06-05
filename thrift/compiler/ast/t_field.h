@@ -20,7 +20,6 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_type.h>

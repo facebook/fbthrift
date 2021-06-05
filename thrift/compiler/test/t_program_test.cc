@@ -18,10 +18,10 @@
 #include <vector>
 
 #include <folly/portability/GTest.h>
+
 #include <thrift/compiler/ast/t_program.h>
 
-namespace apache::thrift::compiler {
-namespace {
+using namespace apache::thrift::compiler;
 
 /**
  * t_program functions are protected so we need
@@ -101,6 +101,3 @@ TEST(TProgram, ComputeNameFromFilePath) {
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_2));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_3));
 }
-
-} // namespace
-} // namespace apache::thrift::compiler

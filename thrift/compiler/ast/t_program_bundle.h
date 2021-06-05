@@ -19,7 +19,6 @@
 #include <memory>
 #include <vector>
 
-#include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_program.h>
 
 namespace apache {

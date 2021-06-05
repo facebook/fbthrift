@@ -18,7 +18,6 @@
 
 #include <string>
 
-#include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_named.h>
 
 namespace apache {

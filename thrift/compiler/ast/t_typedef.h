@@ -19,7 +19,6 @@
 #include <memory>
 #include <string>
 
-#include <thrift/compiler/ast/alias_span.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_type.h>
 
