@@ -23,6 +23,7 @@
 #include <utility>
 #include <vector>
 
+#include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_enum.h>
