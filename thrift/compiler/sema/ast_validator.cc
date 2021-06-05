@@ -20,7 +20,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <thrift/compiler/ast/name_index.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_field.h>
@@ -38,7 +37,7 @@ namespace compiler {
 namespace {
 
 struct service_metadata {
-  name_index<t_service> function_name_to_service;
+  std::unordered_map<std::string, const t_service*> function_name_to_service;
 
   service_metadata(node_metadata_cache& cache, const t_service* node) {
     if (node->extends() != nullptr) {
@@ -46,7 +45,7 @@ struct service_metadata {
           cache.get<service_metadata>(node->extends()).function_name_to_service;
     }
     for (const auto* function : node->functions()) {
-      function_name_to_service.put(function->name(), node);
+      function_name_to_service[function->name()] = node;
     }
   }
 };
@@ -54,9 +53,9 @@ struct service_metadata {
 void validate_interface_function_name_uniqueness(
     diagnostic_context& ctx, const t_interface* node) {
   // Check for a redefinition of a function in the same interface.
-  name_index<t_function> seen;
+  std::unordered_set<std::string> seen;
   for (const auto* function : node->functions()) {
-    if (const auto* existing = seen.put(function)) {
+    if (!seen.emplace(function->name()).second) {
       ctx.failure(
           function,
           "Function `%s` is already defined in `%s`.",
@@ -75,15 +74,15 @@ void validate_extends_service_function_name_uniqueness(
   const auto& extends_metadata =
       ctx.cache().get<service_metadata>(node->extends());
   for (const auto* function : node->functions()) {
-    if (const auto* existing_service =
-            extends_metadata.function_name_to_service.find(function->name())) {
+    auto itr = extends_metadata.function_name_to_service.find(function->name());
+    if (itr != extends_metadata.function_name_to_service.end()) {
       ctx.failure(
           function,
           "Function `%s.%s` redefines `%s.%s`.",
           node->name().c_str(),
           function->name().c_str(),
-          existing_service->get_full_name().c_str(),
-          function->name().c_str());
+          itr->second->get_full_name().c_str(),
+          itr->first.c_str());
     }
   }
 }
@@ -136,9 +135,9 @@ void validate_mixin_field_attributes(
 
 void validate_enum_value_name_uniqueness(
     diagnostic_context& ctx, const t_enum* node) {
-  name_index<t_enum_value> seen;
+  std::unordered_set<std::string> names;
   for (const auto* value : node->values()) {
-    if (const auto* existing = seen.put(value)) {
+    if (!names.insert(value->name()).second) {
       ctx.failure(
           value,
           "Redefinition of value `%s` in enum `%s`.",

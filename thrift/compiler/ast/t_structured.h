@@ -23,7 +23,6 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/name_index.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -62,14 +61,15 @@ class t_structured : public t_type {
   }
   const t_field* get_field_by_id(int32_t id) const;
   const t_field* get_field_by_name(const std::string& name) const {
-    return fields_by_name_.find(name);
+    auto itr = fields_by_name_.find(name);
+    return itr == fields_by_name_.end() ? nullptr : itr->second;
   }
 
  protected:
   t_field_list fields_;
   std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
-  name_index<t_field> fields_by_name_;
+  std::map<std::string, const t_field*> fields_by_name_;
 
   t_structured(t_program* program, std::string name)
       : t_type(program, std::move(name)) {}
