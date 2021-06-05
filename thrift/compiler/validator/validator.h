@@ -102,17 +102,6 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   static bool validate_throws(const t_throws* throws);
 };
 
-class field_names_uniqueness_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  /**
-   * Enforces that there are no duplicate field names either within this
-   * struct or between this struct and any of its mixins.
-   */
-  bool visit(t_struct* s) override;
-};
-
 class struct_names_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;
