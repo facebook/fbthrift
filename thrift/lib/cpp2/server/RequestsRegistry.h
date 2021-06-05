@@ -99,7 +99,6 @@ class RequestsRegistry {
           rctx_(std::move(rctx)),
           protoId_(protoId),
           payload_(std::move(debugPayload)),
-          timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
           rootRequestContextId_(rctx_->getRootId()),
           stateMachine_(stateMachine) {
@@ -124,7 +123,7 @@ class RequestsRegistry {
     }
 
     std::chrono::steady_clock::time_point getTimestamp() const {
-      return timestamp_;
+      return stateMachine_.started();
     }
 
     std::chrono::steady_clock::time_point getFinished() const {
@@ -173,7 +172,6 @@ class RequestsRegistry {
     std::shared_ptr<folly::RequestContext> rctx_;
     const protocol::PROTOCOL_TYPES protoId_;
     rocket::Payload payload_;
-    std::chrono::steady_clock::time_point timestamp_;
     std::chrono::steady_clock::time_point finished_{
         std::chrono::steady_clock::duration::zero()};
     RequestsRegistry* registry_;

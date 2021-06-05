@@ -84,12 +84,16 @@ class RequestStateMachine {
     return includeInRecentRequests_;
   }
 
+  std::chrono::steady_clock::time_point started() const { return started_; }
+
  private:
   std::atomic<bool> startProcessingOrQueueTimeout_{false};
   std::atomic<bool> cancelled_{false};
 
   std::atomic<bool> infoStartedProcessing_{false};
   const bool includeInRecentRequests_;
+  const std::chrono::steady_clock::time_point started_{
+      std::chrono::steady_clock::now()};
 };
 
 } // namespace thrift
