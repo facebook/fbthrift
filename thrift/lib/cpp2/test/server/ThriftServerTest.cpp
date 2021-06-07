@@ -35,7 +35,6 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/executors/MeteredExecutor.h>
-#include <folly/experimental/coro/Sleep.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -2529,7 +2528,6 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
    public:
     folly::Baton<> startEnter, startExit;
     folly::Baton<> stopEnter, stopExit;
-    folly::Baton<> backgroundEnter, backgroundExit;
 
     void voidResponse() override {}
 
@@ -2549,20 +2547,6 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
         stopEnter.post();
         stopExit.wait();
       });
-    }
-
-    folly::coro::Task<void> co_backgroundTask() override {
-      backgroundEnter.post();
-      backgroundExit.wait();
-      // Wait for cancellation
-      const folly::CancellationToken& ct =
-          co_await folly::coro::co_current_cancellation_token;
-      for (size_t retry = 0; retry < 20 && !ct.isCancellationRequested();
-           retry++) {
-        co_await folly::coro::sleepReturnEarlyOnCancel(100ms);
-      }
-      EXPECT_TRUE(ct.isCancellationRequested());
-      co_return;
     }
   };
 
@@ -2649,11 +2633,6 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
   runner->getThriftServer().setEnabled(true);
   client.semifuture_voidResponse().get();
   EXPECT_EQ("echo", client.semifuture_echoRequest("echo").get());
-
-  // Wait for backgroundTask to start
-  EXPECT_TRUE(testIf->backgroundEnter.try_wait_for(2s));
-  client.semifuture_voidResponse().get();
-  testIf->backgroundExit.post();
 
   // Stop the server on a different thread
   folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(

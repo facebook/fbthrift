@@ -16,12 +16,13 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/Portability.h>
 #include <folly/String.h>
 #include <folly/Unit.h>
 #include <folly/container/F14Map.h>
-#include <folly/experimental/coro/Task.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 
@@ -325,10 +326,6 @@ class ServiceHandler {
   virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() = 0;
 
-#if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<void> co_backgroundTask() = 0;
-#endif
-
   virtual ~ServiceHandler() = default;
 };
 
@@ -404,10 +401,6 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
     return folly::makeSemiFuture();
   }
-
-#if FOLLY_HAS_COROUTINES
-  folly::coro::Task<void> co_backgroundTask() override { co_return; }
-#endif
 
   std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
 

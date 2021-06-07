@@ -391,9 +391,6 @@ void ThriftServer::setup() {
     // Called after setup
     callOnStartServing();
 
-    // Start background task on the thread manager
-    startBackgroundTasks();
-
     started_.store(true, std::memory_order_release);
 
     // Notify handler of the preServe event
@@ -413,17 +410,6 @@ void ThriftServer::setup() {
     handleSetupFailure();
     throw;
   }
-}
-
-void ThriftServer::startBackgroundTasks() {
-#if FOLLY_HAS_COROUTINES
-  for (auto handler : getProcessorFactory()->getServiceHandlers()) {
-    folly::coro::co_withCancellation(
-        backgroundCancelSource_.getToken(), handler->co_backgroundTask())
-        .scheduleOn(getThreadManager().get())
-        .start();
-  }
-#endif
 }
 
 void ThriftServer::setupThreadManager() {
@@ -656,11 +642,6 @@ void ThriftServer::callOnStopServing() {
     // callOnStopServing() was called earlier
     return;
   }
-
-#if FOLLY_HAS_COROUTINES
-  // Cancel background tasks
-  backgroundCancelSource_.requestCancellation();
-#endif
   auto handlerList = getProcessorFactory()->getServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
