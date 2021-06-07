@@ -54,10 +54,17 @@ namespace thrift {
 
 class StreamClientCallback;
 class SinkClientCallback;
+class RequestChannel;
 
 namespace detail {
 template <RpcKind Kind>
-struct RequestClientCallbackType {
+struct RequestClientCallbackType {};
+template <>
+struct RequestClientCallbackType<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE> {
+  using Ptr = RequestClientCallback::Ptr;
+};
+template <>
+struct RequestClientCallbackType<RpcKind::SINGLE_REQUEST_NO_RESPONSE> {
   using Ptr = RequestClientCallback::Ptr;
 };
 template <>
@@ -68,6 +75,13 @@ template <>
 struct RequestClientCallbackType<RpcKind::SINK> {
   using Ptr = SinkClientCallback*;
 };
+template <RpcKind Kind>
+using ChannelSendFunc = void (RequestChannel::*)(
+    const RpcOptions&,
+    MethodMetadata&&,
+    SerializedRequest&&,
+    std::shared_ptr<transport::THeader>,
+    typename RequestClientCallbackType<Kind>::Ptr);
 } // namespace detail
 
 /**
@@ -86,14 +100,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
-  template <RpcKind Kind>
+  template <RpcKind Kind, typename RpcOptions>
   void sendRequestAsync(
-      const apache::thrift::RpcOptions&,
-      apache::thrift::MethodMetadata&& methodMetadata,
+      RpcOptions&&,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>&&,
-      typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr) =
-      delete;
+      typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr);
 
   /**
    * ReplyCallback will be invoked when the reply to this request is
@@ -105,7 +118,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   virtual void sendRequestResponse(
       const RpcOptions&,
-      apache::thrift::MethodMetadata&& methodMetadata,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
@@ -116,7 +129,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   virtual void sendRequestNoResponse(
       const RpcOptions&,
-      apache::thrift::MethodMetadata&& methodMetadata,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
@@ -131,14 +144,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   virtual void sendRequestStream(
       const RpcOptions& rpcOptions,
-      apache::thrift::MethodMetadata&& methodMetadata,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
 
   virtual void sendRequestSink(
       const RpcOptions& rpcOptions,
-      apache::thrift::MethodMetadata&& methodMetadata,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback);
@@ -153,13 +166,12 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
   // registers a new interaction with the channel
   // returns id of created interaction (always nonzero)
-  virtual InteractionId createInteraction(
-      apache::thrift::ManagedStringView&& name);
+  virtual InteractionId createInteraction(ManagedStringView&& name);
 
   // registers an interaction with a nested channel
   // only some channels can be nested; the rest call terminate here
   virtual InteractionId registerInteraction(
-      apache::thrift::ManagedStringView&& name, int64_t id);
+      ManagedStringView&& name, int64_t id);
 
   using Ptr =
       std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>;
@@ -168,36 +180,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   static InteractionId createInteractionId(int64_t id);
   static void releaseInteractionId(InteractionId&& id);
 };
-
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-    const apache::thrift::RpcOptions&,
-    apache::thrift::MethodMetadata&& methodMetadata,
-    SerializedRequest&&,
-    std::shared_ptr<apache::thrift::transport::THeader>&&,
-    RequestClientCallback::Ptr);
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-    const apache::thrift::RpcOptions&,
-    apache::thrift::MethodMetadata&& methodMetadata,
-    SerializedRequest&&,
-    std::shared_ptr<apache::thrift::transport::THeader>&&,
-    RequestClientCallback::Ptr);
-template <>
-void RequestChannel::sendRequestAsync<
-    RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
-    const apache::thrift::RpcOptions&,
-    apache::thrift::MethodMetadata&& methodMetadata,
-    SerializedRequest&&,
-    std::shared_ptr<apache::thrift::transport::THeader>&&,
-    StreamClientCallback*);
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINK>(
-    const apache::thrift::RpcOptions&,
-    apache::thrift::MethodMetadata&& methodMetadata,
-    SerializedRequest&&,
-    std::shared_ptr<apache::thrift::transport::THeader>&&,
-    SinkClientCallback*);
 
 template <bool oneWay>
 class ClientSyncCallback : public RequestClientCallback {
@@ -343,6 +325,57 @@ SerializedRequest preprocessSendT(
 
     return SerializedRequest(queue.move());
   });
+}
+
+namespace detail {
+template <RpcKind Kind>
+constexpr ChannelSendFunc<Kind> getChannelSendFunc() {
+  if constexpr (Kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
+    return &RequestChannel::sendRequestResponse;
+  } else if constexpr (Kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+    return &RequestChannel::sendRequestNoResponse;
+  } else if constexpr (Kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
+    return &RequestChannel::sendRequestStream;
+  } else {
+    static_assert(Kind == RpcKind::SINK);
+    return &RequestChannel::sendRequestSink;
+  }
+}
+} // namespace detail
+
+template <RpcKind Kind, typename RpcOptions>
+void RequestChannel::sendRequestAsync(
+    RpcOptions&& rpcOptions,
+    MethodMetadata&& methodMetadata,
+    SerializedRequest&& request,
+    std::shared_ptr<apache::thrift::transport::THeader>&& header,
+    typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
+        callback) {
+  auto* eb = getEventBase();
+  if (!eb || eb->inRunningEventBaseThread()) {
+    auto send = apache::thrift::detail::getChannelSendFunc<Kind>();
+    (this->*send)(
+        rpcOptions,
+        std::move(methodMetadata),
+        std::move(request),
+        std::move(header),
+        std::move(callback));
+  } else {
+    eb->runInEventBaseThread([this,
+                              rpcOptions = std::forward<RpcOptions>(rpcOptions),
+                              methodMetadata = std::move(methodMetadata),
+                              request = std::move(request),
+                              header = std::move(header),
+                              callback = std::move(callback)]() mutable {
+      auto send = apache::thrift::detail::getChannelSendFunc<Kind>();
+      (this->*send)(
+          rpcOptions,
+          std::move(methodMetadata),
+          std::move(request),
+          std::move(header),
+          std::move(callback));
+    });
+  }
 }
 
 template <RpcKind Kind, class Protocol>
