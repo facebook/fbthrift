@@ -675,7 +675,9 @@ TEST_F(StructTest, CppDataMethod) {
 template <class T>
 using DetectIsset = decltype(&T::__isset);
 static_assert(folly::is_detected_v<DetectIsset, PublicIsset>);
-static_assert(!folly::is_detected_v<DetectIsset, Basic>);
+
+// TODO: Uncomment once __isset is private
+// static_assert(!folly::is_detected_v<DetectIsset, Basic>);
 
 TEST_F(StructTest, PublicIsset) {
   PublicIsset obj;

@@ -239,7 +239,7 @@ class MyStruct final  {
  private:
   ::cpp2::MyEnum myEnum;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;

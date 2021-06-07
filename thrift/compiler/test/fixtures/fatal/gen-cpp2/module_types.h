@@ -2308,7 +2308,7 @@ class structA final  {
  private:
   ::std::string b;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -2947,7 +2947,7 @@ class structB final  {
  private:
   bool d;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool c;
@@ -3149,7 +3149,7 @@ class structC final  {
  private:
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> o3;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -4180,7 +4180,7 @@ class struct1 final  {
  private:
   ::test_cpp2::cpp_reflection::union2 field5;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -4465,7 +4465,7 @@ class struct2 final  {
  private:
   ::test_cpp2::cpp_reflection::struct1 fieldG;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -4805,7 +4805,7 @@ class struct3 final  {
  private:
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> fieldR;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -5457,7 +5457,7 @@ class struct4 final  {
  public:
   ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -5656,7 +5656,7 @@ class struct5 final  {
  private:
   ::test_cpp2::cpp_reflection::structB field4;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -5895,7 +5895,7 @@ class struct_binary final  {
  private:
   ::std::string bi;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool bi;
@@ -6015,7 +6015,7 @@ class dep_A_struct final  {
  private:
   ::std::int32_t i_a;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool b;
@@ -6192,7 +6192,7 @@ class dep_B_struct final  {
  private:
   ::std::int32_t i_a;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool b;
@@ -6365,7 +6365,7 @@ class annotated final  {
  private:
   ::std::int32_t a;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -8512,7 +8512,7 @@ class struct_with_special_names final  {
  private:
   ::std::int32_t fields;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool get;
@@ -9496,7 +9496,7 @@ class struct_with_indirections final  {
  private:
   ::test_cpp2::cpp_reflection::HasAPhrase phrase;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool real;

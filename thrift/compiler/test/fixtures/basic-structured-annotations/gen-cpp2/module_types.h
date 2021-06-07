@@ -221,7 +221,7 @@ class structured_annotation_inline final  {
  private:
   ::std::string name;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
@@ -368,7 +368,7 @@ class structured_annotation_with_default final  {
  private:
   ::std::string name;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
@@ -484,7 +484,7 @@ class structured_annotation_forward final  {
  private:
   ::std::int64_t count;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
@@ -597,7 +597,7 @@ class structured_annotation_recursive final  {
  private:
   ::cpp2::structured_annotation_forward forward;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
@@ -775,7 +775,7 @@ class structured_annotation_nested final  {
  private:
   ::cpp2::structured_annotation_with_default nest;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
@@ -928,7 +928,7 @@ class MyStruct final  {
  private:
   ::std::int64_t annotated_nested;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool annotated_field;
@@ -1152,7 +1152,7 @@ class MyException final : public apache::thrift::TException {
  private:
   ::std::string context;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool context;

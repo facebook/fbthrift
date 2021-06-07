@@ -106,7 +106,7 @@ class BasicTypes final  {
  private:
   bool isTrue;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool second;

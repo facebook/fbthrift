@@ -116,7 +116,7 @@ class Mixin1 final  {
  private:
   ::std::string field1;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
@@ -232,7 +232,7 @@ class Mixin2 final  {
  private:
   ::std::string field2;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool m1;
@@ -382,7 +382,7 @@ class Mixin3Base final  {
  private:
   ::std::string field3;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field3;
@@ -500,7 +500,7 @@ class Foo final  {
  private:
   ::cpp2::Mixin3 m3;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field4;

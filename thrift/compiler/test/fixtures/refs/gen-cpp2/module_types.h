@@ -644,7 +644,7 @@ class MyField final  {
  public:
   ::std::unique_ptr<::cpp2::MyEnum> req_enum_value;
 
- private:
+ public:
 
  public:
 
@@ -789,7 +789,7 @@ class MyStruct final  {
  public:
   ::std::unique_ptr<::cpp2::MyField> req_ref;
 
- private:
+ public:
 
  public:
 
@@ -901,7 +901,7 @@ class StructWithUnion final  {
  private:
   ::cpp2::MyField f;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool f;
@@ -1031,7 +1031,7 @@ class RecursiveStruct final  {
  private:
   ::std::vector<::cpp2::RecursiveStruct> mes;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool mes;
@@ -1152,7 +1152,7 @@ class StructWithContainers final  {
  public:
   ::std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const;
 
- private:
+ public:
 
  public:
 
@@ -1298,7 +1298,7 @@ class StructWithSharedConst final  {
  public:
   ::std::shared_ptr<const ::cpp2::MyField> req_shared_const;
 
- private:
+ public:
 
  public:
 
@@ -1481,7 +1481,7 @@ class StructWithRef final  {
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
 
- private:
+ public:
 
  public:
 
@@ -1593,7 +1593,7 @@ class StructWithRefTypeUnique final  {
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
 
- private:
+ public:
 
  public:
 
@@ -1706,7 +1706,7 @@ class StructWithRefTypeShared final  {
  public:
   ::std::shared_ptr<::cpp2::Empty> req_field;
 
- private:
+ public:
 
  public:
 
@@ -1819,7 +1819,7 @@ class StructWithRefTypeSharedConst final  {
  public:
   ::std::shared_ptr<const ::cpp2::Empty> req_field;
 
- private:
+ public:
 
  public:
 
@@ -1926,7 +1926,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
  public:
   ::std::unique_ptr<::cpp2::Empty> def_field;
 
- private:
+ public:
 
  public:
 

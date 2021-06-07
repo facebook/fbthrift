@@ -100,7 +100,7 @@ class Struct final  {
  private:
   ::module1::Struct second;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool first;
@@ -242,7 +242,7 @@ class BigStruct final  {
  private:
   ::std::int32_t id;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool s;

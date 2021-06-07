@@ -171,7 +171,7 @@ class MyStructNestedAnnotation final  {
  private:
   ::std::string name;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
@@ -304,7 +304,7 @@ class MyStruct final  {
  private:
   ::std::string empty_annotations;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool majorVer;
@@ -601,7 +601,7 @@ class SecretStruct final  {
  private:
   ::std::string password;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool id;

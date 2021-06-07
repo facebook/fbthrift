@@ -178,7 +178,7 @@ class ModuleA final  {
  private:
   ::some::ns::IncludedB inclBField;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32Field;
@@ -453,7 +453,7 @@ class ModuleB final  {
  private:
   ::some::ns::EnumB inclEnumB;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool i32Field;

@@ -1366,7 +1366,7 @@ class Val final  {
  private:
   ::cpp2::containerTypedef typedefValue;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool strVal;
@@ -2128,7 +2128,7 @@ class NonCopyableStruct final  {
  private:
   ::std::int64_t num;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool num;

@@ -130,7 +130,7 @@ class Fiery final : public apache::thrift::TException {
  public:
   ::std::string message;
 
- private:
+ public:
 
  public:
 
@@ -253,7 +253,7 @@ class Serious final : public apache::thrift::TException {
  private:
   ::std::string sonnet;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sonnet;
@@ -384,7 +384,7 @@ class ComplexFieldNames final : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool error_message;
@@ -551,7 +551,7 @@ class CustomFieldNames final : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool error_message;
@@ -718,7 +718,7 @@ class ExceptionWithPrimitiveField final : public apache::thrift::TException {
  private:
   ::std::int32_t error_code;
 
- private:
+ public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
