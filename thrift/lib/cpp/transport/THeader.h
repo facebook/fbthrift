@@ -376,6 +376,11 @@ class THeader {
 
   static CLIENT_TYPE tryGetClientType(const folly::IOBuf& data);
 
+  void setRoutingData(std::shared_ptr<void> data) {
+    routingData_ = std::move(data);
+  }
+  std::shared_ptr<void> releaseRoutingData() { return std::move(routingData_); }
+
   // 0 and 16th bits must be 0 to differentiate from framed & unframed
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
   static const uint32_t HEADER_MASK = 0xFFFF0000;
@@ -457,6 +462,8 @@ class THeader {
 
   bool allowBigFrames_;
   folly::Optional<CompressionConfig> compressionConfig_;
+
+  std::shared_ptr<void> routingData_;
 
   /**
    * Returns the maximum number of bytes that write k/v headers can take

@@ -582,6 +582,13 @@ class RpcOptions {
 
   const std::string& getLoggingContext() const { return loggingContext_; }
 
+  RpcOptions& setRoutingData(std::shared_ptr<void> data) {
+    routingData_ = std::move(data);
+    return *this;
+  }
+
+  const std::shared_ptr<void>& getRoutingData() const { return routingData_; }
+
  private:
   std::chrono::milliseconds timeout_{0};
   std::chrono::milliseconds chunkTimeout_{0};
@@ -604,6 +611,9 @@ class RpcOptions {
 
   // Custom data about the request for logging and analysis.
   std::string loggingContext_;
+
+  // Custom data passed back from the routing layer.
+  std::shared_ptr<void> routingData_;
 }; // namespace thrift
 
 struct RpcResponseContext {
