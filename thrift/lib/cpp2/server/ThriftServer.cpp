@@ -819,53 +819,59 @@ void ThriftServer::replaceShutdownSocketSet(
   wShutdownSocketSet_ = newSSS;
 }
 
-folly::SemiFuture<ThriftServer::ServerSnapshot>
-ThriftServer::getServerSnapshot() {
+folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
+    const SnapshotOptions& options) {
   // WorkerSnapshots look the same as the server, except they are unaggregated
   using WorkerSnapshot = ServerSnapshot;
   std::vector<folly::SemiFuture<WorkerSnapshot>> tasks;
+  const auto snapshotTime = std::chrono::steady_clock::now();
 
-  forEachWorker([&tasks](wangle::Acceptor* acceptor) {
+  forEachWorker([&tasks, snapshotTime, options](wangle::Acceptor* acceptor) {
     auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
     if (!worker) {
       return;
     }
-    auto fut = folly::via(worker->getEventBase(), [worker]() {
-      auto reqRegistry = worker->getRequestsRegistry();
-      DCHECK(reqRegistry);
-      RequestSnapshots requestSnapshots;
-      if (reqRegistry != nullptr) {
-        for (const auto& stub : reqRegistry->getActive()) {
-          requestSnapshots.emplace_back(stub);
-        }
-        for (const auto& stub : reqRegistry->getFinished()) {
-          requestSnapshots.emplace_back(stub);
-        }
-      }
-
-      std::unordered_map<folly::SocketAddress, ConnectionSnapshot>
-          connectionSnapshots;
-      worker->getConnectionManager()->forEachConnection(
-          [&](wangle::ManagedConnection* wangleConnection) {
-            if (auto managedConnection =
-                    dynamic_cast<ManagedConnectionIf*>(wangleConnection)) {
-              auto numActiveRequests =
-                  managedConnection->getNumActiveRequests();
-              auto numPendingWrites = managedConnection->getNumPendingWrites();
-              const bool shouldInclude =
-                  numActiveRequests > 0 || numPendingWrites > 0;
-              if (shouldInclude) {
-                connectionSnapshots.emplace(
-                    managedConnection->getPeerAddress(),
-                    ConnectionSnapshot{numActiveRequests, numPendingWrites});
-              }
+    auto fut =
+        folly::via(worker->getEventBase(), [worker, snapshotTime, options]() {
+          auto reqRegistry = worker->getRequestsRegistry();
+          DCHECK(reqRegistry);
+          RequestSnapshots requestSnapshots;
+          if (reqRegistry != nullptr) {
+            for (const auto& stub : reqRegistry->getActive()) {
+              requestSnapshots.emplace_back(stub);
             }
-          });
-      return WorkerSnapshot{
-          worker->getRequestsRegistry()->getRequestCounter().get(),
-          std::move(requestSnapshots),
-          std::move(connectionSnapshots)};
-    });
+            for (const auto& stub : reqRegistry->getFinished()) {
+              requestSnapshots.emplace_back(stub);
+            }
+          }
+
+          std::unordered_map<folly::SocketAddress, ConnectionSnapshot>
+              connectionSnapshots;
+          worker->getConnectionManager()->forEachConnection(
+              [&](wangle::ManagedConnection* wangleConnection) {
+                if (auto managedConnection =
+                        dynamic_cast<ManagedConnectionIf*>(wangleConnection)) {
+                  auto numActiveRequests =
+                      managedConnection->getNumActiveRequests();
+                  auto numPendingWrites =
+                      managedConnection->getNumPendingWrites();
+                  auto creationTime = managedConnection->getCreationTime();
+                  auto minCreationTime =
+                      snapshotTime - options.connectionsAgeMax;
+                  if (numActiveRequests > 0 || numPendingWrites > 0 ||
+                      creationTime > minCreationTime) {
+                    connectionSnapshots.emplace(
+                        managedConnection->getPeerAddress(),
+                        ConnectionSnapshot{
+                            numActiveRequests, numPendingWrites, creationTime});
+                  }
+                }
+              });
+          return WorkerSnapshot{
+              worker->getRequestsRegistry()->getRequestCounter().get(),
+              std::move(requestSnapshots),
+              std::move(connectionSnapshots)};
+        });
     tasks.emplace_back(std::move(fut));
   });
 

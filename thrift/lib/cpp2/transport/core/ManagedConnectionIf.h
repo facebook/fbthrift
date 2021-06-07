@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 
 #include <folly/SocketAddress.h>
@@ -30,11 +31,20 @@ namespace apache::thrift {
  */
 class ManagedConnectionIf : public wangle::ManagedConnection {
  public:
+  ManagedConnectionIf() : creationTime_{std::chrono::steady_clock::now()} {}
+
+  std::chrono::steady_clock::time_point getCreationTime() const {
+    return creationTime_;
+  }
+
   virtual size_t getNumActiveRequests() const = 0;
   virtual size_t getNumPendingWrites() const = 0;
   virtual folly::SocketAddress getPeerAddress() const = 0;
 
   virtual ~ManagedConnectionIf() = default;
+
+ private:
+  const std::chrono::steady_clock::time_point creationTime_;
 };
 
 } // namespace apache::thrift

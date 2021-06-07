@@ -844,6 +844,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   struct ConnectionSnapshot {
     size_t numActiveRequests{0};
     size_t numPendingWrites{0};
+    std::chrono::steady_clock::time_point creationTime;
   };
   using RequestSnapshots = std::vector<RequestSnapshot>;
   using ConnectionSnapshots =
@@ -853,7 +854,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     RequestSnapshots requests;
     ConnectionSnapshots connections;
   };
-  folly::SemiFuture<ServerSnapshot> getServerSnapshot();
+  struct SnapshotOptions {
+    std::chrono::microseconds connectionsAgeMax;
+  };
+  folly::SemiFuture<ServerSnapshot> getServerSnapshot() {
+    return getServerSnapshot(SnapshotOptions{});
+  }
+  folly::SemiFuture<ServerSnapshot> getServerSnapshot(
+      const SnapshotOptions& options);
 };
 
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>
