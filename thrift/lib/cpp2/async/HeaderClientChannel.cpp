@@ -650,10 +650,8 @@ void HeaderClientChannel::RocketUpgradeChannel::upgradeComplete(
     ew.with_exception<TTransportException>([&](const auto& tex) {
       // In case we hit a transport error (e.g. a timeout), we don't know if the
       // server is using header or rocket, so we have to close the connection.
-      auto upgradeEx = TTransportException(
-          tex.getType(), std::string("Rocket upgrade failed: ") + tex.what());
       for (; !bufferedRequests_.empty(); bufferedRequests_.pop()) {
-        std::move(bufferedRequests_.front()).fail(upgradeEx);
+        std::move(bufferedRequests_.front()).fail(tex);
       }
       headerChannel_->closeNow();
     });

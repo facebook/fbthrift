@@ -1314,6 +1314,10 @@ void RocketClient::CloseLoopCallback::readErr(
 
 void RocketClient::OnEventBaseDestructionCallback::
     onEventBaseDestruction() noexcept {
+  // Make sure we never run RocketClient destructor inline from
+  // OnEventBaseDestructionCallback, since it will try to deregister itself from
+  // the EventBase and deadlock.
+  client_.evb_->runInLoop([dg = DestructorGuard(&client_)] {});
   client_.closeNow(transport::TTransportException("Destroying EventBase"));
 }
 
