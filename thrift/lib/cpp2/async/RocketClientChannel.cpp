@@ -708,7 +708,7 @@ void RocketClientChannel::sendRequestStream(
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      static_cast<ProtocolId>(protocolId_),
+      static_cast<ProtocolId>(header->getProtocolId()),
       methodMetadata.name_managed(),
       timeout_,
       *header,
@@ -731,7 +731,10 @@ void RocketClientChannel::sendRequestStream(
       rpcOptions.getChunkTimeout(),
       rpcOptions.getChunkBufferSize(),
       new FirstRequestProcessorStream(
-          protocolId_, std::move(*metadata.name_ref()), clientCallback, evb_));
+          header->getProtocolId(),
+          std::move(*metadata.name_ref()),
+          clientCallback,
+          evb_));
 }
 
 void RocketClientChannel::sendRequestSink(
@@ -747,7 +750,7 @@ void RocketClientChannel::sendRequestSink(
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINK,
-      static_cast<ProtocolId>(protocolId_),
+      static_cast<ProtocolId>(header->getProtocolId()),
       methodMetadata.name_managed(),
       timeout_,
       *header,
@@ -768,7 +771,10 @@ void RocketClientChannel::sendRequestSink(
       std::move(payload),
       firstResponseTimeout,
       new FirstRequestProcessorSink(
-          protocolId_, std::move(*metadata.name_ref()), clientCallback, evb_),
+          header->getProtocolId(),
+          std::move(*metadata.name_ref()),
+          clientCallback,
+          evb_),
       rpcOptions.getEnablePageAlignment(),
       header->getDesiredCompressionConfig());
 }
@@ -787,7 +793,7 @@ void RocketClientChannel::sendThriftRequest(
   auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
-      static_cast<ProtocolId>(protocolId_),
+      static_cast<ProtocolId>(header->getProtocolId()),
       std::move(methodName),
       timeout_,
       *header,
