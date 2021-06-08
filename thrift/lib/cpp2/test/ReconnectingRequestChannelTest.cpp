@@ -165,11 +165,7 @@ void ReconnectingRequestChannelTest::runReconnect(
       std::make_unique<apache::thrift::ScopedServerInterfaceThread>(handler);
   up_addr = runner->getAddress();
 
-  if (!testStreaming) {
-    // Rocket sends a shutdown signal that the channel can use to trigger
-    // reconnection, while Header doesn't
-    EXPECT_THROW(client.sync_echoInt(2), TTransportException);
-  }
+  EXPECT_THROW(client.sync_echoInt(2), TTransportException);
   EXPECT_EQ(client.sync_echoInt(3), 3);
   EXPECT_EQ(connection_count_, 2);
   EXPECT_EQ(client.sync_echoInt(4), 4);

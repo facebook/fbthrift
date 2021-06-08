@@ -352,7 +352,7 @@ void RequestChannel::sendRequestAsync(
     typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
         callback) {
   auto* eb = getEventBase();
-  if (!eb || eb->inRunningEventBaseThread()) {
+  if (!eb || eb->isInEventBaseThread()) {
     auto send = apache::thrift::detail::getChannelSendFunc<Kind>();
     (this->*send)(
         rpcOptions,

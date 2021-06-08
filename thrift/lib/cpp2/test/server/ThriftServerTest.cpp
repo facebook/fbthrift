@@ -1544,7 +1544,8 @@ TEST(ThriftServer, BadSendTest) {
           state.exception()
               .get_exception<apache::thrift::transport::TTransportException>();
       ASSERT_TRUE(ex);
-      EXPECT_THAT(ex->what(), testing::StartsWith("Channel is !good()"));
+      EXPECT_THAT(
+          ex->what(), testing::StartsWith("transport is closed in write()"));
     }
   };
 
