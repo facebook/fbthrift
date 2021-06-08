@@ -38,71 +38,46 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
     return MockTAsyncSSLSocket::UniquePtr(new MockTAsyncSSLSocket(ctx, base));
   }
 
-  GMOCK_METHOD6_(
-      ,
-      noexcept,
-      ,
-      connectInternal,
-      void(
-          AsyncSocket::ConnectCallback*,
-          const folly::SocketAddress&,
-          int,
-          const folly::SocketOptionMap&,
-          const folly::SocketAddress&,
-          const std::string&));
+  MOCK_METHOD(
+      void,
+      connect,
+      (AsyncSocket::ConnectCallback*,
+       const folly::SocketAddress&,
+       int,
+       const folly::SocketOptionMap&,
+       const folly::SocketAddress&,
+       const std::string&),
+      (noexcept, override));
 
-  GMOCK_METHOD7_(
-      ,
-      noexcept,
-      ,
-      connectInternalWithTimeouts,
-      void(
-          AsyncSocket::ConnectCallback*,
-          const folly::SocketAddress&,
-          std::chrono::milliseconds,
-          std::chrono::milliseconds,
-          const folly::SocketOptionMap&,
-          const folly::SocketAddress&,
-          const std::string&));
+  MOCK_METHOD(
+      void,
+      connect,
+      (AsyncSocket::ConnectCallback*,
+       const folly::SocketAddress&,
+       std::chrono::milliseconds,
+       std::chrono::milliseconds,
+       const folly::SocketOptionMap&,
+       const folly::SocketAddress&,
+       const std::string&),
+      (noexcept, override));
 
-  void connect(
-      AsyncSocket::ConnectCallback* callback,
-      const folly::SocketAddress& addr,
-      int timeout = 0,
-      const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
-      const folly::SocketAddress& bindAddr = anyAddress(),
-      const std::string& ifName = "") noexcept override {
-    connectInternal(callback, addr, timeout, options, bindAddr, ifName);
-  }
-
-  void connect(
-      AsyncSocket::ConnectCallback* callback,
-      const folly::SocketAddress& addr,
-      std::chrono::milliseconds connectTimeout,
-      std::chrono::milliseconds totalConnectTimeout,
-      const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
-      const folly::SocketAddress& bindAddr = anyAddress(),
-      const std::string& ifName = "") noexcept override {
-    connectInternalWithTimeouts(
-        callback,
-        addr,
-        connectTimeout,
-        totalConnectTimeout,
-        options,
-        bindAddr,
-        ifName);
-  }
-
-  MOCK_CONST_METHOD1(getLocalAddress, void(folly::SocketAddress*));
-  MOCK_CONST_METHOD1(getPeerAddress, void(folly::SocketAddress*));
-  MOCK_METHOD0(closeNow, void());
-  MOCK_CONST_METHOD0(good, bool());
-  MOCK_CONST_METHOD0(readable, bool());
-  MOCK_CONST_METHOD0(hangup, bool());
-  MOCK_CONST_METHOD2(
-      getSelectedNextProtocol, void(const unsigned char**, unsigned*));
-  MOCK_CONST_METHOD2(
-      getSelectedNextProtocolNoThrow, bool(const unsigned char**, unsigned*));
+  MOCK_METHOD(
+      void, getLocalAddress, (folly::SocketAddress*), (const, override));
+  MOCK_METHOD(void, getPeerAddress, (folly::SocketAddress*), (const, override));
+  MOCK_METHOD(void, closeNow, (), (override));
+  MOCK_METHOD(bool, good, (), (const, override));
+  MOCK_METHOD(bool, readable, (), (const, override));
+  MOCK_METHOD(bool, hangup, (), (const, override));
+  MOCK_METHOD(
+      void,
+      getSelectedNextProtocol,
+      (const unsigned char**, unsigned*),
+      (const, override));
+  MOCK_METHOD(
+      bool,
+      getSelectedNextProtocolNoThrow,
+      (const unsigned char**, unsigned*),
+      (const, override));
 };
 } // namespace test
 } // namespace thrift

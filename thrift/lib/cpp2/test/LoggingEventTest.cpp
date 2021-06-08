@@ -49,18 +49,22 @@ using namespace apache::thrift;
 
 class TestServerEventHandler : public ServerEventHandler {
  public:
-  MOCK_METHOD2(log, void(const ThriftServer&, DynamicFieldsCallback));
+  MOCK_METHOD(
+      void, log, (const ThriftServer&, DynamicFieldsCallback), (override));
 };
 
 class TestConnectionEventHandler : public ConnectionEventHandler {
  public:
-  MOCK_METHOD2(
-      log, void(const ConnectionLoggingContext&, DynamicFieldsCallback));
+  MOCK_METHOD(
+      void,
+      log,
+      (const ConnectionLoggingContext&, DynamicFieldsCallback),
+      (override));
 };
 
 class TestServerTrackerHandler : public ServerTrackerHandler {
  public:
-  MOCK_METHOD1(log, void(const ServerTracker&));
+  MOCK_METHOD(void, log, (const ServerTracker&), (override));
 };
 
 class TestEventRegistry : public LoggingEventRegistry {

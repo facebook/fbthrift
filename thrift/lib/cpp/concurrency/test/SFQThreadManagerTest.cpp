@@ -37,7 +37,7 @@ using testing::AtLeast;
 
 class SFQThreadManagerTest : public testing::Test {
  public:
-  MOCK_METHOD1(bogusTask, void(int));
+  MOCK_METHOD(void, bogusTask, (int));
 
  protected:
   std::shared_ptr<ThreadManager> newSFQTM(

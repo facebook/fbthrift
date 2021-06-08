@@ -33,7 +33,7 @@ namespace thrift {
 
 class TransportUpgradeService : public TransportUpgradeSvIf {
  public:
-  MOCK_METHOD1(noResponse_, void(std::unique_ptr<std::string>));
+  MOCK_METHOD(void, noResponse, (std::unique_ptr<std::string>), (override));
 
   int32_t addTwoNumbers(int32_t num1, int32_t num2) override {
     return num1 + num2;
@@ -42,10 +42,6 @@ class TransportUpgradeService : public TransportUpgradeSvIf {
   int32_t add(int32_t x) override {
     sum += x;
     return sum;
-  }
-
-  void noResponse(std::unique_ptr<std::string> param) override {
-    noResponse_(std::move(param));
   }
 
  protected:
@@ -221,7 +217,7 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeOneway) {
   THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
 
-  EXPECT_CALL(*handler_.get(), noResponse_(_)).Times(1);
+  EXPECT_CALL(*handler_.get(), noResponse(_)).Times(1);
 
   folly::EventBase evb;
   auto socket = folly::AsyncSocket::newSocket(&evb, "::1", port_);

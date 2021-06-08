@@ -43,9 +43,13 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
-  MOCK_METHOD1(noResponse, void(int64_t));
-  MOCK_METHOD2(range, apache::thrift::ServerStream<int32_t>(int32_t, int32_t));
+  MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
+  MOCK_METHOD(void, noResponse, (int64_t), (override));
+  MOCK_METHOD(
+      apache::thrift::ServerStream<int32_t>,
+      range,
+      (int32_t, int32_t),
+      (override));
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<SinkConsumer<int32_t, int32_t>> co_sumSink() override {
     SinkConsumer<int32_t, int32_t> sink;

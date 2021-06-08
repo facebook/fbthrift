@@ -44,16 +44,18 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
-  MOCK_METHOD1(
+  MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
+  MOCK_METHOD(
+      folly::SemiFuture<std::unique_ptr<std::string>>,
       semifuture_echoRequest,
-      folly::SemiFuture<std::unique_ptr<std::string>>(
-          std::unique_ptr<std::string>));
+      (std::unique_ptr<std::string>),
+      (override));
 
-  MOCK_METHOD2(
+  MOCK_METHOD(
+      folly::SemiFuture<ServerStream<int8_t>>,
       semifuture_echoIOBufAsByteStream,
-      folly::SemiFuture<ServerStream<int8_t>>(
-          std::unique_ptr<folly::IOBuf>, int32_t));
+      (std::unique_ptr<folly::IOBuf>, int32_t),
+      (override));
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<SinkConsumer<int32_t, int32_t>> co_sumSink() override {

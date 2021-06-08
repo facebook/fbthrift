@@ -42,8 +42,8 @@ using CSR = ClientReceiveState;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(noResponse, void(int64_t));
-  MOCK_METHOD0(voidResponse, void());
+  MOCK_METHOD(void, noResponse, (int64_t), (override));
+  MOCK_METHOD(void, voidResponse, (), (override));
 };
 
 class FunctionSendRecvRequestCallbackTest : public Test {
