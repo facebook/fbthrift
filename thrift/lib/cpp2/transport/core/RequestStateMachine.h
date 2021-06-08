@@ -19,14 +19,30 @@
 #include <atomic>
 
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
 
 namespace apache {
 namespace thrift {
 
+class AdaptiveConcurrencyController;
+
 class RequestStateMachine {
  public:
-  explicit RequestStateMachine(bool includeInRecentRequests)
-      : includeInRecentRequests_(includeInRecentRequests) {}
+  RequestStateMachine(
+      bool includeInRecentRequests, AdaptiveConcurrencyController& controller)
+      : includeInRecentRequests_(includeInRecentRequests),
+        adaptiveConcurrencyController_(controller) {
+    if (includeInRecentRequests_) {
+      adaptiveConcurrencyController_.requestStarted(started());
+    }
+  }
+
+  ~RequestStateMachine() {
+    if (includeInRecentRequests_ && getStartedProcessing()) {
+      adaptiveConcurrencyController_.requestFinished(
+          started(), std::chrono::steady_clock::now());
+    }
+  }
 
   // Returns true if the request has not been cancelled (via tryCancel())
   //
@@ -94,6 +110,7 @@ class RequestStateMachine {
   const bool includeInRecentRequests_;
   const std::chrono::steady_clock::time_point started_{
       std::chrono::steady_clock::now()};
+  AdaptiveConcurrencyController& adaptiveConcurrencyController_;
 };
 
 } // namespace thrift

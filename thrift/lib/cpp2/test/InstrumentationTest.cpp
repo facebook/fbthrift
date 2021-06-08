@@ -868,7 +868,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MockRequest(
         RequestsRegistry::DebugStub& stub,
         std::shared_ptr<RequestsRegistry> registry)
-        : registry_(registry), stateMachine_(true) {
+        : registry_(registry), stateMachine_(true, controller_) {
       new (&stub) RequestsRegistry::DebugStub(
           *registry,
           *this,
@@ -895,6 +895,9 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
     MOCK_METHOD2(sendErrorWrapped, void(folly::exception_wrapper, std::string));
 
    private:
+    folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
+        oConfig{AdaptiveConcurrencyController::Config{}};
+    AdaptiveConcurrencyController controller_{oConfig.getObserver()};
     RequestStateMachine stateMachine_;
   };
 };

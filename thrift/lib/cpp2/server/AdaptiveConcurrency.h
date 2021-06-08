@@ -94,6 +94,7 @@ class AdaptiveConcurrencyController {
   void requestStarted(Clock::time_point start);
   void requestFinished(Clock::time_point start, Clock::time_point finish);
 
+  bool enabled() const { return getMaxRequests(); }
   // concurrency that should be used by the server, 0 if disabled
   size_t getMaxRequests() const;
 

@@ -629,7 +629,11 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       // definition.
       reqContext_(
           &connection_->context_, req_->getHeader(), std::move(methodName)),
-      stateMachine_(util::includeInRecentRequestsCount(methodName)),
+      stateMachine_(
+          util::includeInRecentRequestsCount(methodName),
+          connection_->getWorker()
+              ->getServer()
+              ->getAdaptiveConcurrencyController()),
       activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
       *connection_->getWorker()->getRequestsRegistry(),

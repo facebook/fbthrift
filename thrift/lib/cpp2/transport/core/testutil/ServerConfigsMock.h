@@ -18,6 +18,7 @@
 
 #include <string>
 
+#include <folly/experimental/observer/SimpleObservable.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
@@ -73,6 +74,14 @@ class ServerConfigsMock : public ServerConfigs {
 
   bool getTosReflect() const override { return false; }
 
+  AdaptiveConcurrencyController& getAdaptiveConcurrencyController() {
+    return adaptiveConcurrencyController_;
+  }
+  const AdaptiveConcurrencyController& getAdaptiveConcurrencyController()
+      const override {
+    return adaptiveConcurrencyController_;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};
@@ -81,6 +90,11 @@ class ServerConfigsMock : public ServerConfigs {
       std::make_shared<FakeServerObserver>()};
   size_t numIOWorkerThreads_{10};
   std::chrono::milliseconds streamExpireTime_{std::chrono::minutes(1)};
+
+  folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
+      oConfig_{AdaptiveConcurrencyController::Config{}};
+  AdaptiveConcurrencyController adaptiveConcurrencyController_{
+      oConfig_.getObserver()};
 };
 
 } // namespace server

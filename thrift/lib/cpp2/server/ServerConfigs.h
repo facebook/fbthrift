@@ -34,6 +34,7 @@ using PreprocessResult =
     folly::Optional<boost::variant<AppClientException, AppServerException>>;
 
 class Cpp2ConnContext;
+class AdaptiveConcurrencyController;
 
 namespace server {
 
@@ -65,6 +66,11 @@ class ServerConfigs {
 
   // @see BaseThriftServer::getObserver function.
   virtual server::TServerObserver* getObserver() const = 0;
+
+  // @see BaseThriftServer::getAdaptiveConcurrencyController function.
+  virtual AdaptiveConcurrencyController& getAdaptiveConcurrencyController() = 0;
+  virtual const AdaptiveConcurrencyController&
+  getAdaptiveConcurrencyController() const = 0;
 
   // @see BaseThriftServer::getNumIOWorkerThreads function.
   virtual size_t getNumIOWorkerThreads() const = 0;

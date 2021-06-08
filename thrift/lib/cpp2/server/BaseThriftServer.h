@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
@@ -324,6 +325,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
+  AdaptiveConcurrencyController adaptiveConcurrencyController_;
 
  protected:
   //! The server's listening addresses
@@ -545,7 +547,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  uint32_t getMaxRequests() const { return maxRequests_.get(); }
+  uint32_t getMaxRequests() const {
+    return adaptiveConcurrencyController_.enabled()
+        ? static_cast<uint32_t>(adaptiveConcurrencyController_.getMaxRequests())
+        : maxRequests_.get();
+  }
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
@@ -593,6 +599,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   server::TServerObserver* getObserver() const final {
     return observerPtr_.load(std::memory_order_relaxed);
+  }
+
+  AdaptiveConcurrencyController& getAdaptiveConcurrencyController() final {
+    return adaptiveConcurrencyController_;
+  }
+
+  const AdaptiveConcurrencyController& getAdaptiveConcurrencyController()
+      const final {
+    return adaptiveConcurrencyController_;
   }
 
   std::shared_ptr<server::TServerObserver> getObserverShared() const {
@@ -1201,6 +1216,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     recoveryFactor = std::max(0.0, std::min(1.0, recoveryFactor));
     egressBufferRecoveryFactor_.set(recoveryFactor, source);
+  }
+
+  const auto& adaptiveConcurrencyController() const {
+    return adaptiveConcurrencyController_;
   }
 };
 } // namespace thrift

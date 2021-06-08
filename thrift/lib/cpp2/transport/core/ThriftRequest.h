@@ -78,7 +78,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_),
         stateMachine_(
-            includeInRecentRequestsCount(reqContext_.getMethodName())) {
+            includeInRecentRequestsCount(reqContext_.getMethodName()),
+            serverConfigs_.getAdaptiveConcurrencyController()) {
     // Note that method name, RPC kind, and serialization protocol are validated
     // outside the ThriftRequestCore constructor.
     header_.setProtocolId(static_cast<int16_t>(

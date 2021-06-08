@@ -35,6 +35,7 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/executors/MeteredExecutor.h>
+#include <folly/experimental/observer/SimpleObservable.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -50,6 +51,7 @@
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
@@ -2521,6 +2523,62 @@ TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
       });
   auto client = makeClient(runner, nullptr);
   EXPECT_EQ(client->semifuture_sendResponse(42).get(), "test42");
+}
+
+namespace {
+
+folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
+    oConfig{AdaptiveConcurrencyController::Config{}};
+
+THRIFT_PLUGGABLE_FUNC_SET(
+    folly::observer::Observer<
+        apache::thrift::AdaptiveConcurrencyController::Config>,
+    makeAdaptiveConcurrencyConfig) {
+  return oConfig.getObserver();
+}
+
+static auto makeConfig(size_t concurrency, double jitter = 0.0) {
+  AdaptiveConcurrencyController::Config config;
+  config.minConcurrency = concurrency;
+  config.recalcPeriodJitter = jitter;
+  return config;
+}
+
+void setConfig(size_t concurrency, double jitter = 0.0) {
+  oConfig.setValue(makeConfig(concurrency, jitter));
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+}
+} // namespace
+
+TEST_P(HeaderOrRocket, AdaptiveConcurrencyConfig) {
+  class TestInterface : public TestServiceSvIf {
+   public:
+    void voidResponse() override {}
+  };
+
+  folly::EventBase base;
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  runner.getThriftServer().setMaxRequests(5000);
+  EXPECT_EQ(runner.getThriftServer().getMaxRequests(), 5000);
+  auto& controller = runner.getThriftServer().adaptiveConcurrencyController();
+  EXPECT_FALSE(controller.enabled());
+  auto client = makeClient(runner, &base);
+
+  setConfig(20, 0);
+
+  // controller will enforce minconcurrency after first request
+  EXPECT_FALSE(controller.enabled());
+  client->sync_voidResponse();
+  EXPECT_TRUE(controller.enabled());
+  EXPECT_EQ(runner.getThriftServer().getMaxRequests(), 20);
+  // verify controller's limit overrides explicit limit on the server
+  runner.getThriftServer().setMaxRequests(2000);
+  EXPECT_EQ(runner.getThriftServer().getMaxRequests(), 20);
+
+  // verify disabling conroller causes the explicit limit to take effect
+  setConfig(0, 0);
+  EXPECT_FALSE(controller.enabled());
+  EXPECT_EQ(runner.getThriftServer().getMaxRequests(), 2000);
 }
 
 TEST_P(HeaderOrRocket, OnStartStopServingTest) {

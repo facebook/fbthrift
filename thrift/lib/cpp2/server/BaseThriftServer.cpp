@@ -29,12 +29,24 @@
 #include <folly/Random.h>
 #include <folly/ScopeGuard.h>
 #include <folly/portability/Sockets.h>
+
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AcceptAllAdmissionStrategy.h>
 
 THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
-
 namespace apache {
 namespace thrift {
+
+namespace {
+
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    folly::observer::Observer<AdaptiveConcurrencyController::Config>,
+    makeAdaptiveConcurrencyConfig) {
+  return folly::observer::makeStaticObserver(
+      AdaptiveConcurrencyController::Config{});
+}
+
+} // namespace
 
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
@@ -47,6 +59,8 @@ const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
 
 BaseThriftServer::BaseThriftServer()
     : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()),
+      adaptiveConcurrencyController_{
+          THRIFT_PLUGGABLE_FUNC(makeAdaptiveConcurrencyConfig())},
       addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
