@@ -106,7 +106,7 @@ if(lib_only OR build_all)
   find_package(fizz CONFIG REQUIRED)
   find_package(fmt CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
-  find_package(Zlib REQUIRED)
+  find_package(ZLIB REQUIRED)
   find_package(Zstd REQUIRED)
   # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
   set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -115,7 +115,6 @@ if(lib_only OR build_all)
     ${LIBGFLAGS_INCLUDE_DIR}
     ${GLOG_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
   )
