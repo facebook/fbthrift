@@ -66,12 +66,7 @@ class t_function final : public t_named {
   const t_type_ref* return_type() const { return &return_type_; }
   const t_paramlist* params() const { return paramlist_.get(); }
   const t_throws* exceptions() const {
-    return t_throws::get_or_empty(exceptions_);
-  }
-  const t_throws* stream_exceptions() const { return stream_exceptions_; }
-  const t_throws* sink_exceptions() const { return sink_exceptions_; }
-  const t_throws* sink_final_response_exceptions() const {
-    return sink_final_response_exceptions_;
+    return t_throws::or_empty(exceptions_.get());
   }
 
   bool is_interaction_constructor() const { return isInteractionConstructor_; }
@@ -87,15 +82,9 @@ class t_function final : public t_named {
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 
-  // Extracted from return type for easy access.
-  const t_throws* stream_exceptions_ = t_throws::no_exceptions();
-  const t_throws* sink_exceptions_ = t_throws::no_exceptions();
-  const t_throws* sink_final_response_exceptions_ = t_throws::no_exceptions();
-
- public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-
+ public:
   t_function(
       const t_type* return_type,
       std::string name,
@@ -113,10 +102,14 @@ class t_function final : public t_named {
   const t_type* get_return_type() const { return return_type()->get_type(); }
   const t_type* get_returntype() const { return return_type()->get_type(); }
   const t_throws* get_xceptions() const { return exceptions(); }
-  const t_throws* get_stream_xceptions() const { return stream_exceptions_; }
-  const t_throws* get_sink_xceptions() const { return sink_exceptions_; }
+  const t_throws* get_stream_xceptions() const {
+    return t_throws::or_empty(stream_exceptions_);
+  }
+  const t_throws* get_sink_xceptions() const {
+    return t_throws::or_empty(sink_exceptions_);
+  }
   const t_throws* get_sink_final_response_xceptions() const {
-    return sink_final_response_exceptions_;
+    return t_throws::or_empty(sink_final_response_exceptions_);
   }
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
   bool returns_stream() const {
@@ -124,6 +117,12 @@ class t_function final : public t_named {
   }
 
   bool returns_sink() const { return return_type_.deref()->is_sink(); }
+
+ private:
+  // Extracted from return type for easy access.
+  const t_throws* stream_exceptions_ = nullptr;
+  const t_throws* sink_exceptions_ = nullptr;
+  const t_throws* sink_final_response_exceptions_ = nullptr;
 };
 
 using t_function_list = node_list<t_function>;

@@ -37,9 +37,9 @@ class t_throws : public t_struct {
     return kEmpty;
   }
 
-  // A helper that returns `no_exceptions` if value is null.
-  static const t_throws* get_or_empty(const std::unique_ptr<t_throws>& value) {
-    return value == nullptr ? no_exceptions() : value.get();
+  // A helper that returns `no_exceptions` if value == nullptr.
+  static const t_throws* or_empty(const t_throws* value) {
+    return value == nullptr ? no_exceptions() : value;
   }
 
  private:

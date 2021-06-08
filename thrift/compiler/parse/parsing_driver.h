@@ -392,7 +392,7 @@ class parsing_driver {
       std::unique_ptr<t_const_value> const_struct);
 
   std::unique_ptr<t_throws> new_throws(
-      std::unique_ptr<t_field_list> exceptions = nullptr);
+      std::unique_ptr<t_field_list> exceptions);
 
   // Creates a reference to a known type.
   std::unique_ptr<t_type_ref> new_type_ref(

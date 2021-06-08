@@ -34,7 +34,7 @@ class t_stream_response : public t_templated_type {
       : elem_type_(std::move(elem_type)), throws_(std::move(throws)) {}
 
   const t_type_ref* elem_type() const { return &elem_type_; }
-  const t_throws* throws() const { return t_throws::get_or_empty(throws_); }
+  const t_throws* throws() const { return t_throws::or_empty(throws_.get()); }
 
   void set_first_response_type(
       std::unique_ptr<t_type_ref> first_response_type) {

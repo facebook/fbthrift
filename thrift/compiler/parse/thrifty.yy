@@ -1104,7 +1104,7 @@ MaybeThrows:
     }
 |   {
       driver.debug("MaybeThrows -> ");
-      $$ = driver.new_throws().release();
+      $$ = nullptr;
 		}
 
 FieldList:

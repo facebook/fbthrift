@@ -46,14 +46,14 @@ class t_sink : public t_templated_type {
 
   const t_type_ref* sink_type() const { return &sink_type_; }
   const t_throws* sink_exceptions() const {
-    return t_throws::get_or_empty(sink_exceptions_);
+    return t_throws::or_empty(sink_exceptions_.get());
   }
   const t_type_ref* final_response_type() const {
     return &final_response_type_;
   }
 
   const t_throws* final_response_exceptions() const {
-    return t_throws::get_or_empty(final_response_exceptions_);
+    return t_throws::or_empty(final_response_exceptions_.get());
   }
 
   void set_first_response_type(std::unique_ptr<t_type_ref> first_response) {

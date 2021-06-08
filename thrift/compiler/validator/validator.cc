@@ -89,7 +89,7 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
           "Non-exception type in throws list for method `" + func->get_name() +
               "`.");
     }
-    if (!validate_throws(func->stream_exceptions())) {
+    if (!validate_throws(func->get_stream_xceptions())) {
       add_error(
           func->get_lineno(),
           "Non-exception type in stream throws list for method `" +
