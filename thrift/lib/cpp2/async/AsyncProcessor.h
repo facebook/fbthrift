@@ -552,7 +552,7 @@ class HandlerCallbackBase {
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
-    doExceptionWrapped(folly::exception_wrapper::from_exception_ptr(ex));
+    doExceptionWrapped(folly::exception_wrapper(ex));
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew);
