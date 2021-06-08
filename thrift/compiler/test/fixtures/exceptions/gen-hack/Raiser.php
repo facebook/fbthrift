@@ -1359,7 +1359,7 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "Raiser",
+        "name" => "module.Raiser",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -1387,7 +1387,7 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                       shape(
                         "t_typedef" => tmeta_ThriftTypedefType::fromShape(
                           shape(
-                            "name" => "Banal",
+                            "name" => "module.Banal",
                             "underlyingType" => tmeta_ThriftType::fromShape(
                               shape(
                               )
@@ -1458,7 +1458,7 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                       shape(
                         "t_typedef" => tmeta_ThriftTypedefType::fromShape(
                           shape(
-                            "name" => "Banal",
+                            "name" => "module.Banal",
                             "underlyingType" => tmeta_ThriftType::fromShape(
                               shape(
                               )
@@ -1487,6 +1487,7 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

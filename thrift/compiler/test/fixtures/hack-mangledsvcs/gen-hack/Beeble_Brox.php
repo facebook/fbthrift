@@ -65,10 +65,11 @@ class Beeble_BroxStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "Brox",
+        "name" => "module.Brox",
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

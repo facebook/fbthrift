@@ -65,10 +65,11 @@ class PubSubStreamingServiceStaticMetadata implements \IThriftServiceStaticMetad
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "PubSubStreamingService",
+        "name" => "module.PubSubStreamingService",
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

@@ -2212,7 +2212,7 @@ class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "NestedContainers",
+        "name" => "module.NestedContainers",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -2462,6 +2462,7 @@ class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

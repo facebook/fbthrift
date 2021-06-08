@@ -415,7 +415,7 @@ class BarStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "Bar",
+        "name" => "module.Bar",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -492,6 +492,7 @@ class BarStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

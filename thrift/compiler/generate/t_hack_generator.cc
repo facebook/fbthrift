@@ -1476,7 +1476,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     auto tenum_tmeta = std::make_unique<t_const_value>();
     tenum_tmeta->add_map(
         std::make_unique<t_const_value>("name"),
-        std::make_unique<t_const_value>(type->get_name()));
+        std::make_unique<t_const_value>(type->get_scoped_name()));
 
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_enum"), std::move(tenum_tmeta));
@@ -1484,7 +1484,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     auto tstruct_tmeta = std::make_unique<t_const_value>();
     tstruct_tmeta->add_map(
         std::make_unique<t_const_value>("name"),
-        std::make_unique<t_const_value>(type->get_name()));
+        std::make_unique<t_const_value>(type->get_scoped_name()));
 
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_struct"), std::move(tstruct_tmeta));
@@ -1492,7 +1492,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     auto tunion_tmeta = std::make_unique<t_const_value>();
     tunion_tmeta->add_map(
         std::make_unique<t_const_value>("name"),
-        std::make_unique<t_const_value>(type->get_name()));
+        std::make_unique<t_const_value>(type->get_scoped_name()));
 
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_union"), std::move(tunion_tmeta));
@@ -1500,7 +1500,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     auto ttypedef_tmeta = std::make_unique<t_const_value>();
     ttypedef_tmeta->add_map(
         std::make_unique<t_const_value>("name"),
-        std::make_unique<t_const_value>(ttypedef->get_name()));
+        std::make_unique<t_const_value>(ttypedef->get_scoped_name()));
     ttypedef_tmeta->add_map(
         std::make_unique<t_const_value>("underlyingType"),
         type_to_tmeta(ttypedef->get_type()));
@@ -1603,7 +1603,7 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
 
   tmeta_ThriftService->add_map(
       std::make_unique<t_const_value>("name"),
-      std::make_unique<t_const_value>(service->get_name()));
+      std::make_unique<t_const_value>(service->get_scoped_name()));
 
   auto functions = get_supported_functions(service);
   if (!functions.empty()) {
@@ -1621,7 +1621,7 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
   if (parent) {
     tmeta_ThriftService->add_map(
         std::make_unique<t_const_value>("parent"),
-        std::make_unique<t_const_value>(parent->get_name()));
+        std::make_unique<t_const_value>(parent->get_scoped_name()));
   }
   return tmeta_ThriftService;
 }
@@ -3396,7 +3396,7 @@ void t_hack_generator::generate_service_helpers(
   arrays_ = saved_arrays_;
 
   indent_down();
-  f_service_ << indent() << "}\n";
+  f_service_ << indent() << "}\n\n";
 
   // Structured annotations
   f_service_ << indent()

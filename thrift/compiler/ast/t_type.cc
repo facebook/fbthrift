@@ -75,14 +75,17 @@ uint64_t t_type::get_type_id() const {
   return (hash & ~t_type::kTypeMask) | int(tv);
 }
 
-std::string t_type::make_full_name(const char* prefix) const {
+std::string t_type::get_scoped_name() const {
   std::ostringstream os;
-  os << prefix << " ";
   if (program_) {
     os << program_->name() << ".";
   }
   os << name_;
   return os.str();
+}
+
+std::string t_type::make_full_name(const char* prefix) const {
+  return std::string(prefix) + " " + get_scoped_name();
 }
 
 const t_type* t_type::get_true_type() const {

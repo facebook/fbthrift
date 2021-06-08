@@ -374,7 +374,7 @@ class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return \tmeta_ThriftService::fromShape(
       shape(
-        "name" => "TestService",
+        "name" => "module2.TestService",
         "functions" => vec[
           \tmeta_ThriftFunction::fromShape(
             shape(
@@ -400,10 +400,11 @@ class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
             )
           ),
         ],
-        "parent" => "FooHackService",
+        "parent" => "module.FooHackService",
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

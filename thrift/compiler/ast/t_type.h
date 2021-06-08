@@ -45,6 +45,9 @@ class t_type : public t_named {
   // thrift.
   const t_program* program() const { return program_; }
 
+  // Returns a string in the format "program_name.type_name"
+  std::string get_scoped_name() const;
+
   // Returns the full name for the given type. For example:
   // `list<string, string>`
   virtual std::string get_full_name() const = 0;

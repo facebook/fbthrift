@@ -953,7 +953,7 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "DbMixedStackArguments",
+        "name" => "module.DbMixedStackArguments",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -1005,6 +1005,7 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

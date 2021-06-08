@@ -791,7 +791,7 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "SomeService",
+        "name" => "module.SomeService",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -800,7 +800,7 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                 shape(
                   "t_typedef" => tmeta_ThriftTypedefType::fromShape(
                     shape(
-                      "name" => "SomeMap",
+                      "name" => "include.SomeMap",
                       "underlyingType" => tmeta_ThriftType::fromShape(
                         shape(
                           "t_map" => tmeta_ThriftMapType::fromShape(
@@ -831,7 +831,7 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                       shape(
                         "t_typedef" => tmeta_ThriftTypedefType::fromShape(
                           shape(
-                            "name" => "SomeMap",
+                            "name" => "include.SomeMap",
                             "underlyingType" => tmeta_ThriftType::fromShape(
                               shape(
                                 "t_map" => tmeta_ThriftMapType::fromShape(
@@ -871,7 +871,7 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                         shape(
                           "t_typedef" => tmeta_ThriftTypedefType::fromShape(
                             shape(
-                              "name" => "TBinary",
+                              "name" => "module.TBinary",
                               "underlyingType" => tmeta_ThriftType::fromShape(
                                 shape(
                                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
@@ -917,6 +917,7 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

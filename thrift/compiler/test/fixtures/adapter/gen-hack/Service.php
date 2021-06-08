@@ -452,7 +452,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "Service",
+        "name" => "module.Service",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -481,7 +481,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                       shape(
                         "t_struct" => tmeta_ThriftStructType::fromShape(
                           shape(
-                            "name" => "Foo",
+                            "name" => "module.Foo",
                           )
                         ),
                       )
@@ -496,6 +496,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],

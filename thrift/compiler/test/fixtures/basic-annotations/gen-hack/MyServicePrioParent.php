@@ -885,7 +885,7 @@ class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
       shape(
-        "name" => "MyServicePrioParent",
+        "name" => "module.MyServicePrioParent",
         "functions" => vec[
           tmeta_ThriftFunction::fromShape(
             shape(
@@ -911,6 +911,7 @@ class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata
       )
     );
   }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
