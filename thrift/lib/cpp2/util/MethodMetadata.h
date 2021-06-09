@@ -20,15 +20,16 @@
 #include <string>
 #include <string_view>
 #include <folly/Range.h>
-#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/util/ManagedStringView.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift {
 
-inline std::string_view qualifierToString(FunctionQualifier fq) {
-  return apache::thrift::util::enumName(fq);
-}
+enum class FunctionQualifier {
+  None = 0,
+  OneWay,
+  Idempotent,
+  ReadOnly,
+};
 
 /*
  * A move-only structure for storing thrift method metadata.

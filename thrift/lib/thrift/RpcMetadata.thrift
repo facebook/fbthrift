@@ -82,13 +82,6 @@ enum ErrorSafety {
   SAFE = 1,
 }
 
-enum FunctionQualifier {
-  None = 0,
-  OneWay = 1,
-  Idempotent = 2,
-  ReadOnly = 3,
-}
-
 struct ZlibCompressionCodecConfig {
 }
 
