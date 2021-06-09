@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <memory>
 
+#include <folly/Indestructible.h>
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBaseManager.h>
@@ -50,11 +51,13 @@ class TConnectionContext {
     }
   }
 
-  transport::THeader::StringToStringMap getHeaders() const {
+  const transport::THeader::StringToStringMap& getHeaders() const {
     if (header_) {
       return header_->getHeaders();
     } else {
-      return transport::THeader::StringToStringMap();
+      static const folly::Indestructible<transport::THeader::StringToStringMap>
+          kEmpty;
+      return *kEmpty;
     }
   }
 
