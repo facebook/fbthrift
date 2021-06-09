@@ -112,6 +112,8 @@ void fillTHeaderFromResponseRpcMetadata(
   }
   if (auto load = responseMetadata.load_ref()) {
     header.setServerLoad(*load);
+    header.setReadHeader(
+        transport::THeader::QUERY_LOAD_HEADER, folly::to<std::string>(*load));
   }
   if (auto crc32c = responseMetadata.crc32c_ref()) {
     header.setCrc32c(*crc32c);
