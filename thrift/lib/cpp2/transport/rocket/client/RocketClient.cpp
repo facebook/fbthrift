@@ -623,21 +623,6 @@ void RocketClient::sendRequestStream(
   }
 }
 
-void RocketClient::sendRequestChannel(
-    Payload&& request,
-    std::chrono::milliseconds firstResponseTimeout,
-    ChannelClientCallback* clientCallback) {
-  const auto streamId = makeStreamId();
-  auto serverCallback = std::make_unique<RocketChannelServerCallback>(
-      streamId, *this, *clientCallback);
-  sendRequestStreamChannel(
-      streamId,
-      std::move(request),
-      firstResponseTimeout,
-      0,
-      std::move(serverCallback));
-}
-
 void RocketClient::sendRequestSink(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,

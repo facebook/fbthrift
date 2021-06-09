@@ -273,42 +273,5 @@ struct SinkServerCallbackSendError {
 
 using SinkServerCallbackPtr =
     std::unique_ptr<SinkServerCallback, SinkServerCallbackSendError>;
-
-/**
- * The Channel contract is a flow-controlled bidirectional stream
- * Using it will make @andrii angrii
- * Currently unused
- */
-
-class ChannelServerCallback {
- public:
-  virtual ~ChannelServerCallback() = default;
-
-  virtual void onStreamRequestN(uint64_t) = 0;
-  virtual void onStreamCancel() = 0;
-
-  virtual void onSinkNext(StreamPayload&&) = 0;
-  virtual void onSinkError(folly::exception_wrapper) = 0;
-  virtual void onSinkComplete() = 0;
-};
-
-class ChannelClientCallback {
- public:
-  virtual ~ChannelClientCallback() = default;
-
-  // ChannelClientCallback must remain alive until onFirstResponse or
-  // onFirstResponseError callback runs.
-  virtual void onFirstResponse(
-      FirstResponsePayload&&, folly::EventBase*, ChannelServerCallback*) = 0;
-  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
-
-  virtual void onStreamNext(StreamPayload&&) = 0;
-  virtual void onStreamError(folly::exception_wrapper) = 0;
-  virtual void onStreamComplete() = 0;
-
-  virtual void onSinkRequestN(uint64_t) = 0;
-  virtual void onSinkCancel() = 0;
-};
-
 } // namespace thrift
 } // namespace apache

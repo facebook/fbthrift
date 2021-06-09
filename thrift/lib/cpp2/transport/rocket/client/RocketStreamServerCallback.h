@@ -112,45 +112,6 @@ class RocketStreamServerCallbackWithChunkTimeout
   std::unique_ptr<folly::HHWheelTimer::Callback> timeout_;
 };
 
-class RocketChannelServerCallback : public ChannelServerCallback {
- public:
-  RocketChannelServerCallback(
-      rocket::StreamId streamId,
-      rocket::RocketClient& client,
-      ChannelClientCallback& clientCallback)
-      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
-
-  void onStreamRequestN(uint64_t tokens) override;
-  void onStreamCancel() override;
-
-  void onSinkNext(StreamPayload&&) override;
-  void onSinkError(folly::exception_wrapper) override;
-  void onSinkComplete() override;
-
-  StreamChannelStatus onInitialPayload(
-      FirstResponsePayload&&, folly::EventBase*);
-  void onInitialError(folly::exception_wrapper);
-  void onStreamTransportError(folly::exception_wrapper);
-
-  StreamChannelStatus onStreamPayload(StreamPayload&&);
-  StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
-  StreamChannelStatus onStreamComplete();
-  StreamChannelStatus onStreamError(folly::exception_wrapper);
-  void onStreamHeaders(HeadersPayload&&);
-
-  StreamChannelStatus onSinkRequestN(uint64_t tokens);
-  StreamChannelStatus onSinkCancel();
-
-  rocket::StreamId streamId() const noexcept { return streamId_; }
-
- private:
-  rocket::RocketClient& client_;
-  ChannelClientCallback& clientCallback_;
-  rocket::StreamId streamId_;
-  enum class State { BothOpen, StreamOpen, SinkOpen };
-  State state_{State::BothOpen};
-};
-
 class RocketSinkServerCallback : public SinkServerCallback {
  public:
   RocketSinkServerCallback(

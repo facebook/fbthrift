@@ -260,18 +260,6 @@ RocketTestClient::sendRequestStreamSync(Payload request) {
   });
 }
 
-void RocketTestClient::sendRequestChannel(
-    ChannelClientCallback* callback, Payload request) {
-  evb_.runInEventBaseThread(
-      [this, request = std::move(request), callback]() mutable {
-        fm_.addTask([this, request = std::move(request), callback]() mutable {
-          constexpr std::chrono::milliseconds kFirstResponseTimeout{500};
-          client_->sendRequestChannel(
-              std::move(request), kFirstResponseTimeout, callback);
-        });
-      });
-}
-
 void RocketTestClient::sendRequestSink(
     SinkClientCallback* callback, Payload request) {
   evb_.runInEventBaseThread(

@@ -104,11 +104,6 @@ class RocketClient : public virtual folly::DelayedDestruction,
       int32_t initialRequestN,
       StreamClientCallback* clientCallback);
 
-  void sendRequestChannel(
-      Payload&& request,
-      std::chrono::milliseconds firstResponseTimeout,
-      ChannelClientCallback* clientCallback);
-
   void sendRequestSink(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
@@ -265,11 +260,6 @@ class RocketClient : public virtual folly::DelayedDestruction,
               reinterpret_cast<intptr_t>(ptr.release()) |
               static_cast<intptr_t>(CallbackType::STREAM_WITH_CHUNK_TIMEOUT)) {}
     explicit ServerCallbackUniquePtr(
-        std::unique_ptr<RocketChannelServerCallback> ptr) noexcept
-        : storage_(
-              reinterpret_cast<intptr_t>(ptr.release()) |
-              static_cast<intptr_t>(CallbackType::CHANNEL)) {}
-    explicit ServerCallbackUniquePtr(
         std::unique_ptr<RocketSinkServerCallback> ptr) noexcept
         : storage_(
               reinterpret_cast<intptr_t>(ptr.release()) |
@@ -288,9 +278,6 @@ class RocketClient : public virtual folly::DelayedDestruction,
           return f(
               reinterpret_cast<RocketStreamServerCallbackWithChunkTimeout*>(
                   storage_ & kPointerMask));
-        case CallbackType::CHANNEL:
-          return f(reinterpret_cast<RocketChannelServerCallback*>(
-              storage_ & kPointerMask));
         case CallbackType::SINK:
           return f(reinterpret_cast<RocketSinkServerCallback*>(
               storage_ & kPointerMask));
@@ -315,7 +302,6 @@ class RocketClient : public virtual folly::DelayedDestruction,
     enum class CallbackType {
       STREAM,
       STREAM_WITH_CHUNK_TIMEOUT,
-      CHANNEL,
       SINK,
     };
 

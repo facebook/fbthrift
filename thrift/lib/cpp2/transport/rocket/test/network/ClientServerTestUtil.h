@@ -69,7 +69,6 @@ class RocketTestClient {
 
   folly::Try<ClientBufferedStream<Payload>> sendRequestStreamSync(
       Payload request);
-  void sendRequestChannel(ChannelClientCallback* callback, Payload request);
   void sendRequestSink(SinkClientCallback* callback, Payload request);
 
   rocket::SetupFrame makeTestSetupFrame(
