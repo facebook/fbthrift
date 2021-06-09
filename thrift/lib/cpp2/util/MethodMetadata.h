@@ -117,6 +117,9 @@ class MethodMetadata {
         data_(new Data(
             std::string(methodName), FunctionQualifier::Unspecified)) {}
 
+  /* implicit */ MethodMetadata(const Data& data)
+      : isOwning_(true), data_(new Data(data)) {}
+
   static MethodMetadata from_static(Data* mPtr) {
     return MethodMetadata(mPtr, NonOwningTag{});
   }
