@@ -203,6 +203,9 @@ struct rust_codegen_options {
   // True if we are generating a submodule rather than the whole crate.
   bool multifile_mode = false;
 
+  // List of extra sources to include at top-level of the crate.
+  std::vector<std::string> include_srcs;
+
   // The current program being generated and its Rust module path.
   const t_program* current_program;
   std::string current_crate;
@@ -265,6 +268,19 @@ class t_mstch_rust_generator : public t_mstch_generator {
       program->set_include_prefix(include_prefix_flag->second);
     }
 
+    auto include_srcs = parsed_options.find("include_srcs");
+    if (include_srcs != parsed_options.end()) {
+      auto paths = include_srcs->second;
+
+      string::size_type pos = 0;
+      while (pos != string::npos && pos < paths.size()) {
+        string::size_type next_pos = paths.find(':', pos);
+        auto path = paths.substr(pos, next_pos - pos);
+        options_.include_srcs.push_back(path);
+        pos = ((next_pos == string::npos) ? next_pos : next_pos + 1);
+      }
+    }
+
     if (options_.multifile_mode) {
       options_.current_crate = "crate::" + mangle(program->name());
     } else {
@@ -313,6 +329,7 @@ class mstch_rust_program : public mstch_program {
              &mstch_rust_program::rust_nonstandard_types},
             {"program:docs?", &mstch_rust_program::rust_has_docs},
             {"program:docs", &mstch_rust_program::rust_docs},
+            {"program:include_srcs", &mstch_rust_program::rust_include_srcs},
         });
   }
   mstch::node rust_has_types() {
@@ -401,6 +418,15 @@ class mstch_rust_program : public mstch_program {
   }
   mstch::node rust_has_docs() { return program_->has_doc(); }
   mstch::node rust_docs() { return quoted_rust_doc(program_); }
+  mstch::node rust_include_srcs() {
+    mstch::array elements;
+    for (auto elem : options_.include_srcs) {
+      mstch::map node;
+      node["program:include_src"] = elem;
+      elements.push_back(node);
+    }
+    return elements;
+  }
 
  private:
   const rust_codegen_options& options_;
@@ -1679,6 +1705,7 @@ THRIFT_REGISTER_GENERATOR(
     "    serde:           Derive serde Serialize/Deserialize traits for types\n"
     "    noserver:        Don't emit server code\n"
     "    include_prefix=: Set program:include_prefix.\n"
+    "    include_srcs=:   Additional Rust source file to include in output, `:` separated\n"
     "    cratemap=map:    Mapping file from services to crate names\n");
 } // namespace compiler
 } // namespace thrift
