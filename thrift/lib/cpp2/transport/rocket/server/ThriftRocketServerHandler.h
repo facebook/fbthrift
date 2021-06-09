@@ -103,7 +103,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;
-  const folly::SocketAddress clientAddress_;
   Cpp2ConnContext connContext_;
   const std::vector<std::unique_ptr<SetupFrameHandler>>& setupFrameHandlers_;
   AsyncProcessorFactory* processorFactory_;

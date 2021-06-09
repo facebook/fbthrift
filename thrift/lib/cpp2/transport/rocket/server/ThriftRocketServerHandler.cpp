@@ -75,9 +75,8 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
     const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers)
     : worker_(std::move(worker)),
       connectionGuard_(worker_->getActiveRequestsGuard()),
-      clientAddress_(clientAddress),
       connContext_(
-          &clientAddress_,
+          &clientAddress,
           transport,
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
