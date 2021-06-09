@@ -20,6 +20,7 @@
 #include <bitset>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <list>
 #include <memory>
 #include <type_traits>
@@ -296,6 +297,14 @@ deserialize_known_length_set(
   }
 }
 
+inline auto checked_container_size(size_t size) {
+  const auto limit = std::numeric_limits<int32_t>::max();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
+  }
+  return size;
+}
+
 /*
  * Primitive Types Specialization
  */
@@ -316,7 +325,12 @@ struct protocol_methods;
   }                                                                          \
   template <typename Protocol>                                               \
   static std::size_t write(Protocol& protocol, Type const& in) {             \
-    return protocol.write##Method(in);                                       \
+    if (std::is_same<type_class::Class, type_class::binary>::value ||        \
+        std::is_same<type_class::Class, type_class::string>::value) {        \
+      return checked_container_size(protocol.write##Method(in));             \
+    } else {                                                                 \
+      return protocol.write##Method(in);                                     \
+    }                                                                        \
   }
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(Class, Type, Method)   \
@@ -535,7 +549,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeListBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_ttype::value, checked_container_size(out.size()));
+
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
@@ -619,7 +634,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeSetBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_ttype::value, checked_container_size(out.size()));
 
     if (!folly::is_detected_v<detect_key_compare, Type> &&
         protocol.kSortKeys()) {
@@ -735,7 +750,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeMapBegin(
-        key_ttype::value, mapped_ttype::value, out.size());
+        key_ttype::value,
+        mapped_ttype::value,
+        checked_container_size(out.size()));
 
     if (!folly::is_detected_v<detect_key_compare, Type> &&
         protocol.kSortKeys()) {
