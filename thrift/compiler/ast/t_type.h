@@ -214,12 +214,15 @@ class t_type_ref final {
   //
   // Throws a std::runtime_error if the type has not been set, or an unresolved
   // t_placeholder_typedef is encountered.
-  const t_type* deref() const;
-
-  void set_type(const t_type* type) { type_ = type; }
+  const t_type& deref() const;
+  const t_type* operator->() const { return &deref(); }
+  const t_type& operator*() const { return deref(); }
 
  private:
+  friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;
+
+  void set_type(const t_type* type) { type_ = type; }
 
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.

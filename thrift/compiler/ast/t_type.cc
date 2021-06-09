@@ -93,14 +93,14 @@ const t_type* t_type::get_true_type() const {
       this, [](const t_type* type) { return !type->is_typedef(); });
 }
 
-const t_type* t_type_ref::deref() const {
+const t_type& t_type_ref::deref() const {
   if (type_ == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
   if (auto ph = dynamic_cast<const t_placeholder_typedef*>(type_)) {
-    return ph->type()->deref();
+    return ph->type().deref();
   }
-  return type_;
+  return *type_;
 }
 
 } // namespace compiler

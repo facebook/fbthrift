@@ -63,7 +63,7 @@ class t_function final : public t_named {
       t_function_qualifier qualifier = {});
 
   t_function_qualifier qualifier() const { return qualifier_; }
-  const t_type_ref* return_type() const { return &return_type_; }
+  const t_type_ref& return_type() const { return return_type_; }
   const t_paramlist* params() const { return paramlist_.get(); }
   const t_throws* exceptions() const {
     return t_throws::or_empty(exceptions_.get());
@@ -99,8 +99,8 @@ class t_function final : public t_named {
             qualifier) {}
 
   t_paramlist* get_paramlist() const { return paramlist_.get(); }
-  const t_type* get_return_type() const { return return_type()->get_type(); }
-  const t_type* get_returntype() const { return return_type()->get_type(); }
+  const t_type* get_return_type() const { return return_type().get_type(); }
+  const t_type* get_returntype() const { return return_type().get_type(); }
   const t_throws* get_xceptions() const { return exceptions(); }
   const t_throws* get_stream_xceptions() const {
     return t_throws::or_empty(stream_exceptions_);
@@ -112,11 +112,8 @@ class t_function final : public t_named {
     return t_throws::or_empty(sink_final_response_exceptions_);
   }
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
-  bool returns_stream() const {
-    return return_type_.deref()->is_streamresponse();
-  }
-
-  bool returns_sink() const { return return_type_.deref()->is_sink(); }
+  bool returns_stream() const { return return_type_->is_streamresponse(); }
+  bool returns_sink() const { return return_type_->is_sink(); }
 
  private:
   // Extracted from return type for easy access.

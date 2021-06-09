@@ -58,7 +58,7 @@ class t_field final : public t_named {
   t_field(t_field&&) = delete;
   t_field& operator=(t_field&&) = delete;
 
-  const t_type_ref* type() const { return &type_; }
+  const t_type_ref& type() const { return type_; }
   int32_t key() const { return key_; }
 
   const t_const_value* default_value() const { return value_.get(); }
@@ -149,7 +149,7 @@ class t_field final : public t_named {
     return {};
   }
 
-  const t_type* get_type() const { return type()->get_type(); }
+  const t_type* get_type() const { return type().get_type(); }
   int32_t get_key() const { return key(); }
 
   const t_field* get_next() const { return next(); }

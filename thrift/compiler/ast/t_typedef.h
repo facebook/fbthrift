@@ -36,7 +36,7 @@ class t_typedef : public t_type {
   t_typedef(t_program* program, std::string name, const t_type* type)
       : t_type(program, std::move(name)), type_(type) {}
 
-  const t_type_ref* type() const { return &type_; }
+  const t_type_ref& type() const { return type_; }
 
   // Returns the first type, in the typedef type hierarchy, matching the
   // given predicate or nullptr.
@@ -73,7 +73,7 @@ class t_typedef : public t_type {
     // TODO(afuller): Just return name() as, unlike a t_placeholder_typedef, the
     // full name for a typedef is just it's name, not the name of the
     // type it is referencing.
-    return type_.deref()->get_full_name();
+    return type_->get_full_name();
   }
 
  protected:
@@ -118,9 +118,7 @@ class t_placeholder_typedef final : public t_typedef {
    */
   bool resolve();
 
-  std::string get_full_name() const override {
-    return type_.deref()->get_full_name();
-  }
+  std::string get_full_name() const override { return type_->get_full_name(); }
 
  private:
   t_scope* scope_;

@@ -30,11 +30,11 @@ class t_set final : public t_container {
  public:
   explicit t_set(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
-  const t_type_ref* elem_type() const { return &elem_type_; }
+  const t_type_ref& elem_type() const { return elem_type_; }
 
   type container_type() const override { return type::t_set; }
   std::string get_full_name() const override {
-    return "set<" + elem_type_.deref()->get_full_name() + ">";
+    return "set<" + elem_type_->get_full_name() + ">";
   }
 
  private:
@@ -44,7 +44,7 @@ class t_set final : public t_container {
   // backwards compatibility.
  public:
   explicit t_set(const t_type* elem_type) : t_set(t_type_ref(elem_type)) {}
-  const t_type* get_elem_type() const { return elem_type()->get_type(); }
+  const t_type* get_elem_type() const { return elem_type().get_type(); }
 };
 
 } // namespace compiler

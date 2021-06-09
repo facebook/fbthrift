@@ -33,7 +33,7 @@ class t_stream_response : public t_templated_type {
       t_type_ref elem_type, std::unique_ptr<t_throws> throws = nullptr)
       : elem_type_(std::move(elem_type)), throws_(std::move(throws)) {}
 
-  const t_type_ref* elem_type() const { return &elem_type_; }
+  const t_type_ref& elem_type() const { return elem_type_; }
   const t_throws* throws() const { return t_throws::or_empty(throws_.get()); }
 
   void set_first_response_type(
@@ -48,10 +48,10 @@ class t_stream_response : public t_templated_type {
 
   std::string get_full_name() const override {
     if (has_first_response()) {
-      return first_response_type_->deref()->get_full_name() + ", stream<" +
-          elem_type_.deref()->get_full_name() + ">";
+      return first_response_type_->deref().get_full_name() + ", stream<" +
+          elem_type_->get_full_name() + ">";
     }
-    return "stream<" + elem_type_.deref()->get_full_name() + ">";
+    return "stream<" + elem_type_->get_full_name() + ">";
   }
 
  private:
@@ -69,7 +69,7 @@ class t_stream_response : public t_templated_type {
   void set_first_response_type(const t_type* first_response_type) {
     set_first_response_type(std::make_unique<t_type_ref>(first_response_type));
   }
-  const t_type* get_elem_type() const { return elem_type()->get_type(); }
+  const t_type* get_elem_type() const { return elem_type().get_type(); }
   const t_type* get_first_response_type() const {
     return has_first_response() ? first_response_type()->get_type() : nullptr;
   }

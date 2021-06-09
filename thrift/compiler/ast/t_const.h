@@ -63,12 +63,13 @@ class t_const final : public t_named {
   }
 
   const t_program* program() const { return program_; }
-  const t_type_ref* type() const { return &type_; }
+  const t_type_ref& type() const { return type_; }
   const t_const_value* value() const { return value_.get(); }
 
  private:
-  t_program* program_;
+  t_program* const program_;
   t_type_ref type_;
+
   std::unique_ptr<t_const_value> value_;
 
   // TODO(afuller): Delete everything below here. It is only provided for
