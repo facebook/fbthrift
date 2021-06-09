@@ -27,6 +27,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <folly/io/async/ssl/OpenSSLTransportCertificate.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
@@ -93,7 +94,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       transport->getLocalAddress(&localAddress_);
       auto cert = transport->getPeerCertificate();
       if (cert) {
-        peerCert_ = cert->getX509();
+        auto osslCert =
+            dynamic_cast<const folly::OpenSSLTransportCertificate*>(cert);
+        peerCert_ = osslCert ? osslCert->getX509() : nullptr;
       }
       securityProtocol_ = transport->getSecurityProtocol();
 
