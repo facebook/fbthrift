@@ -271,7 +271,7 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(apache::thrift::Respon
   ProtocolOut_ prot;
   auto response = serializeLegacyResponse("methodThrow", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  std::ignore = req->sendSinkReply(std::move(response.buffer), {});
+  std::ignore = req->sendSinkReply(std::move(response.buffer), apache::thrift::SinkServerCallbackPtr{});
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

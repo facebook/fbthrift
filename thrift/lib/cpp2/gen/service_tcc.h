@@ -84,21 +84,21 @@ void process_handle_exn_deserialization(
   ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto buf = process_serialize_xform_app_exn<Prot>(
       ::apache::thrift::util::toTApplicationException(ew), ctx, method);
-  eb->runInEventBaseThread(
-      [buf = std::move(buf), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          std::ignore = req->sendStreamReply(
-              std::move(buf), StreamServerCallbackPtr(nullptr));
-        } else if (req->isSink()) {
+  eb->runInEventBaseThread([buf = std::move(buf),
+                            req = std::move(req)]() mutable {
+    if (req->isStream()) {
+      std::ignore = req->sendStreamReply(
+          std::move(buf), StreamServerCallbackPtr(nullptr));
+    } else if (req->isSink()) {
 #if FOLLY_HAS_COROUTINES
-          std::ignore = req->sendSinkReply(std::move(buf), {});
+      std::ignore = req->sendSinkReply(std::move(buf), SinkServerCallbackPtr{});
 #else
-          DCHECK(false);
+      DCHECK(false);
 #endif
-        } else {
-          req->sendReply(std::move(buf));
-        }
-      });
+    } else {
+      req->sendReply(std::move(buf));
+    }
+  });
 }
 
 template <typename Prot>
@@ -122,7 +122,7 @@ void process_throw_wrapped_handler_error(
         req->sendStreamReply(std::move(buf), StreamServerCallbackPtr(nullptr));
   } else if (req->isSink()) {
 #if FOLLY_HAS_COROUTINES
-    std::ignore = req->sendSinkReply(std::move(buf), {});
+    std::ignore = req->sendSinkReply(std::move(buf), SinkServerCallbackPtr{});
 #else
     DCHECK(false);
 #endif

@@ -238,7 +238,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   bool sendSinkReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& response,
       SinkServerCallbackPtr callback,
       folly::Optional<uint32_t> crc32c) override final {
     if (tryCancel()) {
@@ -248,7 +248,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
         metadata.crc32c_ref() = *crc32c;
       }
       auto alive = sendReplyInternal(
-          std::move(metadata), std::move(buf), std::move(callback));
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(callback));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
