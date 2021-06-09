@@ -32,3 +32,8 @@ union TreeNode {
   1: list<TreeNode> nodes;
   2: i32 data;
 }
+
+union CppRef {
+  1: string str;
+  2: CppRef cppref (cpp.ref);
+}

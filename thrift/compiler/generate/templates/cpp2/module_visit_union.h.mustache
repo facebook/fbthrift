@@ -34,7 +34,13 @@ struct VisitUnion<<% > common/namespace_cpp2%><%struct:name%>> {
     switch (t.getType()) {
     <%#struct:fields%>
     case Union::Type::<%field:cpp_name%>:
+<%^field:cpp_ref?%>
       return f(<%field:index%>, *static_cast<T&&>(t).<%field:cpp_name%>_ref());
+<%/field:cpp_ref?%>
+<%#field:cpp_ref?%>
+      <%! TODO: use field ref API once it supports cpp.ref %>
+      return f(<%field:index%>, *static_cast<T&&>(t).get_<%field:cpp_name%>());
+<%/field:cpp_ref?%>
     <%/struct:fields%>
     case Union::Type::__EMPTY__: ;
     }

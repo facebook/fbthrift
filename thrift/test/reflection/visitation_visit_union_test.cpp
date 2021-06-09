@@ -17,10 +17,10 @@
 #include <any>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_for_each_field.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h> // @manual
+#include <thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_for_each_field.h>
-#include <thrift/test/gen-cpp2/UnionFieldRef_visit_by_thrift_field_metadata.h> // @manual
+#include <thrift/test/gen-cpp2/UnionFieldRef_visit_by_thrift_field_metadata.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
 
 namespace apache {
@@ -152,6 +152,29 @@ TYPED_TEST(VisitUnionTest, PassCallableByReference) {
   EXPECT_EQ(f.i, 0);
   TestFixture::adapter(a, std::ref(f));
   EXPECT_EQ(f.i, 1);
+}
+
+template <class T>
+constexpr bool kIsString =
+    std::is_same_v<folly::remove_cvref_t<T>, std::string>;
+
+TEST(VisitUnionTest, CppRef) {
+  CppRef r;
+  CppRef r2;
+  r2.str_ref() = "42";
+  r.set_cppref(r2);
+  bool typeMatches = false;
+  apache::thrift::visit_union(r, [&typeMatches](auto&&, auto&& r2) {
+    if constexpr (!kIsString<decltype(r2)>) {
+      apache::thrift::visit_union(r2, [&typeMatches](auto&&, auto&& v) {
+        if constexpr (kIsString<decltype(v)>) {
+          typeMatches = true;
+          EXPECT_EQ(v, "42");
+        }
+      });
+    }
+  });
+  EXPECT_TRUE(typeMatches);
 }
 
 } // namespace

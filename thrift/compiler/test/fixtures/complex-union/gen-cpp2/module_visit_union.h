@@ -30,7 +30,7 @@ struct VisitUnion<::cpp2::ComplexUnion> {
     case Union::Type::typedefValue:
       return f(4, *static_cast<T&&>(t).typedefValue_ref());
     case Union::Type::stringRef:
-      return f(5, *static_cast<T&&>(t).stringRef_ref());
+      return f(5, *static_cast<T&&>(t).get_stringRef());
     case Union::Type::__EMPTY__: ;
     }
   }

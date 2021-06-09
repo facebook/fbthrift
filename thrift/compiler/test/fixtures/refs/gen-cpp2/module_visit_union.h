@@ -20,9 +20,9 @@ struct VisitUnion<::cpp2::MyUnion> {
     using Union = std::remove_reference_t<T>;
     switch (t.getType()) {
     case Union::Type::anInteger:
-      return f(0, *static_cast<T&&>(t).anInteger_ref());
+      return f(0, *static_cast<T&&>(t).get_anInteger());
     case Union::Type::aString:
-      return f(1, *static_cast<T&&>(t).aString_ref());
+      return f(1, *static_cast<T&&>(t).get_aString());
     case Union::Type::__EMPTY__: ;
     }
   }

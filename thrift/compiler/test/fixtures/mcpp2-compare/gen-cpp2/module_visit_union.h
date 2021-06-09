@@ -82,9 +82,9 @@ struct VisitUnion<::some::valid::ns::ComplexUnion> {
     case Union::Type::MyBinaryListField4:
       return f(23, *static_cast<T&&>(t).MyBinaryListField4_ref());
     case Union::Type::ref_field:
-      return f(24, *static_cast<T&&>(t).ref_field_ref());
+      return f(24, *static_cast<T&&>(t).get_ref_field());
     case Union::Type::ref_field2:
-      return f(25, *static_cast<T&&>(t).ref_field2_ref());
+      return f(25, *static_cast<T&&>(t).get_ref_field2());
     case Union::Type::excp_field:
       return f(26, *static_cast<T&&>(t).excp_field_ref());
     case Union::Type::__EMPTY__: ;
