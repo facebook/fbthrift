@@ -197,4 +197,16 @@ TEST(Serialization, OptionalField) {
   EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
+TEST(Serialization, ReserializeLazyField) {
+  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
+      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+  auto foo2 = CompactSerializer::deserialize<LazyFoo>(
+      CompactSerializer::serialize<std::string>(foo1));
+
+  EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
+  EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
+  EXPECT_EQ(foo1.field3_ref(), foo2.field3_ref());
+  EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
+}
+
 } // namespace apache::thrift::test

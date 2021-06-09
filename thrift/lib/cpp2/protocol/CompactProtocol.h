@@ -123,6 +123,7 @@ class CompactProtocolWriter {
   inline uint32_t writeBinary(folly::ByteRange str);
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   inline uint32_t writeBinary(const IOBuf& str);
+  inline uint32_t writeRaw(const IOBuf& buf);
 
   /**
    * Functions that return the serialized size
@@ -192,6 +193,8 @@ class CompactProtocolWriter {
   int16_t lastFieldId_{-1};
 
   inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
+  template <bool kWriteSize>
+  FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str);
 
   inline uint32_t writeFieldBeginInternal(
       const char* name,

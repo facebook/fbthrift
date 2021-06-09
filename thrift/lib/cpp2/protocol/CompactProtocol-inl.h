@@ -307,13 +307,23 @@ uint32_t CompactProtocolWriter::writeBinary(
 }
 
 uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
+  return writeBinaryImpl<true>(str);
+}
+
+uint32_t CompactProtocolWriter::writeRaw(const folly::IOBuf& str) {
+  return writeBinaryImpl<false>(str);
+}
+
+template <bool kWriteSize>
+uint32_t CompactProtocolWriter::writeBinaryImpl(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
   // leave room for varint size
   uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
   if (size > limit) {
     TProtocolException::throwExceededSizeLimit(size, limit);
   }
-  uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
+  uint32_t result =
+      kWriteSize ? apache::thrift::util::writeVarint(out_, (int32_t)size) : 0;
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
     auto clone = str.clone();
     clone->makeManaged();

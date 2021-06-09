@@ -26,6 +26,14 @@
 <%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldStart();
 <%/struct:indexing?%>
 <%^field:non_opt_cpp_ref?%>
+<%#field:lazy?%>
+<%#struct:union?%>  <%/struct:union?%>    if constexpr (Protocol_::kHasIndexSupport()) {
+<%#struct:union?%>  <%/struct:union?%>      if (prot_->protocolType() == ::apache::thrift::protocol::T_COMPACT_PROTOCOL && !__fbthrift_isDeserialized_.<%field:cpp_name%>) {
+<%#struct:union?%>  <%/struct:union?%>        xfer += prot_->writeRaw(__fbthrift_serializedData_.<%field:cpp_name%>);
+<%#struct:union?%>  <%/struct:union?%>        goto written_lazy_field_<%field:cpp_name%>;
+<%#struct:union?%>  <%/struct:union?%>      }
+<%#struct:union?%>  <%/struct:union?%>    }
+<%/field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += <% > module_types_tcc/pm%>::write(*prot_, <% > module_types_tcc/pm_value%>);
 <%/field:non_opt_cpp_ref?%>
 <%#field:non_opt_cpp_ref?%>
@@ -44,6 +52,9 @@
 <%/type:struct?%>
 <%#struct:union?%>  <%/struct:union?%>    }
 <%/field:non_opt_cpp_ref?%>
+<%#field:lazy?%>
+<%#struct:union?%>  <%/struct:union?%>    written_lazy_field_<%field:cpp_name%>:
+<%/field:lazy?%>
 <%#struct:indexing?%>
 <%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldEnd(<% > common/type_class%>{}, <% > module_types_tcc/pm_value%>, <%field:key%>);
 <%/struct:indexing?%>
