@@ -33,7 +33,7 @@ void service1AsyncClient::method1T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method1",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -51,7 +51,7 @@ void service1AsyncClient::method2T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method2",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -66,7 +66,7 @@ void service1AsyncClient::method3T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method3",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -84,7 +84,7 @@ void service1AsyncClient::method4T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method4",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -99,7 +99,7 @@ void service1AsyncClient::method5T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method5",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -117,7 +117,7 @@ void service1AsyncClient::method6T(Protocol_* prot, const apache::thrift::RpcOpt
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "method6",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }

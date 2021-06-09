@@ -34,7 +34,7 @@ void ExtraServiceAsyncClient::simple_functionT(Protocol_* prot, const apache::th
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "simple_function",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -49,7 +49,7 @@ void ExtraServiceAsyncClient::throws_functionT(Protocol_* prot, const apache::th
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "throws_function",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -65,7 +65,7 @@ void ExtraServiceAsyncClient::throws_function2T(Protocol_* prot, const apache::t
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "throws_function2",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -82,7 +82,7 @@ void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, const apache::t
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "throws_function3",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }

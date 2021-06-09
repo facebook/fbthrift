@@ -32,7 +32,7 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, const apache::thrift
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "mapList",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -48,7 +48,7 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, const apache::thrift:
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "mapSet",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -64,7 +64,7 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, const apache::thrift
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "listMap",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -80,7 +80,7 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, const apache::thrift
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "listSet",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }
@@ -96,7 +96,7 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, const apache::thrift
   static ::apache::thrift::MethodMetadata::Data* methodMetadata =
         new ::apache::thrift::MethodMetadata::Data(
                 "turtles",
-                ::apache::thrift::FunctionQualifier::None);
+                ::apache::thrift::FunctionQualifier::Unspecified);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 
 }

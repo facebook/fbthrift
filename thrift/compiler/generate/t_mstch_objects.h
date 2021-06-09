@@ -1075,7 +1075,7 @@ class mstch_function : public mstch_base {
       case t_function_qualifier::read_only:
         return std::string("ReadOnly");
       default:
-        return std::string("None");
+        return std::string("Unspecified");
     }
   }
 

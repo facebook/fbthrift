@@ -20,16 +20,15 @@
 #include <string>
 #include <string_view>
 #include <folly/Range.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/util/ManagedStringView.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift {
 
-enum class FunctionQualifier {
-  None = 0,
-  OneWay,
-  Idempotent,
-  ReadOnly,
-};
+inline std::string_view qualifierToString(FunctionQualifier fq) {
+  return apache::thrift::util::enumName(fq);
+}
 
 /*
  * A move-only structure for storing thrift method metadata.
@@ -97,21 +96,26 @@ class MethodMetadata {
 
   /* implicit */ MethodMetadata(std::string_view methodName)
       : isOwning_(true),
-        data_(new Data(std::string(methodName), FunctionQualifier::None)) {}
+        data_(new Data(
+            std::string(methodName), FunctionQualifier::Unspecified)) {}
 
   /* implicit */ MethodMetadata(std::string&& methodName)
       : isOwning_(true),
-        data_(new Data(std::move(methodName), FunctionQualifier::None)) {}
+        data_(new Data(std::move(methodName), FunctionQualifier::Unspecified)) {
+  }
 
   /* implicit */ MethodMetadata(const std::string& methodName)
-      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::None)) {}
+      : isOwning_(true),
+        data_(new Data(methodName, FunctionQualifier::Unspecified)) {}
 
   /* implicit */ MethodMetadata(const char* methodName)
-      : isOwning_(true), data_(new Data(methodName, FunctionQualifier::None)) {}
+      : isOwning_(true),
+        data_(new Data(methodName, FunctionQualifier::Unspecified)) {}
 
   /* implicit */ MethodMetadata(folly::StringPiece methodName)
       : isOwning_(true),
-        data_(new Data(std::string(methodName), FunctionQualifier::None)) {}
+        data_(new Data(
+            std::string(methodName), FunctionQualifier::Unspecified)) {}
 
   static MethodMetadata from_static(Data* mPtr) {
     return MethodMetadata(mPtr, NonOwningTag{});

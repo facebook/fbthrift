@@ -21,14 +21,14 @@ using namespace ::testing;
 using namespace apache::thrift;
 
 TEST(MethodMetadataTest, Operations) {
-  MethodMetadata::Data data("123", FunctionQualifier::None);
+  MethodMetadata::Data data("123", FunctionQualifier::Unspecified);
 
   MethodMetadata a = MethodMetadata::from_static(&data);
   EXPECT_FALSE(a.isOwning());
   EXPECT_EQ(a.name_str(), "123");
   EXPECT_EQ(a.name_view(), "123");
 
-  data = MethodMetadata::Data("234", FunctionQualifier::None);
+  data = MethodMetadata::Data("234", FunctionQualifier::Unspecified);
   EXPECT_FALSE(a.isOwning());
   EXPECT_EQ(a.name_str(), "234");
   EXPECT_EQ(a.name_view(), "234");
