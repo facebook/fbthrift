@@ -56,63 +56,36 @@ template <typename T>
 struct HandlerCallbackHelper;
 }
 
-class EventTask : public virtual concurrency::Runnable {
+class EventTask : public concurrency::Runnable, public InteractionTask {
  public:
   EventTask(
-      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
       ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
+      Cpp2RequestContext* ctx,
       bool oneway)
-      : base_(base),
-        taskFunc_(std::move(taskFunc)),
-        req_(std::move(req)),
+      : req_(std::move(req)),
+        serializedRequest_(std::move(serializedRequest)),
+        ctx_(ctx),
+        eb_(eb),
+        tm_(tm),
         oneway_(oneway) {}
 
   ~EventTask() override;
 
-  void run() override;
   void expired();
-  void failWith(folly::exception_wrapper ex, std::string exCode);
+  void failWith(folly::exception_wrapper ex, std::string exCode) override;
+
+  void setTile(TilePtr&& tile) override;
 
  protected:
-  folly::EventBase* base_;
-
- private:
-  folly::Function<void(ResponseChannelRequest::UniquePtr)> taskFunc_;
   ResponseChannelRequest::UniquePtr req_;
+  SerializedCompressedRequest serializedRequest_;
+  Cpp2RequestContext* ctx_;
+  folly::EventBase* eb_;
+  concurrency::ThreadManager* tm_;
   bool oneway_;
-};
-
-class InteractionEventTask : public EventTask, public InteractionTask {
- public:
-  using TaskFunc =
-      folly::Function<void(ResponseChannelRequest::UniquePtr, TilePtr&&)>;
-  InteractionEventTask(
-      TaskFunc&& taskFunc,
-      ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
-      bool oneway,
-      TilePtr&& tile)
-      : EventTask(
-            [=](ResponseChannelRequest::UniquePtr request) {
-              DCHECK(tile_);
-              DCHECK(!dynamic_cast<TilePromise*>(tile_.get()));
-              taskFunc_(std::move(request), std::move(tile_));
-            },
-            std::move(req),
-            base,
-            oneway),
-        tile_(std::move(tile)),
-        taskFunc_(std::move(taskFunc)) {}
-
-  void setTile(TilePtr&& tile) override { tile_ = std::move(tile); }
-  void failWith(folly::exception_wrapper ex, std::string exCode) override {
-    EventTask::failWith(std::move(ex), std::move(exCode));
-  }
-
- private:
-  TilePtr tile_;
-  TaskFunc taskFunc_;
 };
 
 class AsyncProcessor : public TProcessorBase {
@@ -270,6 +243,38 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
   void destroyAllInteractions(
       Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
+};
+
+template <typename ChildType>
+class RequestTask final : public EventTask {
+ public:
+  RequestTask(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
+      Cpp2RequestContext* ctx,
+      bool oneway,
+      ChildType* childClass,
+      GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc)
+      : EventTask(
+            std::move(req), std::move(serializedRequest), eb, tm, ctx, oneway),
+        childClass_(childClass),
+        processFunc_(processFunc) {}
+
+  void run() override {
+    if (ctx_->getTimestamps().getSamplingStatus().isEnabled()) {
+      // Since this request was queued, reset the processBegin
+      // time to the actual start time, and not the queue time.
+      ctx_->getTimestamps().processBegin = std::chrono::steady_clock::now();
+    }
+    (childClass_->*processFunc_)(
+        std::move(req_), std::move(serializedRequest_), ctx_, eb_, tm_);
+  }
+
+ private:
+  ChildType* childClass_;
+  GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc_;
 };
 
 class ServiceHandler;
@@ -748,35 +753,19 @@ GeneratedAsyncProcessor::makeEventTaskForRequest(
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass,
     Tile* tile) {
-  auto taskFn = [=, serializedRequest = std::move(serializedRequest)](
-                    ResponseChannelRequest::UniquePtr rq) mutable {
-    if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
-      // Since this request was queued, reset the processBegin
-      // time to the actual start time, and not the queue time.
-      ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
-    }
-    (childClass->*processFunc)(
-        std::move(rq), std::move(serializedRequest), ctx, eb, tm);
-  };
-
-  if (!tile) {
-    return std::make_unique<EventTask>(
-        std::move(taskFn),
-        std::move(req),
-        eb,
-        kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
-  }
-
-  return std::make_unique<InteractionEventTask>(
-      [=, taskFn = std::move(taskFn)](
-          ResponseChannelRequest::UniquePtr rq, TilePtr&& tileRef) mutable {
-        ctx->setTile(std::move(tileRef));
-        taskFn(std::move(rq));
-      },
+  auto task = std::make_unique<RequestTask<ChildType>>(
       std::move(req),
+      std::move(serializedRequest),
       eb,
+      tm,
+      ctx,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      TilePtr{tile, eb});
+      childClass,
+      processFunc);
+  if (tile) {
+    task->setTile({tile, eb});
+  }
+  return task;
 }
 
 template <typename ChildType>

@@ -28,10 +28,6 @@ EventTask::~EventTask() {
   expired();
 }
 
-void EventTask::run() {
-  taskFunc_(std::move(req_));
-}
-
 void EventTask::expired() {
   // only expire req_ once
   if (!req_) {
@@ -54,11 +50,15 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
     req->sendErrorWrapped(std::move(ex), std::move(exCode));
   };
 
-  if (base_->isInEventBaseThread()) {
+  if (eb_->inRunningEventBaseThread()) {
     cleanUp();
   } else {
-    base_->runInEventBaseThread(std::move(cleanUp));
+    eb_->runInEventBaseThread(std::move(cleanUp));
   }
+}
+
+void EventTask::setTile(TilePtr&& tile) {
+  ctx_->setTile(std::move(tile));
 }
 
 void AsyncProcessor::terminateInteraction(
