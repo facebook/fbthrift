@@ -1480,7 +1480,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
 
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_enum"), std::move(tenum_tmeta));
-  } else if (type->is_struct()) {
+  } else if (type->is_struct() || type->is_exception()) {
     auto tstruct_tmeta = std::make_unique<t_const_value>();
     tstruct_tmeta->add_map(
         std::make_unique<t_const_value>("name"),

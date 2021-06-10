@@ -1390,6 +1390,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                             "name" => "module.Banal",
                             "underlyingType" => tmeta_ThriftType::fromShape(
                               shape(
+                                "t_struct" => tmeta_ThriftStructType::fromShape(
+                                  shape(
+                                    "name" => "module.Banal",
+                                  )
+                                ),
                               )
                             ),
                           )
@@ -1404,6 +1409,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 2,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.Fiery",
+                          )
+                        ),
                       )
                     ),
                     "name" => "f",
@@ -1414,6 +1424,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 3,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.Serious",
+                          )
+                        ),
                       )
                     ),
                     "name" => "s",
@@ -1446,6 +1461,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 1,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.Fiery",
+                          )
+                        ),
                       )
                     ),
                     "name" => "f",
@@ -1461,6 +1481,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                             "name" => "module.Banal",
                             "underlyingType" => tmeta_ThriftType::fromShape(
                               shape(
+                                "t_struct" => tmeta_ThriftStructType::fromShape(
+                                  shape(
+                                    "name" => "module.Banal",
+                                  )
+                                ),
                               )
                             ),
                           )
@@ -1475,6 +1500,11 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 3,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.Serious",
+                          )
+                        ),
                       )
                     ),
                     "name" => "s",
