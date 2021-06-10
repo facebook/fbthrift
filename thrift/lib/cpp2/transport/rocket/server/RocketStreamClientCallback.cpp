@@ -84,6 +84,8 @@ bool RocketStreamClientCallback::onFirstResponse(
     scheduleTimeout();
   }
 
+  firstResponse.metadata.streamId_ref() = static_cast<uint32_t>(streamId_);
+
   connection_.sendPayload(
       streamId_, pack(std::move(firstResponse)), Flags::none().next(true));
 

@@ -273,6 +273,8 @@ struct ResponseRpcMetadata {
   7: optional PayloadMetadata payloadMetadata;
   // Additional metadata for the response payload (if proxied)
   8: optional ProxiedPayloadMetadata proxiedPayloadMetadata;
+  // Sent on stream first response so java client can associate headers push.
+  9: optional i32 streamId;
 }
 
 enum ResponseRpcErrorCategory {
