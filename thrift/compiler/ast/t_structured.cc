@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <stdexcept>
 
 #include <thrift/compiler/ast/t_structured.h>
@@ -25,15 +26,14 @@ namespace compiler {
 namespace {
 
 template <typename C>
-auto find_by_id(const C& fields_id_order, const t_field& field) {
-  return std::equal_range(
-      fields_id_order.begin(),
-      fields_id_order.end(),
-      &field,
-      // Comparator to sort fields in ascending order by key.
-      [](const t_field* a, const t_field* b) {
-        return a->get_key() < b->get_key();
+// Returns a pair<iterator, bool> of (lower bound iterator, id found?).
+auto find_by_id(const C& fields_id_order, int32_t id) {
+  auto lower = std::partition_point(
+      fields_id_order.begin(), fields_id_order.end(), [id](const auto& field) {
+        return field->id() < id;
       });
+  return std::make_pair(
+      lower, lower != fields_id_order.end() && (*lower)->id() == id);
 }
 
 } // namespace
@@ -41,8 +41,8 @@ auto find_by_id(const C& fields_id_order, const t_field& field) {
 bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
   auto elem_ptr = elem.get();
 
-  auto bounds = find_by_id(fields_id_order_, *elem_ptr);
-  if (bounds.first != bounds.second) {
+  auto existing = find_by_id(fields_id_order_, elem_ptr->id());
+  if (existing.second) {
     return false;
   }
 
@@ -57,18 +57,17 @@ bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
     fields_by_name_.emplace(elem_ptr->get_name(), elem_ptr);
   }
   fields_ordinal_order_.emplace_back(elem_ptr);
-  fields_id_order_.emplace(bounds.second, elem_ptr);
+  fields_id_order_.emplace(existing.first, elem_ptr);
 
   fields_raw_.push_back(elem_ptr);
   fields_raw_id_order_.insert(
-      find_by_id(fields_raw_id_order_, *elem_ptr).second, elem_ptr);
+      find_by_id(fields_raw_id_order_, elem_ptr->id()).first, elem_ptr);
   return true;
 }
 
 const t_field* t_structured::get_field_by_id(int32_t id) const {
-  t_field dummy(nullptr, {}, id);
-  auto bounds = find_by_id(fields_id_order_, dummy);
-  return bounds.first == bounds.second ? nullptr : *bounds.first;
+  auto existing = find_by_id(fields_id_order_, id);
+  return existing.second ? *existing.first : nullptr;
 }
 
 void t_structured::append(std::unique_ptr<t_field> elem) {

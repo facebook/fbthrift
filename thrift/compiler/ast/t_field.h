@@ -50,16 +50,16 @@ class t_field final : public t_named {
    *
    * @param type - A field based on thrift types
    * @param name - The symbolic name of the field
-   * @param key  - The numeric identifier of the field
+   * @param id  - The numeric identifier of the field
    */
-  t_field(t_type_ref type, std::string name, int32_t key = 0)
-      : t_named(std::move(name)), type_(std::move(type)), key_(key) {}
+  t_field(t_type_ref type, std::string name, int32_t id = 0)
+      : t_named(std::move(name)), type_(std::move(type)), id_(id) {}
 
   t_field(t_field&&) = delete;
   t_field& operator=(t_field&&) = delete;
 
   const t_type_ref& type() const { return type_; }
-  int32_t key() const { return key_; }
+  int32_t id() const { return id_; }
 
   const t_const_value* default_value() const { return value_.get(); }
   void set_default_value(std::unique_ptr<t_const_value> value) {
@@ -82,7 +82,7 @@ class t_field final : public t_named {
    * target language generators. Do NOT add any new usage of this method.
    */
   std::unique_ptr<t_field> clone_DO_NOT_USE() const {
-    auto clone = std::make_unique<t_field>(type_, name_, key_);
+    auto clone = std::make_unique<t_field>(type_, name_, id_);
 
     if (!!value_) {
       clone->value_ = value_->clone();
@@ -96,12 +96,13 @@ class t_field final : public t_named {
 
  private:
   t_type_ref type_;
-  int32_t key_;
+  const int32_t id_;
+
+  t_field_qualifier qual_ = {};
   std::unique_ptr<t_const_value> value_;
+
   const t_field* next_ = nullptr;
   const t_field* prev_ = nullptr;
-
-  t_field_qualifier qual_{};
 
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
@@ -150,7 +151,7 @@ class t_field final : public t_named {
   }
 
   const t_type* get_type() const { return type().get_type(); }
-  int32_t get_key() const { return key(); }
+  int32_t get_key() const { return id(); }
 
   const t_field* get_next() const { return next(); }
   const t_field* get_prev() const { return prev(); }
