@@ -297,8 +297,8 @@ deserialize_known_length_set(
   }
 }
 
-inline auto checked_container_size(size_t size) {
-  const auto limit = std::numeric_limits<int32_t>::max();
+inline uint32_t checked_container_size(size_t size) {
+  const size_t limit = std::numeric_limits<int32_t>::max();
   if (size > limit) {
     TProtocolException::throwExceededSizeLimit(size, limit);
   }
