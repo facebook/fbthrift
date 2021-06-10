@@ -55,8 +55,9 @@ class FunctionSendRecvRequestCallbackTest : public Test {
   ScopedServerInterfaceThread runner{handler};
 
   unique_ptr<TestServiceAsyncClient> newClient(SocketAddress const& addr) {
-    return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(AsyncSocket::newSocket(eb, addr)));
+    return make_unique<TestServiceAsyncClient>(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithoutRocketUpgrade{},
+        AsyncSocket::newSocket(eb, addr)));
   }
 
   exception_wrapper ew;
@@ -134,8 +135,9 @@ class FunctionSendCallbackTest : public Test {
  public:
   unique_ptr<TestServiceAsyncClient> getClient(
       const folly::SocketAddress& addr) {
-    return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(AsyncSocket::newSocket(&eb, addr)));
+    return make_unique<TestServiceAsyncClient>(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithoutRocketUpgrade{},
+        AsyncSocket::newSocket(&eb, addr)));
   }
   void sendOnewayMessage(
       const folly::SocketAddress& addr,
