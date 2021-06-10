@@ -34,21 +34,40 @@ namespace compiler {
 
 namespace {
 std::string mangle(const std::string& name) {
-  static const char* keywords[] = {
-      "abstract", "alignof", "as",      "async",    "await",  "become",
-      "box",      "break",   "const",   "continue", "crate",  "do",
-      "else",     "enum",    "extern",  "false",    "final",  "fn",
-      "for",      "if",      "impl",    "in",       "let",    "loop",
-      "macro",    "match",   "mod",     "move",     "mut",    "offsetof",
-      "override", "priv",    "proc",    "pub",      "pure",   "ref",
-      "return",   "Self",    "self",    "sizeof",   "static", "struct",
-      "super",    "trait",   "true",    "type",     "typeof", "unsafe",
-      "unsized",  "use",     "virtual", "where",    "while",  "yield",
+  static const char* raw_identifiable_keywords[] = {
+      "abstract", "alignof", "as",      "async",    "await",    "become",
+      "box",      "break",   "const",   "continue", "do",       "else",
+      "enum",     "extern",  "false",   "final",    "fn",       "for",
+      "if",       "impl",    "in",      "let",      "loop",     "macro",
+      "match",    "mod",     "move",    "mut",      "offsetof", "override",
+      "priv",     "proc",    "pub",     "pure",     "ref",      "return",
+      "sizeof",   "static",  "struct",  "trait",    "true",     "type",
+      "typeof",   "unsafe",  "unsized", "use",      "virtual",  "where",
+      "while",    "yield",
   };
 
-  for (auto s : keywords) {
+  static const char* keywords_that_participate_in_name_resolution[] = {
+      "crate",
+      "super",
+      "self",
+      "Self",
+  };
+
+  constexpr const char* keyword_error_message = R"ERROR(
+    Found a rust keyword that participates in name resolution.
+    Please use the `rust.name` annotation to create an alias for)ERROR";
+
+  for (auto& s : keywords_that_participate_in_name_resolution) {
     if (name == s) {
-      return name + '_';
+      std::ostringstream error_message;
+      error_message << keyword_error_message << " " << name;
+      throw std::runtime_error(error_message.str());
+    }
+  }
+
+  for (auto& s : raw_identifiable_keywords) {
+    if (name == s) {
+      return "r#" + name;
     }
   }
 
@@ -453,7 +472,12 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:docs", &mstch_rust_struct::rust_doc},
         });
   }
-  mstch::node rust_name() { return mangle_type(strct_->get_name()); }
+  mstch::node rust_name() {
+    if (!strct_->has_annotation("rust.name")) {
+      return mangle_type(strct_->get_name());
+    }
+    return strct_->get_annotation("rust.name");
+  }
   mstch::node rust_package() {
     return get_import_name(strct_->program(), options_);
   }
@@ -572,6 +596,7 @@ class mstch_rust_function : public mstch_function {
     register_methods(
         this,
         {
+            {"function:rust_name", &mstch_rust_function::rust_name},
             {"function:upcamel", &mstch_rust_function::rust_upcamel},
             {"function:index", &mstch_rust_function::rust_index},
             {"function:void?", &mstch_rust_function::rust_void},
@@ -585,6 +610,12 @@ class mstch_rust_function : public mstch_function {
             {"function:docs?", &mstch_rust_function::rust_has_doc},
             {"function:docs", &mstch_rust_function::rust_doc},
         });
+  }
+  mstch::node rust_name() {
+    if (!function_->has_annotation("rust.name")) {
+      return mangle(function_->get_name());
+    }
+    return function_->get_annotation("rust.name");
   }
   mstch::node rust_upcamel() {
     auto upcamel_name = camelcase(function_->get_name());
@@ -667,7 +698,12 @@ class mstch_rust_enum_value : public mstch_enum_value {
             {"enumValue:docs", &mstch_rust_enum_value::rust_doc},
         });
   }
-  mstch::node rust_name() { return mangle(enm_value_->get_name()); }
+  mstch::node rust_name() {
+    if (!enm_value_->has_annotation("rust.name")) {
+      return mangle(enm_value_->get_name());
+    }
+    return enm_value_->get_annotation("rust.name");
+  }
   mstch::node rust_has_doc() { return enm_value_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(enm_value_); }
 };
@@ -692,7 +728,12 @@ class mstch_rust_enum : public mstch_enum {
             {"enum:docs", &mstch_rust_enum::rust_doc},
         });
   }
-  mstch::node rust_name() { return mangle_type(enm_->get_name()); }
+  mstch::node rust_name() {
+    if (!enm_->has_annotation("rust.name")) {
+      return mangle_type(enm_->get_name());
+    }
+    return enm_->get_annotation("rust.name");
+  }
   mstch::node rust_package() {
     return get_import_name(enm_->program(), options_);
   }
@@ -736,7 +777,12 @@ class mstch_rust_type : public mstch_type {
             {"type:nonstandard?", &mstch_rust_type::rust_nonstandard},
         });
   }
-  mstch::node rust_name() { return mangle_type(type_->get_name()); }
+  mstch::node rust_name() {
+    if (!type_->has_annotation("rust.name")) {
+      return mangle_type(type_->get_name());
+    }
+    return type_->get_annotation("rust.name");
+  }
   mstch::node rust_name_snake() {
     return snakecase(mangle_type(type_->get_name()));
   }
@@ -1079,7 +1125,12 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:docs", &mstch_rust_struct_field::rust_docs},
         });
   }
-  mstch::node rust_name() { return mangle(field_->get_name()); }
+  mstch::node rust_name() {
+    if (!field_->has_annotation("rust.name")) {
+      return mangle(field_->get_name());
+    }
+    return field_->get_annotation("rust.name");
+  }
   mstch::node is_optional() {
     return field_->get_req() == t_field::e_req::optional;
   }
@@ -1239,7 +1290,12 @@ class mstch_rust_field : public mstch_field {
             {"field:docs", &mstch_rust_field::rust_docs},
         });
   }
-  mstch::node rust_name() { return mangle(field_->get_name()); }
+  mstch::node rust_name() {
+    if (!field_->has_annotation("rust.name")) {
+      return mangle(field_->get_name());
+    }
+    return field_->get_annotation("rust.name");
+  }
   mstch::node rust_primitive() {
     auto type = field_->get_type();
     return type->is_bool() || type->is_any_int() || type->is_floating_point();
@@ -1287,7 +1343,12 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:docs", &mstch_rust_typedef::rust_docs},
         });
   }
-  mstch::node rust_name() { return mangle_type(typedf_->name()); }
+  mstch::node rust_name() {
+    if (!typedf_->has_annotation("rust.name")) {
+      return mangle_type(typedf_->name());
+    }
+    return typedf_->get_annotation("rust.name");
+  }
   mstch::node rust_newtype() { return typedf_->has_annotation("rust.newtype"); }
   mstch::node rust_type() {
     const std::string& rust_type = typedf_->get_annotation("rust.type");

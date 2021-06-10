@@ -72,7 +72,7 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq)]
     pub struct MyStruct {
         pub opt_ref: ::std::option::Option<crate::types::MyField>,
-        pub ref_: crate::types::MyField,
+        pub r#ref: crate::types::MyField,
         pub req_ref: crate::types::MyField,
     }
 
@@ -543,7 +543,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 opt_ref: ::std::option::Option::None,
-                ref_: ::std::default::Default::default(),
+                r#ref: ::std::default::Default::default(),
                 req_ref: ::std::default::Default::default(),
             }
         }
@@ -568,7 +568,7 @@ pub mod types {
                 p.write_field_end();
             }
             p.write_field_begin("ref", ::fbthrift::TType::Struct, 2);
-            ::fbthrift::Serialize::write(&self.ref_, p);
+            ::fbthrift::Serialize::write(&self.r#ref, p);
             p.write_field_end();
             p.write_field_begin("req_ref", ::fbthrift::TType::Struct, 3);
             ::fbthrift::Serialize::write(&self.req_ref, p);
@@ -606,7 +606,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 opt_ref: field_opt_ref,
-                ref_: field_ref.unwrap_or_default(),
+                r#ref: field_ref.unwrap_or_default(),
                 req_ref: field_req_ref.unwrap_or_default(),
             })
         }

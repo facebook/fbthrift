@@ -14,14 +14,14 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ThereAreNoPascalCaseKeywords {
-        pub return_: ::std::primitive::bool,
+        pub r#return: ::std::primitive::bool,
         pub super_: ::std::primitive::bool,
     }
 
     impl ::std::default::Default for self::ThereAreNoPascalCaseKeywords {
         fn default() -> Self {
             Self {
-                return_: ::std::default::Default::default(),
+                r#return: ::std::default::Default::default(),
                 super_: ::std::default::Default::default(),
             }
         }
@@ -41,7 +41,7 @@ pub mod types {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("ThereAreNoPascalCaseKeywords");
             p.write_field_begin("return", ::fbthrift::TType::Bool, 1);
-            ::fbthrift::Serialize::write(&self.return_, p);
+            ::fbthrift::Serialize::write(&self.r#return, p);
             p.write_field_end();
             p.write_field_begin("super", ::fbthrift::TType::Bool, 2);
             ::fbthrift::Serialize::write(&self.super_, p);
@@ -75,7 +75,7 @@ pub mod types {
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
-                return_: field_return.unwrap_or_default(),
+                r#return: field_return.unwrap_or_default(),
                 super_: field_super.unwrap_or_default(),
             })
         }
@@ -286,11 +286,11 @@ pub mod client {
     }
 
     pub trait Foo: ::std::marker::Send {
-        fn return(
+        fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>>;
-        fn super(
+        fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
@@ -302,7 +302,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
-    {        fn return(
+    {        fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
@@ -364,7 +364,7 @@ pub mod client {
                 }))
                 .boxed()
         }
-        fn super(
+        fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
@@ -433,19 +433,19 @@ pub mod client {
         T: ::std::convert::AsRef<dyn Foo + 'a>,
         T: ::std::marker::Send,
     {
-        fn return(
+        fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
-            self.as_ref().return(
+            self.as_ref().r#return(
                 arg_bar,
             )
         }
-        fn super(
+        fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
-            self.as_ref().super(
+            self.as_ref().super_(
                 arg_bar,
             )
         }
@@ -499,7 +499,7 @@ pub mod client {
 pub mod server {
     #[::async_trait::async_trait]
     pub trait Foo: ::std::marker::Send + ::std::marker::Sync + 'static {
-        async fn return(
+        async fn r#return(
             &self,
             _bar: crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::result::Result<(), crate::services::foo::ReturnExn> {
@@ -510,7 +510,7 @@ pub mod server {
                 ),
             ))
         }
-        async fn super(
+        async fn super_(
             &self,
             _bar: crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::result::Result<(), crate::services::foo::SuperExn> {
@@ -587,7 +587,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
-            let res = self.service.return(
+            let res = self.service.r#return(
                 field_bar.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
                         "return",
@@ -606,7 +606,7 @@ pub mod server {
                 ::std::result::Result::Err(crate::services::foo::ReturnExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
-                        "return",
+                        "r#return",
                     )
                 }
             };
@@ -658,7 +658,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
-            let res = self.service.super(
+            let res = self.service.super_(
                 field_bar.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
                         "super",
@@ -677,7 +677,7 @@ pub mod server {
                 ::std::result::Result::Err(crate::services::foo::SuperExn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
-                        "super",
+                        "super_",
                     )
                 }
             };
@@ -911,16 +911,16 @@ pub mod server {
 /// ```
 pub mod mock {
     pub struct Foo<'mock> {
-        pub return: r#impl::foo::return<'mock>,
-        pub super: r#impl::foo::super<'mock>,
+        pub r#return: r#impl::foo::r#return<'mock>,
+        pub super_: r#impl::foo::super_<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
     impl dyn super::client::Foo {
         pub fn mock<'mock>() -> Foo<'mock> {
             Foo {
-                return: r#impl::foo::return::unimplemented(),
-                super: r#impl::foo::super::unimplemented(),
+                r#return: r#impl::foo::r#return::unimplemented(),
+                super_: r#impl::foo::super_::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -928,19 +928,19 @@ pub mod mock {
 
     #[::async_trait::async_trait]
     impl<'mock> super::client::Foo for Foo<'mock> {
-        fn return(
+        fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
-            let mut closure = self.return.closure.lock().unwrap();
+            let mut closure = self.r#return.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_bar.clone())))
         }
-        fn super(
+        fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
-            let mut closure = self.super.closure.lock().unwrap();
+            let mut closure = self.super_.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_bar.clone())))
         }
@@ -949,7 +949,7 @@ pub mod mock {
     mod r#impl {
         pub mod foo {
 
-            pub struct return<'mock> {
+            pub struct r#return<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> ::std::result::Result<
                         (),
@@ -958,9 +958,9 @@ pub mod mock {
                 >>,
             }
 
-            impl<'mock> return<'mock> {
+            impl<'mock> r#return<'mock> {
                 pub fn unimplemented() -> Self {
-                    return {
+                    r#return {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::ThereAreNoPascalCaseKeywords| panic!(
                             "{}::{} is not mocked",
                             "Foo",
@@ -993,7 +993,7 @@ pub mod mock {
                 }
             }
 
-            pub struct super<'mock> {
+            pub struct super_<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> ::std::result::Result<
                         (),
@@ -1002,9 +1002,9 @@ pub mod mock {
                 >>,
             }
 
-            impl<'mock> super<'mock> {
+            impl<'mock> super_<'mock> {
                 pub fn unimplemented() -> Self {
-                    super {
+                    super_ {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::ThereAreNoPascalCaseKeywords| panic!(
                             "{}::{} is not mocked",
                             "Foo",

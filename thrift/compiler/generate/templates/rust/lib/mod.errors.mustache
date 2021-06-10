@@ -43,11 +43,11 @@
         {{/service:rust_exceptions}}
         {{#service:rustFunctions}}
         {{#function:exceptions?}}
-        /// Errors for {{function:name}}.
+        /// Errors for {{function:rust_name}}.
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}
-            #[error("{{service:name}}::{{function:name}} failed with {0:?}")]
+            #[error("{{service:name}}::{{function:rust_name}} failed with {0:?}")]
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
             {{/function:exceptions}}
             #[error("Application exception: {0:?}")]
@@ -93,7 +93,7 @@
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}StreamError {
             {{#function:stream_exceptions}}
-            #[error("{{service:name}}::{{function:name}} stream failed with {0:?}")]
+            #[error("{{service:name}}::{{function:rust_name}} stream failed with {0:?}")]
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
             {{/function:stream_exceptions}}
             #[error("Application exception: {0:?}")]

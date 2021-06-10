@@ -28,7 +28,7 @@
         {{#function:docs?}}
         #[doc = {{function:docs}}]
         {{/function:docs?}}
-        async fn {{function:name}}(
+        async fn {{function:rust_name}}(
             &self,{{!
             }}{{#service:requestContext?}}
             _request_context: &Self::RequestContext,{{!
@@ -48,7 +48,7 @@
             ))
         }
     {{/function:returns_streams?}}{{#function:returns_streams?}}
-        // {{function:name}}: server-side streaming not yet implemented
+        // {{function:rust_name}}: server-side streaming not yet implemented
     {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
@@ -147,7 +147,7 @@
             }
             p.read_struct_end()?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
-            let res = self.service.{{function:name}}({{!
+            let res = self.service.{{function:rust_name}}({{!
                 }}{{#service:requestContext?}}
                 req_ctxt,{{!
                 }}{{/service:requestContext?}}{{!
@@ -171,7 +171,7 @@
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
-                        "{{function:name}}",
+                        "{{function:rust_name}}",
                     )
                 }
                 {{#function:exceptions?}}

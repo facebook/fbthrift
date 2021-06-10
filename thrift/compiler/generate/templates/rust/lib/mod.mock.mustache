@@ -21,7 +21,7 @@
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
         {{#service:rustFunctions}}
-        pub {{function:name}}: r#impl::{{service:snake}}::{{function:name}}<'mock>,
+        pub {{function:rust_name}}: r#impl::{{service:snake}}::{{function:rust_name}}<'mock>,
         {{/service:rustFunctions}}
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
@@ -33,8 +33,8 @@
                 parent: <dyn {{service:package}}::client::{{service:name}}>::mock(),
                 {{/service:extends}}
                 {{#service:rustFunctions}}
-                {{function:name}}: {{!
-                    }}r#impl::{{service:snake}}::{{function:name}}::unimplemented(),
+                {{function:rust_name}}: {{!
+                    }}r#impl::{{service:snake}}::{{function:rust_name}}::unimplemented(),
                 {{/service:rustFunctions}}
                 _marker: ::std::marker::PhantomData,
             }
@@ -44,7 +44,7 @@
     #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
-        fn {{function:name}}(
+        fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
@@ -53,7 +53,7 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            let mut closure = self.{{function:name}}.closure.lock().unwrap();
+            let mut closure = self.{{function:rust_name}}.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
                 }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
@@ -99,7 +99,7 @@
 
             }}{{#service:rustFunctions}}
 
-            pub struct {{function:name}}<'mock> {
+            pub struct {{function:rust_name}}<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut({{!
                         }}{{#function:args}}{{!
@@ -113,9 +113,9 @@
                 >>,
             }
 
-            impl<'mock> {{function:name}}<'mock> {
+            impl<'mock> {{function:rust_name}}<'mock> {
                 pub fn unimplemented() -> Self {
-                    {{function:name}} {
+                    {{function:rust_name}} {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|{{!
                             }}{{#function:args}}{{!
                             }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!

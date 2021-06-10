@@ -88,7 +88,7 @@
         {{#function:docs?}}
         #[doc = {{function:docs}}]
         {{/function:docs?}}
-        fn {{function:name}}(
+        fn {{function:rust_name}}(
             &self,
             {{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},
@@ -109,7 +109,7 @@
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
-        fn {{function:name}}(
+        fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
@@ -285,7 +285,7 @@
         T: ::std::marker::Send,
     {
         {{#service:rustFunctions}}
-        fn {{function:name}}(
+        fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
@@ -294,7 +294,7 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            self.as_ref().{{function:name}}(
+            self.as_ref().{{function:rust_name}}(
                 {{#function:args}}
                 arg_{{field:name}},
                 {{/function:args}}
