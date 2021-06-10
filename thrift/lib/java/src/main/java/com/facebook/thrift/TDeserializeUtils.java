@@ -19,6 +19,7 @@ package com.facebook.thrift;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
+import com.facebook.thrift.utils.ByteBufferUtils;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -42,9 +43,7 @@ public class TDeserializeUtils {
    */
   public static TProtocol protocolFromByteBuffer(
       TProtocolFactory protocolFactory, ByteBuffer buffer) throws TException {
-    byte[] byteData = new byte[buffer.limit()];
-    buffer.position(0);
-    buffer.get(byteData);
+    byte[] byteData = ByteBufferUtils.toBytes(buffer);
     return protocolFromByteArray(protocolFactory, byteData);
   }
 
