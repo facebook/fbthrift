@@ -53,8 +53,8 @@ const std::unordered_map<std::string, std::type_index>& uri_map() {
 struct allowed_scopes {
   std::unordered_set<std::type_index> types;
 
-  explicit allowed_scopes(const t_const* annot) {
-    for (const auto* meta_annot : annot->get_type()->structured_annotations()) {
+  explicit allowed_scopes(const t_const& annot) {
+    for (const auto* meta_annot : annot.get_type()->structured_annotations()) {
       const auto& uri = meta_annot->get_type()->get_annotation("thrift.uri");
       auto itr = uri_map().find(uri);
       if (itr != uri_map().end()) {
@@ -75,7 +75,7 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
     }
 
     // Get the allowed set of node types.
-    const auto& allowed = ctx.cache().get<allowed_scopes>(annot);
+    const auto& allowed = ctx.cache().get<allowed_scopes>(*annot);
 
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.

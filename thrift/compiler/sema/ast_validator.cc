@@ -39,13 +39,13 @@ namespace {
 struct service_metadata {
   std::unordered_map<std::string, const t_service*> function_name_to_service;
 
-  service_metadata(node_metadata_cache& cache, const t_service* node) {
-    if (node->extends() != nullptr) {
+  service_metadata(node_metadata_cache& cache, const t_service& node) {
+    if (node.extends() != nullptr) {
       function_name_to_service =
-          cache.get<service_metadata>(node->extends()).function_name_to_service;
+          cache.get<service_metadata>(*node.extends()).function_name_to_service;
     }
-    for (const auto* function : node->functions()) {
-      function_name_to_service[function->name()] = node;
+    for (auto&& function : node.functions()) {
+      function_name_to_service[function->name()] = &node;
     }
   }
 };
@@ -72,7 +72,7 @@ void validate_extends_service_function_name_uniqueness(
   }
 
   const auto& extends_metadata =
-      ctx.cache().get<service_metadata>(node->extends());
+      ctx.cache().get<service_metadata>(*node->extends());
   for (const auto* function : node->functions()) {
     auto itr = extends_metadata.function_name_to_service.find(function->name());
     if (itr != extends_metadata.function_name_to_service.end()) {
