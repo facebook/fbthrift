@@ -26,6 +26,9 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%#program:enforce_required?%><%#struct:fields%><%#field:required?%>
   bool isset_<%field:cpp_name%> = false;
 <%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
+<%#struct:fields%><%#field:lazy?%>
+  bool __fbthrift_has_lazy_field_<%field:cpp_name%> = false;
+<%/field:lazy?%><%/struct:fields%>
 
 <%#struct:fields?%>
 <%#struct:fields%>
@@ -41,6 +44,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%/first?%>
 _readField_<%field:cpp_name%>:
 <%#field:lazy?%>
+  __fbthrift_has_lazy_field_<%field:cpp_name%> = true;
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           <%field:key%>,
@@ -110,6 +114,17 @@ _end:
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
   <%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
+  <%#struct:fields%><%#field:lazy?%>
+  if (__fbthrift_protocol_ != iprot->protocolType()
+      && !__fbthrift_has_lazy_field_<%field:cpp_name%>
+      && !__fbthrift_isDeserialized_.<%field:cpp_name%>) {
+    <%! deserialize lazy field if it is not presented in serialized data %>
+    __fbthrift_read_field_<%field:cpp_name%>();
+  }
+  <%/field:lazy?%><%/struct:fields%>
+<%#struct:lazy_fields?%>
+  __fbthrift_protocol_ = iprot->protocolType();
+<%/struct:lazy_fields?%>
   return;
 
 _loop:
@@ -144,6 +159,20 @@ _skip:
     }
   }
 }
+<%#struct:fields%>
+<%#field:type%>
+<%#field:lazy?%>
+template<class ProtocolReader>
+void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
+  ProtocolReader reader;
+  reader.setInput(&__fbthrift_serializedData_.<%field:cpp_name%>);
+  ProtocolReader *iprot = &reader;
+  apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
+  <% > module_types_tcc/deserialize_field%>
+}
+<%/field:lazy?%>
+<%/field:type%>
+<%/struct:fields%>
 <%/program:tablebased?%>
 <%#program:tablebased?%>
 template <class Protocol_>

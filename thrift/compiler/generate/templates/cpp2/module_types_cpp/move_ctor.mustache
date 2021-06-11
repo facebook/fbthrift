@@ -30,6 +30,7 @@
                         %><%^struct:lazy_fields?%> {}<%/struct:lazy_fields?%><%!
 %><%/struct:isset_fields?%><%!
 %><%#struct:lazy_fields?%>
+    __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
 <%#struct:fields%><%#field:lazy?%>

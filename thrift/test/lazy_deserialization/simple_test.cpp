@@ -209,4 +209,57 @@ TEST(Serialization, ReserializeLazyField) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
+TEST(Serialization, SupportedToUnsupportedProtocol) {
+  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
+      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+
+  EXPECT_FALSE(get_field1(foo1).empty());
+  EXPECT_FALSE(get_field2(foo1).empty());
+  EXPECT_TRUE(get_field3(foo1).empty());
+  EXPECT_TRUE(get_field4(foo1).empty());
+
+  // Simple JSON doesn't support lazy deserialization
+  // All fields will be deserialized
+  SimpleJSONSerializer::deserialize(
+      SimpleJSONSerializer::serialize<std::string>(OptionalFoo{}), foo1);
+
+  EXPECT_FALSE(get_field1(foo1).empty());
+  EXPECT_FALSE(get_field2(foo1).empty());
+  EXPECT_FALSE(get_field3(foo1).empty());
+  EXPECT_FALSE(get_field4(foo1).empty());
+
+  auto foo2 = gen<LazyFoo>();
+
+  EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
+  EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
+  EXPECT_EQ(foo1.field3_ref(), foo2.field3_ref());
+  EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
+}
+
+TEST(Serialization, ReserializeSameStruct) {
+  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
+      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+
+  EXPECT_FALSE(get_field1(foo1).empty());
+  EXPECT_FALSE(get_field2(foo1).empty());
+  EXPECT_TRUE(get_field3(foo1).empty());
+  EXPECT_TRUE(get_field4(foo1).empty());
+
+  // Lazy fields remain undeserialized
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(OptionalFoo{}), foo1);
+
+  EXPECT_FALSE(get_field1(foo1).empty());
+  EXPECT_FALSE(get_field2(foo1).empty());
+  EXPECT_TRUE(get_field3(foo1).empty());
+  EXPECT_TRUE(get_field4(foo1).empty());
+
+  auto foo2 = gen<LazyFoo>();
+
+  EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
+  EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
+  EXPECT_EQ(foo1.field3_ref(), foo2.field3_ref());
+  EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
+}
+
 } // namespace apache::thrift::test

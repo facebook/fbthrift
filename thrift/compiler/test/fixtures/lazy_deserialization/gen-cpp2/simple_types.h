@@ -221,6 +221,8 @@ class Foo final  {
 
  private:
  private:
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
   mutable struct __fbthrift_SerializedData {
     folly::IOBuf field1;
     folly::IOBuf field3;
@@ -235,8 +237,10 @@ class Foo final  {
 
   const ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1() const;
   ::std::unique_ptr<::std::string>& __fbthrift_read_field_field1();
+  template<class ProtocolReader> void __fbthrift_read_field_field1_impl() const;
   const ::std::vector<::std::int32_t>& __fbthrift_read_field_field3() const;
   ::std::vector<::std::int32_t>& __fbthrift_read_field_field3();
+  template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
 
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);

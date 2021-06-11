@@ -37,6 +37,8 @@ void Foo::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
+  bool __fbthrift_has_lazy_field_field1 = false;
+  bool __fbthrift_has_lazy_field_field3 = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -46,6 +48,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
     goto _loop;
   }
 _readField_field1:
+  __fbthrift_has_lazy_field_field1 = true;
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           1,
@@ -88,6 +91,7 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
+  __fbthrift_has_lazy_field_field3 = true;
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           3,
@@ -140,6 +144,17 @@ _readField_field4:
 _end:
   _readState.readStructEnd(iprot);
 
+  if (__fbthrift_protocol_ != iprot->protocolType()
+      && !__fbthrift_has_lazy_field_field1
+      && !__fbthrift_isDeserialized_.field1) {
+    __fbthrift_read_field_field1();
+  }
+  if (__fbthrift_protocol_ != iprot->protocolType()
+      && !__fbthrift_has_lazy_field_field3
+      && !__fbthrift_isDeserialized_.field3) {
+    __fbthrift_read_field_field3();
+  }
+  __fbthrift_protocol_ = iprot->protocolType();
   return;
 
 _loop:
@@ -194,6 +209,27 @@ _skip:
     }
   }
 }
+template<class ProtocolReader>
+void Foo::__fbthrift_read_field_field1_impl() const {
+  ProtocolReader reader;
+  reader.setInput(&__fbthrift_serializedData_.field1);
+  ProtocolReader *iprot = &reader;
+  apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
+  auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+  ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+  this->field1 = std::move(ptr);
+  }
+template<class ProtocolReader>
+void Foo::__fbthrift_read_field_field3_impl() const {
+  ProtocolReader reader;
+  reader.setInput(&__fbthrift_serializedData_.field3);
+  ProtocolReader *iprot = &reader;
+  apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
+  _readState.beforeSubobject(iprot);
+  this->field3 = ::std::vector<::std::int32_t>();
+  ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field3, _readState);
+  _readState.afterSubobject(iprot);
+  }
 
 template <class Protocol_>
 uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
@@ -280,7 +316,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
     previousFieldHasValue = true;
     indexWriter.recordFieldStart();
     if constexpr (Protocol_::kHasIndexSupport()) {
-      if (prot_->protocolType() == ::apache::thrift::protocol::T_COMPACT_PROTOCOL && !__fbthrift_isDeserialized_.field3) {
+      if (prot_->protocolType() == __fbthrift_protocol_ && !__fbthrift_isDeserialized_.field3) {
         xfer += prot_->writeRaw(__fbthrift_serializedData_.field3);
         goto written_lazy_field_field3;
       }

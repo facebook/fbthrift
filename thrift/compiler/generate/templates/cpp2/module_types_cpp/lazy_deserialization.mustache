@@ -26,11 +26,13 @@ const <%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field
 
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
   if (!__fbthrift_isDeserialized_.<%field:cpp_name%>) {
-    ::apache::thrift::CompactProtocolReader reader;
-    reader.setInput(&__fbthrift_serializedData_.<%field:cpp_name%>);
-    ::apache::thrift::CompactProtocolReader *iprot = &reader;
-    apache::thrift::detail::ProtocolReaderStructReadState<::apache::thrift::CompactProtocolReader> _readState;
-    <% > module_types_tcc/deserialize_field%>
+    switch (__fbthrift_protocol_) {
+      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+        __fbthrift_read_field_<%field:cpp_name%>_impl<::apache::thrift::CompactProtocolReader>();
+        break;
+      default:
+        CHECK(false) << int(__fbthrift_protocol_);
+    }
     __fbthrift_isDeserialized_.<%field:cpp_name%> = true;
   }
   return <%field:cpp_name%>;

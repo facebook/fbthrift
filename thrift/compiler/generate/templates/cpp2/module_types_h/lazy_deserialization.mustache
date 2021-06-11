@@ -16,6 +16,8 @@
 
 %><%#struct:lazy_fields?%>
  private:
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
   <%! Stores serialized data of each lazy field %>
   mutable struct __fbthrift_SerializedData {
 <%#struct:fields%><%#field:lazy?%>
@@ -35,6 +37,7 @@
 <%#struct:fields%><%#field:lazy?%>
   const <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>() const;
   <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>();
+  template<class ProtocolReader> void __fbthrift_read_field_<%field:cpp_name%>_impl() const;
 <%/field:lazy?%><%/struct:fields%>
 
 <%/struct:lazy_fields?%>
