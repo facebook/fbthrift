@@ -20,6 +20,19 @@ enum MyThriftEnum: int {
 }
 
 class MyThriftEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module1.MyThriftEnum",
+        "elements" => dict[
+          1 => "foo",
+          2 => "bar",
+          3 => "baz",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],

@@ -17,6 +17,17 @@ enum Status: int {
 }
 
 class Status_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module2.Status",
+        "elements" => dict[
+          0 => "Unknown",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],

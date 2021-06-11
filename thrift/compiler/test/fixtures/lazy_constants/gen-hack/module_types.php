@@ -20,6 +20,20 @@ enum City: int {
 }
 
 class City_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.City",
+        "elements" => dict[
+          0 => "NYC",
+          1 => "MPK",
+          2 => "SEA",
+          3 => "LON",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
@@ -41,6 +55,20 @@ enum Company: int {
 }
 
 class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Company",
+        "elements" => dict[
+          0 => "FACEBOOK",
+          1 => "WHATSAPP",
+          2 => "OCULUS",
+          3 => "INSTAGRAM",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],

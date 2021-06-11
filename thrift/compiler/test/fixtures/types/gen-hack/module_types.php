@@ -19,6 +19,21 @@ enum has_bitwise_ops: int {
 }
 
 class has_bitwise_ops_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.has_bitwise_ops",
+        "elements" => dict[
+          0 => "none",
+          1 => "zero",
+          2 => "one",
+          4 => "two",
+          8 => "three",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
@@ -38,6 +53,18 @@ enum is_unscoped: int {
 }
 
 class is_unscoped_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.is_unscoped",
+        "elements" => dict[
+          0 => "hello",
+          1 => "world",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
@@ -57,6 +84,18 @@ enum MyForwardRefEnum: int {
 }
 
 class MyForwardRefEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyForwardRefEnum",
+        "elements" => dict[
+          0 => "ZERO",
+          12 => "NONZERO",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
@@ -77,6 +116,19 @@ enum MyEnumA: int {
 }
 
 class MyEnumA_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyEnumA",
+        "elements" => dict[
+          1 => "fieldA",
+          2 => "fieldB",
+          4 => "fieldC",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],

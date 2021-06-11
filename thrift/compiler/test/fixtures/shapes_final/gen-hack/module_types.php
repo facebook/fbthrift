@@ -17,6 +17,17 @@ enum Enum: int {
 }
 
 class Enum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Enum",
+        "elements" => dict[
+          1 => "ENUM",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],

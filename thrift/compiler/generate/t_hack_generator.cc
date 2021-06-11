@@ -15,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include "thrift/compiler/ast/base_types.h"
 
 #include <fstream>
 #include <iostream>
@@ -144,6 +145,7 @@ class t_hack_generator : public t_oop_generator {
   std::unique_ptr<t_const_value> field_to_tmeta(const t_field* field);
   std::unique_ptr<t_const_value> function_to_tmeta(const t_function* function);
   std::unique_ptr<t_const_value> service_to_tmeta(const t_service* service);
+  std::unique_ptr<t_const_value> enum_to_tmeta(const t_enum* tenum);
 
   void append_to_t_enum(
       t_enum* tenum, t_program* program, ThriftPrimitiveType value);
@@ -152,6 +154,7 @@ class t_hack_generator : public t_oop_generator {
   const t_type* tmeta_ThriftField_type();
   const t_type* tmeta_ThriftFunction_type();
   const t_type* tmeta_ThriftService_type();
+  const t_type* tmeta_ThriftEnum_type();
 
   /**
    * Structs!
@@ -1080,6 +1083,23 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   f_types_ << indent() << "class " << hack_name(tenum, true)
            << "_TEnumStaticMetadata implements \\IThriftEnumStaticMetadata {\n";
   indent_up();
+
+  // Expose enum metadata
+  f_types_ << indent() << "public static function getEnumMetadata()[]: "
+           << "\\tmeta_ThriftEnum {\n";
+  indent_up();
+
+  bool saved_arrays_ = arrays_;
+  arrays_ = true;
+  f_types_ << indent() << "return "
+           << render_const_value(
+                  tmeta_ThriftEnum_type(), enum_to_tmeta(tenum).get())
+           << ";\n";
+  arrays_ = saved_arrays_;
+
+  indent_down();
+  f_types_ << indent() << "}\n\n";
+
   // Structured annotations
   f_types_ << indent()
            << "public static function getAllStructuredAnnotations()[]: "
@@ -1626,6 +1646,36 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
   return tmeta_ThriftService;
 }
 
+std::unique_ptr<t_const_value> t_hack_generator::enum_to_tmeta(
+    const t_enum* tenum) {
+  auto tmeta_ThriftEnum = std::make_unique<t_const_value>();
+
+  tmeta_ThriftEnum->add_map(
+      std::make_unique<t_const_value>("name"),
+      std::make_unique<t_const_value>(tenum->get_scoped_name()));
+
+  auto enum_values = tenum->get_enum_values();
+  if (!enum_values.empty()) {
+    auto tmeta_elements = std::make_unique<t_const_value>();
+    tmeta_elements->set_map();
+
+    for (const auto& constant : tenum->get_enum_values()) {
+      auto enum_val = std::make_unique<t_const_value>();
+      auto enum_name = std::make_unique<t_const_value>();
+
+      enum_val->set_integer(constant->get_value());
+      enum_name->set_string(constant->get_name());
+
+      tmeta_elements->add_map(std::move(enum_val), std::move(enum_name));
+    }
+
+    tmeta_ThriftEnum->add_map(
+        std::make_unique<t_const_value>("elements"), std::move(tmeta_elements));
+  }
+
+  return tmeta_ThriftEnum;
+}
+
 void t_hack_generator::append_to_t_enum(
     t_enum* tenum, t_program* program, ThriftPrimitiveType value) {
   std::unique_ptr<t_enum_value> enum_value;
@@ -1782,6 +1832,19 @@ const t_type* t_hack_generator::tmeta_ThriftService_type() {
   type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
   type.append(std::make_unique<t_field>(&tlist, "functions"));
   type.append(std::make_unique<t_field>(&t_base_type::t_string(), "parent"));
+  return &type;
+}
+
+const t_type* t_hack_generator::tmeta_ThriftEnum_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftEnum");
+  static t_map tmap(&t_base_type::t_i32(), &t_base_type::t_string());
+  if (type.has_fields()) {
+    return &type;
+  }
+
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  type.append(std::make_unique<t_field>(&tmap, "elements"));
   return &type;
 }
 

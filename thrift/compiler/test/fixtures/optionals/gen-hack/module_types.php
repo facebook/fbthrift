@@ -17,6 +17,19 @@ enum Animal: int {
 }
 
 class Animal_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Animal",
+        "elements" => dict[
+          1 => "DOG",
+          2 => "CAT",
+          3 => "TARANTULA",
+        ],
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
