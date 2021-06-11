@@ -1726,6 +1726,39 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
+  public static function getServiceMetadataResponse()[]: \tmeta_ThriftServiceMetadataResponse {
+    return \tmeta_ThriftServiceMetadataResponse::fromShape(
+      shape(
+        'context' => \tmeta_ThriftServiceContext::fromShape(
+          shape(
+            'service_info' => self::getServiceMetadata(),
+            'module' => \tmeta_ThriftModuleContext::fromShape(
+              shape(
+                'name' => 'module',
+              )
+            ),
+          )
+        ),
+        'metadata' => \tmeta_ThriftMetadata::fromShape(
+          shape(
+            'enums' => dict[
+            ],
+            'structs' => dict[
+            ],
+            'exceptions' => dict[
+              'module.Banal' => Banal::getExceptionMetadata(),
+              'module.Fiery' => Fiery::getExceptionMetadata(),
+              'module.Serious' => Serious::getExceptionMetadata(),
+              'module.Banal' => Banal::getExceptionMetadata(),
+            ],
+            'services' => dict[
+            ],
+          )
+        ),
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
