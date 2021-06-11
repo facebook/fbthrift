@@ -122,11 +122,11 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   };
 
   //  rpcTimeout << handlerDelay << channelTimeout.
-  constexpr auto handlerDelay = milliseconds(10);
+  constexpr auto handlerDelay = milliseconds(100);
   constexpr auto channelTimeout = duration_cast<milliseconds>(seconds(10));
   constexpr auto rpcTimeout = milliseconds(1);
 
-  //  Handler has medium 10ms delay.
+  //  Handler has medium 100ms delay.
   auto handler = make_shared<DelayHandler>(handlerDelay);
   ScopedServerInterfaceThread runner(handler);
 
