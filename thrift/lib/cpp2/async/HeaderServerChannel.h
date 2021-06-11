@@ -122,6 +122,12 @@ class HeaderServerChannel : public ServerChannel,
         MessageChannel::SendCallback* cb = nullptr,
         folly::Optional<uint32_t> crc32 = folly::none) override;
 
+    void sendException(
+        ResponsePayload&& response,
+        MessageChannel::SendCallback* cb = nullptr) override {
+      sendReply(std::move(response), cb);
+    }
+
     void serializeAndSendError(
         apache::thrift::transport::THeader& header,
         TApplicationException& tae,

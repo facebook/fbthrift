@@ -128,5 +128,37 @@ void ThriftRequestCore::sendReply(
   }
 }
 
+void ThriftRequestCore::sendException(
+    ResponsePayload&& response, MessageChannel::SendCallback* cb) {
+  auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
+  if (tryCancel()) {
+    cancelTimeout();
+    // Mark processEnd for the request.
+    // Note: this processEnd time unfortunately does not account for the time
+    // to compress the response in rocket today (which happens in
+    // ThriftServerRequestResponse::sendThriftResponse).
+    // TODO: refactor to move response compression to CPU thread.
+    ;
+    auto& timestamps = getTimestamps();
+    if (UNLIKELY(timestamps.getSamplingStatus().isEnabled())) {
+      timestamps.processEnd = std::chrono::steady_clock::now();
+    }
+    if (!isOneway()) {
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      if (checkResponseSize(*response.buffer())) {
+        sendThriftException(
+            std::move(metadata),
+            std::move(response).buffer(),
+            std::move(cbWrapper));
+      } else {
+        sendResponseTooBigEx();
+      }
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+    }
+  }
+}
+
 } // namespace thrift
 } // namespace apache

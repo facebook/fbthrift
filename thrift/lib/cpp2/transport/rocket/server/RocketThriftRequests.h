@@ -71,6 +71,11 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
 
+  void sendThriftException(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> data,
+      apache::thrift::MessageChannel::SendCallbackPtr) noexcept override;
+
   folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
   bool isStream() const override { return false; }
@@ -112,6 +117,11 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
 
+  void sendThriftException(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> data,
+      apache::thrift::MessageChannel::SendCallbackPtr) noexcept override;
+
   folly::EventBase* getEventBase() noexcept override { return &evb_; }
 
   void closeConnection(folly::exception_wrapper ew) noexcept override;
@@ -152,6 +162,11 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   void sendSerializedError(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
+
+  void sendThriftException(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> data,
+      apache::thrift::MessageChannel::SendCallbackPtr) noexcept override;
 
   bool sendStreamThriftResponse(
       ResponseRpcMetadata&&,
@@ -201,6 +216,11 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
+      apache::thrift::MessageChannel::SendCallbackPtr) noexcept override;
+
+  void sendThriftException(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> data,
       apache::thrift::MessageChannel::SendCallbackPtr) noexcept override;
 
   void sendSerializedError(

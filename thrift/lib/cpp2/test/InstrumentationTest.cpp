@@ -894,6 +894,11 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
         (override));
     MOCK_METHOD(
         void,
+        sendException,
+        (ResponsePayload&&, MessageChannel::SendCallback*),
+        (override));
+    MOCK_METHOD(
+        void,
         sendErrorWrapped,
         (folly::exception_wrapper, std::string),
         (override));

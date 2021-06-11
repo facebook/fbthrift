@@ -459,6 +459,13 @@ void ThriftServerRequestResponse::sendThriftResponse(
       std::move(cb));
 }
 
+void ThriftServerRequestResponse::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
+  sendThriftResponse(std::move(metadata), std::move(data), std::move(cb));
+}
+
 void ThriftServerRequestResponse::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
@@ -509,6 +516,13 @@ void ThriftServerRequestFnf::sendThriftResponse(
   LOG(FATAL) << "One-way requests cannot send responses";
 }
 
+void ThriftServerRequestFnf::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
+  sendThriftResponse(std::move(metadata), std::move(data), std::move(cb));
+}
+
 void ThriftServerRequestFnf::sendSerializedError(
     ResponseRpcMetadata&&, std::unique_ptr<folly::IOBuf>) noexcept {}
 
@@ -555,6 +569,13 @@ void ThriftServerRequestStream::sendThriftResponse(
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
+}
+
+void ThriftServerRequestStream::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
+  sendSerializedError(std::move(metadata), std::move(data));
 }
 
 bool ThriftServerRequestStream::sendStreamThriftResponse(
@@ -669,6 +690,13 @@ void ThriftServerRequestSink::sendThriftResponse(
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Sink requests must respond via sendSinkThriftResponse";
+}
+
+void ThriftServerRequestSink::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
+  sendSerializedError(std::move(metadata), std::move(data));
 }
 
 void ThriftServerRequestSink::sendSerializedError(

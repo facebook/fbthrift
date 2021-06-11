@@ -1222,10 +1222,15 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
     bool includeEnvelope() const override { return req_->includeEnvelope(); }
 
     void sendReply(
-        ResponsePayload&& buf,
+        ResponsePayload&& response,
         MessageChannel::SendCallback* cb,
         folly::Optional<uint32_t> crc32) override {
-      req_->sendReply(std::move(buf), new TestSendCallback(cb), crc32);
+      req_->sendReply(std::move(response), new TestSendCallback(cb), crc32);
+    }
+
+    void sendException(
+        ResponsePayload&& response, MessageChannel::SendCallback* cb) override {
+      req_->sendException(std::move(response), cb);
     }
 
     void sendErrorWrapped(

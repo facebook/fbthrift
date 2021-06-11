@@ -673,7 +673,7 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
-    ResponsePayload&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
   if (tryCancel()) {
@@ -682,7 +682,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
     auto* observer = connection_->getWorker()->getServer()->getObserver();
     auto maxResponseSize =
         connection_->getWorker()->getServer()->getMaxResponseSize();
-    if (maxResponseSize != 0 && buf.length() > maxResponseSize) {
+    if (maxResponseSize != 0 && response.length() > maxResponseSize) {
       req_->sendErrorWrapped(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
@@ -693,7 +693,35 @@ void Cpp2Connection::Cpp2Request::sendReply(
           prepareSendCallback(sendCallback, observer));
     } else {
       req_->sendReply(
-          std::move(buf), prepareSendCallback(sendCallback, observer));
+          std::move(response), prepareSendCallback(sendCallback, observer));
+    }
+    cancelTimeout();
+    if (observer) {
+      observer->sentReply();
+    }
+  }
+}
+
+void Cpp2Connection::Cpp2Request::sendException(
+    ResponsePayload&& response, MessageChannel::SendCallback* sendCallback) {
+  if (tryCancel()) {
+    connection_->setServerHeaders(*req_);
+    markProcessEnd();
+    auto* observer = connection_->getWorker()->getServer()->getObserver();
+    auto maxResponseSize =
+        connection_->getWorker()->getServer()->getMaxResponseSize();
+    if (maxResponseSize != 0 && response.length() > maxResponseSize) {
+      req_->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+              "Response size too big"),
+          kResponseTooBigErrorCode,
+          reqContext_.getMethodName(),
+          reqContext_.getProtoSeqId(),
+          prepareSendCallback(sendCallback, observer));
+    } else {
+      req_->sendException(
+          std::move(response), prepareSendCallback(sendCallback, observer));
     }
     cancelTimeout();
     if (observer) {

@@ -171,8 +171,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   };
 
   void sendReply(
-      ResponsePayload&& buf,
-      apache::thrift::MessageChannel::SendCallback* cb,
+      ResponsePayload&& response,
+      MessageChannel::SendCallback* cb,
       folly::Optional<uint32_t> crc32c) override final;
 
   bool sendStreamReply(
@@ -273,6 +273,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
+  void sendException(
+      ResponsePayload&& response,
+      MessageChannel::SendCallback* cb) override final;
+
   void sendQueueTimeoutResponse() final {
     if (tryCancel() && !isOneway()) {
       cancelTimeout();
@@ -330,6 +334,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
 #endif
+
+  virtual void sendThriftException(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      MessageChannel::SendCallbackPtr) noexcept = 0;
 
   bool tryStartProcessing() final { return stateMachine_.tryStartProcessing(); }
 
@@ -574,6 +583,13 @@ class ThriftRequest final : public ThriftRequestCore {
 
  private:
   void sendThriftResponse(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> response,
+      MessageChannel::SendCallbackPtr) noexcept override {
+    channel_->sendThriftResponse(std::move(metadata), std::move(response));
+  }
+
+  void sendThriftException(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       MessageChannel::SendCallbackPtr) noexcept override {

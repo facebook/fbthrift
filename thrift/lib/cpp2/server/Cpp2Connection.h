@@ -168,9 +168,12 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     bool includeEnvelope() const override { return req_->includeEnvelope(); }
 
     void sendReply(
-        ResponsePayload&& buf,
+        ResponsePayload&& response,
         MessageChannel::SendCallback* notUsed = nullptr,
         folly::Optional<uint32_t> crc32c = folly::none) override;
+    void sendException(
+        ResponsePayload&& response,
+        MessageChannel::SendCallback* notUsed = nullptr) override;
     void sendErrorWrapped(
         folly::exception_wrapper ew, std::string exCode) override;
     void sendQueueTimeoutResponse() override;

@@ -139,6 +139,13 @@ class ResponseChannelRequest {
   }
 #endif
 
+  virtual void sendException(
+      ResponsePayload&& response, MessageChannel::SendCallback* cb = nullptr) {
+    // Until we start requesting payloads without the envelope we can pass any
+    // sendException calls to sendReply
+    sendReply(std::move(response), cb, folly::none);
+  }
+
   virtual void sendErrorWrapped(
       folly::exception_wrapper ex, std::string exCode) = 0;
 
