@@ -2108,6 +2108,15 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyService_ping_args';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ping_args",
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2165,6 +2174,15 @@ class MyService_ping_result implements \IThriftStruct {
     return 'MyService_ping_result';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_ping_result",
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2214,6 +2232,15 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 
   public function getName()[]: string {
     return 'MyService_getRandomData_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.getRandomData_args",
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
@@ -2281,6 +2308,28 @@ class MyService_getRandomData_result implements \IThriftStruct {
     return 'MyService_getRandomData_result';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_getRandomData_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2343,6 +2392,28 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   public function getName()[]: string {
     return 'MyService_hasDataById_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.hasDataById_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
@@ -2415,6 +2486,28 @@ class MyService_hasDataById_result implements \IThriftStruct {
     return 'MyService_hasDataById_result';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_hasDataById_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2477,6 +2570,28 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   public function getName()[]: string {
     return 'MyService_getDataById_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.getDataById_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
@@ -2547,6 +2662,28 @@ class MyService_getDataById_result implements \IThriftStruct {
 
   public function getName()[]: string {
     return 'MyService_getDataById_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_getDataById_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
@@ -2623,6 +2760,39 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_putDataById_args';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.putDataById_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "data",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2688,6 +2858,15 @@ class MyService_putDataById_result implements \IThriftStruct {
 
   public function getName()[]: string {
     return 'MyService_putDataById_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_putDataById_result",
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
@@ -2761,6 +2940,39 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return 'MyService_lobDataById_args';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.lobDataById_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "data",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2831,6 +3043,15 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
     return 'MyService_doNothing_args';
   }
 
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.doNothing_args",
+        "is_union" => false,
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
@@ -2886,6 +3107,15 @@ class MyService_doNothing_result implements \IThriftStruct {
 
   public function getName()[]: string {
     return 'MyService_doNothing_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_doNothing_result",
+        "is_union" => false,
+      )
+    );
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {

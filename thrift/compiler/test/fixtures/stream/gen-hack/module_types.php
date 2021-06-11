@@ -40,6 +40,14 @@ class FooEx extends \TException implements \IThriftStruct {
     return 'FooEx';
   }
 
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.FooEx",
+      )
+    );
+  }
+
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],

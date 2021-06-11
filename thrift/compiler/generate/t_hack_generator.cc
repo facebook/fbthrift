@@ -146,6 +146,8 @@ class t_hack_generator : public t_oop_generator {
   std::unique_ptr<t_const_value> function_to_tmeta(const t_function* function);
   std::unique_ptr<t_const_value> service_to_tmeta(const t_service* service);
   std::unique_ptr<t_const_value> enum_to_tmeta(const t_enum* tenum);
+  std::unique_ptr<t_const_value> struct_to_tmeta(
+      const t_struct* tstruct, bool is_exception);
 
   void append_to_t_enum(
       t_enum* tenum, t_program* program, ThriftPrimitiveType value);
@@ -155,6 +157,8 @@ class t_hack_generator : public t_oop_generator {
   const t_type* tmeta_ThriftFunction_type();
   const t_type* tmeta_ThriftService_type();
   const t_type* tmeta_ThriftEnum_type();
+  const t_type* tmeta_ThriftStruct_type();
+  const t_type* tmeta_ThriftException_type();
 
   /**
    * Structs!
@@ -1676,6 +1680,36 @@ std::unique_ptr<t_const_value> t_hack_generator::enum_to_tmeta(
   return tmeta_ThriftEnum;
 }
 
+std::unique_ptr<t_const_value> t_hack_generator::struct_to_tmeta(
+    const t_struct* tstruct, bool is_exception) {
+  auto tmeta = std::make_unique<t_const_value>();
+
+  tmeta->add_map(
+      std::make_unique<t_const_value>("name"),
+      std::make_unique<t_const_value>(tstruct->get_scoped_name()));
+
+  auto fields = tstruct->get_members();
+  if (!fields.empty()) {
+    auto tmeta_fields = std::make_unique<t_const_value>();
+    tmeta_fields->set_list();
+
+    for (const auto& field : fields) {
+      tmeta_fields->add_list(field_to_tmeta(field));
+    }
+    tmeta->add_map(
+        std::make_unique<t_const_value>("fields"), std::move(tmeta_fields));
+  }
+
+  if (!is_exception) {
+    auto is_union = std::make_unique<t_const_value>();
+    is_union->set_bool(tstruct->is_union());
+    tmeta->add_map(
+        std::make_unique<t_const_value>("is_union"), std::move(is_union));
+  }
+
+  return tmeta;
+}
+
 void t_hack_generator::append_to_t_enum(
     t_enum* tenum, t_program* program, ThriftPrimitiveType value) {
   std::unique_ptr<t_enum_value> enum_value;
@@ -1845,6 +1879,33 @@ const t_type* t_hack_generator::tmeta_ThriftEnum_type() {
 
   type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
   type.append(std::make_unique<t_field>(&tmap, "elements"));
+  return &type;
+}
+
+const t_type* t_hack_generator::tmeta_ThriftStruct_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftStruct");
+  static t_list tlist(tmeta_ThriftField_type());
+  if (type.has_fields()) {
+    return &type;
+  }
+
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  type.append(std::make_unique<t_field>(&tlist, "fields"));
+  type.append(std::make_unique<t_field>(&t_base_type::t_bool(), "is_union"));
+  return &type;
+}
+
+const t_type* t_hack_generator::tmeta_ThriftException_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftException");
+  static t_list tlist(tmeta_ThriftField_type());
+  if (type.has_fields()) {
+    return &type;
+  }
+
+  type.append(std::make_unique<t_field>(&t_base_type::t_string(), "name"));
+  type.append(std::make_unique<t_field>(&tlist, "fields"));
   return &type;
 }
 
@@ -3020,6 +3081,26 @@ void t_hack_generator::_generate_php_struct_definition(
       out << ";\n" << indent() << "}\n\n";
     }
   }
+
+  // Metadata
+  out << indent() << "public static function get"
+      << (is_exception ? "Exception" : "Struct") << "Metadata()[]: "
+      << (is_exception ? "\\tmeta_ThriftException" : "\\tmeta_ThriftStruct")
+      << " {\n";
+  indent_up();
+
+  bool saved_arrays_ = arrays_;
+  arrays_ = true;
+  out << indent() << "return "
+      << render_const_value(
+             is_exception ? tmeta_ThriftException_type()
+                          : tmeta_ThriftStruct_type(),
+             struct_to_tmeta(tstruct, is_exception).get())
+      << ";\n";
+  arrays_ = saved_arrays_;
+
+  indent_down();
+  out << indent() << "}\n\n";
 
   // Structured annotations
   indent(out) << "public static function getAllStructuredAnnotations()[]: "
