@@ -394,15 +394,19 @@ class parsing_driver {
   std::unique_ptr<t_throws> new_throws(
       std::unique_ptr<t_field_list> exceptions);
 
-  // Creates a reference to a known type.
-  std::unique_ptr<t_type_ref> new_type_ref(
-      const t_type* type, std::unique_ptr<t_annotations> annotations);
+  // Creates a reference to a known type, potentally with additional
+  // annotations.
+  t_type_ref new_type_ref(
+      const t_type& type, std::unique_ptr<t_annotations> annotations);
+  t_type_ref new_type_ref(t_type&& type, std::unique_ptr<t_annotations>) =
+      delete;
+
   // Creates a reference to a newly instantiated templated type.
-  std::unique_ptr<t_type_ref> new_type_ref(
+  t_type_ref new_type_ref(
       std::unique_ptr<t_templated_type> type,
       std::unique_ptr<t_annotations> annotations);
   // Creates a reference to a named type.
-  std::unique_ptr<t_type_ref> new_type_ref(
+  t_type_ref new_type_ref(
       std::string name,
       std::unique_ptr<t_annotations> annotations,
       bool is_const = false);

@@ -80,7 +80,11 @@ class t_const final : public t_named {
       const t_type* type,
       std::string name,
       std::unique_ptr<t_const_value> value)
-      : t_const(program, t_type_ref(type), std::move(name), std::move(value)) {}
+      : t_const(
+            program,
+            t_type_ref::from_req_ptr(type),
+            std::move(name),
+            std::move(value)) {}
 
   t_program* get_program() const { return program_; }
   const t_type* get_type() const { return type_.get_type(); }

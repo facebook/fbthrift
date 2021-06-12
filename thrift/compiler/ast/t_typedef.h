@@ -33,8 +33,6 @@ class t_typedef : public t_type {
  public:
   t_typedef(t_program* program, std::string name, t_type_ref type)
       : t_type(program, std::move(name)), type_(std::move(type)) {}
-  t_typedef(t_program* program, std::string name, const t_type* type)
-      : t_type(program, std::move(name)), type_(type) {}
 
   const t_type_ref& type() const { return type_; }
 
@@ -79,12 +77,11 @@ class t_typedef : public t_type {
  protected:
   t_type_ref type_;
 
- public:
   // TODO(afuller): Remove everything below here, as it is just provided for
   // backwards compatibility.
-
+ public:
   t_typedef(t_program* program, const t_type* type, std::string name, t_scope*)
-      : t_typedef(program, std::move(name), t_type_ref(type)) {}
+      : t_typedef(program, std::move(name), t_type_ref::from_req_ptr(type)) {}
 
   const t_type* get_type() const { return type_.get_type(); }
 

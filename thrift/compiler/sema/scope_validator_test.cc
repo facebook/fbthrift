@@ -128,7 +128,7 @@ class ScopeValidatorTest : public ::testing::Test {
   std::unique_ptr<t_const> inst(const t_struct* ttype) {
     auto value = std::make_unique<t_const_value>();
     value->set_map();
-    value->set_ttype(std::make_unique<t_type_ref>(ttype));
+    value->set_ttype(t_type_ref::from_ptr(ttype));
     return std::make_unique<t_const>(&program, ttype, "", std::move(value));
   }
 
@@ -178,11 +178,11 @@ TEST_F(ScopeValidatorTest, Excpetion) {
 }
 
 TEST_F(ScopeValidatorTest, Field) {
-  runTest(t_field{&t_base_type::t_i32(), "my_field"}, "Field");
+  runTest(t_field{t_base_type::t_i32(), "my_field"}, "Field");
 }
 
 TEST_F(ScopeValidatorTest, Typedef) {
-  runTest(t_typedef{&program, "MyTypedef", &t_base_type::t_void()}, "Typedef");
+  runTest(t_typedef{&program, "MyTypedef", t_base_type::t_void()}, "Typedef");
 }
 
 TEST_F(ScopeValidatorTest, Service) {
@@ -196,7 +196,7 @@ TEST_F(ScopeValidatorTest, Interaction) {
 TEST_F(ScopeValidatorTest, Function) {
   runTest(
       t_function{
-          &t_base_type::t_i32(),
+          t_base_type::t_i32(),
           "my_func",
           std::make_unique<t_paramlist>(&program)},
       "Function");
@@ -211,8 +211,7 @@ TEST_F(ScopeValidatorTest, EnumValue) {
 }
 
 TEST_F(ScopeValidatorTest, Const) {
-  runTest(
-      t_const{&program, &t_base_type::t_i32(), "MyConst", nullptr}, "Const");
+  runTest(t_const{&program, t_base_type::t_i32(), "MyConst", nullptr}, "Const");
 }
 
 } // namespace

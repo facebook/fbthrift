@@ -23,6 +23,8 @@
 #include <sstream>
 #include <string>
 
+#include <boost/optional.hpp>
+
 #include <thrift/compiler/ast/t_named.h>
 
 namespace apache {
@@ -208,7 +210,8 @@ class t_templated_type : public t_type {
 class t_type_ref final {
  public:
   t_type_ref() = default;
-  explicit t_type_ref(const t_type* type) : type_(type) {}
+  /* implicit */ t_type_ref(const t_type& type) : type_(&type) {}
+  /* implicit */ t_type_ref(t_type&&) = delete;
 
   // Returns the resolved type being referenced.
   //
@@ -228,6 +231,16 @@ class t_type_ref final {
   // for backwards compatibility.
  public:
   const t_type* get_type() const { return type_; }
+
+  static boost::optional<t_type_ref> from_ptr(const t_type* type) {
+    if (type == nullptr) {
+      return boost::none;
+    }
+    return t_type_ref(*type);
+  }
+  static t_type_ref from_req_ptr(const t_type* type) {
+    return from_ptr(type).value();
+  }
 };
 
 } // namespace compiler

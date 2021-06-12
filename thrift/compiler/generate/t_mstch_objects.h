@@ -790,7 +790,7 @@ class mstch_type : public mstch_base {
   mstch::node stream_has_first_response() {
     return resolved_type_->is_streamresponse() &&
         dynamic_cast<const t_stream_response*>(resolved_type_)
-            ->has_first_response();
+            ->first_response_type() != boost::none;
   }
   mstch::node is_service() { return resolved_type_->is_service(); }
   mstch::node is_base() { return resolved_type_->is_base_type(); }
@@ -1034,9 +1034,9 @@ class mstch_function : public mstch_base {
     return function_->get_sink_final_response_xceptions()->has_fields();
   }
   mstch::node stream_has_first_response() {
-    auto rettype = function_->get_returntype();
-    auto stream = dynamic_cast<const t_stream_response*>(rettype);
-    return stream && stream->has_first_response();
+    const auto& rettype = *function_->return_type();
+    auto stream = dynamic_cast<const t_stream_response*>(&rettype);
+    return stream && stream->first_response_type() != boost::none;
   }
   mstch::node has_args() {
     if (function_->get_paramlist()->has_fields()) {

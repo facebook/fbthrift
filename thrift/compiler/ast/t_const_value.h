@@ -25,6 +25,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/optional.hpp>
+
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -187,11 +189,8 @@ class t_const_value {
 
   t_const* get_owner() const { return owner_; }
 
-  void set_ttype(std::unique_ptr<t_type_ref> type) { type_ = std::move(type); }
-
-  const t_type* get_ttype() const {
-    return type_ == nullptr ? nullptr : type_->get_type();
-  }
+  const boost::optional<t_type_ref>& ttype() const { return ttype_; }
+  void set_ttype(boost::optional<t_type_ref> type) { ttype_ = std::move(type); }
 
   void set_is_enum(bool value = true) { is_enum_ = value; }
 
@@ -222,7 +221,7 @@ class t_const_value {
 
   t_const_value_type valType_ = CV_BOOL;
   t_const* owner_ = nullptr;
-  std::unique_ptr<t_type_ref> type_;
+  boost::optional<t_type_ref> ttype_;
 
   bool is_enum_ = false;
   t_enum const* tenum_ = nullptr;
@@ -233,8 +232,9 @@ class t_const_value {
  public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-  void set_ttype(const t_type* type) {
-    type_ = std::make_unique<t_type_ref>(type);
+  void set_ttype(const t_type* type) { ttype_ = t_type_ref::from_ptr(type); }
+  const t_type* get_ttype() const {
+    return ttype() == boost::none ? nullptr : ttype()->get_type();
   }
 };
 

@@ -631,9 +631,9 @@ void parsing_driver::finish_node(
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     std::unique_ptr<t_const_value> const_struct) {
-  auto* ttype = const_struct->get_ttype();
-  auto result =
-      std::make_unique<t_const>(program, ttype, "", std::move(const_struct));
+  auto ttype = const_struct->ttype().value(); // Copy the t_type_ref.
+  auto result = std::make_unique<t_const>(
+      program, std::move(ttype), "", std::move(const_struct));
   result->set_lineno(scanner->get_lineno());
   if (mode == parsing_mode::PROGRAM) {
     validate_const_type(result.get());
@@ -662,44 +662,44 @@ void parsing_driver::append_fields(
   }
 }
 
-std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
-    const t_type* type, std::unique_ptr<t_annotations> annotations) {
-  if (annotations != nullptr) {
-    // Make a copy of the node to hold the annotations.
-    // TODO(afuller): Remove the need for copying the underlying type by making
-    // t_type_ref annotatable directly.
-    if (const auto* tbase_type = dynamic_cast<const t_base_type*>(type)) {
-      // base types can be copy constructed.
-      auto node = std::make_unique<t_base_type>(*tbase_type);
-      set_annotations(node.get(), std::move(annotations));
-      type = node.get();
-      if (mode == parsing_mode::INCLUDES) {
-        delete_at_the_end(node.release());
-      } else {
-        program->add_unnamed_type(std::move(node));
-      }
-    } else {
-      // Containers always use a new type, so should never show up here.
-      assert(!type->is_container());
-      // For all other types, we can just create a dummy typedef node with
-      // the same name.
-      // NOTE(afuller): This is not a safe assumption as it breaks all
-      // dynamic casts and t_type::is_* calls.
-      type = add_unnamed_typedef(
-          std::make_unique<t_typedef>(
-              const_cast<t_program*>(type->program()),
-              type,
-              type->get_name(),
-              scope_cache),
-          std::move(annotations));
-    }
+t_type_ref parsing_driver::new_type_ref(
+    const t_type& type, std::unique_ptr<t_annotations> annotations) {
+  if (annotations == nullptr) {
+    return type;
   }
-  return std::make_unique<t_type_ref>(type);
+
+  // Make a copy of the node to hold the annotations.
+  // TODO(afuller): Remove the need for copying the underlying type by making
+  // t_type_ref annotatable directly.
+  if (const auto* tbase_type = dynamic_cast<const t_base_type*>(&type)) {
+    // base types can be copy constructed.
+    auto node = std::make_unique<t_base_type>(*tbase_type);
+    set_annotations(node.get(), std::move(annotations));
+    t_type_ref result(*node);
+    if (mode == parsing_mode::INCLUDES) {
+      delete_at_the_end(node.release());
+    } else {
+      program->add_unnamed_type(std::move(node));
+    }
+    return result;
+  }
+
+  // Containers always use a new type, so should never show up here.
+  assert(!type.is_container());
+  // For all other types, we can just create a dummy typedef node with
+  // the same name.
+  // NOTE(afuller): This is not a safe assumption as it breaks all
+  // dynamic casts and t_type::is_* calls.
+  return *add_unnamed_typedef(
+      std::make_unique<t_typedef>(
+          const_cast<t_program*>(type.program()), type.get_name(), type),
+      std::move(annotations));
 }
 
-std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
+t_type_ref parsing_driver::new_type_ref(
     std::unique_ptr<t_templated_type> node,
     std::unique_ptr<t_annotations> annotations) {
+  assert(node != nullptr);
   const t_type* type = node.get();
   set_annotations(node.get(), std::move(annotations));
   if (mode == parsing_mode::INCLUDES) {
@@ -707,16 +707,16 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
   } else {
     program->add_type_instantiation(std::move(node));
   }
-  return std::make_unique<t_type_ref>(type);
+  return *type;
 }
 
-std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
+t_type_ref parsing_driver::new_type_ref(
     std::string name,
     std::unique_ptr<t_annotations> annotations,
     bool is_const) {
   if (mode == parsing_mode::INCLUDES) {
     // Ignore identifier-based type references in include mode
-    return std::make_unique<t_type_ref>();
+    return {};
   }
 
   // Try to resolve the type
@@ -743,7 +743,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
 
   if (type != nullptr) {
     // We found the type!
-    return new_type_ref(type, std::move(annotations));
+    return new_type_ref(*type, std::move(annotations));
   }
 
   /*
@@ -755,7 +755,7 @@ std::unique_ptr<t_type_ref> parsing_driver::new_type_ref(
   // is safe to create a dummy typedef to use as a proxy for the original type.
   // However, this actually breaks dynamic casts and t_type::is_* calls.
   // TODO(afuller): Resolve *all* types in a second pass.
-  return std::make_unique<t_type_ref>(add_placeholder_typedef(
+  return t_type_ref(*add_placeholder_typedef(
       std::make_unique<t_placeholder_typedef>(
           program, std::move(name), scope_cache),
       std::move(annotations)));

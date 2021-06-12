@@ -92,7 +92,7 @@ class t_function final : public t_named {
       std::unique_ptr<t_throws> exceptions = nullptr,
       t_function_qualifier qualifier = {})
       : t_function(
-            t_type_ref(return_type),
+            t_type_ref::from_req_ptr(return_type),
             std::move(name),
             std::move(paramlist),
             std::move(exceptions),

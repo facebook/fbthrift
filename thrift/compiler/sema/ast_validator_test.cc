@@ -75,7 +75,7 @@ class StdAstValidatorTest : public ::testing::Test {
   std::unique_ptr<t_const> inst(const t_struct* ttype, int lineno) {
     auto value = std::make_unique<t_const_value>();
     value->set_map();
-    value->set_ttype(std::make_unique<t_type_ref>(ttype));
+    value->set_ttype(t_type_ref::from_ptr(ttype));
     auto result =
         std::make_unique<t_const>(&program_, ttype, "", std::move(value));
     result->set_lineno(lineno);

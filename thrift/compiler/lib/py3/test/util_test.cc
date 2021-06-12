@@ -21,6 +21,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
+#include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_field.h>
 
 using namespace apache::thrift::compiler;
@@ -28,11 +29,12 @@ using namespace apache::thrift::compiler;
 class UtilTest : public testing::Test {};
 
 TEST_F(UtilTest, get_py3_name) {
-  EXPECT_EQ("foo", py3::get_py3_name(t_field(nullptr, "foo")));
-  EXPECT_EQ("True_", py3::get_py3_name(t_field(nullptr, "True")));
-  EXPECT_EQ("cpdef_", py3::get_py3_name(t_field(nullptr, "cpdef")));
+  EXPECT_EQ("foo", py3::get_py3_name(t_field(t_base_type::t_i32(), "foo")));
+  EXPECT_EQ("True_", py3::get_py3_name(t_field(t_base_type::t_i32(), "True")));
+  EXPECT_EQ(
+      "cpdef_", py3::get_py3_name(t_field(t_base_type::t_i32(), "cpdef")));
 
-  t_field f(nullptr, "foo");
+  t_field f(t_base_type::t_i32(), "foo");
   f.set_annotation("py3.name", "bar");
   EXPECT_EQ("bar", py3::get_py3_name(f));
 }
