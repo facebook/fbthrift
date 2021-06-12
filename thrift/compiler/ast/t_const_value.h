@@ -232,7 +232,6 @@ class t_const_value {
  public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-  void set_ttype(const t_type* type) { ttype_ = t_type_ref::from_ptr(type); }
   const t_type* get_ttype() const {
     return ttype() == boost::none ? nullptr : ttype()->get_type();
   }
