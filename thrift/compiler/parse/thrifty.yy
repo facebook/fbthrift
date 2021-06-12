@@ -666,7 +666,7 @@ ConstValue:
 
         // We only want to clone the value, while discarding all real type
         // information.
-        $$->set_ttype(nullptr);
+        $$->set_ttype(boost::none);
         $$->set_is_enum(false);
         $$->set_enum(nullptr);
         $$->set_enum_value(nullptr);

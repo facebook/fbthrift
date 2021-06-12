@@ -94,7 +94,7 @@ class t_const_value {
     }
 
     clone->set_owner(get_owner());
-    clone->set_ttype(get_ttype());
+    clone->set_ttype(ttype());
     clone->set_is_enum(is_enum());
     clone->set_enum(get_enum());
     clone->set_enum_value(get_enum_value());

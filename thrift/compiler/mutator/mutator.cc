@@ -80,7 +80,7 @@ static void match_type_with_const_value(
     const t_type* long_type,
     t_const_value* value) {
   const t_type* type = resolve_type(long_type);
-  value->set_ttype(type);
+  value->set_ttype(t_type_ref::from_req_ptr(type));
   if (type->is_list()) {
     auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
     for (auto list_val : value->get_list()) {
