@@ -28,7 +28,7 @@ namespace thrift {
 namespace compiler {
 
 void validate_annotation_scopes(
-    diagnostic_context& results, const t_named* node);
+    diagnostic_context& results, const t_named& node);
 
 } // namespace compiler
 } // namespace thrift

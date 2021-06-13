@@ -184,10 +184,10 @@ class diagnostic_context {
   template <typename... Args>
   void report(
       diagnostic_level level,
-      const t_node* node,
+      const t_node& node,
       const char* fmt,
       Args&&... args) {
-    report(level, node->lineno(), {}, fmt, std::forward<Args>(args)...);
+    report(level, node.lineno(), {}, fmt, std::forward<Args>(args)...);
   }
 
   template <typename... Args>

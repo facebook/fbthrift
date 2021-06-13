@@ -89,11 +89,11 @@ class ScopeValidatorTest : public ::testing::Test {
     all_annots.emplace_back(&annotConst);
   }
 
-  void annotateWithAll(t_named* node) {
+  void annotateWithAll(t_named& node) {
     for (auto* annot : all_annots) {
-      node->add_structured_annotation(inst(annot));
+      node.add_structured_annotation(inst(annot));
     }
-    node->add_structured_annotation(inst(&annotUnscoped));
+    node.add_structured_annotation(inst(&annotUnscoped));
   }
 
  protected:
@@ -132,7 +132,7 @@ class ScopeValidatorTest : public ::testing::Test {
     return std::make_unique<t_const>(&program, ttype, "", std::move(value));
   }
 
-  diagnostic_results validate(const t_named* node) {
+  diagnostic_results validate(const t_named& node) {
     diagnostic_results results;
     diagnostic_context ctx{results, diagnostic_params::keep_all()};
     ctx.start_program(&program);
@@ -142,8 +142,8 @@ class ScopeValidatorTest : public ::testing::Test {
   }
 
   void runTest(t_named&& node, std::string scope) {
-    annotateWithAll(&node);
-    auto result = validate(&node);
+    annotateWithAll(node);
+    auto result = validate(node);
     std::vector<diagnostic> expected;
     std::string matching_name = scope + "Annot";
     for (const auto* annot : all_annots) {

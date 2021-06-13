@@ -53,9 +53,9 @@ class basic_ast_visitor;
 //
 // For each concrete node type, provides the following functions:
 // - an operator() overload for visiting the node:
-//     void operator()(args..., t_{name}*) const;
+//     void operator()(args..., t_{name}&) const;
 // - a function to add a node-specific visitor:
-//     void add_{name}_visitor(std::function<void(args..., t_{name}*)>);
+//     void add_{name}_visitor(std::function<void(args..., t_{name}&)>);
 //
 // Also provides helper functions for registering a visitor for multiple node
 // types. For example: all interface, structured_declaration, and
@@ -114,61 +114,60 @@ class basic_ast_visitor {
 #define FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(name)           \
  private:                                                   \
   using name##_type = node_type<t_##name>;                  \
-  visitor_list<Args..., name##_type*> name##_visitors_;     \
+  visitor_list<Args..., name##_type&> name##_visitors_;     \
                                                             \
  public:                                                    \
   void add_##name##_visitor(                                \
-      std::function<void(Args..., name##_type*)> visitor) { \
+      std::function<void(Args..., name##_type&)> visitor) { \
     name##_visitors_.emplace_back(std::move(visitor));      \
   }                                                         \
-  void operator()(Args... args, name##_type* node) const
+  void operator()(Args... args, name##_type& node) const
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(program) {
     visit(program_visitors_, node, args...);
-    visit_children(node->services(), args...);
-    visit_children(node->interactions(), args...);
+    visit_children(node.services(), args...);
+    visit_children(node.interactions(), args...);
     // TODO(afuller): Split structs and unions in t_program accessors.
-    for (auto* struct_or_union : node->structs()) {
+    for (auto* struct_or_union : node.structs()) {
       if (auto* tunion = dynamic_cast<union_type*>(struct_or_union)) {
-        this->operator()(args..., tunion);
+        this->operator()(args..., *tunion);
       } else {
-        this->operator()(args..., struct_or_union);
+        this->operator()(args..., *struct_or_union);
       }
     }
-    visit_children(node->exceptions(), args...);
-    visit_children(node->typedefs(), args...);
-    visit_children(node->enums(), args...);
-    visit_children(node->consts(), args...);
+    visit_children(node.exceptions(), args...);
+    visit_children(node.typedefs(), args...);
+    visit_children(node.enums(), args...);
+    visit_children(node.consts(), args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(service) {
-    assert(
-        typeid(*node) == typeid(service_type)); // Must actually be a service.
+    assert(typeid(node) == typeid(service_type)); // Must actually be a service.
     visit(service_visitors_, node, args...);
-    visit_children(node->functions(), args...);
+    visit_children(node.functions(), args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(interaction) {
     visit(interaction_visitors_, node, args...);
-    visit_children(node->functions(), args...);
+    visit_children(node.functions(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(function) {
     visit(function_visitors_, node, args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(struct) {
-    assert(typeid(*node) == typeid(struct_type)); // Must actually be a struct.
+    assert(typeid(node) == typeid(struct_type)); // Must actually be a struct.
     visit(struct_visitors_, node, args...);
-    visit_children(node->get_members(), args...);
+    visit_children(node.get_members(), args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(union) {
     visit(union_visitors_, node, args...);
-    visit_children(node->get_members(), args...);
+    visit_children(node.get_members(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(exception) {
     visit(exception_visitors_, node, args...);
-    visit_children(node->get_members(), args...);
+    visit_children(node.get_members(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(field) {
     visit(field_visitors_, node, args...);
@@ -176,7 +175,7 @@ class basic_ast_visitor {
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(enum) {
     visit(enum_visitors_, node, args...);
-    visit_children(node->values(), args...);
+    visit_children(node.values(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(enum_value) {
     visit(enum_value_visitors_, node, args...);
@@ -193,16 +192,16 @@ class basic_ast_visitor {
 
  private:
   template <typename N>
-  void visit(
-      const visitor_list<Args..., N*>& visitors, N* node, Args... args) const {
-    for (const auto& visitor : visitors) {
+  static void visit(
+      const visitor_list<Args..., N&>& visitors, N& node, Args... args) {
+    for (auto&& visitor : visitors) {
       visitor(args..., node);
     }
   }
   template <typename C>
   void visit_children(const C& children, Args... args) const {
     for (auto* child : children) {
-      operator()(args..., child);
+      operator()(args..., *child);
     }
   }
 };

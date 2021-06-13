@@ -66,8 +66,8 @@ struct allowed_scopes {
 
 } // namespace
 
-void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
-  for (const auto* annot : node->structured_annotations()) {
+void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
+  for (const auto* annot : node.structured_annotations()) {
     // Ignore scoping annotations themselves.
     if (uri_map().find(annot->get_type()->get_annotation("thrift.uri")) !=
         uri_map().end()) {
@@ -80,16 +80,16 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named* node) {
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
       ctx.warning_strict(
-          annot,
+          *annot,
           "Using `%s` as an annotation, even though it has not been enabled for any annotation scope.",
           annot->get_type()->name().c_str());
-    } else if (allowed.types.find(typeid(*node)) == allowed.types.end()) {
+    } else if (allowed.types.find(typeid(node)) == allowed.types.end()) {
       // Type mismatch.
       ctx.failure(
-          annot,
+          *annot,
           "`%s` cannot annotate `%s`",
           annot->get_type()->name().c_str(),
-          node->name().c_str());
+          node.name().c_str());
     }
   }
 }

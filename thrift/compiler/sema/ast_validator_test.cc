@@ -45,16 +45,15 @@ class AstValidatorTest : public ::testing::Test {};
 TEST_F(AstValidatorTest, Output) {
   ast_validator validator;
   validator.add_program_visitor(
-      [](diagnostic_context& ctx, const t_program* program) {
+      [](diagnostic_context& ctx, const t_program& program) {
         ctx.info(program, "test");
       });
 
   t_program program("path/to/program.thrift");
-  const t_program* cprogram = &program;
   diagnostic_results results;
   diagnostic_context ctx{results, diagnostic_params::keep_all()};
   ctx.start_program(&program);
-  validator(ctx, cprogram);
+  validator(ctx, program);
   EXPECT_THAT(
       results.diagnostics(),
       UnorderedElementsAre(
@@ -68,7 +67,7 @@ class StdAstValidatorTest : public ::testing::Test {
     diagnostic_results results;
     diagnostic_context ctx{results, std::move(params)};
     ctx.start_program(&program_);
-    standard_validator()(ctx, &program_);
+    standard_validator()(ctx, program_);
     return std::move(results).diagnostics();
   }
 

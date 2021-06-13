@@ -53,39 +53,39 @@ class MockAstVisitor {
   template <typename V>
   void addTo(V& visitor) {
     visitor.add_program_visitor(
-        [this](const t_program* node) { visit_program(node); });
+        [this](const t_program& node) { visit_program(&node); });
     visitor.add_service_visitor(
-        [this](const t_service* node) { visit_service(node); });
+        [this](const t_service& node) { visit_service(&node); });
     visitor.add_interaction_visitor(
-        [this](const t_interaction* node) { visit_interaction(node); });
+        [this](const t_interaction& node) { visit_interaction(&node); });
     visitor.add_function_visitor(
-        [this](const t_function* node) { visit_function(node); });
+        [this](const t_function& node) { visit_function(&node); });
 
     visitor.add_struct_visitor(
-        [this](const t_struct* node) { visit_struct(node); });
+        [this](const t_struct& node) { visit_struct(&node); });
     visitor.add_union_visitor(
-        [this](const t_union* node) { visit_union(node); });
+        [this](const t_union& node) { visit_union(&node); });
     visitor.add_exception_visitor(
-        [this](const t_exception* node) { visit_exception(node); });
+        [this](const t_exception& node) { visit_exception(&node); });
     visitor.add_field_visitor(
-        [this](const t_field* node) { visit_field(node); });
+        [this](const t_field& node) { visit_field(&node); });
 
-    visitor.add_enum_visitor([this](const t_enum* node) { visit_enum(node); });
+    visitor.add_enum_visitor([this](const t_enum& node) { visit_enum(&node); });
     visitor.add_enum_value_visitor(
-        [this](const t_enum_value* node) { visit_enum_value(node); });
+        [this](const t_enum_value& node) { visit_enum_value(&node); });
     visitor.add_const_visitor(
-        [this](const t_const* node) { visit_const(node); });
+        [this](const t_const& node) { visit_const(&node); });
 
     visitor.add_typedef_visitor(
-        [this](const t_typedef* node) { visit_typedef(node); });
+        [this](const t_typedef& node) { visit_typedef(&node); });
 
     visitor.add_interface_visitor(
-        [this](const t_interface* node) { visit_interface(node); });
-    visitor.add_structured_definition_visitor([this](const t_structured* node) {
-      visit_structured_definition(node);
+        [this](const t_interface& node) { visit_interface(&node); });
+    visitor.add_structured_definition_visitor([this](const t_structured& node) {
+      visit_structured_definition(&node);
     });
     visitor.add_definition_visitor(
-        [this](const t_named* node) { visit_definition(node); });
+        [this](const t_named& node) { visit_definition(&node); });
   }
 };
 
@@ -95,21 +95,23 @@ class OverloadedVisitor {
  public:
   explicit OverloadedVisitor(MockAstVisitor* mock) : mock_(mock) {}
 
-  void operator()(const t_interaction* node) { mock_->visit_interaction(node); }
-  void operator()(const t_service* node) { mock_->visit_service(node); }
-  void operator()(const t_program* node) { mock_->visit_program(node); }
-  void operator()(const t_function* node) { mock_->visit_function(node); }
+  void operator()(const t_interaction& node) {
+    mock_->visit_interaction(&node);
+  }
+  void operator()(const t_service& node) { mock_->visit_service(&node); }
+  void operator()(const t_program& node) { mock_->visit_program(&node); }
+  void operator()(const t_function& node) { mock_->visit_function(&node); }
 
-  void operator()(const t_struct* node) { mock_->visit_struct(node); }
-  void operator()(const t_union* node) { mock_->visit_union(node); }
-  void operator()(const t_exception* node) { mock_->visit_exception(node); }
-  void operator()(const t_field* node) { mock_->visit_field(node); }
+  void operator()(const t_struct& node) { mock_->visit_struct(&node); }
+  void operator()(const t_union& node) { mock_->visit_union(&node); }
+  void operator()(const t_exception& node) { mock_->visit_exception(&node); }
+  void operator()(const t_field& node) { mock_->visit_field(&node); }
 
-  void operator()(const t_enum* node) { mock_->visit_enum(node); }
-  void operator()(const t_enum_value* node) { mock_->visit_enum_value(node); }
-  void operator()(const t_const* node) { mock_->visit_const(node); }
+  void operator()(const t_enum& node) { mock_->visit_enum(&node); }
+  void operator()(const t_enum_value& node) { mock_->visit_enum_value(&node); }
+  void operator()(const t_const& node) { mock_->visit_const(&node); }
 
-  void operator()(const t_typedef* node) { mock_->visit_typedef(node); }
+  void operator()(const t_typedef& node) { mock_->visit_typedef(&node); }
 
  private:
   MockAstVisitor* mock_;
@@ -136,7 +138,7 @@ class AstVisitorTest : public ::testing::Test {
     EXPECT_CALL(this->mock_, visit_program(&this->program_));
   }
 
-  void TearDown() override { visitor_(&program_); }
+  void TearDown() override { visitor_(program_); }
 
  protected:
   ::testing::StrictMock<MockAstVisitor> mock_;

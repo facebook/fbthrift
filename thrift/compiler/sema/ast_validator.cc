@@ -51,35 +51,35 @@ struct service_metadata {
 };
 
 void validate_interface_function_name_uniqueness(
-    diagnostic_context& ctx, const t_interface* node) {
+    diagnostic_context& ctx, const t_interface& node) {
   // Check for a redefinition of a function in the same interface.
   std::unordered_set<std::string> seen;
-  for (const auto* function : node->functions()) {
+  for (const auto* function : node.functions()) {
     if (!seen.emplace(function->name()).second) {
       ctx.failure(
-          function,
+          *function,
           "Function `%s` is already defined in `%s`.",
           function->name().c_str(),
-          node->name().c_str());
+          node.name().c_str());
     }
   }
 }
 
 void validate_extends_service_function_name_uniqueness(
-    diagnostic_context& ctx, const t_service* node) {
-  if (node->extends() == nullptr) {
+    diagnostic_context& ctx, const t_service& node) {
+  if (node.extends() == nullptr) {
     return;
   }
 
   const auto& extends_metadata =
-      ctx.cache().get<service_metadata>(*node->extends());
-  for (const auto* function : node->functions()) {
+      ctx.cache().get<service_metadata>(*node.extends());
+  for (const auto* function : node.functions()) {
     auto itr = extends_metadata.function_name_to_service.find(function->name());
     if (itr != extends_metadata.function_name_to_service.end()) {
       ctx.failure(
-          function,
+          *function,
           "Function `%s.%s` redefines `%s.%s`.",
-          node->name().c_str(),
+          node.name().c_str(),
           function->name().c_str(),
           itr->second->get_full_name().c_str(),
           itr->first.c_str());
@@ -88,11 +88,11 @@ void validate_extends_service_function_name_uniqueness(
 }
 
 void validate_union_field_attributes(
-    diagnostic_context& ctx, const t_union* node) {
-  for (const auto* field : node->fields()) {
+    diagnostic_context& ctx, const t_union& node) {
+  for (const auto* field : node.fields()) {
     if (field->qualifier() != t_field_qualifier::unspecified) {
       ctx.failure(
-          field,
+          *field,
           "Unions cannot contain qualified fields. Remove `%s` qualifier from field `%s`.",
           field->qualifier() == t_field_qualifier::required ? "required"
                                                             : "optional",
@@ -100,90 +100,90 @@ void validate_union_field_attributes(
     }
     if (cpp2::is_mixin(*field)) {
       ctx.failure(
-          field,
+          *field,
           "Union `%s` cannot contain mixin field `%s`.",
-          node->name().c_str(),
+          node.name().c_str(),
           field->name().c_str());
     }
   }
 }
 
 void validate_mixin_field_attributes(
-    diagnostic_context& ctx, const t_field* field) {
-  if (!cpp2::is_mixin(*field)) {
+    diagnostic_context& ctx, const t_field& node) {
+  if (!cpp2::is_mixin(node)) {
     return;
   }
 
-  auto* ttype = field->type()->get_true_type();
+  auto* ttype = node.type()->get_true_type();
   if (typeid(*ttype) != typeid(t_struct) && typeid(*ttype) != typeid(t_union)) {
     ctx.failure(
-        field,
+        node,
         "Mixin field `%s` type must be a struct or union. Found `%s`.",
-        field->name().c_str(),
+        node.name().c_str(),
         ttype->get_name().c_str());
   }
 
-  if (field->qualifier() == t_field_qualifier::optional) {
+  if (node.qualifier() == t_field_qualifier::optional) {
     // Nothing technically stops us from marking optional field mixin.
     // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
     // might throw `bad_field_access` if `bar` is inside optional mixin
     // field.
     ctx.failure(
-        field, "Mixin field `%s` cannot be optional.", field->name().c_str());
+        node, "Mixin field `%s` cannot be optional.", node.name().c_str());
   }
 }
 
 void validate_enum_value_name_uniqueness(
-    diagnostic_context& ctx, const t_enum* node) {
+    diagnostic_context& ctx, const t_enum& node) {
   std::unordered_set<std::string> names;
-  for (const auto* value : node->values()) {
+  for (const auto* value : node.values()) {
     if (!names.insert(value->name()).second) {
       ctx.failure(
-          value,
+          *value,
           "Redefinition of value `%s` in enum `%s`.",
           value->name().c_str(),
-          node->name().c_str());
+          node.name().c_str());
     }
   }
 }
 
 void validate_enum_value_uniqueness(
-    diagnostic_context& ctx, const t_enum* node) {
+    diagnostic_context& ctx, const t_enum& node) {
   std::unordered_map<int32_t, const t_enum_value*> values;
-  for (const auto* value : node->values()) {
+  for (const auto* value : node.values()) {
     auto prev = values.emplace(value->get_value(), value);
     if (!prev.second) {
       ctx.failure(
-          value,
+          *value,
           "Duplicate value `%s=%d` with value `%s` in enum `%s`.",
           value->name().c_str(),
           value->get_value(),
           prev.first->second->name().c_str(),
-          node->name().c_str());
+          node.name().c_str());
     }
   }
 }
 
 void validate_enum_value_explicit(
-    diagnostic_context& ctx, const t_enum_value* node) {
-  if (!node->has_value()) {
+    diagnostic_context& ctx, const t_enum_value& node) {
+  if (!node.has_value()) {
     ctx.failure(
         node,
         "The enum value, `%s`, must have an explicitly assigned value.",
-        node->name().c_str());
+        node.name().c_str());
   }
 }
 
 void validate_structured_annotation_type_uniqueness(
-    diagnostic_context& ctx, const t_named* node) {
+    diagnostic_context& ctx, const t_named& node) {
   std::unordered_set<const t_type*> seen;
-  for (const auto& annot : node->structured_annotations()) {
+  for (const auto& annot : node.structured_annotations()) {
     if (!seen.emplace(&annot->type().deref()).second) {
       ctx.failure(
-          annot,
+          *annot,
           "Duplicate structured annotation `%s` on `%s`.",
           annot->type()->name().c_str(),
-          node->name().c_str());
+          node.name().c_str());
     }
   }
 }

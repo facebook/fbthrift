@@ -435,7 +435,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Validate it!
   ctx.report_all(validator::validate(program->root_program()));
-  standard_validator()(ctx, program->root_program());
+  standard_validator()(ctx, *program->root_program());
   if (result.detail.has_failure()) {
     return result;
   }
@@ -447,7 +447,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
       result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {
-    ctx.failure(program->root_program(), e.what());
+    ctx.failure(*program->root_program(), e.what());
   }
   return result;
 }
