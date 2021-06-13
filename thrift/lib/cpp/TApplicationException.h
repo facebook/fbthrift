@@ -34,7 +34,7 @@ class TProtocol;
  * exception from a handler method.  Because of the latter case, this
  * class can be serialized.
  */
-class TApplicationException : public TException {
+class FOLLY_EXPORT TApplicationException : public TException {
  public:
   /**
    * Error codes for the various types of exceptions.
@@ -270,7 +270,7 @@ class TApplicationException : public TException {
  * An error Thrift application can return from preprocess callback.
  * Indicates the error has been caused by the client
  */
-struct AppClientException : public TApplicationException {
+struct FOLLY_EXPORT AppClientException : public TApplicationException {
   AppClientException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
   const auto& name() const noexcept { return name_; }
@@ -285,7 +285,7 @@ struct AppClientException : public TApplicationException {
  * Indicates the server is aware it has encountered an error and is incapable
  * of performing the request.
  */
-struct AppServerException : TApplicationException {
+struct FOLLY_EXPORT AppServerException : TApplicationException {
   AppServerException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
   const auto& name() const noexcept { return name_; }

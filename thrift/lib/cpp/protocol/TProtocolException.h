@@ -34,7 +34,8 @@ namespace protocol {
  * pipes etc.
  *
  */
-class TProtocolException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT TProtocolException
+    : public apache::thrift::TLibraryException {
  public:
   /**
    * Error codes for the various types of exceptions.

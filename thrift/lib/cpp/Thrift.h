@@ -177,7 +177,7 @@ extern TOutput GlobalOutput;
  * Base class for all Thrift exceptions.
  * Should never be instantiated, only caught.
  */
-class TException : public std::exception {
+class FOLLY_EXPORT TException : public std::exception {
  public:
   TException() {}
   TException(TException&&) noexcept {}
@@ -191,7 +191,7 @@ class TException : public std::exception {
  * from the generated code.  This class should not be thrown by user code.
  * Instances of this class are not meant to be serialized.
  */
-class TLibraryException : public TException {
+class FOLLY_EXPORT TLibraryException : public TException {
  public:
   TLibraryException() {}
 

@@ -794,7 +794,7 @@ class LayoutRoot : public FieldCycleHolder {
  * LayoutException is thrown if freezing is attempted without a sufficient
  * layout
  */
-class LayoutException : public std::length_error {
+class FOLLY_EXPORT LayoutException : public std::length_error {
  public:
   LayoutException()
       : std::length_error("Existing layouts insufficient for this object") {}
@@ -805,7 +805,7 @@ class LayoutException : public std::length_error {
  * type specified in a schema. This may be relaxed by setting
  * 'schema.relaxTypeChecks'.
  */
-class LayoutTypeMismatchException : public std::logic_error {
+class FOLLY_EXPORT LayoutTypeMismatchException : public std::logic_error {
  public:
   LayoutTypeMismatchException(
       const std::string& expected, const std::string& actual)

@@ -73,7 +73,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class <%struct:name%> <%!
+class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <%!
 %><%^struct:virtual%>final <%/struct:virtual%><%#struct:exception?%><%!
 %>: public apache::thrift::TException<%/struct:exception?%> {
  private:

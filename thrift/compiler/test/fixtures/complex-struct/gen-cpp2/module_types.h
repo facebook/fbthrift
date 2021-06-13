@@ -5362,7 +5362,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class emptyXcep final : public apache::thrift::TException {
+class FOLLY_EXPORT emptyXcep final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -5445,7 +5445,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class reqXcep final : public apache::thrift::TException {
+class FOLLY_EXPORT reqXcep final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -5599,7 +5599,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class optXcep final : public apache::thrift::TException {
+class FOLLY_EXPORT optXcep final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -5766,7 +5766,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class complexException final : public apache::thrift::TException {
+class FOLLY_EXPORT complexException final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

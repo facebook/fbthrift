@@ -34,7 +34,8 @@ namespace transport {
  * pipes etc.
  *
  */
-class TTransportException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT TTransportException
+    : public apache::thrift::TLibraryException {
  public:
   /**
    * Error codes for the various types of exceptions.

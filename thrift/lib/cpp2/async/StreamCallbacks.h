@@ -71,7 +71,7 @@ struct HeadersPayload {
 
 namespace detail {
 
-struct EncodedError : std::exception {
+struct FOLLY_EXPORT EncodedError : std::exception {
   explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
       : encoded(std::move(buf)) {}
 
@@ -86,7 +86,7 @@ struct EncodedError : std::exception {
   std::unique_ptr<folly::IOBuf> encoded;
 };
 
-struct EncodedFirstResponseError : std::exception {
+struct FOLLY_EXPORT EncodedFirstResponseError : std::exception {
   explicit EncodedFirstResponseError(FirstResponsePayload&& payload)
       : encoded(std::move(payload)) {}
 
@@ -105,7 +105,7 @@ struct EncodedFirstResponseError : std::exception {
   FirstResponsePayload encoded;
 };
 
-struct EncodedStreamError : std::exception {
+struct FOLLY_EXPORT EncodedStreamError : std::exception {
   explicit EncodedStreamError(StreamPayload&& payload)
       : encoded(std::move(payload)) {}
 
@@ -124,7 +124,7 @@ struct EncodedStreamError : std::exception {
   StreamPayload encoded;
 };
 
-struct EncodedStreamRpcError : std::exception {
+struct FOLLY_EXPORT EncodedStreamRpcError : std::exception {
   explicit EncodedStreamRpcError(std::unique_ptr<folly::IOBuf> rpcError)
       : encoded(std::move(rpcError)) {}
   EncodedStreamRpcError(const EncodedStreamRpcError& oth)

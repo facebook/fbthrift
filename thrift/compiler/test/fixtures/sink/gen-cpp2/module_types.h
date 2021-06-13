@@ -538,7 +538,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class InitialException final : public apache::thrift::TException {
+class FOLLY_EXPORT InitialException final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -665,7 +665,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class SinkException1 final : public apache::thrift::TException {
+class FOLLY_EXPORT SinkException1 final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -792,7 +792,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class SinkException2 final : public apache::thrift::TException {
+class FOLLY_EXPORT SinkException2 final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

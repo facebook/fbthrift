@@ -4214,7 +4214,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class AnException final : public apache::thrift::TException {
+class FOLLY_EXPORT AnException final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -4807,7 +4807,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class AnotherException : public apache::thrift::TException {
+class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

@@ -29,7 +29,7 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-class RocketException : public std::exception {
+class FOLLY_EXPORT RocketException : public std::exception {
  public:
   explicit RocketException(ErrorCode errorCode)
       : rsocketErrorCode_(errorCode) {}

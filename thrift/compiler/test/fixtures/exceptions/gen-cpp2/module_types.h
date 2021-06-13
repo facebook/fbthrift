@@ -86,7 +86,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class Fiery final : public apache::thrift::TException {
+class FOLLY_EXPORT Fiery final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -209,7 +209,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class Serious final : public apache::thrift::TException {
+class FOLLY_EXPORT Serious final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -338,7 +338,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class ComplexFieldNames final : public apache::thrift::TException {
+class FOLLY_EXPORT ComplexFieldNames final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -505,7 +505,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class CustomFieldNames final : public apache::thrift::TException {
+class FOLLY_EXPORT CustomFieldNames final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -672,7 +672,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class ExceptionWithPrimitiveField final : public apache::thrift::TException {
+class FOLLY_EXPORT ExceptionWithPrimitiveField final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -834,7 +834,7 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 #endif
 
-class Banal final : public apache::thrift::TException {
+class FOLLY_EXPORT Banal final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

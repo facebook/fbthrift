@@ -25,26 +25,32 @@ namespace apache {
 namespace thrift {
 namespace concurrency {
 
-class NoSuchTaskException : public apache::thrift::TLibraryException {};
+class FOLLY_EXPORT NoSuchTaskException
+    : public apache::thrift::TLibraryException {};
 
-class UncancellableTaskException : public apache::thrift::TLibraryException {};
+class FOLLY_EXPORT UncancellableTaskException
+    : public apache::thrift::TLibraryException {};
 
-class InvalidArgumentException : public apache::thrift::TLibraryException {};
+class FOLLY_EXPORT InvalidArgumentException
+    : public apache::thrift::TLibraryException {};
 
-class IllegalStateException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT IllegalStateException
+    : public apache::thrift::TLibraryException {
  public:
   IllegalStateException() {}
   IllegalStateException(const std::string& message)
       : TLibraryException(message) {}
 };
 
-class TimedOutException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT TimedOutException
+    : public apache::thrift::TLibraryException {
  public:
   TimedOutException() : TLibraryException("TimedOutException") {}
   TimedOutException(const std::string& message) : TLibraryException(message) {}
 };
 
-class TooManyPendingTasksException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT TooManyPendingTasksException
+    : public apache::thrift::TLibraryException {
  public:
   TooManyPendingTasksException()
       : TLibraryException("TooManyPendingTasksException") {}
@@ -52,7 +58,8 @@ class TooManyPendingTasksException : public apache::thrift::TLibraryException {
       : TLibraryException(message) {}
 };
 
-class SystemResourceException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT SystemResourceException
+    : public apache::thrift::TLibraryException {
  public:
   SystemResourceException() {}
 
