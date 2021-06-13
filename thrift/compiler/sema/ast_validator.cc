@@ -44,8 +44,8 @@ struct service_metadata {
       function_name_to_service =
           cache.get<service_metadata>(*node.extends()).function_name_to_service;
     }
-    for (auto&& function : node.functions()) {
-      function_name_to_service[function->name()] = &node;
+    for (const auto& function : node.functions()) {
+      function_name_to_service[function.name()] = &node;
     }
   }
 };
@@ -54,12 +54,12 @@ void validate_interface_function_name_uniqueness(
     diagnostic_context& ctx, const t_interface& node) {
   // Check for a redefinition of a function in the same interface.
   std::unordered_set<std::string> seen;
-  for (const auto* function : node.functions()) {
-    if (!seen.emplace(function->name()).second) {
+  for (const auto& function : node.functions()) {
+    if (!seen.emplace(function.name()).second) {
       ctx.failure(
-          *function,
+          function,
           "Function `%s` is already defined in `%s`.",
-          function->name().c_str(),
+          function.name().c_str(),
           node.name().c_str());
     }
   }
@@ -73,14 +73,14 @@ void validate_extends_service_function_name_uniqueness(
 
   const auto& extends_metadata =
       ctx.cache().get<service_metadata>(*node.extends());
-  for (const auto* function : node.functions()) {
-    auto itr = extends_metadata.function_name_to_service.find(function->name());
+  for (const auto& function : node.functions()) {
+    auto itr = extends_metadata.function_name_to_service.find(function.name());
     if (itr != extends_metadata.function_name_to_service.end()) {
       ctx.failure(
-          *function,
+          function,
           "Function `%s.%s` redefines `%s.%s`.",
           node.name().c_str(),
-          function->name().c_str(),
+          function.name().c_str(),
           itr->second->get_full_name().c_str(),
           itr->first.c_str());
     }
@@ -136,12 +136,12 @@ void validate_mixin_field_attributes(
 void validate_enum_value_name_uniqueness(
     diagnostic_context& ctx, const t_enum& node) {
   std::unordered_set<std::string> names;
-  for (const auto* value : node.values()) {
-    if (!names.insert(value->name()).second) {
+  for (const auto& value : node.values()) {
+    if (!names.insert(value.name()).second) {
       ctx.failure(
-          *value,
+          value,
           "Redefinition of value `%s` in enum `%s`.",
-          value->name().c_str(),
+          value.name().c_str(),
           node.name().c_str());
     }
   }
@@ -150,14 +150,14 @@ void validate_enum_value_name_uniqueness(
 void validate_enum_value_uniqueness(
     diagnostic_context& ctx, const t_enum& node) {
   std::unordered_map<int32_t, const t_enum_value*> values;
-  for (const auto* value : node.values()) {
-    auto prev = values.emplace(value->get_value(), value);
+  for (const auto& value : node.values()) {
+    auto prev = values.emplace(value.get_value(), &value);
     if (!prev.second) {
       ctx.failure(
-          *value,
+          value,
           "Duplicate value `%s=%d` with value `%s` in enum `%s`.",
-          value->name().c_str(),
-          value->get_value(),
+          value.name().c_str(),
+          value.get_value(),
           prev.first->second->name().c_str(),
           node.name().c_str());
     }
@@ -177,7 +177,7 @@ void validate_enum_value_explicit(
 void validate_structured_annotation_type_uniqueness(
     diagnostic_context& ctx, const t_named& node) {
   std::unordered_set<const t_type*> seen;
-  for (const auto& annot : node.structured_annotations()) {
+  for (const auto* annot : node.structured_annotations()) {
     if (!seen.emplace(&annot->type().deref()).second) {
       ctx.failure(
           *annot,

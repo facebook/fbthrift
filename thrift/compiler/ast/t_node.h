@@ -247,11 +247,10 @@ class node_list_view : public detail::base_view<node_list_view<T>, T*> {
   using size_type = typename node_list_type::size_type;
   using difference_type = typename node_list_type::difference_type;
 
-  // Return by value.
-  // This follows the std::ranges::view behavior.
-  using value_type = T*;
-  using pointer = void;
-  using reference = value_type;
+  // Return by reference.
+  using value_type = std::remove_const_t<T>;
+  using pointer = T*;
+  using reference = T&;
 
   class iterator {
     friend class node_list_view;
@@ -265,10 +264,8 @@ class node_list_view : public detail::base_view<node_list_view<T>, T*> {
     using pointer = node_list_view::pointer;
     using reference = node_list_view::reference;
 
-    reference operator*() const noexcept { return itr_->get(); }
-    reference operator[](difference_type n) const noexcept {
-      return itr_[n].get();
-    }
+    reference operator*() const noexcept { return itr_->operator*(); }
+    reference operator[](difference_type n) const noexcept { return *itr_[n]; }
 
     constexpr iterator operator++(int) noexcept { return {itr_++}; }
     constexpr iterator& operator++() noexcept {
@@ -321,9 +318,9 @@ class node_list_view : public detail::base_view<node_list_view<T>, T*> {
   constexpr node_list_view(const node_list_view&) noexcept = default;
   constexpr node_list_view& operator=(const node_list_view&) noexcept = default;
 
-  constexpr T* front() const { return list_->front().get(); }
-  constexpr T* back() const { return list_->back().get(); }
-  constexpr T* operator[](std::size_t pos) const { return at(pos); }
+  constexpr reference front() const { return *list_->front(); }
+  constexpr reference back() const { return *list_->back(); }
+  constexpr reference operator[](std::size_t pos) const { return at(pos); }
   constexpr iterator begin() const noexcept { return list_->begin(); }
   constexpr iterator end() const noexcept { return list_->end(); }
   constexpr std::size_t size() const noexcept { return list_->size(); }
@@ -337,7 +334,7 @@ class node_list_view : public detail::base_view<node_list_view<T>, T*> {
   using const_pointer = pointer;
   constexpr iterator cbegin() const noexcept { return list_->cbegin(); }
   constexpr iterator cend() const noexcept { return list_->cend(); }
-  constexpr T* at(std::size_t pos) const { return list_->at(pos).get(); }
+  constexpr reference at(std::size_t pos) const { return *list_->at(pos); }
 
  private:
   const node_list_type* list_;

@@ -2822,10 +2822,10 @@ std::string t_hack_generator::render_service_metadata_response(
       }
       queue.push(tservice->get_extends());
 
-      for (const auto* function : tservice->functions()) {
-        queue.push(function->get_returntype());
-        queue.push(function->params());
-        queue.push(function->exceptions());
+      for (const auto& function : tservice->functions()) {
+        queue.push(function.get_returntype());
+        queue.push(function.params());
+        queue.push(function.exceptions());
       }
     } else if (const auto* tenum = dynamic_cast<const t_enum*>(type)) {
       enums.push_back(tenum);

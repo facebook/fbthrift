@@ -125,8 +125,8 @@ class basic_ast_visitor {
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(program) {
     visit(program_visitors_, node, args...);
-    visit_children(node.services(), args...);
-    visit_children(node.interactions(), args...);
+    visit_children_ptrs(node.services(), args...);
+    visit_children_ptrs(node.interactions(), args...);
     // TODO(afuller): Split structs and unions in t_program accessors.
     for (auto* struct_or_union : node.structs()) {
       if (auto* tunion = dynamic_cast<union_type*>(struct_or_union)) {
@@ -135,10 +135,10 @@ class basic_ast_visitor {
         this->operator()(args..., *struct_or_union);
       }
     }
-    visit_children(node.exceptions(), args...);
-    visit_children(node.typedefs(), args...);
-    visit_children(node.enums(), args...);
-    visit_children(node.consts(), args...);
+    visit_children_ptrs(node.exceptions(), args...);
+    visit_children_ptrs(node.typedefs(), args...);
+    visit_children_ptrs(node.enums(), args...);
+    visit_children_ptrs(node.consts(), args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(service) {
@@ -158,16 +158,16 @@ class basic_ast_visitor {
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(struct) {
     assert(typeid(node) == typeid(struct_type)); // Must actually be a struct.
     visit(struct_visitors_, node, args...);
-    visit_children(node.get_members(), args...);
+    visit_children_ptrs(node.get_members(), args...);
   }
 
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(union) {
     visit(union_visitors_, node, args...);
-    visit_children(node.get_members(), args...);
+    visit_children_ptrs(node.get_members(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(exception) {
     visit(exception_visitors_, node, args...);
-    visit_children(node.get_members(), args...);
+    visit_children_ptrs(node.get_members(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(field) {
     visit(field_visitors_, node, args...);
@@ -200,6 +200,12 @@ class basic_ast_visitor {
   }
   template <typename C>
   void visit_children(const C& children, Args... args) const {
+    for (auto&& child : children) {
+      operator()(args..., child);
+    }
+  }
+  template <typename C>
+  void visit_children_ptrs(const C& children, Args... args) const {
     for (auto* child : children) {
       operator()(args..., *child);
     }
