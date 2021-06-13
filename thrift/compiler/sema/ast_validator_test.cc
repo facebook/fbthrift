@@ -170,8 +170,8 @@ TEST_F(StdAstValidatorTest, ReapeatedNamesInService) {
   EXPECT_THAT(
       validate(),
       ::testing::UnorderedElementsAre(
-          failure(2, "Function `foo` is already defined in `Service`."),
-          failure(4, "Function `bar` is already defined in `Interaction`.")));
+          failure(2, "Function `foo` is already defined for `Service`."),
+          failure(4, "Function `bar` is already defined for `Interaction`.")));
 }
 
 TEST_F(StdAstValidatorTest, RepeatedNameInExtendedService) {
@@ -247,7 +247,7 @@ TEST_F(StdAstValidatorTest, RepeatedNamesInEnumValues) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          failure(1, "Redefinition of value `bar` in enum `foo`.")));
+          failure(1, "Enum value `bar` is already defined for `foo`.")));
 }
 
 TEST_F(StdAstValidatorTest, UnsetEnumValues) {
@@ -394,8 +394,8 @@ TEST_F(StdAstValidatorTest, RepeatedStructuredAnnotation) {
   // Only the third annotation is a duplicate.
   EXPECT_THAT(
       validate(diagnostic_params::only_failures()),
-      UnorderedElementsAre(
-          failure(3, "Duplicate structured annotation `Foo` on `Bar`.")));
+      UnorderedElementsAre(failure(
+          3, "Structured annotation `Foo` is already defined for `Bar`.")));
 }
 
 } // namespace
