@@ -15,9 +15,6 @@
  */
 
 #include <stdlib.h>
-#include "thrift/compiler/ast/base_types.h"
-#include "thrift/compiler/ast/t_const_value.h"
-#include "thrift/compiler/ast/t_field.h"
 
 #include <fstream>
 #include <iostream>
@@ -30,6 +27,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/ast/t_const_value.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>

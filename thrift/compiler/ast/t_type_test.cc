@@ -22,7 +22,8 @@
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 
-using namespace apache::thrift::compiler;
+namespace apache::thrift::compiler {
+namespace {
 
 /**
  * Inherit from t_type to access protected declarations
@@ -139,3 +140,6 @@ TEST(TType, TypeName) {
   EXPECT_EQ(t_type::type_name(t_type::type::t_stream), "stream");
   EXPECT_EQ(t_type::type_name(t_type::type::t_binary), "binary");
 }
+
+} // namespace
+} // namespace apache::thrift::compiler
