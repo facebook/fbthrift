@@ -39,29 +39,28 @@ auto find_by_id(const C& fields_id_order, int32_t id) {
 } // namespace
 
 bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
-  auto elem_ptr = elem.get();
-
-  auto existing = find_by_id(fields_id_order_, elem_ptr->id());
+  auto existing = find_by_id(fields_id_order_, elem->id());
   if (existing.second) {
     return false;
   }
 
-  // Take ownership.
-  if (!fields_.empty()) {
-    fields_.back()->set_next(elem_ptr);
-  }
-  fields_.push_back(std::move(elem));
-
   // Index the new field.
-  if (!elem_ptr->get_name().empty()) {
-    fields_by_name_.emplace(elem_ptr->get_name(), elem_ptr);
+  if (!fields_.empty()) {
+    fields_.back()->set_next(elem.get());
   }
-  fields_ordinal_order_.emplace_back(elem_ptr);
-  fields_id_order_.emplace(existing.first, elem_ptr);
 
-  fields_raw_.push_back(elem_ptr);
+  if (!elem->name().empty()) {
+    fields_by_name_.put(*elem);
+  }
+  fields_ordinal_order_.emplace_back(elem.get());
+  fields_id_order_.emplace(existing.first, elem.get());
+
+  fields_raw_.push_back(elem.get());
   fields_raw_id_order_.insert(
-      find_by_id(fields_raw_id_order_, elem_ptr->id()).first, elem_ptr);
+      find_by_id(fields_raw_id_order_, elem->id()).first, elem.get());
+
+  // Take ownership.
+  fields_.push_back(std::move(elem));
   return true;
 }
 
@@ -87,7 +86,7 @@ void t_structured::append(std::unique_ptr<t_field> elem) {
     fields_raw_.back()->set_next(elem.get());
   }
   if (!elem->get_name().empty()) {
-    fields_by_name_.emplace(elem->get_name(), elem.get());
+    fields_by_name_.put(*elem);
   }
   fields_ordinal_order_.push_back(elem.get());
   fields_raw_.push_back(elem.get());
