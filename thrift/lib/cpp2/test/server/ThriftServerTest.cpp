@@ -1112,7 +1112,7 @@ TEST_P(HeaderOrRocket, CancellationTest) {
 
       NotCalledBackHandlers results;
       auto handlers = notCalledBackHandlers_.lock();
-      if (!handlersCV_.wait_until(handlers.getUniqueLock(), end_time, [&] {
+      if (!handlersCV_.wait_until(handlers.as_lock(), end_time, [&] {
             return !handlers->empty();
           })) {
         // If we get here we timed out.
