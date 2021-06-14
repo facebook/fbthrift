@@ -169,7 +169,7 @@ class ClientReceiveState {
 
  private:
   uint16_t protocolId_;
-  MessageType messageType_{T_CALL};
+  MessageType messageType_{MessageType::T_CALL};
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
   SerializedResponse response_{nullptr};
   std::unique_ptr<apache::thrift::transport::THeader> header_;

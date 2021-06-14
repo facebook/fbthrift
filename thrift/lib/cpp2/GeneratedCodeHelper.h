@@ -495,12 +495,12 @@ folly::exception_wrapper recv_wrapped_helper(
     //       TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
     //       "corrupted response");
     // }
-    if (mtype == T_EXCEPTION) {
+    if (mtype == MessageType::T_EXCEPTION) {
       TApplicationException x;
       apache::thrift::detail::deserializeExceptionBody(prot, &x);
       return folly::exception_wrapper(std::move(x));
     }
-    if (mtype != T_REPLY) {
+    if (mtype != MessageType::T_REPLY) {
       prot->skip(protocol::T_STRUCT);
       return folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::TApplicationExceptionType::

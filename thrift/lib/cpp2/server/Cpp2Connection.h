@@ -105,7 +105,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     folly::IOBufQueue queue;
     ProtocolWriter w;
     w.setOutput(&queue);
-    w.writeMessageBegin("upgradeToRocket", apache::thrift::T_REPLY, protoSeqId);
+    w.writeMessageBegin("upgradeToRocket", MessageType::T_REPLY, protoSeqId);
     RocketUpgrade_upgradeToRocket_presult result;
     apache::thrift::detail::serializeResponseBody(&w, &result);
     w.writeMessageEnd();

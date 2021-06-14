@@ -66,7 +66,7 @@ std::unique_ptr<folly::IOBuf> helper<ProtocolReader, ProtocolWriter>::write_exn(
   if (ctx) {
     ctx->handlerErrorWrapped(exception_wrapper(x));
   }
-  prot->writeMessageBegin(method, T_EXCEPTION, protoSeqId);
+  prot->writeMessageBegin(method, MessageType::T_EXCEPTION, protoSeqId);
   apache::thrift::detail::serializeExceptionBody(prot, &x);
   prot->writeMessageEnd();
   return std::move(queue).move();
@@ -128,8 +128,10 @@ static bool setupRequestContextWithMessageBegin(
     h::process_exn(fn, type, msg, std::move(req), ctx, eb, msgBegin.seqId);
     return false;
   }
-  if (msgBegin.msgType != T_CALL && msgBegin.msgType != T_ONEWAY) {
-    LOG(ERROR) << "received invalid message of type " << msgBegin.msgType;
+  if (msgBegin.msgType != MessageType::T_CALL &&
+      msgBegin.msgType != MessageType::T_ONEWAY) {
+    LOG(ERROR) << "received invalid message of type "
+               << folly::to_underlying(msgBegin.msgType);
     auto type =
         TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE;
     const char* msg = "invalid message arguments";

@@ -723,7 +723,7 @@ LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
   if (ctx) {
     ctx->preWrite();
   }
-  prot->writeMessageBegin(method, T_REPLY, protoSeqId);
+  prot->writeMessageBegin(method, MessageType::T_REPLY, protoSeqId);
   apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
   SerializedMessage smsg;

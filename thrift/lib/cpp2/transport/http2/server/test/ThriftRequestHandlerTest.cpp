@@ -71,7 +71,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     auto queue = std::make_unique<IOBufQueue>();
     CompactProtocolWriter writer;
     writer.setOutput(queue.get());
-    writer.writeMessageBegin("dummy", T_CALL, 0);
+    writer.writeMessageBegin("dummy", MessageType::T_CALL, 0);
     queue->append("payload");
     return queue->move();
   }

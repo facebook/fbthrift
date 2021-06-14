@@ -55,7 +55,7 @@ std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   prot.setOutput(&queue, bufSize);
   prot.writeMessageBegin(
-      method, apache::thrift::T_EXCEPTION, ctx->getProtoSeqId());
+      method, MessageType::T_EXCEPTION, ctx->getProtoSeqId());
   x.write(&prot);
   prot.writeMessageEnd();
   queue.append(transport::THeader::transform(

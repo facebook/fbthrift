@@ -73,7 +73,12 @@ typedef apache::thrift::protocol::PROTOCOL_TYPES ProtocolType;
  * Enumerated definition of the message types that the Thrift protocol
  * supports.
  */
-enum MessageType { T_CALL = 1, T_REPLY = 2, T_EXCEPTION = 3, T_ONEWAY = 4 };
+enum class MessageType {
+  T_CALL = 1,
+  T_REPLY = 2,
+  T_EXCEPTION = 3,
+  T_ONEWAY = 4,
+};
 
 namespace detail {
 struct SkipNoopString {

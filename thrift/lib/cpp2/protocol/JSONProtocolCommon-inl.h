@@ -41,7 +41,7 @@ uint32_t JSONProtocolWriterCommon::writeMessageBegin(
   auto ret = beginContext(ContextType::ARRAY);
   ret += writeI32(apache::thrift::detail::json::kThriftVersion1);
   ret += writeString(name);
-  ret += writeI32(messageType);
+  ret += writeI32(static_cast<int32_t>(messageType));
   ret += writeI32(seqid);
   return ret;
 }

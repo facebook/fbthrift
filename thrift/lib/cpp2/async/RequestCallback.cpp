@@ -43,7 +43,7 @@ void ClientReceiveState::initFromLegacyFormat(
     LOG(ERROR) << "Couldn't parse envelope, would serialize the exception with "
                << protocol;
     protocolId_ = protocol;
-    messageType_ = T_EXCEPTION;
+    messageType_ = MessageType::T_EXCEPTION;
     response_ = SerializedResponse(serializeErrorStruct(
         static_cast<protocol::PROTOCOL_TYPES>(protocol),
         TApplicationException(

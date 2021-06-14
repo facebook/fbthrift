@@ -54,7 +54,7 @@ void ChannelTestFixture::sendAndReceiveStream(
     auto envelopeBuf = std::make_unique<IOBufQueue>();
     CompactProtocolWriter writer;
     writer.setOutput(envelopeBuf.get());
-    writer.writeMessageBegin("dummy", T_CALL, 0);
+    writer.writeMessageBegin("dummy", MessageType::T_CALL, 0);
     string envelope = envelopeBuf->move()->moveToFbString().toStdString();
     payload = envelope + inputPayload;
   }

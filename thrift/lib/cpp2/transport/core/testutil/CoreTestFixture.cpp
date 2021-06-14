@@ -113,7 +113,7 @@ bool CoreTestFixture::deserializeException(
     int32_t protoSeqId;
     reader->setInput(buf);
     reader->readMessageBegin(fname, mtype, protoSeqId);
-    EXPECT_EQ(T_EXCEPTION, mtype);
+    EXPECT_TRUE(MessageType::T_EXCEPTION == mtype);
     tae->read(reader.get());
     return true;
   } catch (...) {

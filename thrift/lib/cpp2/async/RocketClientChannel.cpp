@@ -96,7 +96,7 @@ struct ResponseSerializationHandler {
 
   std::unique_ptr<folly::IOBuf> handleException(
       const TApplicationException& ex) {
-    mtype = T_EXCEPTION;
+    mtype = MessageType::T_EXCEPTION;
     return serializeErrorStruct(
         static_cast<protocol::PROTOCOL_TYPES>(protocolId), ex);
   }
@@ -107,7 +107,7 @@ struct ResponseSerializationHandler {
   }
 
   uint16_t protocolId;
-  MessageType mtype{T_REPLY};
+  MessageType mtype{MessageType::T_REPLY};
 };
 
 template <class Handler>

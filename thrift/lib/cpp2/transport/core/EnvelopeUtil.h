@@ -41,7 +41,7 @@ class EnvelopeUtil {
   stripRequestEnvelope(std::unique_ptr<folly::IOBuf>&& payload) noexcept {
     auto ret = stripEnvelope(std::move(payload));
     if (ret) {
-      DCHECK_EQ(T_CALL, ret->first.messageType);
+      DCHECK(MessageType::T_CALL == ret->first.messageType);
     }
     return ret;
   }

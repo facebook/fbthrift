@@ -165,16 +165,16 @@ uint32_t DebugProtocolWriter::writeMessageBegin(
     const std::string& name, MessageType messageType, int32_t /*seqid*/) {
   std::string mtype;
   switch (messageType) {
-    case T_CALL:
+    case MessageType::T_CALL:
       mtype = "call";
       break;
-    case T_REPLY:
+    case MessageType::T_REPLY:
       mtype = "reply";
       break;
-    case T_EXCEPTION:
+    case MessageType::T_EXCEPTION:
       mtype = "exn";
       break;
-    case T_ONEWAY:
+    case MessageType::T_ONEWAY:
       mtype = "oneway";
       break;
   }

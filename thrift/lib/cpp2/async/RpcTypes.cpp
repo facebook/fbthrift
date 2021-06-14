@@ -110,7 +110,7 @@ LegacySerializedRequest::LegacySerializedRequest(
     SerializedRequest&& serializedRequest)
     : buffer(addEnvelope(
           protocolId,
-          T_CALL,
+          MessageType::T_CALL,
           seqid,
           methodName,
           std::move(serializedRequest.buffer))) {}
@@ -130,7 +130,7 @@ LegacySerializedResponse::LegacySerializedResponse(
     : LegacySerializedResponse(
           protocolId,
           seqid,
-          T_REPLY,
+          MessageType::T_REPLY,
           methodName,
           std::move(serializedResponse)) {}
 

@@ -32,7 +32,8 @@ inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
   wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
       apache::thrift::detail::compact_v1::kCompactV1ProtocolVersion |
-      ((messageType << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
+      ((static_cast<int32_t>(messageType)
+        << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
        apache::thrift::detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);

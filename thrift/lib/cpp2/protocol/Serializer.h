@@ -231,7 +231,7 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
   bufSize += prot.serializedMessageSize(fname);
   folly::IOBufQueue queue;
   prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(fname, apache::thrift::T_EXCEPTION, protoSeqId);
+  prot.writeMessageBegin(fname, MessageType::T_EXCEPTION, protoSeqId);
   obj.write(&prot);
   prot.writeMessageEnd();
   return queue.move();
@@ -247,7 +247,7 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
   bufSize += prot.serializedMessageSize(fname);
   folly::IOBufQueue queue;
   prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(fname, apache::thrift::T_EXCEPTION, protoSeqId);
+  prot.writeMessageBegin(fname, MessageType::T_EXCEPTION, protoSeqId);
   obj.write(&prot);
   prot.writeMessageEnd();
   return queue.move();

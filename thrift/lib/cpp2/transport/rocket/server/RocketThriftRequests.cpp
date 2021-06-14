@@ -150,7 +150,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     reader.readMessageBegin(methodNameIgnore, mtype, seqIdIgnore);
 
     switch (mtype) {
-      case T_REPLY: {
+      case MessageType::T_REPLY: {
         auto prefixSize = reader.getCursorPosition();
 
         protocol::TType ftype;
@@ -211,7 +211,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         metadata.payloadMetadata_ref() = std::move(payloadMetadata);
         break;
       }
-      case T_EXCEPTION: {
+      case MessageType::T_EXCEPTION: {
         if (version < 2) {
           return {};
         }
