@@ -195,9 +195,13 @@ func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, opro
 			}
 		}
 
-		if e2 := pfunc.Write(seqID, result, oprot); e2 != nil {
-			// close connection on write failure
-			return false, err
+		// if result was nil, call was oneway
+		// often times oneway calls do not even have msgType ONEWAY
+		if result != nil {
+			if e2 := pfunc.Write(seqID, result, oprot); e2 != nil {
+				// close connection on write failure
+				return false, err
+			}
 		}
 	}
 
