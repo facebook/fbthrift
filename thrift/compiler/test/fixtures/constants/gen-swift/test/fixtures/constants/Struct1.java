@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="struct1", builder=Struct1.Builder.class)
-public final class Struct1 {
+public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Struct1(
@@ -134,6 +134,10 @@ public final class Struct1 {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Struct1> asReader() {
+      return Struct1::read0;
+    }
     
     public static Struct1 read0(TProtocol oprot) throws TException {
       TField __field;

@@ -97,6 +97,10 @@ public final class OptXcep extends java.lang.Exception {
     public Integer getErrorCode() { return errorCode; }
     
     
+    public static com.facebook.thrift.payload.Reader<OptXcep> asReader() {
+      return OptXcep::read0;
+    }
+    
     public static OptXcep read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.FIELD_METADATA);

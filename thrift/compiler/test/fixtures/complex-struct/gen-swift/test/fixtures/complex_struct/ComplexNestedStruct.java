@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="ComplexNestedStruct", builder=ComplexNestedStruct.Builder.class)
-public final class ComplexNestedStruct {
+public final class ComplexNestedStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public ComplexNestedStruct(
@@ -550,6 +550,10 @@ public final class ComplexNestedStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<ComplexNestedStruct> asReader() {
+      return ComplexNestedStruct::read0;
+    }
     
     public static ComplexNestedStruct read0(TProtocol oprot) throws TException {
       TField __field;

@@ -77,6 +77,10 @@ public final class Fiery extends java.lang.RuntimeException {
     public String getMessage() { return message; }
     
     
+    public static com.facebook.thrift.payload.Reader<Fiery> asReader() {
+      return Fiery::read0;
+    }
+    
     public static Fiery read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Fiery.NAMES_TO_IDS, Fiery.FIELD_METADATA);

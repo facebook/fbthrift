@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
-public final class TypeRemapped {
+public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public TypeRemapped(
@@ -186,6 +186,10 @@ public final class TypeRemapped {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<TypeRemapped> asReader() {
+      return TypeRemapped::read0;
+    }
     
     public static TypeRemapped read0(TProtocol oprot) throws TException {
       TField __field;

@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="Color", builder=Color.Builder.class)
-public final class Color {
+public final class Color implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Color(
@@ -186,6 +186,10 @@ public final class Color {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Color> asReader() {
+      return Color::read0;
+    }
     
     public static Color read0(TProtocol oprot) throws TException {
       TField __field;

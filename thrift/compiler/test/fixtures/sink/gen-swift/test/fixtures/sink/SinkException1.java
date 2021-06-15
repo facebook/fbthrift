@@ -77,6 +77,10 @@ public final class SinkException1 extends java.lang.Exception {
     public String getReason() { return reason; }
     
     
+    public static com.facebook.thrift.payload.Reader<SinkException1> asReader() {
+      return SinkException1::read0;
+    }
+    
     public static SinkException1 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SinkException1.NAMES_TO_IDS, SinkException1.FIELD_METADATA);

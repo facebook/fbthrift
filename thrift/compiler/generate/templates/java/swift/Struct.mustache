@@ -41,7 +41,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 {{^struct:asBean?}}
 @com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
-public final class {{struct:javaCapitalName}} {
+public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
     {{#struct:enableIsSet?}}
     private BitSet __isset_bit_vector = new BitSet();
     {{/struct:enableIsSet?}}

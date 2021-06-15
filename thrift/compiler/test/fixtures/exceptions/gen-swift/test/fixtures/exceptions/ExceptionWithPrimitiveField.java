@@ -97,6 +97,10 @@ public final class ExceptionWithPrimitiveField extends java.lang.RuntimeExceptio
     public int getErrorCode() { return errorCode; }
     
     
+    public static com.facebook.thrift.payload.Reader<ExceptionWithPrimitiveField> asReader() {
+      return ExceptionWithPrimitiveField::read0;
+    }
+    
     public static ExceptionWithPrimitiveField read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ExceptionWithPrimitiveField.NAMES_TO_IDS, ExceptionWithPrimitiveField.FIELD_METADATA);

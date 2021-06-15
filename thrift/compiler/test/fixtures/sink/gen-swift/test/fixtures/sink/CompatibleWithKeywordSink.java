@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
-public final class CompatibleWithKeywordSink {
+public final class CompatibleWithKeywordSink implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public CompatibleWithKeywordSink(
@@ -108,6 +108,10 @@ public final class CompatibleWithKeywordSink {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<CompatibleWithKeywordSink> asReader() {
+      return CompatibleWithKeywordSink::read0;
+    }
     
     public static CompatibleWithKeywordSink read0(TProtocol oprot) throws TException {
       TField __field;

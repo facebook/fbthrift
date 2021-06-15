@@ -81,6 +81,10 @@ public final class Serious extends java.lang.RuntimeException {
       return sonnet;
     }
     
+    public static com.facebook.thrift.payload.Reader<Serious> asReader() {
+      return Serious::read0;
+    }
+    
     public static Serious read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Serious.NAMES_TO_IDS, Serious.FIELD_METADATA);

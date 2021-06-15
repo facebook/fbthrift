@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="MyStructFloatFieldThrowExp", builder=MyStructFloatFieldThrowExp.Builder.class)
-public final class MyStructFloatFieldThrowExp {
+public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStructFloatFieldThrowExp(
@@ -186,6 +186,10 @@ public final class MyStructFloatFieldThrowExp {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStructFloatFieldThrowExp> asReader() {
+      return MyStructFloatFieldThrowExp::read0;
+    }
     
     public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
       TField __field;

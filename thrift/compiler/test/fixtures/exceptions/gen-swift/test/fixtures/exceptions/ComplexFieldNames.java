@@ -101,6 +101,10 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
       return internalErrorMessage;
     }
     
+    public static com.facebook.thrift.payload.Reader<ComplexFieldNames> asReader() {
+      return ComplexFieldNames::read0;
+    }
+    
     public static ComplexFieldNames read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ComplexFieldNames.NAMES_TO_IDS, ComplexFieldNames.FIELD_METADATA);

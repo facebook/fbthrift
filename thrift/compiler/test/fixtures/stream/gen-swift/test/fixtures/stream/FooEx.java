@@ -55,6 +55,10 @@ public final class FooEx extends java.lang.Exception {
     
 
     
+    public static com.facebook.thrift.payload.Reader<FooEx> asReader() {
+      return FooEx::read0;
+    }
+    
     public static FooEx read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FooEx.NAMES_TO_IDS, FooEx.FIELD_METADATA);

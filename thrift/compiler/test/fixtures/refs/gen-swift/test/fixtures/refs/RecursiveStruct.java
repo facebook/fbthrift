@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
-public final class RecursiveStruct {
+public final class RecursiveStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public RecursiveStruct(
@@ -108,6 +108,10 @@ public final class RecursiveStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<RecursiveStruct> asReader() {
+      return RecursiveStruct::read0;
+    }
     
     public static RecursiveStruct read0(TProtocol oprot) throws TException {
       TField __field;

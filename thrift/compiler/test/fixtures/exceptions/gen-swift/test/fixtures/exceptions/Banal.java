@@ -55,6 +55,10 @@ public final class Banal extends java.lang.RuntimeException {
     
 
     
+    public static com.facebook.thrift.payload.Reader<Banal> asReader() {
+      return Banal::read0;
+    }
+    
     public static Banal read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Banal.NAMES_TO_IDS, Banal.FIELD_METADATA);

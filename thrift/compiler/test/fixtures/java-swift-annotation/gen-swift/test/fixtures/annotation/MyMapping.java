@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
-public final class MyMapping {
+public final class MyMapping implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyMapping(
@@ -134,6 +134,10 @@ public final class MyMapping {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyMapping> asReader() {
+      return MyMapping::read0;
+    }
     
     public static MyMapping read0(TProtocol oprot) throws TException {
       TField __field;

@@ -77,6 +77,10 @@ public final class InitialException extends java.lang.Exception {
     public String getReason() { return reason; }
     
     
+    public static com.facebook.thrift.payload.Reader<InitialException> asReader() {
+      return InitialException::read0;
+    }
+    
     public static InitialException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(InitialException.NAMES_TO_IDS, InitialException.FIELD_METADATA);

@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
-public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
+public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
@@ -108,6 +108,10 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<StructWithRefAndAnnotCppNoexceptMoveCtor> asReader() {
+      return StructWithRefAndAnnotCppNoexceptMoveCtor::read0;
+    }
     
     public static StructWithRefAndAnnotCppNoexceptMoveCtor read0(TProtocol oprot) throws TException {
       TField __field;

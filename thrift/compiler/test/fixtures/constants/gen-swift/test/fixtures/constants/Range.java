@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="Range", builder=Range.Builder.class)
-public final class Range {
+public final class Range implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Range(
@@ -134,6 +134,10 @@ public final class Range {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Range> asReader() {
+      return Range::read0;
+    }
     
     public static Range read0(TProtocol oprot) throws TException {
       TField __field;

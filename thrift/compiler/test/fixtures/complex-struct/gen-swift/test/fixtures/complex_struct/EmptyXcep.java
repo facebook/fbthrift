@@ -55,6 +55,10 @@ public final class EmptyXcep extends java.lang.Exception {
     
 
     
+    public static com.facebook.thrift.payload.Reader<EmptyXcep> asReader() {
+      return EmptyXcep::read0;
+    }
+    
     public static EmptyXcep read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(EmptyXcep.NAMES_TO_IDS, EmptyXcep.FIELD_METADATA);

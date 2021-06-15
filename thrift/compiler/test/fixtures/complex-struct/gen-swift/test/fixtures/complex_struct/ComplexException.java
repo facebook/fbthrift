@@ -177,6 +177,10 @@ public final class ComplexException extends java.lang.Exception {
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
     
+    public static com.facebook.thrift.payload.Reader<ComplexException> asReader() {
+      return ComplexException::read0;
+    }
+    
     public static ComplexException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.FIELD_METADATA);

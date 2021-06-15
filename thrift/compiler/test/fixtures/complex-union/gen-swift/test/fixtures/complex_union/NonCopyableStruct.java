@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
-public final class NonCopyableStruct {
+public final class NonCopyableStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public NonCopyableStruct(
@@ -108,6 +108,10 @@ public final class NonCopyableStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<NonCopyableStruct> asReader() {
+      return NonCopyableStruct::read0;
+    }
     
     public static NonCopyableStruct read0(TProtocol oprot) throws TException {
       TField __field;
