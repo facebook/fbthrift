@@ -63,6 +63,17 @@ std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
   return queue.move();
 }
 
+void inline sendExceptionHelper(
+    ResponseChannelRequest::UniquePtr req, ResponsePayload&& payload) {
+#if !FOLLY_HAS_COROUTINES
+  if (req->isSink()) {
+    DCHECK(false);
+    return;
+  }
+#endif
+  req->sendException(std::move(payload));
+}
+
 template <typename Prot>
 void process_handle_exn_deserialization(
     const folly::exception_wrapper& ew,
@@ -84,21 +95,10 @@ void process_handle_exn_deserialization(
   ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto buf = process_serialize_xform_app_exn<Prot>(
       ::apache::thrift::util::toTApplicationException(ew), ctx, method);
-  eb->runInEventBaseThread([buf = std::move(buf),
-                            req = std::move(req)]() mutable {
-    if (req->isStream()) {
-      std::ignore = req->sendStreamReply(
-          std::move(buf), StreamServerCallbackPtr(nullptr));
-    } else if (req->isSink()) {
-#if FOLLY_HAS_COROUTINES
-      std::ignore = req->sendSinkReply(std::move(buf), SinkServerCallbackPtr{});
-#else
-      DCHECK(false);
-#endif
-    } else {
-      req->sendReply(std::move(buf));
-    }
-  });
+  eb->runInEventBaseThread(
+      [buf = std::move(buf), req = std::move(req)]() mutable {
+        sendExceptionHelper(std::move(req), std::move(buf));
+      });
 }
 
 template <typename Prot>
@@ -117,18 +117,7 @@ void process_throw_wrapped_handler_error(
   auto xp = ew.get_exception<TApplicationException>();
   auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
-  if (req->isStream()) {
-    std::ignore =
-        req->sendStreamReply(std::move(buf), StreamServerCallbackPtr(nullptr));
-  } else if (req->isSink()) {
-#if FOLLY_HAS_COROUTINES
-    std::ignore = req->sendSinkReply(std::move(buf), SinkServerCallbackPtr{});
-#else
-    DCHECK(false);
-#endif
-  } else {
-    req->sendReply(std::move(buf));
-  }
+  sendExceptionHelper(std::move(req), std::move(buf));
 }
 
 } // namespace ap
