@@ -15,6 +15,9 @@
 
 include(CMakeFindDependencyMacro)
 
+find_dependency(folly)
+find_dependency(fmt)
+
 # Save the PACKAGE_PREFIX_DIR in a separate variable.  find_dependency() calls
 # below can replace PACKAGE_PREFIX_DIR with the prefix of the dependency that
 # was searched for.
