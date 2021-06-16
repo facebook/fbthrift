@@ -268,6 +268,8 @@ class t_hack_generator : public t_oop_generator {
       const t_service* tservice, bool mangle, bool async);
   void generate_process_function(
       const t_service* tservice, const t_function* tfunction, bool async);
+  void generate_process_metadata_function(
+      const t_service* tservice, bool mangle, bool async);
   void generate_processor_event_handler_functions(std::ofstream& out);
   void generate_client_event_handler_functions(std::ofstream& out);
   void generate_event_handler_functions(std::ofstream& out, std::string cl);
@@ -3526,6 +3528,7 @@ void t_hack_generator::generate_service_processor(
   for (const auto* function : get_supported_functions(tservice)) {
     generate_process_function(tservice, function, async);
   }
+  generate_process_metadata_function(tservice, mangle, async);
 
   indent_down();
   f_service_ << "}\n";
@@ -3544,6 +3547,86 @@ void t_hack_generator::generate_service_processor(
   }
 
   f_service_ << "\n";
+}
+
+void t_hack_generator::generate_process_metadata_function(
+    const t_service* tservice, bool mangle, bool async) {
+  // Open function
+  indent(f_service_)
+      << "protected" << (async ? " async" : "")
+      << " function process_getThriftServiceMetadata(int $seqid, \\TProtocol $input, \\TProtocol $output): "
+      << (async ? "Awaitable<void>" : "void") << " {\n";
+  indent_up();
+
+  std::string function_name = "getThriftServiceMetadata";
+  std::string argsname =
+      "\\tmeta_ThriftMetadataService_" + function_name + "_args";
+  std::string resultname =
+      "\\tmeta_ThriftMetadataService_" + function_name + "_result";
+
+  f_service_ << indent() << "$reply_type = \\TMessageType::REPLY;\n"
+             << "\n"
+             << indent() << "if ($input is \\TBinaryProtocolAccelerated) {\n"
+             << indent() << "  $args = \\thrift_protocol_read_binary_struct("
+             << "$input, '" << argsname << "');\n"
+             << indent()
+             << "} else if ($input is \\TCompactProtocolAccelerated) {"
+             << "\n"
+             << indent()
+             << "  $args = \\thrift_protocol_read_compact_struct($input, '"
+             << argsname << "');\n"
+             << indent() << "} else {\n"
+             << indent() << "  $args = " << argsname
+             << "::withDefaultValues();\n"
+             << indent() << "  $args->read($input);\n"
+             << indent() << "}\n";
+
+  f_service_ << indent() << "$input->readMessageEnd();\n"
+             << indent() << "$result = " << resultname
+             << "::withDefaultValues();\n";
+
+  f_service_
+      << indent() << "try {\n"
+      << indent()
+      << "  $result->success = " << php_servicename_mangle(mangle, tservice)
+      << "StaticMetadata::getServiceMetadataResponse();\n"
+      << indent() << "} catch (\\Exception $ex) {\n"
+      << indent() << "  $reply_type = \\TMessageType::EXCEPTION;\n"
+      << indent()
+      << "  $result = new \\TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());\n"
+      << indent() << "}\n";
+
+  f_service_ << indent() << "if ($output is \\TBinaryProtocolAccelerated)\n";
+  scope_up(f_service_);
+
+  f_service_ << indent() << "\\thrift_protocol_write_binary($output, '"
+             << function_name
+             << "', $reply_type, $result, $seqid, $output->isStrictWrite());\n";
+
+  scope_down(f_service_);
+  f_service_ << indent()
+             << "else if ($output is \\TCompactProtocolAccelerated)\n";
+  scope_up(f_service_);
+
+  f_service_ << indent() << "\\thrift_protocol_write_compact($output, '"
+             << function_name << "', $reply_type, $result, $seqid);\n";
+
+  scope_down(f_service_);
+  f_service_ << indent() << "else\n";
+  scope_up(f_service_);
+
+  // Serialize the request header
+  f_service_ << indent() << "$output->writeMessageBegin(\"" << function_name
+             << "\", $reply_type, $seqid);\n"
+             << indent() << "$result->write($output);\n"
+             << indent() << "$output->writeMessageEnd();\n"
+             << indent() << "$output->getTransport()->flush();\n";
+
+  scope_down(f_service_);
+
+  // Close function
+  indent_down();
+  f_service_ << indent() << "}\n";
 }
 
 /**
