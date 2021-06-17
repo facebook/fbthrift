@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <folly/Portability.h>
+#include <variant>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Portability.h>
@@ -88,9 +88,89 @@ class EventTask : public concurrency::Runnable, public InteractionTask {
   bool oneway_;
 };
 
+class AsyncProcessor;
+class ServiceHandler;
+
+class AsyncProcessorFactory {
+ public:
+  virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
+  virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
+
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
+    return nullptr;
+  }
+
+  struct MethodMetadata {
+    virtual ~MethodMetadata() = default;
+  };
+  /**
+   * A map of method names to some loosely typed metadata that will be
+   * passed to AsyncProcessor::processSerializedRequest. The concrete type of
+   * the entries in the map is a contract between the AsyncProcessorFactory and
+   * the AsyncProcessor returned by getProcessor.
+   */
+  using MethodMetadataMap =
+      folly::F14FastMap<std::string, std::unique_ptr<const MethodMetadata>>;
+  /**
+   * A marker struct indicating that the AsyncProcessor supports any method, or
+   * a list of methods that is not enumerable. This applies to AsyncProcessor
+   * implementations such as proxies to external services.
+   * The implementation may optionally enumerate a subset of known methods.
+   */
+  struct WildcardMethodMetadataMap {
+    MethodMetadataMap knownMethods;
+  };
+  /**
+   * The concrete metadata type that will be passed if createMethodMetadata
+   * returns WildcardMethodMetadataMap and the current method is not in its
+   * knownMethods.
+   */
+  struct WildcardMethodMetadata final : public MethodMetadata {};
+
+  using CreateMethodMetadataResult = std::
+      variant<std::monostate, MethodMetadataMap, WildcardMethodMetadataMap>;
+  /**
+   * This function enumerates the list of methods supported by the
+   * AsyncProcessor returned by getProcessor(), if possible. The return value
+   * represents one of the following states:
+   *   1. This API is not supported / implemented. (Will be removed soon)
+   *   2. This API is supported and there is a static list of known methods.
+   *      This applies to all generated AsyncProcessors.
+   *   3. This API is supported but the complete set of methods is not known or
+   *      is not enumerable (e.g. all method names supported). This applies, for
+   *      example, to AsyncProcessors that proxy to external services.
+   *
+   * If returning (1), AsyncProcessor::processSerializedCompressedRequest MUST
+   * be implemented instead of
+   * AsyncProcessor::processSerializedCompressedRequestWithMetadata. Override
+   * the latter only if returning (2) or (3). The metadata API is effectively
+   * bypassed as a result.
+   *
+   * If returning (2), Thrift server will lookup the method metadata in the map.
+   * If the method name is not found, a not-found error will be sent and
+   * getProcessor will not be called. Any metadata passed to the processor will
+   * always be a reference from the map.
+   *
+   * If returning (3), Thrift server will lookup the method metadata in the map.
+   * If the method name is not found, Thrift will pass a WildcardMethodMetadata
+   * object instead. Any metadata passed to the processor will always be a
+   * reference from the map (or be WildcardMethodMetadata).
+   */
+  virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
+
+  virtual ~AsyncProcessorFactory() = default;
+};
+
 class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() = default;
+
+  using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
@@ -103,6 +183,15 @@ class AsyncProcessor : public TProcessorBase {
   virtual void processSerializedCompressedRequest(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm);
+
+  virtual void processSerializedCompressedRequestWithMetadata(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      const MethodMetadata& methodMetadata,
       protocol::PROTOCOL_TYPES prot_type,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
@@ -151,7 +240,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       protocol::PROTOCOL_TYPES prot_type,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
-      concurrency::ThreadManager* tm) override final {
+      concurrency::ThreadManager* tm) final {
     processSerializedCompressedRequest(
         std::move(req),
         SerializedCompressedRequest(std::move(serializedRequest)),
@@ -161,6 +250,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         tm);
   }
 
+  // TODO(praihan): This function will be removed once we enforce that
+  // createMethodMetadata is always implemented correctly.
   void processSerializedCompressedRequest(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
@@ -275,23 +366,6 @@ class RequestTask final : public EventTask {
  private:
   ChildType* childClass_;
   GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc_;
-};
-
-class ServiceHandler;
-
-class AsyncProcessorFactory {
- public:
-  virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
-  virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
-  /**
-   * Override to return a pre-initialized RequestContext.
-   * Its content will be copied in the RequestContext initialized at
-   * the beginning of each thrift request processing.
-   */
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
-  virtual ~AsyncProcessorFactory() = default;
 };
 
 /**

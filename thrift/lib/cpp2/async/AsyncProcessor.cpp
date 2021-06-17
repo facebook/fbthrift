@@ -85,6 +85,21 @@ void AsyncProcessor::processSerializedCompressedRequest(
       tm);
 }
 
+void AsyncProcessor::processSerializedCompressedRequestWithMetadata(
+    ResponseChannelRequest::UniquePtr,
+    SerializedCompressedRequest&&,
+    const MethodMetadata&,
+    protocol::PROTOCOL_TYPES,
+    Cpp2RequestContext*,
+    folly::EventBase*,
+    concurrency::ThreadManager*) {
+  LOG(FATAL)
+      << "processSerializedCompressedRequestWithMetadata was called because "
+         "AsyncProcessorFactory::createMethodMetadata (from the provided service) "
+         "opted in to use the MethodMetadata-based method resolution API. "
+         "Therefore, this method must be overridden alongside processSerializedRequest.";
+}
+
 bool GeneratedAsyncProcessor::createInteraction(
     ResponseChannelRequest::UniquePtr& req,
     int64_t id,

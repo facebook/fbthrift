@@ -851,7 +851,7 @@ void processMissing(
   }
 }
 
-//  Generated AsyncProcessor::process just calls this.
+// Generated AsyncProcessor::processSerializedCompressedRequest just calls this.
 template <class Processor>
 void process(
     Processor* processor,
