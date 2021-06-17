@@ -483,6 +483,22 @@ class ServerInterface : public virtual AsyncProcessorFactory,
 
   std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
 
+  /**
+   * The concrete instance of MethodMetadata that generated AsyncProcessors
+   * expect will be passed to them. Therefore, generated service handlers will
+   * also create instances of these for entries in
+   * AsyncProcessorFactory::createMethodMetadata.
+   */
+  template <typename Processor>
+  struct GeneratedMethodMetadata final
+      : public AsyncProcessorFactory::MethodMetadata {
+    explicit GeneratedMethodMetadata(
+        GeneratedAsyncProcessor::ProcessFuncs<Processor> funcs)
+        : processFuncs(funcs) {}
+
+    GeneratedAsyncProcessor::ProcessFuncs<Processor> processFuncs;
+  };
+
  protected:
   folly::Executor::KeepAlive<> getInternalKeepAlive();
 

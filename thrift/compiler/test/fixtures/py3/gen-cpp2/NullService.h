@@ -35,6 +35,7 @@ class NullServiceSvIf : public NullServiceSvAsyncIf, public apache::thrift::Serv
  public:
   typedef NullServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
  private:

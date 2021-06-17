@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> DbMixedStackArgumentsSvIf::getPr
   return std::make_unique<DbMixedStackArgumentsAsyncProcessor>(this);
 }
 
+DbMixedStackArgumentsSvIf::CreateMethodMetadataResult DbMixedStackArgumentsSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<DbMixedStackArgumentsAsyncProcessor>();
+}
+
 
 void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey0");

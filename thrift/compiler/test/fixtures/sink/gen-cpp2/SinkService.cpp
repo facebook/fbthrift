@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> SinkServiceSvIf::getProcessor() 
   return std::make_unique<SinkServiceAsyncProcessor>(this);
 }
 
+SinkServiceSvIf::CreateMethodMetadataResult SinkServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<SinkServiceAsyncProcessor>();
+}
+
 
 ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::method() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method");

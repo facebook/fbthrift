@@ -39,6 +39,7 @@ class RederivedServiceSvIf : public RederivedServiceSvAsyncIf, virtual public ::
  public:
   typedef RederivedServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual ::std::int32_t get_seven();

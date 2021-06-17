@@ -26,6 +26,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
   return std::make_unique<<%service:name%>AsyncProcessor>(this);
 }
 
+<%service:name%>SvIf::CreateMethodMetadataResult <%service:name%>SvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:name%>AsyncProcessor>();
+}
+
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>

@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> NestedContainersSvIf::getProcess
   return std::make_unique<NestedContainersAsyncProcessor>(this);
 }
 
+NestedContainersSvIf::CreateMethodMetadataResult NestedContainersSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<NestedContainersAsyncProcessor>();
+}
+
 
 void NestedContainersSvIf::mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapList");

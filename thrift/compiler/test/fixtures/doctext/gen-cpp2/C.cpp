@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> CSvIf::getProcessor() {
   return std::make_unique<CAsyncProcessor>(this);
 }
 
+CSvIf::CreateMethodMetadataResult CSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<CAsyncProcessor>();
+}
+
 
 void CSvIf::f() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("f");

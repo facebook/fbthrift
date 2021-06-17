@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> SomeServiceSvIf::getProcessor() 
   return std::make_unique<SomeServiceAsyncProcessor>(this);
 }
 
+SomeServiceSvIf::CreateMethodMetadataResult SomeServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<SomeServiceAsyncProcessor>();
+}
+
 
 void SomeServiceSvIf::bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bounce_map");

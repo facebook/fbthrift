@@ -56,6 +56,7 @@ class service3SvIf : public service3SvAsyncIf, public apache::thrift::ServerInte
  public:
   typedef service3AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void methodA();

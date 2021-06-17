@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> EmptyServiceSvIf::getProcessor()
   return std::make_unique<EmptyServiceAsyncProcessor>(this);
 }
 
+EmptyServiceSvIf::CreateMethodMetadataResult EmptyServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<EmptyServiceAsyncProcessor>();
+}
+
 
 
 

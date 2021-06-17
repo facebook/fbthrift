@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor(
   return std::make_unique<MyServiceFastAsyncProcessor>(this);
 }
 
+MyServiceFastSvIf::CreateMethodMetadataResult MyServiceFastSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceFastAsyncProcessor>();
+}
+
 
 void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::TApplicationException("Function hasDataById is unimplemented"));

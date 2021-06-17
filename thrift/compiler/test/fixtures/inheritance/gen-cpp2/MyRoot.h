@@ -38,6 +38,7 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
  public:
   typedef MyRootAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void do_root();

@@ -39,6 +39,7 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
  public:
   typedef MyServiceFastAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) override;

@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> RaiserSvIf::getProcessor() {
   return std::make_unique<RaiserAsyncProcessor>(this);
 }
 
+RaiserSvIf::CreateMethodMetadataResult RaiserSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<RaiserAsyncProcessor>();
+}
+
 
 void RaiserSvIf::doBland() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doBland");

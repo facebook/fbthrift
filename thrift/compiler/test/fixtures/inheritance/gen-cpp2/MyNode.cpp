@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyNodeSvIf::getProcessor() {
   return std::make_unique<MyNodeAsyncProcessor>(this);
 }
 
+MyNodeSvIf::CreateMethodMetadataResult MyNodeSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyNodeAsyncProcessor>();
+}
+
 
 void MyNodeSvIf::do_mid() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_mid");

@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor()
   return std::make_unique<ParamServiceAsyncProcessor>(this);
 }
 
+ParamServiceSvIf::CreateMethodMetadataResult ParamServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<ParamServiceAsyncProcessor>();
+}
+
 
 void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function void_ret_i16_param is unimplemented"));

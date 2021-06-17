@@ -122,6 +122,7 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
  public:
   typedef service_with_special_namesAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual ::std::int32_t get();

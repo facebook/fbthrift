@@ -116,6 +116,7 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
  public:
   typedef ParamServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t p_param1) override;

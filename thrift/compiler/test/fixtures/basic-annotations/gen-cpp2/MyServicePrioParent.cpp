@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioParentSvIf::getProc
   return std::make_unique<MyServicePrioParentAsyncProcessor>(this);
 }
 
+MyServicePrioParentSvIf::CreateMethodMetadataResult MyServicePrioParentSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServicePrioParentAsyncProcessor>();
+}
+
 
 void MyServicePrioParentSvIf::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");

@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor(
   return std::make_unique<ReturnServiceAsyncProcessor>(this);
 }
 
+ReturnServiceSvIf::CreateMethodMetadataResult ReturnServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<ReturnServiceAsyncProcessor>();
+}
+
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function noReturn is unimplemented"));

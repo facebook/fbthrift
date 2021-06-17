@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ServiceSvIf::getProcessor() {
   return std::make_unique<ServiceAsyncProcessor>(this);
 }
 
+ServiceSvIf::CreateMethodMetadataResult ServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<ServiceAsyncProcessor>();
+}
+
 
 ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> ServiceSvIf::func(std::unique_ptr<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>> /*arg1*/, std::unique_ptr<::cpp2::Foo> /*arg2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("func");

@@ -88,6 +88,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
  public:
   typedef ReturnServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;

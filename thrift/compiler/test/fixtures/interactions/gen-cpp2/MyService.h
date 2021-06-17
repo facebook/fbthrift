@@ -40,12 +40,16 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~MyInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    std::terminate();
+  }
+  CreateMethodMetadataResult createMethodMetadata() override {
     std::terminate();
   }
   virtual ::std::int32_t frobnicate();
@@ -88,6 +92,9 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
   }
+  CreateMethodMetadataResult createMethodMetadata() override {
+    std::terminate();
+  }
   virtual void async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
   virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback);
   virtual void async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback);
@@ -98,6 +105,9 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~SerialInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    std::terminate();
+  }
+  CreateMethodMetadataResult createMethodMetadata() override {
     std::terminate();
   }
   virtual void frobnicate();

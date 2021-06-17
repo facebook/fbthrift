@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyLeafSvIf::getProcessor() {
   return std::make_unique<MyLeafAsyncProcessor>(this);
 }
 
+MyLeafSvIf::CreateMethodMetadataResult MyLeafSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyLeafAsyncProcessor>();
+}
+
 
 void MyLeafSvIf::do_leaf() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_leaf");

@@ -41,6 +41,7 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
  public:
   typedef MyServicePrioParentAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void ping();

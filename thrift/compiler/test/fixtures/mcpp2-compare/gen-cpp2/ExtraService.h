@@ -60,6 +60,7 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::va
  public:
   typedef ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual bool simple_function();

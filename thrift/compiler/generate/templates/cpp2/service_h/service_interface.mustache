@@ -20,6 +20,7 @@
   typedef <%service:parent_service_name%>AsyncProcessor ProcessorType;
 <%^service:interaction?%>
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 <%#service:interactions%>
 <% > service_h/service_interface%>
@@ -28,6 +29,9 @@
 <%/service:interaction?%><%#service:interaction?%>
   virtual ~<%service:name%>If() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    std::terminate();
+  }
+  CreateMethodMetadataResult createMethodMetadata() override {
     std::terminate();
   }
 <%/service:interaction?%>

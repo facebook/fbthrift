@@ -47,6 +47,7 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
  public:
   typedef RaiserAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void doBland();

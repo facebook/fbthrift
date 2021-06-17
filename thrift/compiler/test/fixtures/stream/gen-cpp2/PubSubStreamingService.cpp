@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getP
   return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
 }
 
+PubSubStreamingServiceSvIf::CreateMethodMetadataResult PubSubStreamingServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<PubSubStreamingServiceAsyncProcessor>();
+}
+
 
 ::apache::thrift::ServerStream<::std::int32_t> PubSubStreamingServiceSvIf::returnstream(::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");

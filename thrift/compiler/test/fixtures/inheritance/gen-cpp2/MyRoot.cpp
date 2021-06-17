@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyRootSvIf::getProcessor() {
   return std::make_unique<MyRootAsyncProcessor>(this);
 }
 
+MyRootSvIf::CreateMethodMetadataResult MyRootSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyRootAsyncProcessor>();
+}
+
 
 void MyRootSvIf::do_root() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_root");

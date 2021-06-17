@@ -39,6 +39,7 @@ class DerivedServiceSvIf : public DerivedServiceSvAsyncIf, virtual public ::py3:
  public:
   typedef DerivedServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual ::std::int32_t get_six();

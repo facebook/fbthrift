@@ -39,6 +39,7 @@ class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual publi
  public:
   typedef MyServicePrioChildAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void pang();

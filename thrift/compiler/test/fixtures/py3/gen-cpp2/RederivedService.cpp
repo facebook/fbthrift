@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> RederivedServiceSvIf::getProcess
   return std::make_unique<RederivedServiceAsyncProcessor>(this);
 }
 
+RederivedServiceSvIf::CreateMethodMetadataResult RederivedServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<RederivedServiceAsyncProcessor>();
+}
+
 
 ::std::int32_t RederivedServiceSvIf::get_seven() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_seven");

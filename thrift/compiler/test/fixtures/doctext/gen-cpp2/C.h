@@ -45,6 +45,7 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef CAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
   virtual void f();

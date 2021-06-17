@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> service_with_special_namesSvIf::
   return std::make_unique<service_with_special_namesAsyncProcessor>(this);
 }
 
+service_with_special_namesSvIf::CreateMethodMetadataResult service_with_special_namesSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<service_with_special_namesAsyncProcessor>();
+}
+
 
 ::std::int32_t service_with_special_namesSvIf::get() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get");

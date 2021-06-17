@@ -910,6 +910,29 @@ bool setupRequestContextWithMessageBegin(
 MessageBegin deserializeMessageBegin(
     const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
 
+template <class Processor>
+void populateMethodMetadataMap(AsyncProcessorFactory::MethodMetadataMap& map) {
+  for (const auto& [methodName, processFuncs] : Processor::getOwnProcessMap()) {
+    map.emplace(
+        std::piecewise_construct,
+        std::forward_as_tuple(methodName),
+        std::forward_as_tuple(
+            std::make_unique<
+                ServerInterface::GeneratedMethodMetadata<Processor>>(
+                processFuncs)));
+  }
+  if constexpr (!is_root_async_processor<Processor>) {
+    populateMethodMetadataMap<typename Processor::BaseAsyncProcessor>(map);
+  }
+}
+
+template <class Processor>
+AsyncProcessorFactory::MethodMetadataMap createMethodMetadataMap() {
+  AsyncProcessorFactory::MethodMetadataMap result;
+  populateMethodMetadataMap<Processor>(result);
+  return result;
+}
+
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item) {
   PResult res;
