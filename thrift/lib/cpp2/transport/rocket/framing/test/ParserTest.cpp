@@ -167,6 +167,27 @@ TEST(ParserTest, BufferIsChainedAlignmentTest) {
   EXPECT_EQ(folly::StringPiece(buf->coalesce()), s + s);
 }
 
+TEST(ParserTest, PageAlignedBufferTest) {
+  // total number of (usable) bytes to be allocated
+  constexpr size_t kNumBytes = 32;
+  // portion of kNumBytes to be placed before page boundary
+  constexpr size_t kStartOffset = 13;
+  // final length of the iobuf (must be <= kNumBytes)
+  size_t trimLength = 0;
+  auto buf = get4kAlignedBuf(kNumBytes, kStartOffset, trimLength);
+  ASSERT_NE(nullptr, buf.get());
+  EXPECT_EQ(
+      reinterpret_cast<std::uintptr_t>(buf->data() + kStartOffset) % 4096u, 0);
+  EXPECT_EQ(trimLength, buf->length());
+
+  trimLength = kStartOffset;
+  buf = get4kAlignedBuf(kNumBytes, kStartOffset, trimLength);
+  ASSERT_NE(nullptr, buf.get());
+  EXPECT_EQ(
+      reinterpret_cast<std::uintptr_t>(buf->data() + kStartOffset) % 4096u, 0);
+  EXPECT_EQ(trimLength, buf->length());
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

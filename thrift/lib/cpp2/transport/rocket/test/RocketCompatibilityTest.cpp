@@ -188,12 +188,14 @@ TEST_F(RocketCompatibilityTest, RequestResponse_NoCompression) {
 
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
     ASSERT_NE(nullptr, channel);
-    auto sock = channel->getTransport()
-                    ->getUnderlyingTransport<TAsyncSocketIntercepted>();
-    ASSERT_NE(nullptr, sock);
-    int32_t numRead = sock->getTotalBytesRead();
-    // check that compression actually kicked in
-    EXPECT_GT(numRead, asString.size());
+    channel->getEventBase()->runInEventBaseThreadAndWait([&] {
+      auto sock = channel->getTransport()
+                      ->getUnderlyingTransport<TAsyncSocketIntercepted>();
+      ASSERT_NE(nullptr, sock);
+      int32_t numRead = sock->getTotalBytesRead();
+      // check that compression actually kicked in
+      EXPECT_GT(numRead, asString.size());
+    });
   });
 }
 

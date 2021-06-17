@@ -54,6 +54,9 @@ bool alignTo4k(folly::IOBuf& buffer, size_t startOffset, size_t frameSize);
 bool alignTo4kBufQueue(
     folly::IOBufQueue& bufQueue, size_t startOffset, size_t frameSize);
 
+std::unique_ptr<folly::IOBuf> get4kAlignedBuf(
+    size_t numBytes, size_t startOffset, size_t trimLength);
+
 // Has both false positives and false negatives
 bool isMaybeRocketFrame(const folly::IOBuf& data);
 

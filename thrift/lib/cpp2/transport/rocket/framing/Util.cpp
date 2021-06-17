@@ -22,6 +22,10 @@
 
 #include <folly/Conv.h>
 
+namespace {
+constexpr size_t kPageSize = 4096;
+} // namespace
+
 namespace apache {
 namespace thrift {
 namespace rocket {
@@ -89,25 +93,12 @@ ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
 }
 
 bool alignTo4k(folly::IOBuf& buffer, size_t startOffset, size_t frameSize) {
-  constexpr int kPageSize = 4096;
-  size_t padding = kPageSize - startOffset % kPageSize;
-  size_t allocationSize = padding + std::max(buffer.length(), frameSize);
-
-  void* rawbuf = folly::aligned_malloc(allocationSize, kPageSize);
-  if (!rawbuf) {
-    LOG(ERROR) << "Allocating : " << kPageSize
-               << " aligned memory of size: " << allocationSize << " failed!";
+  auto iobuf = get4kAlignedBuf(
+      std::max(buffer.length(), frameSize), startOffset, buffer.length());
+  if (UNLIKELY(!iobuf)) {
     return false;
   }
 
-  auto iobuf = folly::IOBuf::takeOwnership(
-      static_cast<void*>(rawbuf),
-      allocationSize,
-      allocationSize,
-      [](void* p, void*) { folly::aligned_free(p); });
-
-  iobuf->trimStart(padding);
-  iobuf->trimEnd(allocationSize - buffer.length() - padding);
   memcpy(iobuf->writableData(), buffer.writableData(), buffer.length());
   buffer = *std::move(iobuf);
   return true;
@@ -115,25 +106,13 @@ bool alignTo4k(folly::IOBuf& buffer, size_t startOffset, size_t frameSize) {
 
 bool alignTo4kBufQueue(
     folly::IOBufQueue& bufQueue, size_t startOffset, size_t frameSize) {
-  constexpr int kPageSize = 4096;
-  size_t padding = kPageSize - startOffset % kPageSize;
-  size_t allocationSize = padding + std::max(bufQueue.chainLength(), frameSize);
-
-  void* rawbuf = folly::aligned_malloc(allocationSize, kPageSize);
-  if (!rawbuf) {
-    LOG(ERROR) << "Allocating : " << kPageSize
-               << " aligned memory of size: " << allocationSize << " failed!";
+  auto iobuf = get4kAlignedBuf(
+      std::max(bufQueue.chainLength(), frameSize),
+      startOffset,
+      bufQueue.chainLength());
+  if (UNLIKELY(!iobuf)) {
     return false;
   }
-
-  auto iobuf = folly::IOBuf::takeOwnership(
-      static_cast<void*>(rawbuf),
-      allocationSize,
-      allocationSize,
-      [](void* p, void*) { folly::aligned_free(p); });
-
-  iobuf->trimStart(padding);
-  iobuf->trimEnd(allocationSize - bufQueue.chainLength() - padding);
 
   folly::io::Cursor cursor(bufQueue.front());
   cursor.pull(iobuf->writableData(), bufQueue.chainLength());
@@ -141,6 +120,24 @@ bool alignTo4kBufQueue(
   bufQ.append(*std::move(iobuf));
   bufQueue = std::move(bufQ);
   return true;
+}
+
+std::unique_ptr<folly::IOBuf> get4kAlignedBuf(
+    size_t numBytes, size_t startOffset, size_t trimLength) {
+  DCHECK_LE(trimLength, numBytes);
+  const size_t padding = kPageSize - (startOffset % kPageSize);
+  const size_t size = numBytes + padding;
+  void* rawbuf = folly::aligned_malloc(size, kPageSize);
+  if (UNLIKELY(!rawbuf)) {
+    LOG(ERROR) << "Allocating : " << kPageSize
+               << " aligned memory of size: " << numBytes << " failed!";
+    return nullptr;
+  }
+  auto iobuf = folly::IOBuf::takeOwnership(
+      rawbuf, size, size, [](void* p, void*) { folly::aligned_free(p); });
+  iobuf->trimStart(padding);
+  iobuf->trimEnd(size - std::min(numBytes, trimLength) - padding);
+  return iobuf;
 }
 
 // Has both false positives and false negatives
