@@ -93,6 +93,9 @@ class ServerConfigs {
   // @see ThriftServer::getTosReflect function.
   virtual bool getTosReflect() const = 0;
 
+  // @see ThriftServer::getListenerTos function.
+  virtual uint32_t getListenerTos() const = 0;
+
   /**
    * Disables tracking of number of active requests in the server.
    *

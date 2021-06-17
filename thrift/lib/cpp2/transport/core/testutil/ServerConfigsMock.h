@@ -82,6 +82,8 @@ class ServerConfigsMock : public ServerConfigs {
     return adaptiveConcurrencyController_;
   }
 
+  uint32_t getListenerTos() const override { return 0; }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

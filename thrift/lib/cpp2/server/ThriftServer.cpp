@@ -373,8 +373,9 @@ void ThriftServer::setup() {
 
           try {
             socket->setTosReflect(tosReflect_);
+            socket->setListenerTos(listenerTos_);
           } catch (std::exception const& ex) {
-            LOG(ERROR) << "Got exception setting up TOS reflect: "
+            LOG(ERROR) << "Got exception setting up TOS settings: "
                        << folly::exceptionStr(ex);
           }
         });

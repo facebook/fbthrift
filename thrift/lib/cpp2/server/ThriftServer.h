@@ -214,6 +214,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   friend class rocket::ThriftRocketServerHandler;
 
   bool tosReflect_{false};
+  uint32_t listenerTos_{0};
 
   std::optional<instrumentation::ServerTracker> tracker_;
 
@@ -558,6 +559,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * Get TOS reflection setting for the server socket
    */
   bool getTosReflect() const override { return tosReflect_; }
+
+  /**
+   * Set default TOS for listener/accepted connections
+   */
+  void setListenerTos(uint32_t tos) { listenerTos_ = tos; }
+
+  /**
+   * Get default TOS for listener socket
+   */
+  uint32_t getListenerTos() const override { return listenerTos_; }
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket
