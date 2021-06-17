@@ -1129,10 +1129,6 @@ Field:
         $$->set_default_value(own($7));
       }
       driver.finish_node($$, LineType::Field, own($1), own($8));
-
-      if ($3 != t_field_qualifier::optional && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
-        driver.warning("`cpp.ref` field must be optional if it is recursive.");
-      }
     }
 
 FieldIdentifier:

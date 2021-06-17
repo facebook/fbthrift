@@ -403,7 +403,7 @@ std::string get_include_path(
 compile_result compile(const std::vector<std::string>& arguments) {
   compile_result result;
 
-  // Parese arguments.
+  // Parse arguments.
   g_stage = "arguments";
   parsing_params pparams{};
   gen_params gparams{};

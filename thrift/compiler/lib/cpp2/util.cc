@@ -253,6 +253,11 @@ bool is_mixin(const t_field& field) {
   return field.has_annotation("cpp.mixin");
 }
 
+bool has_ref_annotation(const t_field& field) {
+  return field.has_annotation(
+      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
+}
+
 static void get_mixins_and_members_impl(
     const t_struct& strct,
     const t_field* top_level_mixin,

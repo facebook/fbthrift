@@ -174,6 +174,23 @@ void validate_mixin_field_attributes(
   }
 }
 
+/*
+ * Validates whether all fields in a t_struct which have annotations
+ * cpp.ref or cpp2.ref are also optional.
+ */
+void validate_struct_optional_refs(
+    diagnostic_context& ctx, const t_struct& node) {
+  for (const auto* field : node.fields()) {
+    if (cpp2::has_ref_annotation(*field) &&
+        field->qualifier() != t_field_qualifier::optional) {
+      ctx.warning(
+          *field,
+          "`cpp.ref` field `%s` must be optional if it is recursive.",
+          field->name().c_str());
+    }
+  }
+}
+
 void validate_enum_value_name_uniqueness(
     diagnostic_context& ctx, const t_enum& node) {
   redef_checker(ctx, "Enum value", node).check_all(node.values());
@@ -233,6 +250,8 @@ ast_validator standard_validator() {
 
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_field_visitor(&validate_mixin_field_attributes);
+
+  validator.add_struct_visitor(&validate_struct_optional_refs);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);

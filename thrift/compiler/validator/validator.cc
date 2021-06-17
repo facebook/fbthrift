@@ -228,11 +228,6 @@ bool reserved_field_id_validator::visit(t_struct* s) {
   return true;
 }
 
-static bool has_ref_annotation(const t_field* f) {
-  return f->has_annotation(
-      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
-}
-
 bool recursive_union_validator::visit(t_struct* s) {
   if (!s->is_union()) {
     return true;
@@ -253,7 +248,7 @@ bool recursive_union_validator::visit(t_struct* s) {
 
 bool recursive_ref_validator::visit(t_struct* s) {
   for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box") && has_ref_annotation(field)) {
+    if (field->has_annotation("cpp.box") && cpp2::has_ref_annotation(*field)) {
       add_error(
           field->get_lineno(),
           std::string(

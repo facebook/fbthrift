@@ -156,6 +156,8 @@ int32_t get_split_count(std::map<std::string, std::string> const& options);
 
 bool is_mixin(const t_field& field);
 
+bool has_ref_annotation(const t_field& f);
+
 struct mixin_member {
   const t_field* mixin;
   const t_field* member;

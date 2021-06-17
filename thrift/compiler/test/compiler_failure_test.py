@@ -382,6 +382,26 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:bar.thrift:3] Field `B.i` and `a.i` can not have same name in struct `B`.\n",
         )
 
+    def test_struct_optional_refs(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                1: A rec (cpp.ref);
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 0)
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] `cpp.ref` field `rec` must be optional if it is recursive.\n",
+        )
+
     def test_mixin_nonstruct_members(self):
         write_file(
             "foo.thrift",
@@ -443,8 +463,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 [FAILURE:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
-                [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
-                [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
+                [WARNING:foo.thrift:3] `cpp.ref` field `a` must be optional if it is recursive.
                 """
             ),
         )
