@@ -784,8 +784,25 @@ GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
   return funcs.binary;
 }
 
+inline void nonRecursiveProcessMissing(
+    const std::string& fname,
+    ResponseChannelRequest::UniquePtr req,
+    folly::EventBase* eb) {
+  if (req) {
+    eb->runInEventBaseThread([request = move(req),
+                              msg = fmt::format(
+                                  "Method name {} not found", fname)]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+              msg),
+          kMethodUnknownErrorCode);
+    });
+  }
+}
+
 template <class ProtocolReader, class Processor>
-void processMissing(
+void recursiveProcessMissing(
     Processor* processor,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
@@ -795,7 +812,7 @@ void processMissing(
     concurrency::ThreadManager* tm);
 
 template <class ProtocolReader, class Processor>
-void processPmap(
+void recursiveProcessPmap(
     Processor* proc,
     const typename Processor::ProcessMap& pmap,
     ResponseChannelRequest::UniquePtr req,
@@ -806,7 +823,7 @@ void processPmap(
   const auto& fname = ctx->getMethodName();
   auto processFuncs = pmap.find(fname);
   if (processFuncs == pmap.end()) {
-    processMissing<ProtocolReader>(
+    recursiveProcessMissing<ProtocolReader>(
         proc, fname, std::move(req), std::move(serializedRequest), ctx, eb, tm);
     return;
   }
@@ -817,7 +834,7 @@ void processPmap(
 }
 
 template <class ProtocolReader, class Processor>
-void processMissing(
+void recursiveProcessMissing(
     Processor* processor,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
@@ -826,21 +843,10 @@ void processMissing(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
   if constexpr (is_root_async_processor<Processor>) {
-    if (req) {
-      eb->runInEventBaseThread(
-          [request = move(req),
-           msg = fmt::format("Method name {} not found", fname)]() {
-            request->sendErrorWrapped(
-                folly::make_exception_wrapper<TApplicationException>(
-                    TApplicationException::TApplicationExceptionType::
-                        UNKNOWN_METHOD,
-                    msg),
-                kMethodUnknownErrorCode);
-          });
-    }
+    nonRecursiveProcessMissing(fname, std::move(req), eb);
   } else {
     using BaseAsyncProcessor = typename Processor::BaseAsyncProcessor;
-    processPmap<ProtocolReader, BaseAsyncProcessor>(
+    recursiveProcessPmap<ProtocolReader, BaseAsyncProcessor>(
         processor,
         BaseAsyncProcessor::getOwnProcessMap(),
         std::move(req),
@@ -851,7 +857,98 @@ void processMissing(
   }
 }
 
-// Generated AsyncProcessor::processSerializedCompressedRequest just calls this.
+/**
+ * Recursive implementation of method resolution based on
+ * Processor::getOwnProcessMap(). This is the fallback/legacy implementation for
+ * generated AsyncProcessor::processSerializedCompressedRequest, which is called
+ * in the absence of MethodMetadata support.
+ *
+ * TODO(praihan): Remove this implementation once all services support
+ * MethodMetadata.
+ */
+template <class ProtocolReader, class Processor>
+void recursiveProcess(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  return recursiveProcessPmap<ProtocolReader>(
+      processor,
+      Processor::getOwnProcessMap(),
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm);
+}
+
+/**
+ * Non-recursive implementation of method resolution based on
+ * the passed-in MethodMetadata.
+ * See ServerInterface::GeneratedMethodMetadata.
+ */
+template <class ProtocolReader, class Processor>
+void nonRecursiveProcess(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
+  static_assert(std::is_final_v<Metadata>);
+  LOG_IF(
+      DFATAL, dynamic_cast<const Metadata*>(&untypedMethodMetadata) == nullptr)
+      << "Received MethodMetadata of an unknown type";
+  auto methodMetadata = static_cast<const Metadata*>(&untypedMethodMetadata);
+  auto pfn = getProcessFuncFromProtocol(
+      folly::tag<ProtocolReader>, methodMetadata->processFuncs);
+  (processor->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+// Generated AsyncProcessor::processSerializedCompressedRequestWithMetadata just
+// calls this
+template <class Processor>
+void process(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    const apache::thrift::AsyncProcessor::MethodMetadata& methodMetadata,
+    protocol::PROTOCOL_TYPES protType,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      return nonRecursiveProcess<BinaryProtocolReader>(
+          processor,
+          std::move(req),
+          std::move(serializedRequest),
+          methodMetadata,
+          ctx,
+          eb,
+          tm);
+    }
+    case protocol::T_COMPACT_PROTOCOL: {
+      return nonRecursiveProcess<CompactProtocolReader>(
+          processor,
+          std::move(req),
+          std::move(serializedRequest),
+          methodMetadata,
+          ctx,
+          eb,
+          tm);
+    }
+    default:
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+      return;
+  }
+}
+
+// Generated AsyncProcessor::processSerializedCompressedRequest just calls this
 template <class Processor>
 void process(
     Processor* processor,
@@ -861,27 +958,14 @@ void process(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
-  const auto& pmap = Processor::getOwnProcessMap();
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {
-      return processPmap<BinaryProtocolReader>(
-          processor,
-          pmap,
-          std::move(req),
-          std::move(serializedRequest),
-          ctx,
-          eb,
-          tm);
+      return recursiveProcess<BinaryProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
-      return processPmap<CompactProtocolReader>(
-          processor,
-          pmap,
-          std::move(req),
-          std::move(serializedRequest),
-          ctx,
-          eb,
-          tm);
+      return recursiveProcess<CompactProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
     }
     default:
       LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
@@ -910,19 +994,39 @@ bool setupRequestContextWithMessageBegin(
 MessageBegin deserializeMessageBegin(
     const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
 
-template <class Processor>
+/**
+ * The function pointers themselves are contravariant on the Processor type but
+ * ProcessFuncs is not because templates are invariant. This function performs
+ * the conversion manually.
+ */
+template <class DerivedProcessor, class BaseProcessor>
+std::enable_if_t<
+    std::is_base_of_v<BaseProcessor, DerivedProcessor>,
+    GeneratedAsyncProcessor::ProcessFuncs<DerivedProcessor>>
+downcastProcessFuncs(
+    const GeneratedAsyncProcessor::ProcessFuncs<BaseProcessor>& processFuncs) {
+  return GeneratedAsyncProcessor::ProcessFuncs<DerivedProcessor>{
+      processFuncs.compact, processFuncs.binary};
+}
+
+template <
+    class MostDerivedProcessor,
+    class CurrentProcessor = MostDerivedProcessor>
 void populateMethodMetadataMap(AsyncProcessorFactory::MethodMetadataMap& map) {
-  for (const auto& [methodName, processFuncs] : Processor::getOwnProcessMap()) {
+  for (const auto& [methodName, processFuncs] :
+       CurrentProcessor::getOwnProcessMap()) {
     map.emplace(
-        std::piecewise_construct,
-        std::forward_as_tuple(methodName),
-        std::forward_as_tuple(
-            std::make_unique<
-                ServerInterface::GeneratedMethodMetadata<Processor>>(
-                processFuncs)));
+        methodName,
+        // Always create GeneratatedMethodMetadata<MostDerivedProcessor> so that
+        // all entries in the map are of the same type.
+        std::make_unique<
+            ServerInterface::GeneratedMethodMetadata<MostDerivedProcessor>>(
+            downcastProcessFuncs<MostDerivedProcessor>(processFuncs)));
   }
-  if constexpr (!is_root_async_processor<Processor>) {
-    populateMethodMetadataMap<typename Processor::BaseAsyncProcessor>(map);
+  if constexpr (!is_root_async_processor<CurrentProcessor>) {
+    populateMethodMetadataMap<
+        MostDerivedProcessor,
+        typename CurrentProcessor::BaseAsyncProcessor>(map);
   }
 }
 
