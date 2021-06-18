@@ -53,8 +53,6 @@ class ConnectionManager;
 namespace apache {
 namespace thrift {
 
-class AdmissionStrategy;
-
 typedef std::function<void(
     folly::EventBase*,
     wangle::ConnectionManager*,
@@ -261,9 +259,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Max response size allowed. This is the size of the serialized and
   // transformed response, headers not included. 0 (default) means no limit.
   ServerAttributeDynamic<uint64_t> maxResponseSize_{0};
-
-  // Admission strategy use for accepting new requests
-  ServerAttributeDynamic<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
 
   /**
    * The maximum memory usage (in bytes) by each request debug payload.
@@ -1039,23 +1034,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Allows running the server as a Runnable thread
   void run() override { serve(); }
-
-  /**
-   * Set the admission strategy used by the Thrift Server
-   */
-  void setAdmissionStrategy(
-      std::shared_ptr<AdmissionStrategy> admissionStrategy,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) {
-    admissionStrategy_.set(std::move(admissionStrategy), source);
-  }
-
-  /**
-   * Return the admission strategy associated with the Thrift Server
-   */
-  std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
-    return admissionStrategy_.get();
-  }
 
   /**
    * Return the maximum memory usage by each debug payload.

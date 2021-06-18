@@ -18,7 +18,6 @@
 
 #include <folly/init/Init.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/admission_strategy/GlobalAdmissionStrategy.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 #include <thrift/test/loadshedding/client/Client.h>
 #include <thrift/test/loadshedding/server/BackendServiceHandler.h>
@@ -39,9 +38,6 @@ int main(int argc, char* argv[]) {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(0);
   server->setInterface(handler);
-
-  auto strategy = std::make_shared<GlobalAdmissionStrategy>(seconds(1));
-  server->setAdmissionStrategy(strategy);
 
   ScopedServerThread thread;
   thread.start(server);

@@ -174,7 +174,6 @@ add_library(
   server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
   server/ThriftServer.cpp
-  server/admission_strategy/AdmissionStrategy.cpp
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
   transport/core/ThriftClient.cpp

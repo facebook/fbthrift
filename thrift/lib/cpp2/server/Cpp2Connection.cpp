@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
@@ -465,18 +464,6 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  auto admissionStrategy = worker_->getServer()->getAdmissionStrategy();
-  auto admissionController =
-      admissionStrategy->select(methodName, hreq->getHeader());
-  if (!admissionController->admit()) {
-    killRequest(
-        std::move(hreq),
-        TApplicationException::TApplicationExceptionType::LOADSHEDDING,
-        kOverloadedErrorCode,
-        "adaptive loadshedding rejection");
-    return;
-  }
-
   if (worker_->isStopping()) {
     killRequest(
         std::move(hreq),
@@ -536,10 +523,6 @@ void Cpp2Connection::requestReceived(
       std::move(methodName));
 
   logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
-
-  if (admissionController) {
-    t2r->setAdmissionController(std::move(admissionController));
-  }
 
   server->incActiveRequests();
   if (samplingStatus.isEnabled()) {

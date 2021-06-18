@@ -21,7 +21,6 @@
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/admission_strategy/GlobalAdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/perf/cpp2/server/BenchmarkHandler.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
@@ -34,9 +33,7 @@ DEFINE_int32(io_threads, 0, "Number of IO threads (0 means number of cores)");
 DEFINE_int32(cpu_threads, 0, "Number of CPU threads (0 means number of cores)");
 DEFINE_int32(stats_interval_sec, 1, "Seconds between stats");
 DEFINE_int32(terminate_sec, 0, "How long to run server (0 means forever)");
-DEFINE_bool(use_admission_control, false, "Enable admission control");
 
-using apache::thrift::GlobalAdmissionStrategy;
 using apache::thrift::HTTP2RoutingHandler;
 using apache::thrift::ThriftServer;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
@@ -83,10 +80,6 @@ int main(int argc, char** argv) {
   server->setProcessorFactory(cpp2PFac);
 
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
-  if (FLAGS_use_admission_control) {
-    auto strategy = std::make_shared<GlobalAdmissionStrategy>(seconds(1));
-    server->setAdmissionStrategy(strategy);
-  }
 
   LOG(INFO) << "Benchmark server running on port: " << FLAGS_port;
 

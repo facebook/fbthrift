@@ -32,7 +32,6 @@
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/server/AdmissionController.h>
 
 namespace folly {
 class IOBuf;
@@ -151,36 +150,13 @@ class ResponseChannelRequest {
 
   virtual void sendQueueTimeoutResponse() {}
 
-  virtual ~ResponseChannelRequest() {
-    if (admissionController_ != nullptr) {
-      if (!startedProcessing_) {
-        admissionController_->dequeue();
-      } else {
-        auto latency = std::chrono::steady_clock::now() - creationTimestamps_;
-        admissionController_->returnedResponse(latency);
-      }
-    }
-  }
+  virtual ~ResponseChannelRequest() = default;
 
   bool getShouldStartProcessing() {
     if (!tryStartProcessing()) {
       return false;
     }
-
-    if (admissionController_ != nullptr) {
-      admissionController_->dequeue();
-      creationTimestamps_ = std::chrono::steady_clock::now();
-    }
     return true;
-  }
-
-  void setAdmissionController(
-      std::shared_ptr<AdmissionController> admissionController) {
-    admissionController_ = std::move(admissionController);
-  }
-
-  std::shared_ptr<AdmissionController> getAdmissionController() const {
-    return admissionController_;
   }
 
  protected:
@@ -193,9 +169,7 @@ class ResponseChannelRequest {
   }
   virtual bool tryStartProcessing() = 0;
 
-  std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
   bool startedProcessing_{false};
-  std::chrono::steady_clock::time_point creationTimestamps_;
 };
 
 /**

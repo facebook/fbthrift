@@ -31,7 +31,6 @@
 #include <folly/portability/Sockets.h>
 
 #include <thrift/lib/cpp2/PluggableFunction.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AcceptAllAdmissionStrategy.h>
 
 THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
 namespace apache {
@@ -58,9 +57,8 @@ const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();
 
 BaseThriftServer::BaseThriftServer()
-    : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()),
-      adaptiveConcurrencyController_{
-          THRIFT_PLUGGABLE_FUNC(makeAdaptiveConcurrencyConfig())},
+    : adaptiveConcurrencyController_{THRIFT_PLUGGABLE_FUNC(
+          makeAdaptiveConcurrencyConfig())},
       addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
