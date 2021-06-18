@@ -5,7 +5,7 @@
 * [Creating a generator](#creating-a-generator)
 * [Using Templates](#using-templates)
   * [Writing the driver](#writing-the-driver)
-  * [Partials Templates](#partial templates)
+  * [Partial Templates](#partial-templates)
   * [Context types](#context-types)
   * [Context structure](#template-context-structure)
   * [Extending Context Maps](#extending-context-maps)
@@ -38,10 +38,10 @@ specified in the constructor to `t_mstch_generator`.
 Creating a new generator then requires the following steps:
 
 1. Create the C++ file in which the driver will be contained.
-  - Declare a new class inheriting from `t_mstch_generator` in this file
+  - Declare a new class inheriting from `t_mstch_generator` in this file.
     + Include `<thrift/compiler/generate/t_mstch_generator.h>` to extend this
-      class
-  - Register the new generator with the rest of the compiler
+      class.
+  - Register the new generator with the rest of the compiler.
     + `THRIFT_REGISTER_GENERATOR(generator_flag, "Short name", "Long name");`
 2. Implement the `generate_program` function for your generator.
 3. Write templates, iterating on the driver if necessary.
@@ -59,16 +59,16 @@ There are several inherited functions which are useful when implementing
 
 - `t_mstch_generator::dump`
   + Takes an element of the Thrift AST and converts it into a mstch context
-    node that can be provided to the renderer
+    node that can be provided to the renderer.
 - `t_mstch_generator::render`
   + Given the name of a template and a mstch context node, renders the template
-    and returns the results as a string
+    and returns the results as a string.
     * A template's name is the same as its filename, but with the trailing
-      ".mustache" removed
+      ".mustache" removed.
 - `t_mstch_generator::write_output`
   + Given render output and a relative path, writes the output to disk, putting
     the generated code in the proper absolute directory and recording that
-    the file was written
+    the file was written.
 - `t_mstch_generator::get_option`
   + Returns the value associated with a particular
     option key passed on the command line. This lets you change small behavior
@@ -326,24 +326,24 @@ mstch::map extend_struct(const t_struct& strct) const override {
 }
 ```
 
-where `my_escaping_function` is some function that performs the desired
+Where `my_escaping_function` is some function that performs the desired
 escaping. From within templates now, as long as a struct is currently in scope,
 `{{struct:escapedName}}` will refer to the escaped name as defined above, as the
 builtin `dump` functions are aware of the `extend_*` functions.
 
 ## Using the new generator
 
-To invoke a mstch generator, run the following command
+To invoke a mstch generator, run the following command:
 
 ```sh
 thrift --gen $MY_GENERATOR -o $OUT_DIR $THRIFT_SRC
 ```
 
-where `MY_GENERATOR` is the name of the generator as specified in the C++ driver,
+Where `MY_GENERATOR` is the name of the generator as specified in the C++ driver,
 `OUT_DIR` is the desired output directory, and `THRIFT_SRC` is the Thrift IDL
 source file.
 
-Options can be specified as part of the string passed to `--gen`, for example,
+Options can be specified as part of the string passed to `--gen`, for example:
 
 ```sh
 thrift --gen mstch_swift:option=value -o $PWD $PWD/test.thrift

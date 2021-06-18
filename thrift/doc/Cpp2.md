@@ -7,37 +7,37 @@ This is a re-implementation of both the generated cpp code, and a
 fully asynchronous version of the c++ server code.  In many ways it is
 similar to the older first-generation implementation:
 
-* Can run code inline, or in a ThreadManager queue
+* Can run code inline, or in a ThreadManager queue.
 
 * Has a single acceptor thread, and hands off the accepts to IO
-  threads
+  threads.
 
-* Has many options to handle server overload
+* Has many options to handle server overload.
 
-* Uses libevent
+* Uses libevent.
 
 * Maintains wire-format and IDL backwards compatibility.
 
 *And many differences:*
 
-* Updated for C++11
+* Updated for C++11.
 
 * Can optionally provide an asynchronous callback, or future
   interface, as well as the previous synchronous server interface.
 
 * Responses can be sent to the client out of order, and processed in
-  parallel
+  parallel.
 
-* Supports dynamic compression and tracing via the header
+* Supports dynamic compression and tracing via the header.
 
-* Uses eventfd instead of pipes for notification
+* Uses eventfd instead of pipes for notification.
 
 * Uses buffer chains
   ([folly/io/IOBuf.h](https://github.com/facebook/folly/blob/master/folly/io/IOBuf.h))
-  to prevent large allocations of memory
+  to prevent large allocations of memory.
 
 * Allows true zero-copy from client to server and back using IOBufs
-  (vs. previous generated code that used std::string for binary type)
+  (vs. previous generated code that used std::string for binary type).
 
 * It's about 4x as fast as NonblockingServer in our loadtests
   (`perf/cpp`) for small requests.  Latency is also much improved
@@ -49,7 +49,7 @@ similar to the older first-generation implementation:
 This document assumes you are familiar with basic thrift usage.  We
 recommend the following to become familiar:
 [Apache Thrift](http://thrift.apache.org/),
-[Thrift: The Missing Guide](http://diwakergupta.github.com/thrift-missing-guide/),
+[Thrift: The Missing Guide](http://diwakergupta.github.io/thrift-missing-guide/),
 and [SETT on Apache Thrift](http://jnb.ociweb.com/jnb/jnbJun2009.html).
 
 
@@ -57,9 +57,9 @@ and [SETT on Apache Thrift](http://jnb.ociweb.com/jnb/jnbJun2009.html).
 
 Useful (but not complete set of) options that can be set on the ThriftServer:
 
-* setPort(int) - set port to listen on
+* setPort(int) - set port to listen on.
 
-* setIdleTimeout(std::chrono::milliseconds) - milliseconds before we close idle connections
+* setIdleTimeout(std::chrono::milliseconds) - milliseconds before we close idle connections.
 
 * setTaskExpireTime(std::chrono::milliseconds) - milliseconds before
   we timeout any individual request.  This can also be set on a
@@ -80,7 +80,7 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
 * setMaxRequests(uint32_t) - The maximum number of outstanding
   requests.
 
-* setSSLContext(context) - Allow SSL connections
+* setSSLContext(context) - Allow SSL connections.
 
 *There are other options for specific use cases, such as*
 
@@ -132,7 +132,7 @@ So you have three choices of handler type to implement:
 
   (In production code, care would have to be taken with the lifetime
   of the callback object, and which thread it is called on.  See
-  thrift/lib/cpp2/async/AsyncProcessor.h for more info on Callback
+  [AsyncProcessor.h](https://github.com/facebook/fbthrift/blob/master/thrift/lib/cpp2/async/AsyncProcessor.h) for more info on Callback
   objects)
 
 3. future_sendResponse(...) future interface
@@ -156,7 +156,7 @@ python framework automatically knows which file changes need to go in.
   code freely, assuming they are in different namespaces.   This
   precludes using some of the newer features below, however.
 
-* Full Zero Copy binary type:  To change the default binary type to
+* Full Zero Copy binary type: To change the default binary type to
   IOBuf, do something like
 
         typedef binary (cpp.type = "std::unique_ptr<folly::IOBuf>")
@@ -170,7 +170,7 @@ python framework automatically knows which file changes need to go in.
 
 * Arguments on heap:  By default complex arguments are on the heap, so
   they can be moved between threads without a copy.  To disable this,
-  use option 'stack_arguments'
+  use option 'stack_arguments'.
 
 * Optional / Required by default are the same as before.  Using option
   'terse_writes' will make it behave more like the dynamic
