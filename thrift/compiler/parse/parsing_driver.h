@@ -42,10 +42,11 @@
 /**
  * Provide the custom fbthrift_compiler_parse_lex signature to flex.
  */
-#define YY_DECL                                     \
-  apache::thrift::compiler::yy::parser::symbol_type \
-  fbthrift_compiler_parse_lex(                      \
-      apache::thrift::compiler::parsing_driver& driver, yyscan_t yyscanner)
+#define YY_DECL                                         \
+  apache::thrift::compiler::yy::parser::symbol_type     \
+  fbthrift_compiler_parse_lex(                          \
+      apache::thrift::compiler::parsing_driver& driver, \
+      apache::thrift::compiler::yyscan_t yyscanner)
 
 namespace apache {
 namespace thrift {
@@ -219,7 +220,7 @@ class parsing_driver {
   /**
    * The Flex lexer used by the parser.
    */
-  std::unique_ptr<apache::thrift::yy_scanner> scanner;
+  std::unique_ptr<yy_scanner> scanner;
 
   parsing_driver(
       diagnostic_context& ctx, std::string path, parsing_params parse_params);

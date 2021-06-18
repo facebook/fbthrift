@@ -22,22 +22,35 @@
 #include <memory>
 #include <system_error>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
 typedef void* yyscan_t;
+}
+} // namespace thrift
+} // namespace apache
 
 /**
  * These are provided by Flex.
  */
-int fbthrift_compiler_parse_lex_init(yyscan_t* ptr_yy_globals);
-int fbthrift_compiler_parse_lex_destroy(yyscan_t yyscanner);
+int fbthrift_compiler_parse_lex_init(
+    apache::thrift::compiler::yyscan_t* ptr_yy_globals);
+int fbthrift_compiler_parse_lex_destroy(
+    apache::thrift::compiler::yyscan_t yyscanner);
 
-void fbthrift_compiler_parse_restart(FILE* input_file, yyscan_t yyscanner);
+void fbthrift_compiler_parse_restart(
+    FILE* input_file, apache::thrift::compiler::yyscan_t yyscanner);
 
-int fbthrift_compiler_parse_get_lineno(yyscan_t scanner);
-void fbthrift_compiler_parse_set_lineno(int line_number, yyscan_t scanner);
-char* fbthrift_compiler_parse_get_text(yyscan_t scanner);
+int fbthrift_compiler_parse_get_lineno(
+    apache::thrift::compiler::yyscan_t scanner);
+void fbthrift_compiler_parse_set_lineno(
+    int line_number, apache::thrift::compiler::yyscan_t scanner);
+char* fbthrift_compiler_parse_get_text(
+    apache::thrift::compiler::yyscan_t scanner);
 
 namespace apache {
 namespace thrift {
+namespace compiler {
 
 /**
  * A simple RAII wrapper for read-only FILE.
@@ -120,5 +133,6 @@ class yy_scanner {
   std::unique_ptr<readonly_file> file_;
 };
 
+} // namespace compiler
 } // namespace thrift
 } // namespace apache

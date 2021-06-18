@@ -101,7 +101,9 @@ class t_container_type;
 %define api.value.type variant
 %define api.namespace {apache::thrift::compiler::yy}
 
-%param {apache::thrift::compiler::parsing_driver& driver} {yyscan_t raw_scanner}
+%param
+    {apache::thrift::compiler::parsing_driver& driver}
+    {apache::thrift::compiler::yyscan_t raw_scanner}
 
 /**
  * Strings identifier
