@@ -98,9 +98,7 @@ RocketException makeResponseRpcError(
 
 void preprocessProxiedExceptionHeaders(
     ResponseRpcMetadata& metadata, int32_t version) {
-  if (version < 4) {
-    return;
-  }
+  DCHECK_GE(version, 4);
 
   auto otherMetadataRef = metadata.otherMetadata_ref();
   if (!otherMetadataRef) {
@@ -212,9 +210,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       case MessageType::T_EXCEPTION: {
-        if (version < 2) {
-          return {};
-        }
+        DCHECK_GE(version, 2);
 
         preprocessProxiedExceptionHeaders(metadata, version);
 
@@ -253,9 +249,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           otherMetadataRef->erase("servicerouter:sr_error");
           otherMetadataRef->erase("ex");
         } else {
-          if (version < 3) {
-            return {};
-          }
+          DCHECK_GE(version, 3);
 
           auto exPtr = otherMetadataRef
               ? folly::get_ptr(*otherMetadataRef, "ex")
@@ -351,21 +345,18 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       default:
-        if (version < 3) {
-          return {};
-        }
+        DCHECK_GE(version, 3);
         return makeResponseRpcError(
             ResponseRpcErrorCode::UNKNOWN, "Invalid message type", metadata);
     }
   } catch (...) {
-    auto message = fmt::format(
-        "Invalid response payload envelope: {}",
-        folly::exceptionStr(std::current_exception()).toStdString());
-    if (version < 3) {
-      return TApplicationException(std::move(message));
-    }
+    DCHECK_GE(version, 3);
     return makeResponseRpcError(
-        ResponseRpcErrorCode::UNKNOWN, message, metadata);
+        ResponseRpcErrorCode::UNKNOWN,
+        fmt::format(
+            "Invalid response payload envelope: {}",
+            folly::exceptionStr(std::current_exception()).toStdString()),
+        metadata);
   }
   return {};
 }
@@ -389,11 +380,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         *compressionConfig, metadata, payload->computeChainDataLength());
   }
 
-  DCHECK(version >= 0);
-  if (version == 0) {
-    return {};
-  }
-
+  DCHECK_GE(version, 1);
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
       return processFirstResponseHelper<BinaryProtocolReader>(
@@ -402,12 +389,11 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
       return processFirstResponseHelper<CompactProtocolReader>(
           metadata, payload, version);
     default: {
-      auto message = "Invalid response payload protocol id";
-      if (version < 3) {
-        return TApplicationException(std::move(message));
-      }
+      DCHECK_GE(version, 3);
       return makeResponseRpcError(
-          ResponseRpcErrorCode::UNKNOWN, message, metadata);
+          ResponseRpcErrorCode::UNKNOWN,
+          "Invalid response payload protocol id",
+          metadata);
     }
   }
 }

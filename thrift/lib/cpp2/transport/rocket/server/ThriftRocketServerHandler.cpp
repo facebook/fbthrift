@@ -49,7 +49,8 @@
 
 namespace {
 const int64_t kRocketServerMaxVersion = 8;
-}
+const int64_t kRocketServerMinVersion = 5;
+} // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_server_max_version, kRocketServerMaxVersion);
@@ -159,7 +160,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
 
-    if (maxVersion < 0) {
+    if (maxVersion < kRocketServerMinVersion) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
@@ -202,16 +203,15 @@ void ThriftRocketServerHandler::handleSetupFrame(
       connection.applyDscpAndMarkToSocket(meta);
     }
 
-    if (version_ >= 5) {
-      ServerPushMetadata serverMeta;
-      serverMeta.set_setupResponse();
-      serverMeta.setupResponse_ref()->version_ref() = version_;
-      CompactProtocolWriter compactProtocolWriter;
-      folly::IOBufQueue queue;
-      compactProtocolWriter.setOutput(&queue);
-      serverMeta.write(&compactProtocolWriter);
-      connection.sendMetadataPush(std::move(queue).move());
-    }
+    DCHECK_GE(version_, 5);
+    ServerPushMetadata serverMeta;
+    serverMeta.set_setupResponse();
+    serverMeta.setupResponse_ref()->version_ref() = version_;
+    CompactProtocolWriter compactProtocolWriter;
+    folly::IOBufQueue queue;
+    compactProtocolWriter.setOutput(&queue);
+    serverMeta.write(&compactProtocolWriter);
+    connection.sendMetadataPush(std::move(queue).move());
 
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
