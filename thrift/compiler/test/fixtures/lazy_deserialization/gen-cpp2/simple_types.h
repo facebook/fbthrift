@@ -100,7 +100,7 @@ class Foo final  {
  private:
   ::std::vector<::std::int32_t> field4;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field2;

@@ -140,7 +140,7 @@ class AStruct final  {
  private:
   ::std::int32_t FieldA;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool FieldA;
@@ -250,7 +250,7 @@ class AStructB final  {
  public:
   ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
 
- public:
+ private:
 
  public:
 

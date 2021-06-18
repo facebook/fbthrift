@@ -331,7 +331,7 @@ class Internship final  {
  private:
   double compensation;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool title;
@@ -554,7 +554,7 @@ class Range final  {
  public:
   ::std::int32_t max;
 
- public:
+ private:
 
  public:
 
@@ -692,7 +692,7 @@ class struct1 final  {
  private:
   ::std::string b;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -845,7 +845,7 @@ class struct2 final  {
  private:
   ::std::vector<::std::int32_t> d;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -1058,7 +1058,7 @@ class struct3 final  {
  private:
   ::cpp2::struct2 c;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;
@@ -1242,7 +1242,7 @@ class struct4 final  {
  private:
   ::std::int8_t c;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool a;

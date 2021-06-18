@@ -154,7 +154,7 @@ class SomeStruct final  {
  private:
   ::std::set<::std::int32_t> tags;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reasonable;

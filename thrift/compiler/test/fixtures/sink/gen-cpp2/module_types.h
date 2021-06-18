@@ -116,7 +116,7 @@ class InitialResponse final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
@@ -230,7 +230,7 @@ class FinalResponse final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
@@ -344,7 +344,7 @@ class SinkPayload final  {
  private:
   ::std::string content;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
@@ -458,7 +458,7 @@ class CompatibleWithKeywordSink final  {
  private:
   ::std::string sink;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sink;
@@ -581,7 +581,7 @@ class FOLLY_EXPORT InitialException final : public apache::thrift::TException {
  private:
   ::std::string reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
@@ -708,7 +708,7 @@ class FOLLY_EXPORT SinkException1 final : public apache::thrift::TException {
  private:
   ::std::string reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
@@ -835,7 +835,7 @@ class FOLLY_EXPORT SinkException2 final : public apache::thrift::TException {
  private:
   ::std::int64_t reason;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;

@@ -218,7 +218,7 @@ class MyStruct final  {
  private:
   ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myEnum;

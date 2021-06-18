@@ -235,7 +235,7 @@ class Color final  {
  private:
   double alpha;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool red;
@@ -451,7 +451,7 @@ class Vehicle final  {
  private:
   bool hasAC;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool color;
@@ -731,7 +731,7 @@ class Person final  {
  private:
   ::std::vector<::cpp2::Vehicle> vehicles;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool id;

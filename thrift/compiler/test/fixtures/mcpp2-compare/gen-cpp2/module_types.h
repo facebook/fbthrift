@@ -1192,7 +1192,7 @@ class ASimpleStruct final  {
  private:
   ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
@@ -1303,7 +1303,7 @@ class ASimpleStructNoexcept final  {
  private:
   ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
@@ -1431,7 +1431,7 @@ class MyStruct final  {
  private:
   ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyBoolField;
@@ -4286,7 +4286,7 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
  private:
   ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
@@ -4854,7 +4854,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
   ::std::string message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
@@ -5124,7 +5124,7 @@ class containerStruct final  {
  private:
   ::some::valid::ns::IndirectionD fieldSD;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -6679,7 +6679,7 @@ class MyIncludedStruct final  {
  public:
   ::some::valid::ns::AStruct ARequiredField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIncludedInt;
@@ -6937,7 +6937,7 @@ class AnnotatedStruct  {
  private:
   ::some::valid::ns::containerStruct struct_struct;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool no_annotation;
@@ -7923,7 +7923,7 @@ class ComplexContainerStruct final  {
  private:
   ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool map_of_iobufs;
@@ -8067,7 +8067,7 @@ class FloatStruct final  {
  private:
   double doubleField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool floatField;
@@ -8475,7 +8475,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
  public:
   ::std::int64_t intField;
 
- public:
+ private:
 
  public:
 

@@ -285,7 +285,7 @@ class FOLLY_EXPORT SimpleException final : public apache::thrift::TException {
  private:
   ::std::int16_t err_code;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool err_code;
@@ -397,7 +397,7 @@ class OptionalRefStruct final  {
  public:
   ::py3::simple::IOBufPtr optional_blob;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool optional_blob;
@@ -534,7 +534,7 @@ class SimpleStruct final  {
  private:
   ::std::int16_t hidden_field;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool is_on;
@@ -886,7 +886,7 @@ class ComplexStruct final  {
  private:
   ::py3::simple::foo_bar bytes_with_cpp_type;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool structOne;
@@ -1485,7 +1485,7 @@ class BinaryUnionStruct final  {
  private:
   ::py3::simple::BinaryUnion u;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool u;
