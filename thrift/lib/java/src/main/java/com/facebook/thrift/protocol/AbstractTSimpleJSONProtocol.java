@@ -29,12 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-/**
- * JSON protocol implementation for thrift.
- *
- * <p>This protocol is write-only and produces a simple output format suitable for parsing by
- * scripting languages. It should not be confused with the full-featured TJSONProtocol.
- */
 abstract class AbstractTSimpleJSONProtocol extends TProtocol {
 
   private static final byte[] COMMA = new byte[] {','};

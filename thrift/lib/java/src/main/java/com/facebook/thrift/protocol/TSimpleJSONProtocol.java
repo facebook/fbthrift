@@ -27,8 +27,12 @@ import java.util.Map;
 /**
  * JSON protocol implementation for thrift.
  *
- * <p>This protocol is write-only and produces a simple output format suitable for parsing by
- * scripting languages. It should not be confused with the full-featured TJSONProtocol.
+ * <p>This should not be confused with the TJSONProtocol. This protocol store data in JSON-styled
+ * "field name" -> "field value", but it doesn't preserve field id nor field type (which doesn't
+ * give the user the same backward/forward compatibility guarantees).
+ *
+ * <p>It is not recommended to use this protocol for RPC that needs backward/forward compatibility
+ * guarantees.
  */
 public class TSimpleJSONProtocol extends TProtocol {
   private final AbstractTSimpleJSONProtocol delegate;
