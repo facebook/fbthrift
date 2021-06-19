@@ -48,11 +48,11 @@ using parsing_driver = apache::thrift::compiler::parsing_driver;
 YY_DECL;
 
 static void integer_overflow(parsing_driver& driver, char* text) {
-  driver.failure("This integer is too big: \"%s\"\n", text);
+  driver.failure([&](auto& o) { o << "This integer is too big: " << text << "\n"; });
 }
 
 static void unexpected_token(parsing_driver& driver, char* text) {
-  driver.failure("Unexpected token in input: \"%s\"\n", text);
+  driver.failure([&](auto& o) { o << "Unexpected token in input: " << text << "\n"; });
 }
 
 %}

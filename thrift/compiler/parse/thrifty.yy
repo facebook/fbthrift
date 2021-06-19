@@ -580,7 +580,9 @@ EnumValue:
     {
       driver.debug("EnumValue -> Identifier = tok_int_constant");
       if ($3 < 0 && !driver.params.allow_neg_enum_vals) {
-        driver.warning("Negative value supplied for enum %s.", $1.c_str());
+        driver.warning([&](auto& o) {
+          o << "Negative value supplied for enum " << $1 << ".";
+        });
       }
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
@@ -588,7 +590,9 @@ EnumValue:
         // I doubt this will affect many people, but users who run into this
         // will have to update their thrift files to manually specify the
         // truncated i32 value that thrift has always been using anyway.
-        driver.failure("64-bit value supplied for enum %s will be truncated.", $1.c_str());
+        driver.failure([&](auto& o) {
+          o << "64-bit value supplied for enum " << $1 << " will be truncated.";
+        });
       }
       $$ = new t_enum_value(std::move($1));
       $$->set_value($3);
@@ -636,7 +640,9 @@ ConstValue:
       $$->set_integer($1);
       if (driver.mode == parsing_mode::PROGRAM) {
         if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
-          driver.warning("64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
+          driver.warning([&](auto& o) {
+            o << "64-bit constant \"" << $1 << "\" may not work in all languages.";
+          });
         }
       }
     }
@@ -674,7 +680,9 @@ ConstValue:
         $$->set_enum_value(nullptr);
       } else {
         if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning("Constant strings should be quoted: %s", $1.c_str());
+          driver.warning([&](auto& o) {
+            o << "Constant strings should be quoted: " << $1;
+          });
         }
         $$ = new t_const_value($1);
       }
@@ -839,8 +847,10 @@ Exception:
             && $$->get_field_by_name(annotation) != nullptr
             && $$->has_annotation(annotation)
             && strcmp(annotation, $$->get_annotation(annotation).c_str()) != 0) {
-          driver.warning("Some generators (e.g. PHP) will ignore annotation '%s' "
-                         "as it is also used as field", annotation);
+          driver.warning([&](auto& o) {
+            o << "Some generators (e.g. PHP) will ignore annotation '"
+              << annotation << "' as it is also used as field";
+          });
         }
       }
 
@@ -851,13 +861,17 @@ Exception:
         const std::string& v = $$->get_annotation("message");
         const auto* field = $$->get_field_by_name(v);
         if (field == nullptr) {
-          driver.failure("member specified as exception 'message' should be a valid"
-                         " struct member, '%s' in '%s' is not", v.c_str(), $$->name().c_str());
+          driver.failure([&](auto& o) {
+            o << "member specified as exception 'message' should be a valid"
+              << " struct member, '" << v << "' in '" << $$->name() << "' is not";
+          });
         }
 
         if (!field->get_type()->is_string_or_binary()) {
-          driver.failure("member specified as exception 'message' should be of type "
-                         "STRING, '%s' in '%s' is not", v.c_str(), $$->name().c_str());
+          driver.failure([&](auto& o) {
+            o << "member specified as exception 'message' should be of type "
+              << "STRING, '" << v << "' in '" << $$->name() << "' is not";
+          });
         }
       }
 
@@ -951,7 +965,9 @@ Extends:
           $$ = driver.scope_cache->get_service(driver.program->name() + "." + $2);
         }
         if (!$$) {
-          driver.failure("Service \"%s\" has not been defined.", $2.c_str());
+          driver.failure([&](auto& o) {
+            o << "Service \"" << $2 << "\" has not been defined.";
+          });
         }
       }
     }
@@ -1041,8 +1057,10 @@ ParamList:
       $$ = $1;
       auto param = own($2);
       if (!$$->try_append_field(std::move(param))) {
-        driver.failure("Parameter identifier %d for \"%s\" has already been used",
-                       param->get_key(), param->get_name().c_str());
+        driver.failure([&](auto& o) {
+          o << "Parameter identifier " << param->get_key() << " for \""
+          << param->get_name() << "\" has already been used";
+        });
       }
     }
 | EmptyParamList
@@ -1117,8 +1135,10 @@ Field:
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
       if ($2.auto_assigned) {
-        driver.warning("No field key specified for %s, resulting protocol may have conflicts "
-          "or not be backwards compatible!", $5.c_str());
+        driver.warning([&](auto& o) {
+          o << "No field key specified for " << $5 << ", resulting protocol may"
+            << " have conflicts or not be backwards compatible!";
+        });
         if (driver.params.strict >= 192) {
           driver.failure("Implicit field keys are deprecated and not allowed with -strict");
         }
@@ -1148,8 +1168,10 @@ FieldIdentifier:
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
-            driver.warning("Negative field key (%d) differs from what would be "
-                           "auto-assigned by thrift (%d).", $1, y_field_val);
+            driver.warning([&](auto& o) {
+              o << "Negative field key (" << $1 << ") differs from what would "
+                << "be auto-assigned by thrift (" << y_field_val << ").";
+            });
           }
           /*
            * Leave $1 as-is, and update y_field_val to be one less than $1.
@@ -1159,7 +1181,9 @@ FieldIdentifier:
           $$.value = $1;
           $$.auto_assigned = false;
         } else {
-          driver.warning("Nonpositive value (%d) not allowed as a field key.", $1);
+          driver.warning([&](auto& o) {
+            o << "Nonpositive value (" << $1 << ") not allowed as a field key.";
+          });
           $$.value = y_field_val--;
           $$.auto_assigned = true;
         }
@@ -1502,8 +1526,9 @@ FunctionAnnotations:
           s += prio + "','";
         }
         s.erase(s.length() - 3);
-        driver.failure("Bad priority '%s'. Choose one of '%s'.",
-                       prio.c_str(), s.c_str());
+        driver.failure([&](auto& o) {
+          o << "Bad priority '" << prio << "'. Choose one of '" << s << "'.";
+        });
       }
     }
 
@@ -1536,5 +1561,5 @@ IntOrLiteral:
  * Method that will be called by the generated parser upon errors.
  */
 void apache::thrift::compiler::yy::parser::error(std::string const& message) {
-  driver.yyerror("%s", message.c_str());
+  driver.yyerror(message);
 }

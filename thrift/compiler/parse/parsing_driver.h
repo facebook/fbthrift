@@ -239,57 +239,51 @@ class parsing_driver {
   // TODO(afuller): Remove these, and have the parser call the functions on ctx_
   // directly.
   template <typename... Args>
-  void debug(const char* fmt, Args&&... args) {
+  void debug(Args&&... args) {
     ctx_.debug(
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  void verbose(const char* fmt, Args&&... args) {
+  void verbose(Args&&... args) {
     ctx_.info(
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  void yyerror(const char* fmt, Args&&... args) {
+  void yyerror(Args&&... args) {
     ctx_.report(
         diagnostic_level::parse_error,
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  void warning(const char* fmt, Args&&... args) {
+  void warning(Args&&... args) {
     ctx_.warning(
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  void warning_strict(const char* fmt, Args&&... args) {
+  void warning_strict(Args&&... args) {
     ctx_.warning_strict(
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  [[noreturn]] void failure(const char* fmt, Args&&... args) {
+  [[noreturn]] void failure(Args&&... args) {
     ctx_.failure(
         scanner->get_lineno(),
         scanner->get_text(),
-        fmt,
         std::forward<Args>(args)...);
     end_parsing();
   }

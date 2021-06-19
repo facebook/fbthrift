@@ -48,12 +48,10 @@ void report_redef_failure(
     const t_node& /*existing*/) {
   // TODO(afuller): Use `existing` to provide more detail in the
   // diagnostic.
-  ctx.failure(
-      child,
-      "%s `%s` is already defined for `%s`.",
-      kind,
-      name.c_str(),
-      parent.name().c_str());
+  ctx.failure(child, [&](auto& o) {
+    o << kind << " `" << name << "` is already defined for `" << parent.name()
+      << "`.";
+  });
 }
 
 // Helper for checking for the redefinition of a child node in a parent node.
@@ -117,13 +115,11 @@ void validate_extends_service_function_name_uniqueness(
   for (const auto& function : node.functions()) {
     if (const auto* existing_service =
             extends_metadata.function_name_to_service.find(function.name())) {
-      ctx.failure(
-          function,
-          "Function `%s.%s` redefines `%s.%s`.",
-          node.name().c_str(),
-          function.name().c_str(),
-          existing_service->get_full_name().c_str(),
-          function.name().c_str());
+      ctx.failure(function, [&](auto& o) {
+        o << "Function `" << node.name() << "." << function.name()
+          << "` redefines `" << existing_service->get_full_name() << "."
+          << function.name() << "`.";
+      });
     }
   }
 }
@@ -132,19 +128,19 @@ void validate_union_field_attributes(
     diagnostic_context& ctx, const t_union& node) {
   for (const auto* field : node.fields()) {
     if (field->qualifier() != t_field_qualifier::unspecified) {
-      ctx.failure(
-          *field,
-          "Unions cannot contain qualified fields. Remove `%s` qualifier from field `%s`.",
-          field->qualifier() == t_field_qualifier::required ? "required"
-                                                            : "optional",
-          field->name().c_str());
+      auto qual = field->qualifier() == t_field_qualifier::required
+          ? "required"
+          : "optional";
+      ctx.failure(*field, [&](auto& o) {
+        o << "Unions cannot contain qualified fields. Remove `" << qual
+          << "` qualifier from field `" << field->name() << "`.";
+      });
     }
     if (cpp2::is_mixin(*field)) {
-      ctx.failure(
-          *field,
-          "Union `%s` cannot contain mixin field `%s`.",
-          node.name().c_str(),
-          field->name().c_str());
+      ctx.failure(*field, [&](auto& o) {
+        o << "Union `" << node.name() << "` cannot contain mixin field `"
+          << field->name() << "`.";
+      });
     }
   }
 }
@@ -157,11 +153,11 @@ void validate_mixin_field_attributes(
 
   auto* ttype = node.type()->get_true_type();
   if (typeid(*ttype) != typeid(t_struct) && typeid(*ttype) != typeid(t_union)) {
-    ctx.failure(
-        node,
-        "Mixin field `%s` type must be a struct or union. Found `%s`.",
-        node.name().c_str(),
-        ttype->get_name().c_str());
+    ctx.failure(node, [&](auto& o) {
+      o << "Mixin field `" << node.name()
+        << "` type must be a struct or union. Found `" << ttype->get_name()
+        << "`.";
+    });
   }
 
   if (node.qualifier() == t_field_qualifier::optional) {
@@ -169,8 +165,9 @@ void validate_mixin_field_attributes(
     // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
     // might throw `bad_field_access` if `bar` is inside optional mixin
     // field.
-    ctx.failure(
-        node, "Mixin field `%s` cannot be optional.", node.name().c_str());
+    ctx.failure(node, [&](auto& o) {
+      o << "Mixin field `" << node.name() << "` cannot be optional.";
+    });
   }
 }
 
@@ -183,10 +180,10 @@ void validate_struct_optional_refs(
   for (const auto* field : node.fields()) {
     if (cpp2::has_ref_annotation(*field) &&
         field->qualifier() != t_field_qualifier::optional) {
-      ctx.warning(
-          *field,
-          "`cpp.ref` field `%s` must be optional if it is recursive.",
-          field->name().c_str());
+      ctx.warning(*field, [&](auto& o) {
+        o << "`cpp.ref` field `" << field->name()
+          << "` must be optional if it is recursive.";
+      });
     }
   }
 }
@@ -202,13 +199,11 @@ void validate_enum_value_uniqueness(
   for (const auto& value : node.values()) {
     auto prev = values.emplace(value.get_value(), &value);
     if (!prev.second) {
-      ctx.failure(
-          value,
-          "Duplicate value `%s=%d` with value `%s` in enum `%s`.",
-          value.name().c_str(),
-          value.get_value(),
-          prev.first->second->name().c_str(),
-          node.name().c_str());
+      ctx.failure(value, [&](auto& o) {
+        o << "Duplicate value `" << value.name() << "=" << value.get_value()
+          << "` with value `" << prev.first->second->name() << "` in enum `"
+          << node.name() << "`.";
+      });
     }
   }
 }
@@ -216,10 +211,10 @@ void validate_enum_value_uniqueness(
 void validate_enum_value_explicit(
     diagnostic_context& ctx, const t_enum_value& node) {
   if (!node.has_value()) {
-    ctx.failure(
-        node,
-        "The enum value, `%s`, must have an explicitly assigned value.",
-        node.name().c_str());
+    ctx.failure(node, [&](auto& o) {
+      o << "The enum value, `" << node.name()
+        << "`, must have an explicitly assigned value.";
+    });
   }
 }
 

@@ -79,17 +79,16 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
 
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
-      ctx.warning_strict(
-          *annot,
-          "Using `%s` as an annotation, even though it has not been enabled for any annotation scope.",
-          annot->get_type()->name().c_str());
+      ctx.warning_strict(*annot, [&](auto& o) {
+        o << "Using `" << annot->get_type()->name()
+          << "` as an annotation, even though it has not been enabled for any annotation scope.";
+      });
     } else if (allowed.types.find(typeid(node)) == allowed.types.end()) {
       // Type mismatch.
-      ctx.failure(
-          *annot,
-          "`%s` cannot annotate `%s`",
-          annot->get_type()->name().c_str(),
-          node.name().c_str());
+      ctx.failure(*annot, [&](auto& o) {
+        o << "`" << annot->get_type()->name() << "` cannot annotate `"
+          << node.name() << "`";
+      });
     }
   }
 }

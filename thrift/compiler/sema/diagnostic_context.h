@@ -170,24 +170,33 @@ class diagnostic_context {
   node_metadata_cache& cache() { return cache_; }
 
   // Helpers for adding diagnostic results.
-  // TODO(afuller): The variadic template doesn't actually provide additional
-  // type safety. Update this function to use varargs with the format attribute
-  // instead.
-  template <typename... Arg>
   void report(
-      diagnostic_level level,
-      int lineno,
-      std::string token,
-      const char* fmt,
-      Arg&&... arg);
+      diagnostic_level level, int lineno, std::string token, std::string text) {
+    if (!params_.should_report(level)) {
+      return;
+    }
+
+    report_cb_({
+        level,
+        std::move(text),
+        program()->path(),
+        lineno,
+        std::move(token),
+    });
+  }
+  template <
+      typename With,
+      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  void report(
+      diagnostic_level level, int lineno, std::string token, With with) {
+    std::ostringstream o;
+    with(static_cast<std::ostream&>(o));
+    report(level, lineno, token, o.str());
+  }
 
   template <typename... Args>
-  void report(
-      diagnostic_level level,
-      const t_node& node,
-      const char* fmt,
-      Args&&... args) {
-    report(level, node.lineno(), {}, fmt, std::forward<Args>(args)...);
+  void report(diagnostic_level level, const t_node& node, Args&&... args) {
+    report(level, node.lineno(), {}, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
@@ -221,75 +230,6 @@ class diagnostic_context {
   std::stack<const t_program*> programs_;
   diagnostic_params params_;
 };
-
-namespace detail {
-// This elaborate dance is required to avoid triggering -Wformat-security in the
-// case where we have no format arguments.
-template <typename... Arg>
-int snprintf_with_param_pack(
-    char* str, size_t size, const char* fmt, Arg&&... arg) {
-  return snprintf(str, size, fmt, std::forward<Arg>(arg)...);
-}
-
-template <>
-inline int snprintf_with_param_pack(char* str, size_t size, const char* fmt) {
-  return snprintf(str, size, "%s", fmt);
-}
-
-} // namespace detail
-
-template <typename... Arg>
-void diagnostic_context::report(
-    diagnostic_level level,
-    int lineno,
-    std::string token,
-    const char* fmt,
-    Arg&&... arg) {
-  if (!params_.should_report(level)) {
-    return;
-  }
-  const size_t buffer_size = 1024;
-  std::array<char, buffer_size> buffer;
-  std::string message;
-
-  int ret = detail::snprintf_with_param_pack(
-      buffer.data(), buffer_size, fmt, std::forward<Arg>(arg)...);
-  if (ret < 0) {
-    // Technically we could be OOM here, so the following line would fail.
-    // But...
-    throw std::system_error(errno, std::generic_category(), "In snprintf(...)");
-  }
-
-  auto full_length = static_cast<size_t>(ret);
-  if (full_length < buffer_size) {
-    message = std::string{buffer.data()};
-  } else {
-    // In the (extremely) unlikely case that the message is 1024-char or
-    // longer, we do dynamic allocation.
-    //
-    // "+ 1" for the NULL-terminator.
-    std::vector<char> dyn_buffer(static_cast<size_t>(full_length + 1), '\0');
-
-    ret = detail::snprintf_with_param_pack(
-        dyn_buffer.data(), dyn_buffer.size(), fmt, std::forward<Arg>(arg)...);
-    if (ret < 0) {
-      throw std::system_error(
-          errno, std::generic_category(), "In second snprintf(...)");
-    }
-
-    assert(static_cast<size_t>(ret) < dyn_buffer.size());
-
-    message = std::string{dyn_buffer.data()};
-  }
-
-  report_cb_({
-      level,
-      std::move(message),
-      program()->path(),
-      lineno,
-      std::move(token),
-  });
-}
 
 } // namespace compiler
 } // namespace thrift

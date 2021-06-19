@@ -102,14 +102,14 @@ void parsing_driver::parse_file() {
   }
 
   // Create new scope and scan for includes
-  verbose("Scanning %s for includes\n", path.c_str());
+  verbose([&](auto& o) { o << "Scanning " << path << " for includes\n"; });
   mode = parsing_mode::INCLUDES;
   try {
     if (parser_->parse() != 0) {
       failure("Parser error during include pass.");
     }
   } catch (const std::string& x) {
-    failure(x.c_str());
+    failure(x);
   }
 
   // Recursively parse all the include programs
@@ -124,9 +124,10 @@ void parsing_driver::parse_file() {
 
     // Fail on circular dependencies
     if (circular_deps_.count(included_program->path())) {
-      failure(
-          "Circular dependency found: file `%s` is already parsed.",
-          included_program->path().c_str());
+      failure([&](auto& o) {
+        o << "Circular dependency found: file `" << included_program->path()
+          << "` is already parsed.";
+      });
     }
 
     // This must be after the previous circular include check, since the emitted
@@ -153,18 +154,19 @@ void parsing_driver::parse_file() {
   }
 
   mode = parsing_mode::PROGRAM;
-  verbose("Parsing %s for types\n", path.c_str());
+  verbose([&](auto& o) { o << "Parsing " << path << " for types\n"; });
   try {
     if (parser_->parse() != 0) {
       failure("Parser error during types pass.");
     }
   } catch (const std::string& x) {
-    failure(x.c_str());
+    failure(x);
   }
 
   for (auto td : program->placeholder_typedefs()) {
     if (!td->resolve()) {
-      failure("Type `%s` not defined.", td->name().c_str());
+      failure(
+          [&](auto& o) { o << "Type `" << td->name() << "` not defined."; });
     }
   }
 }
@@ -193,7 +195,9 @@ std::string parsing_driver::include_file(const std::string& filename) {
       auto abspath = boost::filesystem::canonical(path);
       return abspath.string();
     } catch (const boost::filesystem::filesystem_error& e) {
-      failure("Could not find file: %s. Error: %s", filename.c_str(), e.what());
+      failure([&](auto& o) {
+        o << "Could not find file: " << filename << ". Error: " << e.what();
+      });
     }
   } else { // relative path, start searching
     // new search path with current dir global
@@ -210,12 +214,12 @@ std::string parsing_driver::include_file(const std::string& filename) {
       if (boost::filesystem::exists(sfilename)) {
         return sfilename;
       } else {
-        debug("Could not find: %s.", sfilename.c_str());
+        debug([&](auto& o) { o << "Could not find: " << filename << "."; });
       }
     }
 
     // File was not found
-    failure("Could not find include file %s", filename.c_str());
+    failure([&](auto& o) { o << "Could not find include file " << filename; });
   }
 }
 
@@ -290,11 +294,10 @@ void parsing_driver::validate_const_rec(
     assert(as_enum != nullptr);
     const auto enum_val = as_enum->find_value(value->get_integer());
     if (enum_val == nullptr) {
-      warning(
-          "type error: const `%s` was declared as enum `%s` with a value"
-          " not of that enum.",
-          name.c_str(),
-          type->get_name().c_str());
+      warning([&](auto& o) {
+        o << "type error: const `" << name << "` was declared as enum `"
+          << type->get_name() << "` with a value not of that enum.";
+      });
     }
   } else if (as_struct && as_struct->is_union()) {
     if (value->get_type() != t_const_value::CV_MAP) {
@@ -395,12 +398,14 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
     if (!possible_enums.empty()) {
       msg += (" Possible options: " + possible_enums);
     }
-    warning(msg.c_str());
+    warning(msg);
   }
 }
 void parsing_driver::clear_doctext() {
   if (doctext) {
-    warning_strict("Uncaptured doctext at on line %d.", doctext_lineno);
+    warning_strict([&](auto& o) {
+      o << "Uncaptured doctext at on line " << doctext_lineno << ".";
+    });
   }
 
   doctext = boost::none;
@@ -546,10 +551,13 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   assert(feature != std::string("all"));
   if (params.allow_experimental_features.count("all") ||
       params.allow_experimental_features.count(feature)) {
-    warning_strict("'%s' is an experimental feature.", feature);
+    warning_strict([&](auto& o) {
+      o << "'" << feature << "' is an experimental feature.";
+    });
     return true;
   }
-  failure("'%s' is an experimental feature.", feature);
+  failure(
+      [&](auto& o) { o << "'" << feature << "' is an experimental feature."; });
   return false;
 }
 
@@ -653,10 +661,10 @@ void parsing_driver::append_fields(
     t_structured& tstruct, t_field_list&& fields) {
   for (auto& field : fields) {
     if (!tstruct.try_append_field(std::move(field))) {
-      failure(
-          "Field identifier %d for \"%s\" has already been used",
-          field->get_key(),
-          field->get_name().c_str());
+      failure([&](auto& o) {
+        o << "Field identifier " << field->get_key() << " for \""
+          << field->get_name() << "\" has already been used";
+      });
       break;
     }
   }
@@ -728,10 +736,10 @@ t_type_ref parsing_driver::new_type_ref(
     // TODO(afuller): Remove this special case for const, which requires a
     // specific declaration order.
     if (is_const) {
-      failure(
-          "The type '%s' is not defined yet. Types must be "
-          "defined before the usage in constant values.",
-          name.c_str());
+      failure([&](auto& o) {
+        o << "The type '" << name << "' is not defined yet. Types must be "
+          << "defined before the usage in constant values.";
+      });
     }
     // TODO(afuller): Why are interactions special? They should just be another
     // declared type.
