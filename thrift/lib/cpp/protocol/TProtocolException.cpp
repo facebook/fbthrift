@@ -43,7 +43,7 @@ namespace protocol {
 }
 
 [[noreturn]] void TProtocolException::throwExceededSizeLimit(
-    uint32_t size, uint32_t limit) {
+    size_t size, size_t limit) {
   throw TProtocolException(
       TProtocolException::SIZE_LIMIT,
       fmt::format("TProtocolException: {} exceeds size limit {}", size, limit));
