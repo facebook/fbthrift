@@ -31,6 +31,10 @@
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
 
+#ifdef SWIG
+#error SWIG
+#endif
+
 //  all members are logically private to fbthrift; external use is deprecated
 //
 //  access_field would use decltype((static_cast<T&&>(t).name)) with the extra
