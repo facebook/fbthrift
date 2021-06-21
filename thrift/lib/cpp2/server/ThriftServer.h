@@ -68,6 +68,7 @@ namespace thrift {
 // Forward declaration of classes
 class Cpp2Connection;
 class Cpp2Worker;
+class ThriftServer;
 namespace rocket {
 class ThriftRocketServerHandler;
 }
@@ -81,6 +82,22 @@ class ThriftTlsConfig : public wangle::CustomConfig {
  public:
   bool enableThriftParamsNegotiation{true};
   bool enableStopTLS{false};
+};
+
+class TLSCredentialWatcher {
+ public:
+  explicit TLSCredentialWatcher(ThriftServer* server);
+
+  void setCertPathsToWatch(std::set<std::string> paths) {
+    credProcessor_.setCertPathsToWatch(std::move(paths));
+  }
+
+  void setTicketPathToWatch(const std::string& path) {
+    credProcessor_.setTicketPathToWatch(path);
+  }
+
+ private:
+  wangle::TLSCredProcessor credProcessor_;
 };
 
 /**
@@ -191,8 +208,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return getIOGroup();
   }
 
-  wangle::TLSCredProcessor& getCredProcessor();
-
   void stopWorkers();
   void stopCPUWorkers();
   void stopAcceptingAndJoinOutstandingRequests();
@@ -204,7 +219,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool stopAcceptingAndJoinOutstandingRequestsDone_{false};
 
-  std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
+  folly::Synchronized<std::optional<TLSCredentialWatcher>> tlsCredWatcher_{};
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
   std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
