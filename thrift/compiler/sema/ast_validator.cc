@@ -127,10 +127,10 @@ void validate_extends_service_function_name_uniqueness(
 }
 
 void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
-  for (const auto* except : node.fields()) {
-    auto except_type = except->type()->get_true_type();
+  for (const auto& except : node.fields()) {
+    auto except_type = except.type()->get_true_type();
     if (dynamic_cast<const t_exception*>(except_type) == nullptr) {
-      ctx.failure(*except, [&](auto& o) {
+      ctx.failure(except, [&](auto& o) {
         o << "Non-exception type, `" << except_type->name() << "`, in throws.";
       });
     }
@@ -139,20 +139,19 @@ void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
 
 void validate_union_field_attributes(
     diagnostic_context& ctx, const t_union& node) {
-  for (const auto* field : node.fields()) {
-    if (field->qualifier() != t_field_qualifier::unspecified) {
-      auto qual = field->qualifier() == t_field_qualifier::required
-          ? "required"
-          : "optional";
-      ctx.failure(*field, [&](auto& o) {
+  for (const auto& field : node.fields()) {
+    if (field.qualifier() != t_field_qualifier::unspecified) {
+      auto qual = field.qualifier() == t_field_qualifier::required ? "required"
+                                                                   : "optional";
+      ctx.failure(field, [&](auto& o) {
         o << "Unions cannot contain qualified fields. Remove `" << qual
-          << "` qualifier from field `" << field->name() << "`.";
+          << "` qualifier from field `" << field.name() << "`.";
       });
     }
-    if (cpp2::is_mixin(*field)) {
-      ctx.failure(*field, [&](auto& o) {
+    if (cpp2::is_mixin(field)) {
+      ctx.failure(field, [&](auto& o) {
         o << "Union `" << node.name() << "` cannot contain mixin field `"
-          << field->name() << "`.";
+          << field.name() << "`.";
       });
     }
   }
@@ -190,11 +189,11 @@ void validate_mixin_field_attributes(
  */
 void validate_struct_optional_refs(
     diagnostic_context& ctx, const t_struct& node) {
-  for (const auto* field : node.fields()) {
-    if (cpp2::has_ref_annotation(*field) &&
-        field->qualifier() != t_field_qualifier::optional) {
-      ctx.warning(*field, [&](auto& o) {
-        o << "`cpp.ref` field `" << field->name()
+  for (const auto& field : node.fields()) {
+    if (cpp2::has_ref_annotation(field) &&
+        field.qualifier() != t_field_qualifier::optional) {
+      ctx.warning(field, [&](auto& o) {
+        o << "`cpp.ref` field `" << field.name()
           << "` must be optional if it is recursive.";
       });
     }

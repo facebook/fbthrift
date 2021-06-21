@@ -807,8 +807,8 @@ class mstch_cpp2_struct : public mstch_struct {
         !strct_->has_annotation("no_default_comparators");
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
-    for (auto const* f : strct_->fields()) {
-      if (cpp2::field_transitively_refers_to_unique(f) || cpp2::is_lazy(f)) {
+    for (auto const& f : strct_->fields()) {
+      if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f)) {
         return true;
       }
     }
@@ -873,8 +873,8 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node cpp_allocator_via() {
     if (const auto* name =
             strct_->get_annotation_or_null("cpp.allocator_via")) {
-      for (const auto* field : strct_->fields()) {
-        if (cpp2::get_name(field) == *name) {
+      for (const auto& field : strct_->fields()) {
+        if (cpp2::get_name(&field) == *name) {
           return *name;
         }
       }
@@ -883,7 +883,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::string();
   }
   mstch::node has_lazy_fields() {
-    for (const auto* field : strct_->get_members()) {
+    for (const auto& field : strct_->get_members()) {
       if (cpp2::is_lazy(field)) {
         return true;
       }
@@ -892,8 +892,8 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node indexing() { return has_lazy_fields(); }
   mstch::node has_isset_fields() {
-    for (const auto* field : strct_->fields()) {
-      if (field_has_isset(field)) {
+    for (const auto& field : strct_->fields()) {
+      if (field_has_isset(&field)) {
         return true;
       }
     }
@@ -901,9 +901,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node isset_fields() {
     std::vector<t_field const*> fields;
-    for (const auto* field : strct_->fields()) {
-      if (field_has_isset(field)) {
-        fields.push_back(field);
+    for (const auto& field : strct_->fields()) {
+      if (field_has_isset(&field)) {
+        fields.push_back(&field);
       }
     }
     if (fields.empty()) {
@@ -923,9 +923,9 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->fields().size() <= kLargeStructThreshold) {
       return false;
     }
-    for (auto const* field : strct_->fields()) {
-      auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (cpp2::is_ref(field) || resolved_typedef->is_string_or_binary() ||
+    for (auto const& field : strct_->fields()) {
+      auto const* resolved_typedef = field.type()->get_true_type();
+      if (cpp2::is_ref(&field) || resolved_typedef->is_string_or_binary() ||
           resolved_typedef->is_container()) {
         return true;
       }
@@ -989,8 +989,8 @@ class mstch_cpp2_struct : public mstch_struct {
               type->get_name() + "` before its use in field `" +
               field->get_name() + "`.");
         }
-        for (auto const* field : strct->fields()) {
-          size_t field_align = compute_alignment(field);
+        for (auto const& field : strct->fields()) {
+          size_t field_align = compute_alignment(&field);
           if (field_align == 0) {
             // Unknown alignment, bail out.
             return 0;
@@ -1015,13 +1015,13 @@ class mstch_cpp2_struct : public mstch_struct {
   // Returns the struct members reordered to minimize padding if the
   // cpp.minimize_padding annotation is specified.
   const std::vector<const t_field*>& get_members_in_layout_order() {
-    if (!strct_->has_annotation("cpp.minimize_padding")) {
-      return strct_->fields();
-    }
-
     if (strct_->fields().size() == fields_in_layout_order_.size()) {
       // Already reordered.
       return fields_in_layout_order_;
+    }
+
+    if (!strct_->has_annotation("cpp.minimize_padding")) {
+      return fields_in_layout_order_ = strct_->fields().copy();
     }
 
     // Compute field alignments.
@@ -1031,13 +1031,13 @@ class mstch_cpp2_struct : public mstch_struct {
     };
     std::vector<FieldAlign> field_alignments;
     field_alignments.reserve(strct_->fields().size());
-    for (const auto* field : strct_->fields()) {
-      auto align = compute_alignment(field);
+    for (const auto& field : strct_->fields()) {
+      auto align = compute_alignment(&field);
       if (align == 0) {
         // Unknown alignment, don't reorder anything.
-        return strct_->fields();
+        return fields_in_layout_order_ = strct_->fields().copy();
       }
-      field_alignments.push_back(FieldAlign{field, align});
+      field_alignments.push_back(FieldAlign{&field, align});
     }
 
     // Sort by decreasing alignment using stable sort to avoid unnecessary
@@ -1068,7 +1068,7 @@ class mstch_cpp2_struct : public mstch_struct {
       return fields_in_key_order_;
     }
 
-    fields_in_key_order_ = strct_->fields();
+    fields_in_key_order_ = strct_->fields().copy();
     // Sort by increasing key.
     std::sort(
         fields_in_key_order_.begin(),
@@ -1476,7 +1476,7 @@ class mstch_cpp2_program : public mstch_program {
       }
       collect_fatal_string_annotated(unique_names, obj);
       for (const auto& m : obj->fields()) {
-        collect_fatal_string_annotated(unique_names, m);
+        collect_fatal_string_annotated(unique_names, &m);
       }
     }
     // consts
@@ -1492,9 +1492,8 @@ class mstch_cpp2_program : public mstch_program {
       for (const auto* f : service->get_functions()) {
         unique_names.emplace(
             get_fatal_string_short_id(f->get_name()), f->get_name());
-        for (const auto* p : f->get_paramlist()->fields()) {
-          unique_names.emplace(
-              get_fatal_string_short_id(p->get_name()), p->get_name());
+        for (const auto& p : f->get_paramlist()->fields()) {
+          unique_names.emplace(get_fatal_string_short_id(p.name()), p.name());
         }
       }
     }
@@ -1518,8 +1517,8 @@ class mstch_cpp2_program : public mstch_program {
     std::vector<const std::string*> ordered_fields;
     for (const t_struct* s : program_->objects()) {
       if (!s->is_union()) {
-        for (const t_field* f : s->fields()) {
-          auto result = fields.insert(cpp2::get_name(f));
+        for (const t_field& f : s->fields()) {
+          auto result = fields.insert(cpp2::get_name(&f));
           if (result.second) {
             ordered_fields.push_back(&*result.first);
           }
@@ -1584,9 +1583,9 @@ class mstch_cpp2_program : public mstch_program {
       const t_program* program, const std::vector<t_struct*>& objects) {
     auto edges = [program](t_struct* obj) {
       std::vector<t_struct*> deps;
-      for (auto* f : obj->fields()) {
+      for (auto& f : obj->fields()) {
         // Ignore ref fields.
-        if (cpp2::is_explicit_ref(f)) {
+        if (cpp2::is_explicit_ref(&f)) {
           continue;
         }
 
@@ -1601,7 +1600,7 @@ class mstch_cpp2_program : public mstch_program {
           }
         };
 
-        auto t = f->get_type()->get_true_type();
+        auto t = f.type()->get_true_type();
         if (auto map = dynamic_cast<t_map const*>(t)) {
           add_dependency(map->get_key_type());
           add_dependency(map->get_val_type());
@@ -2057,13 +2056,13 @@ class annotation_validator : public validator {
 };
 
 bool annotation_validator::visit(t_struct* s) {
-  for (const auto* field : s->fields()) {
-    if (cpp2::is_mixin(*field)) {
+  for (const auto& field : s->fields()) {
+    if (cpp2::is_mixin(field)) {
       // Mixins cannot be refs
-      if (cpp2::is_explicit_ref(field)) {
+      if (cpp2::is_explicit_ref(&field)) {
         add_error(
-            field->get_lineno(),
-            "Mixin field `" + field->get_name() + "` can not be a ref in cpp.");
+            field.lineno(),
+            "Mixin field `" + field.name() + "` can not be a ref in cpp.");
       }
     }
   }
@@ -2089,23 +2088,23 @@ class service_method_validator : public validator {
 
 bool service_method_validator::visit(t_service* service) {
   auto suppress_key = "cpp.coroutine_stack_arguments_broken_suppress_error";
-  for (const auto* func : service->get_functions()) {
-    if (!func->has_annotation(suppress_key) &&
-        func->has_annotation("cpp.coroutine") &&
-        cpp2::is_stack_arguments(options_, *func)) {
+  for (const auto& func : service->functions()) {
+    if (!func.has_annotation(suppress_key) &&
+        func.has_annotation("cpp.coroutine") &&
+        cpp2::is_stack_arguments(options_, func)) {
       // when cpp.coroutine and stack_arguments are both on, return failure if
       // this function has complex types (including string and binary).
-      const auto& params = func->get_paramlist()->fields();
+      const auto& params = func.get_paramlist()->fields();
       bool ok =
-          std::all_of(params.begin(), params.end(), [](const auto* param) {
-            auto type = param->get_type()->get_true_type();
+          std::all_of(params.begin(), params.end(), [](const auto& param) {
+            auto type = param.type()->get_true_type();
             return type->is_base_type() && !type->is_string_or_binary();
           });
 
       if (!ok) {
         add_error(
-            func->get_lineno(),
-            "`" + service->get_name() + "." + func->get_name() +
+            func.lineno(),
+            "`" + service->name() + "." + func.name() +
                 "` use of cpp.coroutine and stack_arguments together is "
                 "disallowed.");
       }

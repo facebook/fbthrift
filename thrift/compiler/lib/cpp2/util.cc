@@ -85,8 +85,8 @@ bool is_orderable(
     return result = std::all_of(
                as_sturct.fields().begin(),
                as_sturct.fields().end(),
-               [&](auto f) {
-                 return is_orderable(seen, memo, *(f->get_type()));
+               [&](const auto& f) {
+                 return is_orderable(seen, memo, f.type().deref());
                });
   }
   if (type.is_list()) {
@@ -262,20 +262,21 @@ static void get_mixins_and_members_impl(
     const t_struct& strct,
     const t_field* top_level_mixin,
     std::vector<mixin_member>& out) {
-  for (const auto* member : strct.fields()) {
-    if (is_mixin(*member)) {
-      assert(member->get_type()->get_true_type()->is_struct());
+  for (const auto& member : strct.fields()) {
+    if (is_mixin(member)) {
+      assert(member.type()->get_true_type()->is_struct());
       auto mixin_struct =
-          static_cast<const t_struct*>(member->get_type()->get_true_type());
-      auto mixin = top_level_mixin ? top_level_mixin : member;
+          static_cast<const t_struct*>(member.type()->get_true_type());
+      const auto& mixin =
+          top_level_mixin != nullptr ? *top_level_mixin : member;
 
       // import members from mixin field
-      for (const auto* member_from_mixin : mixin_struct->fields()) {
-        out.push_back({mixin, member_from_mixin});
+      for (const auto& member_from_mixin : mixin_struct->fields()) {
+        out.push_back({&mixin, &member_from_mixin});
       }
 
       // import members from nested mixin field
-      get_mixins_and_members_impl(*mixin_struct, mixin, out);
+      get_mixins_and_members_impl(*mixin_struct, &mixin, out);
     }
   }
 }

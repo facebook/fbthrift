@@ -201,15 +201,15 @@ class basic_ast_visitor {
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(struct) {
     assert(typeid(node) == typeid(struct_type)); // Must actually be a struct.
     visit(struct_visitors_, node, args...);
-    visit_children_ptrs(node.get_members(), args...);
+    visit_children(node.fields(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(union) {
     visit(union_visitors_, node, args...);
-    visit_children_ptrs(node.get_members(), args...);
+    visit_children(node.fields(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(exception) {
     visit(exception_visitors_, node, args...);
-    visit_children_ptrs(node.get_members(), args...);
+    visit_children(node.fields(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(field) {
     visit(field_visitors_, node, args...);

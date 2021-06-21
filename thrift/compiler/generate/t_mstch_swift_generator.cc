@@ -341,8 +341,8 @@ class mstch_swift_struct : public mstch_struct {
   mstch::node is_struct_union() { return strct_->is_union(); }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
-    for (const auto* field : strct_->fields()) {
-      auto type_name = field->get_type()->get_full_name();
+    for (const auto& field : strct_->fields()) {
+      auto type_name = field.type()->get_full_name();
       std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
       if (field_types.find(type_with_erasure) != field_types.end()) {
         return false;

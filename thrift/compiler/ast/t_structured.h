@@ -43,23 +43,16 @@ class t_structured : public t_type {
   // Tries to append the given field, the argument is untouched on failure.
   bool try_append_field(std::unique_ptr<t_field>&& elem);
 
-  // Get the fields, in the order they were added.
-  const std::vector<const t_field*>& fields() const {
-    return fields_ordinal_order_;
-  }
+  node_list_view<t_field> fields() { return fields_; }
+  node_list_view<const t_field> fields() const { return fields_; }
+  bool has_fields() const { return !fields_.empty(); }
+
   // Get the fields, ordered by id.
   const std::vector<const t_field*>& fields_id_order() const {
     return fields_id_order_;
   }
 
-  // If this struct has any fields.
-  bool has_fields() const { return !fields_.empty(); }
-
-  // Access the field by index, id, or name.
-  t_field* get_field(size_t index) { return fields_.at(index).get(); }
-  const t_field* get_field(size_t index) const {
-    return fields_.at(index).get();
-  }
+  // Access the field by id or name.
   const t_field* get_field_by_id(int32_t id) const;
   const t_field* get_field_by_name(const std::string& name) const {
     return fields_by_name_.find(name);
@@ -67,7 +60,6 @@ class t_structured : public t_type {
 
  protected:
   t_field_list fields_;
-  std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
   name_index<t_field> fields_by_name_;
 
@@ -96,6 +88,11 @@ class t_structured : public t_type {
     const auto* result = get_field_by_name(name);
     assert(result != nullptr);
     return result;
+  }
+
+  t_field* get_field(size_t index) { return fields_.at(index).get(); }
+  const t_field* get_field(size_t index) const {
+    return fields_.at(index).get();
   }
 
   const std::vector<t_field*>& get_members() const { return fields_raw_; }

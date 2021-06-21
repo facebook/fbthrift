@@ -128,7 +128,13 @@ class node_list_view : public ast_detail::base_view<node_list_view<T>, T*> {
   constexpr std::size_t size() const noexcept { return list_->size(); }
 
   // Create an std::vector with the same contents as this span.
-  constexpr std::vector<T*> copy() const noexcept { return {begin(), end()}; }
+  constexpr std::vector<T*> copy() const noexcept {
+    std::vector<T*> result;
+    for (auto& ptr : *list_) {
+      result.emplace_back(ptr.get());
+    }
+    return result;
+  }
 
   // Provided for backwards compatibility with std::vector API.
   using const_iterator = iterator;

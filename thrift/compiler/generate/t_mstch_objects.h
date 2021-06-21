@@ -389,7 +389,7 @@ class mstch_base : public mstch::object {
       Args const&... args) {
     mstch::array a;
     size_t i = 0;
-    for (auto& element : container) {
+    for (auto&& element : container) {
       auto pos = element_position(i, container.size());
       a.push_back(
           generator->generate(element, generators_, cache_, pos, i, args...));

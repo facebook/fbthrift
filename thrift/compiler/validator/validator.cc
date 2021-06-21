@@ -82,32 +82,30 @@ static void fill_validators(validator_list& vs) {
 
 bool field_names_uniqueness_validator::visit(t_struct* s) {
   // If field is not struct, we couldn't extract field from mixin
-  for (auto* field : s->fields()) {
-    if (cpp2::is_mixin(*field) &&
-        !field->get_type()->get_true_type()->is_struct()) {
+  for (auto& field : s->fields()) {
+    if (cpp2::is_mixin(field) && !field.type()->get_true_type()->is_struct()) {
       return true;
     }
   }
 
   std::map<std::string, std::string> memberToParent;
-  for (auto* field : s->fields()) {
-    if (!memberToParent.emplace(field->get_name(), s->get_name()).second) {
+  for (auto& field : s->fields()) {
+    if (!memberToParent.emplace(field.name(), s->name()).second) {
       add_error(
-          field->get_lineno(),
-          "Field `" + field->get_name() + "` is not unique in struct `" +
-              s->get_name() + "`.");
+          field.lineno(),
+          "Field `" + field.name() + "` is not unique in struct `" + s->name() +
+              "`.");
     }
   }
 
   for (auto i : cpp2::get_mixins_and_members(*s)) {
-    auto res =
-        memberToParent.emplace(i.member->get_name(), i.mixin->get_name());
+    auto res = memberToParent.emplace(i.member->name(), i.mixin->name());
     if (!res.second) {
       add_error(
           i.mixin->get_lineno(),
-          "Field `" + res.first->second + "." + i.member->get_name() +
-              "` and `" + i.mixin->get_name() + "." + i.member->get_name() +
-              "` can not have same name in struct `" + s->get_name() + "`.");
+          "Field `" + res.first->second + "." + i.member->name() + "` and `" +
+              i.mixin->name() + "." + i.member->name() +
+              "` can not have same name in struct `" + s->name() + "`.");
     }
   }
   return true;
@@ -117,17 +115,17 @@ bool struct_names_uniqueness_validator::visit(t_program* p) {
   set_program(p);
   std::set<std::string> seen;
   for (auto* object : p->objects()) {
-    if (!seen.emplace(object->get_name()).second) {
+    if (!seen.emplace(object->name()).second) {
       add_error(
           object->get_lineno(),
-          "Redefinition of type `" + object->get_name() + "`.");
+          "Redefinition of type `" + object->name() + "`.");
     }
   }
   for (auto* interaction : p->interactions()) {
-    if (!seen.emplace(interaction->get_name()).second) {
+    if (!seen.emplace(interaction->name()).second) {
       add_error(
           interaction->get_lineno(),
-          "Redefinition of type `" + interaction->get_name() + "`.");
+          "Redefinition of type `" + interaction->name() + "`.");
     }
   }
   return true;
@@ -166,22 +164,21 @@ bool interactions_validator::visit(t_service* s) {
       continue;
     }
 
-    if (!seen.emplace(ret->get_name()).second) {
+    if (!seen.emplace(ret->name()).second) {
       add_error(
           func->get_lineno(),
-          "Service `" + s->get_name() +
+          "Service `" + s->name() +
               "` has multiple methods for creating interaction `" +
-              ret->get_name() + "`.");
+              ret->name() + "`.");
     }
   }
   return true;
 }
 
 bool reserved_field_id_validator::visit(t_struct* s) {
-  for (const auto* field : s->fields()) {
-    if (field->get_key() < kMinimalValidFieldId) {
-      add_error(
-          field->get_lineno(), "Too many fields in `" + s->get_name() + "`");
+  for (const auto& field : s->fields()) {
+    if (field.id() < kMinimalValidFieldId) {
+      add_error(field.lineno(), "Too many fields in `" + s->name() + "`");
     }
   }
   return true;
@@ -192,13 +189,13 @@ bool recursive_union_validator::visit(t_struct* s) {
     return true;
   }
 
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box")) {
+  for (const auto& field : s->fields()) {
+    if (field.has_annotation("cpp.box")) {
       add_error(
-          field->get_lineno(),
+          field.lineno(),
           std::string("Unions cannot contain fields with the `cpp.box` "
                       "annotation. Remove the annotation from `") +
-              field->get_name() + "`.");
+              field.name() + "`.");
     }
   }
 
@@ -206,14 +203,14 @@ bool recursive_union_validator::visit(t_struct* s) {
 }
 
 bool recursive_ref_validator::visit(t_struct* s) {
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box") && cpp2::has_ref_annotation(*field)) {
+  for (const auto& field : s->fields()) {
+    if (field.has_annotation("cpp.box") && cpp2::has_ref_annotation(field)) {
       add_error(
-          field->get_lineno(),
+          field.lineno(),
           std::string(
               "The `cpp.box` annotation cannot be combined with the `ref` or "
               "`ref_type` annotations. Remove one of the annotations from `") +
-              field->get_name() + "`.");
+              field.name() + "`.");
     }
   }
 
@@ -225,14 +222,14 @@ bool recursive_optional_validator::visit(t_struct* s) {
     return true;
   }
 
-  for (const auto* field : s->fields()) {
-    if (field->has_annotation("cpp.box") &&
-        field->get_req() != t_field::e_req::optional) {
+  for (const auto& field : s->fields()) {
+    if (field.has_annotation("cpp.box") &&
+        field.get_req() != t_field::e_req::optional) {
       add_error(
-          field->get_lineno(),
+          field.lineno(),
           std::string("The `cpp.box` annotation can only be used with optional "
                       "fields. Make sure ") +
-              field->get_name() + std::string(" is optional."));
+              field.name() + std::string(" is optional."));
     }
   }
 

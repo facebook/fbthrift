@@ -513,18 +513,18 @@ class mstch_py3_program : public mstch_program {
   }
 
   void visit_type_single_service(const t_service* service) {
-    for (const auto* function : service->get_functions()) {
-      for (const auto* field : function->get_paramlist()->fields()) {
-        visit_type(field->get_type());
+    for (const auto& function : service->functions()) {
+      for (const auto& field : function.get_paramlist()->fields()) {
+        visit_type(field.get_type());
       }
-      for (const auto* field : function->get_stream_xceptions()->fields()) {
-        const t_type* exType = field->get_type();
-        streamExceptions_.emplace(visit_type(field->get_type()), exType);
+      for (const auto& field : function.get_stream_xceptions()->fields()) {
+        const t_type* exType = field.get_type();
+        streamExceptions_.emplace(visit_type(field.get_type()), exType);
       }
-      const t_type* return_type = function->get_returntype();
-      auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
+      const t_type* return_type = function.get_returntype();
+      auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, function);
       uniqueFunctionsByReturnType_.insert(
-          {{visit_type(return_type), sa}, function});
+          {{visit_type(return_type), sa}, &function});
     }
   }
 
@@ -539,8 +539,8 @@ class mstch_py3_program : public mstch_program {
 
   void visit_types_for_objects() {
     for (const auto& object : program_->objects()) {
-      for (const auto& field : object->fields()) {
-        visit_type(field->get_type());
+      for (auto&& field : object->fields()) {
+        visit_type(field.get_type());
       }
     }
   }
@@ -894,7 +894,7 @@ class mstch_py3_struct : public mstch_struct {
             {"struct:py3_fields", &mstch_py3_struct::py3_fields},
             {"struct:py3_fields?", &mstch_py3_struct::has_py3_fields},
         });
-    py3_fields_ = strct_->fields();
+    py3_fields_ = strct_->fields().copy();
     py3_fields_.erase(
         std::remove_if(
             py3_fields_.begin(),
@@ -1237,8 +1237,8 @@ class enum_member_union_field_names_validator : virtual public validator {
     if (!s->is_union()) {
       return false;
     }
-    for (const t_field* f : s->fields()) {
-      validate(f, f->get_name());
+    for (const t_field& f : s->fields()) {
+      validate(&f, f.name());
     }
     return true;
   }

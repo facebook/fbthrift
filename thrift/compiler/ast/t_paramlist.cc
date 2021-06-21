@@ -34,8 +34,6 @@ void t_paramlist::set_stream_field(std::unique_ptr<t_field> stream_field) {
   if (!stream_field->get_name().empty()) {
     fields_by_name_.put(*stream_field);
   }
-  fields_ordinal_order_.emplace(
-      fields_ordinal_order_.begin(), stream_field.get());
   fields_id_order_.insert(fields_id_order_.begin(), stream_field.get());
   fields_.insert(fields_.begin(), std::move(stream_field));
   has_stream_field_ = true;

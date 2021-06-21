@@ -298,18 +298,17 @@ void t_mstch_pyi_generator::add_container_types(
   std::set<string> visited_names;
 
   for (const auto service : program.services()) {
-    for (const auto function : service->get_functions()) {
-      for (const auto param : function->get_paramlist()->fields()) {
-        load_container_type(container_types, visited_names, param->get_type());
+    for (const auto& function : service->functions()) {
+      for (const auto& param : function.get_paramlist()->fields()) {
+        load_container_type(container_types, visited_names, param.get_type());
       }
-      auto return_type = function->get_returntype();
+      auto return_type = function.get_returntype();
       load_container_type(container_types, visited_names, return_type);
     }
   }
   for (const auto object : program.objects()) {
-    for (const auto field : object->fields()) {
-      auto ref_type = field->get_type();
-      load_container_type(container_types, visited_names, ref_type);
+    for (const auto& field : object->fields()) {
+      load_container_type(container_types, visited_names, field.get_type());
     }
   }
   for (const auto constant : program.consts()) {

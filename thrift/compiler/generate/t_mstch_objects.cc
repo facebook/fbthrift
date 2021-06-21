@@ -534,7 +534,7 @@ mstch::node mstch_field::type() {
 }
 
 mstch::node mstch_struct::fields() {
-  return generate_fields(strct_->fields());
+  return generate_fields(strct_->get_members());
 }
 
 mstch::node mstch_struct::thrift_uri() {
@@ -601,24 +601,24 @@ mstch::node mstch_function::return_type() {
 }
 
 mstch::node mstch_function::exceptions() {
-  return generate_fields(function_->get_xceptions()->fields());
+  return generate_fields(function_->get_xceptions()->get_members());
 }
 
 mstch::node mstch_function::stream_exceptions() {
-  return generate_fields(function_->get_stream_xceptions()->fields());
+  return generate_fields(function_->get_stream_xceptions()->get_members());
 }
 
 mstch::node mstch_function::sink_exceptions() {
-  return generate_fields(function_->get_sink_xceptions()->fields());
+  return generate_fields(function_->get_sink_xceptions()->get_members());
 }
 
 mstch::node mstch_function::sink_final_response_exceptions() {
   return generate_fields(
-      function_->get_sink_final_response_xceptions()->fields());
+      function_->get_sink_final_response_xceptions()->get_members());
 }
 
 mstch::node mstch_function::arg_list() {
-  return generate_fields(function_->get_paramlist()->fields());
+  return generate_fields(function_->get_paramlist()->get_members());
 }
 
 mstch::node mstch_function::returns_stream() {

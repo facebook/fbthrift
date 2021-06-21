@@ -52,7 +52,6 @@ bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
   if (!elem->name().empty()) {
     fields_by_name_.put(*elem);
   }
-  fields_ordinal_order_.emplace_back(elem.get());
   fields_id_order_.emplace(existing.first, elem.get());
 
   fields_raw_.push_back(elem.get());
@@ -88,7 +87,6 @@ void t_structured::append(std::unique_ptr<t_field> elem) {
   if (!elem->get_name().empty()) {
     fields_by_name_.put(*elem);
   }
-  fields_ordinal_order_.push_back(elem.get());
   fields_raw_.push_back(elem.get());
   fields_.push_back(std::move(elem));
 }
