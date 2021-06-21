@@ -119,6 +119,9 @@ const ::std::unique_ptr<::std::string>& Foo::__fbthrift_read_field_field1() cons
       case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
         __fbthrift_read_field_field1_impl<::apache::thrift::CompactProtocolReader>();
         break;
+      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+        __fbthrift_read_field_field1_impl<::apache::thrift::BinaryProtocolReader>();
+        break;
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
@@ -142,6 +145,9 @@ const ::std::vector<::std::int32_t>& Foo::__fbthrift_read_field_field3() const {
     switch (__fbthrift_protocol_) {
       case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
         __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
+        break;
+      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+        __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
         break;
       default:
         CHECK(false) << int(__fbthrift_protocol_);

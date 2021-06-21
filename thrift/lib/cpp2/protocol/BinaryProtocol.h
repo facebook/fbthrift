@@ -61,7 +61,7 @@ class BinaryProtocolWriter {
 
   static constexpr bool kSortKeys() { return false; }
 
-  static constexpr bool kHasIndexSupport() { return false; }
+  static constexpr bool kHasIndexSupport() { return true; }
 
   /**
    * ...
@@ -107,6 +107,7 @@ class BinaryProtocolWriter {
   inline uint32_t writeBinary(folly::ByteRange str);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   inline uint32_t writeBinary(const folly::IOBuf& str);
+  inline uint32_t writeRaw(const IOBuf& buf);
 
   /**
    * Functions that return the [estimated] serialized size
@@ -150,7 +151,12 @@ class BinaryProtocolWriter {
       std::unique_ptr<folly::IOBuf> const&) const;
   inline uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
 
+  inline void rewriteDouble(double dub, int64_t offset);
+
  private:
+  template <bool kWriteSize>
+  FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str);
+
   /**
    * Cursor to write the data out to.
    */

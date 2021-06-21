@@ -30,6 +30,9 @@ const <%field:cpp_storage_type%>& <%struct:name%>::__fbthrift_read_field_<%field
       case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
         __fbthrift_read_field_<%field:cpp_name%>_impl<::apache::thrift::CompactProtocolReader>();
         break;
+      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+        __fbthrift_read_field_<%field:cpp_name%>_impl<::apache::thrift::BinaryProtocolReader>();
+        break;
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }

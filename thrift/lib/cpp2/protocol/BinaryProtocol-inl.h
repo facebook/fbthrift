@@ -170,13 +170,22 @@ uint32_t BinaryProtocolWriter::writeBinary(
 }
 
 uint32_t BinaryProtocolWriter::writeBinary(const folly::IOBuf& str) {
+  return writeBinaryImpl<true>(str);
+}
+
+uint32_t BinaryProtocolWriter::writeRaw(const folly::IOBuf& str) {
+  return writeBinaryImpl<false>(str);
+}
+
+template <bool kWriteSize>
+uint32_t BinaryProtocolWriter::writeBinaryImpl(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
   // leave room for size
   uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
   if (size > limit) {
     TProtocolException::throwExceededSizeLimit(size, limit);
   }
-  uint32_t result = writeI32((int32_t)size);
+  uint32_t result = kWriteSize ? writeI32((int32_t)size) : 0;
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
     auto clone = str.clone();
     clone->makeManaged();
@@ -185,6 +194,13 @@ uint32_t BinaryProtocolWriter::writeBinary(const folly::IOBuf& str) {
     out_.insert(str);
   }
   return result + static_cast<uint32_t>(size);
+}
+
+void BinaryProtocolWriter::rewriteDouble(double dub, int64_t offset) {
+  auto cursor = RWCursor(out_);
+  cursor.advanceToEnd();
+  cursor -= offset;
+  cursor.writeBE(folly::bit_cast<uint64_t>(dub));
 }
 
 /**
