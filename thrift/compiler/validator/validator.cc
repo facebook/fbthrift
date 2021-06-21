@@ -70,7 +70,6 @@ void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
  */
 
 static void fill_validators(validator_list& vs) {
-  vs.add<exception_list_is_all_exceptions_validator>();
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
   vs.add<reserved_field_id_validator>();
@@ -79,46 +78,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<recursive_optional_validator>();
 
   // add more validators here ...
-}
-
-bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
-  auto check_func = [=](t_function const* func) {
-    if (!validate_throws(func->get_xceptions())) {
-      add_error(
-          func->get_lineno(),
-          "Non-exception type in throws list for method `" + func->get_name() +
-              "`.");
-    }
-    if (!validate_throws(func->get_stream_xceptions())) {
-      add_error(
-          func->get_lineno(),
-          "Non-exception type in stream throws list for method `" +
-              func->get_name() + "`.");
-    }
-  };
-
-  auto const& funcs = service->get_functions();
-  for (auto const& func : funcs) {
-    check_func(func);
-  }
-
-  return true;
-}
-
-/**
- * Check that all the elements of a throws block are actually exceptions.
- */
-bool exception_list_is_all_exceptions_validator::validate_throws(
-    const t_throws* throws) {
-  if (throws == nullptr) {
-    return true;
-  }
-  for (const auto* ex : throws->fields()) {
-    if (!ex->get_type()->get_true_type()->is_exception()) {
-      return false;
-    }
-  }
-  return true;
 }
 
 bool field_names_uniqueness_validator::visit(t_struct* s) {

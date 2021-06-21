@@ -89,19 +89,6 @@ class validator_list {
   std::vector<std::unique_ptr<validator>> validators_;
 };
 
-class exception_list_is_all_exceptions_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  bool visit(t_service* service) override;
-
- private:
-  /**
-   * Check members of a throws block
-   */
-  static bool validate_throws(const t_throws* throws);
-};
-
 class field_names_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;

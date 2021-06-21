@@ -28,6 +28,8 @@
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_throws.h>
+#include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/sema/scope_validator.h>
@@ -120,6 +122,18 @@ void validate_extends_service_function_name_uniqueness(
           << "` redefines `" << existing_service->get_full_name() << "."
           << function.name() << "`.";
       });
+    }
+  }
+}
+
+void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
+  for (const auto* except : node.fields()) {
+    auto except_type = except->type()->get_true_type();
+    if (dynamic_cast<const t_exception*>(except_type) == nullptr) {
+      ctx.failure(
+          *except,
+          "Non-exception type, `%s`, in throws.",
+          except_type->name().c_str());
     }
   }
 }
@@ -242,6 +256,7 @@ ast_validator standard_validator() {
   validator.add_interface_visitor(&validate_interface_function_name_uniqueness);
   validator.add_service_visitor(
       &validate_extends_service_function_name_uniqueness);
+  validator.add_throws_visitor(&validate_throws_exceptions);
 
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_field_visitor(&validate_mixin_field_attributes);

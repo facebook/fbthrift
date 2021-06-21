@@ -720,6 +720,36 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
+    def test_bad_throws(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {}
+
+                service B {
+                    void foo() throws (1: A ex)
+                    stream<i32 throws (1: A ex)> bar()
+                    sink<i32 throws (1: A ex),
+                         i32 throws (1: A ex)> baz()
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:4] Non-exception type, `A`, in throws.\n"
+                "[FAILURE:foo.thrift:5] Non-exception type, `A`, in throws.\n"
+                "[FAILURE:foo.thrift:6] Non-exception type, `A`, in throws.\n"
+                "[FAILURE:foo.thrift:7] Non-exception type, `A`, in throws.\n"
+            ),
+        )
+
     def test_recursive_union(self):
         write_file(
             "foo.thrift",
