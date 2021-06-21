@@ -130,10 +130,9 @@ void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
   for (const auto* except : node.fields()) {
     auto except_type = except->type()->get_true_type();
     if (dynamic_cast<const t_exception*>(except_type) == nullptr) {
-      ctx.failure(
-          *except,
-          "Non-exception type, `%s`, in throws.",
-          except_type->name().c_str());
+      ctx.failure(*except, [&](auto& o) {
+        o << "Non-exception type, `" << except_type->name() << "`, in throws.";
+      });
     }
   }
 }
