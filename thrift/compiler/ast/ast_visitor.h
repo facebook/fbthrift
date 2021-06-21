@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <exception>
 #include <functional>
 #include <type_traits>
 #include <vector>
@@ -28,8 +29,14 @@
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_interface.h>
+#include <thrift/compiler/ast/t_list.h>
+#include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_set.h>
+#include <thrift/compiler/ast/t_sink.h>
+#include <thrift/compiler/ast/t_stream.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
@@ -110,6 +117,20 @@ class basic_ast_visitor {
     add_typedef_visitor(std::forward<V>(visitor));
   }
 
+  template <typename V>
+  void add_container_visitor(V&& visitor) {
+    add_set_visitor(visitor);
+    add_list_visitor(visitor);
+    add_map_visitor(std::forward<V>(visitor));
+  }
+
+  template <typename V>
+  void add_type_instantiation_visitor(V&& visitor) {
+    add_container_visitor(visitor);
+    add_sink_visitor(visitor);
+    add_stream_response_visitor(std::forward<V>(visitor));
+  }
+
 // Visitation and registration functions for concrete AST nodes.
 #define FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(name)           \
  private:                                                   \
@@ -129,7 +150,7 @@ class basic_ast_visitor {
     visit_children_ptrs(node.interactions(), args...);
     // TODO(afuller): Split structs and unions in t_program accessors.
     for (auto* struct_or_union : node.structs()) {
-      if (auto* tunion = dynamic_cast<union_type*>(struct_or_union)) {
+      if (auto* tunion = as<t_union>(*struct_or_union)) {
         this->operator()(args..., *tunion);
       } else {
         this->operator()(args..., *struct_or_union);
@@ -139,28 +160,49 @@ class basic_ast_visitor {
     visit_children_ptrs(node.typedefs(), args...);
     visit_children_ptrs(node.enums(), args...);
     visit_children_ptrs(node.consts(), args...);
+    for (auto& type_inst : node.type_instantiations()) {
+      if (auto* set_node = as<t_set>(type_inst)) {
+        visit_child(*set_node, args...);
+      } else if (auto* list_node = as<t_list>(type_inst)) {
+        visit_child(*list_node, args...);
+      } else if (auto* map_node = as<t_map>(type_inst)) {
+        visit_child(*map_node, args...);
+      } else if (auto* sink_node = as<t_sink>(type_inst)) {
+        visit_child(*sink_node, args...);
+      } else if (auto* stream_node = as<t_stream_response>(type_inst)) {
+        visit_child(*stream_node, args...);
+      } else {
+        std::terminate(); // Should be unreachable.
+      }
+    }
   }
 
+  // Interfaces
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(service) {
     assert(typeid(node) == typeid(service_type)); // Must actually be a service.
     visit(service_visitors_, node, args...);
     visit_children(node.functions(), args...);
   }
-
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(interaction) {
     visit(interaction_visitors_, node, args...);
     visit_children(node.functions(), args...);
   }
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(function) {
     visit(function_visitors_, node, args...);
+    if (node.exceptions() != nullptr) {
+      visit_child(*node.exceptions(), args...);
+    }
+  }
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(throws) {
+    visit(throws_visitors_, node, args...);
   }
 
+  // Types
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(struct) {
     assert(typeid(node) == typeid(struct_type)); // Must actually be a struct.
     visit(struct_visitors_, node, args...);
     visit_children_ptrs(node.get_members(), args...);
   }
-
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(union) {
     visit(union_visitors_, node, args...);
     visit_children_ptrs(node.get_members(), args...);
@@ -172,7 +214,6 @@ class basic_ast_visitor {
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(field) {
     visit(field_visitors_, node, args...);
   }
-
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(enum) {
     visit(enum_visitors_, node, args...);
     visit_children(node.values(), args...);
@@ -183,9 +224,34 @@ class basic_ast_visitor {
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(const) {
     visit(const_visitors_, node, args...);
   }
-
   FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(typedef) {
     visit(typedef_visitors_, node, args...);
+  }
+
+  // Templated type instantiations.
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(set) {
+    visit(set_visitors_, node, args...);
+  }
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(list) {
+    visit(list_visitors_, node, args...);
+  }
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(map) {
+    visit(map_visitors_, node, args...);
+  }
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(sink) {
+    visit(sink_visitors_, node, args...);
+    if (node.sink_exceptions() != nullptr) {
+      visit_child(*node.sink_exceptions(), args...);
+    }
+    if (node.final_response_exceptions() != nullptr) {
+      visit_child(*node.final_response_exceptions(), args...);
+    }
+  }
+  FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_(stream_response) {
+    visit(stream_response_visitors_, node, args...);
+    if (node.exceptions() != nullptr) {
+      visit_child(*node.exceptions(), args...);
+    }
   }
 
 #undef FBTHRIFT_DETAIL_AST_VISITOR_NODE_T_
@@ -199,6 +265,11 @@ class basic_ast_visitor {
     }
   }
   template <typename C>
+  void visit_child(C& child, Args... args) const {
+    operator()(args..., child);
+  }
+
+  template <typename C>
   void visit_children(const C& children, Args... args) const {
     for (auto&& child : children) {
       operator()(args..., child);
@@ -209,6 +280,11 @@ class basic_ast_visitor {
     for (auto* child : children) {
       operator()(args..., *child);
     }
+  }
+  // Helper that to propagate constness throw a dynamic_cast.
+  template <typename T>
+  static node_type<T>* as(node_type<t_node>& node) {
+    return dynamic_cast<node_type<T>*>(&node);
   }
 };
 
