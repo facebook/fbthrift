@@ -38,12 +38,7 @@ enum class t_function_qualifier {
 };
 
 /**
- * class t_function
- *
- * Representation of a function. Key parts are return type, function name,
- * optional modifiers, and an argument list, which is implemented as a thrift
- * struct.
- *
+ * A thrift function declaration.
  */
 class t_function final : public t_named {
  public:
@@ -53,22 +48,26 @@ class t_function final : public t_named {
    * @param return_type      - The type of the value that will be returned
    * @param name             - The symbolic name of the function
    * @param paramlist        - The parameters that are passed to the functions
-   * @param exceptions        - Declare the exceptions that function might throw
-   * @param qualifier        - The qualifier of the function, if any.
    */
   t_function(
       t_type_ref return_type,
       std::string name,
-      std::unique_ptr<t_paramlist> paramlist,
-      std::unique_ptr<t_throws> exceptions = nullptr,
-      t_function_qualifier qualifier = {});
+      std::unique_ptr<t_paramlist> paramlist);
 
-  t_function_qualifier qualifier() const { return qualifier_; }
   const t_type_ref& return_type() const { return return_type_; }
   const t_paramlist* params() const { return paramlist_.get(); }
-  const t_throws* exceptions() const {
-    return t_throws::or_empty(exceptions_.get());
-  }
+
+  // The qualifier of the function, if any.
+  t_function_qualifier qualifier() const { return qualifier_; }
+  void set_qualifier(t_function_qualifier qualifier) { qualifier_ = qualifier; }
+
+  // The declared exceptions that function might throw.
+  //
+  // Returns nullptr when the throws clause is absent.
+  t_throws* exceptions() { return exceptions_.get(); }
+  const t_throws* exceptions() const { return exceptions_.get(); }
+  // Use nullptr to indicate an absent throws clause.
+  void set_exceptions(std::unique_ptr<t_throws> exceptions);
 
   bool is_interaction_constructor() const { return isInteractionConstructor_; }
   void set_is_interaction_constructor() { isInteractionConstructor_ = true; }
@@ -95,14 +94,17 @@ class t_function final : public t_named {
       : t_function(
             t_type_ref::from_req_ptr(return_type),
             std::move(name),
-            std::move(paramlist),
-            std::move(exceptions),
-            qualifier) {}
+            std::move(paramlist)) {
+    set_exceptions(std::move(exceptions));
+    set_qualifier(qualifier);
+  }
 
   t_paramlist* get_paramlist() const { return paramlist_.get(); }
   const t_type* get_return_type() const { return return_type().get_type(); }
   const t_type* get_returntype() const { return return_type().get_type(); }
-  const t_throws* get_xceptions() const { return exceptions(); }
+  const t_throws* get_xceptions() const {
+    return t_throws::or_empty(exceptions());
+  }
   const t_throws* get_stream_xceptions() const {
     return t_throws::or_empty(stream_exceptions_);
   }

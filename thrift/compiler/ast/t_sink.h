@@ -30,30 +30,39 @@ namespace thrift {
 namespace compiler {
 
 /**
- * A sink is a lightweight object type that just wraps another data type.
+ * A sink contains the types for stream of responses and a final response.
  *
+ * Exceptions throw during the stream or instead of the final response can also
+ * be specified.
  */
-
 class t_sink : public t_templated_type {
  public:
-  explicit t_sink(
-      t_type_ref sink_type,
-      std::unique_ptr<t_throws> sink_exceptions,
-      t_type_ref final_response_type,
-      std::unique_ptr<t_throws> final_response_exceptions)
+  explicit t_sink(t_type_ref sink_type, t_type_ref final_response_type)
       : sink_type_(std::move(sink_type)),
-        sink_exceptions_(std::move(sink_exceptions)),
-        final_response_type_(std::move(final_response_type)),
-        final_response_exceptions_(std::move(final_response_exceptions)) {}
+        final_response_type_(std::move(final_response_type)) {}
 
   const t_type_ref& sink_type() const { return sink_type_; }
-  const t_throws* sink_exceptions() const {
-    return t_throws::or_empty(sink_exceptions_.get());
-  }
   const t_type_ref& final_response_type() const { return final_response_type_; }
 
+  // Returns nullptr when throws clause is absent.
+  t_throws* sink_exceptions() { return sink_exceptions_.get(); }
+  const t_throws* sink_exceptions() const { return sink_exceptions_.get(); }
+  // Use nullptr to indicate an absent throws clause.
+  void set_sink_exceptions(std::unique_ptr<t_throws> sink_exceptions) {
+    sink_exceptions_ = std::move(sink_exceptions);
+  }
+
+  // Returns nullptr when throws clause is absent.
+  t_throws* final_response_exceptions() {
+    return final_response_exceptions_.get();
+  }
   const t_throws* final_response_exceptions() const {
-    return t_throws::or_empty(final_response_exceptions_.get());
+    return final_response_exceptions_.get();
+  }
+  // Use nullptr to indicate an absent throws clause.
+  void set_final_response_exceptions(
+      std::unique_ptr<t_throws> final_response_exceptions) {
+    final_response_exceptions_ = std::move(final_response_exceptions);
   }
 
   void set_first_response_type(boost::optional<t_type_ref> first_response) {
@@ -90,9 +99,10 @@ class t_sink : public t_templated_type {
       std::unique_ptr<t_throws> final_response_exceptions)
       : t_sink(
             t_type_ref::from_req_ptr(sink_type),
-            std::move(sink_exceptions),
-            t_type_ref::from_req_ptr(final_response_type),
-            std::move(final_response_exceptions)) {}
+            t_type_ref::from_req_ptr(final_response_type)) {
+    set_sink_exceptions(std::move(sink_exceptions));
+    set_final_response_exceptions(std::move(final_response_exceptions));
+  }
 
   void set_first_response(const t_type* first_response) {
     set_first_response_type(t_type_ref::from_ptr(first_response));

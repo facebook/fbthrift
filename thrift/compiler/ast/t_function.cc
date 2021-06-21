@@ -28,19 +28,15 @@ namespace compiler {
 t_function::t_function(
     t_type_ref return_type,
     std::string name,
-    std::unique_ptr<t_paramlist> paramlist,
-    std::unique_ptr<t_throws> exceptions,
-    t_function_qualifier qualifier)
+    std::unique_ptr<t_paramlist> paramlist)
     : t_named(std::move(name)),
       return_type_(std::move(return_type)),
-      paramlist_(std::move(paramlist)),
-      exceptions_(std::move(exceptions)),
-      qualifier_(qualifier) {
+      paramlist_(std::move(paramlist)) {
   // Grab stream related exceptions from return type, for easy access.
   // TODO(afuller): Remove these if possible.
   if (const auto* tstream_resp =
           dynamic_cast<const t_stream_response*>(return_type_.get_type())) {
-    stream_exceptions_ = tstream_resp->throws();
+    stream_exceptions_ = tstream_resp->exceptions();
   } else if (
       const auto* tsink =
           dynamic_cast<const t_sink*>(return_type_.get_type())) {
@@ -50,22 +46,25 @@ t_function::t_function(
 
   // Validate function
   // TODO(afuller): Move this to a post parse step.
-  if (is_oneway()) {
-    if (exceptions_ != nullptr && exceptions_->has_fields()) {
-      throw std::runtime_error("Oneway methods can't throw exceptions.");
-    }
-
-    if (return_type_.get_type() == nullptr ||
-        !return_type_.get_type()->is_void()) {
-      throw std::runtime_error("Oneway methods must have void return type.");
-    }
+  if (is_oneway() &&
+      (return_type_.get_type() == nullptr ||
+       !return_type_.get_type()->is_void())) {
+    throw std::runtime_error("Oneway methods must have void return type.");
   }
 
-  if (stream_exceptions_ != nullptr && stream_exceptions_->has_fields()) {
-    if (return_type_.get_type() == nullptr ||
-        !return_type_.get_type()->is_streamresponse()) {
-      throw std::runtime_error("`stream throws` only valid on stream methods");
-    }
+  // TODO(afuller): Move this to a post parse step.
+  if (!t_throws::is_null_or_empty(stream_exceptions_) &&
+      (return_type_.get_type() == nullptr ||
+       !return_type_.get_type()->is_streamresponse())) {
+    throw std::runtime_error("`stream throws` only valid on stream methods");
+  }
+}
+
+void t_function::set_exceptions(std::unique_ptr<t_throws> exceptions) {
+  exceptions_ = std::move(exceptions);
+  // TODO(afuller): Move this to a post parse step.
+  if (is_oneway() && !t_throws::is_null_or_empty(exceptions_.get())) {
+    throw std::runtime_error("Oneway methods can't throw exceptions.");
   }
 }
 

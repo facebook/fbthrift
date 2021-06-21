@@ -41,6 +41,11 @@ class t_throws : public t_struct {
   static const t_throws* or_empty(const t_throws* value) {
     return value == nullptr ? no_exceptions() : value;
   }
+  // A helper that returns true if value contains now exceptions, either because
+  // it is not set, or because it is empty.
+  static bool is_null_or_empty(const t_throws* value) {
+    return value == nullptr || !value->has_fields();
+  }
 
  private:
   friend class t_structured;

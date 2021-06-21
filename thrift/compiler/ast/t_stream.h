@@ -29,12 +29,18 @@ namespace compiler {
 
 class t_stream_response : public t_templated_type {
  public:
-  explicit t_stream_response(
-      t_type_ref elem_type, std::unique_ptr<t_throws> throws = nullptr)
-      : elem_type_(std::move(elem_type)), throws_(std::move(throws)) {}
+  explicit t_stream_response(t_type_ref elem_type)
+      : elem_type_(std::move(elem_type)) {}
 
   const t_type_ref& elem_type() const { return elem_type_; }
-  const t_throws* throws() const { return t_throws::or_empty(throws_.get()); }
+
+  // Returns nullptr when the throws clause is absent.
+  t_throws* exceptions() { return exceptions_.get(); }
+  const t_throws* exceptions() const { return exceptions_.get(); }
+  // Use nullptr to indicate an absent throws clause.
+  void set_exceptions(std::unique_ptr<t_throws> exceptions) {
+    exceptions_ = std::move(exceptions);
+  }
 
   void set_first_response_type(
       boost::optional<t_type_ref> first_response_type) {
@@ -55,7 +61,7 @@ class t_stream_response : public t_templated_type {
 
  private:
   t_type_ref elem_type_;
-  std::unique_ptr<t_throws> throws_;
+  std::unique_ptr<t_throws> exceptions_;
   boost::optional<t_type_ref> first_response_type_;
 
   // TODO(afuller): Remove everything below here. It is provided only for
@@ -63,8 +69,9 @@ class t_stream_response : public t_templated_type {
  public:
   explicit t_stream_response(
       const t_type* elem_type, std::unique_ptr<t_throws> throws = nullptr)
-      : t_stream_response(
-            t_type_ref::from_req_ptr(elem_type), std::move(throws)) {}
+      : t_stream_response(t_type_ref::from_req_ptr(elem_type)) {
+    set_exceptions(std::move(throws));
+  }
 
   void set_first_response_type(const t_type* first_response_type) {
     set_first_response_type(t_type_ref::from_ptr(first_response_type));
@@ -78,8 +85,8 @@ class t_stream_response : public t_templated_type {
   bool has_first_response() const {
     return first_response_type_ != boost::none;
   }
-  t_throws* get_throws_struct() const { return throws_.get(); }
-  bool has_throws_struct() const { return throws_ == nullptr; }
+  t_throws* get_throws_struct() const { return exceptions_.get(); }
+  bool has_throws_struct() const { return exceptions_ == nullptr; }
 
   bool is_streamresponse() const override { return true; }
   type get_type_value() const override { return type::t_stream; }

@@ -83,7 +83,7 @@ static void fill_validators(validator_list& vs) {
 
 bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
   auto check_func = [=](t_function const* func) {
-    if (!validate_throws(func->exceptions())) {
+    if (!validate_throws(func->get_xceptions())) {
       add_error(
           func->get_lineno(),
           "Non-exception type in throws list for method `" + func->get_name() +

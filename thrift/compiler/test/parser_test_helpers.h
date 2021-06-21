@@ -44,8 +44,8 @@ std::unique_ptr<t_function> create_fake_function(
         arg.release(), "arg_" + boost::lexical_cast<std::string>(index++)));
   }
 
-  return std::unique_ptr<t_function>(new t_function(
-      signature::return_type().release(), std::move(name), std::move(args)));
+  return std::make_unique<t_function>(
+      signature::return_type().release(), std::move(name), std::move(args));
 }
 
 /**

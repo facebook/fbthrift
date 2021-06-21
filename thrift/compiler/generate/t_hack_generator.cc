@@ -1608,7 +1608,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
         std::make_unique<t_const_value>("arguments"), std::move(arguments));
   }
 
-  if (function->exceptions()->has_fields()) {
+  if (!t_throws::is_null_or_empty(function->exceptions())) {
     auto exceptions = std::make_unique<t_const_value>();
     exceptions->set_list();
     for (const auto& field : function->exceptions()->fields()) {

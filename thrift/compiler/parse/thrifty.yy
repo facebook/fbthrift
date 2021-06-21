@@ -1030,8 +1030,12 @@ Function:
         "FunctionAnnotations CommaOrSemicolonOptional");
       // TODO(afuller): Leave the param list unnamed.
       $7->set_name(std::string($4) + "_args");
-      $$ = new t_function(std::move($3), std::move($4), own($7), own($9), $2);
-      driver.finish_node($$, LineType::Function, own($1), own($10));
+      auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7));
+      func->set_qualifier($2);
+      func->set_exceptions(own($9));
+
+      driver.finish_node(func.get(), LineType::Function, own($1), own($10));
+      $$ = func.release();
       y_field_val = -1;
     }
   | tok_performs FieldType ";"
@@ -1280,7 +1284,9 @@ StreamReturnType:
   tok_stream "<" FieldType MaybeThrows ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType MaybeThrows >");
-    $$ = new t_stream_response(std::move($3), own($4));
+    auto stream_res = std::make_unique<t_stream_response>(std::move($3));
+    stream_res->set_exceptions(own($4));
+    $$ = stream_res.release();
   }
 
 ResponseAndSinkReturnType:
@@ -1300,10 +1306,12 @@ SinkReturnType:
   tok_sink "<" SinkFieldType "," SinkFieldType ">"
     {
       driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
-      $$ = new t_sink(
-        std::move($3.first), own($3.second),
-        std::move($5.first), own($5.second));
+      auto sink = std::make_unique<t_sink>(std::move($3.first), std::move($5.first));
+      sink->set_sink_exceptions(own($3.second));
+      sink->set_final_response_exceptions(own($5.second));
+      $$ = sink.release();
     }
+
 SinkFieldType:
   FieldType MaybeThrows
     {
