@@ -38,11 +38,11 @@ std::vector<int32_t> randomField() {
   return ret;
 }
 
-template <class Struct>
+template <class Serializer, class Struct>
 std::string randomSerializedStruct() {
   Struct s;
   s.field4_ref() = randomField();
-  return CompactSerializer::serialize<std::string>(s);
+  return Serializer::template serialize<std::string>(s);
 }
 
 auto create(const std::vector<int32_t>& field4) {
@@ -164,24 +164,39 @@ TEST_P(RandomTestWithSeed, test) {
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
         [&] {
-          auto s = randomSerializedStruct<OptionalFoo>();
+          auto s = randomSerializedStruct<CompactSerializer, OptionalFoo>();
           CompactSerializer::deserialize(s, foo);
           CompactSerializer::deserialize(s, lazyFoo);
         },
         [&] {
-          auto s = randomSerializedStruct<OptionalLazyFoo>();
+          auto s = randomSerializedStruct<CompactSerializer, OptionalLazyFoo>();
           CompactSerializer::deserialize(s, foo);
           CompactSerializer::deserialize(s, lazyFoo);
         },
         [&] {
-          auto s = randomSerializedStruct<OptionalFoo>();
+          auto s = randomSerializedStruct<CompactSerializer, OptionalFoo>();
           foo = CompactSerializer::deserialize<OptionalFoo>(s);
           lazyFoo = CompactSerializer::deserialize<OptionalLazyFoo>(s);
         },
         [&] {
-          auto s = randomSerializedStruct<OptionalLazyFoo>();
-          foo = CompactSerializer::deserialize<OptionalFoo>(s);
-          lazyFoo = CompactSerializer::deserialize<OptionalLazyFoo>(s);
+          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
+          foo = BinarySerializer::deserialize<OptionalFoo>(s);
+          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
+        },
+        [&] {
+          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
+          BinarySerializer::deserialize(s, foo);
+          BinarySerializer::deserialize(s, lazyFoo);
+        },
+        [&] {
+          auto s = randomSerializedStruct<BinarySerializer, OptionalFoo>();
+          foo = BinarySerializer::deserialize<OptionalFoo>(s);
+          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
+        },
+        [&] {
+          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
+          foo = BinarySerializer::deserialize<OptionalFoo>(s);
+          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
         });
 
     // Choose a random method and call it

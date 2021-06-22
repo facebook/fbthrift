@@ -69,10 +69,16 @@ TEST(Serialization, Moveable) {
   EXPECT_EQ(foo.field4_ref(), bar.field4_ref());
 }
 
-TEST(Serialization, FooToLazyFoo) {
+template <typename T>
+class Serialization : public testing::Test {};
+
+using Serializers = ::testing::Types<CompactSerializer, BinarySerializer>;
+TYPED_TEST_SUITE(Serialization, Serializers);
+
+TYPED_TEST(Serialization, FooToLazyFoo) {
   auto foo = gen<Foo>();
-  auto s = CompactSerializer::serialize<std::string>(foo);
-  auto lazyFoo = CompactSerializer::deserialize<LazyFoo>(s);
+  auto s = TypeParam::template serialize<std::string>(foo);
+  auto lazyFoo = TypeParam::template deserialize<LazyFoo>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -80,10 +86,10 @@ TEST(Serialization, FooToLazyFoo) {
   EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
-TEST(Serialization, LazyFooToFoo) {
+TYPED_TEST(Serialization, LazyFooToFoo) {
   auto lazyFoo = gen<LazyFoo>();
-  auto s = CompactSerializer::serialize<std::string>(lazyFoo);
-  auto foo = CompactSerializer::deserialize<Foo>(s);
+  auto s = TypeParam::template serialize<std::string>(lazyFoo);
+  auto foo = TypeParam::template deserialize<Foo>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -96,10 +102,10 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFoo, field4);
 
-TEST(Serialization, CheckDataMember) {
+TYPED_TEST(Serialization, CheckDataMember) {
   auto foo = gen<LazyFoo>();
-  auto s = CompactSerializer::serialize<std::string>(foo);
-  auto lazyFoo = CompactSerializer::deserialize<LazyFoo>(s);
+  auto s = TypeParam::template serialize<std::string>(foo);
+  auto lazyFoo = TypeParam::template deserialize<LazyFoo>(s);
 
   EXPECT_EQ(get_field1(lazyFoo), foo.field1_ref());
   EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
@@ -117,33 +123,33 @@ TEST(Serialization, CheckDataMember) {
   EXPECT_EQ(get_field4(lazyFoo), foo.field4_ref());
 }
 
-TEST(Serialization, CppRef) {
+TYPED_TEST(Serialization, CppRef) {
   {
     LazyCppRef foo;
     foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
     foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
     foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
-    auto s = CompactSerializer::serialize<std::string>(foo);
-    auto bar = CompactSerializer::deserialize<LazyCppRef>(s);
+    auto s = TypeParam::template serialize<std::string>(foo);
+    auto bar = TypeParam::template deserialize<LazyCppRef>(s);
     EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
     EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
     EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
   }
   {
     LazyCppRef foo;
-    auto s = CompactSerializer::serialize<std::string>(foo);
-    auto bar = CompactSerializer::deserialize<LazyCppRef>(s);
+    auto s = TypeParam::template serialize<std::string>(foo);
+    auto bar = TypeParam::template deserialize<LazyCppRef>(s);
     EXPECT_FALSE(bar.field1_ref());
     EXPECT_FALSE(bar.field2_ref());
     EXPECT_FALSE(bar.field3_ref());
   }
 }
 
-TEST(Serialization, Comparison) {
+TYPED_TEST(Serialization, Comparison) {
   {
     auto foo1 = gen<LazyFoo>();
-    auto s = CompactSerializer::serialize<std::string>(foo1);
-    auto foo2 = CompactSerializer::deserialize<LazyFoo>(s);
+    auto s = TypeParam::template serialize<std::string>(foo1);
+    auto foo2 = TypeParam::template deserialize<LazyFoo>(s);
 
     EXPECT_FALSE(get_field1(foo1).empty());
     EXPECT_FALSE(get_field2(foo1).empty());
@@ -165,8 +171,8 @@ TEST(Serialization, Comparison) {
 
   {
     auto foo1 = gen<LazyFoo>();
-    auto s = CompactSerializer::serialize<std::string>(foo1);
-    auto foo2 = CompactSerializer::deserialize<LazyFoo>(s);
+    auto s = TypeParam::template serialize<std::string>(foo1);
+    auto foo2 = TypeParam::template deserialize<LazyFoo>(s);
 
     foo1.field4_ref()->clear();
 
@@ -174,22 +180,22 @@ TEST(Serialization, Comparison) {
   }
 }
 
-TEST(Serialization, Evolution) {
+TYPED_TEST(Serialization, Evolution) {
   LazyFoo foo;
-  CompactSerializer::deserialize(
-      CompactSerializer::serialize<std::string>(gen<LazyFoo>()), foo);
-  CompactSerializer::deserialize(
-      CompactSerializer::serialize<std::string>(Foo()), foo);
+  TypeParam::deserialize(
+      TypeParam::template serialize<std::string>(gen<LazyFoo>()), foo);
+  TypeParam::deserialize(
+      TypeParam::template serialize<std::string>(Foo()), foo);
   EXPECT_TRUE(foo.field1_ref()->empty());
   EXPECT_TRUE(foo.field2_ref()->empty());
   EXPECT_TRUE(foo.field3_ref()->empty());
   EXPECT_TRUE(foo.field4_ref()->empty());
 }
 
-TEST(Serialization, OptionalField) {
-  auto s = CompactSerializer::serialize<std::string>(gen<Foo>());
-  auto foo = CompactSerializer::deserialize<OptionalFoo>(s);
-  auto lazyFoo = CompactSerializer::deserialize<OptionalLazyFoo>(s);
+TYPED_TEST(Serialization, OptionalField) {
+  auto s = TypeParam::template serialize<std::string>(gen<Foo>());
+  auto foo = TypeParam::template deserialize<OptionalFoo>(s);
+  auto lazyFoo = TypeParam::template deserialize<OptionalLazyFoo>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -197,11 +203,11 @@ TEST(Serialization, OptionalField) {
   EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
-TEST(Serialization, ReserializeLazyField) {
-  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
-      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
-  auto foo2 = CompactSerializer::deserialize<LazyFoo>(
-      CompactSerializer::serialize<std::string>(foo1));
+TYPED_TEST(Serialization, ReserializeLazyField) {
+  auto foo1 = TypeParam::template deserialize<LazyFoo>(
+      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
+  auto foo2 = TypeParam::template deserialize<LazyFoo>(
+      TypeParam::template serialize<std::string>(foo1));
 
   EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
   EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
@@ -209,9 +215,9 @@ TEST(Serialization, ReserializeLazyField) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
-TEST(Serialization, SupportedToUnsupportedProtocol) {
-  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
-      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+TYPED_TEST(Serialization, SupportedToUnsupportedProtocol) {
+  auto foo1 = TypeParam::template deserialize<LazyFoo>(
+      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
@@ -236,9 +242,9 @@ TEST(Serialization, SupportedToUnsupportedProtocol) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
-TEST(Serialization, ReserializeSameStruct) {
-  auto foo1 = CompactSerializer::deserialize<LazyFoo>(
-      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+TYPED_TEST(Serialization, ReserializeSameStruct) {
+  auto foo1 = TypeParam::template deserialize<LazyFoo>(
+      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
@@ -246,8 +252,8 @@ TEST(Serialization, ReserializeSameStruct) {
   EXPECT_TRUE(get_field4(foo1).empty());
 
   // Lazy fields remain undeserialized
-  CompactSerializer::deserialize(
-      CompactSerializer::serialize<std::string>(OptionalFoo{}), foo1);
+  TypeParam::deserialize(
+      TypeParam::template serialize<std::string>(OptionalFoo{}), foo1);
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
@@ -262,4 +268,37 @@ TEST(Serialization, ReserializeSameStruct) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
+template <class Serializer1, class Serializer2>
+void deserializationWithDifferentProtocol() {
+  auto foo = CompactSerializer::deserialize<LazyFoo>(
+      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+
+  EXPECT_FALSE(get_field1(foo).empty());
+  EXPECT_FALSE(get_field2(foo).empty());
+  EXPECT_TRUE(get_field3(foo).empty());
+  EXPECT_TRUE(get_field4(foo).empty());
+
+  // Reserialize with same protocol, all fields are untouched
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(OptionalFoo{}), foo);
+
+  EXPECT_FALSE(get_field1(foo).empty());
+  EXPECT_FALSE(get_field2(foo).empty());
+  EXPECT_TRUE(get_field3(foo).empty());
+  EXPECT_TRUE(get_field4(foo).empty());
+
+  // Reserialize with different protocol, all fields are deserialized
+  BinarySerializer::deserialize(
+      BinarySerializer::serialize<std::string>(OptionalFoo{}), foo);
+
+  EXPECT_FALSE(get_field1(foo).empty());
+  EXPECT_FALSE(get_field2(foo).empty());
+  EXPECT_FALSE(get_field3(foo).empty());
+  EXPECT_FALSE(get_field4(foo).empty());
+}
+
+TEST(Serialization, DeserializationWithDifferentProtocol) {
+  deserializationWithDifferentProtocol<CompactSerializer, BinarySerializer>();
+  deserializationWithDifferentProtocol<BinarySerializer, CompactSerializer>();
+}
 } // namespace apache::thrift::test
