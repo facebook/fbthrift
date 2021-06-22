@@ -15,7 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
-#include "thrift/lib/cpp2/async/ResponseChannel.h"
 
 #include <functional>
 #include <memory>
@@ -33,6 +32,7 @@
 #endif
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
@@ -372,6 +372,19 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         ResponseRpcErrorCode::UNKNOWN,
         "serialization failed for response",
         metadata);
+  }
+
+  if (metadata.otherMetadata_ref()) {
+    THRIFT_APPLICATION_EVENT(server_write_headers).log([&] {
+      auto size = metadata.otherMetadata_ref()->size();
+      std::vector<folly::dynamic> keys;
+      keys.reserve(size);
+      for (auto& [k, v] : *metadata.otherMetadata_ref()) {
+        keys.push_back(k);
+      }
+      return folly::dynamic::object("size", size) //
+          ("keys", folly::dynamic::array(std::move(keys)));
+    });
   }
 
   // apply compression if client has specified compression codec

@@ -376,6 +376,19 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
+  if (metadata.otherMetadata_ref()) {
+    THRIFT_APPLICATION_EVENT(server_read_headers).log([&] {
+      auto size = metadata.otherMetadata_ref()->size();
+      std::vector<folly::dynamic> keys;
+      keys.reserve(size);
+      for (auto& [k, v] : *metadata.otherMetadata_ref()) {
+        keys.push_back(k);
+      }
+      return folly::dynamic::object("size", size) //
+          ("keys", folly::dynamic::array(std::move(keys)));
+    });
+  }
+
   if (metadata.crc32c_ref()) {
     try {
       if (auto compression = metadata.compression_ref()) {
