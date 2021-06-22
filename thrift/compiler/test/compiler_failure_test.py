@@ -72,6 +72,50 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def test_oneway_return_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service MyService {
+                    oneway void foo();
+                    oneway string bar();
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        # TODO(afuller): Report a diagnostic instead.
+        self.assertEqual(
+            err,
+            "terminate called after throwing an instance of 'std::runtime_error'\n"
+            + "  what():  Oneway methods must have void return type: bar\n",
+        )
+        self.assertEqual(ret, -6)
+
+    def test_oneway_exception(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                exception A {}
+
+                service MyService {
+                    oneway void foo();
+                    oneway void baz() throws (1: A ex);
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        # TODO(afuller): Report a diagnostic instead.
+        self.assertEqual(
+            err,
+            "terminate called after throwing an instance of 'std::runtime_error'\n"
+            + "  what():  Oneway methods can't throw exceptions: baz\n",
+        )
+        self.assertEqual(ret, -6)
+
     def test_idempotent_requires_experimental(self):
         write_file(
             "foo.thrift",

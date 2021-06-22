@@ -1030,8 +1030,7 @@ Function:
         "FunctionAnnotations CommaOrSemicolonOptional");
       // TODO(afuller): Leave the param list unnamed.
       $7->set_name(std::string($4) + "_args");
-      auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7));
-      func->set_qualifier($2);
+      auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7), $2);
       func->set_exceptions(own($9));
 
       driver.finish_node(func.get(), LineType::Function, own($1), own($10));

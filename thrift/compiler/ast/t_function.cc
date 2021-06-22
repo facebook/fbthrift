@@ -28,10 +28,12 @@ namespace compiler {
 t_function::t_function(
     t_type_ref return_type,
     std::string name,
-    std::unique_ptr<t_paramlist> paramlist)
+    std::unique_ptr<t_paramlist> paramlist,
+    t_function_qualifier qualifier)
     : t_named(std::move(name)),
       return_type_(std::move(return_type)),
-      paramlist_(std::move(paramlist)) {
+      paramlist_(std::move(paramlist)),
+      qualifier_(qualifier) {
   // Grab stream related exceptions from return type, for easy access.
   // TODO(afuller): Remove these if possible.
   if (const auto* tstream_resp =
@@ -49,14 +51,16 @@ t_function::t_function(
   if (is_oneway() &&
       (return_type_.get_type() == nullptr ||
        !return_type_.get_type()->is_void())) {
-    throw std::runtime_error("Oneway methods must have void return type.");
+    throw std::runtime_error(
+        "Oneway methods must have void return type: " + name_);
   }
 
   // TODO(afuller): Move this to a post parse step.
   if (!t_throws::is_null_or_empty(stream_exceptions_) &&
       (return_type_.get_type() == nullptr ||
        !return_type_.get_type()->is_streamresponse())) {
-    throw std::runtime_error("`stream throws` only valid on stream methods");
+    throw std::runtime_error(
+        "`stream throws` only valid on stream methods: " + name_);
   }
 }
 
@@ -64,7 +68,8 @@ void t_function::set_exceptions(std::unique_ptr<t_throws> exceptions) {
   exceptions_ = std::move(exceptions);
   // TODO(afuller): Move this to a post parse step.
   if (is_oneway() && !t_throws::is_null_or_empty(exceptions_.get())) {
-    throw std::runtime_error("Oneway methods can't throw exceptions.");
+    throw std::runtime_error(
+        "Oneway methods can't throw exceptions: " + name());
   }
 }
 

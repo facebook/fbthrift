@@ -52,14 +52,14 @@ class t_function final : public t_named {
   t_function(
       t_type_ref return_type,
       std::string name,
-      std::unique_ptr<t_paramlist> paramlist);
+      std::unique_ptr<t_paramlist> paramlist,
+      t_function_qualifier qualifier = {});
 
   const t_type_ref& return_type() const { return return_type_; }
   const t_paramlist* params() const { return paramlist_.get(); }
 
   // The qualifier of the function, if any.
   t_function_qualifier qualifier() const { return qualifier_; }
-  void set_qualifier(t_function_qualifier qualifier) { qualifier_ = qualifier; }
 
   // The declared exceptions that function might throw.
   //
@@ -78,7 +78,7 @@ class t_function final : public t_named {
   t_type_ref return_type_;
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_throws> exceptions_;
-  t_function_qualifier qualifier_;
+  const t_function_qualifier qualifier_;
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 
@@ -94,9 +94,9 @@ class t_function final : public t_named {
       : t_function(
             t_type_ref::from_req_ptr(return_type),
             std::move(name),
-            std::move(paramlist)) {
+            std::move(paramlist),
+            qualifier) {
     set_exceptions(std::move(exceptions));
-    set_qualifier(qualifier);
   }
 
   t_paramlist* get_paramlist() const { return paramlist_.get(); }
