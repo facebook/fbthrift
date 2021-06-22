@@ -111,21 +111,20 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
 }
 
 void RequestContextQueue::failAllScheduledWrites(folly::exception_wrapper ew) {
+  auto what = ew.what().toStdString();
   failQueue(
       writeScheduledQueue_,
       transport::TTransportException(
           transport::TTransportException::NOT_OPEN,
           fmt::format(
-              "Dropping unsent request. Connection closed after: {}",
-              ew.what())));
+              "Dropping unsent request. Connection closed after: {}", what)));
   if (writeBufferQueue_) {
     failQueue(
         *writeBufferQueue_,
         transport::TTransportException(
             transport::TTransportException::NOT_OPEN,
             fmt::format(
-                "Dropping unsent request. Connection closed after: {}",
-                ew.what())));
+                "Dropping unsent request. Connection closed after: {}", what)));
   }
 }
 
