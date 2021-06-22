@@ -22,7 +22,7 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct("SinkException2")
-public final class SinkException2 extends java.lang.Exception {
+public final class SinkException2 extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
 

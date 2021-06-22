@@ -22,7 +22,7 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct("emptyXcep")
-public final class EmptyXcep extends java.lang.Exception {
+public final class EmptyXcep extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
 

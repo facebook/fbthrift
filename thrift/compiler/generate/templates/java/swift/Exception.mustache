@@ -34,7 +34,7 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @com.facebook.swift.codec.ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
-public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}java.lang.RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}java.lang.Exception{{/struct:extendRuntimeException?}} {
+public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}java.lang.RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}java.lang.Exception{{/struct:extendRuntimeException?}} implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
     {{#struct:enableIsSet?}}
