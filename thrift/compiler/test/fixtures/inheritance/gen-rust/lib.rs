@@ -384,6 +384,7 @@ pub mod client {
         }
     }
 
+    #[derive(Clone)]
     pub struct make_MyRoot;
 
     /// To be called by user directly setting up a client. Avoids
@@ -542,6 +543,7 @@ pub mod client {
         }
     }
 
+    #[derive(Clone)]
     pub struct make_MyNode;
 
     /// To be called by user directly setting up a client. Avoids
@@ -714,6 +716,7 @@ pub mod client {
         }
     }
 
+    #[derive(Clone)]
     pub struct make_MyLeaf;
 
     /// To be called by user directly setting up a client. Avoids

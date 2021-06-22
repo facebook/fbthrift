@@ -1213,6 +1213,7 @@ pub mod client {
         }
     }
 
+    #[derive(Clone)]
     pub struct make_Raiser;
 
     /// To be called by user directly setting up a client. Avoids

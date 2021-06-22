@@ -2060,6 +2060,7 @@ pub mod client {
         }
     }
 
+    #[derive(Clone)]
     pub struct make_MyService;
 
     /// To be called by user directly setting up a client. Avoids
