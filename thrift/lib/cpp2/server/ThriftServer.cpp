@@ -736,13 +736,10 @@ void ThriftServer::updateCertsToWatch() {
   });
 }
 
-void ThriftServer::watchTicketPathForChanges(
-    const std::string& ticketPath, bool initializeTickets) {
-  if (initializeTickets) {
-    auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
-    if (seeds) {
-      setTicketSeeds(std::move(*seeds));
-    }
+void ThriftServer::watchTicketPathForChanges(const std::string& ticketPath) {
+  auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
+  if (seeds) {
+    setTicketSeeds(std::move(*seeds));
   }
   tlsCredWatcher_.withWLock([this, &ticketPath](auto& credWatcher) {
     if (!credWatcher) {

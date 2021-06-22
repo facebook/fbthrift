@@ -536,7 +536,7 @@ class CppServerWrapper : public ThriftServer {
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
 
     auto ticketFilePath = getStringAttrSafe(sslConfig, "ticket_file_path");
-    ThriftServer::watchTicketPathForChanges(ticketFilePath, true);
+    ThriftServer::watchTicketPathForChanges(ticketFilePath);
   }
 
   void setCppFastOpenOptions(object enabledObj, object tfoMaxQueueObj) {

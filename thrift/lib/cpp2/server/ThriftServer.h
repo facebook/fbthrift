@@ -422,12 +422,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   /**
    * Tells the thrift server to update ticket seeds with the contents of the
-   * ticket path when modified.  The seed file previously being watched will
-   * no longer be watched.  This is not thread safe.
-   * If initializeTickets is true, seeds are set on the thrift server.
+   * file ticketPath when modified and initialized the seeds with the contents
+   * of the file ticketPath. The seed file previously being watched will no
+   * longer be watched.  This is not thread safe.
    */
-  void watchTicketPathForChanges(
-      const std::string& ticketPath, bool initializeTickets);
+  void watchTicketPathForChanges(const std::string& ticketPath);
 
   void setFastOpenOptions(bool enableTFO, uint32_t fastOpenQueueSize) {
     enableTFO_ = enableTFO;

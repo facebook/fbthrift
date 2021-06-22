@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     server->setSSLConfig(sslContext);
   }
   if (!FLAGS_ticket_seeds.empty()) {
-    server->watchTicketPathForChanges(FLAGS_ticket_seeds, true);
+    server->watchTicketPathForChanges(FLAGS_ticket_seeds);
   } else {
     // Generate random seeds to use for all workers.  If no seeds are set, then
     // each worker gets its own random seeds, so session resumptions fail across
