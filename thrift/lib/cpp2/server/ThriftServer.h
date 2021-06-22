@@ -186,7 +186,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool stopWorkersOnStopListening_ = true;
   bool joinRequestsWhenServerStops_{true};
-  std::chrono::seconds workersJoinTimeout_{30};
 
   folly::AsyncWriter::ZeroCopyEnableFunc zeroCopyEnableFunc_;
 
@@ -626,13 +625,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void leakOutstandingRequestsWhenServerStops(bool leak) {
     CHECK(configMutable());
     joinRequestsWhenServerStops_ = !leak;
-  }
-
-  /**
-   * Sets the timeout for joining workers
-   */
-  void setWorkersJoinTimeout(std::chrono::seconds timeout) {
-    workersJoinTimeout_ = timeout;
   }
 
   /**

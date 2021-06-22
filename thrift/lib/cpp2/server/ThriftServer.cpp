@@ -602,7 +602,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   }
 
-  auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
+  auto deadline = std::chrono::system_clock::now() + getWorkersJoinTimeout();
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       if (!worker->waitForStop(deadline)) {
@@ -615,14 +615,14 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
         if (quickExitOnShutdownTimeout_) {
           LOG(ERROR) << fmt::format(
               msgTemplate,
-              workersJoinTimeout_.count(),
+              getWorkersJoinTimeout().count(),
               "quick_exiting (no coredump)");
           // similar to abort but without generating a coredump
           try_quick_exit(124);
         }
         if (FLAGS_thrift_abort_if_exceeds_shutdown_deadline) {
           LOG(FATAL) << fmt::format(
-              msgTemplate, workersJoinTimeout_.count(), "Aborting");
+              msgTemplate, getWorkersJoinTimeout().count(), "Aborting");
         }
       }
     }

@@ -171,6 +171,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT =
       std::chrono::milliseconds(0);
 
+  static constexpr std::chrono::seconds DEFAULT_WORKERS_JOIN_TIMEOUT =
+      std::chrono::seconds(30);
+
   /// Listen backlog
   static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
 
@@ -185,6 +188,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
+
+  // Timeout for joining worker threads
+  ServerAttributeStatic<std::chrono::seconds> workersJoinTimeout_{
+      DEFAULT_WORKERS_JOIN_TIMEOUT};
 
   //! Number of CPU worker threads
   ServerAttributeStatic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
@@ -535,6 +542,25 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     maxConnections_.set(maxConnections, source);
+  }
+
+  /**
+   * Sets the timeout for joining workers
+   * @param timeout new setting for timeout for joining requests.
+   */
+  void setWorkersJoinTimeout(
+      std::chrono::seconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
+    setStaticAttribute(workersJoinTimeout_, std::move(timeout), source);
+  }
+
+  /**
+   * Get the timeout for joining workers.
+   * @return workers joing timeout in seconds
+   */
+  std::chrono::seconds getWorkersJoinTimeout() const {
+    return workersJoinTimeout_.get();
   }
 
   /**

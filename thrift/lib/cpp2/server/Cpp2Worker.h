@@ -155,7 +155,7 @@ class Cpp2Worker : public IOWorkerContext,
         server_(server),
         activeRequests_(0) {
     if (server) {
-      setGracefulShutdownTimeout(server->workersJoinTimeout_);
+      setGracefulShutdownTimeout(server->getWorkersJoinTimeout());
     }
   }
 
