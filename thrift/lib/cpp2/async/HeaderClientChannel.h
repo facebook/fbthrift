@@ -318,7 +318,7 @@ class HeaderClientChannel : public ClientChannel,
     CLIENT_TYPE getClientType() override;
 
    private:
-    void initUpgradeIfNeeded();
+    void initUpgradeIfNeeded(const RpcOptions& firstRequestRpcOptions);
     void upgradeComplete(folly::exception_wrapper ew);
 
     ClientChannel& getImpl() const;

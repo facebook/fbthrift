@@ -501,7 +501,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestResponse(
     RequestClientCallback::Ptr cb) {
   preprocessHeader(header.get());
 
-  initUpgradeIfNeeded();
+  initUpgradeIfNeeded(rpcOptions);
   if (state_ == State::UPGRADE_IN_PROGRESS) {
     bufferedRequests_.emplace(
         rpcOptions,
@@ -531,7 +531,7 @@ void HeaderClientChannel::RocketUpgradeChannel::sendRequestNoResponse(
     RequestClientCallback::Ptr cb) {
   preprocessHeader(header.get());
 
-  initUpgradeIfNeeded();
+  initUpgradeIfNeeded(rpcOptions);
   if (state_ == State::UPGRADE_IN_PROGRESS) {
     bufferedRequests_.emplace(
         rpcOptions,
@@ -618,7 +618,8 @@ CLIENT_TYPE HeaderClientChannel::RocketUpgradeChannel::getClientType() {
   return getImpl().getClientType();
 }
 
-void HeaderClientChannel::RocketUpgradeChannel::initUpgradeIfNeeded() {
+void HeaderClientChannel::RocketUpgradeChannel::initUpgradeIfNeeded(
+    const RpcOptions& firstRequestRpcOptions) {
   if (state_ != State::INIT) {
     return;
   }
@@ -626,8 +627,11 @@ void HeaderClientChannel::RocketUpgradeChannel::initUpgradeIfNeeded() {
   state_ = State::UPGRADE_IN_PROGRESS;
 
   apache::thrift::RpcOptions rpcOptions;
-  rpcOptions.setTimeout(std::chrono::milliseconds(
-      THRIFT_FLAG(raw_client_rocket_upgrade_timeout_ms)));
+  rpcOptions.setTimeout(folly::constexpr_max(
+      std::chrono::milliseconds(
+          THRIFT_FLAG(raw_client_rocket_upgrade_timeout_ms)),
+      firstRequestRpcOptions.getTimeout(),
+      std::chrono::milliseconds(headerChannel_->timeout_)));
 
   auto callback = std::make_unique<RocketUpgradeCallback>(this);
   auto client = std::make_unique<apache::thrift::RocketUpgradeAsyncClient>(
