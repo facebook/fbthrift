@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-#include <folly/io/async/EventBaseAtomicNotificationQueue.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+
+#include <folly/io/async/EventBaseAtomicNotificationQueue.h>
+
 #include <thrift/lib/cpp2/async/ReplyInfo.h>
 
 namespace apache {

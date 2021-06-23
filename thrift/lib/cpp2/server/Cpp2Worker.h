@@ -16,9 +16,13 @@
 
 #pragma once
 
+#include <memory>
 #include <optional>
+#include <string_view>
 #include <unordered_set>
+#include <variant>
 
+#include <folly/container/F14Map.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
@@ -144,6 +148,73 @@ class Cpp2Worker : public IOWorkerContext,
       std::unique_ptr<Cpp2Worker, ActiveRequestsDecrement>;
   ActiveRequestsGuard getActiveRequestsGuard();
 
+  class PerServiceMetadata {
+   public:
+    explicit PerServiceMetadata(
+        AsyncProcessorFactory::CreateMethodMetadataResult&& methods)
+        : methods_(std::move(methods)) {}
+
+    /**
+     * AsyncProcessorFactory::createMethodMetadata is not implemented.
+     */
+    using MetadataNotImplemented = std::monostate;
+    /**
+     * The service metadata contained an entry for the provided method name.
+     * Otherwise, if the metadata is WildcardMethodMetadataMap, then this is a
+     * reference to a WildcardMethodMetadata object.
+     *
+     * This aligns with the contracts of MethodMetadataMap and
+     * WildcardMethodMetadataMap.
+     */
+    struct MetadataFound {
+      const AsyncProcessorFactory::MethodMetadata& metadata;
+    };
+    /**
+     * The service metadata did not contain an entry for the provided method
+     * name. This should result in an unknown method error.
+     */
+    struct MetadataNotFound {};
+
+    /**
+     * The result type of findMethod() below.
+     */
+    using FindMethodResult =
+        std::variant<MetadataNotImplemented, MetadataFound, MetadataNotFound>;
+    /**
+     * Looks up the provided method name in the metadata map.
+     *
+     * This returns a valid metadata object per the contract established by
+     * AsyncProcessorFactory::createMethodMetadata.
+     *
+     * This returns nullptr iff no valid metadata exists. That means that an
+     * unknown method error should be sent.
+     *
+     * This returns std::nullopt iff the service does not support the
+     * createMethodMetadata() API.
+     */
+    FindMethodResult findMethod(std::string_view methodName) const;
+
+   private:
+    AsyncProcessorFactory::CreateMethodMetadataResult methods_;
+  };
+  /**
+   * Gets the per-IO-thread metadata stored per-service. The metadata is lazily
+   * created and the same object is returned for subsequent calls that pass the
+   * same service.
+   */
+  PerServiceMetadata& getMetadataForService(
+      AsyncProcessorFactory& processorFactory) {
+    getEventBase()->dcheckIsInEventBaseThread();
+    if (auto metadata =
+            folly::get_ptr(perServiceMetadata_, &processorFactory)) {
+      return *metadata;
+    }
+    auto [metadata, _] = perServiceMetadata_.emplace(
+        &processorFactory,
+        PerServiceMetadata{processorFactory.createMethodMetadata()});
+    return metadata->second;
+  }
+
  protected:
   Cpp2Worker(
       ThriftServer* server,
@@ -230,6 +301,11 @@ class Cpp2Worker : public IOWorkerContext,
   // lifetime of the ThriftServer if the Worker is kept alive by some
   // Connections which are kept alive by in-flight requests
   std::shared_ptr<ThriftServer> duplexServer_;
+
+  // We expect to have one processor factory per InterfaceKind. Using F14NodeMap
+  // guarantees reference stability.
+  folly::F14NodeMap<AsyncProcessorFactory*, PerServiceMetadata>
+      perServiceMetadata_;
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,

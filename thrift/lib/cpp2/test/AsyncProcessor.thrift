@@ -19,10 +19,11 @@ namespace cpp2 apache.thrift.test
 service Parent {
   i32 parentMethod1();
   stream<i32> parentMethod2();
+  i32 parentMethod3();
 }
 
 interaction Interaction {
-  void interactionMethod();
+  i32 interactionMethod();
 }
 
 service Child extends Parent {

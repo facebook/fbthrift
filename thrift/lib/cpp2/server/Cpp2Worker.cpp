@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-#include <vector>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+
+#include <vector>
 
 #include <glog/logging.h>
 
+#include <folly/Overload.h>
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -369,5 +371,34 @@ Cpp2Worker::ActiveRequestsGuard Cpp2Worker::getActiveRequestsGuard() {
   ++activeRequests_;
   return Cpp2Worker::ActiveRequestsGuard(this);
 }
+
+Cpp2Worker::PerServiceMetadata::FindMethodResult
+Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
+  static const auto& wildcardMethodMetadata =
+      *new AsyncProcessorFactory::WildcardMethodMetadata{};
+
+  return folly::variant_match(
+      methods_,
+      [](std::monostate) -> FindMethodResult {
+        return MetadataNotImplemented{};
+      },
+      [&](const AsyncProcessorFactory::MethodMetadataMap& map)
+          -> FindMethodResult {
+        if (auto* m = folly::get_ptr(map, methodName)) {
+          DCHECK_NOTNULL(m->get());
+          return MetadataFound{**m};
+        }
+        return MetadataNotFound{};
+      },
+      [&](const AsyncProcessorFactory::WildcardMethodMetadataMap& wildcard)
+          -> FindMethodResult {
+        if (auto* m = folly::get_ptr(wildcard.knownMethods, methodName)) {
+          DCHECK_NOTNULL(m->get());
+          return MetadataFound{**m};
+        }
+        return MetadataFound{wildcardMethodMetadata};
+      });
+}
+
 } // namespace thrift
 } // namespace apache

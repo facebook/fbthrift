@@ -23,11 +23,14 @@
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/GLog.h>
+#include <folly/Overload.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -171,6 +174,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       if (processorInfo) {
         bool valid = true;
         processorFactory_ = std::addressof(processorInfo->processorFactory_);
+        serviceMetadata_ =
+            std::addressof(worker_->getMetadataForService(*processorFactory_));
         valid &= !!(processor_ = processorFactory_->getProcessor());
         valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
@@ -188,10 +193,13 @@ void ThriftRocketServerHandler::handleSetupFrame(
     }
     // no custom frame handler was found, do the default
     processorFactory_ = worker_->getServer()->getProcessorFactory().get();
+    serviceMetadata_ =
+        std::addressof(worker_->getMetadataForService(*processorFactory_));
     processor_ = processorFactory_->getProcessor();
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();
+
     // add sampleRate
     if (serverConfigs_) {
       if (auto* observer = serverConfigs_->getObserver()) {
@@ -496,18 +504,46 @@ void ThriftRocketServerHandler::handleRequestCommon(
     DCHECK_EQ(cpp2ReqCtx->getInteractionId(), 0);
     cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
   }
+
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata_->findMethod(request->getMethodName());
+
+  auto serializedCompressedRequest = SerializedCompressedRequest(
+      std::move(data),
+      metadata.crc32c_ref()
+          ? CompressionAlgorithm::NONE
+          : metadata.compression_ref().value_or(CompressionAlgorithm::NONE));
+
   try {
-    processor_->processSerializedCompressedRequest(
-        std::move(request),
-        SerializedCompressedRequest(
-            std::move(data),
-            metadata.crc32c_ref() ? CompressionAlgorithm::NONE
-                                  : metadata.compression_ref().value_or(
-                                        CompressionAlgorithm::NONE)),
-        protocolId,
-        cpp2ReqCtx,
-        eventBase_,
-        threadManager_.get());
+    folly::variant_match(
+        methodMetadataResult,
+        [&](PerServiceMetadata::MetadataNotImplemented) {
+          // The AsyncProcessorFactory does not implement createMethodMetadata
+          // so we need to fallback to processSerializedCompressedRequest.
+          processor_->processSerializedCompressedRequest(
+              std::move(request),
+              std::move(serializedCompressedRequest),
+              protocolId,
+              cpp2ReqCtx,
+              eventBase_,
+              threadManager_.get());
+        },
+        [&](PerServiceMetadata::MetadataNotFound) {
+          std::string_view methodName = request->getMethodName();
+          AsyncProcessorHelper::sendUnknownMethodError(
+              std::move(request), methodName);
+        },
+        [&](const PerServiceMetadata::MetadataFound& found) {
+          processor_->processSerializedCompressedRequestWithMetadata(
+              std::move(request),
+              std::move(serializedCompressedRequest),
+              found.metadata,
+              protocolId,
+              cpp2ReqCtx,
+              eventBase_,
+              threadManager_.get());
+        });
   } catch (...) {
     LOG(DFATAL) << "AsyncProcessor::process exception: "
                 << folly::exceptionStr(std::current_exception());
