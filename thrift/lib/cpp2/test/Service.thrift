@@ -76,6 +76,7 @@ service TestService {
   stream<byte> echoIOBufAsByteStream(1: IOBuf buf, 2: i32 delayMs);
   void throwsHandlerException();
   stream<i32> range(1: i32 from, 2: i32 to);
+  bool, stream<i32> rangeWithResponse(1: i32 from, 2: i32 to);
   void priorityHigh() (priority = "HIGH");
   void priorityBestEffort() (priority = "BEST_EFFORT", cpp.coroutine);
   sink<i32, i32> sumSink() (cpp.coroutine);

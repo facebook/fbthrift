@@ -360,6 +360,7 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
    private:
     RocketClient& client_;
+    RocketClient::DestructorGuard clientDg_{&client_};
     StreamId streamId_;
   };
 

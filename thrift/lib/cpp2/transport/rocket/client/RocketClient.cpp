@@ -1218,6 +1218,10 @@ void RocketClient::acknowledgeFirstResponse(StreamId streamId) {
 }
 
 void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
+  // remove ourselves from the timeout set to avoid being freed prematurely by
+  // the callback below
+  auto ptr = std::move(client_.firstResponseTimeouts_.at(streamId_));
+
   const auto streamIt = client_.streams_.find(streamId_);
   CHECK(streamIt != client_.streams_.end());
 
