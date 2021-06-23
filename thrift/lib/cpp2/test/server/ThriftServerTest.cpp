@@ -2830,6 +2830,13 @@ class HeaderOrRocketCompression
               this, compression_);
       }
     }
+
+    CreateMethodMetadataResult createMethodMetadata() override {
+      // TODO(praihan) Restore the default implementation once we have migrated
+      // the processor implementation.
+      return {};
+    }
+
     ProcessorImplementation processorImplementation_;
     CompressionAlgorithm compression_;
   };
