@@ -264,6 +264,12 @@ cdef class ThriftServer:
     def use_existing_socket(self, socket):
         self.server.get().useExistingSocket(socket)
 
+    def set_stop_workers_on_stop_listening(self, cbool stop_workers):
+        self.server.get().setStopWorkersOnStopListening(stop_workers)
+
+    def get_stop_workers_on_stop_listening(self):
+        return self.server.get().getStopWorkersOnStopListening()
+
 
 cdef class ConnectionContext:
     @staticmethod
