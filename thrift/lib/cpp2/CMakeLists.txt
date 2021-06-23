@@ -133,6 +133,7 @@ add_library(
   PluggableFunction.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
+  async/AsyncProcessorHelper.cpp
   async/ClientChannel.cpp
   async/ClientSinkBridge.cpp
   async/ClientStreamBridge.cpp

@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -785,18 +786,13 @@ GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
 }
 
 inline void nonRecursiveProcessMissing(
-    const std::string& fname,
+    const std::string& methodName,
     ResponseChannelRequest::UniquePtr req,
     folly::EventBase* eb) {
   if (req) {
-    eb->runInEventBaseThread([request = move(req),
-                              msg = fmt::format(
-                                  "Method name {} not found", fname)]() {
-      request->sendErrorWrapped(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
-              msg),
-          kMethodUnknownErrorCode);
+    eb->runInEventBaseThread([request = std::move(req),
+                              name = std::string{methodName}]() mutable {
+      AsyncProcessorHelper::sendUnknownMethodError(std::move(request), name);
     });
   }
 }
@@ -901,7 +897,8 @@ void nonRecursiveProcess(
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
   LOG_IF(
-      DFATAL, dynamic_cast<const Metadata*>(&untypedMethodMetadata) == nullptr)
+      DFATAL,
+      !AsyncProcessorHelper::isMetadataOfType<Metadata>(untypedMethodMetadata))
       << "Received MethodMetadata of an unknown type";
   auto methodMetadata = static_cast<const Metadata*>(&untypedMethodMetadata);
   auto pfn = getProcessFuncFromProtocol(
