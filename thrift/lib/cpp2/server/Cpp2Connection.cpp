@@ -614,7 +614,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
     std::shared_ptr<folly::RequestContext> rctx,
     std::shared_ptr<Cpp2Connection> con,
     rocket::Payload&& debugPayload,
-    const std::string&& methodName)
+    std::string&& methodName)
     : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
@@ -622,7 +622,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       reqContext_(
           &connection_->context_, req_->getHeader(), std::move(methodName)),
       stateMachine_(
-          util::includeInRecentRequestsCount(methodName),
+          util::includeInRecentRequestsCount(reqContext_.getMethodName()),
           connection_->getWorker()
               ->getServer()
               ->getAdaptiveConcurrencyController()),
