@@ -915,10 +915,18 @@ class mstch_structured_annotation : public mstch_base {
   }
   mstch::node constant() {
     return generators_->const_generator_->generate(
-        &cnst_, generators_, cache_, pos_, index_, &cnst_, cnst_.get_type());
+        &cnst_,
+        generators_,
+        cache_,
+        pos_,
+        index_,
+        &cnst_,
+        cnst_.type()->get_true_type());
   }
 
-  mstch::node is_const_struct() { return cnst_.get_type()->is_struct(); }
+  mstch::node is_const_struct() {
+    return cnst_.type()->get_true_type()->is_struct();
+  }
 
  protected:
   const t_const& cnst_;

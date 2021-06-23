@@ -464,22 +464,21 @@ mstch::node mstch_const_value::map_elems() {
 }
 
 mstch::node mstch_const_value::is_const_struct() {
-  if (!const_value_->get_ttype()) {
+  if (!const_value_->ttype()) {
     return false;
   }
-  return const_value_->get_ttype()->is_struct() ||
-      const_value_->get_ttype()->is_xception();
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  return type->is_struct() || type->is_xception();
 }
 
 mstch::node mstch_const_value::const_struct_type() {
-  if (!const_value_->get_ttype()) {
+  if (!const_value_->ttype()) {
     return {};
   }
 
-  if (const_value_->get_ttype()->is_struct() ||
-      const_value_->get_ttype()->is_xception()) {
-    return generators_->type_generator_->generate(
-        const_value_->get_ttype(), generators_, cache_);
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  if (type->is_struct() || type->is_xception()) {
+    return generators_->type_generator_->generate(type, generators_, cache_);
   }
 
   return {};
@@ -491,10 +490,9 @@ mstch::node mstch_const_value::const_struct() {
   std::vector<std::string> field_names;
   mstch::array a;
 
-  if (const_value_->get_ttype()->is_struct() ||
-      const_value_->get_ttype()->is_xception()) {
-    auto const* strct =
-        dynamic_cast<t_struct const*>(const_value_->get_ttype());
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  if (type->is_struct() || type->is_xception()) {
+    auto const* strct = dynamic_cast<t_struct const*>(type);
     for (auto member : const_value_->get_map()) {
       auto const* field = strct->get_field_by_name(member.first->get_string());
       assert(field != nullptr);
