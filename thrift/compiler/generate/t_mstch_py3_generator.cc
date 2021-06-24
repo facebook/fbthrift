@@ -816,11 +816,8 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node pyName() { return pyName_; }
-
   mstch::node cppName() { return cppName_; }
-
   mstch::node hasModifiedName() { return pyName_ != cppName_; }
-
   mstch::node hasPyName() { return pyName_ != field_->get_name(); }
 
   bool has_default_value() {
@@ -828,7 +825,7 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node boxed_ref() {
-    return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
+    return gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed;
   }
 
  protected:

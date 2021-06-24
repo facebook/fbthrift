@@ -596,6 +596,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_deprecated_accessor_type() {
     // The type to use for pre-field_ref backwards compatiblity functions.
     // These leaked the internal storage type directly.
+    //
     // TODO(afuller): Remove this once all non-field_ref based accessors have
     // been removed.
     return context_->resolver().get_storage_type_name(field_);
@@ -607,7 +608,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node lazy() { return cpp2::is_lazy(field_); }
   mstch::node boxed_ref() {
-    return gen::cpp::find_ref_type(field_) == gen::cpp::reference_type::boxed;
+    return gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed;
   }
   mstch::node transitively_refers_to_unique() {
     return cpp2::field_transitively_refers_to_unique(field_);
@@ -833,7 +834,7 @@ class mstch_cpp2_struct : public mstch_struct {
       if (!field->get_type()->has_annotation("cpp2.noncopyable")) {
         return true;
       }
-      switch (gen::cpp::find_ref_type(field)) {
+      switch (gen::cpp::find_ref_type(*field)) {
         case gen::cpp::reference_type::shared_const:
         case gen::cpp::reference_type::shared_mutable: {
           return true;

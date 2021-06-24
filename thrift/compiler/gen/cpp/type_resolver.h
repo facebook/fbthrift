@@ -22,7 +22,12 @@
 #include <unordered_map>
 #include <utility>
 
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_sink.h>
+#include <thrift/compiler/ast/t_stream.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/gen/cpp/detail/gen.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>

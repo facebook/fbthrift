@@ -122,8 +122,8 @@ std::string const& get_type(const t_type* type) {
   return value_or_empty(gen::cpp::type_resolver::find_type(type));
 }
 
-std::string const& get_ref_type(const t_field* f) {
-  return value_or_empty(gen::cpp::detail::find_ref_type_annot(f));
+std::string const& get_ref_type(const t_field* field) {
+  return value_or_empty(gen::cpp::detail::find_ref_type_annot(*field));
 }
 
 bool is_implicit_ref(const t_type* type) {
@@ -134,7 +134,7 @@ bool is_implicit_ref(const t_type* type) {
 }
 
 bool field_transitively_refers_to_unique(const t_field* field) {
-  switch (gen::cpp::find_ref_type(field)) {
+  switch (gen::cpp::find_ref_type(*field)) {
     case gen::cpp::reference_type::none:
     case gen::cpp::reference_type::unrecognized: {
       break;

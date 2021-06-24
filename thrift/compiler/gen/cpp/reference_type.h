@@ -19,6 +19,7 @@
 #include <string>
 
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_node.h>
 
 namespace apache {
 namespace thrift {
@@ -37,11 +38,11 @@ enum class reference_type {
   unrecognized, // Got some unrecognized string value.
 };
 
-reference_type find_ref_type(const t_field* node);
+reference_type find_ref_type(const t_field& node);
 const std::string& reference_template(reference_type ref_type);
 
 namespace detail {
-const std::string* find_ref_type_annot(const t_node* node);
+const std::string* find_ref_type_annot(const t_node& node);
 }
 
 } // namespace cpp

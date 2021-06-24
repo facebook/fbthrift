@@ -16,11 +16,6 @@
 
 #include <thrift/compiler/gen/cpp/reference_type.h>
 
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <vector>
-
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_field.h>
@@ -32,49 +27,49 @@ class ReferenceTypeTest : public ::testing::Test {};
 
 TEST_F(ReferenceTypeTest, None) {
   t_field tfield(&t_base_type::t_string(), "my_string");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::none);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::none);
 }
 
 TEST_F(ReferenceTypeTest, CppRef) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref", "");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::unique);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::unique);
 }
 
 TEST_F(ReferenceTypeTest, Cpp2Ref) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp2.ref", "");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::unique);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::unique);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_Unique) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "unique");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::unique);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::unique);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_Shared) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "shared");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::shared_mutable);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::shared_mutable);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_SharedMutable) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "shared_mutable");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::shared_mutable);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::shared_mutable);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_SharedConst) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "shared_const");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::shared_const);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::shared_const);
 }
 
 TEST_F(ReferenceTypeTest, CppRefType_Unknown) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("cpp.ref_type", "blah");
-  EXPECT_EQ(find_ref_type(&tfield), reference_type::unrecognized);
+  EXPECT_EQ(find_ref_type(tfield), reference_type::unrecognized);
 }
 
 } // namespace

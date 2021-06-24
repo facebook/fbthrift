@@ -16,8 +16,6 @@
 
 #include <thrift/compiler/gen/cpp/reference_type.h>
 
-#include <thrift/compiler/ast/t_node.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -26,14 +24,14 @@ namespace cpp {
 
 namespace detail {
 
-const std::string* find_ref_type_annot(const t_node* node) {
-  return node->get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
+const std::string* find_ref_type_annot(const t_node& node) {
+  return node.get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 
 } // namespace detail
 
-reference_type find_ref_type(const t_field* node) {
-  if (node->has_annotation("cpp.box")) {
+reference_type find_ref_type(const t_field& node) {
+  if (node.has_annotation("cpp.box")) {
     return reference_type::boxed;
   }
 
@@ -55,7 +53,7 @@ reference_type find_ref_type(const t_field* node) {
   }
 
   // Look for the generic annotations, which implies unique.
-  if (node->has_annotation({"cpp.ref", "cpp2.ref"})) {
+  if (node.has_annotation({"cpp.ref", "cpp2.ref"})) {
     // TODO(afuller): Seems like this should really be a 'boxed' reference type
     // (e.g. a deep copy smart pointer) by default, so both recursion and copy
     // constructors would work. Maybe that would let us also remove most or all

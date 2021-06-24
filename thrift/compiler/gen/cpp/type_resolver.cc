@@ -18,14 +18,10 @@
 
 #include <stdexcept>
 
-#include <thrift/compiler/ast/t_base_type.h>
-#include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_set.h>
-#include <thrift/compiler/ast/t_sink.h>
-#include <thrift/compiler/ast/t_stream.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 
@@ -36,7 +32,7 @@ namespace gen {
 namespace cpp {
 
 const std::string& type_resolver::get_storage_type_name(const t_field* node) {
-  auto ref_type = find_ref_type(node);
+  auto ref_type = find_ref_type(*node);
   if (ref_type == reference_type::none) {
     // The storage type is just the type name.
     return get_type_name(node->get_type());

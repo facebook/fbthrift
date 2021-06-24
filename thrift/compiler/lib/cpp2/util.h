@@ -75,7 +75,7 @@ bool is_implicit_ref(const t_type* type);
  */
 // TODO(afuller): Remove by actually inlining function.
 inline bool is_explicit_ref(const t_field* f) {
-  return gen::cpp::find_ref_type(f) != gen::cpp::reference_type::none;
+  return gen::cpp::find_ref_type(*f) != gen::cpp::reference_type::none;
 }
 
 inline bool is_ref(const t_field* f) {
@@ -138,9 +138,9 @@ std::string const& get_ref_type(const t_field* f);
 /**
  * If the field has cpp.ref/cpp2.ref or cpp.ref_type/cpp2.ref_type == "unique".
  */
-// TODO(afuller): Remove by acutally inlining function.
+// TODO(afuller): Remove by actually inlining function.
 inline bool is_unique_ref(const t_field* f) {
-  return gen::cpp::find_ref_type(f) == gen::cpp::reference_type::unique;
+  return gen::cpp::find_ref_type(*f) == gen::cpp::reference_type::unique;
 }
 
 template <typename Node>
