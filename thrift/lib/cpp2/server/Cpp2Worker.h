@@ -203,7 +203,7 @@ class Cpp2Worker : public IOWorkerContext,
    * same service.
    */
   PerServiceMetadata& getMetadataForService(
-      AsyncProcessorFactory& processorFactory) {
+      AsyncProcessorFactory& processorFactory) const {
     getEventBase()->dcheckIsInEventBaseThread();
     if (auto metadata =
             folly::get_ptr(perServiceMetadata_, &processorFactory)) {
@@ -304,7 +304,7 @@ class Cpp2Worker : public IOWorkerContext,
 
   // We expect to have one processor factory per InterfaceKind. Using F14NodeMap
   // guarantees reference stability.
-  folly::F14NodeMap<AsyncProcessorFactory*, PerServiceMetadata>
+  mutable folly::F14NodeMap<AsyncProcessorFactory*, PerServiceMetadata>
       perServiceMetadata_;
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
