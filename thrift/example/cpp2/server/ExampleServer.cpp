@@ -20,8 +20,8 @@
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/example/cpp2/server/ChatRoomService.h>
 #include <thrift/example/cpp2/server/EchoService.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
 DEFINE_int32(chatroom_port, 7777, "Chatroom Server port");

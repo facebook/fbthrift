@@ -22,7 +22,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseLocal.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeThreadManager.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>

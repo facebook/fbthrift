@@ -17,8 +17,8 @@
 #pragma once
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
 namespace apache {
 namespace thrift {

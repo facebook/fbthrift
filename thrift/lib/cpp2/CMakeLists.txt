@@ -174,12 +174,12 @@ add_library(
   server/RequestDebugLog.cpp
   server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
+  server/ThriftProcessor.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
-  transport/core/ThriftProcessor.cpp
   transport/core/ThriftRequest.cpp
   transport/rocket/PayloadUtils.cpp
   transport/rocket/Types.cpp

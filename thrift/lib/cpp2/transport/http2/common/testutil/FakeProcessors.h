@@ -18,7 +18,7 @@
 
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 
 namespace apache {
 namespace thrift {
