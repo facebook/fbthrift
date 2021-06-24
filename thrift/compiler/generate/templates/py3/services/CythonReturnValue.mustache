@@ -58,15 +58,14 @@ to the client.
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:stream_has_first_response?}}createEmptyResponseAndServerStream[{{!
+  }}{{#type:stream_has_first_response?}}createResponseAndServerStream[{{!
   }}{{#type:stream_first_response_type}}{{ >types/CythonCppType}}{{/type:stream_first_response_type}},{{!
-  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]{{!
+  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]({{!
+  }}{{#type:stream_first_response_type}}(<{{> types/CythonCppType}}?> {{> CythonPythonToCppItem}}){{/type:stream_first_response_type}}, {{!
   }}{{/type:stream_has_first_response?}}{{!
-  }}{{^type:stream_has_first_response?}}cServerStream[{{!
-  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}].createEmpty{{!
-  }}{{/type:stream_has_first_response?}}{{!
-  }}() # server streaming support is not implemented yet
-{{/type:streamresponse?}}{{!
+  }}cmove(deref((<ServerStream_{{#type:stream_elem_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_elem_type}}?>result).cStream)){{!
+  }}{{#type:stream_has_first_response?}}){{/type:stream_has_first_response?}}{{!
+}}{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
   }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!

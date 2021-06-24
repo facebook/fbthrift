@@ -13,11 +13,16 @@
 # limitations under the License.
 
 from libcpp.memory cimport unique_ptr, shared_ptr
+from libcpp.pair cimport pair
+from thrift.py3.std_libcpp cimport optional
 from folly cimport cFollyExecutor
 from folly.coro cimport cFollyCoroTask
 from folly.optional cimport cOptional
 from folly.async_generator cimport cAsyncGeneratorWrapper, cAsyncGenerator
 from thrift.py3.common cimport RpcOptions
+from folly cimport cFollyPromise
+from cpython.ref cimport PyObject
+from libc.stdint cimport int32_t
 
 cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apache::thrift":
     cdef cppclass cClientBufferedStream "::apache::thrift::ClientBufferedStream"[T]:
@@ -31,21 +36,26 @@ cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apa
 cdef extern from "thrift/lib/cpp2/async/ServerStream.h" namespace "::apache::thrift":
     cdef cppclass cServerStream "::apache::thrift::ServerStream"[T]:
         cServerStream()
+        cServerStream(cAsyncGenerator[T])
         @staticmethod
         cServerStream[T] createEmpty()
 
     cdef cppclass cResponseAndServerStream "::apache::thrift::ResponseAndServerStream"[R, S]:
         R response
         cServerStream[S] stream
-        cResponseAndServerStream()
 
 cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
     cdef cppclass cClientBufferedStreamWrapper "::thrift::py3::ClientBufferedStreamWrapper"[T]:
         cClientBufferedStreamWrapper() except +
         cClientBufferedStreamWrapper(cClientBufferedStream[T]&, int buffer_size) except +
         cFollyCoroTask[cOptional[T]] getNext()
-    cResponseAndServerStream[R, S] createEmptyResponseAndServerStream[R, S]()
+    cResponseAndServerStream[R, S] createResponseAndServerStream[R, S](R, cServerStream[S])
+    cServerStream[T] createAsyncIteratorFromPyIterator[T](object iter,
+        cFollyExecutor*,
+        void(*)(object, cFollyPromise[optional[T]]),
+    )
 
+cdef public api void cancelAsyncGenerator(object generator)
 
 cdef class ClientBufferedStream:
     cdef cFollyExecutor* _executor

@@ -52,7 +52,8 @@ import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
-from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createEmptyResponseAndServerStream
+from thrift.py3.std_libcpp cimport optional
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createResponseAndServerStream, createAsyncIteratorFromPyIterator, ServerStream
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 import test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 
@@ -65,6 +66,14 @@ import traceback
 import types as _py_types
 
 from test.fixtures.interactions.module.services_wrapper cimport cMyServiceInterface
+cdef class ServerStream_cbool(ServerStream):
+    cdef unique_ptr[cServerStream[cbool]] cStream
+
+    @staticmethod
+    cdef create(cServerStream[cbool] cStream):
+        cdef ServerStream_cbool inst = ServerStream_cbool.__new__(ServerStream_cbool)
+        inst.cStream = make_unique[cServerStream[cbool]](cmove(cStream))
+        return inst
 
 
 
@@ -105,6 +114,16 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cbool_Stream:
+    cdef cFollyPromise[optional[cbool]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[optional[cbool]] cPromise):
+        cdef Promise_cbool_Stream inst = Promise_cbool_Stream.__new__(Promise_cbool_Stream)
         inst.cPromise = cmove(cPromise)
         return inst
 

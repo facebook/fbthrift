@@ -79,15 +79,24 @@ async def {{service:name}}_{{function:name}}_coro(
     try:
         {{! only use this path if python < 3.7.2 Final (where ctx is not None) and has pass_context }}
         if ctx and getattr(self.{{function:name}}, "pass_context", False):
-            result = await self.{{function:name}}(ctx,{{#function:args}}
+            result = {{#function:return_type}}{{^type:streamresponse?}}await {{/type:streamresponse?}}{{/function:return_type}}self.{{function:name}}(ctx,{{#function:args}}
                       {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         else:
-            result = await self.{{function:name}}({{#function:args}}
+            result = {{#function:return_type}}{{^type:streamresponse?}}await {{/type:streamresponse?}}{{/function:return_type}}self.{{function:name}}({{#function:args}}
                       {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         {{#function:return_type}}
         {{#type:container?}}
         result = {{> types/CythonPythonType}}(result)
         {{/type:container?}}
+        {{#type:streamresponse?}}
+        {{#type:stream_has_first_response?}}
+        result = await result
+        item, result = result
+        {{/type:stream_has_first_response?}}
+        {{#type:stream_elem_type}}
+        result = ServerStream_{{> types/CythonCppTypeIdent}}.create(cmove(createAsyncIteratorFromPyIterator[{{ >types/CythonCppType}}](result, get_executor(), &getNextGenerator_{{service:name}}_{{function:name}})))
+        {{/type:stream_elem_type}}
+        {{/type:streamresponse?}}
         {{/function:return_type}}
     {{#function:exceptions}}
     {{#field:type}}

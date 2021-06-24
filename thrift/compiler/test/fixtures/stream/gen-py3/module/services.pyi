@@ -24,88 +24,88 @@ class PubSubStreamingServiceInterface(
     def pass_context_returnstream(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+                _typing.Coroutine[_typing.Any, int, _typing.Any]
         ]
     ) -> _typing.Callable[
         [_PubSubStreamingServiceInterfaceT, int, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+        _typing.Coroutine[_typing.Any, int, _typing.Any]
     ]: ...
 
     @abstractmethod
-    async def returnstream(
+    def returnstream(
         self,
         i32_from: int,
         i32_to: int
-    ) -> _module_types.ServerStream__i32: ...
+    ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
     def pass_context_streamthrows(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+                _typing.Coroutine[_typing.Any, int, _typing.Any]
         ]
     ) -> _typing.Callable[
         [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+        _typing.Coroutine[_typing.Any, int, _typing.Any]
     ]: ...
 
     @abstractmethod
-    async def streamthrows(
+    def streamthrows(
         self,
         foo: int
-    ) -> _module_types.ServerStream__i32: ...
+    ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
     def pass_context_boththrows(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+                _typing.Coroutine[_typing.Any, int, _typing.Any]
         ]
     ) -> _typing.Callable[
         [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+        _typing.Coroutine[_typing.Any, int, _typing.Any]
     ]: ...
 
     @abstractmethod
-    async def boththrows(
+    def boththrows(
         self,
         foo: int
-    ) -> _module_types.ServerStream__i32: ...
+    ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
     def pass_context_responseandstreamthrows(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ResponseAndServerStream__i32_i32]
+                _typing.Coroutine[_typing.Any, int, _typing.Any]
         ]
     ) -> _typing.Callable[
         [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ResponseAndServerStream__i32_i32]
+        _typing.Coroutine[_typing.Any, int, _typing.Any]
     ]: ...
 
     @abstractmethod
     async def responseandstreamthrows(
         self,
         foo: int
-    ) -> _module_types.ResponseAndServerStream__i32_i32: ...
+    ) -> _typing.Tuple[int, _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]]: ...
 
     @staticmethod
     def pass_context_returnstreamFast(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+                _typing.Coroutine[_typing.Any, int, _typing.Any]
         ]
     ) -> _typing.Callable[
         [_PubSubStreamingServiceInterfaceT, int, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+        _typing.Coroutine[_typing.Any, int, _typing.Any]
     ]: ...
 
     @abstractmethod
-    async def returnstreamFast(
+    def returnstreamFast(
         self,
         i32_from: int,
         i32_to: int
-    ) -> _module_types.ServerStream__i32: ...
+    ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
     pass
 
 

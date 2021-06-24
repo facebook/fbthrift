@@ -73,7 +73,8 @@ from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 {{#program:has_stream?}}
-from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createEmptyResponseAndServerStream
+from thrift.py3.std_libcpp cimport optional
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createResponseAndServerStream, createAsyncIteratorFromPyIterator, ServerStream
 {{/program:has_stream?}}
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
@@ -99,8 +100,70 @@ import types as _py_types
 {{#program:services}}
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.services_wrapper cimport c{{service:name}}Interface
 {{/program:services}}
+{{#program:stream_types}}
+cdef class ServerStream_{{> types/CythonCppTypeIdent}}(ServerStream):
+    cdef unique_ptr[cServerStream[{{!
+            }}{{> types/CythonCppType}}{{!
+        }}]] cStream
 
+    @staticmethod
+    cdef create(cServerStream[{{!
+            }}{{> types/CythonCppType}}{{!
+        }}] cStream):
+        cdef ServerStream_{{> types/CythonCppTypeIdent}} inst = ServerStream_{{> types/CythonCppTypeIdent}}.__new__(ServerStream_{{> types/CythonCppTypeIdent}})
+        inst.cStream = make_unique[cServerStream[{{!
+            }}{{> types/CythonCppType}}{{!
+        }}]](cmove(cStream))
+        return inst
+{{/program:stream_types}}
+
+{{#program:services}}
+{{#service:supportedFunctions}}
+{{#function:return_type}}
+{{#type:streamresponse?}}
+{{#type:stream_elem_type}}
+async def runGenerator_{{service:name}}_{{function:name}}(object generator, Promise_{{> types/CythonCppTypeIdent}}_Stream promise):
+    try:
+        item = await generator.asend(None)
+    except StopAsyncIteration:
+        promise.cPromise.setValue(optional[{{> types/CythonCppType}}]())
+    {{#function:stream_exceptions}}
+    {{#field:type}}
+    except {{> types/CythonPythonType}} as ex:
+        promise.cPromise.setException(deref((<{{> types/CythonPythonType}}> ex)._cpp_obj))
+    {{/field:type}}
+    {{/function:stream_exceptions}}
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in [TODO template this properly]:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(optional[{{> types/CythonCppType}}](<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}}))
+
+cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/CythonCppType}}]] cPromise):
+    cdef Promise_{{> types/CythonCppTypeIdent}}_Stream __promise = Promise_{{> types/CythonCppTypeIdent}}_Stream.create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        runGenerator_{{service:name}}_{{function:name}}(
+            generator,
+            __promise
+        )
+    )
+{{/type:stream_elem_type}}
+{{/type:streamresponse?}}
+{{/function:return_type}}
+{{/service:supportedFunctions}}
+{{/program:services}}
 {{> services/Promises}}
+{{> stream/StreamPromises}}
 
 {{#program:services}}
 cdef object _{{service:name}}_annotations = _py_types.MappingProxyType({
