@@ -49,7 +49,6 @@
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
-#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -69,6 +68,7 @@ namespace thrift {
 class Cpp2Connection;
 class Cpp2Worker;
 class ThriftServer;
+class ThriftProcessor;
 namespace rocket {
 class ThriftRocketServerHandler;
 }
@@ -740,11 +740,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * to use for custom transports
    */
   virtual void setProcessorFactory(
-      std::shared_ptr<AsyncProcessorFactory> pFac) override {
-    CHECK(configMutable());
-    BaseThriftServer::setProcessorFactory(pFac);
-    thriftProcessor_.reset(new ThriftProcessor(*this));
-  }
+      std::shared_ptr<AsyncProcessorFactory> pFac) override;
 
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's
   // FDs are registered there. But in some tests you might want to simulate 2

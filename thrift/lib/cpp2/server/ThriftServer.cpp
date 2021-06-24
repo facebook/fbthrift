@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -156,6 +157,13 @@ SSLPolicy ThriftServer::getSSLPolicy() const {
   // to. We can use ThriftFlags to opt-out services.
   return THRIFT_FLAG(ssl_policy_default_required) ? SSLPolicy::REQUIRED
                                                   : SSLPolicy::PERMITTED;
+}
+
+void ThriftServer::setProcessorFactory(
+    std::shared_ptr<AsyncProcessorFactory> pFac) {
+  CHECK(configMutable());
+  BaseThriftServer::setProcessorFactory(pFac);
+  thriftProcessor_.reset(new ThriftProcessor(*this));
 }
 
 void ThriftServer::useExistingSocket(
