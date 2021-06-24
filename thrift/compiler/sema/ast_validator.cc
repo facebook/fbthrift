@@ -33,6 +33,7 @@
 #include <thrift/compiler/ast/t_throws.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
@@ -214,6 +215,19 @@ void validate_field_names_uniqueness(
   }
 }
 
+void validate_struct_except_field_attributes(
+    diagnostic_context& ctx, const t_structured& node) {
+  for (const auto& field : node.fields()) {
+    if (gen::cpp::find_ref_type(field) == gen::cpp::reference_type::boxed &&
+        field.qualifier() != t_field_qualifier::optional) {
+      ctx.failure(field, [&](auto& o) {
+        o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
+          << field.name() << "` is optional.";
+      });
+    }
+  }
+}
+
 // Checks the attributes of fields in a union.
 void validate_union_field_attributes(
     diagnostic_context& ctx, const t_union& node) {
@@ -232,6 +246,32 @@ void validate_union_field_attributes(
           << field.name() << "`.";
       });
     }
+    if (gen::cpp::find_ref_type(field) == gen::cpp::reference_type::boxed) {
+      // TODO(afuller): Support cpp.box on union fields.
+      ctx.failure(field, [&](auto& o) {
+        o << "Unions cannot contain fields with the `cpp.box` annotation. Remove the annotation from `"
+          << field.name() << "`.";
+      });
+    }
+  }
+}
+
+void validate_boxed_field_attributes(
+    diagnostic_context& ctx, const t_field& field) {
+  if (gen::cpp::find_ref_type(field) != gen::cpp::reference_type::boxed) {
+    return;
+  }
+
+  if (field.has_annotation({
+          "cpp.ref",
+          "cpp2.ref",
+          "cpp.ref_type",
+          "cpp2.ref_type",
+      })) {
+    ctx.failure(field, [&](auto& o) {
+      o << "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
+        << field.name() << "`.";
+    });
   }
 }
 
@@ -337,7 +377,10 @@ ast_validator standard_validator() {
 
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_union_visitor(&validate_union_field_attributes);
+  validator.add_struct_visitor(&validate_struct_except_field_attributes);
+  validator.add_exception_visitor(&validate_struct_except_field_attributes);
   validator.add_field_visitor(&validate_mixin_field_attributes);
+  validator.add_field_visitor(&validate_boxed_field_attributes);
 
   validator.add_struct_visitor(&validate_struct_optional_refs);
 
