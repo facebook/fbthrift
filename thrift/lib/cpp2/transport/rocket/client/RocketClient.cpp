@@ -1110,7 +1110,6 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
   queue_.failAllScheduledWrites(error_);
 
   if (evb_) {
-    socket_->setReadCB(&closeLoopCallback_);
     evb_->runInLoop(&closeLoopCallback_);
   }
 }
@@ -1272,33 +1271,7 @@ void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
 }
 
 void RocketClient::CloseLoopCallback::runLoopCallback() noexcept {
-  if (std::exchange(reschedule_, false)) {
-    client_.evb_->runInLoop(this);
-    return;
-  }
   client_.closeNowImpl();
-}
-
-void RocketClient::CloseLoopCallback::getReadBuffer(
-    void** bufout, size_t* lenout) {
-  client_.parser_.getReadBuffer(bufout, lenout);
-}
-
-void RocketClient::CloseLoopCallback::readDataAvailable(
-    size_t nbytes) noexcept {
-  reschedule_ = true;
-  client_.parser_.readDataAvailable(nbytes);
-}
-
-void RocketClient::CloseLoopCallback::readEOF() noexcept {
-  reschedule_ = false;
-  client_.parser_.readEOF();
-}
-
-void RocketClient::CloseLoopCallback::readErr(
-    const folly::AsyncSocketException& ex) noexcept {
-  reschedule_ = false;
-  client_.parser_.readErr(ex);
 }
 
 void RocketClient::OnEventBaseDestructionCallback::

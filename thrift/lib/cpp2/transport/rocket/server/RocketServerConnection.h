@@ -26,6 +26,7 @@
 #include <boost/variant.hpp>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Executor.h>
 #include <folly/container/F14Map.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/io/IOBuf.h>
@@ -399,45 +400,34 @@ class RocketServerConnection final
         : connection_(connection) {}
 
     void activate() {
-      deadline_ = std::chrono::steady_clock::now() + kTimeout;
-      tryClose();
+      if (!drainComplete_) {
+        // Make sure the EventBase doesn't get destroyed until the timer
+        // expires.
+        evbKA_ = folly::getKeepAliveToken(connection_.evb_);
+        connection_.evb_.timer().scheduleTimeout(this, kTimeout);
+      }
     }
+
+    void drainComplete() {
+      if (!drainComplete_) {
+        cancelTimeout();
+        evbKA_.reset();
+        connection_.socket_->setReadCB(nullptr);
+        drainComplete_ = true;
+      }
+    }
+
+    bool isDrainComplete() const { return drainComplete_; }
 
    private:
-    void tryClose() {
-      if (shouldClose()) {
-        connection_.destroy();
-        return;
-      }
-      connection_.evb_.timer().scheduleTimeout(this, kRetryInterval);
+    void timeoutExpired() noexcept final {
+      drainComplete();
+      connection_.closeIfNeeded();
     }
-
-    bool shouldClose() {
-      if (std::chrono::steady_clock::now() >= deadline_) {
-        return true;
-      }
-
-#if defined(__linux__)
-      if (auto socket = connection_.socket_
-                            ->getUnderlyingTransport<folly::AsyncSocket>()) {
-        tcp_info info;
-        socklen_t infolen = sizeof(info);
-        if (socket->getSockOpt(IPPROTO_TCP, TCP_INFO, &info, &infolen)) {
-          return true;
-        }
-        DCHECK(infolen == sizeof(info));
-        return info.tcpi_unacked == 0;
-      }
-#endif
-
-      return true;
-    }
-
-    void timeoutExpired() noexcept final { tryClose(); }
 
     RocketServerConnection& connection_;
-    std::chrono::steady_clock::time_point deadline_;
-    static constexpr std::chrono::milliseconds kRetryInterval{50};
+    bool drainComplete_{false};
+    folly::Executor::KeepAlive<> evbKA_;
     static constexpr std::chrono::seconds kTimeout{1};
   };
   SocketDrainer socketDrainer_;

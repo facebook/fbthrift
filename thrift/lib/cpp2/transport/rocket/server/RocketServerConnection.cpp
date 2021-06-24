@@ -53,8 +53,6 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-constexpr std::chrono::milliseconds
-    RocketServerConnection::SocketDrainer::kRetryInterval;
 constexpr std::chrono::seconds RocketServerConnection::SocketDrainer::kTimeout;
 
 RocketServerConnection::RocketServerConnection(
@@ -132,8 +130,8 @@ void RocketServerConnection::closeIfNeeded() {
   if (state_ == ConnectionState::DRAINING && inflightRequests_ == 0 &&
       inflightSinkFinalResponses_ == 0) {
     DestructorGuard dg(this);
-    // Immediately stop processing new requests
-    socket_->setReadCB(nullptr);
+
+    socketDrainer_.activate();
 
     // for version 7+, send custom error code via metadata push
     if (getVersion() >= 7) {
@@ -154,9 +152,17 @@ void RocketServerConnection::closeIfNeeded() {
     state_ = ConnectionState::CLOSING;
     frameHandler_->connectionClosing();
     closeIfNeeded();
+    return;
   }
 
-  if (state_ != ConnectionState::CLOSING || isBusy()) {
+  if (state_ != ConnectionState::CLOSING) {
+    return;
+  }
+
+  if (!socket_->good()) {
+    socketDrainer_.drainComplete();
+  }
+  if (isBusy() || !socketDrainer_.isDrainComplete()) {
     return;
   }
 
@@ -188,7 +194,7 @@ void RocketServerConnection::closeIfNeeded() {
 
   writeBatcher_.drain();
 
-  socketDrainer_.activate();
+  destroy();
 }
 
 void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -611,8 +617,8 @@ void RocketServerConnection::close(folly::exception_wrapper ew) {
   }
 
   DestructorGuard dg(this);
-  // Immediately stop processing new requests
-  socket_->setReadCB(nullptr);
+
+  socketDrainer_.activate();
 
   if (!ew.with_exception<RocketException>([this](RocketException rex) {
         sendError(StreamId{0}, std::move(rex));
@@ -658,12 +664,14 @@ void RocketServerConnection::notifyPendingShutdown() {
 }
 
 void RocketServerConnection::dropConnection(const std::string& /* errorMsg */) {
+  socketDrainer_.drainComplete();
   close(folly::make_exception_wrapper<transport::TTransportException>(
       transport::TTransportException::TTransportExceptionType::INTERRUPTED,
       "Dropping connection"));
 }
 
 void RocketServerConnection::closeWhenIdle() {
+  socketDrainer_.drainComplete();
   close(folly::make_exception_wrapper<transport::TTransportException>(
       transport::TTransportException::TTransportExceptionType::INTERRUPTED,
       "Closing due to imminent shutdown"));

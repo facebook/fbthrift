@@ -389,21 +389,13 @@ class RocketClient : public virtual folly::DelayedDestruction,
     RocketClient& client_;
   };
   DetachableLoopCallback detachableLoopCallback_;
-  class CloseLoopCallback : public folly::EventBase::LoopCallback,
-                            public folly::AsyncTransport::ReadCallback {
+  class CloseLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit CloseLoopCallback(RocketClient& client) : client_(client) {}
     void runLoopCallback() noexcept override;
 
-    // AsyncTransport::ReadCallback implementation
-    void getReadBuffer(void** bufout, size_t* lenout) override;
-    void readDataAvailable(size_t nbytes) noexcept override;
-    void readEOF() noexcept override;
-    void readErr(const folly::AsyncSocketException&) noexcept override;
-
    private:
     RocketClient& client_;
-    bool reschedule_{false};
   };
   CloseLoopCallback closeLoopCallback_;
   class OnEventBaseDestructionCallback
