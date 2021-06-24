@@ -224,10 +224,6 @@ class ThreadManager::Impl : public ThreadManager,
         expiredCount_(0),
         workersToStop_(0),
         enableTaskStats_(enableTaskStats),
-        statsLock_{0},
-        waitingTimeUs_(0),
-        executingTimeUs_(0),
-        numTasks_(0),
         state_(ThreadManager::UNINITIALIZED),
         tasks_(N_SOURCES * numPriorities),
         deadWorkers_(),
@@ -322,10 +318,6 @@ class ThreadManager::Impl : public ThreadManager,
     initCallback_ = initCallback;
   }
 
-  void getStats(
-      std::chrono::microseconds& waitTime,
-      std::chrono::microseconds& runTime,
-      int64_t maxItems) override;
   void enableCodel(bool) override;
   folly::Codel* getCodel() override;
 
@@ -345,6 +337,8 @@ class ThreadManager::Impl : public ThreadManager,
     LOG(FATAL)
         << "getKeepAlive() should be implemented in derived/wrapper class";
   }
+
+  void addTaskObserver(std::shared_ptr<Observer> observer) override;
 
  protected:
   void add(
@@ -379,10 +373,6 @@ class ThreadManager::Impl : public ThreadManager,
   std::atomic<int> workersToStop_;
 
   const bool enableTaskStats_;
-  folly::MicroSpinLock statsLock_;
-  std::chrono::microseconds waitingTimeUs_;
-  std::chrono::microseconds executingTimeUs_;
-  int64_t numTasks_;
 
   ExpireCallback expireCallback_;
   ExpireCallback codelCallback_;
@@ -414,6 +404,7 @@ class ThreadManager::Impl : public ThreadManager,
 
   folly::Optional<std::vector<std::unique_ptr<folly::QueueObserver>>>
       queueObservers_;
+  std::vector<std::shared_ptr<Observer>> taskObservers_;
 };
 
 namespace {
@@ -556,13 +547,10 @@ void SimpleThreadManager::setCodelCallback(ExpireCallback cb) {
 void SimpleThreadManager::setThreadInitCallback(InitCallback cb) {
   return impl_->setThreadInitCallback(std::move(cb));
 }
-void SimpleThreadManager::getStats(
-    std::chrono::microseconds& waitTime,
-    std::chrono::microseconds& runTime,
-    int64_t maxItems) {
-  return impl_->getStats(waitTime, runTime, maxItems);
+void SimpleThreadManager::addTaskObserver(
+    std::shared_ptr<ThreadManager::Observer> observer) {
+  impl_->addTaskObserver(std::move(observer));
 }
-
 folly::Executor::KeepAlive<> SimpleThreadManager::getKeepAlive(
     ExecutionScope es, Source source) const {
   return impl_->getKeepAlive(std::move(es), source);
@@ -965,32 +953,13 @@ void ThreadManager::Impl::setCodelCallback(ExpireCallback expireCallback) {
   codelCallback_ = expireCallback;
 }
 
-void ThreadManager::Impl::getStats(
-    std::chrono::microseconds& waitTime,
-    std::chrono::microseconds& runTime,
-    int64_t maxItems) {
-  folly::MSLGuard g(statsLock_);
-  if (numTasks_) {
-    if (numTasks_ >= maxItems) {
-      waitingTimeUs_ /= numTasks_;
-      executingTimeUs_ /= numTasks_;
-      numTasks_ = 1;
-    }
-    waitTime = waitingTimeUs_ / numTasks_;
-    runTime = executingTimeUs_ / numTasks_;
-  } else {
-    waitTime = std::chrono::microseconds::zero();
-    runTime = std::chrono::microseconds::zero();
-  }
-}
-
 void ThreadManager::Impl::reportTaskStats(
     const Task& task,
     const std::chrono::steady_clock::time_point& workBegin,
     const std::chrono::steady_clock::time_point& workEnd) {
   auto queueBegin = task.getQueueBeginTime();
-  auto waitTime = workBegin - queueBegin;
-  auto runTime = workEnd - workBegin;
+  FOLLY_MAYBE_UNUSED auto waitTime = workBegin - queueBegin;
+  FOLLY_MAYBE_UNUSED auto runTime = workEnd - workBegin;
 
   // Times in this USDT use granularity of std::chrono::steady_clock::duration,
   // which is platform dependent. On Facebook servers, the granularity is
@@ -1006,23 +975,20 @@ void ThreadManager::Impl::reportTaskStats(
       waitTime.count(),
       runTime.count());
 
-  if (enableTaskStats_) {
-    folly::MSLGuard g(statsLock_);
-    auto waitTimeUs =
-        std::chrono::duration_cast<std::chrono::microseconds>(waitTime);
-    auto runTimeUs =
-        std::chrono::duration_cast<std::chrono::microseconds>(runTime);
-    waitingTimeUs_ += waitTimeUs;
-    executingTimeUs_ += runTimeUs;
-    ++numTasks_;
+  auto observer = getThreadManagerObserverSingleton().get();
+  if (observer == nullptr && taskObservers_.size() == 0) {
+    return;
   }
-
-  if (auto observer = getThreadManagerObserverSingleton().get()) {
-    // Note: We are assuming the namePrefix_ does not change after the
-    // thread is started.
-    // TODO: enforce this.
-    auto seriesName = folly::to<std::string>(namePrefix_, statContext());
+  // Note: We are assuming the namePrefix_ does not change after the
+  // thread is started.
+  // TODO: enforce this.
+  auto seriesName = folly::to<std::string>(namePrefix_, statContext());
+  if (observer) {
     observer->postRun(
+        task.getContext().get(), {seriesName, queueBegin, workBegin, workEnd});
+  }
+  for (auto taskObserver : taskObservers_) {
+    taskObserver->postRun(
         task.getContext().get(), {seriesName, queueBegin, workBegin, workEnd});
   }
 }
@@ -1603,6 +1569,11 @@ size_t ThreadManagerExecutorAdapter::expiredTaskCount() {
 void ThreadManager::setGlobalObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
   getThreadManagerObserverSingleton().set(std::move(observer));
+}
+
+void ThreadManager::Impl::addTaskObserver(
+    std::shared_ptr<ThreadManager::Observer> observer) {
+  taskObservers_.push_back(std::move(observer));
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(

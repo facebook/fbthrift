@@ -251,21 +251,6 @@ class ThreadManager : public virtual folly::Executor {
   static std::shared_ptr<ThreadManager> newPriorityQueueThreadManager(
       size_t numThreads, bool enableTaskStats = false);
 
-  /**
-   * Get an internal statistics.
-   *
-   * @param waitTime - average time (us) task spent in a queue
-   * @param runTime - average time (us) task spent running
-   * @param maxItems - max items collected for stats
-   */
-  virtual void getStats(
-      std::chrono::microseconds& waitTime,
-      std::chrono::microseconds& runTime,
-      int64_t /*maxItems*/) {
-    waitTime = std::chrono::microseconds::zero();
-    runTime = std::chrono::microseconds::zero();
-  }
-
   struct RunStats {
     const std::string& threadPoolName;
     std::chrono::steady_clock::time_point queueBegin;
@@ -282,6 +267,10 @@ class ThreadManager : public virtual folly::Executor {
   };
 
   static void setGlobalObserver(std::shared_ptr<Observer> observer);
+
+  virtual void addTaskObserver(std::shared_ptr<Observer>) {
+    LOG(FATAL) << "Method not implemented";
+  }
 
   virtual void enableCodel(bool) = 0;
 
@@ -507,10 +496,8 @@ class SimpleThreadManager : public ThreadManager,
   void setExpireCallback(ExpireCallback expireCallback) override;
   void setCodelCallback(ExpireCallback expireCallback) override;
   void setThreadInitCallback(InitCallback initCallback) override;
-  void getStats(
-      std::chrono::microseconds& waitTime,
-      std::chrono::microseconds& runTime,
-      int64_t /*maxItems*/) override;
+  void addTaskObserver(std::shared_ptr<Observer> observer) override;
+
   [[nodiscard]] KeepAlive<> getKeepAlive(
       ExecutionScope es, Source source) const override;
 
