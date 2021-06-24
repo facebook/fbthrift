@@ -51,3 +51,6 @@ cdef class ServerStream:
 
 cdef class ResponseAndServerStream:
     pass
+
+cdef class ServerPublisher:
+    pass

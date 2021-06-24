@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -53,7 +55,7 @@ from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 from thrift.py3.std_libcpp cimport optional
-from thrift.py3.stream cimport cServerStream, cResponseAndServerStream, createResponseAndServerStream, createAsyncIteratorFromPyIterator, ServerStream
+from thrift.py3.stream cimport cServerStream, cServerStreamPublisher, cResponseAndServerStream, createResponseAndServerStream, createAsyncIteratorFromPyIterator, pythonFuncToCppFunc, ServerStream, ServerPublisher
 cimport module.types as _module_types
 import module.types as _module_types
 
@@ -66,6 +68,23 @@ import traceback
 import types as _py_types
 
 from module.services_wrapper cimport cPubSubStreamingServiceInterface
+cdef class ServerPublisher_cint32_t(ServerPublisher):
+    cdef unique_ptr[cServerStreamPublisher[cint32_t]] cPublisher
+
+    def complete(ServerPublisher self):
+        cmove(deref(self.cPublisher)).complete()
+
+    # Calling this send instead of the wrapped method name of next because next is
+    # a python keyword and makes the linter complain
+    def send(ServerPublisher self, cint32_t item):
+        deref(self.cPublisher).next(<cint32_t?>item)
+
+    @staticmethod
+    cdef create(cServerStreamPublisher[cint32_t] cPublisher):
+        cdef ServerPublisher_cint32_t inst = ServerPublisher_cint32_t.__new__(ServerPublisher_cint32_t)
+        inst.cPublisher = make_unique[cServerStreamPublisher[cint32_t]](cmove(cPublisher))
+        return inst
+
 cdef class ServerStream_cint32_t(ServerStream):
     cdef unique_ptr[cServerStream[cint32_t]] cStream
 
@@ -285,6 +304,12 @@ cdef class PubSubStreamingServiceInterface(
         raise NotImplementedError("async def returnstream is not implemented")
 
     @staticmethod
+    def createPublisher_returnstream(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+
+    @staticmethod
     def pass_context_streamthrows(fn):
         return pass_context(fn)
 
@@ -292,6 +317,12 @@ cdef class PubSubStreamingServiceInterface(
             self,
             foo):
         raise NotImplementedError("async def streamthrows is not implemented")
+
+    @staticmethod
+    def createPublisher_streamthrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
 
     @staticmethod
     def pass_context_boththrows(fn):
@@ -303,6 +334,12 @@ cdef class PubSubStreamingServiceInterface(
         raise NotImplementedError("async def boththrows is not implemented")
 
     @staticmethod
+    def createPublisher_boththrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+
+    @staticmethod
     def pass_context_responseandstreamthrows(fn):
         return pass_context(fn)
 
@@ -310,6 +347,12 @@ cdef class PubSubStreamingServiceInterface(
             self,
             foo):
         raise NotImplementedError("async def responseandstreamthrows is not implemented")
+
+    @staticmethod
+    def createPublisher_responseandstreamthrows(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
 
     @staticmethod
     def pass_context_returnstreamFast(fn):
@@ -320,6 +363,12 @@ cdef class PubSubStreamingServiceInterface(
             i32_from,
             i32_to):
         raise NotImplementedError("async def returnstreamFast is not implemented")
+
+    @staticmethod
+    def createPublisher_returnstreamFast(callback=None):
+        cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
+
+        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
 
     @classmethod
     def __get_reflection__(cls):
@@ -381,7 +430,10 @@ async def PubSubStreamingService_returnstream_coro(
             result = self.returnstream(
                       i32_from,
                       i32_to)
-        result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstream)))
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstream)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -434,7 +486,10 @@ async def PubSubStreamingService_streamthrows_coro(
         else:
             result = self.streamthrows(
                       foo)
-        result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_streamthrows)))
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_streamthrows)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -487,7 +542,10 @@ async def PubSubStreamingService_boththrows_coro(
         else:
             result = self.boththrows(
                       foo)
-        result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_boththrows)))
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_boththrows)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -544,7 +602,10 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
                       foo)
         result = await result
         item, result = result
-        result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -605,7 +666,10 @@ async def PubSubStreamingService_returnstreamFast_coro(
             result = self.returnstreamFast(
                       i32_from,
                       i32_to)
-        result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstreamFast)))
+        if not isinstance(result, (ServerStream, AsyncIterator)):
+            result = await result
+        if isinstance(result, AsyncIterator):
+            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstreamFast)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

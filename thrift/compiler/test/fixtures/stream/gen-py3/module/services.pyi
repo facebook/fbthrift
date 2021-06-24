@@ -21,6 +21,12 @@ class PubSubStreamingServiceInterface(
 ):
 
     @staticmethod
+    def createPublisher_returnstream(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+    @staticmethod
     def pass_context_returnstream(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
@@ -37,6 +43,12 @@ class PubSubStreamingServiceInterface(
         i32_from: int,
         i32_to: int
     ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
+
+    @staticmethod
+    def createPublisher_streamthrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
 
     @staticmethod
     def pass_context_streamthrows(
@@ -56,6 +68,12 @@ class PubSubStreamingServiceInterface(
     ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
+    def createPublisher_boththrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+    @staticmethod
     def pass_context_boththrows(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int],
@@ -73,6 +91,12 @@ class PubSubStreamingServiceInterface(
     ) -> _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]: ...
 
     @staticmethod
+    def createPublisher_responseandstreamthrows(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
+
+    @staticmethod
     def pass_context_responseandstreamthrows(
         fn: _typing.Callable[
                 [_PubSubStreamingServiceInterfaceT, RequestContext, int],
@@ -88,6 +112,12 @@ class PubSubStreamingServiceInterface(
         self,
         foo: int
     ) -> _typing.Tuple[int, _typing.Union[_typing.Awaitable[_typing.AsyncGenerator[int, None]],_typing.AsyncGenerator[int, None]]]: ...
+
+    @staticmethod
+    def createPublisher_returnstreamFast(callback=None) -> _typing.Tuple[
+        _typing.AsyncGenerator[int, None],
+        _module_types.ServerPublisher_cint32_t
+    ]: ...
 
     @staticmethod
     def pass_context_returnstreamFast(

@@ -30,6 +30,7 @@ service StreamTestService {
   stream<i32 throws (1: StreamEx e)> streamthrows(1: bool t) throws (
     1: FuncEx e,
   );
+  stream<string> stringstream();
   included.Included, stream<included.Included> returnresponseandstream(
     1: included.Included foo,
   );

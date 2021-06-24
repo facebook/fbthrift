@@ -44,6 +44,10 @@ class ClientBufferedStream__i32(thrift.py3.stream.ClientBufferedStream[int]):
 class ServerStream__i32(thrift.py3.stream.ServerStream[int]):
     pass
 
+class ServerPublisher_cint32_t(thrift.py3.stream.ServerPublisher):
+    def complete(self) -> None: ...
+    def send(self, item: cint32_t) -> None: ...
+
 class ResponseAndClientBufferedStream__i32_i32(thrift.py3.stream.ResponseAndClientBufferedStream[int, int]):
     def __iter__(self) -> _typing.Tuple[
         int,

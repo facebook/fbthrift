@@ -41,6 +41,13 @@ class Handler(StreamTestServiceInterface):
         raise StreamEx()
         yield
 
+    async def stringstream(self) -> AsyncGenerator[str, None]:
+        stream, pub = self.createPublisher_stringstream()
+        pub.send("hi")
+        pub.send("hello")
+        pub.complete()
+        return stream
+
     # Has to be set up this way because if there's a yield in
     # this function then it transforms the whole function into a generator
     async def streamthrows(self, t: bool) -> AsyncGenerator[int, None]:
@@ -104,6 +111,71 @@ class StreamClientTest(unittest.TestCase):
 
         loop.run_until_complete(inner_test())
 
+    def test_stringstream(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    stream = await client.stringstream()
+                    res = [n async for n in stream]
+                    self.assertEqual(res, ["hi", "hello"])
+
+        loop.run_until_complete(inner_test())
+
+    def test_stream_throws(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    with self.assertRaises(FuncEx):
+                        await client.streamthrows(True)
+                    stream = await client.streamthrows(False)
+                    with self.assertRaises(StreamEx):
+                        async for _ in stream:  # noqa: F841 current flake8 version too old to support "async for _ in"
+                            pass
+
+        loop.run_until_complete(inner_test())
+
+    def test_stream_cancel(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    _ = await client.streamthrows(False)
+                    otherStream = await client.stringstream()
+                    async for val in otherStream:
+                        self.assertEqual(val, "hi")
+                        break
+                    thirdStream = await client.stringstream()
+                    res = [n async for n in thirdStream]
+                    self.assertEqual(res, ["hi", "hello"])
+
+        loop.run_until_complete(inner_test())
+
     def test_return_response_and_stream(self) -> None:
         loop = asyncio.get_event_loop()
 
@@ -117,7 +189,7 @@ class StreamClientTest(unittest.TestCase):
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
-                    # pyre-fixme[23]: may be a pyre bug?
+                    # pyre-fixme[23]: response and server stream aren't unpackable according to pyre
                     resp, stream = await client.returnresponseandstream(
                         Included(from_=39, to=42)
                     )

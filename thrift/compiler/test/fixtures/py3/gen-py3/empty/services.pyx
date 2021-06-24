@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (

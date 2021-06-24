@@ -28,3 +28,7 @@ class ClientBufferedStream__bool(thrift.py3.stream.ClientBufferedStream[bool]):
 class ServerStream__bool(thrift.py3.stream.ServerStream[bool]):
     pass
 
+class ServerPublisher_cbool(thrift.py3.stream.ServerPublisher):
+    def complete(self) -> None: ...
+    def send(self, item: pbool) -> None: ...
+

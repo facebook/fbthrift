@@ -33,17 +33,25 @@ cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apa
         cClientBufferedStream[S] stream
         cResponseAndClientBufferedStream()
 
+cdef extern from "thrift/lib/cpp2/async/ServerPublisherStream.h" namespace "::apache::thrift":
+    cdef cppclass cServerStreamPublisher "::apache::thrift::ServerStreamPublisher"[T]:
+        void next(T)
+        void complete()
+
 cdef extern from "thrift/lib/cpp2/async/ServerStream.h" namespace "::apache::thrift":
     cdef cppclass cServerStream "::apache::thrift::ServerStream"[T]:
         cServerStream()
         cServerStream(cAsyncGenerator[T])
         @staticmethod
         cServerStream[T] createEmpty()
+        @staticmethod
+        pair[cServerStream[T], cServerStreamPublisher[T]] createPublisher(void(*)())
 
     cdef cppclass cResponseAndServerStream "::apache::thrift::ResponseAndServerStream"[R, S]:
         R response
         cServerStream[S] stream
 
+ctypedef void (*emptyFunc)() # This typedef is necessary because otherwise cython gets a syntax error
 cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
     cdef cppclass cClientBufferedStreamWrapper "::thrift::py3::ClientBufferedStreamWrapper"[T]:
         cClientBufferedStreamWrapper() except +
@@ -54,6 +62,7 @@ cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
         cFollyExecutor*,
         void(*)(object, cFollyPromise[optional[T]]),
     )
+    emptyFunc pythonFuncToCppFunc(object)
 
 cdef public api void cancelAsyncGenerator(object generator)
 
@@ -65,6 +74,9 @@ cdef class ResponseAndClientBufferedStream:
     pass
 
 cdef class ServerStream:
+    pass
+
+cdef class ServerPublisher:
     pass
 
 cdef class ResponseAndServerStream:

@@ -31,5 +31,8 @@ class ResponseAndClientBufferedStream(Generic[rT, _T]):
 class ServerStream(Generic[_T]):
     pass
 
+class ServerPublisher(Generic[_T]):
+    pass
+
 class ResponseAndServerStream(Generic[rT, _T]):
     pass

@@ -65,6 +65,16 @@ createResponseAndServerStream(
 
 void cancelPythonIterator(PyObject*);
 
+folly::Function<void()> pythonFuncToCppFunc(PyObject* func) {
+  Py_INCREF(func);
+  return [func = std::move(func)] {
+    if (func != Py_None) {
+      PyObject_CallObject(func, nullptr);
+    }
+    Py_DECREF(func);
+  };
+}
+
 template <typename StreamElement>
 apache::thrift::ServerStream<StreamElement> createAsyncIteratorFromPyIterator(
     PyObject* iter,
