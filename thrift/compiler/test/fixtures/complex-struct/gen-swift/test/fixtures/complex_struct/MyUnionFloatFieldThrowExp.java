@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("MyUnionFloatFieldThrowExp")
-public final class MyUnionFloatFieldThrowExp {
+public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionFloatFieldThrowExp");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -278,6 +278,11 @@ public final class MyUnionFloatFieldThrowExp {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<MyUnionFloatFieldThrowExp> asReader() {
+      return MyUnionFloatFieldThrowExp::read0;
     }
     
     public static MyUnionFloatFieldThrowExp read0(TProtocol oprot) throws TException {

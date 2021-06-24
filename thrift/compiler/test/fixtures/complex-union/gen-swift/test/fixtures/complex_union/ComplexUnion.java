@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("ComplexUnion")
-public final class ComplexUnion {
+public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -361,6 +361,11 @@ public final class ComplexUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<ComplexUnion> asReader() {
+      return ComplexUnion::read0;
     }
     
     public static ComplexUnion read0(TProtocol oprot) throws TException {

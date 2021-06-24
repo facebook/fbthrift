@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("NonCopyableUnion")
-public final class NonCopyableUnion {
+public final class NonCopyableUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -144,6 +144,11 @@ public final class NonCopyableUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<NonCopyableUnion> asReader() {
+      return NonCopyableUnion::read0;
     }
     
     public static NonCopyableUnion read0(TProtocol oprot) throws TException {
