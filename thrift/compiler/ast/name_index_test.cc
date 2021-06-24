@@ -35,7 +35,8 @@ TEST_F(NameIndexTest, FindPutReplace) {
   EXPECT_EQ(index.contains("t"), false);
   EXPECT_EQ(index.find("s"), nullptr);
 
-  // Can't use string temporaries. Uncomment to see expected compiler error.
+  // Can't use string temporaries.
+  // Uncomment to see expected compiler error.
   // index.put("hi", nullptr);
 
   auto s1 = std::make_unique<t_struct>(&program, "s");
@@ -79,9 +80,9 @@ TEST_F(NameIndexTest, PutAll) {
   EXPECT_EQ(index1.find("s3"), s3.get());
 
   std::vector<const t_struct*> nodes;
-  index1.for_each([&](const std::string& name, const t_struct* node) {
-    EXPECT_EQ(&name, &node->name());
-    nodes.emplace_back(node);
+  index1.for_each([&](const std::string& name, const t_struct& node) {
+    EXPECT_EQ(&name, &node.name());
+    nodes.emplace_back(&node);
   });
   EXPECT_THAT(
       nodes, ::testing::UnorderedElementsAre(s1.get(), s2b.get(), s3.get()));

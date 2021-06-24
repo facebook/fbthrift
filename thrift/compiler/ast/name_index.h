@@ -46,7 +46,7 @@ class name_index {
   //
   // `named` must live the name_index entry.
   const T* put(const T& named) { return put(named.name(), named); }
-  const T* put(T&&) = delete; // Must be an l-value
+  const T* put(T&&) = delete; // Must be an l-value.
 
   // Adds the given node, under the given name, returning any replaced value or
   // nullptr.
@@ -72,14 +72,14 @@ class name_index {
   // Returns the node associated with the given name, or nullptr.
   const T* find(const std::string& name) const;
 
-  // Calls the given function with `(const std::string& name, const T* node)`,
+  // Calls the given function with `(const std::string& name, const T& node)`,
   // for each entry in the name_index.
   // TODO(afuller): Generalize the iterator adapter in detail/view.h and expose
   // them here.
   template <typename F>
   void for_each(const F& cb) const {
     for (const auto& entry : index_) {
-      cb(entry.first.get(), entry.second);
+      cb(entry.first.get(), *entry.second);
     }
   }
 
