@@ -55,7 +55,7 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 
 {{/program:enums}}
 {{#program:structs}}
-class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
+class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable):
     class __fbthrift_IsSet:
     {{#struct:py3_fields}}
         {{#field:has_ref_accessor?}}
@@ -83,9 +83,6 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...
     {{/struct:plain?}}
-    {{^struct:union?}}
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-    {{/struct:union?}}
     def __hash__(self) -> int: ...
     {{#struct:is_struct_orderable?}}
     def __lt__(self, other: '{{struct:name}}') -> bool: ...
