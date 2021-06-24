@@ -18,11 +18,16 @@
 
 #include <string>
 
+#include <folly/Overload.h>
+
+#include <fmt/core.h>
 #include <glog/logging.h>
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 
@@ -45,6 +50,9 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(tm_);
   DCHECK(processorFactory_);
   DCHECK(processor_);
+
+  auto worker = connContext->getWorker();
+  worker->getEventBase()->dcheckIsInEventBaseThread();
 
   bool invalidMetadata =
       !(metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref());
@@ -85,13 +93,41 @@ void ThriftProcessor::onThriftRequest(
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
-  processor_->processSerializedRequest(
-      std::move(request),
-      SerializedRequest(std::move(payload)),
-      protoId,
-      reqContext,
-      evb,
-      tm_);
+
+  const auto& serviceMetadata =
+      worker->getMetadataForService(*processorFactory_);
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata.findMethod(request->getMethodName());
+
+  folly::variant_match(
+      methodMetadataResult,
+      [&](PerServiceMetadata::MetadataNotImplemented) {
+        // The AsyncProcessorFactory does not implement createMethodMetadata
+        // so we need to fallback to processSerializedCompressedRequest.
+        processor_->processSerializedCompressedRequest(
+            std::move(request),
+            SerializedCompressedRequest(std::move(payload)),
+            protoId,
+            reqContext,
+            evb,
+            tm_);
+      },
+      [&](PerServiceMetadata::MetadataNotFound) {
+        std::string_view methodName = request->getMethodName();
+        AsyncProcessorHelper::sendUnknownMethodError(
+            std::move(request), methodName);
+      },
+      [&](const PerServiceMetadata::MetadataFound& found) {
+        processor_->processSerializedCompressedRequestWithMetadata(
+            std::move(request),
+            SerializedCompressedRequest(std::move(payload)),
+            found.metadata,
+            protoId,
+            reqContext,
+            evb,
+            tm_);
+      });
 }
 } // namespace thrift
 } // namespace apache

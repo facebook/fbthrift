@@ -61,7 +61,7 @@ class ThriftProcessor {
       RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel,
-      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept;
+      std::unique_ptr<Cpp2ConnContext> connContext) noexcept;
 
   // Called from the server initialization code if there's an update
   // to the thread manager used to manage the server

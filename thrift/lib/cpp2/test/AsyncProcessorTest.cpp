@@ -23,11 +23,14 @@
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
+#include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -45,6 +48,8 @@ using WildcardMethodMetadataMap =
 using CreateMethodMetadataResult =
     AsyncProcessorFactory::CreateMethodMetadataResult;
 
+using TransportType = Cpp2ConnContext::TransportType;
+
 namespace {
 class Child : public ChildSvIf {
   MOCK_METHOD(std::unique_ptr<InteractionIf>, createInteraction, ());
@@ -60,6 +65,16 @@ MethodMetadataMap& expectMethodMetadataMap(
     return *map;
   }
   throw std::logic_error{"Expected createMethodMetadata to return a map"};
+}
+
+std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
+    ThriftServer& server) {
+  auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
+  h2_options->threads = static_cast<size_t>(server.getNumIOWorkerThreads());
+  h2_options->idleTimeout = server.getIdleTimeout();
+  h2_options->shutdownOn = {SIGINT, SIGTERM};
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server.getThriftProcessor(), server);
 }
 
 } // namespace
@@ -108,16 +123,37 @@ class ChildWithMetadata : public Child {
 };
 
 class AsyncProcessorMethodResolutionTestP
-    : public ::testing::TestWithParam<bool> {
+    : public ::testing::TestWithParam<TransportType> {
  public:
-  bool useRocket() const { return GetParam(); }
+  TransportType transportType() const { return GetParam(); }
+
+  std::unique_ptr<ScopedServerInterfaceThread> makeServer(
+      std::shared_ptr<AsyncProcessorFactory> service) {
+    auto runner =
+        std::make_unique<ScopedServerInterfaceThread>(std::move(service));
+    if (transportType() == TransportType::HTTP2) {
+      auto& thriftServer =
+          dynamic_cast<ThriftServer&>(runner->getThriftServer());
+      thriftServer.addRoutingHandler(createHTTP2RoutingHandler(thriftServer));
+    }
+    return runner;
+  }
 
   template <typename ClientT>
   std::unique_ptr<ClientT> makeClientFor(ScopedServerInterfaceThread& runner) {
-    return runner.newClient<ClientT>(nullptr, [&](auto socket) {
-      return useRocket() ? RocketClientChannel::newChannel(std::move(socket))
-                         : HeaderClientChannel::newChannel(std::move(socket));
-    });
+    return runner.newClient<ClientT>(
+        nullptr, [&](auto socket) -> ClientChannel::Ptr {
+          switch (transportType()) {
+            case TransportType::HEADER:
+              return HeaderClientChannel::newChannel(std::move(socket));
+            case TransportType::ROCKET:
+              return RocketClientChannel::newChannel(std::move(socket));
+            case TransportType::HTTP2:
+              return HTTPClientChannel::newHTTP2Channel(std::move(socket));
+            default:
+              throw std::logic_error{"Unreachable!"};
+          }
+        });
   }
 };
 } // namespace
@@ -125,8 +161,8 @@ class AsyncProcessorMethodResolutionTestP
 TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
   auto service = std::make_shared<ChildWithMetadata>(
       [](auto&&) -> CreateMethodMetadataResult { return {}; });
-  ScopedServerInterfaceThread runner{service};
-  auto client = makeClientFor<ChildAsyncClient>(runner);
+  auto runner = makeServer(service);
+  auto client = makeClientFor<ChildAsyncClient>(*runner);
 
   // Recursive method resolution in action
   EXPECT_EQ(client->semifuture_parentMethod1().get(), 42);
@@ -136,8 +172,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
 TEST_P(AsyncProcessorMethodResolutionTestP, EmptyMap) {
   auto service = std::make_shared<ChildWithMetadata>(
       [](auto&&) -> MethodMetadataMap { return {}; });
-  ScopedServerInterfaceThread runner{service};
-  auto client = makeClientFor<ChildAsyncClient>(runner);
+  auto runner = makeServer(service);
+  auto client = makeClientFor<ChildAsyncClient>(*runner);
 
   EXPECT_THROW(client->semifuture_parentMethod1().get(), TApplicationException);
   EXPECT_THROW(client->semifuture_childMethod2().get(), TApplicationException);
@@ -154,8 +190,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
       }
       return result;
     });
-    ScopedServerInterfaceThread runner{service};
-    callback(makeClientFor<ChildAsyncClient>(runner));
+    auto runner = makeServer(service);
+    callback(makeClientFor<ChildAsyncClient>(*runner));
   };
 
   EXPECT_DEATH(
@@ -173,8 +209,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, ParentMapDeathTest) {
       [&] {
         auto service = std::make_shared<ChildWithMetadata>(
             [](auto&&) { return ParentSvIf{}.createMethodMetadata(); });
-        ScopedServerInterfaceThread runner{service};
-        auto client = makeClientFor<ChildAsyncClient>(runner);
+        auto runner = makeServer(service);
+        auto client = makeClientFor<ChildAsyncClient>(*runner);
         client->semifuture_parentMethod1().get();
       }(),
       "Received MethodMetadata of an unknown type");
@@ -228,8 +264,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
         return std::make_unique<ProcessorImpl>(this);
       }
     };
-    ScopedServerInterfaceThread runner{std::make_shared<ChildImpl>()};
-    return callback(makeClientFor<ChildAsyncClient>(runner));
+    auto runner = makeServer(std::make_shared<ChildImpl>());
+    return callback(makeClientFor<ChildAsyncClient>(*runner));
   };
 
   EXPECT_EQ(
@@ -244,8 +280,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
-  if (!useRocket()) {
-    // Interactions are not supported on header
+  if (transportType() != TransportType::ROCKET) {
+    // Interactions are only supported on rocket
     return;
   }
   class ChildWithInteraction : public ChildSvIf {
@@ -258,8 +294,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
     }
   };
   auto service = std::make_shared<ChildWithInteraction>();
-  ScopedServerInterfaceThread runner{service};
-  auto client = makeClientFor<ChildAsyncClient>(runner);
+  auto runner = makeServer(service);
+  auto client = makeClientFor<ChildAsyncClient>(*runner);
 
   auto interaction2 = client->createInteraction();
   EXPECT_EQ(interaction2.semifuture_interactionMethod().get(), 1);
@@ -269,7 +305,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
 INSTANTIATE_TEST_SUITE_P(
     AsyncProcessorMethodResolutionTestP,
     AsyncProcessorMethodResolutionTestP,
-    ::testing::Values(false, true));
+    ::testing::Values(
+        TransportType::HEADER, TransportType::ROCKET, TransportType::HTTP2));
 
 namespace {
 // Setup monitoring interface handler for test below
