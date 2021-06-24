@@ -29,6 +29,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+// NOTE: Use thrift/compiler/sema/ast_validator.h instead.
 class validator : virtual public visitor {
  public:
   using diagnostics_t = std::vector<diagnostic>;
@@ -87,17 +88,6 @@ class validator_list {
  private:
   validator::diagnostics_t& diagnostics_;
   std::vector<std::unique_ptr<validator>> validators_;
-};
-
-class field_names_uniqueness_validator : virtual public validator {
- public:
-  using validator::visit;
-
-  /**
-   * Enforces that there are no duplicate field names either within this
-   * struct or between this struct and any of its mixins.
-   */
-  bool visit(t_struct* s) override;
 };
 
 class struct_names_uniqueness_validator : virtual public validator {
