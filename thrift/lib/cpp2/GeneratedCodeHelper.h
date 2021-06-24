@@ -897,7 +897,7 @@ void nonRecursiveProcess(
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
   LOG_IF(
-      DFATAL,
+      FATAL,
       !AsyncProcessorHelper::isMetadataOfType<Metadata>(untypedMethodMetadata))
       << "Received MethodMetadata of an unknown type";
   auto methodMetadata = static_cast<const Metadata*>(&untypedMethodMetadata);
