@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 
@@ -37,8 +38,7 @@ namespace thrift {
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
-ThriftProcessor::ThriftProcessor(server::ServerConfigs& serverConfigs)
-    : serverConfigs_(serverConfigs) {}
+ThriftProcessor::ThriftProcessor(ThriftServer& server) : server_(server) {}
 
 void ThriftProcessor::onThriftRequest(
     RequestRpcMetadata&& metadata,
@@ -47,9 +47,11 @@ void ThriftProcessor::onThriftRequest(
     std::unique_ptr<Cpp2ConnContext> connContext) noexcept {
   DCHECK(payload);
   DCHECK(channel);
-  DCHECK(tm_);
-  DCHECK(processorFactory_);
-  DCHECK(processor_);
+
+  auto& processorFactory = *server_.getProcessorFactory();
+  if (processor_ == nullptr) {
+    processor_ = processorFactory.getProcessor();
+  }
 
   auto worker = connContext->getWorker();
   worker->getEventBase()->dcheckIsInEventBaseThread();
@@ -61,7 +63,7 @@ void ThriftProcessor::onThriftRequest(
       *metadata.crc32c_ref() != apache::thrift::checksum::crc32c(*payload);
 
   auto request = std::make_unique<ThriftRequest>(
-      serverConfigs_, channel, std::move(metadata), std::move(connContext));
+      server_, channel, std::move(metadata), std::move(connContext));
 
   auto* evb = channel->getEventBase();
   if (UNLIKELY(invalidMetadata)) {
@@ -86,7 +88,7 @@ void ThriftProcessor::onThriftRequest(
     return;
   }
 
-  auto baseReqCtx = processorFactory_->getBaseContextForRequest();
+  auto baseReqCtx = processorFactory.getBaseContextForRequest();
   auto reqCtx = baseReqCtx ? folly::RequestContext::copyAsChild(*baseReqCtx)
                            : std::make_shared<folly::RequestContext>();
   folly::RequestContextScopeGuard rctx(reqCtx);
@@ -94,8 +96,7 @@ void ThriftProcessor::onThriftRequest(
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
 
-  const auto& serviceMetadata =
-      worker->getMetadataForService(*processorFactory_);
+  const auto& serviceMetadata = worker->getMetadataForService(processorFactory);
   using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
   const PerServiceMetadata::FindMethodResult methodMetadataResult =
       serviceMetadata.findMethod(request->getMethodName());
@@ -111,7 +112,7 @@ void ThriftProcessor::onThriftRequest(
             protoId,
             reqContext,
             evb,
-            tm_);
+            server_.getThreadManager().get());
       },
       [&](PerServiceMetadata::MetadataNotFound) {
         std::string_view methodName = request->getMethodName();
@@ -126,7 +127,7 @@ void ThriftProcessor::onThriftRequest(
             protoId,
             reqContext,
             evb,
-            tm_);
+            server_.getThreadManager().get());
       });
 }
 } // namespace thrift

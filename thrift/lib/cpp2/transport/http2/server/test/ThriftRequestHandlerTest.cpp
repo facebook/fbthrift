@@ -25,7 +25,6 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
@@ -56,7 +55,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     EventBaseManager::get()->setEventBase(eventBase_.get(), true);
     responseHandler_ = std::make_unique<FakeResponseHandler>(eventBase_.get());
     processor_ = std::make_unique<EchoProcessor>(
-        serverConfigs_, "extrakey", "extravalue", "<eom>", eventBase_.get());
+        "extrakey", "extravalue", "<eom>", eventBase_.get());
     // This test assumes metadata is passed in the header, so we need
     // to use SingleRpcChannel.  The second parameter 1 enables this.
     // requestHandler_ deletes itself.
@@ -83,7 +82,6 @@ class ThriftRequestHandlerTest : public testing::Test {
   }
 
  protected:
-  apache::thrift::server::ServerConfigsMock serverConfigs_;
   std::unique_ptr<folly::EventBase> eventBase_{
       std::make_unique<folly::EventBase>()};
   apache::thrift::ThriftServer server_;

@@ -318,10 +318,6 @@ void ThriftServer::setup() {
         }
       }
     });
-    if (thriftProcessor_) {
-      thriftProcessor_->setThreadManager(threadManager_.get());
-      thriftProcessor_->setProcessorFactory(*getProcessorFactory());
-    }
 
     if (!serverChannel_) {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();

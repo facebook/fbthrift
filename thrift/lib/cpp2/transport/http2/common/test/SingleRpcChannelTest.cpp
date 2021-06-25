@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h>
@@ -44,9 +43,7 @@ class SingleRpcChannelTest
       public testing::WithParamInterface<string::size_type> {};
 
 TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   inputHeaders["key2"] = "value2";
@@ -71,9 +68,7 @@ INSTANTIATE_TEST_CASE_P(
     AllChunkSizes, SingleRpcChannelTest, testing::Values(0, 1, 2, 4, 10));
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   string inputPayload = "";
@@ -95,9 +90,7 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   string inputPayload = "notempty";
@@ -119,9 +112,7 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
 }
 
 TEST_F(ChannelTestFixture, BadHeaderFields) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> headersExpectNoEncoding{
       {"X-FB-Header-Uppercase", "good value"},
       {"x-fb-header-lowercase", "good value"},

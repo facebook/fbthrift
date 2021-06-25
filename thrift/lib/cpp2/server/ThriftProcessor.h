@@ -32,6 +32,8 @@
 namespace apache {
 namespace thrift {
 
+class ThriftServer;
+
 /**
  * Server side Thrift processor.  Accepts calls from the channel,
  * calls the function handler, and finally calls back into the channel
@@ -42,7 +44,7 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  explicit ThriftProcessor(server::ServerConfigs& serverConfigs);
+  explicit ThriftProcessor(ThriftServer& server);
 
   virtual ~ThriftProcessor() = default;
 
@@ -63,25 +65,9 @@ class ThriftProcessor {
       std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<Cpp2ConnContext> connContext) noexcept;
 
-  // Called from the server initialization code if there's an update
-  // to the thread manager used to manage the server
-  void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
-    tm_ = tm;
-  }
-  void setProcessorFactory(AsyncProcessorFactory& processorFactory) {
-    processorFactory_ = std::addressof(processorFactory);
-    processor_ = processorFactory.getProcessor();
-  }
-
  private:
-  AsyncProcessorFactory* processorFactory_{nullptr};
-  // Object of the generated AsyncProcessor subclass.
   std::unique_ptr<AsyncProcessor> processor_;
-  // To access server specific fields.
-  server::ServerConfigs& serverConfigs_;
-  // Thread manager that is used to run thrift handlers.
-  // Owned by the server initialization code.
-  apache::thrift::concurrency::ThreadManager* tm_;
+  ThriftServer& server_;
 };
 
 } // namespace thrift

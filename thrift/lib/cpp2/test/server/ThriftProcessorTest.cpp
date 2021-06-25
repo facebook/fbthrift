@@ -35,7 +35,7 @@ TEST_F(CoreTestFixture, SumTwoNumbers) {
   int32_t y = 10;
   int32_t expected_result = x + y;
 
-  EXPECT_CALL(service_, sumTwoNumbers_(x, y));
+  EXPECT_CALL(*service_, sumTwoNumbers_(x, y));
 
   runInEventBaseThread([&]() mutable {
     RequestRpcMetadata metadata;

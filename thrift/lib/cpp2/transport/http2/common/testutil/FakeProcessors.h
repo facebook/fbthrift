@@ -17,8 +17,8 @@
 #pragma once
 
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/server/ThriftProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
 namespace apache {
 namespace thrift {
@@ -36,12 +36,11 @@ class EchoProcessor : public ThriftProcessor {
   // payload data that is sent back, as well as the event base in
   // which to schedule the callbacks.
   EchoProcessor(
-      server::ServerConfigs& serverConfigs,
       const std::string& key,
       const std::string& value,
       const std::string& trailer,
       folly::EventBase* evb)
-      : ThriftProcessor(serverConfigs),
+      : ThriftProcessor(server_),
         key_(key),
         value_(value),
         trailer_(trailer),
@@ -53,9 +52,13 @@ class EchoProcessor : public ThriftProcessor {
       RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel,
-      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept override;
+      std::unique_ptr<Cpp2ConnContext> connContext) noexcept override;
 
  private:
+  // We override onThriftRequest so this is unused. This exists simply to
+  // appease the constructor of ThriftProcessor.
+  ThriftServer server_;
+
   // The new entry to add to the header.
   std::string key_;
   std::string value_;

@@ -28,12 +28,10 @@ namespace thrift {
 
 using namespace testutil::testservice;
 
-CoreTestFixture::CoreTestFixture()
-    : threadManager_(std::make_shared<FakeThreadManager>()),
-      processor_(serverConfigs_) {
+CoreTestFixture::CoreTestFixture() : processor_(server_) {
   threadManager_->start();
-  processor_.setThreadManager(threadManager_.get());
-  processor_.setProcessorFactory(service_);
+  server_.setThreadManager(threadManager_);
+  server_.setProcessorFactory(service_);
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
   worker_ = Cpp2Worker::createDummy(&eventBase_);
 }
