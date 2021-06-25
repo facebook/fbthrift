@@ -374,18 +374,19 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         metadata);
   }
 
-  if (metadata.otherMetadata_ref()) {
-    THRIFT_APPLICATION_EVENT(server_write_headers).log([&] {
-      auto size = metadata.otherMetadata_ref()->size();
-      std::vector<folly::dynamic> keys;
+  THRIFT_APPLICATION_EVENT(server_write_headers).log([&] {
+    auto size =
+        metadata.otherMetadata_ref() ? metadata.otherMetadata_ref()->size() : 0;
+    std::vector<folly::dynamic> keys;
+    if (size) {
       keys.reserve(size);
       for (auto& [k, v] : *metadata.otherMetadata_ref()) {
         keys.push_back(k);
       }
-      return folly::dynamic::object("size", size) //
-          ("keys", folly::dynamic::array(std::move(keys)));
-    });
-  }
+    }
+    return folly::dynamic::object("size", size) //
+        ("keys", folly::dynamic::array(std::move(keys)));
+  });
 
   // apply compression if client has specified compression codec
   if (compressionConfig.has_value()) {
