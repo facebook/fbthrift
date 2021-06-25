@@ -311,6 +311,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {        fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
@@ -338,35 +339,77 @@ pub mod client {
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
-                .and_then(|reply| ::futures::future::ready({
+                .and_then(|reply| {
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_root::DoRootError> {
+                    (move |mut p: P::Deserializer| {
                         use ::fbthrift::{ProtocolReader as _};
-                        let p = &mut p;
-                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                        let result = match message_type {
+                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                            Ok(res) => res,
+                            Err(e) => return ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ::std::result::Result::Err(e.into())
+                                    )
+                                )
+                        };
+                        match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: crate::services::my_root::DoRootExn = ::fbthrift::Deserialize::read(p)?;
-                                match exn {
-                                    crate::services::my_root::DoRootExn::Success(x) => ::std::result::Result::Ok(x),
-                                    crate::services::my_root::DoRootExn::ApplicationException(ae) => {
-                                        ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_root::DoRootExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                  (::fbthrift::Deserialize::read(&mut p), p)
+                                });
+                                ::futures::future::Either::Right(exn.then(
+                                    |exn| {
+                                        let result = (move || {
+                                            let (exn, mut p) = match exn {
+                                                Ok(res) => res,
+                                                Err(e) => {
+                                                    // spawn_blocking threads can't be cancelled, so any
+                                                    // error is a panic. This shouldn't happen, but we propagate if it does
+                                                    ::std::panic::resume_unwind(e.into_panic())
+                                                }
+                                            };
+                                            let exn = exn?;
+                                            let result = match exn {
+                                                crate::services::my_root::DoRootExn::Success(x) => ::std::result::Result::Ok(x),
+                                                crate::services::my_root::DoRootExn::ApplicationException(ae) => {
+                                                    ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                                }
+                                            };
+                                            p.read_message_end()?;
+                                            result
+                                        })();
+                                        ::futures::future::ready(result)
                                     }
-                                }
+                                ))
                             }
                             ::fbthrift::MessageType::Exception => {
-                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
-                                ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ae.map_err(|e| e.into()).and_then(|ae| {
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                              ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(ae))
+                                          }
+                                        )
+                                        })
+                                    )
+                                )
                             }
                             ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
                                 let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::std::result::Result::Err(crate::errors::my_root::DoRootError::ThriftError(err))
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                            ::std::result::Result::Err(crate::errors::my_root::DoRootError::ThriftError(err))
+                                          }
+                                        )
+                                    )
+                                )
                             }
-                        };
-                        p.read_message_end()?;
-                        result
-                    }(de)
-                }))
+                        }
+                    })(de)
+                })
                 .boxed()
         }
     }
@@ -408,6 +451,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
         {
             let _ = protocol;
             ::std::sync::Arc::new(MyRootImpl::<P, T>::new(transport))
@@ -423,6 +467,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
         {
             <dyn MyRoot>::new(protocol, transport)
         }
@@ -450,6 +495,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -469,6 +515,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {        fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
@@ -496,35 +543,77 @@ pub mod client {
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
-                .and_then(|reply| ::futures::future::ready({
+                .and_then(|reply| {
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_node::DoMidError> {
+                    (move |mut p: P::Deserializer| {
                         use ::fbthrift::{ProtocolReader as _};
-                        let p = &mut p;
-                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                        let result = match message_type {
+                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                            Ok(res) => res,
+                            Err(e) => return ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ::std::result::Result::Err(e.into())
+                                    )
+                                )
+                        };
+                        match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: crate::services::my_node::DoMidExn = ::fbthrift::Deserialize::read(p)?;
-                                match exn {
-                                    crate::services::my_node::DoMidExn::Success(x) => ::std::result::Result::Ok(x),
-                                    crate::services::my_node::DoMidExn::ApplicationException(ae) => {
-                                        ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_node::DoMidExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                  (::fbthrift::Deserialize::read(&mut p), p)
+                                });
+                                ::futures::future::Either::Right(exn.then(
+                                    |exn| {
+                                        let result = (move || {
+                                            let (exn, mut p) = match exn {
+                                                Ok(res) => res,
+                                                Err(e) => {
+                                                    // spawn_blocking threads can't be cancelled, so any
+                                                    // error is a panic. This shouldn't happen, but we propagate if it does
+                                                    ::std::panic::resume_unwind(e.into_panic())
+                                                }
+                                            };
+                                            let exn = exn?;
+                                            let result = match exn {
+                                                crate::services::my_node::DoMidExn::Success(x) => ::std::result::Result::Ok(x),
+                                                crate::services::my_node::DoMidExn::ApplicationException(ae) => {
+                                                    ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                                }
+                                            };
+                                            p.read_message_end()?;
+                                            result
+                                        })();
+                                        ::futures::future::ready(result)
                                     }
-                                }
+                                ))
                             }
                             ::fbthrift::MessageType::Exception => {
-                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
-                                ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ae.map_err(|e| e.into()).and_then(|ae| {
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                              ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(ae))
+                                          }
+                                        )
+                                        })
+                                    )
+                                )
                             }
                             ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
                                 let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::std::result::Result::Err(crate::errors::my_node::DoMidError::ThriftError(err))
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                            ::std::result::Result::Err(crate::errors::my_node::DoMidError::ThriftError(err))
+                                          }
+                                        )
+                                    )
+                                )
                             }
-                        };
-                        p.read_message_end()?;
-                        result
-                    }(de)
-                }))
+                        }
+                    })(de)
+                })
                 .boxed()
         }
     }
@@ -567,6 +656,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
         {
             let _ = protocol;
             ::std::sync::Arc::new(MyNodeImpl::<P, T>::new(transport))
@@ -582,6 +672,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
         {
             <dyn MyNode>::new(protocol, transport)
         }
@@ -609,6 +700,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyNode + 'static)
         {
@@ -622,6 +714,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -641,6 +734,7 @@ pub mod client {
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
     {        fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
@@ -668,35 +762,77 @@ pub mod client {
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
                 .map_err(::std::convert::From::from)
-                .and_then(|reply| ::futures::future::ready({
+                .and_then(|reply| {
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> ::std::result::Result<(), crate::errors::my_leaf::DoLeafError> {
+                    (move |mut p: P::Deserializer| {
                         use ::fbthrift::{ProtocolReader as _};
-                        let p = &mut p;
-                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                        let result = match message_type {
+                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                            Ok(res) => res,
+                            Err(e) => return ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ::std::result::Result::Err(e.into())
+                                    )
+                                )
+                        };
+                        match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: crate::services::my_leaf::DoLeafExn = ::fbthrift::Deserialize::read(p)?;
-                                match exn {
-                                    crate::services::my_leaf::DoLeafExn::Success(x) => ::std::result::Result::Ok(x),
-                                    crate::services::my_leaf::DoLeafExn::ApplicationException(ae) => {
-                                        ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_leaf::DoLeafExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                  (::fbthrift::Deserialize::read(&mut p), p)
+                                });
+                                ::futures::future::Either::Right(exn.then(
+                                    |exn| {
+                                        let result = (move || {
+                                            let (exn, mut p) = match exn {
+                                                Ok(res) => res,
+                                                Err(e) => {
+                                                    // spawn_blocking threads can't be cancelled, so any
+                                                    // error is a panic. This shouldn't happen, but we propagate if it does
+                                                    ::std::panic::resume_unwind(e.into_panic())
+                                                }
+                                            };
+                                            let exn = exn?;
+                                            let result = match exn {
+                                                crate::services::my_leaf::DoLeafExn::Success(x) => ::std::result::Result::Ok(x),
+                                                crate::services::my_leaf::DoLeafExn::ApplicationException(ae) => {
+                                                    ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                                }
+                                            };
+                                            p.read_message_end()?;
+                                            result
+                                        })();
+                                        ::futures::future::ready(result)
                                     }
-                                }
+                                ))
                             }
                             ::fbthrift::MessageType::Exception => {
-                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
-                                ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        ae.map_err(|e| e.into()).and_then(|ae| {
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                              ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(ae))
+                                          }
+                                        )
+                                        })
+                                    )
+                                )
                             }
                             ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
                                 let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ThriftError(err))
+                                ::futures::future::Either::Left(
+                                    ::futures::future::ready(
+                                        p.read_message_end().map_err(|e| e.into()).and_then(
+                                          |_| {
+                                            ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ThriftError(err))
+                                          }
+                                        )
+                                    )
+                                )
                             }
-                        };
-                        p.read_message_end()?;
-                        result
-                    }(de)
-                }))
+                        }
+                    })(de)
+                })
                 .boxed()
         }
     }
@@ -740,6 +876,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
         {
             let _ = protocol;
             ::std::sync::Arc::new(MyLeafImpl::<P, T>::new(transport))
@@ -755,6 +892,7 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
         {
             <dyn MyLeaf>::new(protocol, transport)
         }

@@ -27,7 +27,8 @@ pub trait ClientFactory {
     fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
     where
         P: Protocol<Frame = T> + 'static,
-        T: Transport + Sync;
+        T: Transport + Sync,
+        P::Deserializer: Send;
 }
 
 pub trait Transport: Framing + Send + 'static {
