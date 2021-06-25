@@ -54,6 +54,34 @@ struct recurse_helper {
   template <typename TC, typename T>
   static void to(
       folly::dynamic& out,
+      boxed_value_ptr<T> const& input,
+      dynamic_format format) {
+    if (!input) {
+      out = nullptr;
+      return;
+    }
+    dynamic_converter_impl<TC>::to(out, *input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      boxed_value_ptr<T>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    boxed_value_ptr<T> temp;
+    dynamic_converter_impl<TC>::from(temp.emplace(), input, format, adherence);
+    out = std::move(temp);
+  }
+
+  template <typename TC, typename T>
+  static void to(
+      folly::dynamic& out,
       std::shared_ptr<T> const& input,
       dynamic_format format) {
     if (!input) {

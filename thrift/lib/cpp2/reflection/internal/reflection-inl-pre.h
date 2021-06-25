@@ -93,6 +93,18 @@ struct mark_set_fn {
     }
   }
 
+  template <class T>
+  void operator()(optional_boxed_field_ref<T> ref, bool b) const {
+    if (b) {
+      ref.ensure();
+    } else {
+      ref.reset();
+    }
+  }
+
+  template <class T>
+  void operator()(boxed_value_ptr<T>&, bool) const {}
+
   template <class T, class D>
   void operator()(std::unique_ptr<T, D>&, bool) const {}
 

@@ -28,6 +28,25 @@ struct merge {
   static void go(const T& src, T& dst) { impl::template go<T>(src, dst); }
   static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
 
+  static void go(
+      const detail::boxed_value_ptr<T>& src, detail::boxed_value_ptr<T>& dst) {
+    if (!dst) {
+      dst = src;
+    } else if (src) {
+      go(*src, *dst);
+    }
+  }
+
+  static void go(
+      detail::boxed_value_ptr<T>&& src, detail::boxed_value_ptr<T>& dst) {
+    if (!dst) {
+      dst = std::move(src);
+    } else if (src) {
+      go(std::move(*src), *dst);
+      src.reset();
+    }
+  }
+
   static void go(const std::unique_ptr<T>& src, std::unique_ptr<T>& dst) {
     dst = !src ? nullptr : std::make_unique<T>(*src);
   }
@@ -70,6 +89,8 @@ struct merge_impl<type_class::structure> {
   struct deref {
     using type = T;
   };
+  template <typename T>
+  struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
   template <typename T, typename D>
   struct deref<std::unique_ptr<T, D>> : deref<T> {};
   template <typename T>

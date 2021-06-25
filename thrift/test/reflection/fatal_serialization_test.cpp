@@ -239,6 +239,21 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   expect_same_serialized_size(a, this->writer);
 }
 
+TYPED_TEST(MultiProtocolTest, test_blank_optional_boxed_field) {
+  struct3 a, b;
+  a.box_nested1_ref().ensure().f1_ref() = 5;
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(*a.box_nested1_ref(), *b.box_nested1_ref());
+  EXPECT_FALSE(a.box_nested2_ref().has_value());
+  EXPECT_FALSE(b.box_nested2_ref().has_value());
+  expect_same_serialized_size(a, this->writer);
+}
+
 TYPED_TEST(MultiProtocolTest, test_empty_containers) {
   struct1 a, b;
   serializer_write(a, this->writer);

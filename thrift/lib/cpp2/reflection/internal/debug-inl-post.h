@@ -88,6 +88,11 @@ T const* debug_equals_get_pointer(T const& what) {
 }
 
 template <typename T>
+T const* debug_equals_get_pointer(boxed_value_ptr<T> const& what) {
+  return what ? &*what : nullptr;
+}
+
+template <typename T>
 T const* debug_equals_get_pointer(std::shared_ptr<T> const& what) {
   return what.get();
 }
@@ -301,7 +306,7 @@ struct debug_equals_with_pointers {
       U const&,
       U const&) {
     return debug_equals_impl<TypeClass>::equals(
-        path, lMember, rMember, callback);
+        path, lMember, rMember, std::forward<Callback>(callback));
   }
 
   template <typename TypeClass, typename T, typename U, typename Callback>
@@ -316,15 +321,47 @@ struct debug_equals_with_pointers {
       return true;
     }
     if (!rMember) {
-      debug_equals_missing()(TypeClass{}, callback, lMember, path, "missing");
+      debug_equals_missing()(
+          TypeClass{},
+          std::forward<Callback>(callback),
+          lMember,
+          path,
+          "missing");
       return false;
     }
     if (!lMember) {
-      debug_equals_extra()(TypeClass{}, callback, rMember, path, "extra");
+      debug_equals_extra()(
+          TypeClass{},
+          std::forward<Callback>(callback),
+          rMember,
+          path,
+          "extra");
       return false;
     }
     return recurse_into<TypeClass>(
-        path, *lMember, *rMember, callback, lObject, rObject);
+        path,
+        *lMember,
+        *rMember,
+        std::forward<Callback>(callback),
+        lObject,
+        rObject);
+  }
+
+  template <typename TypeClass, typename Callback, typename U, typename T>
+  static bool recurse_into(
+      std::string& path,
+      boxed_value_ptr<T> const& lMember,
+      boxed_value_ptr<T> const& rMember,
+      Callback&& callback,
+      U const& lObject,
+      U const& rObject) {
+    return recurse_into_ptr<TypeClass>(
+        path,
+        lMember ? &*lMember : nullptr,
+        rMember ? &*rMember : nullptr,
+        std::forward<Callback>(callback),
+        lObject,
+        rObject);
   }
 
   template <typename TypeClass, typename Callback, typename U, typename T>
@@ -336,7 +373,12 @@ struct debug_equals_with_pointers {
       U const& lObject,
       U const& rObject) {
     return recurse_into_ptr<TypeClass>(
-        path, lMember.get(), rMember.get(), callback, lObject, rObject);
+        path,
+        lMember.get(),
+        rMember.get(),
+        std::forward<Callback>(callback),
+        lObject,
+        rObject);
   }
 
   template <typename TypeClass, typename Callback, typename U, typename T>
@@ -348,7 +390,12 @@ struct debug_equals_with_pointers {
       U const& lObject,
       U const& rObject) {
     return recurse_into_ptr<TypeClass>(
-        path, lMember.get(), rMember.get(), callback, lObject, rObject);
+        path,
+        lMember.get(),
+        rMember.get(),
+        std::forward<Callback>(callback),
+        lObject,
+        rObject);
   }
 };
 
@@ -391,19 +438,45 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path, T const& field, Callback&& callback) {
-    Change()(TC{}, callback, &field, path, "union type changed");
+    Change()(
+        TC{},
+        std::forward<Callback>(callback),
+        &field,
+        path,
+        "union type changed");
+  }
+
+  template <typename Change, typename TC, typename T, typename Callback>
+  static void visit_changed_field(
+      std::string& path, boxed_value_ptr<T> const& field, Callback&& callback) {
+    Change()(
+        TC{},
+        std::forward<Callback>(callback),
+        field ? &*field : nullptr,
+        path,
+        "union type changed");
   }
 
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path, std::unique_ptr<T> const& field, Callback&& callback) {
-    Change()(TC{}, callback, field.get(), path, "union type changed");
+    Change()(
+        TC{},
+        std::forward<Callback>(callback),
+        field.get(),
+        path,
+        "union type changed");
   }
 
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path, std::shared_ptr<T> const& field, Callback&& callback) {
-    Change()(TC{}, callback, field.get(), path, "union type changed");
+    Change()(
+        TC{},
+        std::forward<Callback>(callback),
+        field.get(),
+        path,
+        "union type changed");
   }
 
   template <typename Change, typename T, typename Callback>

@@ -573,6 +573,24 @@ TEST(fatal_folly_dynamic, to_from_variant_ref_unique) {
   test_to_from(pod, json);
 }
 
+TEST(fatal_pretty_print, to_from_struct_box) {
+  test_cpp2::cpp_reflection::hasBoxSimple pod;
+
+  auto& inner = pod.anOptionalStruct_ref().ensure();
+  inner.a_ref() = 109;
+  inner.b_ref() = "testing yo";
+
+  auto const rawJson = folly::stripLeftMargin(R"({
+    "anOptionalStruct": {
+      "a": 109,
+      "b": "testing yo"
+    }
+  })");
+
+  auto const json = folly::parseJson(rawJson);
+  test_to_from(pod, json);
+}
+
 } // namespace thrift
 } // namespace apache
 

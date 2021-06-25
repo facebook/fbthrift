@@ -61,6 +61,8 @@ template <typename T>
 struct deref {
   using type = T;
 };
+template <typename T>
+struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
 template <typename T, typename D>
 struct deref<std::unique_ptr<T, D>> : deref<T> {};
 template <typename T>

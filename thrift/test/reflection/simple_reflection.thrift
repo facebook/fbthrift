@@ -72,6 +72,8 @@ struct struct3 {
   1: optional smallstruct opt_nested (cpp.ref = "true", cpp2.ref = "true");
   2: smallstruct def_nested (cpp.ref = "true", cpp2.ref = "true");
   3: required smallstruct req_nested (cpp.ref = "true", cpp2.ref = "true");
+  4: optional smallstruct box_nested1 (cpp.box);
+  5: optional smallstruct box_nested2 (cpp.box);
 }
 
 typedef map<i32, string> (cpp2.template = "std::unordered_map") unordered_map

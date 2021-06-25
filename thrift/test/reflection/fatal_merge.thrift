@@ -221,6 +221,27 @@ const NestedRefSharedConstExample kNestedRefSharedConstExample = {
   "nil": {},
 };
 
+struct NestedBox {
+  1: optional Basic a (cpp.box);
+  2: optional Basic b (cpp.box);
+  3: optional string c (cpp.box);
+  4: optional string d (cpp.box);
+}
+
+struct NestedBoxExample {
+  1: NestedBox src;
+  2: NestedBox dst;
+  3: NestedBox exp;
+  4: NestedBox nil;
+}
+
+const NestedBoxExample kNestedBoxExample = {
+  "src": {"b": {"b": "hello"}, "d": "bar"},
+  "dst": {"a": {"b": "world"}, "c": "foo"},
+  "exp": {"a": {"b": "world"}, "b": {"b": "hello"}, "c": "foo", "d": "bar"},
+  "nil": {},
+};
+
 typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection) HasANumber
 
 struct Indirection {

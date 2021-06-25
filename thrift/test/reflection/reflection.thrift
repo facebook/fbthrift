@@ -517,6 +517,28 @@ struct hasRefSharedConstSimple {
   10: optional unionA anOptionalUnion (cpp2.ref_type = "shared_const");
 }
 
+struct hasBox {
+  6: optional structA anOptionalStruct (cpp.box);
+  7: optional list<string> (cpp.template = "std::deque") anOptionalList (
+    cpp.box,
+  );
+  8: optional set<string> (cpp.template = "std::unordered_set") anOptionalSet (
+    cpp.box,
+  );
+  9: optional map<string, string> (
+    cpp.template = "std::unordered_map",
+  ) anOptionalMap (cpp.box);
+  10: optional unionA anOptionalUnion (cpp.box);
+}
+
+struct hasBoxSimple {
+  6: optional structA anOptionalStruct (cpp.box);
+  7: optional list<string> anOptionalList (cpp.box);
+  8: optional set<string> anOptionalSet (cpp.box);
+  9: optional map<string, string> anOptionalMap (cpp.box);
+  10: optional unionA anOptionalUnion (cpp.box);
+}
+
 struct StructWithIOBuf {
   1: binary (cpp.type = "std::unique_ptr<folly::IOBuf>") buf;
 }

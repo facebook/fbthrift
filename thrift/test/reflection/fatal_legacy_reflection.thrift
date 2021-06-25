@@ -60,6 +60,7 @@ struct SampleStruct {
   24: SampleSubStruct struct_unique_field (cpp.ref_type = 'unique');
   25: SampleSubStruct struct_shared_field (cpp.ref_type = 'shared');
   26: SampleSubStruct struct_shared_const_field (cpp.ref_type = 'shared_const');
+  31: optional SampleSubStruct struct_box_field (cpp.box);
 
   // integer custom types
   27: byte (cpp.type = "std::uint8_t") ubyte_field;
