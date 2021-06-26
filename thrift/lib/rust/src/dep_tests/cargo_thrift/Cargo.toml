@@ -24,6 +24,7 @@ ref-cast = "1.0.2"
 serde = { version = "1.0.126", features = ["derive", "rc"] }
 serde_derive = "1.0"
 thiserror = "1.0"
+tokio_shim = { path = "../../../../../../common/rust/shed/tokio_shim" }
 
 [build-dependencies]
 thrift_compiler = { path = "../../../../../../common/rust/shed/thrift_compiler" }
