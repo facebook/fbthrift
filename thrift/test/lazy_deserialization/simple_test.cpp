@@ -270,26 +270,26 @@ TYPED_TEST(Serialization, ReserializeSameStruct) {
 
 template <class Serializer1, class Serializer2>
 void deserializationWithDifferentProtocol() {
-  auto foo = CompactSerializer::deserialize<LazyFoo>(
-      CompactSerializer::serialize<std::string>(gen<LazyFoo>()));
+  auto foo = Serializer1::template deserialize<LazyFoo>(
+      Serializer1::template serialize<std::string>(gen<LazyFoo>()));
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
   EXPECT_TRUE(get_field3(foo).empty());
   EXPECT_TRUE(get_field4(foo).empty());
 
-  // Reserialize with same protocol, all fields are untouched
-  CompactSerializer::deserialize(
-      CompactSerializer::serialize<std::string>(OptionalFoo{}), foo);
+  // Deserialize with same protocol, all fields are untouched
+  Serializer1::deserialize(
+      Serializer1::template serialize<std::string>(OptionalFoo{}), foo);
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
   EXPECT_TRUE(get_field3(foo).empty());
   EXPECT_TRUE(get_field4(foo).empty());
 
-  // Reserialize with different protocol, all fields are deserialized
-  BinarySerializer::deserialize(
-      BinarySerializer::serialize<std::string>(OptionalFoo{}), foo);
+  // Deserialize with different protocol, all fields are deserialized
+  Serializer2::deserialize(
+      Serializer2::template serialize<std::string>(OptionalFoo{}), foo);
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
@@ -301,4 +301,5 @@ TEST(Serialization, DeserializationWithDifferentProtocol) {
   deserializationWithDifferentProtocol<CompactSerializer, BinarySerializer>();
   deserializationWithDifferentProtocol<BinarySerializer, CompactSerializer>();
 }
+
 } // namespace apache::thrift::test
