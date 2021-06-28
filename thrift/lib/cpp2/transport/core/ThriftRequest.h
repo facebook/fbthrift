@@ -294,6 +294,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   bool isReplyChecksumNeeded() const override { return checksumRequested_; }
 
+  virtual void closeConnection(folly::exception_wrapper) noexcept {
+    LOG(FATAL) << "closeConnection not implemented";
+  }
+
  protected:
   virtual void sendThriftResponse(
       ResponseRpcMetadata&& metadata,
@@ -341,10 +345,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       MessageChannel::SendCallbackPtr) noexcept = 0;
 
   bool tryStartProcessing() final { return stateMachine_.tryStartProcessing(); }
-
-  virtual void closeConnection(folly::exception_wrapper) noexcept {
-    LOG(FATAL) << "closeConnection not implemented";
-  }
 
   virtual folly::EventBase* getEventBase() noexcept = 0;
 

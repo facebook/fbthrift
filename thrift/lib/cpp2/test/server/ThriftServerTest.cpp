@@ -1598,7 +1598,7 @@ TEST(ThriftServer, ResetStateTest) {
   }
 }
 
-TEST(ThriftServer, FailureInjection) {
+TEST_P(HeaderOrRocket, FailureInjection) {
   enum ExpectedFailure { NONE = 0, ERROR, TIMEOUT, DISCONNECT, END };
 
   std::atomic<ExpectedFailure> expected(NONE);
@@ -1654,24 +1654,19 @@ TEST(ThriftServer, FailureInjection) {
     const std::atomic<ExpectedFailure>* expected_;
   };
 
-  TestThriftServerFactory<TestInterface> factory;
-  ScopedServerThread sst(factory.create());
+  ScopedServerInterfaceThread sst(std::make_shared<TestInterface>());
   folly::EventBase base;
-  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
+  auto client = makeClient(sst, &base);
 
-  TestServiceAsyncClient client(
-      HeaderClientChannel::newChannel(std::move(socket)));
-
-  auto server = std::dynamic_pointer_cast<ThriftServer>(sst.getServer().lock());
-  CHECK(server);
-  SCOPE_EXIT { server->setFailureInjection(ThriftServer::FailureInjection()); };
+  auto& server = sst.getThriftServer();
+  SCOPE_EXIT { server.setFailureInjection(ThriftServer::FailureInjection()); };
 
   RpcOptions rpcOptions;
   rpcOptions.setTimeout(std::chrono::milliseconds(100));
   for (int i = 0; i < END; ++i) {
     auto exp = static_cast<ExpectedFailure>(i);
     ThriftServer::FailureInjection fi;
-
+    LOG(INFO) << i;
     switch (exp) {
       case NONE:
         break;
@@ -1688,12 +1683,12 @@ TEST(ThriftServer, FailureInjection) {
         LOG(FATAL) << "unreached";
     }
 
-    server->setFailureInjection(std::move(fi));
+    server.setFailureInjection(std::move(fi));
 
     expected = exp;
 
     auto callback = std::make_unique<Callback>(&expected);
-    client.sendResponse(rpcOptions, std::move(callback), 1);
+    client->sendResponse(rpcOptions, std::move(callback), 1);
     base.loop();
   }
 }

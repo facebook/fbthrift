@@ -422,6 +422,29 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
+  if (auto injectedFailure = worker_->getServer()->maybeInjectFailure();
+      injectedFailure != ThriftServer::InjectedFailure::NONE) {
+    InjectedFault injectedFault;
+    switch (injectedFailure) {
+      case ThriftServer::InjectedFailure::NONE:
+        folly::assume_unreachable();
+      case ThriftServer::InjectedFailure::ERROR:
+        injectedFault = InjectedFault::ERROR;
+        break;
+      case ThriftServer::InjectedFailure::DROP:
+        injectedFault = InjectedFault::DROP;
+        break;
+      case ThriftServer::InjectedFailure::DISCONNECT:
+        injectedFault = InjectedFault::DISCONNECT;
+        break;
+    }
+    handleInjectedFault(
+        makeActiveRequest(
+            std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
+        injectedFault);
+    return;
+  }
+
   // A request should not be active until the overload checking is done.
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
@@ -633,6 +656,30 @@ void ThriftRocketServerHandler::handleServerShutdown(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "server shutting down"),
       kQueueOverloadedErrorCode);
+}
+
+void ThriftRocketServerHandler::handleInjectedFault(
+    ThriftRequestCoreUniquePtr request, InjectedFault fault) {
+  switch (fault) {
+    case InjectedFault::ERROR:
+      if (auto* observer = serverConfigs_->getObserver()) {
+        observer->taskKilled();
+      }
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INJECTED_FAILURE, "injected failure"),
+          kInjectedFailureErrorCode);
+      return;
+    case InjectedFault::DROP:
+      VLOG(1) << "ERROR: injected drop: "
+              << connContext_.getPeerAddress()->getAddressStr();
+      return;
+    case InjectedFault::DISCONNECT:
+      return request->closeConnection(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INJECTED_FAILURE, "injected failure"));
+      return;
+  }
 }
 
 void ThriftRocketServerHandler::requestComplete() {
