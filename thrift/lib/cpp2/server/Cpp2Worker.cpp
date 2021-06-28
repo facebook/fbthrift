@@ -385,7 +385,7 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
       [&](const AsyncProcessorFactory::MethodMetadataMap& map)
           -> FindMethodResult {
         if (auto* m = folly::get_ptr(map, methodName)) {
-          DCHECK_NOTNULL(m->get());
+          DCHECK(m->get());
           return MetadataFound{**m};
         }
         return MetadataNotFound{};
@@ -393,7 +393,7 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
       [&](const AsyncProcessorFactory::WildcardMethodMetadataMap& wildcard)
           -> FindMethodResult {
         if (auto* m = folly::get_ptr(wildcard.knownMethods, methodName)) {
-          DCHECK_NOTNULL(m->get());
+          DCHECK(m->get());
           return MetadataFound{**m};
         }
         return MetadataFound{wildcardMethodMetadata};
