@@ -18,7 +18,6 @@
 
 #include <memory>
 #include <utility>
-#include <boost/variant.hpp>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>

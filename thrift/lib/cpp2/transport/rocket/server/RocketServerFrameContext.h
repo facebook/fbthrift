@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <folly/io/async/HHWheelTimer.h>
 
 #include <thrift/lib/cpp2/async/MessageChannel.h>

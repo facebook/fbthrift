@@ -22,8 +22,7 @@
 #include <ostream>
 #include <unordered_map>
 #include <utility>
-
-#include <boost/variant.hpp>
+#include <variant>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Executor.h>
@@ -271,7 +270,7 @@ class RocketServerConnection final
   bool setupFrameReceived_{false};
   folly::F14NodeMap<
       StreamId,
-      boost::variant<
+      std::variant<
           RequestResponseFrame,
           RequestFnfFrame,
           RequestStreamFrame,
@@ -309,11 +308,11 @@ class RocketServerConnection final
   ConnectionState state_{ConnectionState::ALIVE};
   ErrorCode drainingErrorCode_;
 
-  using ClientCallbackUniquePtr = boost::variant<
+  using ClientCallbackUniquePtr = std::variant<
       std::unique_ptr<RocketStreamClientCallback>,
       std::unique_ptr<RocketSinkClientCallback>>;
   using ClientCallbackPtr =
-      boost::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
+      std::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
   const size_t egressBufferMaxSize_;
