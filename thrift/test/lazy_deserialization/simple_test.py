@@ -33,59 +33,73 @@ def gen(Struct):
     )
 
 
+def test_supported_protocols(func):
+    def wrapper(self):
+        for protocol in [Protocol.COMPACT, Protocol.BINARY]:
+            func(self, protocol)
+
+    return wrapper
+
+
 class UnitTest(unittest.TestCase):
-    def testFooToLazyFoo(self):
+    @test_supported_protocols
+    def testFooToLazyFoo(self, protocol):
         foo = gen(Foo)
-        s = serialize(foo, Protocol.COMPACT)
-        lazyFoo = deserialize(LazyFoo, s, Protocol.COMPACT)
+        s = serialize(foo, protocol)
+        lazyFoo = deserialize(LazyFoo, s, protocol)
         self.assertEqual(foo.field1, lazyFoo.field1)
         self.assertEqual(foo.field2, lazyFoo.field2)
         self.assertEqual(foo.field3, lazyFoo.field3)
         self.assertEqual(foo.field4, lazyFoo.field4)
 
-    def testLazyFooToFoo(self):
+    @test_supported_protocols
+    def testLazyFooToFoo(self, protocol):
         lazyFoo = gen(LazyFoo)
-        s = serialize(lazyFoo, Protocol.COMPACT)
-        foo = deserialize(Foo, s, Protocol.COMPACT)
+        s = serialize(lazyFoo, protocol)
+        foo = deserialize(Foo, s, protocol)
         self.assertEqual(foo.field1, lazyFoo.field1)
         self.assertEqual(foo.field2, lazyFoo.field2)
         self.assertEqual(foo.field3, lazyFoo.field3)
         self.assertEqual(foo.field4, lazyFoo.field4)
 
-    def testLazyCppRefRoundTrip(self):
+    @test_supported_protocols
+    def testLazyCppRefRoundTrip(self, protocol):
         foo = LazyCppRef(
             field1=[1] * 10,
             field2=[2] * 20,
             field3=[3] * 30,
         )
-        s = serialize(foo, Protocol.COMPACT)
-        bar = deserialize(LazyCppRef, s, Protocol.COMPACT)
+        s = serialize(foo, protocol)
+        bar = deserialize(LazyCppRef, s, protocol)
         self.assertEqual(bar.field1, [1] * 10)
         self.assertEqual(bar.field2, [2] * 20)
         self.assertEqual(bar.field3, [3] * 30)
 
-    def testEmptyLazyCppRefRoundTrip(self):
+    @test_supported_protocols
+    def testEmptyLazyCppRefRoundTrip(self, protocol):
         foo = LazyCppRef()
-        s = serialize(foo, Protocol.COMPACT)
-        bar = deserialize(LazyCppRef, s, Protocol.COMPACT)
+        s = serialize(foo, protocol)
+        bar = deserialize(LazyCppRef, s, protocol)
         self.assertIsNone(bar.field1)
         self.assertIsNone(bar.field2)
         self.assertIsNone(bar.field3)
 
-    def testComparison(self):
+    @test_supported_protocols
+    def testComparison(self, protocol):
         foo1 = gen(LazyFoo)
-        s = serialize(foo1, Protocol.COMPACT)
-        foo2 = deserialize(LazyFoo, s, Protocol.COMPACT)
+        s = serialize(foo1, protocol)
+        foo2 = deserialize(LazyFoo, s, protocol)
         self.assertEqual(foo1, foo2)
         foo1 = foo1(field4=[])
         self.assertLess(foo1, foo2)
         foo2 = foo2(field4=[])
         self.assertEqual(foo1, foo2)
 
-    def testOptional(self):
-        s = serialize(gen(Foo), Protocol.COMPACT)
-        foo = deserialize(OptionalFoo, s, Protocol.COMPACT)
-        lazyFoo = deserialize(OptionalLazyFoo, s, Protocol.COMPACT)
+    @test_supported_protocols
+    def testOptional(self, protocol):
+        s = serialize(gen(Foo), protocol)
+        foo = deserialize(OptionalFoo, s, protocol)
+        lazyFoo = deserialize(OptionalLazyFoo, s, protocol)
         self.assertEqual(foo.field1, lazyFoo.field1)
         self.assertEqual(foo.field2, lazyFoo.field2)
         self.assertEqual(foo.field3, lazyFoo.field3)
