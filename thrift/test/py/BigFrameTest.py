@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 
 import unittest
 import socket
+import time
 from threading import Thread
 
 from ThriftTest import ThriftTest
@@ -46,6 +47,8 @@ def create_server():
     t = Thread(name="test_tcpp_server", target=server.serve)
     t.setDaemon(True)
     t.start()
+
+    time.sleep(2)
 
     return (server, port)
 
