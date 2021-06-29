@@ -41,7 +41,6 @@ def mock_client(client_klass: Type[Client]) -> mock.AsyncMock:
                 return True
         except Exception:
             pass
-        # pyre-fixme[6]: Expected `(...) -> Any` for 1st param but got `object`.
         return iscoroutinefunction(thing)
 
     with mock.patch("asyncio.iscoroutinefunction", magic):
