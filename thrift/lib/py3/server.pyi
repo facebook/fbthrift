@@ -37,7 +37,6 @@ from thrift.py3.common import Headers, Priority
 mT = TypeVar("mT", bound=Callable[..., Any])
 T = TypeVar("T")
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
-# pyre-fixme[24]: Generic type `os.PathLike` expects 1 type parameter.
 Path = Union[str, bytes, os.PathLike]
 
 class SocketAddress(NamedTuple):
