@@ -216,14 +216,13 @@ class ThreadManager::Impl : public ThreadManager,
   class Worker;
 
  public:
-  explicit Impl(bool enableTaskStats = false, size_t numPriorities = 1)
+  explicit Impl(size_t numPriorities = 1)
       : workerCount_(0),
         intendedWorkerCount_(0),
         idleCount_(0),
         totalTaskCount_(0),
         expiredCount_(0),
         workersToStop_(0),
-        enableTaskStats_(enableTaskStats),
         state_(ThreadManager::UNINITIALIZED),
         tasks_(N_SOURCES * numPriorities),
         deadWorkers_(),
@@ -372,8 +371,6 @@ class ThreadManager::Impl : public ThreadManager,
   size_t expiredCount_;
   std::atomic<int> workersToStop_;
 
-  const bool enableTaskStats_;
-
   ExpireCallback expireCallback_;
   ExpireCallback codelCallback_;
   InitCallback initCallback_;
@@ -411,9 +408,8 @@ namespace {
 
 class SimpleThreadManagerImpl : public ThreadManager::Impl {
  public:
-  explicit SimpleThreadManagerImpl(
-      size_t workerCount = 4, bool enableTaskStats = false)
-      : ThreadManager::Impl(enableTaskStats), workerCount_(workerCount) {
+  explicit SimpleThreadManagerImpl(size_t workerCount = 4)
+      : ThreadManager::Impl(), workerCount_(workerCount) {
     executors_.reserve(N_SOURCES);
     // for INTERNAL source, this is just a straight pass through
     executors_.emplace_back(this).get_deleter().unown();
@@ -454,10 +450,8 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
 
 } // namespace
 
-SimpleThreadManager::SimpleThreadManager(
-    size_t workerCount, bool enableTaskStats)
-    : impl_(std::make_unique<SimpleThreadManagerImpl>(
-          workerCount, enableTaskStats)) {}
+SimpleThreadManager::SimpleThreadManager(size_t workerCount)
+    : impl_(std::make_unique<SimpleThreadManagerImpl>(workerCount)) {}
 
 SimpleThreadManager::~SimpleThreadManager() {
   joinKeepAliveOnce();
@@ -547,10 +541,12 @@ void SimpleThreadManager::setCodelCallback(ExpireCallback cb) {
 void SimpleThreadManager::setThreadInitCallback(InitCallback cb) {
   return impl_->setThreadInitCallback(std::move(cb));
 }
+
 void SimpleThreadManager::addTaskObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
   impl_->addTaskObserver(std::move(observer));
 }
+
 folly::Executor::KeepAlive<> SimpleThreadManager::getKeepAlive(
     ExecutionScope es, Source source) const {
   return impl_->getKeepAlive(std::move(es), source);
@@ -1016,14 +1012,12 @@ class PriorityThreadManager::PriorityImpl
     : public PriorityThreadManager,
       public folly::DefaultKeepAliveExecutor {
  public:
-  explicit PriorityImpl(
-      const std::array<
-          std::pair<std::shared_ptr<ThreadFactory>, size_t>,
-          N_PRIORITIES>& factories,
-      bool enableTaskStats = false) {
+  explicit PriorityImpl(const std::array<
+                        std::pair<std::shared_ptr<ThreadFactory>, size_t>,
+                        N_PRIORITIES>& factories) {
     executors_.reserve(N_PRIORITIES * N_SOURCES);
     for (int i = 0; i < N_PRIORITIES; i++) {
-      auto m = std::make_unique<ThreadManager::Impl>(enableTaskStats);
+      auto m = std::make_unique<ThreadManager::Impl>();
       // for INTERNAL source, this is just a straight pass through
       executors_.emplace_back(m.get()).get_deleter().unown();
       for (int j = 1; j < N_SOURCES; j++) {
@@ -1286,10 +1280,8 @@ namespace {
 class PriorityQueueThreadManager : public ThreadManager::Impl {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
-  explicit PriorityQueueThreadManager(
-      size_t numThreads, bool enableTaskStats = false)
-      : ThreadManager::Impl(enableTaskStats, N_PRIORITIES),
-        numThreads_(numThreads) {
+  explicit PriorityQueueThreadManager(size_t numThreads)
+      : ThreadManager::Impl(N_PRIORITIES), numThreads_(numThreads) {
     for (int i = 0; i < N_PRIORITIES; i++) {
       for (int j = 0; j < N_SOURCES; j++) {
         executors_.emplace_back(
@@ -1577,24 +1569,22 @@ void ThreadManager::Impl::addTaskObserver(
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
-    size_t count, bool enableTaskStats) {
-  auto tm = std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
+    size_t count) {
+  auto tm = std::make_shared<SimpleThreadManagerImpl>(count);
   tm->threadFactory(Factory(PosixThreadFactory::NORMAL_PRI));
   return tm;
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
-    const std::string& name, size_t count, bool enableTaskStats) {
-  auto simpleThreadManager =
-      std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
+    const std::string& name, size_t count) {
+  auto simpleThreadManager = std::make_shared<SimpleThreadManagerImpl>(count);
   simpleThreadManager->setNamePrefix(name);
   return simpleThreadManager;
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
-    size_t numThreads, bool enableTaskStats) {
-  auto tm =
-      std::make_shared<PriorityQueueThreadManager>(numThreads, enableTaskStats);
+    size_t numThreads) {
+  auto tm = std::make_shared<PriorityQueueThreadManager>(numThreads);
   tm->threadFactory(Factory(PosixThreadFactory::NORMAL_PRI));
   return tm;
 }
@@ -1603,21 +1593,19 @@ std::shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
     const std::array<
         std::pair<std::shared_ptr<ThreadFactory>, size_t>,
-        N_PRIORITIES>& factories,
-    bool enableTaskStats) {
+        N_PRIORITIES>& factories) {
   auto copy = factories;
   if (copy[PRIORITY::NORMAL].second < NORMAL_PRIORITY_MINIMUM_THREADS) {
     LOG(INFO) << "Creating minimum threads of NORMAL priority: "
               << NORMAL_PRIORITY_MINIMUM_THREADS;
     copy[PRIORITY::NORMAL].second = NORMAL_PRIORITY_MINIMUM_THREADS;
   }
-  return std::make_shared<PriorityThreadManager::PriorityImpl>(
-      copy, enableTaskStats);
+  return std::make_shared<PriorityThreadManager::PriorityImpl>(copy);
 }
 
 std::shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
-    const std::array<size_t, N_PRIORITIES>& counts, bool enableTaskStats) {
+    const std::array<size_t, N_PRIORITIES>& counts) {
   static_assert(N_PRIORITIES == 5, "Implementation is out-of-date");
   // Note that priorities for HIGH and IMPORTANT are the same, the difference
   // is in the number of threads.
@@ -1632,14 +1620,12 @@ PriorityThreadManager::newPriorityThreadManager(
           {Factory(PosixThreadFactory::NORMAL_PRI), counts[PRIORITY::NORMAL]},
           {Factory(PosixThreadFactory::LOW_PRI), counts[PRIORITY::BEST_EFFORT]},
       }};
-  return newPriorityThreadManager(factories, enableTaskStats);
+  return newPriorityThreadManager(factories);
 }
 
 std::shared_ptr<PriorityThreadManager>
-PriorityThreadManager::newPriorityThreadManager(
-    size_t normalThreadsCount, bool enableTaskStats) {
-  return newPriorityThreadManager(
-      {{2, 2, 2, normalThreadsCount, 2}}, enableTaskStats);
+PriorityThreadManager::newPriorityThreadManager(size_t normalThreadsCount) {
+  return newPriorityThreadManager({{2, 2, 2, normalThreadsCount, 2}});
 }
 
 } // namespace concurrency

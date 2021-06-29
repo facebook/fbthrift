@@ -34,7 +34,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     SocketAddress const& addr,
     ServerConfigCb configCb) {
   auto tf = make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
-  auto tm = ThreadManager::newSimpleThreadManager(1, false);
+  auto tm = ThreadManager::newSimpleThreadManager(1);
   tm->threadFactory(move(tf));
   tm->start();
   auto ts = make_shared<ThriftServer>();

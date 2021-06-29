@@ -56,7 +56,6 @@ class TCppServerTestManager(object):
         server.setNewSimpleThreadManager(
             count=1,
             pendingTaskCountMax=5,
-            enableTaskStats=False
         )
         return server
 

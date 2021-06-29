@@ -605,8 +605,8 @@ class CppServerWrapper : public ThriftServer {
         std::make_shared<CppServerEventHandler>(serverEventHandler));
   }
 
-  void setNewSimpleThreadManager(size_t count, size_t, bool enableTaskStats) {
-    auto tm = ThreadManager::newSimpleThreadManager(count, enableTaskStats);
+  void setNewSimpleThreadManager(size_t count, size_t) {
+    auto tm = ThreadManager::newSimpleThreadManager(count);
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       tm->setNamePrefix(poolThreadName);
@@ -617,10 +617,8 @@ class CppServerWrapper : public ThriftServer {
     setThreadManager(std::move(tm));
   }
 
-  void setNewPriorityQueueThreadManager(
-      size_t numThreads, bool enableTaskStats) {
-    auto tm = ThreadManager::newPriorityQueueThreadManager(
-        numThreads, enableTaskStats);
+  void setNewPriorityQueueThreadManager(size_t numThreads) {
+    auto tm = ThreadManager::newPriorityQueueThreadManager(numThreads);
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       tm->setNamePrefix(poolThreadName);
@@ -637,11 +635,9 @@ class CppServerWrapper : public ThriftServer {
       size_t important,
       size_t normal,
       size_t best_effort,
-      bool enableTaskStats,
       size_t) {
     auto tm = PriorityThreadManager::newPriorityThreadManager(
-        {{high_important, high, important, normal, best_effort}},
-        enableTaskStats);
+        {{high_important, high, important, normal, best_effort}});
     tm->enableCodel(getEnableCodel());
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
@@ -743,13 +739,11 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def(
           "setNewSimpleThreadManager",
           &CppServerWrapper::setNewSimpleThreadManager,
-          (arg("count"),
-           arg("pendingTaskCountMax"),
-           arg("enableTaskStats") = false))
+          (arg("count"), arg("pendingTaskCountMax")))
       .def(
           "setNewPriorityQueueThreadManager",
           &CppServerWrapper::setNewPriorityQueueThreadManager,
-          (arg("numThreads"), arg("enableTaskStats") = false))
+          (arg("numThreads")))
       .def(
           "setNewPriorityThreadManager",
           &CppServerWrapper::setNewPriorityThreadManager,
@@ -758,7 +752,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
            arg("important"),
            arg("normal"),
            arg("best_effort"),
-           arg("enableTaskStats") = false,
            arg("maxQueueLen") = 0))
       .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
       .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)

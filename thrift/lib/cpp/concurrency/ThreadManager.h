@@ -234,14 +234,14 @@ class ThreadManager : public virtual folly::Executor {
    * Creates a simple thread manager that uses count number of worker threads
    */
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
-      size_t count = 4, bool enableTaskStats = false);
+      size_t count = 4);
 
   /**
    * Creates a simple thread manager that uses count number of worker threads
    * and sets the name prefix
    */
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
-      const std::string& name, size_t count = 4, bool enableTaskStats = false);
+      const std::string& name, size_t count = 4);
 
   /**
    * Creates a thread manager with support for priorities. Unlike
@@ -249,7 +249,7 @@ class ThreadManager : public virtual folly::Executor {
    * thread pool.
    */
   static std::shared_ptr<ThreadManager> newPriorityQueueThreadManager(
-      size_t numThreads, bool enableTaskStats = false);
+      size_t numThreads);
 
   struct RunStats {
     const std::string& threadPoolName;
@@ -366,16 +366,14 @@ class PriorityThreadManager : public ThreadManager {
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
       const std::array<
           std::pair<std::shared_ptr<ThreadFactory>, size_t>,
-          N_PRIORITIES>& counts,
-      bool enableTaskStats = false);
+          N_PRIORITIES>& counts);
 
   /**
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
    */
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
-      const std::array<size_t, N_PRIORITIES>& counts,
-      bool enableTaskStats = false);
+      const std::array<size_t, N_PRIORITIES>& counts);
 
   /**
    * Creates a priority-aware thread manager that uses normalThreadsCount
@@ -387,8 +385,7 @@ class PriorityThreadManager : public ThreadManager {
    *          to the number of CPUs on the system
    */
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
-      size_t normalThreadsCount = sysconf(_SC_NPROCESSORS_ONLN),
-      bool enableTaskStats = false);
+      size_t normalThreadsCount = sysconf(_SC_NPROCESSORS_ONLN));
 
   class PriorityImpl;
 };
@@ -462,8 +459,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager,
 class SimpleThreadManager : public ThreadManager,
                             public folly::DefaultKeepAliveExecutor {
  public:
-  explicit SimpleThreadManager(
-      size_t workerCount = 4, bool enableTaskStats = false);
+  explicit SimpleThreadManager(size_t workerCount = 4);
   ~SimpleThreadManager() override;
 
   void start() override;

@@ -516,8 +516,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
     auto tf = make_shared<apache::thrift::concurrency::PosixThreadFactory>(
         apache::thrift::concurrency::PosixThreadFactory::ATTACHED);
     auto tm =
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-            1, false);
+        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1);
     tm->threadFactory(move(tf));
     tm->start();
     ts->setAddress({"::1", 0});

@@ -2627,7 +2627,7 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
           auto tf = std::make_shared<PosixThreadFactory>(
               PosixThreadFactory::ATTACHED);
           // We need at least 2 threads for the test
-          auto tm = ThreadManager::newSimpleThreadManager(2, false);
+          auto tm = ThreadManager::newSimpleThreadManager(2);
           tm->threadFactory(move(tf));
           tm->start();
           ts.setThreadManager(tm);

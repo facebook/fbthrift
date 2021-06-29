@@ -653,7 +653,7 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
   CoroutineServiceHandlerThrowing handler;
 
   folly::ScopedEventBaseThread ebt;
-  auto tm = ThreadManager::newSimpleThreadManager(1, true);
+  auto tm = ThreadManager::newSimpleThreadManager(1);
 
   apache::thrift::Cpp2RequestContext cpp2reqCtx(nullptr);
   auto cb = std::make_unique<

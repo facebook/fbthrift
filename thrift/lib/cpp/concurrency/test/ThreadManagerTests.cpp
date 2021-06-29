@@ -784,8 +784,7 @@ TEST_F(ThreadManagerTest, PriorityThreadManagerWorkerCount) {
 }
 
 TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
-  auto threadManager =
-      ThreadManager::newPriorityQueueThreadManager(1, true /*stats*/);
+  auto threadManager = ThreadManager::newPriorityQueueThreadManager(1);
   threadManager->start();
   folly::Baton<> reqSyncBaton;
   folly::Baton<> reqDoneBaton;
@@ -815,10 +814,9 @@ TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
 std::array<std::function<std::shared_ptr<ThreadManager>()>, 3> factories = {
     std::bind(
         (std::shared_ptr<ThreadManager>(*)(
-            size_t, bool))ThreadManager::newSimpleThreadManager,
-        1,
-        false),
-    std::bind(ThreadManager::newPriorityQueueThreadManager, 1, false),
+            size_t))ThreadManager::newSimpleThreadManager,
+        1),
+    std::bind(ThreadManager::newPriorityQueueThreadManager, 1),
     []() -> std::shared_ptr<apache::thrift::concurrency::ThreadManager> {
       return PriorityThreadManager::newPriorityThreadManager({{
           1 /*HIGH_IMPORTANT*/,
