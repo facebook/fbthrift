@@ -33,6 +33,8 @@
 <%#struct:union?%>  <%/struct:union?%>        goto written_lazy_field_<%field:cpp_name%>;
 <%#struct:union?%>  <%/struct:union?%>      }
 <%#struct:union?%>  <%/struct:union?%>    }
+<%#struct:union?%>  <%/struct:union?%>
+<%#struct:union?%>  <%/struct:union?%>    __fbthrift_read_field_<%field:cpp_name%>();
 <%/field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += <% > module_types_tcc/pm%>::write(*prot_, <% > module_types_tcc/pm_value%>);
 <%/field:non_opt_cpp_ref?%>

@@ -321,6 +321,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
         goto written_lazy_field_field3;
       }
     }
+    __fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->field3);
     written_lazy_field_field3:
     indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->field3, 3);
