@@ -60,6 +60,7 @@
 #include <wangle/ssl/TLSCredProcessor.h>
 
 DECLARE_bool(thrift_abort_if_exceeds_shutdown_deadline);
+DECLARE_string(service_identity);
 
 namespace apache {
 namespace thrift {
