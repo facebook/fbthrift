@@ -59,7 +59,7 @@ TEST_P(RandomTestWithSeed, test) {
   OptionalLazyFoo lazyFoo;
   for (int i = 0; i < kIterationCount; i++) {
     auto arg = randomField();
-    auto methods = folly::make_array<std::function<void()>>(
+    std::vector<std::function<void()>> methods = {
         [&] { EXPECT_EQ(bool(foo.field4_ref()), bool(lazyFoo.field4_ref())); },
         [&] {
           EXPECT_EQ(
@@ -163,41 +163,34 @@ TEST_P(RandomTestWithSeed, test) {
           EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
-        [&] {
-          auto s = randomSerializedStruct<CompactSerializer, OptionalFoo>();
-          CompactSerializer::deserialize(s, foo);
-          CompactSerializer::deserialize(s, lazyFoo);
-        },
-        [&] {
-          auto s = randomSerializedStruct<CompactSerializer, OptionalLazyFoo>();
-          CompactSerializer::deserialize(s, foo);
-          CompactSerializer::deserialize(s, lazyFoo);
-        },
-        [&] {
-          auto s = randomSerializedStruct<CompactSerializer, OptionalFoo>();
-          foo = CompactSerializer::deserialize<OptionalFoo>(s);
-          lazyFoo = CompactSerializer::deserialize<OptionalLazyFoo>(s);
-        },
-        [&] {
-          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
-          foo = BinarySerializer::deserialize<OptionalFoo>(s);
-          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
-        },
-        [&] {
-          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
-          BinarySerializer::deserialize(s, foo);
-          BinarySerializer::deserialize(s, lazyFoo);
-        },
-        [&] {
-          auto s = randomSerializedStruct<BinarySerializer, OptionalFoo>();
-          foo = BinarySerializer::deserialize<OptionalFoo>(s);
-          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
-        },
-        [&] {
-          auto s = randomSerializedStruct<BinarySerializer, OptionalLazyFoo>();
-          foo = BinarySerializer::deserialize<OptionalFoo>(s);
-          lazyFoo = BinarySerializer::deserialize<OptionalLazyFoo>(s);
-        });
+    };
+
+    auto addSerializationMethods = [&](auto ser) {
+      using Serializer = decltype(ser);
+      methods.push_back([&] {
+        auto s = randomSerializedStruct<Serializer, OptionalFoo>();
+        Serializer::deserialize(s, foo);
+        Serializer::deserialize(s, lazyFoo);
+      });
+      methods.push_back([&] {
+        auto s = randomSerializedStruct<Serializer, OptionalLazyFoo>();
+        Serializer::deserialize(s, foo);
+        Serializer::deserialize(s, lazyFoo);
+      });
+      methods.push_back([&] {
+        auto s = randomSerializedStruct<Serializer, OptionalFoo>();
+        foo = Serializer::template deserialize<OptionalFoo>(s);
+        lazyFoo = Serializer::template deserialize<OptionalLazyFoo>(s);
+      });
+      methods.push_back([&] {
+        auto s = randomSerializedStruct<Serializer, OptionalLazyFoo>();
+        foo = Serializer::template deserialize<OptionalFoo>(s);
+        lazyFoo = Serializer::template deserialize<OptionalLazyFoo>(s);
+      });
+    };
+
+    addSerializationMethods(CompactSerializer{});
+    addSerializationMethods(BinarySerializer{});
 
     // Choose a random method and call it
     methods[rng() % methods.size()]();
